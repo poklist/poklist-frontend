@@ -10,12 +10,26 @@ import { Button } from '@/components/ui/button';
 
 import { useForm } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
+import { useNavigate } from 'react-router-dom';
+import type { FormEvent } from 'react';
 
 const Login = () => {
   const form = useForm();
+
+  const navigate = useNavigate();
+
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log('login!');
+    navigate('/home');
+  };
+
   return (
     <Form {...form}>
-      <form className="flex flex-col gap-4 rounded-md border border-gray-300 p-12">
+      <form
+        onSubmit={onSubmit}
+        className="flex flex-col gap-4 rounded-md border border-gray-300 p-12"
+      >
         <FormField
           control={form.control}
           name="username"
