@@ -3,6 +3,8 @@ import router from './router';
 
 import MainContainer from './components/ui/containers/MainContainer';
 
+import MainContainer from './components/ui/containers/MainContainer';
+
 function App() {
   return (
     <MainContainer>
