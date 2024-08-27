@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
 
 function App() {
   const [count, setCount] = useState(0);
@@ -6,9 +7,9 @@ function App() {
   return (
     <>
       <div>
-        <button type="button" onClick={() => setCount((count) => count + 1)}>
+        <Button type="button" onClick={() => setCount((count) => count + 1)}>
           count is {count}
-        </button>
+        </Button>
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
