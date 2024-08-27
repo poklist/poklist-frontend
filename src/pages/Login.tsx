@@ -18,6 +18,13 @@ import MainContainer from '@/components/ui/containers/MainContainer';
 const Login = () => {
   const form = useForm();
 
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log('login!');
+    navigate('/home');
+  };
+
+
   const navigate = useNavigate();
 
   useEffect(() => {
