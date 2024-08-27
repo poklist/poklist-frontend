@@ -6,6 +6,8 @@ interface MainContainerProps {
 
 export default function MainContainer({ children }: MainContainerProps) {
   return (
-    <div className="flex h-screen items-center justify-center">{children}</div>
+    <div className="flex h-screen flex-col items-center justify-center">
+      {children}
+    </div>
   );
 }
