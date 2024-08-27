@@ -15,7 +15,7 @@ const Login = () => {
   const form = useForm();
   return (
     <Form {...form}>
-      <form className="flex flex-col gap-4 border border-gray-300 p-12 rounded-md">
+      <form className="flex flex-col gap-4 rounded-md border border-gray-300 p-12">
         <FormField
           control={form.control}
           name="username"
