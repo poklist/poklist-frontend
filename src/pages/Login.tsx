@@ -21,25 +21,24 @@ const Login = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (localStorage.getItem("token")) {
-      navigate("/home");
+    if (localStorage.getItem('token')) {
+      navigate('/home');
     }
   }, [navigate]);
 
-  const baseURL = "http://localhost:7777"
-  const loginURL = `${baseURL}/login`
-  const helloURL = `${baseURL}/hello`  
-  
+  const baseURL = 'http://localhost:7777';
+  const loginURL = `${baseURL}/login`;
+  const helloURL = `${baseURL}/hello`;
   /** Fetch */
   const callHello = async () => {
     const response = await fetch(helloURL, {
-      method: "GET", 
-      credentials: "include"
+      method: 'GET',
+      credentials: 'include',
     });
     console.log(response);
   };
-  
-  // TODO: 
+
+  // TODO:
   /** XHR */
   // const callHello = async () => {
   //   const xhr = new XMLHttpRequest();
