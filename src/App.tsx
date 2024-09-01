@@ -1,17 +1,11 @@
-import { useState } from "react";
+import { RouterProvider } from "react-router-dom";
+import { router } from "./router";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
       <div>
-        <button type="button" onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+        <RouterProvider router={router} />
       </div>
     </>
   );
