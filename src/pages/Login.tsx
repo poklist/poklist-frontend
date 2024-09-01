@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import {
   Form,
   FormItem,
@@ -18,6 +20,45 @@ const Login = () => {
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      navigate("/home");
+    }
+  }, [navigate]);
+
+  const baseURL = "http://localhost:7777"
+  const loginURL = `${baseURL}/login`
+  const helloURL = `${baseURL}/hello`  
+  
+  /** Fetch */
+  const callHello = async () => {
+    const response = await fetch(helloURL, {
+      method: "GET", 
+      credentials: "include"
+    });
+    console.log(response);
+  };
+  
+  // TODO: 
+  /** XHR */
+  // const callHello = async () => {
+  //   const xhr = new XMLHttpRequest();
+  //   xhr.withCredentials = true;
+  //   xhr.open("GET", helloURL, true);
+  //   xhr.onload = () => {
+  //     if (xhr.readyState === 4) {
+  //       if (xhr.status === 200) {
+  //         console.log(xhr.responseText);
+  //       } else {
+  //         console.error(xhr.statusText);
+  //       }
+  //     }
+  //   };
+  //   xhr.onerror = () => {
+  //     console.error(xhr.statusText);
+  //   };
+  //   xhr.send(null);
+  // };
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log('login!');
