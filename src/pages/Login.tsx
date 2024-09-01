@@ -11,60 +11,38 @@ export default function Login() {
   }, [navigate]);
 
   const baseURL = "http://localhost:7777"
-  const loginURL = "http://localhost:7777/login"
-  const helloURL = "http://localhost:7777/hello"
-  let token: string;
+  const loginURL = `${baseURL}/login`
+  const helloURL = `${baseURL}/hello`  
   
-  // const hello = async () => {
-  //   const response = await fetch(`${baseURL}/hello`, {
-  //     method: "GET", 
-  //     headers: {
-  //       "Authorization": `Bearer ${token}`
-  //     },
-  //     credentials: "include"
-  //   });
-  //   console.log(response);
-  // };
-
-  const login7777 = async () => {
-    const xhr = new XMLHttpRequest();
-
-    xhr.open("POST", loginURL, true);
-    xhr.onload = () => {
-      if (xhr.readyState === 4) {
-        if (xhr.status === 200) {
-          console.log(xhr.responseText);
-        } else {
-          console.error(xhr.statusText);
-        }
-      }
-    };
-    xhr.onerror = () => {
-      console.error(xhr.statusText);
-    };
-    xhr.send(null);
-
-  };
-
+  /** Fetch */
   const callHello = async () => {
-    const xhr = new XMLHttpRequest();
-
-    xhr.open("GET", helloURL, true);
-    xhr.onload = () => {
-      if (xhr.readyState === 4) {
-        if (xhr.status === 200) {
-          console.log(xhr.responseText);
-        } else {
-          console.error(xhr.statusText);
-        }
-      }
-    };
-    xhr.onerror = () => {
-      console.error(xhr.statusText);
-    };
-    xhr.send(null);
-
+    const response = await fetch(helloURL, {
+      method: "GET", 
+      credentials: "include"
+    });
+    console.log(response);
   };
+  
+  // TODO: 
+  /** XHR */
+  // const callHello = async () => {
+  //   const xhr = new XMLHttpRequest();
+  //   xhr.withCredentials = true;
+  //   xhr.open("GET", helloURL, true);
+  //   xhr.onload = () => {
+  //     if (xhr.readyState === 4) {
+  //       if (xhr.status === 200) {
+  //         console.log(xhr.responseText);
+  //       } else {
+  //         console.error(xhr.statusText);
+  //       }
+  //     }
+  //   };
+  //   xhr.onerror = () => {
+  //     console.error(xhr.statusText);
+  //   };
+  //   xhr.send(null);
+  // };
 
   return (
     <>
