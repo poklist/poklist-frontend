@@ -1,5 +1,5 @@
-import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -10,47 +10,100 @@ export default function Login() {
     }
   }, [navigate]);
 
-  const loginUser = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log(e.currentTarget.username.value);
-    console.log(e.currentTarget.password.value);
-    localStorage.setItem("token", "123");
-    navigate("/home");
+  const baseURL = "http://localhost:7777"
+  const loginURL = "http://localhost:7777/login"
+  const helloURL = "http://localhost:7777/hello"
+  let token: string;
+  
+  // const hello = async () => {
+  //   const response = await fetch(`${baseURL}/hello`, {
+  //     method: "GET", 
+  //     headers: {
+  //       "Authorization": `Bearer ${token}`
+  //     },
+  //     credentials: "include"
+  //   });
+  //   console.log(response);
+  // };
+
+  const login7777 = async () => {
+    const xhr = new XMLHttpRequest();
+
+    xhr.open("POST", loginURL, true);
+    xhr.onload = () => {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+          console.log(xhr.responseText);
+        } else {
+          console.error(xhr.statusText);
+        }
+      }
+    };
+    xhr.onerror = () => {
+      console.error(xhr.statusText);
+    };
+    xhr.send(null);
+
+  };
+
+  const callHello = async () => {
+    const xhr = new XMLHttpRequest();
+
+    xhr.open("GET", helloURL, true);
+    xhr.onload = () => {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+          console.log(xhr.responseText);
+        } else {
+          console.error(xhr.statusText);
+        }
+      }
+    };
+    xhr.onerror = () => {
+      console.error(xhr.statusText);
+    };
+    xhr.send(null);
+
   };
 
   return (
-    <form
-      onSubmit={loginUser}
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        marginTop: "200px",
-        marginInline: "auto",
-        gap: "1rem",
-        padding: "20px",
-        border: "1px solid #ccc",
-        width: "500px",
-      }}>
-      <label>
-        Username:
-        <input type="text" name="username" />
-      </label>
-      <label>
-        Password:
-        <input type="password" name="password" />
-      </label>
-      <button
-        type="submit"
+    <>
+      <form
+        action={loginURL}
+        method="post"
         style={{
-          padding: "10px",
-          border: "1px solid #ccc",
-          borderRadius: "5px",
-          cursor: "pointer",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          marginTop: "200px",
+          marginInline: "auto",
+          gap: "1rem",
+          width: "500px",
         }}>
-        Login in with Google
-      </button>
-    </form>
+        <button
+          type="submit"
+          style={{
+            padding: "10px",
+            border: "1px solid #ccc",
+            borderRadius: "5px",
+            cursor: "pointer",
+          }}>
+          Login in
+        </button>
+      </form>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "20px",
+          marginTop: "50px",
+        }}>
+        {/* <button onClick={login7777}>🚀 Login? 🚀</button> */}
+        <button onClick={callHello}>🚀 Hello 🚀</button>
+      </div>
+    </>
   );
 }
