@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Link } from 'react-router-dom';
 
 import logo from '@/assets/images/logo.png';
 import NotificationIcon from '@/components/ui/icons/NotificationIcon';
@@ -26,9 +27,9 @@ export default function SiteFooter({ floatingBtnTxts }: SiteFooterProps) {
         ))}
       </div>
       <footer className="fixed bottom-0 right-0 flex h-14 w-full items-center justify-between border-t border-gray-600 px-6">
-        <div className="flex items-center gap-2">
+        <Link className="flex items-center gap-2" to="/home">
           <img src={logo} alt="logo" className="w-20" />
-        </div>
+        </Link>
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-2">
             <span>
