@@ -6,8 +6,8 @@ import { Link } from 'react-router-dom';
 export default function Home() {
   return (
     <MainContainer>
-      <Link to="/">
-        <Button variant="outline" className="mx-auto mt-5 hover:bg-gray-100">
+      <Link to="/" className="contents">
+        <Button variant="outline" className="mt-5 self-start hover:bg-gray-100">
           Logout
         </Button>
       </Link>

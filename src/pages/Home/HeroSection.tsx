@@ -6,7 +6,7 @@ import { XIcon } from '@/components/ui/icons/XIcon';
 
 export default function HeroSection() {
   return (
-    <div className="flex h-screen flex-col items-center justify-center">
+    <div className="flex h-screen flex-col items-center pt-5">
       <div
         id="user-id"
         style={{ '--secondary-tint': '0, 0%, 95%' } as CSSProperties}
