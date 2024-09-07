@@ -1,29 +1,50 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect } from 'react';
 
-export default function Login() {
+import {
+  Form,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+  FormField,
+} from '@/components/ui/form';
+import { Button } from '@/components/ui/button';
+
+import { useForm } from 'react-hook-form';
+import { Input } from '@/components/ui/input';
+import { useNavigate } from 'react-router-dom';
+import type { FormEvent } from 'react';
+import MainContainer from '@/components/ui/containers/MainContainer';
+const Login = () => {
+  const form = useForm();
+
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log('login!');
+    navigate('/home');
+  };
+
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (localStorage.getItem("token")) {
-      navigate("/home");
+    if (localStorage.getItem('token')) {
+      navigate('/home');
     }
   }, [navigate]);
 
-  const baseURL = "http://localhost:7777"
-  const loginURL = `${baseURL}/login`
-  const helloURL = `${baseURL}/hello`  
-  
+  const baseURL = 'http://localhost:7777';
+  const loginURL = `${baseURL}/login`;
+  const helloURL = `${baseURL}/hello`;
   /** Fetch */
   const callHello = async () => {
     const response = await fetch(helloURL, {
-      method: "GET", 
-      credentials: "include"
+      method: 'GET',
+      credentials: 'include',
     });
     console.log(response);
   };
-  
-  // TODO: 
+
+  // TODO:
   /** XHR */
   // const callHello = async () => {
   //   const xhr = new XMLHttpRequest();
@@ -45,43 +66,45 @@ export default function Login() {
   // };
 
   return (
-    <>
-      <form
-        action={loginURL}
-        method="post"
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          marginTop: "200px",
-          marginInline: "auto",
-          gap: "1rem",
-          width: "500px",
-        }}>
-        <button
-          type="submit"
-          style={{
-            padding: "10px",
-            border: "1px solid #ccc",
-            borderRadius: "5px",
-            cursor: "pointer",
-          }}>
-          Login in
-        </button>
-      </form>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: "20px",
-          marginTop: "50px",
-        }}>
-        {/* <button onClick={login7777}>🚀 Login? 🚀</button> */}
-        <button onClick={callHello}>🚀 Hello 🚀</button>
-      </div>
-    </>
+    <MainContainer>
+      <MainContainer>
+        <Form {...form}>
+          <form
+            onSubmit={onSubmit}
+            className="flex flex-col gap-4 rounded-md border border-gray-300 p-12"
+          >
+            <FormField
+              control={form.control}
+              name="username"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Username</FormLabel>
+                  <FormControl>
+                    <Input placeholder="shadcn" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <Input placeholder="your password" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button>Login</Button>
+          </form>
+        </Form>
+      </MainContainer>
+    </MainContainer>
   );
-}
+};
+
+export default Login;
