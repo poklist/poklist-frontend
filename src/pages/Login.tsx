@@ -24,7 +24,6 @@ const Login = () => {
     navigate('/home');
   };
 
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -65,16 +64,11 @@ const Login = () => {
   //   };
   //   xhr.send(null);
   // };
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log('login!');
-    navigate('/home');
-  };
 
   return (
     <MainContainer>
       <MainContainer>
-      <Form {...form}>
+        <Form {...form}>
           <form
             onSubmit={onSubmit}
             className="flex flex-col gap-4 rounded-md border border-gray-300 p-12"
@@ -108,7 +102,7 @@ const Login = () => {
             <Button>Login</Button>
           </form>
         </Form>
-    </MainContainer>
+      </MainContainer>
     </MainContainer>
   );
 };
