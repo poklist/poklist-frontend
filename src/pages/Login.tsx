@@ -32,17 +32,17 @@ const Login = () => {
     }
   }, [navigate]);
 
-  const baseURL = 'http://localhost:7777';
-  const loginURL = `${baseURL}/login`;
-  const helloURL = `${baseURL}/hello`;
+  // const baseURL = 'http://localhost:7777';
+  // const loginURL = `${baseURL}/login`;
+  // const helloURL = `${baseURL}/hello`;
   /** Fetch */
-  const callHello = async () => {
-    const response = await fetch(helloURL, {
-      method: 'GET',
-      credentials: 'include',
-    });
-    console.log(response);
-  };
+  // const callHello = async () => {
+  // const response = await fetch(helloURL, {
+  // method: 'GET',
+  // credentials: 'include',
+  // });
+  // console.log(response);
+  // };
 
   // TODO:
   /** XHR */
