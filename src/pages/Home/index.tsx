@@ -1,8 +1,8 @@
-import MainContainer from '@/components/ui/containers/MainContainer';
-import HeroSection from './HeroSection';
 import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
+import MainContainer from '@/components/ui/containers/MainContainer';
 import SiteFooter from '@/components/ui/SiteFooter';
+import { Link } from 'react-router-dom';
+import HeroSection from './HeroSection';
 
 export default function Home() {
   return (
