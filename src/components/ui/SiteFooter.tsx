@@ -1,5 +1,5 @@
-import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 
 import logo from '@/assets/images/logo.png';
@@ -13,14 +13,11 @@ interface SiteFooterProps {
 export default function SiteFooter({ floatingBtnTxts }: SiteFooterProps) {
   return (
     <>
-      <div
-        id="floating-btns"
-        className="fixed bottom-16 right-0 flex w-full justify-center gap-2"
-      >
+      <div id="floating-btns" className="fixed bottom-16 right-0 flex w-full justify-center gap-2">
         <Button type="button" className="rounded-full">
           {'<'}
         </Button>
-        {floatingBtnTxts.map((txt) => (
+        {floatingBtnTxts.map(txt => (
           <Button key={txt} type="button" className="rounded-full">
             {txt}
           </Button>
@@ -35,15 +32,13 @@ export default function SiteFooter({ floatingBtnTxts }: SiteFooterProps) {
             <span>
               <IonAdd className="h-5 w-5" />
             </span>
-            <span className="font-inter text-xs font-semibold">新增名單</span>
+            <Link to="/create">
+              <span className="font-inter text-xs font-semibold">新增名單</span>
+            </Link>
           </div>
           <NotificationIcon className="h-5 w-5" />
           <Avatar>
-            <AvatarImage
-              src="https://github.com/shadcn.png"
-              width="24px"
-              height="24px"
-            />
+            <AvatarImage src="https://github.com/shadcn.png" width="24px" height="24px" />
             <AvatarFallback>Profile</AvatarFallback>
           </Avatar>
         </div>

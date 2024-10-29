@@ -1,34 +1,33 @@
-import { useEffect } from 'react';
+import { useEffect } from "react";
 
+import { Button } from "@/components/ui/button";
 import {
   Form,
+  FormControl,
+  FormField,
   FormItem,
   FormLabel,
-  FormControl,
-  FormMessage,
-  FormField,
-} from '@/components/ui/form';
-import { Button } from '@/components/ui/button';
+  FormMessage
+} from "@/components/ui/form";
 
-import { useForm } from 'react-hook-form';
-import { Input } from '@/components/ui/input';
-import { useNavigate } from 'react-router-dom';
-import type { FormEvent } from 'react';
-import MainContainer from '@/components/ui/containers/MainContainer';
+import MainContainer from "@/components/ui/containers/MainContainer";
+import { Input } from "@/components/ui/input";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 const Login = () => {
   const form = useForm();
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('login!');
-    navigate('/home');
+    console.log("login!");
+    navigate("/home");
   };
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (localStorage.getItem('token')) {
-      navigate('/home');
+    if (localStorage.getItem("token")) {
+      navigate("/home");
     }
   }, [navigate]);
 
