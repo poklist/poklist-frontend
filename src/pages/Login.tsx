@@ -1,20 +1,19 @@
-import { useEffect } from 'react';
+import { FormEvent, useEffect } from 'react';
 
+import { Button } from '@/components/ui/button';
 import {
   Form,
+  FormControl,
+  FormField,
   FormItem,
   FormLabel,
-  FormControl,
   FormMessage,
-  FormField,
 } from '@/components/ui/form';
-import { Button } from '@/components/ui/button';
 
-import { useForm } from 'react-hook-form';
-import { Input } from '@/components/ui/input';
-import { useNavigate } from 'react-router-dom';
-import type { FormEvent } from 'react';
 import MainContainer from '@/components/ui/containers/MainContainer';
+import { Input } from '@/components/ui/input';
+import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 const Login = () => {
   const form = useForm();
 
@@ -31,39 +30,6 @@ const Login = () => {
       navigate('/home');
     }
   }, [navigate]);
-
-  // const baseURL = 'http://localhost:7777';
-  // const loginURL = `${baseURL}/login`;
-  // const helloURL = `${baseURL}/hello`;
-  /** Fetch */
-  // const callHello = async () => {
-  // const response = await fetch(helloURL, {
-  // method: 'GET',
-  // credentials: 'include',
-  // });
-  // console.log(response);
-  // };
-
-  // TODO:
-  /** XHR */
-  // const callHello = async () => {
-  //   const xhr = new XMLHttpRequest();
-  //   xhr.withCredentials = true;
-  //   xhr.open("GET", helloURL, true);
-  //   xhr.onload = () => {
-  //     if (xhr.readyState === 4) {
-  //       if (xhr.status === 200) {
-  //         console.log(xhr.responseText);
-  //       } else {
-  //         console.error(xhr.statusText);
-  //       }
-  //     }
-  //   };
-  //   xhr.onerror = () => {
-  //     console.error(xhr.statusText);
-  //   };
-  //   xhr.send(null);
-  // };
 
   return (
     <MainContainer>

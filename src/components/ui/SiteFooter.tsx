@@ -1,5 +1,5 @@
-import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 
 import logo from '@/assets/images/logo.png';
@@ -35,7 +35,9 @@ export default function SiteFooter({ floatingBtnTxts }: SiteFooterProps) {
             <span>
               <IonAdd className="h-5 w-5" />
             </span>
-            <span className="font-inter text-xs font-semibold">新增名單</span>
+            <Link to="/create">
+              <span className="font-inter text-xs font-semibold">新增名單</span>
+            </Link>
           </div>
           <NotificationIcon className="h-5 w-5" />
           <Avatar>
