@@ -11,24 +11,24 @@ export type CommonStoreState = {
   setShowingAlert: (isShowing: boolean, alertMessage?: IAlertMessage) => void;
 };
 
-const useCommonStore = create<CommonStoreState>(set => ({
+const useCommonStore = create<CommonStoreState>((set) => ({
   isLoading: false,
   isShowingAlert: false,
   alertMessage: {
-    message: ''
+    message: '',
   },
-  setIsLoading: isLoading => set({ isLoading }),
+  setIsLoading: (isLoading) => set({ isLoading }),
   setShowingAlert: (isShowing, alertMessage) => {
     set({
-      isShowingAlert: isShowing
+      isShowingAlert: isShowing,
     });
 
     if (alertMessage) {
       set({
-        alertMessage
+        alertMessage,
       });
     }
-  }
+  },
 }));
 
 export default useCommonStore;

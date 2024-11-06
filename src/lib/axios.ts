@@ -1,11 +1,11 @@
-import axios from "axios";
+import axios from 'axios';
 
-import { LocalStorageKey } from "@/enums/index.enum";
-import { getLocalStorage, removeLocalStorage } from "@/lib/utils";
-import commonStore from "@/stores/useCommonStore";
+import { LocalStorageKey } from '@/enums/index.enum';
+import { getLocalStorage, removeLocalStorage } from '@/lib/utils';
+import commonStore from '@/stores/useCommonStore';
 
 const instance = axios.create({
-  baseURL: ""
+  baseURL: '',
 });
 
 instance.interceptors.request.use(
@@ -14,18 +14,18 @@ instance.interceptors.request.use(
     const storage = getLocalStorage(LocalStorageKey.USER_INFO);
 
     if (storage?.state?.user?.token) {
-      config.headers["x-user-token"] = storage.state.user.token;
+      config.headers['x-user-token'] = storage.state.user.token;
     }
     return config;
   },
-  error => {
+  (error) => {
     const { setShowingAlert } = commonStore.getState();
     console.error(error);
     setShowingAlert(true, {
-      message: error
+      message: error,
     });
     removeLocalStorage(LocalStorageKey.USER_INFO);
-    window.location.href = "/";
+    window.location.href = '/';
     return Promise.reject(error);
   }
 );

@@ -1,8 +1,8 @@
-import React from "react";
+import React from 'react';
 
-import { cn } from "@/lib/utils";
-import useCommonStore from "@/stores/useCommonStore";
-import * as Toast from "@radix-ui/react-toast";
+import { cn } from '@/lib/utils';
+import useCommonStore from '@/stores/useCommonStore';
+import * as Toast from '@radix-ui/react-toast';
 
 export interface IAlertMessage {
   message: string;
@@ -22,14 +22,16 @@ const AlertComponent: React.FC = ({ className }: { className?: string }) => {
         duration={DELAY_TIME}
         defaultOpen={false}
         className={cn(
-          `flex justify-between px-4 py-3 bg-green-bright-01 rounded-lg mx-1`,
+          `mx-1 flex justify-between rounded-lg bg-green-bright-01 px-4 py-3`,
           className
         )}
       >
-        <Toast.Title className="text-black-text-01 font-bold">{alertMessage.message}</Toast.Title>
+        <Toast.Title className="font-bold text-black-text-01">
+          {alertMessage.message}
+        </Toast.Title>
         <Toast.Close
           aria-label="Close"
-          className="rounded-full w-5 h-5 bg-black-text-01 text-green-bright-01 leading-5 text-center"
+          className="h-5 w-5 rounded-full bg-black-text-01 text-center leading-5 text-green-bright-01"
         >
           <span aria-hidden>×</span>
         </Toast.Close>
