@@ -5,7 +5,7 @@ import { getLocalStorage, removeLocalStorage } from '@/lib/utils';
 import commonStore from '@/stores/useCommonStore';
 
 const instance = axios.create({
-  baseURL: '',
+  baseURL: import.meta.env.VITE_API_BASE_URL,
 });
 
 instance.interceptors.request.use(
