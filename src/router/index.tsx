@@ -1,4 +1,3 @@
-import AlertComponent from '@/components/ui/Alert';
 import CreatePage from '@/pages/Create';
 import Home from '@/pages/Home/index';
 import Layout from '@/pages/Layout';
@@ -8,25 +7,25 @@ import { createBrowserRouter } from 'react-router-dom';
 const router = createBrowserRouter([
   {
     path: '/',
-    element:<Layout />,
+    element: <Layout />,
     children: [
-    {
-      path:"login",
-      element: <Login />,
-    },
-    {
-      path: 'home',
-      element: <Home />,
-    },
-    {
-      path: 'create',
-      element: (
-        <>
-          <CreatePage />
-        </>
-      ),
-    },
-    ]
+      {
+        path: 'login',
+        element: <Login />,
+      },
+      {
+        path: 'home',
+        element: <Home />,
+      },
+      {
+        path: 'create',
+        element: (
+          <>
+            <CreatePage />
+          </>
+        ),
+      },
+    ],
   },
 ]);
 
