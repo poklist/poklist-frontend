@@ -11,8 +11,8 @@
     "preview": "vite preview",
     "extract": "lingui extract",
     "compile": "lingui compile",
-    "lingui:all": "lingui extract && lingui compile",
-    "lingui:clean": "lingui extract --clean"
+    "build-lang": "lingui extract && lingui compile",
+    "cleanup-lang": "lingui extract --clean"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
