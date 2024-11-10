@@ -1,5 +1,32 @@
 # React + TypeScript + Vite
 
+### Core module
+
+- zustand
+- tailwind
+- lingui
+
+### UI library
+
+- radix
+
+## Getting Started
+
+First, run the development server:
+
+- with node v18.17.1 (npm v9.6.7)
+
+```bash
+npm i
+npm run dev
+```
+
+## i18n/lingui
+
+```bash
+npm run build-lang
+```
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:
@@ -22,7 +49,7 @@ export default tseslint.config({
       tsconfigRootDir: import.meta.dirname,
     },
   },
-})
+});
 ```
 
 - Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
@@ -31,7 +58,7 @@ export default tseslint.config({
 
 ```js
 // eslint.config.js
-import react from 'eslint-plugin-react'
+import react from 'eslint-plugin-react';
 
 export default tseslint.config({
   // Set the react version
@@ -46,5 +73,5 @@ export default tseslint.config({
     ...react.configs.recommended.rules,
     ...react.configs['jsx-runtime'].rules,
   },
-})
+});
 ```
