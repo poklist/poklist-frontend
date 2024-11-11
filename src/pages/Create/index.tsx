@@ -1,6 +1,7 @@
 // import { Drawer, useDrawer } from '@/components/ui/Drawer';
+import { Drawer, useDrawer } from '@/components/ui/Drawer';
 import useCommonStore from '@/stores/useCommonStore';
-import { t } from '@lingui/macro';
+import { t, Trans } from '@lingui/macro';
 
 interface CreatePageProps {
   // Add any props you need for the page
@@ -9,7 +10,7 @@ interface CreatePageProps {
 const CreatePage: React.FC<CreatePageProps> = () => {
   // Render the page here
   const { setShowingAlert } = useCommonStore();
-  // const { openDrawer } = useDrawer();
+  const { openDrawer } = useDrawer();
 
   return (
     // Your component code here
@@ -17,7 +18,8 @@ const CreatePage: React.FC<CreatePageProps> = () => {
       <button onClick={() => setShowingAlert(true, { message: t`欸，標題不能留空喔！` })}>
         Delete Sense
       </button>
-      {/* <div onClick={() => openDrawer()} className="border">
+      <Trans>欸，標題不能留空喔！</Trans>
+      <div onClick={() => openDrawer()} className="border">
         Open drawer
       </div>
       <Drawer
@@ -30,7 +32,7 @@ const CreatePage: React.FC<CreatePageProps> = () => {
           </>
         }
         footer={<div className="">繼續編輯</div>}
-      /> */}
+      />
     </>
   );
 };
