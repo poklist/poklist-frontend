@@ -6,7 +6,7 @@ interface IDropdownOptions {
   label?: string;
 }
 
-export interface IDropdownProps {
+interface IDropdownProps {
   trigger: React.ReactNode;
   options: IDropdownOptions[];
   onSelect: (value: string) => void;

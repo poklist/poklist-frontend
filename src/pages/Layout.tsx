@@ -1,6 +1,6 @@
-import AlertComponent from '@/components/ui/Alert';
-import { DrawerProvider } from '@/components/ui/Drawer';
-import { LanguageProvider, LanguageSelector } from '@/lib/languageProvider';
+import AlertComponent from '@/components/Alert';
+import { DrawerProvider } from '@/components/Drawer';
+import { LanguageProvider } from '@/lib/languageProvider';
 import { Outlet } from 'react-router-dom';
 
 export default function Layout() {
@@ -13,7 +13,7 @@ export default function Layout() {
     <LanguageProvider>
       <DrawerProvider>
         <AlertComponent />
-        <LanguageSelector />
+        {/* <LanguageSelector /> */}
         <Outlet />
       </DrawerProvider>
     </LanguageProvider>

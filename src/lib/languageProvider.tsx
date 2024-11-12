@@ -1,4 +1,4 @@
-import DropdownComponent from '@/components/ui/Dropdown';
+import DropdownComponent from '@/components/Dropdown';
 import { Language, LocalStorageKey } from '@/enums/index.enum';
 import { getLocalStorage, setLocalStorage } from '@/lib/utils';
 import { i18n } from '@lingui/core';
