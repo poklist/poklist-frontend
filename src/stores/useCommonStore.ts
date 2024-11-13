@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-import { IAlertMessage } from '@/components/ui/Alert';
+import { IAlertMessage } from '@/components/Alert';
 
 export type CommonStoreState = {
   isLoading: boolean;
@@ -11,13 +11,13 @@ export type CommonStoreState = {
   setShowingAlert: (isShowing: boolean, alertMessage?: IAlertMessage) => void;
 };
 
-const useCommonStore = create<CommonStoreState>((set) => ({
+const useCommonStore = create<CommonStoreState>(set => ({
   isLoading: false,
   isShowingAlert: false,
   alertMessage: {
     message: '',
   },
-  setIsLoading: (isLoading) => set({ isLoading }),
+  setIsLoading: isLoading => set({ isLoading }),
   setShowingAlert: (isShowing, alertMessage) => {
     set({
       isShowingAlert: isShowing,
