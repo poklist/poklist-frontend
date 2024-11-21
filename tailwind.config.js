@@ -19,6 +19,13 @@ module.exports = {
       },
     },
     extend: {
+      fontSize: {
+        h1: ['1.625rem', '2.194rem'],
+        h2: ['1.063rem', '1.541rem'],
+        t1: ['0.938rem', '1.359rem'],
+        t2: ['0.813rem', '1.178rem'],
+        t3: ['0.625rem', '0.906rem'],
+      },
       colors: {
         'black-text-01': '#1F1F1F',
         'black-icon-02': '#484848',
@@ -93,6 +100,8 @@ module.exports = {
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
+        'show-mask': 'enter-from ease-in-out both',
+        'hide-mask': 'leave-to ease-in-out both',
         'swipe-down': 'swipe-down 0.5s ease-in-out',
         'swipe-up': 'swipe-up 1s ease-in-out',
       },
