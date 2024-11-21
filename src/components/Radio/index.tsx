@@ -24,6 +24,7 @@ export const RadioComponent: React.FC<IRadioProps> = ({
   disabled,
   type,
   className,
+  ...props
 }) => {
   return (
     <RadioGroup
@@ -35,6 +36,7 @@ export const RadioComponent: React.FC<IRadioProps> = ({
         { '': type === RadioType.DEFAULT, 'radio-button': type === RadioType.BUTTON },
         className
       )}
+      {...props}
     >
       {choices.map((choice, index) => (
         <Fragment key={`${choice.value}-${index}`}>
