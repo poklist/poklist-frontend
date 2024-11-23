@@ -27,10 +27,11 @@ const FormSchema = z.object({
 });
 
 interface IListFormProps {
-  callback: (list: { title: string; content: string }) => void;
+  checkEmptyCallback: () => boolean;
+  completedCallback: (list: { title: string; content: string }) => void;
 }
 
-export const ListForm: React.FC<IListFormProps> = ({ callback }) => {
+export const ListForm: React.FC<IListFormProps> = ({ checkEmptyCallback, completedCallback }) => {
   const [isTextareaFocus, setIsTextareaFocus] = useState(false);
 
   const listForm = useForm<z.infer<typeof FormSchema>>({
@@ -44,6 +45,19 @@ export const ListForm: React.FC<IListFormProps> = ({ callback }) => {
     title: '',
     content: '',
   });
+
+  const onDismiss = () => {
+    if (
+      listForm.getValues('title') !== '' ||
+      listForm.getValues('content') !== '' ||
+      checkEmptyCallback()
+    )
+      setErrorDrawer({
+        title: t`取消後，資料就飛走囉！`,
+        content: t`如果取消，所填的內容都會消失。`,
+      });
+    setOpenDrawer(true);
+  };
 
   const onSubmitFailed = (value: FieldErrors<{ title: string; content: string }>) => {
     // TODO 目前解法
@@ -81,7 +95,7 @@ export const ListForm: React.FC<IListFormProps> = ({ callback }) => {
   };
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
-    callback(data);
+    completedCallback(data);
   };
 
   const submitFooterRef = useRef<HTMLDivElement>(null);
@@ -158,12 +172,16 @@ export const ListForm: React.FC<IListFormProps> = ({ callback }) => {
             className="border-t-gray-main-03 border-t fixed flex px-4 py-2 w-dvw justify-between left-0 z-10"
           >
             <div className="flex items-center gap-2">
-              <Button aria-label="Previous" className="p-0 h-auto rounded-full bg-inherit">
+              <Button
+                onClick={() => onDismiss()}
+                aria-label="Previous"
+                className="p-0 h-auto rounded-full bg-inherit"
+              >
                 <IconClose />
               </Button>
               <Trans>建立名單</Trans>
             </div>
-            <Button type="submit">
+            <Button type="submit" disabled={listForm.getValues('title') === ''}>
               <Trans>下一步</Trans>
             </Button>
           </div>

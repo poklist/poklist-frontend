@@ -1,4 +1,4 @@
-import CreatePage from '@/pages/Create';
+import CreatePage from '@/pages/CreateList';
 import Home from '@/pages/Home/index';
 import Layout from '@/pages/Layout';
 import Login from '@/pages/Login';
