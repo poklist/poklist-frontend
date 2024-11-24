@@ -13,10 +13,60 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/components/ui/Alert.tsx:30
+#: src/components/Alert/index.tsx:30
+#: src/components/Radio/index.tsx:46
 msgid "<0>{0}</0>"
 msgstr "<0>{0}</0>"
 
-#: src/pages/Create/index.tsx:15
+#: src/pages/Create/index.tsx:21
+msgid "生活風格"
+msgstr "生活風格"
+
+#: src/pages/Create/index.tsx:25
+msgid "美食"
+msgstr "美食"
+
+#: src/pages/Create/index.tsx:29
+msgid "文化"
+msgstr "文化"
+
+#: src/pages/Create/index.tsx:33
+msgid "旅遊"
+msgstr "旅遊"
+
+#: src/pages/Create/index.tsx:37
+msgid "娛樂"
+msgstr "娛樂"
+
+#: src/pages/Create/index.tsx:41
+msgid "數位科技"
+msgstr "數位科技"
+
+#: src/pages/Create/index.tsx:45
+msgid "個人成長"
+msgstr "個人成長"
+
+#: src/pages/Create/index.tsx:49
+msgid "健康與健身"
+msgstr "健康與健身"
+
+#: src/pages/Create/index.tsx:53
+msgid "其他"
+msgstr "其他"
+
+#: src/pages/Create/index.tsx:66
+#: src/pages/Create/index.tsx:69
 msgid "欸，標題不能留空喔！"
 msgstr "欸，標題不能留空喔！"
+
+#: src/pages/Create/index.tsx:77
+msgid "名單分類"
+msgstr "名單分類"
+
+#: src/pages/Create/index.tsx:82
+msgid "選擇一項接近此份名單的分類"
+msgstr "選擇一項接近此份名單的分類"
+
+#: src/pages/Create/index.tsx:99
+msgid "下一步"
+msgstr "下一步"

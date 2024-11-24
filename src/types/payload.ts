@@ -1,3 +1,5 @@
+import { ListCategory } from '@/types/enum';
+
 export interface UserResponse {
   id: string;
   displayName: string;
@@ -6,12 +8,21 @@ export interface UserResponse {
   bio: string;
 }
 
+export interface IdeaPreview {
+  id: number;
+  title: number;
+  description: string;
+  coverImage: string;
+}
+
 export interface ListResponse {
   title: string;
   description: string;
   coverImage: string;
   externalLink: string;
-  categoryID: string;
+  categoryID: ListCategory;
+  likeCount: number;
+  ideas: IdeaPreview[];
 }
 
 export interface IdeaResponse {
