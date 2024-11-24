@@ -1,22 +1,27 @@
-import type { CSSProperties } from 'react';
 import { Button } from '@/components/ui/button';
 import { InstagramIcon } from '@/components/ui/icons/InstagramIcon';
 import { TikTokIcon } from '@/components/ui/icons/TikTokIcon';
 import { XIcon } from '@/components/ui/icons/XIcon';
+import { UserResponse } from '@/types/payload';
+import type { CSSProperties } from 'react';
 
-export default function HeroSection() {
+type HeroSectionProps = {
+  user: UserResponse | undefined;
+};
+
+export default function HeroSection(props: HeroSectionProps) {
   return (
     <div className="flex h-screen flex-col items-center pt-5">
       <div
-        id="user-id"
+        id={`user-id-${props.user?.id}`}
         style={{ '--secondary-tint': '0, 0%, 95%' } as CSSProperties}
         className="mb-5 rounded-md bg-secondary-tint px-2 py-0.5"
       >
-        <span className="text-sm">@tview</span>
+        <span className="text-sm">@{props.user?.userCode}</span>
       </div>
       <div id="profile-picture">
         <img
-          src="https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/avatars/44/4418a705c2c414dadb30c25de8bb2f7805007093_full.jpg"
+          src={props.user?.profileImage}
           alt="profile-picture"
           className="h-40 w-40 rounded-full"
         />
@@ -25,9 +30,9 @@ export default function HeroSection() {
         id="user-brief"
         className="flex flex-col items-center gap-[18px] pt-5"
       >
-        <span className="text-2xl font-bold">生活可以很無聊</span>
+        <span className="text-2xl font-bold">{props.user?.displayName}</span>
         <span className="text-pretty text-center text-[15px]">
-          生活可以很無聊，但生命可以很精彩。乾啦！
+          {props.user?.bio}
         </span>
       </div>
       <div id="user-stats" className="flex gap-2 pt-5">
