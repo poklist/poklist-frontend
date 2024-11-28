@@ -7,7 +7,7 @@ interface MobileContainerProps {
 export default function MobileContainer({ children }: MobileContainerProps) {
   return (
     <div className="flex justify-center bg-[#888888]">
-      <div className="flex h-screen w-[430px] flex-col justify-center bg-white px-10">
+      <div className="flex h-screen w-[430px] flex-col bg-white">
         {children}
       </div>
     </div>

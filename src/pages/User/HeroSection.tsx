@@ -1,8 +1,8 @@
-import type { CSSProperties } from 'react';
 import { Button } from '@/components/ui/button';
 import { InstagramIcon } from '@/components/ui/icons/InstagramIcon';
 import { TikTokIcon } from '@/components/ui/icons/TikTokIcon';
 import { XIcon } from '@/components/ui/icons/XIcon';
+import type { CSSProperties } from 'react';
 
 export default function HeroSection() {
   return (
@@ -48,17 +48,17 @@ export default function HeroSection() {
         <span className="fw-400 text-[15px]">追蹤</span>
       </Button>
       <div id="social-links" className="flex gap-2 pt-5">
-        <Button variant="ghost">
+        <Button variant="white">
           <a href="https://www.instagram.com">
             <InstagramIcon className="h-8 w-8 rounded-full" />
           </a>
         </Button>
-        <Button variant="ghost">
+        <Button variant="white">
           <a href="https://www.tiktok.com">
             <TikTokIcon className="h-8 w-8 rounded-full" />
           </a>
         </Button>
-        <Button variant="ghost">
+        <Button variant="white">
           <a href="https://www.x.com">
             <XIcon className="h-8 w-8 rounded-full" />
           </a>
