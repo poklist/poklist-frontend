@@ -1,4 +1,5 @@
 import CreatePage from '@/pages/Create';
+import EditUserPage from '@/pages/EditUser';
 import Home from '@/pages/Home/index';
 import Layout from '@/pages/Layout';
 import Login from '@/pages/Login';
@@ -24,22 +25,20 @@ const router = createBrowserRouter([
         element: <Settings />,
       },
       {
-        path: 'users',
+        path: ':id',
         element: (
           <>
             <UserPage />
           </>
         ),
-        children: [
-          {
-            path: '',
-            element: <UserPage />,
-          },
-          {
-            path: ':id',
-            element: <UserPage />,
-          },
-        ],
+      },
+      {
+        path: 'user/edit',
+        element: (
+          <>
+            <EditUserPage />
+          </>
+        ),
       },
       {
         path: 'create',

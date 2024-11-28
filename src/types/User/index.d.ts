@@ -6,6 +6,10 @@ export interface User {
   bio?: string;
   profileImage?: string;
   socialLinks?: SocialLinks;
+  listCount?: number;
+  followerCount?: number;
+  followingCount?: number;
+  isFollowing?: boolean;
 }
 
 export interface SocialLinks {

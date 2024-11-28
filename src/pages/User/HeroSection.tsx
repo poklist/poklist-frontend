@@ -1,69 +1,119 @@
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { InstagramIcon } from '@/components/ui/icons/InstagramIcon';
-import { TikTokIcon } from '@/components/ui/icons/TikTokIcon';
-import { XIcon } from '@/components/ui/icons/XIcon';
-import type { CSSProperties } from 'react';
+import useIsMyPage from '@/hooks/useIsMyPage';
+import axios from '@/lib/axios';
+import useUserStore from '@/stores/useUserStore';
+import { User } from '@/types/User';
+import { useEffect, useMemo, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
-export default function HeroSection() {
+interface IHeroSectionProps {
+  viewUser: User;
+}
+
+export const HeroSection: React.FC<IHeroSectionProps> = ({ viewUser }) => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { isLoggedIn } = useUserStore();
+  const isMyPage = useIsMyPage(id);
+
+  const linkCount = useMemo(() => {
+    if (viewUser.socialLinks !== undefined) {
+      return Object.keys(viewUser.socialLinks).length;
+    } else {
+      return 0;
+    }
+  }, [viewUser]);
+
+  const [isFollowing, setIsFollowing] = useState(false);
+
+  const follow = () => {
+    if (!isLoggedIn) {
+      navigate('/login');
+    }
+    axios
+      .post('/follow', null, { params: { userID: viewUser.id } })
+      .then(() => {
+        // TODO: success message
+        setIsFollowing(true);
+      })
+      .catch(() => {
+        // TODO: error message
+      });
+  };
+
+  const unfollow = () => {
+    axios
+      .post('/unfollow', null, { params: { userID: viewUser.id } })
+      .then(() => {
+        // TODO: success message
+        setIsFollowing(false);
+      })
+      .catch(() => {
+        // TODO: error message
+      });
+  };
+
+  const goToEditPage = () => {
+    navigate('/user/edit');
+  };
+
+  useEffect(() => {
+    // TODO: triggered multiple times but reason is not realized yet
+    setIsFollowing(isLoggedIn && viewUser.isFollowing === true);
+    console.log('isFollowing:', isFollowing);
+  }, [viewUser]);
+
   return (
-    <div className="flex h-screen flex-col items-center pt-5">
-      <div
-        id="user-id"
-        style={{ '--secondary-tint': '0, 0%, 95%' } as CSSProperties}
-        className="mb-5 rounded-md bg-secondary-tint px-2 py-0.5"
-      >
-        <span className="text-sm">@tview</span>
+    <div role="hero" className="flex flex-col items-center gap-4 pb-4 pt-6">
+      <div id="hero-basic-info" className="flex flex-col items-center gap-2">
+        <Avatar className="h-16 w-16">
+          <AvatarImage src={viewUser.profileImage} />
+          <AvatarFallback>{viewUser.displayName[0]}</AvatarFallback>
+        </Avatar>
+        <p className="text-[17px] font-bold">{viewUser.displayName}</p>
+        <p className="text-[13px] font-semibold">@{viewUser.userCode}</p>
+        <p className="text-[13px] font-normal">
+          {viewUser.bio /* TODO: trimTail */}
+        </p>
       </div>
-      <div id="profile-picture">
-        <img
-          src="https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/avatars/44/4418a705c2c414dadb30c25de8bb2f7805007093_full.jpg"
-          alt="profile-picture"
-          className="h-40 w-40 rounded-full"
-        />
+      <div id="action-button">
+        {isMyPage ? (
+          <Button
+            id="edit-profile-button"
+            variant="black"
+            size="lg"
+            onClick={goToEditPage}
+            className="rounded-lg"
+          >
+            Edit profile and account
+          </Button>
+        ) : isFollowing ? (
+          <Button
+            id="unfollow-button"
+            variant="gray"
+            size="lg"
+            onClick={unfollow}
+          >
+            Following
+          </Button>
+        ) : (
+          <Button
+            id="follow-button"
+            variant="highlighted"
+            size="lg"
+            onClick={follow}
+          >
+            Follow
+          </Button>
+        )}
       </div>
-      <div
-        id="user-brief"
-        className="flex flex-col items-center gap-[18px] pt-5"
-      >
-        <span className="text-2xl font-bold">生活可以很無聊</span>
-        <span className="text-pretty text-center text-[15px]">
-          生活可以很無聊，但生命可以很精彩。乾啦！
-        </span>
-      </div>
-      <div id="user-stats" className="flex gap-2 pt-5">
-        <div className="leading-2 flex items-center gap-[6px] text-[15px]">
-          <span className="font-bold">18</span>
-          <span className="">名單</span>
-        </div>
-        <div className="leading-2 flex items-center gap-[6px] text-[15px]">
-          <span className="font-bold">24</span>
-          <span className="">粉絲</span>
-        </div>
-        <div className="leading-2 flex items-center gap-[6px] text-[15px]">
-          <span className="font-bold">416</span>
-          <span className="">正追蹤</span>
-        </div>
-      </div>
-      <Button className="mt-5 rounded-full px-8 py-4">
-        <span className="fw-400 text-[15px]">追蹤</span>
-      </Button>
-      <div id="social-links" className="flex gap-2 pt-5">
-        <Button variant="white">
-          <a href="https://www.instagram.com">
-            <InstagramIcon className="h-8 w-8 rounded-full" />
-          </a>
-        </Button>
-        <Button variant="white">
-          <a href="https://www.tiktok.com">
-            <TikTokIcon className="h-8 w-8 rounded-full" />
-          </a>
-        </Button>
-        <Button variant="white">
-          <a href="https://www.x.com">
-            <XIcon className="h-8 w-8 rounded-full" />
-          </a>
-        </Button>
+      <div id="hero-stats" className="flex gap-2">
+        <p>{viewUser.listCount} Lists</p>
+        <p>{viewUser.followerCount} Followers</p>
+        <p>{viewUser.followingCount} Following</p>
+        <p>{linkCount} Links</p>
       </div>
     </div>
   );
-}
+};

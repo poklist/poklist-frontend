@@ -25,8 +25,20 @@ const useUserStore = create<UserStoreState>()(
       },
 
       login: (token) => set({ isLoggedIn: true, accessToken: token }),
-      logout: () => set({ isLoggedIn: false }),
-      setUser: (user) => set({ user }),
+      logout: () =>
+        set({
+          isLoggedIn: false,
+          accessToken: '',
+          user: {
+            id: 0,
+            displayName: '',
+            userCode: '',
+          },
+        }),
+      setUser: (user) => {
+        console.log(user);
+        set({ user });
+      },
     }),
     { name: 'user-storage' }
   )
