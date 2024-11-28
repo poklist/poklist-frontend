@@ -45,7 +45,7 @@ export const Header: React.FC<IHeaderProps> = ({
       </div>
       <div id="header-right" className="flex items-center justify-center gap-4">
         {!isLoggedIn && (
-          <Button variant={'white'} onClick={() => navigate('/login')}>
+          <Button variant="white" onClick={() => navigate('/login')}>
             Sign In
           </Button>
         )}
@@ -56,7 +56,7 @@ export const Header: React.FC<IHeaderProps> = ({
           </Avatar>
         ) : (
           <Button
-            variant={'white'}
+            variant="white"
             size={'icon'}
             onClick={() => navigate('/settings')}
           >
