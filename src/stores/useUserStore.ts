@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-import { User } from '@/models/User';
+import { User } from '@/types/User';
 
 export type UserStoreState = {
   isLoggedIn: boolean;
