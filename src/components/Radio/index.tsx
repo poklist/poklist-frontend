@@ -4,7 +4,7 @@ import { RadioType } from '@/enums/Style/index.enum';
 import { cn } from '@/lib/utils';
 import { Trans } from '@lingui/macro';
 import React, { Fragment } from 'react';
-interface IChoice {
+export interface IChoice {
   value: string;
   label?: string;
   disabled?: boolean;
@@ -55,7 +55,7 @@ export const RadioComponent: React.FC<IRadioProps> = ({
                 'bg-yellow-bright-01 border-black-text-01': defaultValue === choice.value,
               })}
             >
-              {choice.label || choice.value}
+              <Trans>{choice.label || choice.value}</Trans>
             </Label>
           </Trans>
         </Fragment>

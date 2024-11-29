@@ -27,6 +27,27 @@ npm run dev
 npm run build-lang
 ```
 
+# Component Folder Structure Guidelines
+
+To maintain a clear and consistent structure for components in the project, follow these rules:
+
+1. **Shadcn UI Components**  
+   Components imported from Shadcn UI must be placed under `@/components/ui/` as `.tsx` files with **lowercase file names**.  
+   Example: `@/components/ui/button.tsx`
+
+2. **Custom Shared Components**  
+   Custom reusable components must be placed under `@/components/` inside **uppercase-named folders**, and the main component file must be named `index.tsx`.  
+   Example: `@/components/Button/index.tsx`
+
+3. **Page-Specific Components**  
+   Components that are not yet confirmed for reuse can be placed under the corresponding folder for your page in `@/pages/`.  
+   Example: `@/pages/home/CustomHeader.tsx`
+
+4. **Legacy Components**  
+   Any components not adhering to the above structure are considered legacy components (handled by Sail but not yet reorganized).
+
+By following these rules, we aim to maintain better code organization and improve overall maintainability.
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:

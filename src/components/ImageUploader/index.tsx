@@ -11,7 +11,7 @@ interface IImageUploaderProps {
 }
 
 const ImageUploader: React.FC<IImageUploaderProps> = ({ file, callback }) => {
-  const { setShowingAlert } = useCommonStore();
+  const { setShowErrorDrawer } = useCommonStore();
 
   const onUploadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     const fileList = event.target.files;
@@ -20,8 +20,10 @@ const ImageUploader: React.FC<IImageUploaderProps> = ({ file, callback }) => {
       if (imageFile.size <= 2_097_152) {
         callback(imageFile);
       } else {
-        // TODO Error message
-        setShowingAlert(true, { message: t`` });
+        setShowErrorDrawer(true, {
+          title: t`封面圖片不符合規格！`,
+          content: t`請確認圖片格式為 JPG，且檔案大小不得超過 2MB。`,
+        });
       }
     }
   };
