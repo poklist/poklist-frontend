@@ -4,28 +4,26 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import IconLeftArrow from '@/components/ui/icons/LeftArrowIcon';
 import IconSetting from '@/components/ui/icons/SettingIcon';
+import useIsMyPage from '@/hooks/useIsMyPage';
 import useUserStore from '@/stores/useUserStore';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 interface IHeaderProps {
-  isLoggedIn: boolean;
-  isMyPage: boolean;
   isListPage?: boolean;
   listOwnerAvatar?: string;
   listOwnerName?: string;
 }
 
 export const Header: React.FC<IHeaderProps> = ({
-  isLoggedIn,
-  isMyPage,
   isListPage = false,
   listOwnerAvatar,
   listOwnerName,
 }) => {
-  // TODO: get isLoggedIn from store?
+  const { id } = useParams();
   const navigate = useNavigate();
-  const { user } = useUserStore();
+  const { isLoggedIn, user } = useUserStore();
+  const isMyPage = useIsMyPage(id);
 
   return (
     <header className="flex h-14 items-center justify-between px-4 text-t1 font-semibold">
@@ -36,11 +34,16 @@ export const Header: React.FC<IHeaderProps> = ({
             <IconLeftArrow />
             <Avatar className="h-6 w-6">
               <AvatarImage src={listOwnerAvatar} />
+              <AvatarFallback>{listOwnerName?.[0]}</AvatarFallback>
             </Avatar>
             <span className="font-regular text-[15px]">{listOwnerName}</span>
           </>
         ) : (
-          <img src={headerPoklist} alt="Poklist" />
+          <img
+            src={headerPoklist}
+            alt="Poklist"
+            onClick={() => navigate('/login') /* TEMP: */}
+          />
         )}
       </div>
       <div id="header-right" className="flex items-center justify-center gap-4">
@@ -50,9 +53,12 @@ export const Header: React.FC<IHeaderProps> = ({
           </Button>
         )}
         {isLoggedIn && !isMyPage ? (
-          <Avatar className="h-8 w-8">
+          <Avatar
+            className="h-8 w-8 cursor-pointer"
+            onClick={() => navigate(`/${user.id}`)}
+          >
             <AvatarImage src={user.profileImage} />
-            <AvatarFallback>{user.displayName}</AvatarFallback>
+            <AvatarFallback>{user.displayName[0]}</AvatarFallback>
           </Avatar>
         ) : (
           <Button

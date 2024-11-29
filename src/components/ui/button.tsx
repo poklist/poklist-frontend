@@ -11,8 +11,9 @@ const buttonVariants = cva(
       variant: {
         highlighted:
           'border border-black bg-yellow-bright-01 text-black-text-01',
-        black: 'border border-black bg-black text-white',
+        black: 'bg-black text-white',
         white: 'border border-black bg-white text-black-text-01',
+        gray: ' bg-gray-main-03 text-black-text-01',
       },
       size: {
         // sm: 'px-3',
