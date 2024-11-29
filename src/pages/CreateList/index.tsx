@@ -1,6 +1,6 @@
 import { DrawerComponent, useDrawer } from '@/components/Drawer';
 import ImageUploader from '@/components/ImageUploader';
-import { RadioComponent } from '@/components/Radio';
+import { IChoice, RadioComponent } from '@/components/Radio';
 import { Button } from '@/components/ui/button';
 import IconExteriorLink from '@/components/ui/icons/ExteriorLinkIcon';
 import { Input } from '@/components/ui/input';
@@ -10,7 +10,7 @@ import useCreateList from '@/hooks/CreateList/useCreateList';
 import { Header } from '@/pages/CreateList/Header';
 import useCommonStore from '@/stores/useCommonStore';
 import { t, Trans } from '@lingui/macro';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ListForm } from './Form';
 
 interface CreatePageProps {
@@ -66,6 +66,16 @@ const CreatePage: React.FC<CreatePageProps> = () => {
     }
   }, [categoriesLoading, createListLoading, setIsLoading]);
 
+  const [radioChoice, setRadioChoice] = useState<IChoice[]>([]);
+
+  useEffect(() => {
+    const _radioChoice = categories.map(_category => {
+      const { id: value, name: label } = { id: String(_category.id), name: _category.name };
+      return { value, label };
+    });
+    setRadioChoice(_radioChoice);
+  }, [categories]);
+
   return (
     // Your component code here
     <>
@@ -102,7 +112,7 @@ const CreatePage: React.FC<CreatePageProps> = () => {
             <div className="mt-6 mb-10">
               <RadioComponent
                 defaultValue={listData.categoryID}
-                choices={categories}
+                choices={radioChoice}
                 onChange={value => setListData({ ...listData, categoryID: value })}
                 type={RadioType.BUTTON}
                 className="flex gap-2 flex-wrap"
