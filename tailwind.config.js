@@ -108,6 +108,18 @@ module.exports = {
       fontFamily: {
         inter: 'Inter, sans-serif',
       },
+      backgroundImage: {
+        'user-page-grid': "url('tile.jpeg')",
+      },
+      backgroundSize: {
+        '1%': '1%',
+      },
+      width: {
+        'mobile-max': '430px',
+      },
+      letterSpacing: {
+        '-1.1%': '-1.1%',
+      },
     },
   },
   plugins: [require('tailwindcss-animate')],
