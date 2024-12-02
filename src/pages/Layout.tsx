@@ -1,5 +1,6 @@
 import AlertComponent from '@/components/Alert';
 import { DrawerProvider } from '@/components/Drawer';
+import { ErrorDrawer } from '@/components/ErrorDrawer';
 import LoadingSpinner from '@/components/Loading';
 import { LanguageProvider } from '@/lib/languageProvider';
 import useCommonStore from '@/stores/useCommonStore';
@@ -19,6 +20,7 @@ export default function Layout() {
         {/* <LanguageSelector /> */}
         <Outlet />
         <LoadingSpinner isLoading={isLoading} />
+        <ErrorDrawer></ErrorDrawer>
       </DrawerProvider>
     </LanguageProvider>
   );

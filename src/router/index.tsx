@@ -1,4 +1,4 @@
-import CreatePage from '@/pages/Create';
+import CreateListPage from '@/pages/CreateList';
 import EditUserPage from '@/pages/EditUser';
 import Home from '@/pages/Home/index';
 import Layout from '@/pages/Layout';
@@ -44,7 +44,7 @@ const router = createBrowserRouter([
         path: 'create',
         element: (
           <>
-            <CreatePage />
+            <CreateListPage />
           </>
         ),
       },
