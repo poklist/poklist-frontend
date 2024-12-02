@@ -93,8 +93,8 @@ const HeroSection: React.FC = () => {
             id="edit-profile-button"
             variant="black"
             size="lg"
+            shape="rounded8px"
             onClick={goToEditPage}
-            className="rounded-lg"
           >
             Edit profile and account
           </Button>
