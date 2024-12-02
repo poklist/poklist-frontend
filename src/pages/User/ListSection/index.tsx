@@ -8,20 +8,18 @@ import { ListSectionSkeleton } from './ListSectionSkeleton';
 const ListSection: React.FC = () => {
   const { id } = useParams();
   const [listPreviewList, setListPreviewList] = useState<ListPreview[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const getListPreviewList = async (id: string) => {
     axios.get<GetListPreviewListResponse>(`/lists?userID=${id}`).then((res) => {
       setListPreviewList(res.data.lists);
+      setIsLoading(false);
     });
   };
 
-  const [isLoading, setIsLoading] = useState(true);
-
   useEffect(() => {
     if (id !== undefined) {
-      getListPreviewList(id).then(() => {
-        setIsLoading(false);
-      });
+      getListPreviewList(id);
     }
   }, [id]);
 
@@ -38,7 +36,7 @@ const ListSection: React.FC = () => {
             key={listPreview.title}
             className={`flex min-h-[72px] items-center justify-between ${
               isLastItem ? 'border-b-[3px]' : 'border-b'
-            } -tracking-1.1% border-black-text-01 p-4`}
+            } border-black-text-01 p-4 -tracking-1.1%`}
           >
             <p className="text-[15px] font-semibold text-black-text-01">
               {listPreview.title}
@@ -57,7 +55,7 @@ const ListSection: React.FC = () => {
       <div className="flex flex-col items-center">
         <div
           id="list-data-placeholder"
-          className="mt-4 flex flex-col items-center text-[15px] font-semibold text-black-text-01"
+          className="z-10 mt-4 flex flex-col items-center text-[15px] font-semibold text-black-text-01"
         >
           {listPreviewList.length === 0 && (
             <>
@@ -66,7 +64,7 @@ const ListSection: React.FC = () => {
             </>
           )}
         </div>
-        <div className="bg-user-page-grid bg-1% w-mobile-max absolute h-full bg-[-0.1px] opacity-25" />
+        <div className="absolute h-full w-mobile-max bg-user-page-grid bg-1% bg-[-0.1px] opacity-25" />
       </div>
     </div>
   );

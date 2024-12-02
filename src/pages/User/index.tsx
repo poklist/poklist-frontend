@@ -1,5 +1,5 @@
 import MobileContainer from '@/components/ui/containers/MobileContainer';
-import { Header } from './Header';
+import { Header } from './Header/Header';
 import HeroSection from './HeroSection';
 import ListSection from './ListSection';
 

@@ -1,24 +1,24 @@
-import headerP from '@/assets/images/header-p.svg';
 import headerPoklist from '@/assets/images/header-poklist.svg';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import IconLeftArrow from '@/components/ui/icons/LeftArrowIcon';
 import IconSetting from '@/components/ui/icons/SettingIcon';
 import useUserStore from '@/stores/useUserStore';
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 interface IHeaderProps {
-  isListPage?: boolean;
-  listOwnerAvatar?: string;
-  listOwnerName?: string;
+  // isListPage?: boolean;
+  // listOwnerAvatar?: string;
+  // listOwnerName?: string;
 }
 
-export const Header: React.FC<IHeaderProps> = ({
-  isListPage = false,
-  listOwnerAvatar,
-  listOwnerName,
-}) => {
+export const Header: React.FC<IHeaderProps> = (
+  {
+    // isListPage = false,
+    // listOwnerAvatar,
+    // listOwnerName,
+  }
+) => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { isLoggedIn, user: me } = useUserStore();
@@ -27,7 +27,7 @@ export const Header: React.FC<IHeaderProps> = ({
   return (
     <header className="flex h-14 items-center justify-between px-4 text-t1 font-semibold">
       <div id="header-left" className="flex items-center justify-center gap-4">
-        {isListPage ? (
+        {/* {isListPage ? (
           <>
             <img src={headerP} alt="P" />
             <IconLeftArrow />
@@ -37,13 +37,13 @@ export const Header: React.FC<IHeaderProps> = ({
             </Avatar>
             <span className="font-regular text-[15px]">{listOwnerName}</span>
           </>
-        ) : (
-          <img
-            src={headerPoklist}
-            alt="Poklist"
-            onClick={() => navigate('/login') /* TEMP: */}
-          />
-        )}
+        ) : ( */}
+        <img
+          src={headerPoklist}
+          alt="Poklist"
+          onClick={() => navigate('/login') /* TEMP: */}
+        />
+        {/* )} */}
       </div>
       <div id="header-right" className="flex items-center justify-center gap-4">
         {!isLoggedIn && (
