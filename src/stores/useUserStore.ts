@@ -13,27 +13,25 @@ export type UserStoreState = {
   setUser: (user: User) => void;
 };
 
+export const emptyUser: User = {
+  id: 0,
+  displayName: '',
+  userCode: '',
+};
+
 const useUserStore = create<UserStoreState>()(
   persist(
     (set) => ({
       isLoggedIn: false,
       accessToken: '',
-      user: {
-        id: 0,
-        displayName: '',
-        userCode: '',
-      },
+      user: { ...emptyUser },
 
       login: (token) => set({ isLoggedIn: true, accessToken: token }),
       logout: () =>
         set({
           isLoggedIn: false,
           accessToken: '',
-          user: {
-            id: 0,
-            displayName: '',
-            userCode: '',
-          },
+          user: { ...emptyUser },
         }),
       setUser: (user) => {
         console.log(user);

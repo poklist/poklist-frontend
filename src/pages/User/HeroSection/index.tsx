@@ -1,21 +1,17 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import useIsMyPage from '@/hooks/useIsMyPage';
 import axios from '@/lib/axios';
-import useUserStore from '@/stores/useUserStore';
+import useUserStore, { emptyUser } from '@/stores/useUserStore';
 import { User } from '@/types/User';
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { HeroSectionSkeleton } from './HeroSectionSkeleton';
 
-interface IHeroSectionProps {
-  viewUser: User;
-}
-
-export const HeroSection: React.FC<IHeroSectionProps> = ({ viewUser }) => {
+const HeroSection: React.FC = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { isLoggedIn } = useUserStore();
-  const isMyPage = useIsMyPage(id);
+  const { isLoggedIn, user: me } = useUserStore();
+  const [viewUser, setViewUser] = useState<User>(emptyUser);
 
   const linkCount = useMemo(() => {
     if (viewUser.socialLinks !== undefined) {
@@ -25,7 +21,9 @@ export const HeroSection: React.FC<IHeroSectionProps> = ({ viewUser }) => {
     }
   }, [viewUser]);
 
-  const [isFollowing, setIsFollowing] = useState(false);
+  const isMyPage = id?.toString() === me.id.toString();
+  let isFollowing = isLoggedIn && viewUser.isFollowing === true;
+  const isLoading = viewUser.id === 0;
 
   const follow = () => {
     if (!isLoggedIn) {
@@ -35,7 +33,7 @@ export const HeroSection: React.FC<IHeroSectionProps> = ({ viewUser }) => {
       .post('/follow', null, { params: { userID: viewUser.id } })
       .then(() => {
         // TODO: success message
-        setIsFollowing(true);
+        isFollowing = true;
       })
       .catch(() => {
         // TODO: error message
@@ -47,7 +45,7 @@ export const HeroSection: React.FC<IHeroSectionProps> = ({ viewUser }) => {
       .post('/unfollow', null, { params: { userID: viewUser.id } })
       .then(() => {
         // TODO: success message
-        setIsFollowing(false);
+        isFollowing = false;
       })
       .catch(() => {
         // TODO: error message
@@ -58,14 +56,26 @@ export const HeroSection: React.FC<IHeroSectionProps> = ({ viewUser }) => {
     navigate('/user/edit');
   };
 
-  useEffect(() => {
-    // TODO: triggered multiple times but reason is not realized yet
-    setIsFollowing(isLoggedIn && viewUser.isFollowing === true);
-    console.log('isFollowing:', isFollowing);
-  }, [viewUser]);
+  const getUser = async (id: string) => {
+    axios.get<User>(`/users/${id}`).then((res) => {
+      setViewUser({ ...res.data }); // deep copy
+    });
+  };
 
+  useEffect(() => {
+    if (id != undefined) {
+      getUser(id);
+    }
+  }, [id]);
+
+  if (isLoading) {
+    return <HeroSectionSkeleton />;
+  }
   return (
-    <div role="hero" className="flex flex-col items-center gap-4 pb-4 pt-6">
+    <div
+      role="hero"
+      className="flex flex-col items-center gap-4 border-b border-black pb-4 pt-6"
+    >
       <div id="hero-basic-info" className="flex flex-col items-center gap-2">
         <Avatar className="h-16 w-16">
           <AvatarImage src={viewUser.profileImage} />
@@ -83,8 +93,8 @@ export const HeroSection: React.FC<IHeroSectionProps> = ({ viewUser }) => {
             id="edit-profile-button"
             variant="black"
             size="lg"
+            shape="rounded8px"
             onClick={goToEditPage}
-            className="rounded-lg"
           >
             Edit profile and account
           </Button>
@@ -117,3 +127,5 @@ export const HeroSection: React.FC<IHeroSectionProps> = ({ viewUser }) => {
     </div>
   );
 };
+
+export default HeroSection;
