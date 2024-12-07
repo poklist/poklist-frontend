@@ -1,7 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import axios from '@/lib/axios';
-import useUserStore, { emptyUser } from '@/stores/useUserStore';
+import useUserStore from '@/stores/useUserStore';
 import { User } from '@/types/User';
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -10,27 +10,27 @@ import { HeroSectionSkeleton } from './HeroSectionSkeleton';
 const HeroSection: React.FC = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { isLoggedIn, user: me } = useUserStore();
-  const [viewUser, setViewUser] = useState<User>(emptyUser);
+  const { isLoggedIn, user: me, currentUser, setCurrentUser } = useUserStore();
+  // const [viewUser, setViewUser] = useState<User>(emptyUser);
 
   const linkCount = useMemo(() => {
-    if (viewUser.socialLinks !== undefined) {
-      return Object.keys(viewUser.socialLinks).length;
+    if (currentUser.socialLinks !== undefined) {
+      return Object.keys(currentUser.socialLinks).length;
     } else {
       return 0;
     }
-  }, [viewUser]);
+  }, [currentUser]);
 
   const isMyPage = id?.toString() === me.id.toString();
-  let isFollowing = isLoggedIn && viewUser.isFollowing === true;
-  const isLoading = viewUser.id === 0;
+  let isFollowing = isLoggedIn && currentUser.isFollowing === true;
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const follow = () => {
     if (!isLoggedIn) {
       navigate('/login');
     }
     axios
-      .post('/follow', null, { params: { userID: viewUser.id } })
+      .post('/follow', null, { params: { userID: currentUser.id } })
       .then(() => {
         // TODO: success message
         isFollowing = true;
@@ -42,7 +42,7 @@ const HeroSection: React.FC = () => {
 
   const unfollow = () => {
     axios
-      .post('/unfollow', null, { params: { userID: viewUser.id } })
+      .post('/unfollow', null, { params: { userID: currentUser.id } })
       .then(() => {
         // TODO: success message
         isFollowing = false;
@@ -58,7 +58,8 @@ const HeroSection: React.FC = () => {
 
   const getUser = async (id: string) => {
     axios.get<User>(`/users/${id}`).then((res) => {
-      setViewUser({ ...res.data }); // deep copy
+      setCurrentUser({ ...res.data }); // deep copy
+      setIsLoading(false);
     });
   };
 
@@ -78,13 +79,13 @@ const HeroSection: React.FC = () => {
     >
       <div id="hero-basic-info" className="flex flex-col items-center gap-2">
         <Avatar className="h-16 w-16">
-          <AvatarImage src={viewUser.profileImage} />
-          <AvatarFallback>{viewUser.displayName[0]}</AvatarFallback>
+          <AvatarImage src={currentUser.profileImage} />
+          <AvatarFallback>{currentUser.displayName[0]}</AvatarFallback>
         </Avatar>
-        <p className="text-[17px] font-bold">{viewUser.displayName}</p>
-        <p className="text-[13px] font-semibold">@{viewUser.userCode}</p>
+        <p className="text-[17px] font-bold">{currentUser.displayName}</p>
+        <p className="text-[13px] font-semibold">@{currentUser.userCode}</p>
         <p className="text-[13px] font-normal">
-          {viewUser.bio /* TODO: trimTail */}
+          {currentUser.bio /* TODO: trimTail */}
         </p>
       </div>
       <div id="action-button">
@@ -119,9 +120,9 @@ const HeroSection: React.FC = () => {
         )}
       </div>
       <div id="hero-stats" className="flex gap-2">
-        <p>{viewUser.listCount} Lists</p>
-        <p>{viewUser.followerCount} Followers</p>
-        <p>{viewUser.followingCount} Following</p>
+        <p>{currentUser.listCount} Lists</p>
+        <p>{currentUser.followerCount} Followers</p>
+        <p>{currentUser.followingCount} Following</p>
         <p>{linkCount} Links</p>
       </div>
     </div>

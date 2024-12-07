@@ -22,12 +22,12 @@ const FooterComponent: React.FC<IFooterProps> = () => {
     copy(window.location.href);
   };
   return (
-    <div className="fixed bottom-2 flex gap-2 justify-center items-center w-dvw">
+    <div className="max-w-mobile-max fixed bottom-2 flex w-dvw items-center justify-center gap-2">
       {isShowLikeButton && (
         <Button
           onClick={() => setLiked(!liked)}
           variant="white"
-          className="flex items-center text-sm gap-1.5"
+          className="flex items-center gap-1.5 text-sm"
         >
           <IconLike
             className={cn(liked ? 'stroke-red-warning-01' : 'stroke-black')}
@@ -37,7 +37,7 @@ const FooterComponent: React.FC<IFooterProps> = () => {
         </Button>
       )}
       <Link to="/create">
-        <Button variant="white" className="text-sm flex gap-2 items-center">
+        <Button variant="white" className="flex items-center gap-2 text-sm">
           <IconAdd />
           <Trans>建立名單</Trans>
         </Button>
@@ -45,7 +45,7 @@ const FooterComponent: React.FC<IFooterProps> = () => {
       <Button
         onClick={() => copyUrl()}
         variant="white"
-        className="text-sm flex gap-1.5 items-center"
+        className="flex items-center gap-1.5 text-sm"
       >
         <IconLink />
         <Trans>複製</Trans>
