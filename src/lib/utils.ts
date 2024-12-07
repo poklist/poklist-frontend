@@ -20,3 +20,10 @@ export const setLocalStorage = (key: LocalStorageKey, value: any) => {
 export const removeLocalStorage = (key: LocalStorageKey) => {
   localStorage.removeItem(key);
 };
+
+export const urlPreview = (url: string | undefined) => {
+  if (url === undefined) {
+    return '';
+  }
+  return url.replace(/^https?:\/\//, '');
+};

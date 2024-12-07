@@ -5,39 +5,27 @@ import IconSetting from '@/components/ui/icons/SettingIcon';
 import useUserStore from '@/stores/useUserStore';
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { BackToUserNav } from './BackToUserNav';
 
 interface IHeaderProps {
-  // isListPage?: boolean;
-  // listOwnerAvatar?: string;
-  // listOwnerName?: string;
+  type?: 'default' | 'back-to-user' | 'only-title';
 }
 
-export const Header: React.FC<IHeaderProps> = (
-  {
-    // isListPage = false,
-    // listOwnerAvatar,
-    // listOwnerName,
-  }
-) => {
+export const Header: React.FC<IHeaderProps> = ({
+  type: headerType = 'default',
+}) => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { isLoggedIn, user: me } = useUserStore();
   const isMyPage = id?.toString() === me.id.toString();
 
+  if (headerType === 'back-to-user') {
+    return <BackToUserNav />;
+  }
+
   return (
     <header className="flex h-14 items-center justify-between px-4 text-t1 font-semibold">
       <div id="header-left" className="flex items-center justify-center gap-4">
-        {/* {isListPage ? (
-          <>
-            <img src={headerP} alt="P" />
-            <IconLeftArrow />
-            <Avatar className="h-6 w-6">
-              <AvatarImage src={listOwnerAvatar} />
-              <AvatarFallback>{listOwnerName?.[0]}</AvatarFallback>
-            </Avatar>
-            <span className="font-regular text-[15px]">{listOwnerName}</span>
-          </>
-        ) : ( */}
         <img
           src={headerPoklist}
           alt="Poklist"

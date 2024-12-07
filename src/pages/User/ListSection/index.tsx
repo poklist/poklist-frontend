@@ -3,6 +3,7 @@ import { ListPreview } from '@/types/List';
 import { GetListPreviewListResponse } from '@/types/response';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { TileBackground } from '../TileBackground';
 import { ListSectionSkeleton } from './ListSectionSkeleton';
 
 const ListSection: React.FC = () => {
@@ -53,18 +54,16 @@ const ListSection: React.FC = () => {
         );
       })}
       <div className="flex flex-col items-center">
-        <div
-          id="list-data-placeholder"
-          className="z-10 mt-4 flex flex-col items-center text-[15px] font-semibold text-black-text-01"
-        >
-          {listPreviewList.length === 0 && (
-            <>
-              <p>Looks like this pok is a bit empty.</p>
-              <p>Follow and check back soon for surprise lists!</p>
-            </>
-          )}
-        </div>
-        <div className="absolute h-full w-mobile-max bg-user-page-grid bg-1% bg-[-0.1px] opacity-25" />
+        {listPreviewList.length === 0 && (
+          <div
+            id="list-data-placeholder"
+            className="mt-4 flex flex-col items-center text-[15px] font-semibold text-black-text-01"
+          >
+            <p>Looks like this pok is a bit empty.</p>
+            <p>Follow and check back soon for surprise lists!</p>
+          </div>
+        )}
+        <TileBackground />
       </div>
     </div>
   );

@@ -7,10 +7,12 @@ export type UserStoreState = {
   isLoggedIn: boolean;
   accessToken: string;
   user: User;
+  currentUser: User;
 
   login: (token: string) => void;
   logout: () => void;
   setUser: (user: User) => void;
+  setCurrentUser: (user: User) => void;
 };
 
 export const emptyUser: User = {
@@ -25,6 +27,7 @@ const useUserStore = create<UserStoreState>()(
       isLoggedIn: false,
       accessToken: '',
       user: { ...emptyUser },
+      currentUser: { ...emptyUser },
 
       login: (token) => set({ isLoggedIn: true, accessToken: token }),
       logout: () =>
@@ -34,8 +37,10 @@ const useUserStore = create<UserStoreState>()(
           user: { ...emptyUser },
         }),
       setUser: (user) => {
-        console.log(user);
         set({ user });
+      },
+      setCurrentUser: (user) => {
+        set({ currentUser: user });
       },
     }),
     { name: 'user-storage' }
