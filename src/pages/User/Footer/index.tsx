@@ -6,7 +6,7 @@ import useClipboard from '@/hooks/useClipboard';
 import { cn } from '@/lib/utils';
 import { Trans } from '@lingui/macro';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 interface IFooterProps {
   // Add any props you need for the page
@@ -14,7 +14,8 @@ interface IFooterProps {
 
 const FooterComponent: React.FC<IFooterProps> = () => {
   // May use ReactNode instead
-  const [isShowLikeButton, _setIsShowLikeButton] = useState(true);
+  const location = useLocation();
+  const isShowLikeButton = location.pathname.startsWith('/list/');
   const [liked, setLiked] = useState(false);
 
   const { copy } = useClipboard();
@@ -22,7 +23,7 @@ const FooterComponent: React.FC<IFooterProps> = () => {
     copy(window.location.href);
   };
   return (
-    <div className="max-w-mobile-max fixed bottom-2 flex w-dvw items-center justify-center gap-2">
+    <div className="fixed bottom-2 flex w-dvw max-w-mobile-max items-center justify-center gap-2">
       {isShowLikeButton && (
         <Button
           onClick={() => setLiked(!liked)}
