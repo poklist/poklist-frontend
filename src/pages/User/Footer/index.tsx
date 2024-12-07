@@ -14,7 +14,7 @@ interface IFooterProps {
 
 const FooterComponent: React.FC<IFooterProps> = () => {
   // May use ReactNode instead
-  const [isShowLikeButton, setIsShowLikeButton] = useState(true);
+  const [isShowLikeButton, _setIsShowLikeButton] = useState(true);
   const [liked, setLiked] = useState(false);
 
   const { copy } = useClipboard();
