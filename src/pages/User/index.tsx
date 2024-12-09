@@ -1,5 +1,6 @@
+import { Header } from '@/components/Header';
 import MobileContainer from '@/components/ui/containers/MobileContainer';
-import { Header } from './Header/Header';
+import FooterComponent from './Footer';
 import HeroSection from './HeroSection';
 import ListSection from './ListSection';
 
@@ -10,6 +11,7 @@ const UserPage: React.FC = () => {
       <Header />
       <HeroSection />
       <ListSection />
+      <FooterComponent />
     </MobileContainer>
   );
 };

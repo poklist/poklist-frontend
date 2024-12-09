@@ -117,6 +117,9 @@ module.exports = {
       width: {
         'mobile-max': '430px',
       },
+      maxWidth: {
+        'mobile-max': '430px',
+      },
       letterSpacing: {
         '-1.1%': '-1.1%',
       },

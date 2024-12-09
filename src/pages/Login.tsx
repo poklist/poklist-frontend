@@ -19,6 +19,7 @@ const Login = () => {
       .then(async (res: any) => {
         login(res.data.accessToken);
         const userData = res.data.user as User;
+        console.log('userData:', userData);
         setUser(userData);
 
         navigate(`/${userData.id}`);
