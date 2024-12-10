@@ -7,11 +7,13 @@ import { Input } from '@/components/ui/input';
 import { RadioType } from '@/enums/Style/index.enum';
 import useCategories from '@/hooks/CreateList/useCategories';
 import useCreateList from '@/hooks/CreateList/useCreateList';
+import { ListForm } from '@/pages/CreateList/Form';
 import { Header } from '@/pages/CreateList/Header';
+import { CategoriesI18n } from '@/pages/CreateList/i18n';
 import useCommonStore from '@/stores/useCommonStore';
+import { i18n } from '@lingui/core';
 import { t, Trans } from '@lingui/macro';
 import React, { useEffect, useState } from 'react';
-import { ListForm } from './Form';
 
 interface CreatePageProps {
   // Add any props you need for the page
@@ -25,6 +27,7 @@ const CreatePage: React.FC<CreatePageProps> = () => {
   const { createListLoading, listData, setListData, fetchPostCreateList } = useCreateList();
 
   const onCoverImageChange = (file: File | null) => {
+    console.log(file);
     setListData({ ...listData, coverImage: file });
   };
 
@@ -70,7 +73,8 @@ const CreatePage: React.FC<CreatePageProps> = () => {
 
   useEffect(() => {
     const _radioChoice = categories.map(_category => {
-      const { id: value, name: label } = { id: String(_category.id), name: _category.name };
+      const { id: value } = { id: String(_category.id) };
+      const label = i18n._(CategoriesI18n[_category.id]);
       return { value, label };
     });
     setRadioChoice(_radioChoice);
@@ -79,7 +83,7 @@ const CreatePage: React.FC<CreatePageProps> = () => {
   return (
     // Your component code here
     <>
-      <Header title={<Trans>名單標題</Trans>} />
+      <Header title={<Trans>List Title</Trans>} />
       <div className="mt-6 flex flex-col gap-6 mx-4">
         <ListForm completedCallback={onOpenCategoryDrawer} checkEmptyCallback={isListDataEmpty} />
         <div className="flex gap-2 items-center">
@@ -87,11 +91,11 @@ const CreatePage: React.FC<CreatePageProps> = () => {
           <Input
             value={listData.externalLink}
             onChange={e => setListData({ ...listData, externalLink: e.target.value })}
-            placeholder={t`連結網頁`}
+            placeholder={t`Link a page`}
             className="border-none w-full p-0 h-6"
           />
         </div>
-        <div className="flex justify-center items-center">
+        <div className="flex justify-center items-center sm:justify-start">
           <ImageUploader file={listData.coverImage} callback={onCoverImageChange} />
         </div>
       </div>
@@ -99,12 +103,12 @@ const CreatePage: React.FC<CreatePageProps> = () => {
         isShowClose={false}
         header={
           <div className="mb-1 font-bold w-fit text-black-text-01">
-            <Trans>名單分類</Trans>
+            <Trans>List Topic</Trans>
           </div>
         }
         subHeader={
           <div className=" text-black-text-01">
-            <Trans>選擇一項接近此份名單的分類</Trans>
+            <Trans>Choose a topic that vibes with your List. </Trans>
           </div>
         }
         content={
@@ -122,8 +126,8 @@ const CreatePage: React.FC<CreatePageProps> = () => {
         }
         footer={
           <div className="flex justify-end">
-            <Button onClick={() => fetchPostCreateList()} className="w-fit px-3 text-white">
-              <Trans>下一步</Trans>
+            <Button onClick={() => fetchPostCreateList()} variant="black" shape="rounded8px">
+              <Trans>Next</Trans>
             </Button>
           </div>
         }

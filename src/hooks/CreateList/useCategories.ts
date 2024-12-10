@@ -1,11 +1,12 @@
 import ApiPath from '@/config/apiPath';
+import { Categories } from '@/enums/CreateList/index.enum';
 import axios from '@/lib/axios';
 import useCommonStore from '@/stores/useCommonStore';
 import { AxiosResponse } from 'axios';
 import { useState } from 'react';
 
 export interface ICategory {
-  id: number;
+  id: Categories;
   name: string;
 }
 
@@ -24,44 +25,6 @@ const useCategories = (): {
       setCategoriesLoading(true);
       const response: AxiosResponse<ICategory[]> = await axios.get<ICategory[]>(ApiPath.categories);
       const { data } = response;
-      // const data = [
-      //   {
-      //     id: 2,
-      //     name: 'lifestyle',
-      //   },
-      //   {
-      //     id: 1,
-      //     name: 'others',
-      //   },
-      //   {
-      //     id: 3,
-      //     name: 'food',
-      //   },
-      //   {
-      //     id: 4,
-      //     name: 'culture',
-      //   },
-      //   {
-      //     id: 5,
-      //     name: 'traveling',
-      //   },
-      //   {
-      //     id: 6,
-      //     name: 'entertainment',
-      //   },
-      //   {
-      //     id: 7,
-      //     name: 'technology',
-      //   },
-      //   {
-      //     id: 8,
-      //     name: 'growth',
-      //   },
-      //   {
-      //     id: 9,
-      //     name: 'health',
-      //   },
-      // ];
       setCategories(data);
     } catch (error) {
       setShowingAlert(true, { message: JSON.parse(String(error)) });

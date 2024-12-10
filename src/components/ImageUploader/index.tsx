@@ -21,8 +21,8 @@ const ImageUploader: React.FC<IImageUploaderProps> = ({ file, callback }) => {
         callback(imageFile);
       } else {
         setShowErrorDrawer(true, {
-          title: t`封面圖片不符合規格！`,
-          content: t`請確認圖片格式為 JPG，且檔案大小不得超過 2MB。`,
+          title: t`Cover image error!`,
+          content: t`Must be JPG and under 2MB.`,
         });
       }
     }
@@ -34,10 +34,10 @@ const ImageUploader: React.FC<IImageUploaderProps> = ({ file, callback }) => {
       <IconPhoto />
       <label className="text-black-gray-03">
         <div className="w-full h-6">
-          <Trans>上傳封面</Trans>
+          <Trans>Upload a cover</Trans>
         </div>
         <Input type="file" accept="image/*" onChange={e => onUploadFile(e)} className="hidden" />({' '}
-        <Trans>500x500 像素，限 JPG，最大 2MB</Trans> )
+        <Trans>500x500px, JPG, max 2MB</Trans> )
       </label>
     </div>
   );

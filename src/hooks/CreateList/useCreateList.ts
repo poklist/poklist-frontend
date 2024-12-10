@@ -35,9 +35,15 @@ const useCreateList = (): {
 
   const fetchPostCreateList = async () => {
     setCreateListLoading(true);
+    const _params = new FormData();
+    _params.append('title', listData.title);
+    _params.append('description', listData.description);
+    _params.append('externalLink', listData.externalLink);
+    if (listData.coverImage) _params.append('coverImage', listData.coverImage);
+    _params.append('categoryID', listData.categoryID);
+
     try {
-      const response: AxiosResponse = await axios.post(ApiPath.createList, listData);
-      console.log(response);
+      const response: AxiosResponse = await axios.post(ApiPath.createList, _params);
       // if success
       resetListData();
     } catch (error) {

@@ -1,6 +1,7 @@
+import { formatter } from '@lingui/format-po';
 module.exports = {
   locales: ['en', 'zh-TW'],
-  sourceLocale: 'zh-TW',
+  sourceLocale: 'en',
   catalogs: [
     {
       path: 'src/locales/{locale}/messages',
@@ -12,4 +13,5 @@ module.exports = {
   orderBy: 'origin',
   compileNamespace: 'ts',
   runtimeConfigModule: ['@lingui/core', 'i18n'],
+  format: formatter({ lineNumbers: false }),
 };
