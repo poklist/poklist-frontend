@@ -1,5 +1,6 @@
 import ApiPath from '@/config/apiPath';
 import axios from '@/lib/axios';
+import { fileToBase64 } from '@/lib/utils';
 import useCommonStore from '@/stores/useCommonStore';
 import { ICreateListRequest } from '@/types/CreateList';
 import { AxiosResponse } from 'axios';
@@ -35,15 +36,21 @@ const useCreateList = (): {
 
   const fetchPostCreateList = async () => {
     setCreateListLoading(true);
-    const _params = new FormData();
-    _params.append('title', listData.title);
-    _params.append('description', listData.description);
-    _params.append('externalLink', listData.externalLink);
-    if (listData.coverImage) _params.append('coverImage', listData.coverImage);
-    _params.append('categoryID', listData.categoryID);
+    const _params = {
+      title: listData.title,
+      description: listData.description,
+      externalLink: listData.externalLink,
+      coverImage: listData.coverImage
+        ? await fileToBase64(listData.coverImage)
+        : null,
+      categoryID: listData.categoryID,
+    };
 
     try {
-      const response: AxiosResponse = await axios.post(ApiPath.createList, _params);
+      const response: AxiosResponse = await axios.post(
+        ApiPath.createList,
+        _params
+      );
       // if success
       resetListData();
     } catch (error) {
