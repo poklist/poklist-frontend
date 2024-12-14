@@ -41,8 +41,8 @@ export const ListForm: React.FC<IListFormProps> = ({ checkEmptyCallback, complet
       checkEmptyCallback()
     )
       setShowErrorDrawer(true, {
-        title: t`取消後，資料就飛走囉！`,
-        content: t`如果取消，所填的內容都會消失。`,
+        title: t`Your edits will be lost if you cancel! `,
+        content: t`If you cancel, everything you’ve entered will be lost. `,
       });
   };
 
@@ -52,14 +52,14 @@ export const ListForm: React.FC<IListFormProps> = ({ checkEmptyCallback, complet
       case 'title': {
         if (Object.values(value)[0].type === 'too_small') {
           setShowErrorDrawer(true, {
-            title: t`欸，標題不能留空喔！`,
-            content: t`名單都得有個標題，趕快填一下吧！`,
+            title: t`Hey, the title can’t be left empty! `,
+            content: t`Every list needs a title, so fill it in! `,
           });
         }
         if (Object.values(value)[0].type === 'too_big') {
           setShowErrorDrawer(true, {
-            title: t`名單標題字數太長啦！`,
-            content: t`標題過長，請將字數縮短至 ${TITLE_MAX_LENGTH} 個字元以內。`,
+            title: t`List title is too long! `,
+            content: t`Please keep it under ${TITLE_MAX_LENGTH} characters. `,
           });
         }
 
@@ -68,8 +68,8 @@ export const ListForm: React.FC<IListFormProps> = ({ checkEmptyCallback, complet
       case 'content': {
         if (Object.values(value)[0].type === 'too_big') {
           setShowErrorDrawer(true, {
-            title: t`標題描述內容超出限制了！`,
-            content: t`字數有點爆表，請減到 ${DESC_MAX_LENGTH} 個字元以內。`,
+            title: t`Description is too long! `,
+            content: t`Please keep it under ${DESC_MAX_LENGTH} characters. `,
           });
         }
 
@@ -115,8 +115,8 @@ export const ListForm: React.FC<IListFormProps> = ({ checkEmptyCallback, complet
                   })}
                 >
                   <Input
-                    placeholder={t`輸入名單標題`}
-                    className="border-none text-center relative w-min"
+                    placeholder={t`Give your list a title`}
+                    className="border-none text-center relative text-h1 placeholder:text-h1"
                     {...field}
                   />
                 </div>
@@ -134,7 +134,7 @@ export const ListForm: React.FC<IListFormProps> = ({ checkEmptyCallback, complet
                   <div className="flex gap-2 items-start">
                     <IconTextarea className="" />
                     <Textarea
-                      placeholder={t`描述標題`}
+                      placeholder={t`Describe what this title is about`}
                       className={cn(`border-none p-0 resize-none`, {
                         'min-h-6 h-6 line-clamp-1': !isTextareaFocus,
                       })}
@@ -165,10 +165,15 @@ export const ListForm: React.FC<IListFormProps> = ({ checkEmptyCallback, complet
             >
               <IconClose />
             </Button>
-            <Trans>建立名單</Trans>
+            <Trans>Create List</Trans>
           </div>
-          <Button type="submit" disabled={listForm.getValues('title') === ''}>
-            <Trans>下一步</Trans>
+          <Button
+            disabled={listForm.getValues('title') === ''}
+            type="submit"
+            variant="black"
+            shape="rounded8px"
+          >
+            <Trans>Next</Trans>
           </Button>
         </div>
       </form>
