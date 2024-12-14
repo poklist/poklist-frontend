@@ -1,4 +1,4 @@
-import { Categories } from '@/enums/CreateList/index.enum';
+import { Categories } from '@/enums/Lists/index.enum';
 import { msg } from '@lingui/macro';
 
 export const CategoriesI18n: Record<number, { id: string }> = {

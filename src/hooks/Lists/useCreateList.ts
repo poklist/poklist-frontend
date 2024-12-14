@@ -6,11 +6,33 @@ import { ICreateListRequest } from '@/types/CreateList';
 import { AxiosResponse } from 'axios';
 import { useState } from 'react';
 
+interface IListOwnerInfo {
+  id: number;
+  displayName: string;
+  userCode: string;
+  profileImage: string;
+}
+
+export interface ICreateListResponse {
+  id: number;
+  title: string;
+  description: string;
+  coverImage: string;
+  externalLink: string;
+  categoryID: number;
+  likeCount: number;
+  createdAt: string;
+  updatedAt: string;
+  ideas: null;
+  ideaTotalCount: number;
+  owner: IListOwnerInfo;
+}
+
 const useCreateList = (): {
   createListLoading: boolean;
   listData: ICreateListRequest;
   setListData: React.Dispatch<React.SetStateAction<ICreateListRequest>>;
-  fetchPostCreateList: () => Promise<void>;
+  fetchPostCreateList: () => Promise<ICreateListResponse | undefined>;
 } => {
   const { setShowingAlert } = useCommonStore();
 
@@ -40,19 +62,20 @@ const useCreateList = (): {
       title: listData.title,
       description: listData.description,
       externalLink: listData.externalLink,
-      coverImage: listData.coverImage
-        ? await fileToBase64(listData.coverImage)
-        : null,
+      coverImage: listData.coverImage ? await fileToBase64(listData.coverImage) : null,
       categoryID: listData.categoryID,
     };
 
     try {
-      const response: AxiosResponse = await axios.post(
+      const response: AxiosResponse<ICreateListResponse> = await axios.post(
         ApiPath.createList,
         _params
       );
-      // if success
-      resetListData();
+      if (response) {
+        resetListData();
+        const { data } = response;
+        return data;
+      }
     } catch (error) {
       setShowingAlert(true, { message: JSON.parse(String(error)) });
     } finally {

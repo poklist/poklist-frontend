@@ -1,5 +1,5 @@
 import ApiPath from '@/config/apiPath';
-import { Categories } from '@/enums/CreateList/index.enum';
+import { Categories } from '@/enums/Lists/index.enum';
 import axios from '@/lib/axios';
 import useCommonStore from '@/stores/useCommonStore';
 import { AxiosResponse } from 'axios';

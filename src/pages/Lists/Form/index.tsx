@@ -116,7 +116,7 @@ export const ListForm: React.FC<IListFormProps> = ({ checkEmptyCallback, complet
                 >
                   <Input
                     placeholder={t`Give your list a title`}
-                    className="border-none text-center relative w-min"
+                    className="border-none text-center relative text-h1 placeholder:text-h1"
                     {...field}
                   />
                 </div>

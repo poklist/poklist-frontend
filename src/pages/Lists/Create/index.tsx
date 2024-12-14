@@ -5,15 +5,16 @@ import { Button } from '@/components/ui/button';
 import IconExteriorLink from '@/components/ui/icons/ExteriorLinkIcon';
 import { Input } from '@/components/ui/input';
 import { RadioType } from '@/enums/Style/index.enum';
-import useCategories from '@/hooks/CreateList/useCategories';
-import useCreateList from '@/hooks/CreateList/useCreateList';
-import { ListForm } from '@/pages/CreateList/Form';
-import { Header } from '@/pages/CreateList/Header';
-import { CategoriesI18n } from '@/pages/CreateList/i18n';
+import useCategories from '@/hooks/Lists/useCategories';
+import useCreateList from '@/hooks/Lists/useCreateList';
+import { ListForm } from '@/pages/Lists/Form';
+import { Header } from '@/pages/Lists/Header';
+import { CategoriesI18n } from '@/pages/Lists/i18n';
 import useCommonStore from '@/stores/useCommonStore';
 import { i18n } from '@lingui/core';
 import { t, Trans } from '@lingui/macro';
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface CreatePageProps {
   // Add any props you need for the page
@@ -22,12 +23,12 @@ interface CreatePageProps {
 const CreatePage: React.FC<CreatePageProps> = () => {
   // Render the page here
   const { setIsLoading } = useCommonStore();
-  const { openDrawer } = useDrawer();
+  const navigate = useNavigate();
+  const { openDrawer, closeDrawer } = useDrawer();
 
   const { createListLoading, listData, setListData, fetchPostCreateList } = useCreateList();
 
   const onCoverImageChange = (file: File | null) => {
-    console.log(file);
     setListData({ ...listData, coverImage: file });
   };
 
@@ -80,6 +81,14 @@ const CreatePage: React.FC<CreatePageProps> = () => {
     setRadioChoice(_radioChoice);
   }, [categories]);
 
+  const onCreateList = async () => {
+    closeDrawer();
+    const response = await fetchPostCreateList();
+    if (response) {
+      navigate(`/list/manage/${response.id}`);
+    }
+  };
+
   return (
     // Your component code here
     <>
@@ -126,7 +135,7 @@ const CreatePage: React.FC<CreatePageProps> = () => {
         }
         footer={
           <div className="flex justify-end">
-            <Button onClick={() => fetchPostCreateList()} variant="black" shape="rounded8px">
+            <Button onClick={() => onCreateList()} variant="black" shape="rounded8px">
               <Trans>Next</Trans>
             </Button>
           </div>

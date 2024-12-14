@@ -38,6 +38,7 @@ module.exports = {
         'gray-02': '#E2DFD6',
         'gray-main-03': '#F1F1F1',
         'gray-sub-04': '#F8F7F4',
+        'gray-note-05': '#F6F6F6',
         'red-warning-01': '#EB6052',
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
