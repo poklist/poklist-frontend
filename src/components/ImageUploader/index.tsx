@@ -30,14 +30,22 @@ const ImageUploader: React.FC<IImageUploaderProps> = ({ file, callback }) => {
   return file ? (
     <ImagePreviewComponent file={file} callback={() => callback(null)} />
   ) : (
-    <div className="flex gap-2 items-start">
+    <div className="flex items-start gap-2">
       <IconPhoto />
       <label className="text-black-gray-03">
-        <div className="w-full h-6">
+        <div className="h-6 w-full">
+          <Trans>上傳封面</Trans>
+        </div>
+        <div className="h-6 w-full">
           <Trans>Upload a cover</Trans>
         </div>
-        <Input type="file" accept="image/*" onChange={e => onUploadFile(e)} className="hidden" />({' '}
-        <Trans>500x500px, JPG, max 2MB</Trans> )
+        <Input
+          type="file"
+          accept="image/*"
+          onChange={(e) => onUploadFile(e)}
+          className="hidden"
+        />
+        ( <Trans>500x500 像素，限 JPG，最大 2MB</Trans> )
       </label>
     </div>
   );

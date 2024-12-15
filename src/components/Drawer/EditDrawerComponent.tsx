@@ -50,6 +50,7 @@ export const EditDrawerComponent: React.FC<IEditDrawerProps> = ({
             isModified={isModified}
             onClose={closeDrawer}
             title={title}
+            onSaveText="Done"
             onSave={() => {
               onFieldValueSet(fieldValue);
               setFieldValue(undefined);

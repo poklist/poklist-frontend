@@ -1,4 +1,4 @@
-import { SocialLinkType } from '@/types/enum';
+import { SocialLinkType } from '@/enums/index.enum';
 import { User } from '@/types/User';
 import { create } from 'zustand';
 import useUserStore from './useUserStore';
@@ -8,6 +8,8 @@ export type EditProfileStoreState = {
   setNewUserInfo: (user: User) => void;
   resetNewUserInfo: () => void;
   setDisplayName: (value: string) => void;
+  /* file is base64 string */
+  setProfileImage: (file: string) => void;
   setUserCode: (value: string) => void;
   setBio: (value: string) => void;
   setSocialLink: (type: SocialLinkType, value: string) => void;
@@ -21,6 +23,8 @@ const useEditProfileStore = create<EditProfileStoreState>((set, get) => ({
     set({ newUserInfo: { ...useUserStore.getState().user } }),
   setDisplayName: (value: string) =>
     set({ newUserInfo: { ...get().newUserInfo, displayName: value } }),
+  setProfileImage: (file: string) =>
+    set({ newUserInfo: { ...get().newUserInfo, profileImage: file } }),
   setUserCode: (value: string) =>
     set({ newUserInfo: { ...get().newUserInfo, userCode: value } }),
   setBio: (value: string) =>

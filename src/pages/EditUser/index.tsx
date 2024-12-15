@@ -5,13 +5,16 @@ import { Header } from '@/components/Header';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import MobileContainer from '@/components/ui/containers/MobileContainer';
 import { IconCamera } from '@/components/ui/icons/CameraIcon';
+import { Input } from '@/components/ui/input';
 import LinkIconWrapper from '@/components/ui/wrappers/LinkIconWrapper';
 import { socialLinkStarterMap } from '@/constants/User';
+import { SocialLinkType } from '@/enums/index.enum';
 import axios from '@/lib/axios';
-import { urlPreview } from '@/lib/utils';
+import { fileToBase64, urlPreview } from '@/lib/utils';
+import useCommonStore from '@/stores/useCommonStore';
 import useEditProfileStore from '@/stores/useEditProfileStore';
 import useUserStore from '@/stores/useUserStore';
-import { SocialLinkType } from '@/types/enum';
+import { t } from '@lingui/macro';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -22,12 +25,14 @@ const EditUserPage: React.FC = () => {
     newUserInfo,
     resetNewUserInfo,
     setDisplayName,
+    setProfileImage,
     setUserCode,
     setBio,
     setSocialLink,
     isModified,
   } = useEditProfileStore();
-  const { openDrawer } = useDrawer();
+  const { openDrawer, closeDrawer } = useDrawer();
+  const { setShowErrorDrawer } = useCommonStore();
   const socialLinkTypeList = Object.values(SocialLinkType);
 
   enum FieldType {
@@ -158,8 +163,29 @@ const EditUserPage: React.FC = () => {
     navigate(`/${user.id}`);
   };
 
+  // FUTURE: 需要 refactor ImageUploader
+  const onUploadFile = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const fileList = event.target.files;
+    if (fileList && fileList.length > 0) {
+      const imageFile = fileList[0];
+      // FUTURE: File size limit should be set in constants config
+      if (imageFile.size <= 2_097_152) {
+        setProfileImage(await fileToBase64(imageFile));
+      } else {
+        setShowErrorDrawer(true, {
+          title: t`Cover image error!`,
+          content: t`Must be JPG and under 2MB.`,
+        });
+      }
+    }
+  };
+
   useEffect(() => {
-    resetNewUserInfo();
+    // onUnmounted
+    return () => {
+      closeDrawer();
+      resetNewUserInfo();
+    };
   }, []);
 
   return (
@@ -168,15 +194,21 @@ const EditUserPage: React.FC = () => {
       {/* Upload ProfileImageSection */}
       <div id="profile-image" className="flex items-end justify-center pt-6">
         <Avatar className="h-24 w-24">
-          <AvatarImage src={user.profileImage} />
-          <AvatarFallback>{user.displayName[0]}</AvatarFallback>
+          <AvatarImage src={newUserInfo.profileImage} />
+          <AvatarFallback>{newUserInfo.displayName[0]}</AvatarFallback>
         </Avatar>
-        <div
+        <label
           className="z-10 -ml-8 flex h-8 w-8 items-center justify-center rounded-full border border-black-text-01 bg-white"
           onClick={openUploadOptions}
         >
           <IconCamera />
-        </div>
+          <Input
+            type="file"
+            accept="image/*"
+            onChange={(e) => onUploadFile(e)}
+            className="hidden"
+          />
+        </label>
       </div>
       {/* Basic Info Section */}
       <div id="info-section" className="px-4 pt-10">

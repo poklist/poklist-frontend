@@ -9,3 +9,12 @@ export enum Language {
   EN = "en",
   ZH_TW = "zh-TW"
 }
+
+export enum SocialLinkType {
+  CUSTOMIZED = 'customized',
+  INSTAGRAM = 'instagram',
+  YOUTUBE = 'youtube',
+  TIKTOK = 'tiktok',
+  THREADS = 'threads',
+  LINKEDIN = 'linkedin',
+}

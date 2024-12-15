@@ -1,4 +1,4 @@
-import { SocialLinkType } from '@/types/enum';
+import { SocialLinkType } from '@/enums/index.enum';
 
 export const socialLinkStarterMap: Record<SocialLinkType, string> = {
   [SocialLinkType.CUSTOMIZED]: 'www.',
