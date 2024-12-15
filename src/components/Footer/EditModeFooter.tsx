@@ -1,19 +1,26 @@
 import IconClose from '@/components/ui/icons/CloseIcon';
-import useEditProfileStore from '@/stores/useEditProfileStore';
 
 import { Button } from '@/components/ui/button';
 import { useEffect, useRef } from 'react';
 
 interface IEditModeFooterProps {
-  // Add any props you need for the page
+  onClose: () => void;
+  title: string;
+  onSave: ((value?: string) => void) | (() => void);
+  onSaveText?: string;
+  value?: string;
+  isModified: boolean;
 }
 
-const EditModeFooter: React.FC<IEditModeFooterProps> = () => {
+const EditModeFooter: React.FC<IEditModeFooterProps> = ({
+  onClose,
+  title,
+  onSave,
+  onSaveText = 'Save', // TODO: i18n
+  value,
+  isModified,
+}) => {
   const submitFooterRef = useRef<HTMLDivElement>(null);
-  const { isModified } = useEditProfileStore();
-
-  // FUTURE: custom hook?
-  const onSave = () => {};
 
   const footerPosition = () => {
     if (submitFooterRef.current && window.visualViewport) {
@@ -32,21 +39,21 @@ const EditModeFooter: React.FC<IEditModeFooterProps> = () => {
     >
       <div className="flex items-center gap-2">
         <Button
-          onClick={() => onSave()}
+          onClick={onClose}
           aria-label="Previous"
           className="h-auto rounded-full bg-inherit p-0"
         >
           <IconClose />
         </Button>
-        <p className="text-[17px] font-bold">Edit profile and account</p>
+        <p className="text-[17px] font-bold">{title}</p>
       </div>
       <Button
         variant="black"
         shape="rounded8px"
-        disabled={!isModified()}
-        onClick={onSave}
+        disabled={!isModified}
+        onClick={value ? () => onSave(value) : () => onSave()}
       >
-        <p className="text-[17px] font-bold">Save</p>
+        <p className="text-[17px] font-bold">{onSaveText} </p>
       </Button>
     </div>
   );
