@@ -1,8 +1,8 @@
 export enum SocialLinkType {
-  Customized = 'customized',
-  Instagram = 'instagram',
-  YouTube = 'youtube',
-  TikTok = 'tiktok',
-  Threads = 'threads',
-  LinkedIn = 'linkedin',
+  CUSTOMIZED = 'customized',
+  INSTAGRAM = 'instagram',
+  YOUTUBE = 'youtube',
+  TIKTOK = 'tiktok',
+  THREADS = 'threads',
+  LINKEDIN = 'linkedin',
 }

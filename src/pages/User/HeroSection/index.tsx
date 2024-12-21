@@ -10,7 +10,13 @@ import { HeroSectionSkeleton } from './HeroSectionSkeleton';
 const HeroSection: React.FC = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { isLoggedIn, user: me, currentUser, setCurrentUser } = useUserStore();
+  const {
+    isLoggedIn,
+    user: me,
+    setUser,
+    currentUser,
+    setCurrentUser,
+  } = useUserStore();
   // const [viewUser, setViewUser] = useState<User>(emptyUser);
 
   const linkCount = useMemo(() => {
@@ -59,6 +65,9 @@ const HeroSection: React.FC = () => {
   const getUser = async (id: string) => {
     axios.get<User>(`/users/${id}`).then((res) => {
       setCurrentUser({ ...res.data }); // deep copy
+      if (res.data.id === me.id) {
+        setUser(res.data);
+      }
       setIsLoading(false);
     });
   };

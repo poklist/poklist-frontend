@@ -24,7 +24,10 @@ interface IListFormProps {
   completedCallback: (list: { title: string; content: string }) => void;
 }
 
-export const ListForm: React.FC<IListFormProps> = ({ checkEmptyCallback, completedCallback }) => {
+export const ListForm: React.FC<IListFormProps> = ({
+  checkEmptyCallback,
+  completedCallback,
+}) => {
   const [isTextareaFocus, setIsTextareaFocus] = useState(false);
 
   const listForm = useForm<z.infer<typeof FormSchema>>({
@@ -46,7 +49,9 @@ export const ListForm: React.FC<IListFormProps> = ({ checkEmptyCallback, complet
       });
   };
 
-  const onSubmitFailed = (value: FieldErrors<{ title: string; content: string }>) => {
+  const onSubmitFailed = (
+    value: FieldErrors<{ title: string; content: string }>
+  ) => {
     // TODO 目前解法
     switch (Object.keys(value)[0]) {
       case 'title': {
@@ -109,14 +114,14 @@ export const ListForm: React.FC<IListFormProps> = ({ checkEmptyCallback, complet
             <FormItem>
               <FormControl>
                 <div
-                  className={cn(`flex justify-center items-center`, {
-                    'before:h-8 before:w-0.5 before:bg-black-text-01 before:z-10':
+                  className={cn(`flex items-center justify-center`, {
+                    'before:z-10 before:h-8 before:w-0.5 before:bg-black-text-01':
                       listForm.getValues('title') === '',
                   })}
                 >
                   <Input
-                    placeholder={t`Give your list a title`}
-                    className="border-none text-center relative text-h1 placeholder:text-h1"
+                    placeholder={t`輸入名單標題`}
+                    className="relative w-min border-none text-center"
                     {...field}
                   />
                 </div>
@@ -131,12 +136,12 @@ export const ListForm: React.FC<IListFormProps> = ({ checkEmptyCallback, complet
             <FormItem>
               <FormControl>
                 <>
-                  <div className="flex gap-2 items-start">
+                  <div className="flex items-start gap-2">
                     <IconTextarea className="" />
                     <Textarea
-                      placeholder={t`Describe what this title is about`}
-                      className={cn(`border-none p-0 resize-none`, {
-                        'min-h-6 h-6 line-clamp-1': !isTextareaFocus,
+                      placeholder={t`描述標題`}
+                      className={cn(`resize-none border-none p-0`, {
+                        'line-clamp-1 h-6 min-h-6': !isTextareaFocus,
                       })}
                       {...field}
                       onFocus={() => setIsTextareaFocus(true)}
@@ -144,7 +149,7 @@ export const ListForm: React.FC<IListFormProps> = ({ checkEmptyCallback, complet
                     />
                   </div>
                   {isTextareaFocus && (
-                    <div className="text-black-tint-04 flex justify-end mt-2">
+                    <div className="mt-2 flex justify-end text-black-tint-04">
                       {listForm.getValues('content').length}/{DESC_MAX_LENGTH}
                     </div>
                   )}
@@ -155,13 +160,13 @@ export const ListForm: React.FC<IListFormProps> = ({ checkEmptyCallback, complet
         />
         <div
           ref={submitFooterRef}
-          className="border-t-gray-main-03 border-t fixed flex px-4 py-2 w-dvw justify-between left-0 z-10"
+          className="fixed left-0 z-10 flex w-dvw justify-between border-t border-t-gray-main-03 px-4 py-2"
         >
           <div className="flex items-center gap-2">
             <Button
               onClick={() => onDismiss()}
               aria-label="Previous"
-              className="p-0 h-auto rounded-full bg-inherit"
+              className="h-auto rounded-full bg-inherit p-0"
             >
               <IconClose />
             </Button>
