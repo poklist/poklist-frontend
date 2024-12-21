@@ -1,3 +1,4 @@
+import Footer from '@/components/Footer';
 import useUserStore from '@/stores/useUserStore';
 import { ILinksBlock } from '@/types/Settings';
 import { useNavigate } from 'react-router-dom';
@@ -5,6 +6,7 @@ import LinksBlock from './LinksBlock';
 
 const BlocksSection: React.FC = () => {
   const navigate = useNavigate();
+
   const { isLoggedIn, logout } = useUserStore();
 
   const openLanguageDrawer = () => {}; // TODO:
@@ -97,17 +99,20 @@ const BlocksSection: React.FC = () => {
   blocks.push(signInBlock);
 
   return (
-    <div id="blocks" className="flex flex-col gap-10 px-4 py-10 text-[15px]">
-      {blocks.map((block) => {
-        return (
-          <LinksBlock
-            key={block.title}
-            title={block.title}
-            actionItems={block.actionItems}
-          />
-        );
-      })}
-    </div>
+    <>
+      <div id="blocks" className="flex flex-col gap-10 px-4 py-10 text-[15px]">
+        {blocks.map((block) => {
+          return (
+            <LinksBlock
+              key={block.title}
+              title={block.title}
+              actionItems={block.actionItems}
+            />
+          );
+        })}
+      </div>
+      <Footer onClose={() => navigate(-1)} title="Setting Center" />
+    </>
   );
 };
 
