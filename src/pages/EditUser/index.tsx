@@ -5,16 +5,16 @@ import { Header } from '@/components/Header';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import MobileContainer from '@/components/ui/containers/MobileContainer';
 import { IconCamera } from '@/components/ui/icons/CameraIcon';
-import { Input } from '@/components/ui/input';
 import LinkIconWrapper from '@/components/ui/wrappers/LinkIconWrapper';
 import { socialLinkStarterMap } from '@/constants/User';
+import { EditFieldVariant, FieldType } from '@/enums/EditField/index.enum';
 import { SocialLinkType } from '@/enums/index.enum';
 import axios from '@/lib/axios';
-import { fileToBase64, urlPreview } from '@/lib/utils';
+import { urlPreview } from '@/lib/utils';
 import useCommonStore from '@/stores/useCommonStore';
 import useEditProfileStore from '@/stores/useEditProfileStore';
 import useUserStore from '@/stores/useUserStore';
-import { t } from '@lingui/macro';
+import { IEditFieldConfig } from '@/types/EditField';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -35,21 +35,10 @@ const EditUserPage: React.FC = () => {
   const { setShowErrorDrawer } = useCommonStore();
   const socialLinkTypeList = Object.values(SocialLinkType);
 
-  enum FieldType {
-    DISPLAY_NAME = 'display_name',
-    USER_CODE = 'user_code',
-    BIO = 'bio',
-  }
-
-  interface FieldConfig {
-    fieldName: string;
-    placeholder?: string;
-    onFieldValueSet: (value: string | undefined) => void;
-  }
-
-  const fieldConfigMap: Record<FieldType | SocialLinkType, FieldConfig> = {
+  const fieldConfigMap: Record<FieldType | SocialLinkType, IEditFieldConfig> = {
     [FieldType.DISPLAY_NAME]: {
       fieldName: 'Name',
+      variant: EditFieldVariant.TEXT,
       placeholder: 'Enter your name here',
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
@@ -61,6 +50,7 @@ const EditUserPage: React.FC = () => {
     },
     [FieldType.USER_CODE]: {
       fieldName: 'Username',
+      variant: EditFieldVariant.TEXT,
       placeholder: 'Enter your username here',
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
@@ -72,6 +62,7 @@ const EditUserPage: React.FC = () => {
     },
     [FieldType.BIO]: {
       fieldName: 'Bio',
+      variant: EditFieldVariant.TEXT,
       placeholder: 'Enter your bio here',
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
@@ -81,8 +72,20 @@ const EditUserPage: React.FC = () => {
         }
       },
     },
+    [FieldType.PROFILE_IMAGE]: {
+      fieldName: 'Profile Image',
+      variant: EditFieldVariant.IMAGE,
+      onFieldValueSet: (value: string | undefined) => {
+        if (value) {
+          setProfileImage(value);
+        } else {
+          console.log('value is undefined');
+        }
+      },
+    },
     [SocialLinkType.CUSTOMIZED]: {
       fieldName: 'Customized Link',
+      variant: EditFieldVariant.TEXT,
       placeholder: 'Enter your link here',
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
@@ -94,6 +97,7 @@ const EditUserPage: React.FC = () => {
     },
     [SocialLinkType.INSTAGRAM]: {
       fieldName: 'Instagram',
+      variant: EditFieldVariant.TEXT,
       placeholder: 'Enter your Instagram link here',
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
@@ -105,6 +109,7 @@ const EditUserPage: React.FC = () => {
     },
     [SocialLinkType.YOUTUBE]: {
       fieldName: 'YouTube',
+      variant: EditFieldVariant.TEXT,
       placeholder: 'Enter your YouTube link here',
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
@@ -116,6 +121,7 @@ const EditUserPage: React.FC = () => {
     },
     [SocialLinkType.TIKTOK]: {
       fieldName: 'TikTok',
+      variant: EditFieldVariant.TEXT,
       placeholder: 'Enter your TikTok link here',
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
@@ -127,6 +133,7 @@ const EditUserPage: React.FC = () => {
     },
     [SocialLinkType.THREADS]: {
       fieldName: 'Threads',
+      variant: EditFieldVariant.TEXT,
       placeholder: 'Enter your Threads link here',
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
@@ -138,6 +145,7 @@ const EditUserPage: React.FC = () => {
     },
     [SocialLinkType.LINKEDIN]: {
       fieldName: 'LinkedIn',
+      variant: EditFieldVariant.TEXT,
       placeholder: 'Enter your LinkedIn link here',
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
@@ -149,35 +157,16 @@ const EditUserPage: React.FC = () => {
     },
   };
 
-  const [fieldConfig, setFieldConfig] = useState<FieldConfig>();
+  const [fieldConfig, setFieldConfig] = useState<IEditFieldConfig>();
 
   const onOpenDrawer = (fieldType: FieldType | SocialLinkType) => {
     setFieldConfig(fieldConfigMap[fieldType]);
     openDrawer();
   };
 
-  const openUploadOptions = () => {}; // TODO:
-
   const onSubmit = () => {
     axios.put(`/users/me`, newUserInfo);
     navigate(`/${user.id}`);
-  };
-
-  // FUTURE: 需要 refactor ImageUploader
-  const onUploadFile = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const fileList = event.target.files;
-    if (fileList && fileList.length > 0) {
-      const imageFile = fileList[0];
-      // FUTURE: File size limit should be set in constants config
-      if (imageFile.size <= 2_097_152) {
-        setProfileImage(await fileToBase64(imageFile));
-      } else {
-        setShowErrorDrawer(true, {
-          title: t`Cover image error!`,
-          content: t`Must be JPG and under 2MB.`,
-        });
-      }
-    }
   };
 
   useEffect(() => {
@@ -199,15 +188,9 @@ const EditUserPage: React.FC = () => {
         </Avatar>
         <label
           className="z-10 -ml-8 flex h-8 w-8 items-center justify-center rounded-full border border-black-text-01 bg-white"
-          onClick={openUploadOptions}
+          onClick={() => onOpenDrawer(FieldType.PROFILE_IMAGE)}
         >
           <IconCamera />
-          <Input
-            type="file"
-            accept="image/*"
-            onChange={(e) => onUploadFile(e)}
-            className="hidden"
-          />
         </label>
       </div>
       {/* Basic Info Section */}
@@ -287,11 +270,14 @@ const EditUserPage: React.FC = () => {
         onSave={onSubmit}
       />
 
-      <EditDrawerComponent
-        title={fieldConfig?.fieldName ?? ''}
-        placeholder={fieldConfig?.placeholder}
-        onFieldValueSet={fieldConfig?.onFieldValueSet ?? (() => {})}
-      />
+      {fieldConfig && (
+        <EditDrawerComponent
+          variant={fieldConfig.variant}
+          title={fieldConfig.fieldName}
+          placeholder={fieldConfig.placeholder}
+          onFieldValueSet={fieldConfig.onFieldValueSet}
+        />
+      )}
     </MobileContainer>
   );
 };
