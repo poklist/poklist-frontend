@@ -1,3 +1,4 @@
+import DeleteAccountPage from '@/pages/DeleteAccount';
 import EditUserPage from '@/pages/EditUser';
 import Home from '@/pages/Home/index';
 // import CreateIdeaPage from '@/pages/Idea/Create';
@@ -5,7 +6,7 @@ import Layout from '@/pages/Layout';
 import ListManagementPage from '@/pages/ListManage';
 import CreateListPage from '@/pages/Lists/Create';
 import Login from '@/pages/Login';
-import Settings from '@/pages/Settings';
+import SettingsPage from '@/pages/Settings';
 import UserPage from '@/pages/User';
 import { createBrowserRouter } from 'react-router-dom';
 
@@ -24,7 +25,11 @@ const router = createBrowserRouter([
       },
       {
         path: 'settings',
-        element: <Settings />,
+        element: <SettingsPage />,
+      },
+      {
+        path: 'delete-account',
+        element: <DeleteAccountPage />,
       },
       {
         path: ':id',

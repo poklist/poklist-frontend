@@ -3,23 +3,12 @@ import IconClose from '@/components/ui/icons/CloseIcon';
 import { Button } from '@/components/ui/button';
 import { useEffect, useRef } from 'react';
 
-interface IEditModeFooterProps {
+interface IFooterProps {
   onClose: () => void;
   title: string;
-  onSave: ((value?: string) => void) | (() => void);
-  onSaveText?: string;
-  value?: string;
-  isModified: boolean;
 }
 
-const EditModeFooter: React.FC<IEditModeFooterProps> = ({
-  onClose,
-  title,
-  onSave,
-  onSaveText = 'Save', // TODO: i18n
-  value,
-  isModified,
-}) => {
+const Footer: React.FC<IFooterProps> = ({ onClose, title }) => {
   const submitFooterRef = useRef<HTMLDivElement>(null);
 
   const footerPosition = () => {
@@ -47,16 +36,8 @@ const EditModeFooter: React.FC<IEditModeFooterProps> = ({
         </Button>
         <p className="text-[17px] font-bold">{title}</p>
       </div>
-      <Button
-        variant="black"
-        shape="rounded8px"
-        disabled={!isModified}
-        onClick={value ? () => onSave(value) : () => onSave()}
-      >
-        <p className="text-[17px] font-bold">{onSaveText} </p>
-      </Button>
     </div>
   );
 };
 
-export default EditModeFooter;
+export default Footer;
