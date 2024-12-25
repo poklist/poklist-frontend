@@ -1,21 +1,23 @@
 import axios from 'axios';
 
 import { LocalStorageKey } from '@/enums/index.enum';
-import { getLocalStorage, removeLocalStorage } from '@/lib/utils';
+import { removeLocalStorage } from '@/lib/utils';
 import commonStore from '@/stores/useCommonStore';
+import userStore from '@/stores/useUserStore';
 
 const instance = axios.create({
-  baseURL: '',
+  baseURL: import.meta.env.VITE_API_BASE_URL,
 });
 
 instance.interceptors.request.use(
   async function (config) {
     // 從 localStorage 取得 token
-    const storage = getLocalStorage(LocalStorageKey.USER_INFO);
-
-    if (storage?.state?.user?.token) {
-      config.headers['x-user-token'] = storage.state.user.token;
-    }
+    const { accessToken } = userStore.getState();
+    config.headers['Authorization'] = `Bearer ${accessToken}`;
+    // const storage = getLocalStorage(LocalStorageKey.USER_INFO);
+    // if (storage?.state?.user?.token) {
+    //   config.headers['x-user-token'] = storage.state.user.token;
+    // }
     return config;
   },
   (error) => {

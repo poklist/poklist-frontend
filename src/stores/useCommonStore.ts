@@ -1,23 +1,30 @@
 import { create } from 'zustand';
 
-import { IAlertMessage } from '@/components/ui/Alert';
+import { IAlertMessage } from '@/components/Alert';
+import { IErrorDrawerMessage } from '@/components/ErrorDrawer';
 
 export type CommonStoreState = {
   isLoading: boolean;
+  setIsLoading: (isLoading: boolean) => void;
+
   isShowingAlert: boolean;
   alertMessage: IAlertMessage; // Add 'alertMessage' property
-
-  setIsLoading: (isLoading: boolean) => void;
   setShowingAlert: (isShowing: boolean, alertMessage?: IAlertMessage) => void;
+
+  isShowErrorDrawer: boolean;
+  errorDrawerMessage: IErrorDrawerMessage;
+  setShowErrorDrawer: (isShow: boolean, errorMessage?: IErrorDrawerMessage) => void;
 };
 
-const useCommonStore = create<CommonStoreState>((set) => ({
+const useCommonStore = create<CommonStoreState>(set => ({
   isLoading: false,
+  setIsLoading: isLoading => set({ isLoading }),
+
   isShowingAlert: false,
   alertMessage: {
     message: '',
   },
-  setIsLoading: (isLoading) => set({ isLoading }),
+
   setShowingAlert: (isShowing, alertMessage) => {
     set({
       isShowingAlert: isShowing,
@@ -27,6 +34,15 @@ const useCommonStore = create<CommonStoreState>((set) => ({
       set({
         alertMessage,
       });
+    }
+  },
+
+  isShowErrorDrawer: false,
+  errorDrawerMessage: { title: '', content: '' },
+  setShowErrorDrawer: (isShow, errorMessage) => {
+    set({ isShowErrorDrawer: isShow });
+    if (errorMessage) {
+      set({ errorDrawerMessage: errorMessage });
     }
   },
 }));

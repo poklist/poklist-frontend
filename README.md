@@ -1,5 +1,53 @@
 # React + TypeScript + Vite
 
+### Core module
+
+- zustand
+- tailwind
+- lingui
+
+### UI library
+
+- radix
+
+## Getting Started
+
+First, run the development server:
+
+- with node v18.17.1 (npm v9.6.7)
+
+```bash
+npm i
+npm run dev
+```
+
+## i18n/lingui
+
+```bash
+npm run build-lang
+```
+
+# Component Folder Structure Guidelines
+
+To maintain a clear and consistent structure for components in the project, follow these rules:
+
+1. **Shadcn UI Components**  
+   Components imported from Shadcn UI must be placed under `@/components/ui/` as `.tsx` files with **lowercase file names**.  
+   Example: `@/components/ui/button.tsx`
+
+2. **Custom Shared Components**  
+   Custom reusable components must be placed under `@/components/` inside **uppercase-named folders**, and the main component file must be named `index.tsx`.  
+   Example: `@/components/Button/index.tsx`
+
+3. **Page-Specific Components**  
+   Components that are not yet confirmed for reuse can be placed under the corresponding folder for your page in `@/pages/`.  
+   Example: `@/pages/home/CustomHeader.tsx`
+
+4. **Legacy Components**  
+   Any components not adhering to the above structure are considered legacy components (handled by Sail but not yet reorganized).
+
+By following these rules, we aim to maintain better code organization and improve overall maintainability.
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:
@@ -22,7 +70,7 @@ export default tseslint.config({
       tsconfigRootDir: import.meta.dirname,
     },
   },
-})
+});
 ```
 
 - Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
@@ -31,7 +79,7 @@ export default tseslint.config({
 
 ```js
 // eslint.config.js
-import react from 'eslint-plugin-react'
+import react from 'eslint-plugin-react';
 
 export default tseslint.config({
   // Set the react version
@@ -46,5 +94,5 @@ export default tseslint.config({
     ...react.configs.recommended.rules,
     ...react.configs['jsx-runtime'].rules,
   },
-})
+});
 ```

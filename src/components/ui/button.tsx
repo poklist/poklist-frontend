@@ -1,34 +1,35 @@
-import * as React from 'react';
 import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
+import * as React from 'react';
 
 import { cn } from '@/lib/utils';
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
+  'inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
   {
     variants: {
       variant: {
-        default: 'bg-primary text-primary-foreground hover:bg-primary/90',
-        destructive:
-          'bg-destructive text-destructive-foreground hover:bg-destructive/90',
-        outline:
-          'border border-input bg-background hover:bg-accent hover:text-accent-foreground',
-        secondary:
-          'bg-secondary text-secondary-foreground hover:bg-secondary/80',
-        ghost: 'hover:bg-accent hover:text-accent-foreground',
-        link: 'text-primary underline-offset-4 hover:underline',
+        highlighted:
+          'border border-black bg-yellow-bright-01 text-black-text-01',
+        black: 'bg-black text-white',
+        white: 'border border-black bg-white text-black-text-01',
+        gray: ' bg-gray-main-03 text-black-text-01',
       },
       size: {
-        default: 'h-10 px-4 py-2',
-        sm: 'h-9 rounded-md px-3',
-        lg: 'h-11 rounded-md px-8',
-        icon: 'h-10 w-10',
+        // sm: 'px-3',
+        md: 'h-8 text-[13px] px-3',
+        lg: 'h-12 text-[15px] px-8',
+        icon: 'h-8 w-8',
+      },
+      shape: {
+        roundedFull: 'rounded-full',
+        rounded8px: 'rounded-[8px]',
       },
     },
     defaultVariants: {
-      variant: 'default',
-      size: 'default',
+      variant: 'white',
+      size: 'md',
+      shape: 'roundedFull',
     },
   }
 );
@@ -40,11 +41,11 @@ export interface ButtonProps
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
+  ({ className, variant, size, shape, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : 'button';
     return (
       <Comp
-        className={cn(buttonVariants({ variant, size, className }))}
+        className={cn(buttonVariants({ variant, size, shape, className }))}
         ref={ref}
         {...props}
       />

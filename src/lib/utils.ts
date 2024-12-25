@@ -20,3 +20,19 @@ export const setLocalStorage = (key: LocalStorageKey, value: any) => {
 export const removeLocalStorage = (key: LocalStorageKey) => {
   localStorage.removeItem(key);
 };
+
+export const urlPreview = (url: string | undefined) => {
+  if (url === undefined) {
+    return '';
+  }
+  return url.replace(/^https?:\/\//, '');
+};
+
+export const fileToBase64 = (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = (error) => reject(error);
+  });
+};

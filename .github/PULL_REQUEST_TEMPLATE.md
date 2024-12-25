@@ -2,8 +2,6 @@
 
 **Replace this text with a detailed description of what this PR does.**
 
-Related issue #(ticket number) / None
-
 ## Type of Change
 
 - [ ] Bug fix (non-breaking change that fixes an issue)
@@ -13,11 +11,9 @@ Related issue #(ticket number) / None
 
 ## Affected Pages
 
-- [ ] Home
-- [ ] Profile and Settings
-- [ ] Other (please specify)
+- [ ] Please Specify. E.g., Edit Page/User Profile or Global
 
-## Related Project Task (e.g., Redmine)
+## Related Project Task (Linear)
 
 (If there are related tasks, please provide links; if not, delete this line and write "None")
 

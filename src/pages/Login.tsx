@@ -1,75 +1,39 @@
-import { FormEvent, useEffect } from 'react';
+import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
 
-import { Button } from '@/components/ui/button';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
-
-import MainContainer from '@/components/ui/containers/MainContainer';
-import { Input } from '@/components/ui/input';
-import { useForm } from 'react-hook-form';
+import MobileContainer from '@/components/ui/containers/MobileContainer';
+import axios from '@/lib/axios';
+import useUserStore from '@/stores/useUserStore';
+import { User } from '@/types/User';
 import { useNavigate } from 'react-router-dom';
-const Login = () => {
-  const form = useForm();
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log('login!');
-    navigate('/home');
+const Login = () => {
+  const navigate = useNavigate();
+  const { login, setUser } = useUserStore();
+
+  const clientId =
+    '399453774973-062qr2akh95l3lq55ea91rr0evkq2qgn.apps.googleusercontent.com';
+
+  const onSuccess = (res: any) => {
+    axios
+      .post('/auth/google', { idToken: res.credential })
+      .then(async (res: any) => {
+        login(res.data.accessToken);
+        const userData = res.data.user as User;
+        console.log('userData:', userData);
+        setUser(userData);
+
+        navigate(`/${userData.id}`);
+      });
   };
 
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (localStorage.getItem('token')) {
-      navigate('/home');
-    }
-  }, [navigate]);
-
   return (
-    <MainContainer>
-      <MainContainer>
-        <Form {...form}>
-          <form
-            onSubmit={onSubmit}
-            className="flex flex-col gap-4 rounded-md border border-gray-300 p-12"
-          >
-            <FormField
-              control={form.control}
-              name="username"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Username</FormLabel>
-                  <FormControl>
-                    <Input placeholder="shadcn" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Input placeholder="your password" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button>Login</Button>
-          </form>
-        </Form>
-      </MainContainer>
-    </MainContainer>
+    <GoogleOAuthProvider clientId={clientId}>
+      <MobileContainer>
+        <div className="flex justify-center">
+          <GoogleLogin onSuccess={onSuccess} />
+        </div>
+      </MobileContainer>
+    </GoogleOAuthProvider>
   );
 };
 

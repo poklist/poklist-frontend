@@ -71,3 +71,15 @@
     @apply bg-background text-foreground;
   }
 }
+
+::-webkit-scrollbar {
+  appearance: none;
+  width: 0.25rem;
+  height: 0.25rem;
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #c4c2c2;
+  border-radius: 0.25rem;
+  padding: 0.125rem;
+}
