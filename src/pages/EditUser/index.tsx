@@ -203,33 +203,49 @@ const EditUserPage: React.FC = () => {
           onClick={() => onOpenDrawer(FieldType.DISPLAY_NAME)}
         >
           <p>Name</p>
-          <p className="text-right text-gray-storm-01">
-            {newUserInfo.displayName
-              ? newUserInfo.displayName
-              : fieldConfigMap[FieldType.DISPLAY_NAME]?.placeholder}
-          </p>
+          <>
+            {newUserInfo.displayName ? (
+              <p className="text-right text-black-text-01">
+                {newUserInfo.displayName}
+              </p>
+            ) : (
+              <p className="text-right text-gray-storm-01">
+                {fieldConfigMap[FieldType.DISPLAY_NAME]?.placeholder}
+              </p>
+            )}
+          </>
         </div>
         <div
           className="flex h-16 cursor-pointer items-center justify-between border-t border-[#F6F6F6] px-2 text-[13px]"
           onClick={() => onOpenDrawer(FieldType.USER_CODE)}
         >
           <p>Username</p>
-          <p className="text-right text-gray-storm-01">
-            {newUserInfo.userCode
-              ? newUserInfo.userCode
-              : fieldConfigMap[FieldType.USER_CODE]?.placeholder}
-          </p>
+          <>
+            {newUserInfo.userCode ? (
+              <p className="text-right text-black-text-01">
+                {newUserInfo.userCode}
+              </p>
+            ) : (
+              <p className="text-right text-gray-storm-01">
+                {fieldConfigMap[FieldType.USER_CODE]?.placeholder}
+              </p>
+            )}
+          </>
         </div>
         <div
           className="flex h-16 cursor-pointer items-center justify-between border-t border-[#F6F6F6] px-2 text-[13px]"
           onClick={() => onOpenDrawer(FieldType.BIO)}
         >
           <p>Bio</p>
-          <p className="text-right text-gray-storm-01">
-            {newUserInfo.bio
-              ? newUserInfo.bio
-              : fieldConfigMap[FieldType.BIO]?.placeholder}
-          </p>
+          <>
+            {newUserInfo.bio ? (
+              <p className="text-right text-black-text-01">{newUserInfo.bio}</p>
+            ) : (
+              <p className="text-right text-gray-storm-01">
+                {fieldConfigMap[FieldType.BIO]?.placeholder}
+              </p>
+            )}
+          </>
         </div>
       </div>
       {/* Social Links Section */}

@@ -103,7 +103,7 @@ const ImageCropper: React.FC<IImageCropperProps> = ({ value, onChange }) => {
             <Slider
               className="absolute bottom-20 left-1/2 flex h-20 w-1/2 -translate-x-1/2 transform items-center"
               min={1}
-              max={3}
+              max={5}
               step={0.1}
               defaultValue={[1]}
               value={[zoom]}
