@@ -40,6 +40,7 @@ const EditUserPage: React.FC = () => {
       fieldName: 'Name',
       variant: EditFieldVariant.TEXT,
       placeholder: 'Enter your name here',
+      characterLimit: 20,
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
           setDisplayName(value);
@@ -52,6 +53,7 @@ const EditUserPage: React.FC = () => {
       fieldName: 'Username',
       variant: EditFieldVariant.TEXT,
       placeholder: 'Enter your username here',
+      characterLimit: 30,
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
           setUserCode(value);
@@ -64,6 +66,7 @@ const EditUserPage: React.FC = () => {
       fieldName: 'Bio',
       variant: EditFieldVariant.TEXT,
       placeholder: 'Enter your bio here',
+      characterLimit: 250,
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
           setBio(value);
@@ -159,7 +162,7 @@ const EditUserPage: React.FC = () => {
 
   const [fieldConfig, setFieldConfig] = useState<IEditFieldConfig>();
 
-  const onOpenDrawer = (fieldType: FieldType | SocialLinkType) => {
+  const onOpenFakePage = (fieldType: FieldType | SocialLinkType) => {
     setFieldConfig(fieldConfigMap[fieldType]);
     openFakePage();
   };
@@ -188,7 +191,7 @@ const EditUserPage: React.FC = () => {
         </Avatar>
         <label
           className="z-10 -ml-8 flex h-8 w-8 items-center justify-center rounded-full border border-black-text-01 bg-white"
-          onClick={() => onOpenDrawer(FieldType.PROFILE_IMAGE)}
+          onClick={() => onOpenFakePage(FieldType.PROFILE_IMAGE)}
         >
           <IconCamera />
         </label>
@@ -200,7 +203,7 @@ const EditUserPage: React.FC = () => {
         </div>
         <div
           className="flex h-16 cursor-pointer items-center justify-between border-t border-[#F6F6F6] px-2 text-[13px]"
-          onClick={() => onOpenDrawer(FieldType.DISPLAY_NAME)}
+          onClick={() => onOpenFakePage(FieldType.DISPLAY_NAME)}
         >
           <p>Name</p>
           <>
@@ -217,7 +220,7 @@ const EditUserPage: React.FC = () => {
         </div>
         <div
           className="flex h-16 cursor-pointer items-center justify-between border-t border-[#F6F6F6] px-2 text-[13px]"
-          onClick={() => onOpenDrawer(FieldType.USER_CODE)}
+          onClick={() => onOpenFakePage(FieldType.USER_CODE)}
         >
           <p>Username</p>
           <>
@@ -234,7 +237,7 @@ const EditUserPage: React.FC = () => {
         </div>
         <div
           className="flex h-16 cursor-pointer items-center justify-between border-t border-[#F6F6F6] px-2 text-[13px]"
-          onClick={() => onOpenDrawer(FieldType.BIO)}
+          onClick={() => onOpenFakePage(FieldType.BIO)}
         >
           <p>Bio</p>
           <>
@@ -258,7 +261,7 @@ const EditUserPage: React.FC = () => {
             <div
               key={linkType}
               className="flex h-16 cursor-pointer items-center gap-2 border-t border-[#F6F6F6] px-2 text-[13px]"
-              onClick={() => onOpenDrawer(linkType)}
+              onClick={() => onOpenFakePage(linkType)}
             >
               <LinkIconWrapper variant={linkType} />
               {newUserInfo.socialLinks?.[linkType] ? (
@@ -285,14 +288,7 @@ const EditUserPage: React.FC = () => {
         title={'Edit profile and account'}
         onSave={onSubmit}
       />
-      {fieldConfig && (
-        <EditFieldFakePageComponent
-          variant={fieldConfig.variant}
-          title={fieldConfig.fieldName}
-          placeholder={fieldConfig.placeholder}
-          onFieldValueSet={fieldConfig.onFieldValueSet}
-        />
-      )}
+      {fieldConfig && <EditFieldFakePageComponent {...fieldConfig} />}
     </MobileContainer>
   );
 };

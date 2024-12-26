@@ -1,25 +1,20 @@
 import { Dialog, DialogContent } from '@/components/ui/dialog';
-import { EditFieldVariant } from '@/enums/EditField/index.enum';
-import { useState } from 'react';
+import useAutosizeTextArea from '@/hooks/useAutosizedTextArea';
+import { IEditFieldConfig } from '@/types/EditField';
+import { useRef, useState } from 'react';
 import { useFakePage } from '.';
 import EditModeFooter from '../Footer/EditModeFooter';
 import ImageCropper from '../ImageCropper';
-import { Input } from '../ui/input';
+import { Textarea } from '../ui/textarea';
 
-interface IEditFieldFakePageProps {
-  title: string;
-  variant: EditFieldVariant;
-  onFieldValueSet: (value?: string) => void;
-
+interface IEditFieldFakePageProps extends IEditFieldConfig {
   originalFieldValue?: string;
-  placeholder?: string;
-  characterLimit?: number;
   errorMessage?: string;
   validator?: (value?: string) => boolean;
 }
 
 export const EditFieldFakePageComponent: React.FC<IEditFieldFakePageProps> = ({
-  title,
+  fieldName,
   variant,
   onFieldValueSet,
   originalFieldValue,
@@ -53,7 +48,7 @@ export const EditFieldFakePageComponent: React.FC<IEditFieldFakePageProps> = ({
           <EditModeFooter
             isModified={isModified}
             onClose={closeFakePage}
-            title={title}
+            title={fieldName}
             onSaveText="Done"
             onSave={() => {
               onFieldValueSet(fieldValue);
@@ -82,10 +77,16 @@ const TextInput: React.FC<ITextInputProps> = ({
   characterLimit,
 }) => {
   const [fieldValue, setFieldValue] = useState<string | undefined>(value);
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
+
+  useAutosizeTextArea(textAreaRef.current, value);
+
   return (
     <>
-      <Input
+      <Textarea
+        ref={textAreaRef}
         value={fieldValue}
+        maxLength={characterLimit}
         onChange={(e) => {
           setFieldValue(e.target.value);
           onChange(e.target.value);
@@ -95,7 +96,7 @@ const TextInput: React.FC<ITextInputProps> = ({
       />
       <>
         {characterLimit && (
-          <p>
+          <p className="self-end text-black-gray-03">
             {fieldValue?.length ?? 0} / {characterLimit}
           </p>
         )}
