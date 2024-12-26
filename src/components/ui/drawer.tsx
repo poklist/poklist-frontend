@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Drawer as DrawerPrimitive } from 'vaul';
 
 import { cn } from '@/lib/utils';
+import { VisuallyHidden } from '@radix-ui/themes';
 
 const Drawer = ({
   shouldScaleBackground = true,
@@ -46,6 +47,9 @@ const DrawerContent = React.forwardRef<
       )}
       {...props}
     >
+      <VisuallyHidden>
+        <DrawerPrimitive.Title></DrawerPrimitive.Title>
+      </VisuallyHidden>
       {children}
     </DrawerPrimitive.Content>
   </DrawerPortal>
