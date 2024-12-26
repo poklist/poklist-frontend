@@ -10,8 +10,7 @@ const Login = () => {
   const navigate = useNavigate();
   const { login, setUser } = useUserStore();
 
-  const clientId =
-    '399453774973-062qr2akh95l3lq55ea91rr0evkq2qgn.apps.googleusercontent.com';
+  const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
   const onSuccess = (res: any) => {
     axios
