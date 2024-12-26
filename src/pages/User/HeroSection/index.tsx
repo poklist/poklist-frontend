@@ -1,6 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import axios from '@/lib/axios';
+import { getPreviewText } from '@/lib/utils';
 import useUserStore from '@/stores/useUserStore';
 import { User } from '@/types/User';
 import { useEffect, useMemo, useState } from 'react';
@@ -93,9 +94,11 @@ const HeroSection: React.FC = () => {
         </Avatar>
         <p className="text-[17px] font-bold">{currentUser.displayName}</p>
         <p className="text-[13px] font-semibold">@{currentUser.userCode}</p>
-        <p className="text-[13px] font-normal">
-          {currentUser.bio /* TODO: trimTail */}
-        </p>
+        {currentUser.bio && (
+          <p className="text-[13px] font-normal">
+            {getPreviewText(currentUser.bio, 20)}
+          </p>
+        )}
       </div>
       <div id="action-button">
         {isMyPage ? (

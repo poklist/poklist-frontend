@@ -36,3 +36,17 @@ export const fileToBase64 = (file: File): Promise<string> => {
     reader.onerror = (error) => reject(error);
   });
 };
+
+export const getPreviewText = (text: string, length: number = 20) => {
+  return text.slice(0, length) + (text.length > length ? '...' : '');
+};
+
+export const isValidInstagramUsername = (username: string) => {
+  // Instagram 使用者名稱規則：
+  // 1. 長度限制：30 個字元
+  // 2. 可用字符：字母、數字、底線
+  // 3. 首字元必須是字母
+
+  const regex = /^[a-zA-Z][a-zA-Z0-9_]{0,29}$/;
+  return regex.test(username);
+};
