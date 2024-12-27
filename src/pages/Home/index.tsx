@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import MainContainer from '@/components/ui/containers/MainContainer';
-import SiteFooter from '@/components/ui/SiteFooter';
 import { Link } from 'react-router-dom';
+import FooterComponent from '../User/Footer';
 import OldHeroSection from './OldHeroSection';
 
 export default function Home() {
@@ -13,7 +13,8 @@ export default function Home() {
         </Button>
       </Link>
       <OldHeroSection />
-      <SiteFooter floatingBtnTxts={['喜歡', '轉單', '分享']} />
+      {/* <SiteFooter floatingBtnTxts={['喜歡', '轉單', '分享']} /> */}
+      <FooterComponent />
     </MainContainer>
   );
 }

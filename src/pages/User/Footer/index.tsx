@@ -37,7 +37,7 @@ const FooterComponent: React.FC<IFooterProps> = () => {
           {liked ? <Trans>Liked</Trans> : <Trans>Like</Trans>}
         </Button>
       )}
-      <Link to="/create">
+      <Link to="/list/create">
         <Button variant="white" className="flex items-center gap-2 text-sm">
           <IconAdd />
           <Trans>Create List</Trans>

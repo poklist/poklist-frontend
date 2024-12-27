@@ -1,16 +1,18 @@
 import ImagePreviewComponent from '@/components/ImagePreview';
 import IconPhoto from '@/components/ui/icons/PhotoIcon';
 import { Input } from '@/components/ui/input';
+import { cn } from '@/lib/utils';
 import useCommonStore from '@/stores/useCommonStore';
 import { t, Trans } from '@lingui/macro';
 import React from 'react';
 
 interface IImageUploaderProps {
-  file: File | null;
+  file: File | null | undefined;
   callback: (file: File | null) => void;
+  className?: string;
 }
 
-const ImageUploader: React.FC<IImageUploaderProps> = ({ file, callback }) => {
+const ImageUploader: React.FC<IImageUploaderProps> = ({ file, callback, className }) => {
   const { setShowErrorDrawer } = useCommonStore();
 
   const onUploadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,9 +30,9 @@ const ImageUploader: React.FC<IImageUploaderProps> = ({ file, callback }) => {
     }
   };
   return file ? (
-    <ImagePreviewComponent file={file} callback={() => callback(null)} />
+    <ImagePreviewComponent className={cn(className)} file={file} callback={() => callback(null)} />
   ) : (
-    <div className="flex gap-2 items-start">
+    <div className={cn(`flex gap-2 items-start`, className)}>
       <IconPhoto />
       <label className="text-black-gray-03">
         <div className="w-full h-6">
