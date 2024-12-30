@@ -35,7 +35,7 @@ export default function SiteFooter({ floatingBtnTxts }: SiteFooterProps) {
             <span>
               <IonAdd className="h-5 w-5" />
             </span>
-            <Link to="/create">
+            <Link to="/list/create">
               <span className="font-inter text-xs font-semibold">新增名單</span>
             </Link>
           </div>
