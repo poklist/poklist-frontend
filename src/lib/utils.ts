@@ -1,4 +1,5 @@
-import { LocalStorageKey } from '@/enums/index.enum';
+import { socialLinkStarterMap } from '@/constants/User';
+import { LocalStorageKey, SocialLinkType } from '@/enums/index.enum';
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -49,4 +50,25 @@ export const isValidInstagramUsername = (username: string) => {
 
   const regex = /^[a-zA-Z][a-zA-Z0-9_]{0,29}$/;
   return regex.test(username);
+};
+
+export const copyHref = () => {
+  const url = window.location.href;
+  navigator.clipboard.writeText(url);
+};
+
+export const extractUsernameFromUrl = (
+  linkType: SocialLinkType,
+  url: string
+) => {
+  const prefix = socialLinkStarterMap[linkType];
+  const index = url.indexOf(prefix);
+
+  if (index !== -1) {
+    // If found, then cut out the part starting from the found position
+    return url.substring(index + prefix.length);
+  } else {
+    // If not found, then return the original URL
+    return url;
+  }
 };

@@ -2,11 +2,10 @@ import { Button } from '@/components/ui/button';
 import IconAdd from '@/components/ui/icons/AddIcon';
 import IconLike from '@/components/ui/icons/LikeIcon';
 import IconLink from '@/components/ui/icons/LinkIcon';
-import useClipboard from '@/hooks/useClipboard';
-import { cn } from '@/lib/utils';
+import { cn, copyHref } from '@/lib/utils';
 import { Trans } from '@lingui/macro';
 import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 interface IFooterProps {
   // Add any props you need for the page
@@ -15,13 +14,10 @@ interface IFooterProps {
 const FooterComponent: React.FC<IFooterProps> = () => {
   // May use ReactNode instead
   const location = useLocation();
+  const navigate = useNavigate();
   const isShowLikeButton = location.pathname.startsWith('/list/');
   const [liked, setLiked] = useState(false);
 
-  const { copy } = useClipboard();
-  const copyUrl = () => {
-    copy(window.location.href);
-  };
   return (
     <div className="fixed bottom-2 flex w-dvw items-center justify-center gap-2">
       {isShowLikeButton && (
@@ -37,14 +33,16 @@ const FooterComponent: React.FC<IFooterProps> = () => {
           {liked ? <Trans>Liked</Trans> : <Trans>Like</Trans>}
         </Button>
       )}
-      <Link to="/create">
-        <Button variant="white" className="flex items-center gap-2 text-sm">
-          <IconAdd />
-          <Trans>Create List</Trans>
-        </Button>
-      </Link>
       <Button
-        onClick={() => copyUrl()}
+        variant="white"
+        className="flex items-center gap-2 text-sm"
+        onClick={() => navigate('/list/create')}
+      >
+        <IconAdd />
+        <Trans>Create List</Trans>
+      </Button>
+      <Button
+        onClick={() => copyHref()}
         variant="white"
         className="flex items-center gap-1.5 text-sm"
       >

@@ -12,11 +12,4 @@ export interface User {
   isFollowing?: boolean;
 }
 
-export interface SocialLinks {
-  customized?: string;
-  instagram?: string;
-  threads?: string;
-  tiktok?: string;
-  youtube?: string;
-  linkedin?: string;
-}
+export type SocialLinks = PartialRecord<SocialLinkType, string>;

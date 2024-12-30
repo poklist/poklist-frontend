@@ -258,7 +258,7 @@ const EditUserPage: React.FC = () => {
         <div className="py-2">
           <h2 className="text-[15px] font-semibold">Links</h2>
         </div>
-        {socialLinkTypeList.map((linkType) => {
+        {socialLinkTypeList.map((linkType: SocialLinkType) => {
           return (
             <div
               key={linkType}
