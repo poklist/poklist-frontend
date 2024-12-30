@@ -6,7 +6,6 @@ import { Slider } from '../ui/slider';
 import getCroppedImg from './cropImage';
 
 // TODO: move to constants
-const ASPECT_RATIO = 1;
 const MIN_DIMENSION = 150;
 
 interface IImageCropperProps {

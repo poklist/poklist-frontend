@@ -25,8 +25,6 @@ export const EditFieldFakePageComponent: React.FC<IEditFieldFakePageProps> = ({
   const [fieldValue, setFieldValue] = useState<string | undefined>(undefined);
   const isModified =
     fieldValue !== undefined && fieldValue !== originalFieldValue;
-  const placeholderText =
-    originalFieldValue !== undefined ? originalFieldValue : placeholder;
 
   return (
     <Dialog open={isOpen} onOpenChange={closeFakePage}>

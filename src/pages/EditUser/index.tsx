@@ -11,7 +11,6 @@ import { EditFieldVariant, FieldType } from '@/enums/EditField/index.enum';
 import { SocialLinkType } from '@/enums/index.enum';
 import axios from '@/lib/axios';
 import { getPreviewText, urlPreview } from '@/lib/utils';
-import useCommonStore from '@/stores/useCommonStore';
 import useEditProfileStore from '@/stores/useEditProfileStore';
 import useUserStore from '@/stores/useUserStore';
 import { IEditFieldConfig } from '@/types/EditField';
@@ -31,7 +30,7 @@ const EditUserPage: React.FC = () => {
     setSocialLink,
     isModified,
   } = useEditProfileStore();
-  const { setShowErrorDrawer } = useCommonStore(); // TODO:
+
   const { openFakePage, closeFakePage } = useFakePage();
   const socialLinkTypeList = Object.values(SocialLinkType);
 
