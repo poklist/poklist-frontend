@@ -2,7 +2,6 @@ import ApiPath from '@/config/apiPath';
 import axios from '@/lib/axios';
 import { fileToBase64 } from '@/lib/utils';
 import useCommonStore from '@/stores/useCommonStore';
-import { ICreateListRequest } from '@/types/CreateList';
 import { AxiosResponse } from 'axios';
 import { useState } from 'react';
 
@@ -11,6 +10,14 @@ interface IListOwnerInfo {
   displayName: string;
   userCode: string;
   profileImage: string;
+}
+
+export interface ICreateListRequest {
+  title: string;
+  description: string;
+  externalLink: string;
+  coverImage: File | null;
+  categoryID: string;
 }
 
 export interface ICreateListResponse {
@@ -67,10 +74,7 @@ const useCreateList = (): {
     };
 
     try {
-      const response: AxiosResponse<ICreateListResponse> = await axios.post(
-        ApiPath.createList,
-        _params
-      );
+      const response: AxiosResponse<ICreateListResponse> = await axios.post(ApiPath.lists, _params);
       if (response) {
         resetListData();
         const { data } = response;
