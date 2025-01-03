@@ -12,7 +12,11 @@ interface IImageUploaderProps {
   className?: string;
 }
 
-const ImageUploader: React.FC<IImageUploaderProps> = ({ file, callback, className }) => {
+const ImageUploader: React.FC<IImageUploaderProps> = ({
+  file,
+  callback,
+  className,
+}) => {
   const { setShowErrorDrawer } = useCommonStore();
 
   const onUploadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,16 +34,28 @@ const ImageUploader: React.FC<IImageUploaderProps> = ({ file, callback, classNam
     }
   };
   return file ? (
-    <ImagePreviewComponent className={cn(className)} file={file} callback={() => callback(null)} />
+    <ImagePreviewComponent
+      className={cn(className)}
+      file={file}
+      callback={() => callback(null)}
+    />
   ) : (
-    <div className={cn(`flex gap-2 items-start`, className)}>
+    <div className={cn(`flex items-start gap-2`, className)}>
       <IconPhoto />
       <label className="text-black-gray-03">
-        <div className="w-full h-6">
+        <div className="h-6 w-full">
+          <Trans>上傳封面</Trans>
+        </div>
+        <div className="h-6 w-full">
           <Trans>Upload a cover</Trans>
         </div>
-        <Input type="file" accept="image/*" onChange={e => onUploadFile(e)} className="hidden" />({' '}
-        <Trans>500x500px, JPG, max 2MB</Trans> )
+        <Input
+          type="file"
+          accept="image/*"
+          onChange={(e) => onUploadFile(e)}
+          className="hidden"
+        />
+        ( <Trans>500x500 像素，限 JPG，最大 2MB</Trans> )
       </label>
     </div>
   );

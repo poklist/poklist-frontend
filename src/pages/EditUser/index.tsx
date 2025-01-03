@@ -1,5 +1,5 @@
-import { useDrawer } from '@/components/Drawer';
-import { EditDrawerComponent } from '@/components/Drawer/EditDrawerComponent';
+import { useFakePage } from '@/components/FakePage';
+import { EditFieldFakePageComponent } from '@/components/FakePage/EditFieldFakePage';
 import EditModeFooter from '@/components/Footer/EditModeFooter';
 import { Header } from '@/components/Header';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -7,11 +7,13 @@ import MobileContainer from '@/components/ui/containers/MobileContainer';
 import { IconCamera } from '@/components/ui/icons/CameraIcon';
 import LinkIconWrapper from '@/components/ui/wrappers/LinkIconWrapper';
 import { socialLinkStarterMap } from '@/constants/User';
+import { EditFieldVariant, FieldType } from '@/enums/EditField/index.enum';
+import { SocialLinkType } from '@/enums/index.enum';
 import axios from '@/lib/axios';
-import { urlPreview } from '@/lib/utils';
+import { getPreviewText, urlPreview } from '@/lib/utils';
 import useEditProfileStore from '@/stores/useEditProfileStore';
 import useUserStore from '@/stores/useUserStore';
-import { SocialLinkType } from '@/types/enum';
+import { IEditFieldConfig } from '@/types/EditField';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -22,30 +24,22 @@ const EditUserPage: React.FC = () => {
     newUserInfo,
     resetNewUserInfo,
     setDisplayName,
+    setProfileImage,
     setUserCode,
     setBio,
     setSocialLink,
     isModified,
   } = useEditProfileStore();
-  const { openDrawer } = useDrawer();
+
+  const { openFakePage, closeFakePage } = useFakePage();
   const socialLinkTypeList = Object.values(SocialLinkType);
 
-  enum FieldType {
-    DISPLAY_NAME = 'display_name',
-    USER_CODE = 'user_code',
-    BIO = 'bio',
-  }
-
-  interface FieldConfig {
-    fieldName: string;
-    placeholder?: string;
-    onFieldValueSet: (value: string | undefined) => void;
-  }
-
-  const fieldConfigMap: Record<FieldType | SocialLinkType, FieldConfig> = {
+  const fieldConfigMap: Record<FieldType | SocialLinkType, IEditFieldConfig> = {
     [FieldType.DISPLAY_NAME]: {
       fieldName: 'Name',
+      variant: EditFieldVariant.TEXT,
       placeholder: 'Enter your name here',
+      characterLimit: 20,
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
           setDisplayName(value);
@@ -56,7 +50,9 @@ const EditUserPage: React.FC = () => {
     },
     [FieldType.USER_CODE]: {
       fieldName: 'Username',
+      variant: EditFieldVariant.TEXT,
       placeholder: 'Enter your username here',
+      characterLimit: 30,
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
           setUserCode(value);
@@ -67,7 +63,9 @@ const EditUserPage: React.FC = () => {
     },
     [FieldType.BIO]: {
       fieldName: 'Bio',
+      variant: EditFieldVariant.TEXT,
       placeholder: 'Enter your bio here',
+      characterLimit: 250,
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
           setBio(value);
@@ -76,8 +74,20 @@ const EditUserPage: React.FC = () => {
         }
       },
     },
+    [FieldType.PROFILE_IMAGE]: {
+      fieldName: 'Profile Image',
+      variant: EditFieldVariant.IMAGE,
+      onFieldValueSet: (value: string | undefined) => {
+        if (value) {
+          setProfileImage(value);
+        } else {
+          console.log('value is undefined');
+        }
+      },
+    },
     [SocialLinkType.CUSTOMIZED]: {
       fieldName: 'Customized Link',
+      variant: EditFieldVariant.TEXT,
       placeholder: 'Enter your link here',
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
@@ -89,6 +99,7 @@ const EditUserPage: React.FC = () => {
     },
     [SocialLinkType.INSTAGRAM]: {
       fieldName: 'Instagram',
+      variant: EditFieldVariant.TEXT,
       placeholder: 'Enter your Instagram link here',
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
@@ -100,6 +111,7 @@ const EditUserPage: React.FC = () => {
     },
     [SocialLinkType.YOUTUBE]: {
       fieldName: 'YouTube',
+      variant: EditFieldVariant.TEXT,
       placeholder: 'Enter your YouTube link here',
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
@@ -111,6 +123,7 @@ const EditUserPage: React.FC = () => {
     },
     [SocialLinkType.TIKTOK]: {
       fieldName: 'TikTok',
+      variant: EditFieldVariant.TEXT,
       placeholder: 'Enter your TikTok link here',
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
@@ -122,6 +135,7 @@ const EditUserPage: React.FC = () => {
     },
     [SocialLinkType.THREADS]: {
       fieldName: 'Threads',
+      variant: EditFieldVariant.TEXT,
       placeholder: 'Enter your Threads link here',
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
@@ -133,6 +147,7 @@ const EditUserPage: React.FC = () => {
     },
     [SocialLinkType.LINKEDIN]: {
       fieldName: 'LinkedIn',
+      variant: EditFieldVariant.TEXT,
       placeholder: 'Enter your LinkedIn link here',
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
@@ -144,14 +159,12 @@ const EditUserPage: React.FC = () => {
     },
   };
 
-  const [fieldConfig, setFieldConfig] = useState<FieldConfig>();
+  const [fieldConfig, setFieldConfig] = useState<IEditFieldConfig>();
 
-  const onOpenDrawer = (fieldType: FieldType | SocialLinkType) => {
+  const onOpenFakePage = (fieldType: FieldType | SocialLinkType) => {
     setFieldConfig(fieldConfigMap[fieldType]);
-    openDrawer();
+    openFakePage();
   };
-
-  const openUploadOptions = () => {}; // TODO:
 
   const onSubmit = () => {
     axios.put(`/users/me`, newUserInfo);
@@ -159,7 +172,11 @@ const EditUserPage: React.FC = () => {
   };
 
   useEffect(() => {
-    resetNewUserInfo();
+    // onUnmounted
+    return () => {
+      closeFakePage();
+      resetNewUserInfo();
+    };
   }, []);
 
   return (
@@ -168,15 +185,15 @@ const EditUserPage: React.FC = () => {
       {/* Upload ProfileImageSection */}
       <div id="profile-image" className="flex items-end justify-center pt-6">
         <Avatar className="h-24 w-24">
-          <AvatarImage src={user.profileImage} />
-          <AvatarFallback>{user.displayName[0]}</AvatarFallback>
+          <AvatarImage src={newUserInfo.profileImage} />
+          <AvatarFallback>{newUserInfo.displayName[0]}</AvatarFallback>
         </Avatar>
-        <div
+        <label
           className="z-10 -ml-8 flex h-8 w-8 items-center justify-center rounded-full border border-black-text-01 bg-white"
-          onClick={openUploadOptions}
+          onClick={() => onOpenFakePage(FieldType.PROFILE_IMAGE)}
         >
           <IconCamera />
-        </div>
+        </label>
       </div>
       {/* Basic Info Section */}
       <div id="info-section" className="px-4 pt-10">
@@ -185,36 +202,54 @@ const EditUserPage: React.FC = () => {
         </div>
         <div
           className="flex h-16 cursor-pointer items-center justify-between border-t border-[#F6F6F6] px-2 text-[13px]"
-          onClick={() => onOpenDrawer(FieldType.DISPLAY_NAME)}
+          onClick={() => onOpenFakePage(FieldType.DISPLAY_NAME)}
         >
           <p>Name</p>
-          <p className="text-right text-gray-storm-01">
-            {newUserInfo.displayName
-              ? newUserInfo.displayName
-              : fieldConfigMap[FieldType.DISPLAY_NAME]?.placeholder}
-          </p>
+          <>
+            {newUserInfo.displayName ? (
+              <p className="text-right text-black-text-01">
+                {newUserInfo.displayName}
+              </p>
+            ) : (
+              <p className="text-right text-gray-storm-01">
+                {fieldConfigMap[FieldType.DISPLAY_NAME]?.placeholder}
+              </p>
+            )}
+          </>
         </div>
         <div
           className="flex h-16 cursor-pointer items-center justify-between border-t border-[#F6F6F6] px-2 text-[13px]"
-          onClick={() => onOpenDrawer(FieldType.USER_CODE)}
+          onClick={() => onOpenFakePage(FieldType.USER_CODE)}
         >
           <p>Username</p>
-          <p className="text-right text-gray-storm-01">
-            {newUserInfo.userCode
-              ? newUserInfo.userCode
-              : fieldConfigMap[FieldType.USER_CODE]?.placeholder}
-          </p>
+          <>
+            {newUserInfo.userCode ? (
+              <p className="text-right text-black-text-01">
+                {newUserInfo.userCode}
+              </p>
+            ) : (
+              <p className="text-right text-gray-storm-01">
+                {fieldConfigMap[FieldType.USER_CODE]?.placeholder}
+              </p>
+            )}
+          </>
         </div>
         <div
           className="flex h-16 cursor-pointer items-center justify-between border-t border-[#F6F6F6] px-2 text-[13px]"
-          onClick={() => onOpenDrawer(FieldType.BIO)}
+          onClick={() => onOpenFakePage(FieldType.BIO)}
         >
           <p>Bio</p>
-          <p className="text-right text-gray-storm-01">
-            {newUserInfo.bio
-              ? newUserInfo.bio
-              : fieldConfigMap[FieldType.BIO]?.placeholder}
-          </p>
+          <>
+            {newUserInfo.bio ? (
+              <p className="text-right text-black-text-01">
+                {getPreviewText(newUserInfo.bio, 20)}
+              </p>
+            ) : (
+              <p className="text-right text-gray-storm-01">
+                {fieldConfigMap[FieldType.BIO]?.placeholder}
+              </p>
+            )}
+          </>
         </div>
       </div>
       {/* Social Links Section */}
@@ -222,12 +257,12 @@ const EditUserPage: React.FC = () => {
         <div className="py-2">
           <h2 className="text-[15px] font-semibold">Links</h2>
         </div>
-        {socialLinkTypeList.map((linkType) => {
+        {socialLinkTypeList.map((linkType: SocialLinkType) => {
           return (
             <div
               key={linkType}
               className="flex h-16 cursor-pointer items-center gap-2 border-t border-[#F6F6F6] px-2 text-[13px]"
-              onClick={() => onOpenDrawer(linkType)}
+              onClick={() => onOpenFakePage(linkType)}
             >
               <LinkIconWrapper variant={linkType} />
               {newUserInfo.socialLinks?.[linkType] ? (
@@ -254,12 +289,7 @@ const EditUserPage: React.FC = () => {
         title={'Edit profile and account'}
         onSave={onSubmit}
       />
-
-      <EditDrawerComponent
-        title={fieldConfig?.fieldName ?? ''}
-        placeholder={fieldConfig?.placeholder}
-        onFieldValueSet={fieldConfig?.onFieldValueSet ?? (() => {})}
-      />
+      {fieldConfig && <EditFieldFakePageComponent {...fieldConfig} />}
     </MobileContainer>
   );
 };
