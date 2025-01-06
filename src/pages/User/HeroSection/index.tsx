@@ -28,6 +28,7 @@ const HeroSection: React.FC = () => {
   const { openDrawer } = useDrawer();
   // const [viewUser, setViewUser] = useState<User>(emptyUser);
   const [drawerContent, setDrawerContent] = useState<React.ReactNode>(null);
+  const [isFollowing, setIsFollowing] = useState<boolean>(false);
 
   const linkCount = useMemo(() => {
     if (currentUser.socialLinks !== undefined) {
@@ -38,18 +39,22 @@ const HeroSection: React.FC = () => {
   }, [currentUser]);
 
   const isMyPage = id?.toString() === me.id.toString();
-  let isFollowing = isLoggedIn && currentUser.isFollowing === true;
   const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    setIsFollowing(isLoggedIn && currentUser.isFollowing === true);
+  }, [isLoggedIn, currentUser.isFollowing]);
 
   const follow = () => {
     if (!isLoggedIn) {
       navigate('/login');
+      return;
     }
     axios
       .post('/follow', null, { params: { userID: currentUser.id } })
       .then(() => {
         // TODO: success message
-        isFollowing = true;
+        setIsFollowing(true);
       })
       .catch(() => {
         // TODO: error message
@@ -61,7 +66,7 @@ const HeroSection: React.FC = () => {
       .post('/unfollow', null, { params: { userID: currentUser.id } })
       .then(() => {
         // TODO: success message
-        isFollowing = false;
+        setIsFollowing(false);
       })
       .catch(() => {
         // TODO: error message
