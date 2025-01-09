@@ -4,6 +4,7 @@ import { HeroSection } from '../../components/Home/HeroSection';
 import { InfoSection } from '../../components/Home/InfoSection';
 import { Footer } from '../../components/Home/Footer';
 import logo from '@/assets/images/logo-big.svg';
+import { LIST_SECTION } from '@/constants/home';
 
 export default function Home() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -35,14 +36,32 @@ export default function Home() {
           <img src={logo} alt="Poklist Logo" className="h-48" />
         </section>
 
-        <div className="container bg-yellow-bright-01">
-          <div className="h-px w-full bg-black" />
+        <div className="w-full bg-yellow-bright-01">
+          <div className="container h-px bg-black" />
         </div>
 
         <InfoSection />
 
-        <div className="container bg-yellow-bright-01">
-          <div className="h-px w-full bg-black" />
+        <div className="w-full bg-yellow-bright-01">
+          <div className="container h-px bg-black" />
+        </div>
+
+        <section className="flex flex-col gap-8 bg-yellow-bright-01 px-4 py-12">
+          <div className="container mx-auto mt-4 text-start">
+            <h1 className="text-lg font-extrabold">
+              {LIST_SECTION.tutorial.title}
+            </h1>
+            <p className="text-lg font-extrabold">
+              {LIST_SECTION.tutorial.description}
+            </p>
+            <button className="mt-4 w-full rounded-lg bg-black px-4 py-2 text-white">
+              {LIST_SECTION.tutorial.buttonText}
+            </button>
+          </div>
+        </section>
+
+        <div className="w-full bg-yellow-bright-01">
+          <div className="container h-px bg-black" />
         </div>
 
         <Footer />
