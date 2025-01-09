@@ -10,7 +10,7 @@ export const BackToUserNav: React.FC = () => {
   const { currentUser: lastVisitedUser } = useUserStore();
 
   return (
-    <header className="flex h-14 items-center justify-between border-b border-black-text-01 px-3">
+    <header className="flex h-14 items-center justify-between border-b border-black-text-01 p-3">
       <div id="header-left" className="flex items-center justify-center gap-1">
         <img src={headerP} alt="P" />
         <div
