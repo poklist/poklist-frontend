@@ -28,22 +28,26 @@ export default function Home() {
       <main className="flex min-h-screen flex-col">
         <HeroSection />
 
-        <div className="bg-yellow-bright-01">
-          <div className="h-px w-full bg-black" />
+        <div className="w-full bg-yellow-bright-01">
+          <div className="h-px bg-black" />
         </div>
 
         <section className="flex w-full flex-col items-center justify-center bg-yellow-bright-01 py-12">
           <img src={logo} alt="Poklist Logo" className="h-48" />
         </section>
 
-        <div className="w-full bg-yellow-bright-01">
-          <div className="container h-px bg-black" />
+        <div className="bg-yellow-bright-01 px-4">
+          <div className="container mx-auto">
+            <div className="h-px w-full bg-black" />
+          </div>
         </div>
 
         <InfoSection />
 
-        <div className="w-full bg-yellow-bright-01">
-          <div className="container h-px bg-black" />
+        <div className="bg-yellow-bright-01 px-4">
+          <div className="container mx-auto">
+            <div className="h-px w-full bg-black" />
+          </div>
         </div>
 
         <section className="flex flex-col gap-8 bg-yellow-bright-01 px-4 py-12">
@@ -60,8 +64,10 @@ export default function Home() {
           </div>
         </section>
 
-        <div className="w-full bg-yellow-bright-01">
-          <div className="container h-px bg-black" />
+        <div className="bg-yellow-bright-01 px-4">
+          <div className="container mx-auto">
+            <div className="h-px w-full bg-black" />
+          </div>
         </div>
 
         <Footer />
