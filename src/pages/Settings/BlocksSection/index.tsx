@@ -82,7 +82,7 @@ const BlocksSection: React.FC = () => {
         decription: 'Sign Out',
         action: () => {
           logout();
-          navigate('/login');
+          navigate('/');
         },
       },
     ];

@@ -8,13 +8,17 @@ import ListManagementPage from '@/pages/Lists/Manage';
 import Login from '@/pages/Login';
 import SettingsPage from '@/pages/Settings';
 import UserPage from '@/pages/User';
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, Navigate } from 'react-router-dom';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <Layout />,
     children: [
+      {
+        path: '',
+        element: <Navigate to="/home" replace />,
+      },
       {
         path: 'login',
         element: <Login />,
