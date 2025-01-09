@@ -1,4 +1,4 @@
-import { SocialLinkType } from '@/types/enum';
+import { SocialLinkType } from '@/enums/index.enum';
 import type { ReactNode } from 'react';
 import { CustomizedLinkIcon } from '../icons/CustomizedLinkIcon';
 import { InstagramIcon } from '../icons/InstagramIcon';

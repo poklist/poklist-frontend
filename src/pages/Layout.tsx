@@ -1,6 +1,7 @@
 import AlertComponent from '@/components/Alert';
 import { DrawerProvider } from '@/components/Drawer';
 import { ErrorDrawer } from '@/components/ErrorDrawer';
+import { FakePageProvider } from '@/components/FakePage';
 import LoadingSpinner from '@/components/Loading';
 import { LanguageProvider } from '@/lib/languageProvider';
 import useCommonStore from '@/stores/useCommonStore';
@@ -16,11 +17,13 @@ export default function Layout() {
   return (
     <LanguageProvider>
       <DrawerProvider>
-        <AlertComponent />
-        {/* <LanguageSelector /> */}
-        <Outlet />
-        <LoadingSpinner isLoading={isLoading} />
-        <ErrorDrawer></ErrorDrawer>
+        <FakePageProvider>
+          <AlertComponent />
+          {/* <LanguageSelector /> */}
+          <Outlet />
+          <LoadingSpinner isLoading={isLoading} />
+          <ErrorDrawer></ErrorDrawer>
+        </FakePageProvider>
       </DrawerProvider>
     </LanguageProvider>
   );

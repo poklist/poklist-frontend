@@ -1,7 +1,8 @@
 const ApiPath: Record<string, string> = {
   // Lists & Ideas
   categories: '/categories',
-  createList: '/lists',
+  lists: '/lists',
+  ideas: '/ideas'
 };
 
 export default ApiPath;

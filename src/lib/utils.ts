@@ -1,4 +1,5 @@
-import { LocalStorageKey } from '@/enums/index.enum';
+import { socialLinkStarterMap } from '@/constants/User';
+import { LocalStorageKey, SocialLinkType } from '@/enums/index.enum';
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -35,4 +36,39 @@ export const fileToBase64 = (file: File): Promise<string> => {
     reader.onload = () => resolve(reader.result as string);
     reader.onerror = (error) => reject(error);
   });
+};
+
+export const getPreviewText = (text: string, length: number = 20) => {
+  return text.slice(0, length) + (text.length > length ? '...' : '');
+};
+
+export const isValidInstagramUsername = (username: string) => {
+  // Instagram 使用者名稱規則：
+  // 1. 長度限制：30 個字元
+  // 2. 可用字符：字母、數字、底線
+  // 3. 首字元必須是字母
+
+  const regex = /^[a-zA-Z][a-zA-Z0-9_]{0,29}$/;
+  return regex.test(username);
+};
+
+export const copyHref = () => {
+  const url = window.location.href;
+  navigator.clipboard.writeText(url);
+};
+
+export const extractUsernameFromUrl = (
+  linkType: SocialLinkType,
+  url: string
+) => {
+  const prefix = socialLinkStarterMap[linkType];
+  const index = url.indexOf(prefix);
+
+  if (index !== -1) {
+    // If found, then cut out the part starting from the found position
+    return url.substring(index + prefix.length);
+  } else {
+    // If not found, then return the original URL
+    return url;
+  }
 };
