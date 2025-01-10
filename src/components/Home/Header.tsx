@@ -14,7 +14,7 @@ export const Header = ({ isScrolled, onSignInClick }: HeaderProps) => (
       isScrolled ? 'bg-transparent backdrop-blur-sm' : 'bg-transparent'
     }`}
   >
-    <div className="mx-auto flex items-center justify-between px-10 py-4">
+    <div className="mx-auto flex items-center justify-between px-4 py-2">
       <Link to="/home">
         <img src={headerLogo} alt="Poklist" className="h-8" />
       </Link>
