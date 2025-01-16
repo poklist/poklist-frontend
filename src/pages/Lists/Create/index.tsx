@@ -115,18 +115,14 @@ const CreatePage: React.FC<CreatePageProps> = () => {
             <Trans>List Topic</Trans>
           </div>
         }
-        subHeader={
-          <div className=" text-black-text-01">
-            <Trans>Choose a topic that vibes with your List. </Trans>
-          </div>
-        }
+        subHeader={<Trans>Choose a topic that vibes with your List. </Trans>}
         content={
           !categoriesLoading && (
             <div className="mt-6 mb-10">
               <RadioComponent
-                defaultValue={listData.categoryID}
+                defaultValue={String(listData.categoryID)}
                 choices={radioChoice}
-                onChange={value => setListData({ ...listData, categoryID: value })}
+                onChange={value => setListData({ ...listData, categoryID: Number(value) })}
                 type={RadioType.BUTTON}
                 className="flex gap-2 flex-wrap"
               />

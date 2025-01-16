@@ -1,3 +1,4 @@
+import ApiPath from '@/config/apiPath';
 import { Categories } from '@/enums/Lists/index.enum';
 import axios from '@/lib/axios';
 import useCommonStore from '@/stores/useCommonStore';
@@ -29,7 +30,8 @@ export interface IIdeaPreviewInfo {
 const useGetListInfo = (): {
   listLoading: boolean;
   listInfo: IListInfo | undefined;
-  fetchGetListInfo: (listId: string) => Promise<void>;
+  setListInfo: React.Dispatch<React.SetStateAction<IListInfo | undefined>>;
+  fetchGetListInfo: (listId: string) => Promise<IListInfo | undefined>;
 } => {
   const { setShowingAlert } = useCommonStore();
   const [listLoading, setListLoading] = useState(false);
@@ -38,9 +40,11 @@ const useGetListInfo = (): {
   const fetchGetListInfo = async (listId: string) => {
     setListLoading(true);
     try {
-      const response: AxiosResponse<IListInfo> = await axios.get(`/lists/${listId}`);
+      const response: AxiosResponse<IListInfo> = await axios.get(`${ApiPath.lists}/${listId}`);
       if (response) {
         setListInfo(response.data);
+        setListLoading(false);
+        return response.data;
       }
     } catch (error) {
       setShowingAlert(true, { message: JSON.parse(String(error)) });
@@ -49,7 +53,7 @@ const useGetListInfo = (): {
     }
   };
 
-  return { listLoading, listInfo, fetchGetListInfo };
+  return { listLoading, listInfo, setListInfo, fetchGetListInfo };
 };
 export default useGetListInfo;
 

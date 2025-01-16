@@ -60,6 +60,7 @@ const useCreateIdea = (): {
       const response: AxiosResponse<ICreateIdeaResponse> = await axios.post(ApiPath.ideas, _params);
       if (response) {
         resetIdeaData();
+        setCreateIdeaLoading(false);
         return response.data;
       }
     } catch (error) {

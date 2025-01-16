@@ -4,6 +4,7 @@ import Home from '@/pages/Home/index';
 import CreateIdeaPage from '@/pages/Idea/Create';
 import Layout from '@/pages/Layout';
 import CreateListPage from '@/pages/Lists/Create';
+import EditListPage from '@/pages/Lists/Edit';
 import ListManagementPage from '@/pages/Lists/Manage';
 import Login from '@/pages/Login';
 import SettingsPage from '@/pages/Settings';
@@ -41,7 +42,7 @@ const router = createBrowserRouter([
       },
       { path: 'list/create', element: <CreateListPage /> },
       { path: 'list/manage/:id', element: <ListManagementPage /> },
-      // { path: 'list/edit/:id', element: <EditListPage /> },
+      { path: 'list/edit/:id', element: <EditListPage /> },
       { path: 'idea/create', element: <CreateIdeaPage /> },
     ],
   },

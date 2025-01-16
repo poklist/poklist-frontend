@@ -17,7 +17,7 @@ export interface ICreateListRequest {
   description: string;
   externalLink: string;
   coverImage: File | null;
-  categoryID: string;
+  categoryID: number;
 }
 
 export interface ICreateListResponse {
@@ -48,7 +48,7 @@ const useCreateList = (): {
     description: '',
     externalLink: '',
     coverImage: null,
-    categoryID: '',
+    categoryID: 0,
   });
 
   const resetListData = () => {
@@ -57,7 +57,7 @@ const useCreateList = (): {
       description: '',
       externalLink: '',
       coverImage: null,
-      categoryID: '',
+      categoryID: 0,
     });
   };
 
