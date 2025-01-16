@@ -13,10 +13,257 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/components/ui/Alert.tsx:30
+#: src/components/Alert/index.tsx
+#: src/components/Radio/index.tsx
 msgid "<0>{0}</0>"
 msgstr ""
 
-#: src/pages/Create/index.tsx:15
-msgid "欸，標題不能留空喔！"
+#: src/components/ImageCropper/index.tsx
+#: src/components/ImageUploader/index.tsx
+msgid "500x500 像素，限 JPG，最大 2MB"
+msgstr "500x500 像素，限 JPG，最大 2MB"
+
+#: src/components/ImageUploader/index.tsx
+#~ msgid "500x500px, JPG, max 2MB"
+#~ msgstr "500x500px, JPG, max 2MB"
+
+#: src/components/ImageUploader/index.tsx
+msgid "Cover image error!"
+msgstr "Cover image error!"
+
+#: src/components/ImageUploader/index.tsx
+msgid "Must be JPG and under 2MB."
+msgstr "Must be JPG and under 2MB."
+
+#: src/components/ImageUploader/index.tsx
+msgid "上傳封面"
+msgstr "上傳封面"
+
+#: src/components/ImageUploader/index.tsx
+msgid "Upload a cover"
+msgstr "Upload a cover"
+
+#: src/pages/Create/index.tsx
+#~ msgid "欸，標題不能留空喔！"
+#~ msgstr "Hey, the title can’t be left empty!"
+
+#: src/pages/Idea/Create/Form/index.tsx
+#: src/pages/Lists/Edit/Form/index.tsx
+#: src/pages/Lists/Form/index.tsx
+msgid "Your edits will be lost if you cancel!"
+msgstr "Your edits will be lost if you cancel!"
+
+#: src/pages/Idea/Create/Form/index.tsx
+#: src/pages/Lists/Edit/Form/index.tsx
+#: src/pages/Lists/Form/index.tsx
+msgid "If you cancel, everything you’ve entered will be lost."
+msgstr "If you cancel, everything you’ve entered will be lost."
+
+#: src/pages/Idea/Create/Form/index.tsx
+#: src/pages/Lists/Edit/Form/index.tsx
+#: src/pages/Lists/Form/index.tsx
+msgid "Hey, the title can’t be left empty!"
 msgstr "Hey, the title can’t be left empty!"
+
+#: src/pages/Idea/Create/Form/index.tsx
+#: src/pages/Lists/Edit/Form/index.tsx
+#: src/pages/Lists/Form/index.tsx
+msgid "Every list needs a title, so fill it in!"
+msgstr "Every list needs a title, so fill it in!"
+
+#: src/pages/Idea/Create/Form/index.tsx
+#: src/pages/Lists/Edit/Form/index.tsx
+#: src/pages/Lists/Form/index.tsx
+msgid "List title is too long!"
+msgstr "List title is too long!"
+
+#: src/pages/Idea/Create/Form/index.tsx
+#: src/pages/Lists/Edit/Form/index.tsx
+#: src/pages/Lists/Form/index.tsx
+msgid "Please keep it under {TITLE_MAX_LENGTH} characters."
+msgstr "Please keep it under {TITLE_MAX_LENGTH} characters."
+
+#: src/pages/Idea/Create/Form/index.tsx
+#: src/pages/Lists/Edit/Form/index.tsx
+#: src/pages/Lists/Form/index.tsx
+msgid "Description is too long!"
+msgstr "Description is too long!"
+
+#: src/pages/Idea/Create/Form/index.tsx
+#: src/pages/Lists/Edit/Form/index.tsx
+#: src/pages/Lists/Form/index.tsx
+msgid "Please keep it under {DESC_MAX_LENGTH} characters."
+msgstr "Please keep it under {DESC_MAX_LENGTH} characters."
+
+#: src/pages/Idea/Create/Form/index.tsx
+#: src/pages/Lists/Edit/Form/index.tsx
+msgid "What’s your Idea?"
+msgstr "What’s your Idea?"
+
+#: src/pages/Idea/Create/Form/index.tsx
+#: src/pages/Lists/Edit/Form/index.tsx
+msgid "Describe what this Idea is about"
+msgstr "Describe what this Idea is about"
+
+#: src/pages/Idea/Create/Form/index.tsx
+#: src/pages/Lists/Create/index.tsx
+#: src/pages/Lists/Edit/Form/index.tsx
+msgid "Link a page"
+msgstr "Link a page"
+
+#: src/pages/Idea/Create/Form/index.tsx
+#: src/pages/Lists/Form/index.tsx
+#: src/pages/User/Footer/index.tsx
+msgid "Create List"
+msgstr "Create List"
+
+#: src/pages/Idea/Create/Form/index.tsx
+#: src/pages/Lists/Create/index.tsx
+#: src/pages/Lists/Edit/Form/index.tsx
+#: src/pages/Lists/Edit/index.tsx
+#: src/pages/Lists/Form/index.tsx
+msgid "Next"
+msgstr "Next"
+
+#: src/pages/Idea/Create/index.tsx
+msgid "New Idea"
+msgstr "New Idea"
+
+#: src/pages/Lists/Create/index.tsx
+#: src/pages/Lists/Edit/index.tsx
+#: src/pages/Lists/Manage/index.tsx
+msgid "List Title"
+msgstr "List Title"
+
+#: src/pages/Lists/Create/index.tsx
+#: src/pages/Lists/Edit/index.tsx
+msgid "List Topic"
+msgstr "List Topic"
+
+#: src/pages/Lists/Create/index.tsx
+#: src/pages/Lists/Edit/index.tsx
+msgid "Choose a topic that vibes with your List."
+msgstr "Choose a topic that vibes with your List."
+
+#: src/pages/Lists/Edit/DeleteButton/index.tsx
+msgid "Deleting the list title will also erase all ideas!"
+msgstr "Deleting the list title will also erase all ideas!"
+
+#: src/pages/Lists/Edit/DeleteButton/index.tsx
+msgid "Permanently delete the entire list and all its ideas. This action cannot be undone!"
+msgstr "Permanently delete the entire list and all its ideas. This action cannot be undone!"
+
+#: src/pages/Lists/Edit/DeleteButton/index.tsx
+msgid "Delete List and All Ideas"
+msgstr "Delete List and All Ideas"
+
+#: src/pages/Lists/Edit/DeleteButton/index.tsx
+msgid "Cancel"
+msgstr "Cancel"
+
+#: src/pages/Lists/Edit/Form/index.tsx
+#: src/pages/Lists/Form/index.tsx
+#~ msgid "Give your list a title"
+#~ msgstr "Give your list a title"
+
+#: src/pages/Lists/Edit/Form/index.tsx
+#: src/pages/Lists/Form/index.tsx
+#~ msgid "Describe what this title is about"
+#~ msgstr "Describe what this title is about"
+
+#: src/pages/Lists/Edit/Form/index.tsx
+msgid "Edit List Title"
+msgstr "Edit List Title"
+
+#: src/pages/Lists/Edit/i18n.ts
+#: src/pages/Lists/i18n.ts
+msgid "Other"
+msgstr "Other"
+
+#: src/pages/Lists/Edit/i18n.ts
+#: src/pages/Lists/i18n.ts
+msgid "Lifestyle"
+msgstr "Lifestyle"
+
+#: src/pages/Lists/Edit/i18n.ts
+#: src/pages/Lists/i18n.ts
+msgid "Food & Drink"
+msgstr "Food & Drink"
+
+#: src/pages/Lists/Edit/i18n.ts
+#: src/pages/Lists/i18n.ts
+msgid "Culture"
+msgstr "Culture"
+
+#: src/pages/Lists/Edit/i18n.ts
+#: src/pages/Lists/i18n.ts
+msgid "Travel"
+msgstr "Travel"
+
+#: src/pages/Lists/Edit/i18n.ts
+#: src/pages/Lists/i18n.ts
+msgid "Entertainment"
+msgstr "Entertainment"
+
+#: src/pages/Lists/Edit/i18n.ts
+#: src/pages/Lists/i18n.ts
+msgid "Tech & Digital"
+msgstr "Tech & Digital"
+
+#: src/pages/Lists/Edit/i18n.ts
+#: src/pages/Lists/i18n.ts
+msgid "Personal Growth"
+msgstr "Personal Growth"
+
+#: src/pages/Lists/Edit/i18n.ts
+#: src/pages/Lists/i18n.ts
+msgid "Health & Fitness"
+msgstr "Health & Fitness"
+
+#: src/pages/Lists/Edit/index.tsx
+msgid "Edit List Topic"
+msgstr "Edit List Topic"
+
+#: src/pages/Lists/Form/index.tsx
+msgid "輸入名單標題"
+msgstr "輸入名單標題"
+
+#: src/pages/Lists/Form/index.tsx
+msgid "描述標題"
+msgstr "描述標題"
+
+#: src/pages/Lists/Manage/IdeasList/index.tsx
+msgid "Edit List"
+msgstr "Edit List"
+
+#: src/pages/Lists/Manage/IdeasList/index.tsx
+msgid "Save New Order"
+msgstr "Save New Order"
+
+#: src/pages/Lists/Manage/IdeasList/index.tsx
+msgid "Done"
+msgstr "Done"
+
+#: src/pages/Lists/Manage/index.tsx
+msgid "Ideas"
+msgstr "Ideas"
+
+#: src/pages/Lists/Manage/index.tsx
+msgid "Tap to edit. Hold & drag to reorder Ideas"
+msgstr "Tap to edit. Hold & drag to reorder Ideas"
+
+#: src/pages/Lists/Manage/index.tsx
+msgid "Add an idea"
+msgstr "Add an idea"
+
+#: src/pages/User/Footer/index.tsx
+msgid "Liked"
+msgstr "Liked"
+
+#: src/pages/User/Footer/index.tsx
+msgid "Like"
+msgstr "Like"
+
+#: src/pages/User/Footer/index.tsx
+msgid "Copy"
+msgstr "Copy"
