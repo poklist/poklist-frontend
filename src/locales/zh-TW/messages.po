@@ -24,10 +24,6 @@ msgid "500x500 像素，限 JPG，最大 2MB"
 msgstr ""
 
 #: src/components/ImageUploader/index.tsx
-#~ msgid "500x500px, JPG, max 2MB"
-#~ msgstr ""
-
-#: src/components/ImageUploader/index.tsx
 msgid "Cover image error!"
 msgstr ""
 
@@ -42,10 +38,6 @@ msgstr ""
 #: src/components/ImageUploader/index.tsx
 msgid "Upload a cover"
 msgstr ""
-
-#: src/pages/Create/index.tsx
-#~ msgid "欸，標題不能留空喔！"
-#~ msgstr "欸，標題不能留空喔！"
 
 #: src/pages/Idea/Create/Form/index.tsx
 #: src/pages/Lists/Edit/Form/index.tsx
@@ -120,7 +112,7 @@ msgstr ""
 #: src/pages/Idea/Create/Form/index.tsx
 #: src/pages/Lists/Create/index.tsx
 #: src/pages/Lists/Edit/Form/index.tsx
-#: src/pages/Lists/Edit/index.tsx
+#: src/pages/Lists/Edit/Form/index.tsx
 #: src/pages/Lists/Form/index.tsx
 msgid "Next"
 msgstr ""
@@ -136,12 +128,12 @@ msgid "List Title"
 msgstr ""
 
 #: src/pages/Lists/Create/index.tsx
-#: src/pages/Lists/Edit/index.tsx
+#: src/pages/Lists/Edit/Form/index.tsx
 msgid "List Topic"
 msgstr ""
 
 #: src/pages/Lists/Create/index.tsx
-#: src/pages/Lists/Edit/index.tsx
+#: src/pages/Lists/Edit/Form/index.tsx
 msgid "Choose a topic that vibes with your List."
 msgstr ""
 
@@ -162,14 +154,8 @@ msgid "Cancel"
 msgstr ""
 
 #: src/pages/Lists/Edit/Form/index.tsx
-#: src/pages/Lists/Form/index.tsx
-#~ msgid "Give your list a title"
-#~ msgstr ""
-
-#: src/pages/Lists/Edit/Form/index.tsx
-#: src/pages/Lists/Form/index.tsx
-#~ msgid "Describe what this title is about"
-#~ msgstr ""
+msgid "Edit List Topic"
+msgstr ""
 
 #: src/pages/Lists/Edit/Form/index.tsx
 msgid "Edit List Title"
@@ -218,10 +204,6 @@ msgstr ""
 #: src/pages/Lists/Edit/i18n.ts
 #: src/pages/Lists/i18n.ts
 msgid "Health & Fitness"
-msgstr ""
-
-#: src/pages/Lists/Edit/index.tsx
-msgid "Edit List Topic"
 msgstr ""
 
 #: src/pages/Lists/Form/index.tsx
