@@ -2,7 +2,7 @@ import ApiPath from '@/config/apiPath';
 import axios from '@/lib/axios';
 import { fileToBase64 } from '@/lib/utils';
 import useCommonStore from '@/stores/useCommonStore';
-import { AxiosResponse } from 'axios';
+import { IResponse } from '@/types/response';
 import { useState } from 'react';
 
 interface IListOwnerInfo {
@@ -69,16 +69,20 @@ const useCreateList = (): {
       title: listData.title,
       description: listData.description,
       externalLink: listData.externalLink,
-      coverImage: listData.coverImage ? await fileToBase64(listData.coverImage) : null,
+      coverImage: listData.coverImage
+        ? await fileToBase64(listData.coverImage)
+        : null,
       categoryID: listData.categoryID,
     };
 
     try {
-      const response: AxiosResponse<ICreateListResponse> = await axios.post(ApiPath.lists, _params);
-      if (response) {
+      const response = await axios.post<IResponse<ICreateListResponse>>(
+        ApiPath.lists,
+        _params
+      );
+      if (response.data.content) {
         resetListData();
-        const { data } = response;
-        return data;
+        return response.data.content;
       }
     } catch (error) {
       setShowingAlert(true, { message: JSON.parse(String(error)) });

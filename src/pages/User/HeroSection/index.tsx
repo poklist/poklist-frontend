@@ -10,6 +10,7 @@ import {
   urlPreview,
 } from '@/lib/utils';
 import useUserStore from '@/stores/useUserStore';
+import { IResponse } from '@/types/response';
 import { User } from '@/types/User';
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -49,6 +50,7 @@ const HeroSection: React.FC = () => {
       navigate('/login');
       return;
     }
+    // FUTURE: refactor the follow/unfollow API
     axios
       .post('/follow', null, { params: { userID: currentUser.id } })
       .then(() => {
@@ -77,13 +79,16 @@ const HeroSection: React.FC = () => {
   };
 
   const getUser = async (code: string) => {
-    axios.get<User>(`/${code}/info`).then((res) => {
-      setCurrentUser({ ...res.data }); // deep copy
-      if (res.data.id === me.id) {
-        setUser(res.data);
-      }
-      setIsLoading(false);
-    });
+    if (!code) return;
+    const res = await axios.get<IResponse<User>>(`/${code}/info`);
+    if (!res.data.content) {
+      throw new Error('No user data');
+    }
+    setCurrentUser({ ...res.data.content }); // deep copy
+    if (res.data.content?.id === me.id) {
+      setUser(res.data.content);
+    }
+    setIsLoading(false);
   };
 
   // FUTURE: refactor the drawer content because we may have more than one drawer
@@ -130,7 +135,7 @@ const HeroSection: React.FC = () => {
   };
 
   useEffect(() => {
-    if (code != undefined) {
+    if (code !== undefined) {
       getUser(code);
     }
   }, [code]);

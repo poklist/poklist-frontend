@@ -2,7 +2,7 @@ import ApiPath from '@/config/apiPath';
 import { Categories } from '@/enums/Lists/index.enum';
 import axios from '@/lib/axios';
 import useCommonStore from '@/stores/useCommonStore';
-import { AxiosResponse } from 'axios';
+import { IResponse } from '@/types/response';
 import { useState } from 'react';
 
 export interface IListInfo {
@@ -40,11 +40,13 @@ const useGetListInfo = (): {
   const fetchGetListInfo = async (listId: string) => {
     setListLoading(true);
     try {
-      const response: AxiosResponse<IListInfo> = await axios.get(`${ApiPath.lists}/${listId}`);
-      if (response) {
-        setListInfo(response.data);
+      const response = await axios.get<IResponse<IListInfo>>(
+        `${ApiPath.lists}/${listId}`
+      );
+      if (response.data.content) {
+        setListInfo(response.data.content);
         setListLoading(false);
-        return response.data;
+        return response.data.content;
       }
     } catch (error) {
       setShowingAlert(true, { message: JSON.parse(String(error)) });

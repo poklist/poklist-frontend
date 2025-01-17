@@ -1,6 +1,6 @@
 import axios from '@/lib/axios';
 import { ListPreview } from '@/types/List';
-import { GetListPreviewListResponse } from '@/types/response';
+import { IResponse } from '@/types/response';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { TileBackground } from '../TileBackground';
@@ -12,10 +12,12 @@ const ListSection: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const getListPreviewList = async (code: string) => {
-    axios.get<GetListPreviewListResponse>(`/${code}/lists`).then((res) => {
-      setListPreviewList(res.data.lists);
-      setIsLoading(false);
-    });
+    if (!code) return;
+    // FUTURE: maybe set pagination in the future
+    const res = await axios.get<IResponse<ListPreview[]>>(`/${code}/lists`);
+    // TODO: error handling
+    setListPreviewList(res.data.content ?? []);
+    setIsLoading(false);
   };
 
   useEffect(() => {
