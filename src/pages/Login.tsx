@@ -21,7 +21,7 @@ const Login = () => {
         console.log('userData:', userData);
         setUser(userData);
 
-        navigate(`/${userData.id}`);
+        navigate(`/${userData.userCode}`);
       });
   };
 

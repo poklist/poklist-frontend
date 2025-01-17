@@ -7,22 +7,22 @@ import { TileBackground } from '../TileBackground';
 import { ListSectionSkeleton } from './ListSectionSkeleton';
 
 const ListSection: React.FC = () => {
-  const { id } = useParams();
+  const { code } = useParams();
   const [listPreviewList, setListPreviewList] = useState<ListPreview[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const getListPreviewList = async (id: string) => {
-    axios.get<GetListPreviewListResponse>(`/lists?userID=${id}`).then((res) => {
+  const getListPreviewList = async (code: string) => {
+    axios.get<GetListPreviewListResponse>(`/${code}/lists`).then((res) => {
       setListPreviewList(res.data.lists);
       setIsLoading(false);
     });
   };
 
   useEffect(() => {
-    if (id !== undefined) {
-      getListPreviewList(id);
+    if (code !== undefined) {
+      getListPreviewList(code);
     }
-  }, [id]);
+  }, [code]);
 
   if (isLoading) {
     return <ListSectionSkeleton />;

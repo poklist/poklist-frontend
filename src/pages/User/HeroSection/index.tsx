@@ -16,7 +16,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { HeroSectionSkeleton } from './HeroSectionSkeleton';
 
 const HeroSection: React.FC = () => {
-  const { id } = useParams();
+  const { code } = useParams();
   const navigate = useNavigate();
   const {
     isLoggedIn,
@@ -26,7 +26,6 @@ const HeroSection: React.FC = () => {
     setCurrentUser,
   } = useUserStore();
   const { openDrawer } = useDrawer();
-  // const [viewUser, setViewUser] = useState<User>(emptyUser);
   const [drawerContent, setDrawerContent] = useState<React.ReactNode>(null);
   const [isFollowing, setIsFollowing] = useState<boolean>(false);
 
@@ -38,7 +37,7 @@ const HeroSection: React.FC = () => {
     }
   }, [currentUser]);
 
-  const isMyPage = id?.toString() === me.id.toString();
+  const isMyPage = code?.toString() === me.userCode.toString();
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -77,8 +76,8 @@ const HeroSection: React.FC = () => {
     navigate('/user/edit');
   };
 
-  const getUser = async (id: string) => {
-    axios.get<User>(`/users/${id}`).then((res) => {
+  const getUser = async (code: string) => {
+    axios.get<User>(`/${code}/info`).then((res) => {
       setCurrentUser({ ...res.data }); // deep copy
       if (res.data.id === me.id) {
         setUser(res.data);
@@ -131,10 +130,10 @@ const HeroSection: React.FC = () => {
   };
 
   useEffect(() => {
-    if (id != undefined) {
-      getUser(id);
+    if (code != undefined) {
+      getUser(code);
     }
-  }, [id]);
+  }, [code]);
 
   if (isLoading) {
     return <HeroSectionSkeleton />;
