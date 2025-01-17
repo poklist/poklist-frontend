@@ -5,7 +5,7 @@ import { base64ToFile, fileToBase64 } from '@/lib/utils';
 import useCommonStore from '@/stores/useCommonStore';
 import { AxiosResponse } from 'axios';
 import { useState } from 'react';
-import useGetListInfo from './useGetList';
+import useGetList from './useGetList';
 
 export interface IEditListRequest extends ICreateListRequest {
   listID: number;
@@ -13,7 +13,7 @@ export interface IEditListRequest extends ICreateListRequest {
 
 const useEditList = () => {
   const { setShowingAlert } = useCommonStore();
-  const { fetchGetListInfo } = useGetListInfo();
+  const { fetchGetListInfo } = useGetList();
 
   const [editListLoading, setEditListLoading] = useState(false);
   const [listInfo, setListInfo] = useState<IEditListRequest>();

@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import useGetListInfo from '@/hooks/Lists/useGetList';
+import useGetList from '@/hooks/Lists/useGetList';
 import { Header } from '@/pages/Lists/Manage/Header';
 import IdeaList from '@/pages/Lists/Manage/IdeasList';
 import ListInfo from '@/pages/Lists/Manage/ListInfo';
@@ -16,19 +16,19 @@ const ListManagePage: React.FC<ManageListPageProps> = () => {
   const { id } = useParams();
   const { setIsLoading } = useCommonStore();
 
-  const { listLoading, listInfo, fetchGetListInfo } = useGetListInfo();
+  const { isListInfoLoading, listInfo, fetchGetListInfo } = useGetList();
 
   useEffect(() => {
     if (id) fetchGetListInfo(id);
   }, [id]);
 
   useEffect(() => {
-    if (listLoading) {
+    if (isListInfoLoading) {
       setIsLoading(true);
     } else {
       setIsLoading(false);
     }
-  }, [listLoading]);
+  }, [isListInfoLoading]);
   return (
     <>
       <Header title={<Trans>List Title</Trans>} />

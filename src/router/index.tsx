@@ -1,7 +1,9 @@
 import DeleteAccountPage from '@/pages/DeleteAccount';
 import EditUserPage from '@/pages/EditUser';
+import ErrorPage from '@/pages/Error';
 import Home from '@/pages/Home/index';
 import CreateIdeaPage from '@/pages/Idea/Create';
+import EditIdeaPage from '@/pages/Idea/Edit';
 import Layout from '@/pages/Layout';
 import CreateListPage from '@/pages/Lists/Create';
 import EditListPage from '@/pages/Lists/Edit';
@@ -9,7 +11,6 @@ import ListManagementPage from '@/pages/Lists/Manage';
 import Login from '@/pages/Login';
 import SettingsPage from '@/pages/Settings';
 import UserPage from '@/pages/User';
-import ErrorPage from '@/pages/Error';
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 
 const router = createBrowserRouter([
@@ -50,6 +51,7 @@ const router = createBrowserRouter([
       { path: 'list/manage/:id', element: <ListManagementPage /> },
       { path: 'list/edit/:id', element: <EditListPage /> },
       { path: 'idea/create', element: <CreateIdeaPage /> },
+      { path: 'idea/edit/:id', element: <EditIdeaPage /> },
       {
         path: '*',
         element: <ErrorPage />,

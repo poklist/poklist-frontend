@@ -27,35 +27,35 @@ export interface IIdeaPreviewInfo {
   coverImage: string;
 }
 
-const useGetListInfo = (): {
-  listLoading: boolean;
+const useGetList = (): {
+  isListInfoLoading: boolean;
   listInfo: IListInfo | undefined;
   setListInfo: React.Dispatch<React.SetStateAction<IListInfo | undefined>>;
   fetchGetListInfo: (listId: string) => Promise<IListInfo | undefined>;
 } => {
   const { setShowingAlert } = useCommonStore();
-  const [listLoading, setListLoading] = useState(false);
+  const [isListInfoLoading, setIsListInfoLoading] = useState(false);
   const [listInfo, setListInfo] = useState<IListInfo>();
 
   const fetchGetListInfo = async (listId: string) => {
-    setListLoading(true);
+    setIsListInfoLoading(true);
     try {
       const response: AxiosResponse<IListInfo> = await axios.get(`${ApiPath.lists}/${listId}`);
       if (response) {
         setListInfo(response.data);
-        setListLoading(false);
+        setIsListInfoLoading(false);
         return response.data;
       }
     } catch (error) {
       setShowingAlert(true, { message: JSON.parse(String(error)) });
     } finally {
-      setListLoading(false);
+      setIsListInfoLoading(false);
     }
   };
 
-  return { listLoading, listInfo, setListInfo, fetchGetListInfo };
+  return { isListInfoLoading, listInfo, setListInfo, fetchGetListInfo };
 };
-export default useGetListInfo;
+export default useGetList;
 
 interface IListOwnerInfo {
   id: number; // listID??
