@@ -40,7 +40,7 @@ const router = createBrowserRouter([
         element: <DeleteAccountPage />,
       },
       {
-        path: ':id',
+        path: ':code',
         element: <UserPage />,
       },
       {

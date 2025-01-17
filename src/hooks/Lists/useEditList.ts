@@ -1,9 +1,12 @@
 import ApiPath from '@/config/apiPath';
-import { ICreateListRequest, ICreateListResponse } from '@/hooks/Lists/useCreateList';
+import {
+  ICreateListRequest,
+  ICreateListResponse,
+} from '@/hooks/Lists/useCreateList';
 import axios from '@/lib/axios';
 import { base64ToFile, fileToBase64 } from '@/lib/utils';
 import useCommonStore from '@/stores/useCommonStore';
-import { AxiosResponse } from 'axios';
+import { IResponse } from '@/types/response';
 import { useState } from 'react';
 import useGetList from './useGetList';
 
@@ -23,7 +26,9 @@ const useEditList = () => {
     const response = await fetchGetListInfo(listID);
     if (response) {
       const coverImage =
-        response.coverImage.length > 0 ? await base64ToFile(response.coverImage) : null;
+        response.coverImage.length > 0
+          ? await base64ToFile(response.coverImage)
+          : null;
       setListInfo({
         listID: response.id,
         title: response.title,
@@ -36,7 +41,9 @@ const useEditList = () => {
     setEditListLoading(false);
   };
 
-  const fetchEditList = async (editListRequest: Omit<IEditListRequest, 'listID'>) => {
+  const fetchEditList = async (
+    editListRequest: Omit<IEditListRequest, 'listID'>
+  ) => {
     if (!listInfo) {
       return;
     }
@@ -52,13 +59,12 @@ const useEditList = () => {
       categoryID: editListRequest.categoryID,
     };
     try {
-      const response: AxiosResponse<ICreateListResponse> = await axios.put(
+      const response = await axios.put<IResponse<ICreateListResponse>>(
         `${ApiPath.lists}/${listInfo?.listID}`,
-        _params,
+        _params
       );
-      if (response) {
-        const { data } = response;
-        return data;
+      if (response.data.content) {
+        return response.data.content;
       }
     } catch (error) {
       setShowingAlert(true, { message: JSON.parse(String(error)) });

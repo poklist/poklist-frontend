@@ -42,7 +42,7 @@ export const Header: React.FC<IHeaderProps> = ({
         {isLoggedIn && !isMyPage ? (
           <Avatar
             className="h-8 w-8 cursor-pointer"
-            onClick={() => navigate(`/${me.id}`)}
+            onClick={() => navigate(`/${me.userCode}`)}
           >
             <AvatarImage src={me.profileImage} />
             <AvatarFallback>{me.displayName[0]}</AvatarFallback>
