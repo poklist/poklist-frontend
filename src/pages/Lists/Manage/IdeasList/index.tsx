@@ -3,6 +3,7 @@ import IconClose from '@/components/ui/icons/CloseIcon';
 import { IIdeaPreviewInfo } from '@/hooks/Lists/useGetList';
 import { Trans } from '@lingui/macro';
 import React, { useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 
 interface IdeaListProps {
   // Add any props you need for the page
@@ -25,7 +26,11 @@ const IdeaListSection: React.FC<IdeaListProps> = ({ ideaList }) => {
     <>
       <div className="flex flex-col gap-2">
         {ideaList?.map(idea => (
-          <div className="border border-l-gray-main-03 bg-gray-note-05 py-2 px-4">
+          <Link
+            to={`/idea/edit/${idea.id}`}
+            key={`idea-${idea.id}`}
+            className="border border-l-gray-main-03 bg-gray-note-05 py-2 px-4"
+          >
             <div className="flex justify-between items-center gap-2">
               <div className="flex flex-col">
                 <div className="text-black-text-01 font-semibold text-t1">{idea.title}</div>
@@ -38,7 +43,7 @@ const IdeaListSection: React.FC<IdeaListProps> = ({ ideaList }) => {
                 />
               )}
             </div>
-          </div>
+          </Link>
         ))}
       </div>
       <div
