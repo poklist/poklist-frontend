@@ -1,28 +1,30 @@
 import axios from '@/lib/axios';
 import { ListPreview } from '@/types/List';
-import { GetListPreviewListResponse } from '@/types/response';
+import { IResponse } from '@/types/response';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { TileBackground } from '../TileBackground';
 import { ListSectionSkeleton } from './ListSectionSkeleton';
 
 const ListSection: React.FC = () => {
-  const { id } = useParams();
+  const { code } = useParams();
   const [listPreviewList, setListPreviewList] = useState<ListPreview[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const getListPreviewList = async (id: string) => {
-    axios.get<GetListPreviewListResponse>(`/lists?userID=${id}`).then((res) => {
-      setListPreviewList(res.data.lists);
-      setIsLoading(false);
-    });
+  const getListPreviewList = async (code: string) => {
+    if (!code) return;
+    // FUTURE: maybe set pagination in the future
+    const res = await axios.get<IResponse<ListPreview[]>>(`/${code}/lists`);
+    // TODO: error handling
+    setListPreviewList(res.data.content ?? []);
+    setIsLoading(false);
   };
 
   useEffect(() => {
-    if (id !== undefined) {
-      getListPreviewList(id);
+    if (code !== undefined) {
+      getListPreviewList(code);
     }
-  }, [id]);
+  }, [code]);
 
   if (isLoading) {
     return <ListSectionSkeleton />;
