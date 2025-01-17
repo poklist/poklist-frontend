@@ -9,12 +9,14 @@ import ListManagementPage from '@/pages/Lists/Manage';
 import Login from '@/pages/Login';
 import SettingsPage from '@/pages/Settings';
 import UserPage from '@/pages/User';
+import ErrorPage from '@/pages/Error';
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <Layout />,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: '',
@@ -48,6 +50,10 @@ const router = createBrowserRouter([
       { path: 'list/manage/:id', element: <ListManagementPage /> },
       { path: 'list/edit/:id', element: <EditListPage /> },
       { path: 'idea/create', element: <CreateIdeaPage /> },
+      {
+        path: '*',
+        element: <ErrorPage />,
+      },
     ],
   },
 ]);
