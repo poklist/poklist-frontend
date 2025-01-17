@@ -40,6 +40,7 @@ module.exports = {
         'gray-sub-04': '#F8F7F4',
         'gray-note-05': '#F6F6F6',
         'red-warning-01': '#EB6052',
+        'smart-purple': '#3EBCB0',
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
@@ -113,6 +114,7 @@ module.exports = {
         'user-page-grid': "url('tile.jpeg')",
       },
       backgroundSize: {
+        '0.3%': '0.3%',
         '1%': '1%',
       },
       width: {
@@ -124,7 +126,24 @@ module.exports = {
       letterSpacing: {
         '-1.1%': '-1.1%',
       },
+      textStrokeWidth: {
+        white: '-1px',
+      },
+      textStrokeColor: {
+        white: '#FFFFFF',
+      },
     },
   },
-  plugins: [require('tailwindcss-animate')],
+  plugins: [
+    require('tailwindcss-animate'),
+    function ({ addUtilities }) {
+      const newUtilities = {
+        '.text-stroke-white': {
+          '-webkit-text-stroke-width': '1px',
+          '-webkit-text-stroke-color': '#FFFFFF',
+        },
+      };
+      addUtilities(newUtilities);
+    },
+  ],
 };
