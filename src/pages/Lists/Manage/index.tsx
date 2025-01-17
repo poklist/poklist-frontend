@@ -32,18 +32,17 @@ const ListManagePage: React.FC<ManageListPageProps> = () => {
   return (
     <>
       <Header title={<Trans>List Title</Trans>} />
-      <ListInfo listInfo={listInfo} />
-      <Link
-        to={`/list/edit/${id}`}
-        className="bg-black text-white flex justify-between px-4 items-center h-12"
-      >
+      <Link to={`/list/edit/${id}`}>
+        <ListInfo listInfo={listInfo} />
+      </Link>
+      <div className="bg-black text-white flex justify-between px-4 items-center h-12">
         <div className="text-t1">
           <Trans>Ideas</Trans>
         </div>
         <div className="text-t2">
           <Trans>Tap to edit. Hold & drag to reorder Ideas</Trans>
         </div>
-      </Link>
+      </div>
       <div className="p-4">
         <Link to={'/idea/create'} state={{ listID: Number(id), listTitle: listInfo?.title }}>
           <Button className="text-h2 font-bold w-full" variant="highlighted" shape="rounded8px">

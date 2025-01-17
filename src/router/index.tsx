@@ -4,12 +4,13 @@ import Home from '@/pages/Home/index';
 import CreateIdeaPage from '@/pages/Idea/Create';
 import Layout from '@/pages/Layout';
 import CreateListPage from '@/pages/Lists/Create';
+import EditListPage from '@/pages/Lists/Edit';
 import ListManagementPage from '@/pages/Lists/Manage';
 import Login from '@/pages/Login';
 import SettingsPage from '@/pages/Settings';
 import UserPage from '@/pages/User';
 import ErrorPage from '@/pages/Error';
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, Navigate } from 'react-router-dom';
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
     element: <Layout />,
     errorElement: <ErrorPage />,
     children: [
+      {
+        path: '',
+        element: <Navigate to="/home" replace />,
+      },
       {
         path: 'login',
         element: <Login />,
@@ -43,7 +48,7 @@ const router = createBrowserRouter([
       },
       { path: 'list/create', element: <CreateListPage /> },
       { path: 'list/manage/:id', element: <ListManagementPage /> },
-      // { path: 'list/edit/:id', element: <EditListPage /> },
+      { path: 'list/edit/:id', element: <EditListPage /> },
       { path: 'idea/create', element: <CreateIdeaPage /> },
       {
         path: '*',

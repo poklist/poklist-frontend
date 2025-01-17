@@ -20,7 +20,7 @@ instance.interceptors.request.use(
     // }
     return config;
   },
-  (error) => {
+  error => {
     const { setShowingAlert } = commonStore.getState();
     console.error(error);
     setShowingAlert(true, {
@@ -29,7 +29,7 @@ instance.interceptors.request.use(
     removeLocalStorage(LocalStorageKey.USER_INFO);
     window.location.href = '/';
     return Promise.reject(error);
-  }
+  },
 );
 
 export default instance;

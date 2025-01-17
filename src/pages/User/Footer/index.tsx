@@ -19,7 +19,7 @@ const FooterComponent: React.FC<IFooterProps> = () => {
   const [liked, setLiked] = useState(false);
 
   return (
-    <div className="fixed bottom-2 flex w-dvw items-center justify-center gap-2">
+    <div className="fixed bottom-2 left-0 flex w-dvw items-center justify-center gap-2">
       {isShowLikeButton && (
         <Button
           onClick={() => setLiked(!liked)}
