@@ -45,7 +45,7 @@ const useGetList = (): {
       );
       if (response.data.content) {
         setListInfo(response.data.content);
-        setListLoading(false);
+        setIsListInfoLoading(false);
         return response.data.content;
       }
     } catch (error) {

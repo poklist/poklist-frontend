@@ -35,7 +35,7 @@ const ListManagePage: React.FC<ManageListPageProps> = () => {
       <Link to={`/list/edit/${id}`}>
         <ListInfo listInfo={listInfo} />
       </Link>
-      <div className="bg-black text-white flex justify-between px-4 items-center h-12">
+      <div className="flex h-12 items-center justify-between bg-black px-4 text-white">
         <div className="text-t1">
           <Trans>Ideas</Trans>
         </div>
@@ -44,8 +44,15 @@ const ListManagePage: React.FC<ManageListPageProps> = () => {
         </div>
       </div>
       <div className="p-4">
-        <Link to={'/idea/create'} state={{ listID: Number(id), listTitle: listInfo?.title }}>
-          <Button className="text-h2 font-bold w-full" variant="highlighted" shape="rounded8px">
+        <Link
+          to={'/idea/create'}
+          state={{ listID: Number(id), listTitle: listInfo?.title }}
+        >
+          <Button
+            className="w-full text-h2 font-bold"
+            variant="highlighted"
+            shape="rounded8px"
+          >
             <Trans>Add an idea</Trans>
           </Button>
         </Link>

@@ -2,6 +2,7 @@ import ApiPath from '@/config/apiPath';
 import axios from '@/lib/axios';
 import { fileToBase64 } from '@/lib/utils';
 import useCommonStore from '@/stores/useCommonStore';
+import { IResponse } from '@/types/response';
 import { AxiosResponse } from 'axios';
 import { useState } from 'react';
 
@@ -33,13 +34,13 @@ const useEditIdea = () => {
       coverImage: params.coverImage ? await fileToBase64(params.coverImage) : null,
     };
     try {
-      const response: AxiosResponse<IEditIdeaResponse> = await axios.put(
+      const response: AxiosResponse<IResponse<IEditIdeaResponse>> = await axios.put(
         `${ApiPath.ideas}/${params.id}`,
         _params,
       );
-      if (response) {
+      if (response.data.content) {
         setIsEditIdeaLoading(false);
-        return response.data;
+        return response.data.content;
       }
     } catch (error) {
       setShowingAlert(true, { message: JSON.parse(String(error)) });

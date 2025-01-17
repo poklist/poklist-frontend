@@ -2,6 +2,7 @@ import ApiPath from '@/config/apiPath';
 import axios from '@/lib/axios';
 import { base64ToFile } from '@/lib/utils';
 import useCommonStore from '@/stores/useCommonStore';
+import { IResponse } from '@/types/response';
 import { AxiosResponse } from 'axios';
 import { useState } from 'react';
 
@@ -30,11 +31,11 @@ export const useGetIdea = () => {
   const fetchIdeaInfo = async (params: string) => {
     setIsIdeaInfoLoading(true);
     try {
-      const response: AxiosResponse<IIdeaResponse> = await axios.get(`${ApiPath.ideas}/${params}`);
-      if (response) {
+      const response: AxiosResponse<IResponse<IIdeaResponse>> = await axios.get(`${ApiPath.ideas}/${params}`);
+      if (response.data.content) {
         const coverImage =
-          response.data.coverImage.length > 0 ? await base64ToFile(response.data.coverImage) : null;
-        const _ideaInfo = { ...response.data, coverImage };
+          response.data.content.coverImage.length > 0 ? await base64ToFile(response.data.content.coverImage) : null;
+        const _ideaInfo = { ...response.data.content, coverImage };
         setIdeaInfo(_ideaInfo);
         setIsIdeaInfoLoading(false);
         return _ideaInfo;
