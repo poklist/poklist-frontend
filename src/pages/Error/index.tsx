@@ -1,4 +1,4 @@
-import mascotBig from '@/assets/images/mascot/mascot-big.svg';
+import mascotError from '@/assets/images/mascot/mascot-error.svg';
 import { Header } from '@/components/Header';
 import MobileContainer from '@/components/ui/containers/MobileContainer';
 import { TileBackground } from '../User/TileBackground';
@@ -13,12 +13,12 @@ export default function ErrorPage() {
         <Header />
 
         {/* 內容 */}
-        <div className="flex flex-1 flex-col items-center justify-center">
+        <div className="flex flex-1 flex-col items-center justify-start pt-28">
           <div className="flex flex-col items-center gap-6">
-            <img src={mascotBig} alt="Error Mascot" className="h-40 md:h-60" />
-            <h1 className="text-center text-2xl font-bold text-black-text-01 md:text-4xl">
-              Oops something is wrong!
-            </h1>
+            <img src={mascotError} alt="Error Mascot" className="h-[125px]" />
+            <h2 className="text-center text-[17px] font-bold text-black-text-01">
+              哎呀！網頁又在耍脾氣啦！
+            </h2>
           </div>
         </div>
       </div>
