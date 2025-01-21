@@ -9,6 +9,8 @@
 ### UI library
 
 - radix
+- shadcn/ui
+- React DnD
 
 ## Getting Started
 

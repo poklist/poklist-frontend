@@ -37,11 +37,18 @@ const useGetList = (): {
   const [isListInfoLoading, setIsListInfoLoading] = useState(false);
   const [listInfo, setListInfo] = useState<IListInfo>();
 
-  const fetchGetListInfo = async (listId: string) => {
+  const fetchGetListInfo = async (
+    listId: string,
+    offset?: number,
+    limited?: number
+  ) => {
     setIsListInfoLoading(true);
+    const _offset = offset || 0;
+    const _limited = limited || 0;
     try {
       const response = await axios.get<IResponse<IListInfo>>(
-        `${ApiPath.lists}/${listId}`
+        // TODO feature of offset & limit
+        `${ApiPath.lists}/${listId}?offset=${_offset}&limit=${_limited}`
       );
       if (response.data.content) {
         setListInfo(response.data.content);
