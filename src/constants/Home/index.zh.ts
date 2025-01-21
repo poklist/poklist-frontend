@@ -14,7 +14,7 @@ export const HERO_SECTION = {
 };
 export const FEATURE_SECTION = {
   title: '創作我的靈感名單',
-  descriprion: '獵奇有趣的事物，創作新奇的名單，追蹤超有料的好靈感。',
+  description: '獵奇有趣的事物，創作新奇的名單，追蹤超有料的好靈感。',
 };
 export const LIST_SECTION = {
   lifeStyle: {
@@ -217,7 +217,7 @@ export const LIST_SECTION = {
     title: '健康與健身',
     user: '匹克匹克',
     account: '＠picapica',
-    userAvatar: '',
+    userAvatar: IMAGES.avatar.healthAndFitness,
     listCount: '17',
     listTitle: '高蛋白飲料~原來超簡單做的',
     lists: [
@@ -245,7 +245,7 @@ export const LIST_SECTION = {
     title: '其他',
     user: 'Jacob PHD',
     account: '＠jacobphd',
-    userAvatar: '',
+    userAvatar: IMAGES.avatar.other,
     listCount: '13',
     listTitle: '絕對左甩的交友檔案',
     lists: [

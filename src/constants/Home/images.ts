@@ -8,7 +8,7 @@ export const IMAGES = {
     personalGrowth: '/src/assets/images/home/avatar/corpgirlies.png',
     techAndDigital: '/src/assets/images/home/avatar/itech.png',
     healthAndFitness: '/src/assets/images/home/avatar/picapica.png',
-    other: '/src/assets/images/home/avatar/jennyphd.png',
+    other: '/src/assets/images/home/avatar/jacobphd.png',
   },
   list: {
     lifeStyle: {
@@ -56,5 +56,14 @@ export const IMAGES = {
       list2: '/src/assets/images/home/lists/other/no-bio.png',
       list3: '/src/assets/images/home/lists/other/dirty-room.png',
     },
+  },
+  feature: {
+    leftTop: '/src/assets/images/home/feature/left-top.png',
+    leftBottom: '/src/assets/images/home/feature/left-bottom.png',
+    leftMid: '/src/assets/images/home/feature/left-mid.png',
+    midTop: '/src/assets/images/home/feature/mid-top.png',
+    rightTop: '/src/assets/images/home/feature/right-top.png',
+    rightMid: '/src/assets/images/home/feature/right-mid.png',
+    rightBottom: '/src/assets/images/home/feature/right-bottom.png',
   },
 };

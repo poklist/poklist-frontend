@@ -15,7 +15,7 @@ export const HERO_SECTION = {
 };
 export const FEATURE_SECTION = {
   title: 'List Your Ideas',
-  descriprion:
+  description:
     'Turn thoughts into lists, discover fresh finds, and follow inspiration.',
 };
 export const LIST_SECTION = {
@@ -219,7 +219,7 @@ export const LIST_SECTION = {
     title: 'Health & Fitness',
     user: 'Pica Pica ',
     account: '＠picapica',
-    userAvatar: '',
+    userAvatar: IMAGES.avatar.healthAndFitness,
     listCount: '17',
     listTitle: 'My best protein shake recipe',
     lists: [
@@ -247,7 +247,7 @@ export const LIST_SECTION = {
     title: 'Other',
     user: 'Jacob PHD',
     account: '＠jacobphd',
-    userAvatar: '',
+    userAvatar: IMAGES.avatar.other,
     listCount: '13',
     listTitle: 'Reasons I swipe left',
     lists: [
