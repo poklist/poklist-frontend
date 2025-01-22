@@ -2,20 +2,75 @@ import { useNavigate } from 'react-router-dom';
 import useUserStore from '@/stores/useUserStore';
 import { ChevronRight } from 'lucide-react';
 import { HeroSectionContent } from '@/types/Home';
+import { useGoogleOneTapLogin, CredentialResponse } from '@react-oauth/google';
+import { useState, useEffect } from 'react';
+import axios from '@/lib/axios';
+import { IResponse } from '@/types/response';
+import { User } from '@/types/User';
 
 interface HeroSectionProps {
   content: HeroSectionContent;
 }
 
+export interface ILoginRequest {
+  idToken: string;
+}
+
+export interface LoginInfo {
+  accessToken: string;
+  user: User;
+}
+
 export const HeroSection = ({ content }: HeroSectionProps) => {
   const navigate = useNavigate();
-  const { isLoggedIn, user } = useUserStore();
+  const { login, setUser, isLoggedIn, user } = useUserStore();
+  const [showGoogleLogin, setShowGoogleLogin] = useState(false);
+
+  useGoogleOneTapLogin({
+    onSuccess: async (credentialResponse: CredentialResponse) => {
+      try {
+        const res = await axios.post<IResponse<LoginInfo>>('/auth/google', {
+          idToken: credentialResponse.credential,
+        });
+        if (!res.data.content?.accessToken) {
+          throw new Error('No access token');
+        }
+        login(res.data.content?.accessToken);
+        const userData = res.data.content?.user;
+        setUser(userData);
+        navigate(`/${userData.userCode}`);
+      } catch (error) {
+        console.error('Login failed:', error);
+      }
+    },
+    onError: () => {
+      console.log('Login Failed');
+      setShowGoogleLogin(false);
+    },
+    disabled: !showGoogleLogin,
+  });
+
+  useEffect(() => {
+    if (showGoogleLogin) {
+      // 強制重新初始化 Google One Tap
+      const script = document.createElement('script');
+      script.src = 'https://accounts.google.com/gsi/client';
+      script.async = true;
+      script.defer = true;
+      document.body.appendChild(script);
+
+      return () => {
+        document.body.removeChild(script);
+      };
+    }
+  }, [showGoogleLogin]);
 
   const handleSignIn = () => {
-    if (isLoggedIn && user.id) {
-      navigate(`/${user.id}`);
+    // 如果已經登入且有 userCode，則導向該用戶的頁面
+    if (isLoggedIn && user?.userCode) {
+      navigate(`/${user.userCode}`);
     } else {
-      navigate('/login');
+      setShowGoogleLogin(true);
     }
   };
 

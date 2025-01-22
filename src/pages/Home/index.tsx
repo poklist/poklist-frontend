@@ -6,7 +6,7 @@ import { Divider } from '../../components/Home/Divider';
 import { Tutorial } from '../../components/Home/Tutorial';
 import logo from '@/assets/images/logo-big.png';
 import MobileContainer from '@/components/ui/containers/MobileContainer';
-
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import * as zhContent from '@/constants/Home/index.zh';
 import * as enContent from '@/constants/Home/index.en';
 
@@ -14,7 +14,7 @@ import { useState } from 'react';
 
 type Language = 'zh' | 'en';
 
-export default function Home() {
+function HomeContent() {
   const [currentLanguage, setCurrentLanguage] = useState<Language>('zh');
   const content = currentLanguage === 'zh' ? zhContent : enContent;
 
@@ -48,5 +48,15 @@ export default function Home() {
         />
       </main>
     </MobileContainer>
+  );
+}
+
+export default function Home() {
+  const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+
+  return (
+    <GoogleOAuthProvider clientId={clientId}>
+      <HomeContent />
+    </GoogleOAuthProvider>
   );
 }
