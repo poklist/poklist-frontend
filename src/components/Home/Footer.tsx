@@ -6,7 +6,7 @@ interface FooterProps {
 }
 
 export const Footer = ({ content, socialMedia }: FooterProps) => (
-  <section className="flex w-full flex-col bg-yellow-bright-01 px-8 pb-8 pt-2">
+  <section className="flex w-full flex-col bg-yellow-bright-01 px-8 pb-20 pt-2">
     <div className="w-full">
       <div className="flex flex-col justify-between md:flex-row">
         <div className="flex flex-col">
@@ -21,7 +21,7 @@ export const Footer = ({ content, socialMedia }: FooterProps) => (
               </a>
             ))}
           </div>
-          <div className="flex gap-4">
+          <div className="flex gap-8">
             {socialMedia.map((item) => (
               <a
                 key={item.name}
