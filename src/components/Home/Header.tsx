@@ -4,15 +4,12 @@ import { Link } from 'react-router-dom';
 import headerLogo from '@/assets/images/header-poklist.svg';
 
 interface HeaderProps {
-  isScrolled: boolean;
   onSignInClick: () => void;
 }
 
-export const Header = ({ isScrolled, onSignInClick }: HeaderProps) => (
+export const Header = ({ onSignInClick }: HeaderProps) => (
   <header
-    className={`fixed top-0 z-50 w-full transition-all duration-300 ${
-      isScrolled ? 'bg-transparent backdrop-blur-sm' : 'bg-transparent'
-    }`}
+    className={`fixed top-0 z-50 w-mobile-max transition-all duration-300`}
   >
     <div className="mx-auto flex items-center justify-between px-4 py-2">
       <Link to="/home">
@@ -22,9 +19,9 @@ export const Header = ({ isScrolled, onSignInClick }: HeaderProps) => (
         <Button
           variant="white"
           onClick={onSignInClick}
-          className="text-black hover:text-gray-700"
+          className="font-semibold text-black hover:text-gray-700"
         >
-          Sign in
+          登入
         </Button>
         <Button variant="gray" size="icon" className="rounded-full">
           <SettingsIcon className="h-5 w-5" />

@@ -1,15 +1,21 @@
-import { LIST_SECTION } from '@/constants/home';
+import { ChevronRight } from 'lucide-react';
+import { TutorialLink } from '@/types/Home';
 
-export const Tutorial = () => (
-  <section className="flex flex-col gap-8 bg-yellow-bright-01 p-8">
-    <div className="w-full text-start">
-      <h1 className="mb-4 text-2xl font-bold">{LIST_SECTION.tutorial.title}</h1>
-      <h2 className="text-[17px] font-bold">
-        {LIST_SECTION.tutorial.description}
-      </h2>
-      <button className="mt-4 w-full rounded-lg bg-black px-4 py-2 text-white">
-        {LIST_SECTION.tutorial.buttonText}
-      </button>
-    </div>
+interface TutorialProps {
+  content: TutorialLink[];
+}
+
+export const Tutorial = ({ content }: TutorialProps) => (
+  <section className="flex flex-col gap-4 bg-yellow-bright-01 px-8 py-10">
+    {content.map((item) => (
+      <div
+        key={item.title}
+        className="flex cursor-pointer items-center"
+        onClick={() => (window.location.href = item.url || '#')}
+      >
+        <h1 className="text-h1 font-bold">{item.title}</h1>
+        <ChevronRight className="ml-3 h-5 w-5" />
+      </div>
+    ))}
   </section>
 );

@@ -10,7 +10,10 @@ export const HERO_SECTION = {
     title: '我擁有創作者帳號!',
     buttonText: 'Google 登入',
   },
-  nonCreatorQuestion: '非內容創作者也能使用 Poklist 嗎？',
+  nonCreatorQuestion: {
+    title: '非內容創作者也能使用 Poklist 嗎？',
+    url: '',
+  },
 };
 export const FEATURE_SECTION = {
   title: '創作我的靈感名單',
@@ -309,5 +312,28 @@ export const FOOTER_SECTION = [
   {
     title: '額外公告',
     url: '',
+  },
+];
+
+export const SOCIAL_MEDIA = [
+  {
+    name: 'Discord',
+    icon: '/src/assets/images/socialMedia/discord-logo.png',
+    url: '#',
+  },
+  {
+    name: 'Instagram',
+    icon: '/src/assets/images/socialMedia/instagram-logo.png',
+    url: '#',
+  },
+  {
+    name: 'Threads',
+    icon: '/src/assets/images/socialMedia/threads-logo.png',
+    url: '#',
+  },
+  {
+    name: 'LinkedIn',
+    icon: '/src/assets/images/socialMedia/linkedin-logo.png',
+    url: '#',
   },
 ];

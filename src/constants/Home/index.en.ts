@@ -11,7 +11,10 @@ export const HERO_SECTION = {
     title: 'Got a Creator Account',
     buttonText: 'Sign in with Google',
   },
-  nonCreatorQuestion: 'Can non-creators use Poklist?',
+  nonCreatorQuestion: {
+    title: 'Can non-creators use Poklist?',
+    url: '',
+  },
 };
 export const FEATURE_SECTION = {
   title: 'List Your Ideas',
@@ -307,5 +310,27 @@ export const FOOTER_SECTION = [
   {
     title: 'Collection Notice',
     url: '',
+  },
+];
+export const SOCIAL_MEDIA = [
+  {
+    name: 'Discord',
+    icon: '/src/assets/images/socialMedia/discord-logo.png',
+    url: '#',
+  },
+  {
+    name: 'Instagram',
+    icon: '/src/assets/images/socialMedia/instagram-logo.png',
+    url: '#',
+  },
+  {
+    name: 'Threads',
+    icon: '/src/assets/images/socialMedia/threads-logo.png',
+    url: '#',
+  },
+  {
+    name: 'LinkedIn',
+    icon: '/src/assets/images/socialMedia/linkedin-logo.png',
+    url: '#',
   },
 ];
