@@ -1,11 +1,14 @@
+import { ICreateListRequest } from '@/hooks/Lists/useCreateList';
 import useDeleteList from '@/hooks/Lists/useDeleteList';
 import useEditList, { IEditListRequest } from '@/hooks/Lists/useEditList';
-import ListForm from '@/pages/Lists/Edit/Form';
-import { Header } from '@/pages/Lists/Edit/Header';
+import useGetList from '@/hooks/Lists/useGetList';
+import { base64ToFile } from '@/lib/utils';
+import ListForm from '@/pages/Lists/Component/Form';
+import { Header } from '@/pages/Lists/Component/Header';
 import useCommonStore from '@/stores/useCommonStore';
 import useUserStore from '@/stores/useUserStore';
 import { Trans } from '@lingui/macro';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 interface EditListPageProps {
@@ -20,14 +23,17 @@ const EditListPage: React.FC<EditListPageProps> = () => {
   const { setIsLoading } = useCommonStore();
   const userStore = useUserStore();
 
-  const { editListLoading, listInfo, setListInfo, initialListInfo, fetchEditList } = useEditList();
+  const { isListInfoLoading, fetchGetListInfo } = useGetList();
+  const { editListLoading, fetchEditList } = useEditList();
   const { deleteListLoading, fetchDeleteList } = useDeleteList();
+
+  const [listInfo, setListInfo] = useState<IEditListRequest>();
 
   const onDeleteList = async () => {
     if (listInfo) {
       const response = await fetchDeleteList(listInfo.listID);
-      if (response) {
-        navigate(`/${userStore.user.id}`);
+      if (response === null) {
+        navigate(`/${userStore.user.userCode}`);
       }
     }
   };
@@ -38,7 +44,7 @@ const EditListPage: React.FC<EditListPageProps> = () => {
     }
   };
 
-  const onEditList = async (listFormData: Omit<IEditListRequest, 'listID'>) => {
+  const onEditList = async (listFormData: ICreateListRequest) => {
     if (!listInfo) {
       return;
     }
@@ -50,7 +56,7 @@ const EditListPage: React.FC<EditListPageProps> = () => {
       coverImage: listFormData.coverImage,
       categoryID: listFormData.categoryID,
     });
-    const response = await fetchEditList(listFormData);
+    const response = await fetchEditList(Number(id), listFormData);
     if (response) {
       navigate(`/list/manage/${response.id}`);
       return;
@@ -58,7 +64,24 @@ const EditListPage: React.FC<EditListPageProps> = () => {
   };
   useEffect(() => {
     if (id) {
-      initialListInfo(id);
+      const _fetchGetListInfo = async () => {
+        const response = await fetchGetListInfo(id);
+        if (response) {
+          const coverImage =
+            response.coverImage.length > 0
+              ? await base64ToFile(response.coverImage)
+              : null;
+          setListInfo({
+            listID: response.id,
+            title: response.title,
+            description: response.description,
+            externalLink: response.externalLink,
+            coverImage,
+            categoryID: response.categoryID,
+          });
+        }
+      };
+      _fetchGetListInfo();
     }
   }, [id]);
 
@@ -67,16 +90,18 @@ const EditListPage: React.FC<EditListPageProps> = () => {
       setIsLoading(true);
     } else if (deleteListLoading) {
       setIsLoading(true);
+    } else if (isListInfoLoading) {
+      setIsLoading(true);
     } else {
       setIsLoading(false);
     }
-  }, [editListLoading, deleteListLoading, setIsLoading]);
+  }, [editListLoading, deleteListLoading, isListInfoLoading, setIsLoading]);
 
   return (
     // Your component code here
     <>
       <Header title={<Trans>List Title</Trans>} deleteCallback={onDeleteList} />
-      <div className="mt-6 flex flex-col gap-6 mx-4">
+      <div className="mx-4 mt-6 flex flex-col gap-6">
         <ListForm
           defaultListInfo={listInfo}
           dismissCallback={onDismissEdit}

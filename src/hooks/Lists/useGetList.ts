@@ -31,14 +31,14 @@ const useGetList = (): {
   isListInfoLoading: boolean;
   listInfo: IListInfo | undefined;
   setListInfo: React.Dispatch<React.SetStateAction<IListInfo | undefined>>;
-  fetchGetListInfo: (listId: string) => Promise<IListInfo | undefined>;
+  fetchGetListInfo: (listID: string) => Promise<IListInfo | undefined>;
 } => {
   const { setShowingAlert } = useCommonStore();
   const [isListInfoLoading, setIsListInfoLoading] = useState(false);
   const [listInfo, setListInfo] = useState<IListInfo>();
 
   const fetchGetListInfo = async (
-    listId: string,
+    listID: string,
     offset?: number,
     limited?: number
   ) => {
@@ -48,7 +48,7 @@ const useGetList = (): {
     try {
       const response = await axios.get<IResponse<IListInfo>>(
         // TODO feature of offset & limit
-        `${ApiPath.lists}/${listId}?offset=${_offset}&limit=${_limited}`
+        `${ApiPath.lists}/${listID}?offset=${_offset}&limit=${_limited}`
       );
       if (response.data.content) {
         setListInfo(response.data.content);
@@ -56,7 +56,7 @@ const useGetList = (): {
         return response.data.content;
       }
     } catch (error) {
-      setShowingAlert(true, { message: JSON.parse(String(error)) });
+      setShowingAlert(true, { message: String(error) });
     } finally {
       setIsListInfoLoading(false);
     }

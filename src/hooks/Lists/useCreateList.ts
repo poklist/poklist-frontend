@@ -39,7 +39,9 @@ const useCreateList = (): {
   createListLoading: boolean;
   listData: ICreateListRequest;
   setListData: React.Dispatch<React.SetStateAction<ICreateListRequest>>;
-  fetchPostCreateList: () => Promise<ICreateListResponse | undefined>;
+  fetchCreateList: (
+    listForm: ICreateListRequest
+  ) => Promise<ICreateListResponse | undefined>;
 } => {
   const { setShowingAlert } = useCommonStore();
 
@@ -63,16 +65,17 @@ const useCreateList = (): {
 
   const [createListLoading, setCreateListLoading] = useState(false);
 
-  const fetchPostCreateList = async () => {
+  const fetchCreateList = async (listForm: ICreateListRequest) => {
     setCreateListLoading(true);
+    setListData(listForm);
     const _params = {
-      title: listData.title,
-      description: listData.description,
-      externalLink: listData.externalLink,
-      coverImage: listData.coverImage
-        ? await fileToBase64(listData.coverImage)
+      title: listForm.title,
+      description: listForm.description,
+      externalLink: listForm.externalLink,
+      coverImage: listForm.coverImage
+        ? await fileToBase64(listForm.coverImage)
         : null,
-      categoryID: listData.categoryID,
+      categoryID: listForm.categoryID,
     };
 
     try {
@@ -85,7 +88,7 @@ const useCreateList = (): {
         return response.data.content;
       }
     } catch (error) {
-      setShowingAlert(true, { message: JSON.parse(String(error)) });
+      setShowingAlert(true, { message: String(error) });
     } finally {
       setCreateListLoading(false);
     }
@@ -95,7 +98,7 @@ const useCreateList = (): {
     createListLoading,
     listData,
     setListData,
-    fetchPostCreateList,
+    fetchCreateList,
   };
 };
 export default useCreateList;

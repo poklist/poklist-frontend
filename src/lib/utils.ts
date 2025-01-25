@@ -34,13 +34,13 @@ export const fileToBase64 = (file: File): Promise<string> => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => resolve(reader.result as string);
-    reader.onerror = error => reject(error);
+    reader.onerror = (error) => reject(error);
   });
 };
 
 export const base64ToFile = async (base64: string) => {
   const response = await fetch(base64);
-  return await response.blob().then(_blob => {
+  return await response.blob().then((_blob) => {
     return new File([_blob], 'file', { type: _blob.type });
   });
 };
@@ -78,4 +78,8 @@ export const extractUsernameFromUrl = (
     // If not found, then return the original URL
     return url;
   }
+};
+
+export const formatInput = (targetValue: string): string => {
+  return targetValue.replace(/ {2,}/g, ' ').replace(/\n/g, '');
 };

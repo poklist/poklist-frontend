@@ -36,7 +36,8 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
   dismissCallback,
   completedCallback,
 }) => {
-  const { setShowErrorDrawer, setShowingAlert, setIsLoading } = useCommonStore();
+  const { setShowErrorDrawer, setShowingAlert, setIsLoading } =
+    useCommonStore();
 
   const [isTextareaFocus, setIsTextareaFocus] = useState(false);
   const [isFormModified, setIsFormModified] = useState(false);
@@ -52,7 +53,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
   });
 
   useEffect(() => {
-    const subscription = ideaForm.watch(fields => {
+    const subscription = ideaForm.watch((fields) => {
       const isModified =
         fields.title !== previousIdeaInfo?.title ||
         fields.description !== previousIdeaInfo?.description ||
@@ -63,8 +64,11 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
     return () => subscription.unsubscribe();
   }, [ideaForm.watch(), previousIdeaInfo]);
 
-  const isFieldNotEmpty = (value: string | number | File | null | undefined) => {
-    if (value === '' || value === 0 || value === null || value === undefined) return false;
+  const isFieldNotEmpty = (
+    value: string | number | File | null | undefined
+  ) => {
+    if (value === '' || value === 0 || value === null || value === undefined)
+      return false;
     if (value instanceof File && value.size === 0) return false;
     return true;
   };
@@ -87,7 +91,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
       description: string;
       externalLink?: string | undefined;
       coverImage?: File | null | undefined;
-    }>,
+    }>
   ) => {
     const errorKey = Object.keys(value)[0];
     // TODO 目前解法
@@ -119,7 +123,9 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
         break;
       }
       case 'externalLink': {
-        setShowingAlert(true, { message: value.externalLink?.message || 'Invalid url' });
+        setShowingAlert(true, {
+          message: value.externalLink?.message || 'Invalid url',
+        });
         break;
       }
 
@@ -173,22 +179,22 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
     >
       <div
         className={cn(`flex items-center`, {
-          'before:h-8 before:w-0.5 before:bg-black-text-01 before:z-10':
+          'before:z-10 before:h-8 before:w-0.5 before:bg-black-text-01':
             ideaForm.watch('title') === '',
         })}
       >
         <Input
           placeholder={t`What’s your Idea?`}
-          className="border-none relative text-h1 placeholder:text-h1 px-0"
+          className="relative border-none px-0 text-h1 placeholder:text-h1"
           {...ideaForm.register('title')}
         />
       </div>
-      <div className="flex gap-2 items-start">
+      <div className="flex items-start gap-2">
         <IconTextarea className="" />
         <Textarea
           placeholder={t`Describe what this Idea is about`}
-          className={cn(`border-none p-0 resize-none`, {
-            'min-h-6 h-6 line-clamp-1': !isTextareaFocus,
+          className={cn(`resize-none border-none p-0`, {
+            'line-clamp-1 h-6 min-h-6': !isTextareaFocus,
           })}
           {...ideaForm.register('description')}
           onFocus={() => setIsTextareaFocus(true)}
@@ -196,16 +202,16 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
         />
       </div>
       {isTextareaFocus && (
-        <div className="text-black-tint-04 flex justify-end mt-2">
+        <div className="mt-2 flex justify-end text-black-tint-04">
           {ideaForm.watch('description').length}/{DESC_MAX_LENGTH}
         </div>
       )}
-      <div className="flex gap-2 items-center">
+      <div className="flex items-center gap-2">
         <IconExteriorLink className="" />
         <Input
           {...ideaForm.register('externalLink')}
           placeholder={t`Link a page`}
-          className="border-none w-full p-0 h-6"
+          className="h-6 w-full border-none p-0"
         />
       </div>
       <div
@@ -216,24 +222,31 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
         <Controller
           name="coverImage"
           control={ideaForm.control}
-          render={({ field }) => <ImageUploader file={field.value} callback={onCoverImageChange} />}
+          render={({ field }) => (
+            <ImageUploader file={field.value} callback={onCoverImageChange} />
+          )}
         />
       </div>
       <div
         ref={submitFooterRef}
-        className="border-t-gray-main-03 border-t fixed flex px-4 py-2 w-dvw justify-between left-0 z-10"
+        className="fixed left-0 z-10 flex w-dvw justify-between border-t border-t-gray-main-03 px-4 py-2"
       >
         <div className="flex items-center gap-2">
           <div
             onClick={() => onDismiss()}
             aria-label="Previous"
-            className="p-0 h-auto rounded-full bg-inherit"
+            className="h-auto rounded-full bg-inherit p-0"
           >
             <IconClose />
           </div>
           <Trans>Edit Idea</Trans>
         </div>
-        <Button disabled={!isFormModified} type="submit" variant="black" shape="rounded8px">
+        <Button
+          disabled={!isFormModified}
+          type="submit"
+          variant="black"
+          shape="rounded8px"
+        >
           <Trans>Next</Trans>
         </Button>
       </div>
