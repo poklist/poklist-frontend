@@ -1,9 +1,9 @@
-import { Header } from '../../components/Home/Header';
-import { HeroSection } from '../../components/Home/HeroSection';
-import { FeatureSection } from '../../components/Home/FeatureSection';
-import { Footer } from '../../components/Home/Footer';
-import { Divider } from '../../components/Home/Divider';
-import { Tutorial } from '../../components/Home/Tutorial';
+import { Header } from './Header';
+import { HeroSection } from './HeroSection';
+import { FeatureSection } from './FeatureSection';
+import { Footer } from './Footer';
+import { Divider } from './Divider';
+import { TutorialSection } from './TutorialSection';
 import logo from '@/assets/images/logo-big.png';
 import MobileContainer from '@/components/ui/containers/MobileContainer';
 import { GoogleOAuthProvider } from '@react-oauth/google';
@@ -36,7 +36,7 @@ function HomeContent() {
           listContent={content.LIST_SECTION}
         />
         <Divider />
-        <Tutorial content={content.TUTORIAL_SECTION} />
+        <TutorialSection content={content.TUTORIAL_SECTION} />
         <Divider />
         {/* Logo */}
         <div className="flex justify-center bg-yellow-bright-01 pb-4">
