@@ -31,19 +31,19 @@ const useEditIdea = () => {
     setIsEditIdeaLoading(true);
     const _params = {
       ...params,
-      coverImage: params.coverImage ? await fileToBase64(params.coverImage) : null,
+      coverImage: params.coverImage
+        ? await fileToBase64(params.coverImage)
+        : null,
     };
     try {
-      const response: AxiosResponse<IResponse<IEditIdeaResponse>> = await axios.put(
-        `${ApiPath.ideas}/${params.id}`,
-        _params,
-      );
+      const response: AxiosResponse<IResponse<IEditIdeaResponse>> =
+        await axios.put(`${ApiPath.ideas}/${params.id}`, _params);
       if (response.data.content) {
         setIsEditIdeaLoading(false);
         return response.data.content;
       }
     } catch (error) {
-      setShowingAlert(true, { message: JSON.parse(String(error)) });
+      setShowingAlert(true, { message: String(error) });
     } finally {
       setIsEditIdeaLoading(false);
     }

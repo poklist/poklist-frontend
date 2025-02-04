@@ -11,7 +11,7 @@ const useDeleteList = () => {
   const fetchDeleteList = async (params: number) => {
     setDeleteListLoading(true);
     try {
-      const response = await axios.delete<IResponse<unknown>>(
+      const response = await axios.delete<IResponse<null>>(
         `${ApiPath.lists}/${params}`
       );
       if (response.data.content) {
@@ -19,7 +19,7 @@ const useDeleteList = () => {
         return response.data.content;
       }
     } catch (error) {
-      setShowingAlert(true, { message: JSON.parse(String(error)) });
+      setShowingAlert(true, { message: String(error) });
     } finally {
       setDeleteListLoading(false);
     }

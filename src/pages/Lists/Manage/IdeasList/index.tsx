@@ -2,8 +2,10 @@ import { Button } from '@/components/ui/button';
 import IconClose from '@/components/ui/icons/CloseIcon';
 import { IIdeaPreviewInfo } from '@/hooks/Lists/useGetList';
 import { cn } from '@/lib/utils';
+import useUserStore from '@/stores/useUserStore';
 import { Trans } from '@lingui/macro';
 import React, { useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import DraggableIdeaRow from './Idea';
 
 interface IdeaListProps {
@@ -18,6 +20,7 @@ const IdeaListSection: React.FC<IdeaListProps> = ({
   reorderCallback,
   confirmReorderCallback,
 }) => {
+  const userStore = useUserStore();
   const onReorderIdea = (dragIndex: number, hoverIndex: number) => {
     if (!ideaList) return;
     reorderCallback(dragIndex, hoverIndex);
@@ -51,12 +54,13 @@ const IdeaListSection: React.FC<IdeaListProps> = ({
         className="fixed left-0 z-10 flex w-dvw justify-between border-t border-t-gray-main-03 bg-white px-4 py-2"
       >
         <div className="flex items-center gap-2">
-          <Button
+          <Link
             aria-label="Previous"
             className="h-auto rounded-full bg-inherit p-0"
+            to={`/${userStore.user.userCode}`}
           >
             <IconClose />
-          </Button>
+          </Link>
           <Trans>Edit List</Trans>
         </div>
         <div className="flex items-center gap-4">

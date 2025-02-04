@@ -1,17 +1,19 @@
 import { Button } from '@/components/ui/button';
+import useDeleteList from '@/hooks/Lists/useDeleteList';
 import useEditList from '@/hooks/Lists/useEditList';
-import useGetList, { IListInfo } from '@/hooks/Lists/useGetList';
+import { IListInfo, default as useGetList } from '@/hooks/Lists/useGetList';
 import useIsMobile from '@/hooks/useIsMobile';
-import { Header } from '@/pages/Lists/Manage/Header';
+import { Header } from '@/pages/Lists/Component/Header';
 import IdeaList from '@/pages/Lists/Manage/IdeasList';
 import ListInfo from '@/pages/Lists/Manage/ListInfo';
 import useCommonStore from '@/stores/useCommonStore';
+import useUserStore from '@/stores/useUserStore';
 import { Trans } from '@lingui/macro';
 import { useCallback, useEffect } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { TouchBackend } from 'react-dnd-touch-backend';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 interface ManageListPageProps {
   // Add any props you need for the page
@@ -19,12 +21,24 @@ interface ManageListPageProps {
 
 const ListManagePage: React.FC<ManageListPageProps> = () => {
   const { id } = useParams();
-  const { setIsLoading } = useCommonStore();
-  const isMobile = useIsMobile();
+  const navigate = useNavigate();
 
+  const { setIsLoading } = useCommonStore();
+  const userStore = useUserStore();
+  const isMobile = useIsMobile();
   const { isListInfoLoading, listInfo, setListInfo, fetchGetListInfo } =
     useGetList();
   const { fetchReorderIdea, editListLoading } = useEditList();
+  const { deleteListLoading, fetchDeleteList } = useDeleteList();
+
+  const onDeleteList = async () => {
+    if (listInfo) {
+      const response = await fetchDeleteList(listInfo.id);
+      if (response === null) {
+        navigate(`/${userStore.user.userCode}`);
+      }
+    }
+  };
 
   const onReorderIdea = useCallback((dragIndex: number, hoverIndex: number) => {
     setListInfo((previousListInfo: IListInfo | undefined) => {
@@ -54,13 +68,15 @@ const ListManagePage: React.FC<ManageListPageProps> = () => {
       setIsLoading(true);
     } else if (editListLoading) {
       setIsLoading(true);
+    } else if (deleteListLoading) {
+      setIsLoading(true);
     } else {
       setIsLoading(false);
     }
-  }, [isListInfoLoading]);
+  }, [isListInfoLoading, editListLoading, deleteListLoading]);
   return (
     <>
-      <Header title={<Trans>List Title</Trans>} />
+      <Header title={<Trans>List Title</Trans>} deleteCallback={onDeleteList} />
       <Link to={`/list/edit/${id}`}>
         <ListInfo listInfo={listInfo} />
       </Link>

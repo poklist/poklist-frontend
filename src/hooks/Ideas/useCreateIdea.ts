@@ -77,7 +77,7 @@ const useCreateIdea = (): {
         return response.data.content;
       }
     } catch (error) {
-      setShowingAlert(true, { message: JSON.parse(String(error)) });
+      setShowingAlert(true, { message: String(error) });
     } finally {
       setCreateIdeaLoading(false);
     }

@@ -31,17 +31,21 @@ export const useGetIdea = () => {
   const fetchIdeaInfo = async (params: string) => {
     setIsIdeaInfoLoading(true);
     try {
-      const response: AxiosResponse<IResponse<IIdeaResponse>> = await axios.get(`${ApiPath.ideas}/${params}`);
+      const response: AxiosResponse<IResponse<IIdeaResponse>> = await axios.get(
+        `${ApiPath.ideas}/${params}`
+      );
       if (response.data.content) {
         const coverImage =
-          response.data.content.coverImage.length > 0 ? await base64ToFile(response.data.content.coverImage) : null;
+          response.data.content.coverImage.length > 0
+            ? await base64ToFile(response.data.content.coverImage)
+            : null;
         const _ideaInfo = { ...response.data.content, coverImage };
         setIdeaInfo(_ideaInfo);
         setIsIdeaInfoLoading(false);
         return _ideaInfo;
       }
     } catch (error) {
-      setShowingAlert(true, { message: JSON.parse(String(error)) });
+      setShowingAlert(true, { message: String(error) });
     } finally {
       setIsIdeaInfoLoading(false);
     }

@@ -44,9 +44,6 @@ const ImageUploader: React.FC<IImageUploaderProps> = ({
       <IconPhoto />
       <label className="text-black-gray-03">
         <div className="h-6 w-full">
-          <Trans>上傳封面</Trans>
-        </div>
-        <div className="h-6 w-full">
           <Trans>Upload a cover</Trans>
         </div>
         <Input
@@ -55,7 +52,7 @@ const ImageUploader: React.FC<IImageUploaderProps> = ({
           onChange={(e) => onUploadFile(e)}
           className="hidden"
         />
-        ( <Trans>500x500 像素，限 JPG，最大 2MB</Trans> )
+        ( <Trans>500x500px, JPG, max 2MB</Trans> )
       </label>
     </div>
   );

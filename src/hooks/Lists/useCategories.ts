@@ -30,7 +30,7 @@ const useCategories = (): {
         setCategories(response.data.content);
       }
     } catch (error) {
-      setShowingAlert(true, { message: JSON.parse(String(error)) });
+      setShowingAlert(true, { message: String(error) });
     } finally {
       setCategoriesLoading(false);
     }
