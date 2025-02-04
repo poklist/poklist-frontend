@@ -8,7 +8,7 @@ import { base64ToFile, fileToBase64 } from '@/lib/utils';
 import useCommonStore from '@/stores/useCommonStore';
 import { IResponse } from '@/types/response';
 import { useState } from 'react';
-import useGetListInfo from './useGetList';
+import useGetList, { IIdeaPreviewInfo } from './useGetList';
 
 export interface IEditListRequest extends ICreateListRequest {
   listID: number;
@@ -16,7 +16,7 @@ export interface IEditListRequest extends ICreateListRequest {
 
 const useEditList = () => {
   const { setShowingAlert } = useCommonStore();
-  const { fetchGetListInfo } = useGetListInfo();
+  const { fetchGetListInfo } = useGetList();
 
   const [editListLoading, setEditListLoading] = useState(false);
   const [listInfo, setListInfo] = useState<IEditListRequest>();
@@ -73,12 +73,37 @@ const useEditList = () => {
     }
   };
 
+  const fetchReorderIdea = async (
+    listId: string,
+    ideaList: IIdeaPreviewInfo[]
+  ) => {
+    setEditListLoading(true);
+    const _params: { ideaOrder: number[] } = { ideaOrder: [] };
+    ideaList.forEach((idea) => {
+      _params.ideaOrder.push(Number(idea.id));
+    });
+    try {
+      const response = await axios.post<IResponse<unknown>>(
+        `${ApiPath.lists}/${listId}/reorder`,
+        _params
+      );
+      if (response.data.content) {
+        return response.data.content;
+      }
+    } catch (error) {
+      setShowingAlert(true, { message: JSON.parse(String(error)) });
+    } finally {
+      setEditListLoading(false);
+    }
+  };
+
   return {
     editListLoading,
     listInfo,
     setListInfo,
     initialListInfo,
     fetchEditList,
+    fetchReorderIdea,
   };
 };
 

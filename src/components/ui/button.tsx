@@ -11,10 +11,15 @@ const buttonVariants = cva(
       variant: {
         highlighted:
           'border border-black bg-yellow-bright-01 text-black-text-01 disabled:opacity-50',
-        warning: 'border border-red-warning-01 text-red-warning-01 disabled:opacity-50',
-        black: 'bg-black text-white disabled:bg-gray-main-03 disabled:text-black-tint-04',
-        white: 'border border-black bg-white text-black-text-01 disabled:opacity-50',
+        warning:
+          'border border-red-warning-01 text-red-warning-01 disabled:opacity-50',
+        black:
+          'bg-black text-white disabled:bg-gray-main-03 disabled:text-black-tint-04',
+        white:
+          'border border-black bg-white text-black-text-01 disabled:opacity-50',
         gray: ' bg-gray-main-03 text-black-text-01 disabled:opacity-50',
+        subActive:
+          'border border-gray-main-03 bg-gray-note-05 text-black-text-01 disabled:opacity-50',
       },
       size: {
         // sm: 'px-3',
@@ -32,7 +37,7 @@ const buttonVariants = cva(
       size: 'md',
       shape: 'roundedFull',
     },
-  },
+  }
 );
 
 export interface ButtonProps
@@ -51,7 +56,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {...props}
       />
     );
-  },
+  }
 );
 Button.displayName = 'Button';
 
