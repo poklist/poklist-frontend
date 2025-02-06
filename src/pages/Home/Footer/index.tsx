@@ -1,4 +1,5 @@
 import { FooterLink, SocialMediaLink } from '@/types/Home';
+import { Trans } from '@lingui/react';
 
 interface FooterProps {
   content: FooterLink[];
@@ -13,11 +14,11 @@ export const Footer = ({ content, socialMedia }: FooterProps) => (
           <div className="mb-8 flex flex-col items-start gap-3">
             {content.map((item) => (
               <a
-                key={item.title}
+                key={item.title.id}
                 href={item.url || '#'}
                 className="text-h2 hover:underline"
               >
-                {item.title}
+                <Trans id={item.title.id} message={item.title.message} />
               </a>
             ))}
           </div>

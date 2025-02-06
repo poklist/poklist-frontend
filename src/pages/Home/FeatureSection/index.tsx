@@ -1,11 +1,20 @@
 import { IMAGES } from '@/constants/Home/images';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import logo from '@/assets/images/logo-big.png';
 import { FeatureSectionContent, FeatureListSection } from '@/types/Home';
+import { Trans } from '@lingui/react';
+import { msg, Trans as TransMacro } from '@lingui/macro';
+import { MessageDescriptor } from '@lingui/core';
+import { useLingui } from '@lingui/react';
 
 interface FeatureSectionProps {
   content: FeatureSectionContent;
   listContent: FeatureListSection;
+}
+
+interface Category {
+  key: string;
+  label: MessageDescriptor;
 }
 
 const truncateText = (text: string, maxLength: number) => {
@@ -16,22 +25,28 @@ export const FeatureSection = ({
   content,
   listContent,
 }: FeatureSectionProps) => {
+  const { i18n } = useLingui();
   const [selectedCategory, setSelectedCategory] = useState('lifeStyle');
 
-  const categories = [
-    { key: 'lifeStyle', label: '生活風格' },
-    { key: 'foodAndDrink', label: '美食' },
-    { key: 'culture', label: '文化' },
-    { key: 'travel', label: '旅遊' },
-    { key: 'entertainment', label: '娛樂' },
-    { key: 'techAndDigital', label: '數位科技' },
-    { key: 'personalGrowth', label: '個人成長' },
-    { key: 'healthAndFitness', label: '健康與健身' },
-    { key: 'other', label: '其他' },
+  const categories: Category[] = [
+    { key: 'lifeStyle', label: msg`Life Style` },
+    { key: 'foodAndDrink', label: msg`Food & Drink` },
+    { key: 'culture', label: msg`Culture` },
+    { key: 'travel', label: msg`Travel` },
+    { key: 'entertainment', label: msg`Entertainment` },
+    { key: 'techAndDigital', label: msg`Tech & Digital` },
+    { key: 'personalGrowth', label: msg`Personal Growth` },
+    { key: 'healthAndFitness', label: msg`Health & Fitness` },
+    { key: 'other', label: msg`Other` },
   ];
 
   const selectedList =
     listContent[selectedCategory as keyof typeof listContent];
+
+  const getTranslatedAndTruncated = (descriptor: MessageDescriptor) => {
+    const translated = i18n._(descriptor.id);
+    return truncateText(String(translated), 18);
+  };
 
   return (
     <section className="relative flex flex-col gap-2 bg-yellow-bright-01 px-4 pb-6 pt-14">
@@ -82,9 +97,11 @@ export const FeatureSection = ({
       />
 
       {/* Feature Section Title */}
-      <h1 className="mt-4 text-center text-h1 font-bold">{content.title}</h1>
+      <h1 className="mt-4 text-center text-h1 font-bold">
+        <Trans id={content.title.id} />
+      </h1>
       <p className="mb-8 px-4 text-center text-h2 font-bold">
-        {content.description}
+        <Trans id={content.description.id} />
       </p>
 
       {/* List Content */}
@@ -92,39 +109,53 @@ export const FeatureSection = ({
         <div className="mb-4 flex items-center gap-1">
           <img
             src={selectedList.userAvatar}
-            alt={selectedList.user}
+            alt={selectedList.user.id}
             className="size-10 rounded-full"
           />
           <div>
-            <p className="text-t2 font-bold">{selectedList.user}</p>
+            <p className="text-t2 font-bold">
+              <Trans id={selectedList.user.id} />
+            </p>
             <div className="flex items-center gap-1">
               <p className="text-t2">{selectedList.account}</p>
               <p className="text-t2">
-                <strong>{selectedList.listCount}</strong> 名單
+                <strong>{selectedList.listCount}</strong>{' '}
+                <TransMacro>Lists</TransMacro>
               </p>
             </div>
           </div>
         </div>
-        <h2 className="pb-2 text-[22px] font-bold">{selectedList.listTitle}</h2>
+        <h2 className="pb-2 text-[22px] font-bold">
+          <Trans id={selectedList.listTitle.id} />
+        </h2>
         <div className="my-4 h-px w-full bg-[#F1F1F1]" />
         <div className="flex flex-col gap-4">
-          {selectedList.lists.map((item) => (
-            <div key={item.id} className="">
-              <div className="flex flex-row gap-1">
-                <div className="flex flex-1 flex-col gap-1">
-                  <p className="text-t1 font-bold">{item.title}</p>
-                  <p className="text-t2 text-gray-600">
-                    {truncateText(item.description, 18)}
-                  </p>
+          {selectedList.lists.map((item) => {
+            const truncatedDescription = useMemo(
+              () => getTranslatedAndTruncated(item.description),
+              [item.description.id, i18n.locale]
+            );
+
+            return (
+              <div key={item.id} className="">
+                <div className="flex flex-row gap-1">
+                  <div className="flex flex-1 flex-col gap-1">
+                    <p className="text-t1 font-bold">
+                      <Trans id={item.title.id} />
+                    </p>
+                    <p className="text-t2 text-gray-600">
+                      {truncatedDescription}
+                    </p>
+                  </div>
+                  <img
+                    src={item.image}
+                    alt={item.title.id}
+                    className="size-10 self-end"
+                  />
                 </div>
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  className="size-10 self-end"
-                />
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
@@ -138,7 +169,7 @@ export const FeatureSection = ({
               selectedCategory === key ? 'bg-bright-green' : 'bg-white'
             }`}
           >
-            {label}
+            <Trans id={label.id} />
           </button>
         ))}
       </div>

@@ -1,3 +1,5 @@
+import { MessageDescriptor } from '@lingui/core';
+
 // Hero Section Types
 export interface HeroJoinInfo {
   title: string;
@@ -16,15 +18,25 @@ export interface HeroQuestionInfo {
 }
 
 export interface HeroSectionContent {
-  joinInformation: HeroJoinInfo;
-  accountOwner: HeroAccountInfo;
-  nonCreatorQuestion: HeroQuestionInfo;
+  joinInformation: {
+    title: MessageDescriptor;
+    descriprion: MessageDescriptor;
+    buttonText: MessageDescriptor;
+  };
+  accountOwner: {
+    title: string;
+    buttonText: MessageDescriptor;
+  };
+  nonCreatorQuestion: {
+    title: MessageDescriptor;
+    url: string;
+  };
 }
 
 // Feature Section Types
 export interface FeatureSectionContent {
-  title: string;
-  description: string;
+  title: MessageDescriptor;
+  description: MessageDescriptor;
 }
 
 export interface FeatureListItem {
@@ -36,12 +48,17 @@ export interface FeatureListItem {
 
 export interface FeatureListContent {
   title: string;
-  user: string;
+  user: MessageDescriptor;
   account: string;
   userAvatar: string;
   listCount: string;
-  listTitle: string;
-  lists: FeatureListItem[];
+  listTitle: MessageDescriptor;
+  lists: {
+    id: number;
+    title: MessageDescriptor;
+    description: MessageDescriptor;
+    image: string;
+  }[];
 }
 
 export interface FeatureListSection {
@@ -50,13 +67,13 @@ export interface FeatureListSection {
 
 // Tutorial Section Types
 export interface TutorialLink {
-  title: string;
+  title: MessageDescriptor;
   url: string;
 }
 
 // Footer Section Types
 export interface FooterLink {
-  title: string;
+  title: MessageDescriptor;
   url: string;
 }
 

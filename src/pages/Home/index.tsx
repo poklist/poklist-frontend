@@ -7,16 +7,24 @@ import { TutorialSection } from './TutorialSection';
 import logo from '@/assets/images/logo-big.png';
 import MobileContainer from '@/components/ui/containers/MobileContainer';
 import { GoogleOAuthProvider } from '@react-oauth/google';
-import * as zhContent from '@/constants/Home/index.zh';
-import * as enContent from '@/constants/Home/index.en';
-
-import { useState } from 'react';
-
-type Language = 'zh' | 'en';
+import {
+  HERO_SECTION,
+  FEATURE_SECTION,
+  LIST_SECTION,
+  TUTORIAL_SECTION,
+  FOOTER_SECTION,
+  SOCIAL_MEDIA,
+} from '@/constants/Home/index.en';
 
 function HomeContent() {
-  const [currentLanguage, setCurrentLanguage] = useState<Language>('zh');
-  const content = currentLanguage === 'zh' ? zhContent : enContent;
+  const content = {
+    HERO_SECTION,
+    FEATURE_SECTION,
+    LIST_SECTION,
+    TUTORIAL_SECTION,
+    FOOTER_SECTION,
+    SOCIAL_MEDIA,
+  };
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });

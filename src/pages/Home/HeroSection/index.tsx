@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react';
 import axios from '@/lib/axios';
 import { IResponse } from '@/types/response';
 import { User } from '@/types/User';
+import { Trans } from '@lingui/react';
 
 interface HeroSectionProps {
   content: HeroSectionContent;
@@ -52,7 +53,6 @@ export const HeroSection = ({ content }: HeroSectionProps) => {
 
   useEffect(() => {
     if (showGoogleLogin) {
-      // 強制重新初始化 Google One Tap
       const script = document.createElement('script');
       script.src = 'https://accounts.google.com/gsi/client';
       script.async = true;
@@ -66,7 +66,6 @@ export const HeroSection = ({ content }: HeroSectionProps) => {
   }, [showGoogleLogin]);
 
   const handleSignIn = () => {
-    // 如果已經登入且有 userCode，則導向該用戶的頁面
     if (isLoggedIn && user?.userCode) {
       navigate(`/${user.userCode}`);
     } else {
@@ -81,28 +80,37 @@ export const HeroSection = ({ content }: HeroSectionProps) => {
           <div className="flex flex-col gap-4">
             <div className="flex flex-col">
               <h2 className="text-h2 font-bold text-black-text-01">
-                {content.joinInformation.title}
+                <Trans
+                  id={content.joinInformation.title.id}
+                  message={content.joinInformation.title.message}
+                />
               </h2>
               <p className="text-t1 text-black-text-01">
-                {content.joinInformation.descriprion}
+                <Trans
+                  id={content.joinInformation.descriprion.id}
+                  message={content.joinInformation.descriprion.message}
+                />
               </p>
             </div>
             <button
               onClick={() => {}}
               className="w-full rounded-lg border border-black bg-yellow-bright-01 px-8 py-2 text-h2 font-bold text-black-text-01 md:w-auto"
             >
-              {content.joinInformation.buttonText}
+              <Trans
+                id={content.joinInformation.buttonText.id}
+                message={content.joinInformation.buttonText.message}
+              />
             </button>
           </div>
           <div className="flex flex-col gap-2">
-            <p className="text-h2 font-bold text-black-text-01">
-              {content.accountOwner.title}
-            </p>
             <button
               onClick={handleSignIn}
               className="w-full rounded-lg border border-white bg-black px-8 py-2 text-[17px] font-bold text-white md:w-auto"
             >
-              {content.accountOwner.buttonText}
+              <Trans
+                id={content.accountOwner.buttonText.id}
+                message={content.accountOwner.buttonText.message}
+              />
             </button>
           </div>
           <div
@@ -112,7 +120,10 @@ export const HeroSection = ({ content }: HeroSectionProps) => {
             }
           >
             <h2 className="text-h2 font-bold">
-              {content.nonCreatorQuestion.title}
+              <Trans
+                id={content.nonCreatorQuestion.title.id}
+                message={content.nonCreatorQuestion.title.message}
+              />
             </h2>
             <ChevronRight className="ml-3 h-5 w-5" />
           </div>
