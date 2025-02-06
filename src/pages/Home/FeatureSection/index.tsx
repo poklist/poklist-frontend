@@ -1,11 +1,12 @@
 import { IMAGES } from '@/constants/Home/images';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef } from 'react';
 import logo from '@/assets/images/logo-big.png';
 import { FeatureSectionContent, FeatureListSection } from '@/types/Home';
 import { Trans } from '@lingui/react';
 import { msg, Trans as TransMacro } from '@lingui/macro';
 import { MessageDescriptor } from '@lingui/core';
 import { useLingui } from '@lingui/react';
+import { Language } from '@/enums/index.enum';
 
 interface FeatureSectionProps {
   content: FeatureSectionContent;
@@ -17,8 +18,22 @@ interface Category {
   label: MessageDescriptor;
 }
 
-const truncateText = (text: string, maxLength: number) => {
-  return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
+const truncateText = (text: string, containerWidth: number, locale: string) => {
+  // 根據語言設置不同的字符寬度
+  const charWidth = locale === Language.ZH_TW ? 18 : 10; // 中文字符寬度較大
+  // 根據容器寬度計算可顯示的字符數
+  const maxChars = Math.floor((containerWidth - 40) / charWidth); // 減去一些 padding 和 margin
+
+  // 設置最小和最大字符數限制
+  const minChars = locale === Language.ZH_TW ? 18 : 35;
+  const maxAllowedChars = locale === Language.ZH_TW ? 20 : 40;
+
+  // 根據計算結果和限制來決定最終的字符數
+  const finalMaxChars = Math.min(Math.max(maxChars, minChars), maxAllowedChars);
+
+  return text.length > finalMaxChars
+    ? text.slice(0, finalMaxChars) + '...'
+    : text;
 };
 
 export const FeatureSection = ({
@@ -27,6 +42,7 @@ export const FeatureSection = ({
 }: FeatureSectionProps) => {
   const { i18n } = useLingui();
   const [selectedCategory, setSelectedCategory] = useState('lifeStyle');
+  const descriptionRefs = useRef<(HTMLParagraphElement | null)[]>([]);
 
   const categories: Category[] = [
     { key: 'lifeStyle', label: msg`Life Style` },
@@ -43,9 +59,13 @@ export const FeatureSection = ({
   const selectedList =
     listContent[selectedCategory as keyof typeof listContent];
 
-  const getTranslatedAndTruncated = (descriptor: MessageDescriptor) => {
+  const getTranslatedAndTruncated = (
+    descriptor: MessageDescriptor,
+    index: number
+  ) => {
     const translated = i18n._(descriptor.id);
-    return truncateText(String(translated), 18);
+    const containerWidth = descriptionRefs.current[index]?.offsetWidth || 0;
+    return truncateText(String(translated), containerWidth, i18n.locale);
   };
 
   return (
@@ -130,9 +150,9 @@ export const FeatureSection = ({
         </h2>
         <div className="my-4 h-px w-full bg-[#F1F1F1]" />
         <div className="flex flex-col gap-4">
-          {selectedList.lists.map((item) => {
+          {selectedList.lists.map((item, index) => {
             const truncatedDescription = useMemo(
-              () => getTranslatedAndTruncated(item.description),
+              () => getTranslatedAndTruncated(item.description, index),
               [item.description.id, i18n.locale]
             );
 
