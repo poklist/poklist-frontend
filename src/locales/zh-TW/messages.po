@@ -40,12 +40,8 @@ msgid "Upload a cover"
 msgstr ""
 
 #: src/pages/Error/index.tsx
-#~ msgid "Oops something is wrong!"
-#~ msgstr ""
-
-#: src/pages/Error/index.tsx
-msgid "哎呀！網頁又在耍脾氣啦！"
-msgstr ""
+msgid "Oops something is wrong!"
+msgstr "哎呀！網頁又在耍脾氣啦！"
 
 #: src/pages/Idea/Create/Form/index.tsx
 #: src/pages/Lists/Edit/Form/index.tsx

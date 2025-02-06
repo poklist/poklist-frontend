@@ -20,7 +20,7 @@ export default function ErrorPage() {
             <div className="flex flex-col items-center gap-6">
               <img src={mascotError} alt="Error Mascot" className="h-[125px]" />
               <h2 className="text-center text-[17px] font-bold text-black-text-01">
-                <Trans>哎呀！網頁又在耍脾氣啦！</Trans>
+                <Trans>Oops something is wrong!</Trans>
               </h2>
             </div>
           </div>
