@@ -2,9 +2,29 @@ import { GoogleLogin } from '@react-oauth/google';
 import { Trans } from '@lingui/macro';
 import { LoginDrawerProps } from '@/types/Home';
 import { X } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 export const LoginDrawer = ({ isOpen, onClose, onLogin }: LoginDrawerProps) => {
   if (!isOpen) return null;
+
+  const [buttonWidth, setButtonWidth] = useState(376);
+
+  useEffect(() => {
+    const updateWidth = () => {
+      if (window.innerWidth <= 768) {
+        // md breakpoint
+        // 移動端: 螢幕寬度 - (2 * 12px padding)
+        setButtonWidth(window.innerWidth - 24);
+      } else {
+        // 桌面端: 400px - (2 * 12px padding)
+        setButtonWidth(376);
+      }
+    };
+
+    updateWidth();
+    window.addEventListener('resize', updateWidth);
+    return () => window.removeEventListener('resize', updateWidth);
+  }, []);
 
   return (
     <div
@@ -27,7 +47,7 @@ export const LoginDrawer = ({ isOpen, onClose, onLogin }: LoginDrawerProps) => {
             <X size={20} />
           </button>
         </div>
-        <div className="p-3">
+        <div className="flex justify-center p-3">
           <GoogleLogin
             onSuccess={onLogin}
             onError={() => {
@@ -40,7 +60,7 @@ export const LoginDrawer = ({ isOpen, onClose, onLogin }: LoginDrawerProps) => {
             size="large"
             text="signin_with"
             shape="rectangular"
-            width="100%"
+            width={buttonWidth}
           />
         </div>
       </div>
