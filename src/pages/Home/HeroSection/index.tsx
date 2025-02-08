@@ -8,12 +8,14 @@ import axios from '@/lib/axios';
 import { IResponse } from '@/types/response';
 import { Trans } from '@lingui/react';
 import { LoginDrawer } from '../LoginDrawer';
+import { ErrorDialog } from '../ErrorDialog';
 import '@/types/global';
 
 export const HeroSection = ({ content }: HeroSectionProps) => {
   const navigate = useNavigate();
   const { login, setUser, isLoggedIn, user } = useUserStore();
   const [showCustomLogin, setShowCustomLogin] = useState(false);
+  const [showErrorDialog, setShowErrorDialog] = useState(false);
   const scriptRef = useRef<HTMLScriptElement | null>(null);
 
   const handleGoogleLogin = async (response: CredentialResponse) => {
@@ -30,8 +32,8 @@ export const HeroSection = ({ content }: HeroSectionProps) => {
       setShowCustomLogin(false);
       navigate(`/${userData.userCode}`);
     } catch (error) {
-      console.error('Login failed:', error);
       setShowCustomLogin(false);
+      setShowErrorDialog(true);
     }
   };
 
@@ -83,7 +85,15 @@ export const HeroSection = ({ content }: HeroSectionProps) => {
         isOpen={showCustomLogin}
         onClose={() => setShowCustomLogin(false)}
         onLogin={handleGoogleLogin}
+        onError={() => setShowErrorDialog(true)}
       />
+
+      <ErrorDialog
+        open={showErrorDialog}
+        onOpenChange={setShowErrorDialog}
+        onClose={() => setShowCustomLogin(false)}
+      />
+
       <section className="relative flex flex-1 items-center justify-center">
         <div className="z-10 flex w-full justify-center px-8 pb-10 pt-24">
           <div className="flex w-full flex-col gap-6">

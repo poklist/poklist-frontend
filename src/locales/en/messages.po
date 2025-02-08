@@ -415,6 +415,18 @@ msgstr "Privacy"
 msgid "Collection Notice"
 msgstr "Collection Notice"
 
+#: src/constants/Home/index.en.ts
+msgid "Login Error - Creator Account Not Found"
+msgstr "Login Error - Creator Account Not Found"
+
+#: src/constants/Home/index.en.ts
+msgid "Only approved and verified “Creator Accounts” can log in and create lists. If you have any questions, please contact us."
+msgstr "Only approved and verified “Creator Accounts” can log in and create lists. If you have any questions, please contact us."
+
+#: src/constants/Home/index.en.ts
+msgid "Contact us"
+msgstr "Contact us"
+
 #: src/pages/Create/index.tsx
 #~ msgid "欸，標題不能留空喔！"
 #~ msgstr "Hey, the title can’t be left empty!"

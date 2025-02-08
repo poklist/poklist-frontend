@@ -333,3 +333,8 @@ export const SOCIAL_MEDIA = [
     url: '#',
   },
 ];
+export const ERROR_DIALOG = {
+  title: msg`Login Error - Creator Account Not Found`,
+  description: msg`Only approved and verified “Creator Accounts” can log in and create lists. If you have any questions, please contact us.`,
+  buttonText: msg`Contact us`,
+};
