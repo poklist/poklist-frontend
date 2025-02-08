@@ -34,7 +34,7 @@ export const RadioComponent: React.FC<IRadioProps> = ({
       className={cn(
         ``,
         { '': type === RadioType.DEFAULT, 'radio-button': type === RadioType.BUTTON },
-        className
+        className,
       )}
       {...props}
     >

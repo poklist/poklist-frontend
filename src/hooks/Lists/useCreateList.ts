@@ -2,7 +2,7 @@ import ApiPath from '@/config/apiPath';
 import axios from '@/lib/axios';
 import { fileToBase64 } from '@/lib/utils';
 import useCommonStore from '@/stores/useCommonStore';
-import { AxiosResponse } from 'axios';
+import { IResponse } from '@/types/response';
 import { useState } from 'react';
 
 interface IListOwnerInfo {
@@ -17,7 +17,7 @@ export interface ICreateListRequest {
   description: string;
   externalLink: string;
   coverImage: File | null;
-  categoryID: string;
+  categoryID: number;
 }
 
 export interface ICreateListResponse {
@@ -39,7 +39,9 @@ const useCreateList = (): {
   createListLoading: boolean;
   listData: ICreateListRequest;
   setListData: React.Dispatch<React.SetStateAction<ICreateListRequest>>;
-  fetchPostCreateList: () => Promise<ICreateListResponse | undefined>;
+  fetchCreateList: (
+    listForm: ICreateListRequest
+  ) => Promise<ICreateListResponse | undefined>;
 } => {
   const { setShowingAlert } = useCommonStore();
 
@@ -48,7 +50,7 @@ const useCreateList = (): {
     description: '',
     externalLink: '',
     coverImage: null,
-    categoryID: '',
+    categoryID: 0,
   });
 
   const resetListData = () => {
@@ -57,31 +59,36 @@ const useCreateList = (): {
       description: '',
       externalLink: '',
       coverImage: null,
-      categoryID: '',
+      categoryID: 0,
     });
   };
 
   const [createListLoading, setCreateListLoading] = useState(false);
 
-  const fetchPostCreateList = async () => {
+  const fetchCreateList = async (listForm: ICreateListRequest) => {
     setCreateListLoading(true);
+    setListData(listForm);
     const _params = {
-      title: listData.title,
-      description: listData.description,
-      externalLink: listData.externalLink,
-      coverImage: listData.coverImage ? await fileToBase64(listData.coverImage) : null,
-      categoryID: listData.categoryID,
+      title: listForm.title,
+      description: listForm.description,
+      externalLink: listForm.externalLink,
+      coverImage: listForm.coverImage
+        ? await fileToBase64(listForm.coverImage)
+        : null,
+      categoryID: listForm.categoryID,
     };
 
     try {
-      const response: AxiosResponse<ICreateListResponse> = await axios.post(ApiPath.lists, _params);
-      if (response) {
+      const response = await axios.post<IResponse<ICreateListResponse>>(
+        ApiPath.lists,
+        _params
+      );
+      if (response.data.content) {
         resetListData();
-        const { data } = response;
-        return data;
+        return response.data.content;
       }
     } catch (error) {
-      setShowingAlert(true, { message: JSON.parse(String(error)) });
+      setShowingAlert(true, { message: String(error) });
     } finally {
       setCreateListLoading(false);
     }
@@ -91,7 +98,7 @@ const useCreateList = (): {
     createListLoading,
     listData,
     setListData,
-    fetchPostCreateList,
+    fetchCreateList,
   };
 };
 export default useCreateList;

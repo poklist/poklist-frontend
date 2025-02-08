@@ -13,7 +13,7 @@ instance.interceptors.request.use(
   async function (config) {
     // 從 localStorage 取得 token
     const { accessToken } = userStore.getState();
-    config.headers['Authorization'] = `Bearer ${accessToken}`;
+    config.headers.Authorization = `Bearer ${accessToken}`;
     // const storage = getLocalStorage(LocalStorageKey.USER_INFO);
     // if (storage?.state?.user?.token) {
     //   config.headers['x-user-token'] = storage.state.user.token;

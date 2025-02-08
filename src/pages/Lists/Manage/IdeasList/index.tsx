@@ -1,15 +1,31 @@
 import { Button } from '@/components/ui/button';
 import IconClose from '@/components/ui/icons/CloseIcon';
 import { IIdeaPreviewInfo } from '@/hooks/Lists/useGetList';
+import { cn } from '@/lib/utils';
+import useUserStore from '@/stores/useUserStore';
 import { Trans } from '@lingui/macro';
 import React, { useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
+import DraggableIdeaRow from './Idea';
 
 interface IdeaListProps {
   // Add any props you need for the page
-  ideaList: IIdeaPreviewInfo[] | undefined;
+  ideaList?: IIdeaPreviewInfo[];
+  reorderCallback: (dragIndex: number, hoverIndex: number) => void;
+  confirmReorderCallback: () => void;
 }
 
-const IdeaListSection: React.FC<IdeaListProps> = ({ ideaList }) => {
+const IdeaListSection: React.FC<IdeaListProps> = ({
+  ideaList,
+  reorderCallback,
+  confirmReorderCallback,
+}) => {
+  const userStore = useUserStore();
+  const onReorderIdea = (dragIndex: number, hoverIndex: number) => {
+    if (!ideaList) return;
+    reorderCallback(dragIndex, hoverIndex);
+  };
+
   const footerRef = useRef<HTMLDivElement>(null);
 
   const footerPosition = () => {
@@ -23,39 +39,43 @@ const IdeaListSection: React.FC<IdeaListProps> = ({ ideaList }) => {
 
   return (
     <>
-      <div className="flex flex-col gap-2">
-        {ideaList?.map(idea => (
-          <div className="border border-l-gray-main-03 bg-gray-note-05 py-2 px-4">
-            <div className="flex justify-between items-center gap-2">
-              <div className="flex flex-col">
-                <div className="text-black-text-01 font-semibold text-t1">{idea.title}</div>
-                <div className="line-clamp-1 text-t3 text-black-tint-04">{idea.description}</div>
-              </div>
-              {idea.coverImage && (
-                <img
-                  src={idea.coverImage}
-                  className="w-10 h-10 rounded border-black-tint-04 border"
-                />
-              )}
-            </div>
-          </div>
+      <div className={cn('flex flex-col gap-2')}>
+        {ideaList?.map((idea, index) => (
+          <DraggableIdeaRow
+            idea={idea}
+            key={`idea-${idea.id}`}
+            index={index}
+            hoverCallback={onReorderIdea}
+          />
         ))}
       </div>
       <div
         ref={footerRef}
-        className="border-t-gray-main-03 border-t fixed flex px-4 py-2 w-dvw justify-between left-0 z-10"
+        className="fixed left-0 z-10 flex w-dvw justify-between border-t border-t-gray-main-03 bg-white px-4 py-2"
       >
         <div className="flex items-center gap-2">
-          <Button aria-label="Previous" className="p-0 h-auto rounded-full bg-inherit">
+          <Link
+            aria-label="Previous"
+            className="h-auto rounded-full bg-inherit p-0"
+            to={`/${userStore.user.userCode}`}
+          >
             <IconClose />
-          </Button>
+          </Link>
           <Trans>Edit List</Trans>
         </div>
         <div className="flex items-center gap-4">
-          <Button disabled variant="black" shape="rounded8px">
+          <Button
+            onClick={() => confirmReorderCallback()}
+            variant="subActive"
+            shape="rounded8px"
+          >
             <Trans>Save New Order</Trans>
           </Button>
-          <Button variant="black" shape="rounded8px">
+          <Button
+            onClick={() => confirmReorderCallback()}
+            variant="black"
+            shape="rounded8px"
+          >
             <Trans>Done</Trans>
           </Button>
         </div>

@@ -10,13 +10,14 @@ import {
   urlPreview,
 } from '@/lib/utils';
 import useUserStore from '@/stores/useUserStore';
+import { IResponse } from '@/types/response';
 import { User } from '@/types/User';
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { HeroSectionSkeleton } from './HeroSectionSkeleton';
 
 const HeroSection: React.FC = () => {
-  const { id } = useParams();
+  const { code } = useParams();
   const navigate = useNavigate();
   const {
     isLoggedIn,
@@ -26,8 +27,8 @@ const HeroSection: React.FC = () => {
     setCurrentUser,
   } = useUserStore();
   const { openDrawer } = useDrawer();
-  // const [viewUser, setViewUser] = useState<User>(emptyUser);
   const [drawerContent, setDrawerContent] = useState<React.ReactNode>(null);
+  const [isFollowing, setIsFollowing] = useState<boolean>(false);
 
   const linkCount = useMemo(() => {
     if (currentUser.socialLinks !== undefined) {
@@ -37,19 +38,24 @@ const HeroSection: React.FC = () => {
     }
   }, [currentUser]);
 
-  const isMyPage = id?.toString() === me.id.toString();
-  let isFollowing = isLoggedIn && currentUser.isFollowing === true;
+  const isMyPage = code?.toString() === me.userCode.toString();
   const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    setIsFollowing(isLoggedIn && currentUser.isFollowing === true);
+  }, [isLoggedIn, currentUser.isFollowing]);
 
   const follow = () => {
     if (!isLoggedIn) {
       navigate('/login');
+      return;
     }
+    // FUTURE: refactor the follow/unfollow API
     axios
       .post('/follow', null, { params: { userID: currentUser.id } })
       .then(() => {
         // TODO: success message
-        isFollowing = true;
+        setIsFollowing(true);
       })
       .catch(() => {
         // TODO: error message
@@ -61,7 +67,7 @@ const HeroSection: React.FC = () => {
       .post('/unfollow', null, { params: { userID: currentUser.id } })
       .then(() => {
         // TODO: success message
-        isFollowing = false;
+        setIsFollowing(false);
       })
       .catch(() => {
         // TODO: error message
@@ -72,14 +78,17 @@ const HeroSection: React.FC = () => {
     navigate('/user/edit');
   };
 
-  const getUser = async (id: string) => {
-    axios.get<User>(`/users/${id}`).then((res) => {
-      setCurrentUser({ ...res.data }); // deep copy
-      if (res.data.id === me.id) {
-        setUser(res.data);
-      }
-      setIsLoading(false);
-    });
+  const getUser = async (code: string) => {
+    if (!code) return;
+    const res = await axios.get<IResponse<User>>(`/${code}/info`);
+    if (!res.data.content) {
+      throw new Error('No user data');
+    }
+    setCurrentUser({ ...res.data.content }); // deep copy
+    if (res.data.content?.id === me.id) {
+      setUser(res.data.content);
+    }
+    setIsLoading(false);
   };
 
   // FUTURE: refactor the drawer content because we may have more than one drawer
@@ -126,10 +135,10 @@ const HeroSection: React.FC = () => {
   };
 
   useEffect(() => {
-    if (id != undefined) {
-      getUser(id);
+    if (code !== undefined) {
+      getUser(code);
     }
-  }, [id]);
+  }, [code]);
 
   if (isLoading) {
     return <HeroSectionSkeleton />;
