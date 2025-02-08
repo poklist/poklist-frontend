@@ -7,6 +7,14 @@ export interface LoginDrawerProps {
   isOpen: boolean;
   onClose: () => void;
   onLogin: (response: CredentialResponse) => void;
+  onError: () => void;
+}
+
+// ErrorDialog Types
+export interface ErrorDialogProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  onClose: () => void;
 }
 
 // HeroSection Types

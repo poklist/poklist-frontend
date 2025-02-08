@@ -2,13 +2,7 @@ import { GoogleLogin } from '@react-oauth/google';
 import { Trans } from '@lingui/macro';
 import { X } from 'lucide-react';
 import { useEffect, useState } from 'react';
-
-interface LoginDrawerProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onLogin: (response: any) => void;
-  onError: () => void;
-}
+import { LoginDrawerProps } from '@/types/Home';
 
 export const LoginDrawer = ({
   isOpen,

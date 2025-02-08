@@ -1,12 +1,7 @@
 import { Trans } from '@lingui/react';
 import { X } from 'lucide-react';
 import { ERROR_DIALOG } from '@/constants/Home/index.en';
-
-interface ErrorDialogProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  onClose: () => void;
-}
+import { ErrorDialogProps } from '@/types/Home';
 
 export const ErrorDialog = ({
   open,
