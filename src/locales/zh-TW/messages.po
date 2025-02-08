@@ -471,6 +471,10 @@ msgstr "名單"
 msgid "Sign In"
 msgstr "登入"
 
+#: src/pages/Home/LoginDrawer/index.tsx
+msgid "Sign in to Poklist with Google"
+msgstr "使用 Google 帳號登入 Poklist"
+
 #: src/pages/Idea/Create/Form/index.tsx
 #: src/pages/Lists/Form/index.tsx
 msgid "Your edits will be lost if you cancel!"

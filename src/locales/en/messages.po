@@ -76,10 +76,6 @@ msgid "Sign up"
 msgstr "Sign up"
 
 #: src/constants/Home/index.en.ts
-msgid "Creator Account"
-msgstr "Creator Account"
-
-#: src/constants/Home/index.en.ts
 msgid "Creator Account Login"
 msgstr "Creator Account Login"
 
@@ -474,6 +470,10 @@ msgstr "Lists"
 #: src/pages/Home/Header/index.tsx
 msgid "Sign In"
 msgstr "Sign In"
+
+#: src/pages/Home/LoginDrawer/index.tsx
+msgid "Sign in to Poklist with Google"
+msgstr "Sign in to Poklist with Google"
 
 #: src/pages/Idea/Create/Form/index.tsx
 #: src/pages/Lists/Form/index.tsx

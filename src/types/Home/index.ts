@@ -1,6 +1,24 @@
 import { MessageDescriptor } from '@lingui/core';
+import { CredentialResponse } from '@react-oauth/google';
+import { User } from '../User';
 
-// Hero Section Types
+// LoginDrawer Types
+export interface LoginDrawerProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onLogin: (response: CredentialResponse) => void;
+}
+
+// HeroSection Types
+export interface HeroSectionProps {
+  content: HeroSectionContent;
+}
+
+export interface LoginInfo {
+  accessToken: string;
+  user: User;
+}
+
 export interface HeroJoinInfo {
   title: string;
   descriprion: string;
