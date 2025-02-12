@@ -32,7 +32,9 @@ const useCreateIdea = (): {
   ) => Promise<ICreateIdeaResponse | undefined>;
 } => {
   const { setShowingAlert } = useCommonStore();
+
   const [createIdeaLoading, setCreateIdeaLoading] = useState(false);
+
   const [ideaData, setIdeaData] = useState<ICreateIdeaRequest>({
     listID: 0,
     title: '',

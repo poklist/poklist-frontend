@@ -1,9 +1,11 @@
+import useIsMobile from '@/hooks/useIsMobile';
+import router from '@/router';
 import { Theme } from '@radix-ui/themes';
 import '@radix-ui/themes/styles.css';
 import { RouterProvider } from 'react-router-dom';
-import router from './router';
 
 function App() {
+  useIsMobile();
   return (
     <Theme>
       <RouterProvider router={router} />

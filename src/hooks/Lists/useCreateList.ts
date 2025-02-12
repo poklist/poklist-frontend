@@ -45,6 +45,8 @@ const useCreateList = (): {
 } => {
   const { setShowingAlert } = useCommonStore();
 
+  const [createListLoading, setCreateListLoading] = useState(false);
+
   const [listData, setListData] = useState<ICreateListRequest>({
     title: '',
     description: '',
@@ -62,8 +64,6 @@ const useCreateList = (): {
       categoryID: 0,
     });
   };
-
-  const [createListLoading, setCreateListLoading] = useState(false);
 
   const fetchCreateList = async (listForm: ICreateListRequest) => {
     setCreateListLoading(true);

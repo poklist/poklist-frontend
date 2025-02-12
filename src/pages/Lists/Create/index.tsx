@@ -1,6 +1,6 @@
 import useCreateList, { ICreateListRequest } from '@/hooks/Lists/useCreateList';
-import ListForm from '@/pages/Lists/Component/Form';
-import { Header } from '@/pages/Lists/Component/Header';
+import ListForm from '@/pages/Lists/Components/Form';
+import { Header } from '@/pages/Lists/Components/Header';
 import useCommonStore from '@/stores/useCommonStore';
 import useUserStore from '@/stores/useUserStore';
 import { Trans } from '@lingui/macro';
@@ -44,7 +44,7 @@ const CreatePage: React.FC<CreatePageProps> = () => {
   return (
     // Your component code here
     <>
-      <Header title={<Trans>List Title</Trans>} />
+      <Header title={<Trans>Idea List</Trans>} />
       <div className="mx-4 mt-6 flex flex-col gap-6">
         <ListForm
           completedCallback={onCreateList}
