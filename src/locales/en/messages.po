@@ -399,6 +399,10 @@ msgstr "Only approved and verified “Creator Accounts” can log in and create 
 msgid "Contact us"
 msgstr "Contact us"
 
+#: src/pages/Error/index.tsx
+msgid "Oops something is wrong!"
+msgstr "Oops something is wrong!"
+
 #: src/pages/Home/FeatureSection/index.tsx
 msgid "Life Style"
 msgstr "Life Style"
