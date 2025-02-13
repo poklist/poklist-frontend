@@ -1,11 +1,14 @@
 import ApiPath from '@/config/apiPath';
-import { ICreateListRequest, ICreateListResponse } from '@/hooks/Lists/useCreateList';
+import {
+  ICreateListRequest,
+  ICreateListResponse,
+} from '@/hooks/Lists/useCreateList';
 import axios from '@/lib/axios';
-import { base64ToFile, fileToBase64 } from '@/lib/utils';
+import { fileToBase64 } from '@/lib/utils';
 import useCommonStore from '@/stores/useCommonStore';
-import { AxiosResponse } from 'axios';
+import { IResponse } from '@/types/response';
 import { useState } from 'react';
-import useGetListInfo from './useGetList';
+import { IIdeaPreviewInfo } from './useGetList';
 
 export interface IEditListRequest extends ICreateListRequest {
   listID: number;
@@ -13,36 +16,16 @@ export interface IEditListRequest extends ICreateListRequest {
 
 const useEditList = () => {
   const { setShowingAlert } = useCommonStore();
-  const { fetchGetListInfo } = useGetListInfo();
 
   const [editListLoading, setEditListLoading] = useState(false);
-  const [listInfo, setListInfo] = useState<IEditListRequest>();
 
-  const initialListInfo = async (listID: string) => {
-    setEditListLoading(true);
-    const response = await fetchGetListInfo(listID);
-    if (response) {
-      const coverImage =
-        response.coverImage.length > 0 ? await base64ToFile(response.coverImage) : null;
-      setListInfo({
-        listID: response.id,
-        title: response.title,
-        description: response.description,
-        externalLink: response.externalLink,
-        coverImage,
-        categoryID: response.categoryID,
-      });
-    }
-    setEditListLoading(false);
-  };
-
-  const fetchEditList = async (editListRequest: Omit<IEditListRequest, 'listID'>) => {
-    if (!listInfo) {
-      return;
-    }
+  const fetchEditList = async (
+    listID: number,
+    editListRequest: ICreateListRequest
+  ) => {
     setEditListLoading(true);
     const _params = {
-      listID: listInfo.listID,
+      listID,
       title: editListRequest.title,
       description: editListRequest.description,
       externalLink: editListRequest.externalLink,
@@ -52,16 +35,39 @@ const useEditList = () => {
       categoryID: editListRequest.categoryID,
     };
     try {
-      const response: AxiosResponse<ICreateListResponse> = await axios.put(
-        `${ApiPath.lists}/${listInfo?.listID}`,
-        _params,
+      const response = await axios.put<IResponse<ICreateListResponse>>(
+        `${ApiPath.lists}/${_params.listID}`,
+        _params
       );
-      if (response) {
-        const { data } = response;
-        return data;
+      if (response.data.content) {
+        return response.data.content;
       }
     } catch (error) {
-      setShowingAlert(true, { message: JSON.parse(String(error)) });
+      setShowingAlert(true, { message: String(error) });
+    } finally {
+      setEditListLoading(false);
+    }
+  };
+
+  const fetchReorderIdea = async (
+    listID: string,
+    ideaList: IIdeaPreviewInfo[]
+  ) => {
+    setEditListLoading(true);
+    const _params: { ideaOrder: number[] } = { ideaOrder: [] };
+    ideaList.forEach((idea) => {
+      _params.ideaOrder.push(Number(idea.id));
+    });
+    try {
+      const response = await axios.post<IResponse<unknown>>(
+        `${ApiPath.lists}/${listID}/reorder`,
+        _params
+      );
+      if (response.data.content) {
+        return response.data.content;
+      }
+    } catch (error) {
+      setShowingAlert(true, { message: String(error) });
     } finally {
       setEditListLoading(false);
     }
@@ -69,10 +75,8 @@ const useEditList = () => {
 
   return {
     editListLoading,
-    listInfo,
-    setListInfo,
-    initialListInfo,
     fetchEditList,
+    fetchReorderIdea,
   };
 };
 

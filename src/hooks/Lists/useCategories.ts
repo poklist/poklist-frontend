@@ -2,7 +2,7 @@ import ApiPath from '@/config/apiPath';
 import { Categories } from '@/enums/Lists/index.enum';
 import axios from '@/lib/axios';
 import useCommonStore from '@/stores/useCommonStore';
-import { AxiosResponse } from 'axios';
+import { IResponse } from '@/types/response';
 import { useState } from 'react';
 
 export interface ICategory {
@@ -23,11 +23,14 @@ const useCategories = (): {
     setCategoriesLoading(true);
     try {
       setCategoriesLoading(true);
-      const response: AxiosResponse<ICategory[]> = await axios.get<ICategory[]>(ApiPath.categories);
-      const { data } = response;
-      setCategories(data);
+      const response = await axios.get<IResponse<ICategory[]>>(
+        ApiPath.categories
+      );
+      if (response.data.content) {
+        setCategories(response.data.content);
+      }
     } catch (error) {
-      setShowingAlert(true, { message: JSON.parse(String(error)) });
+      setShowingAlert(true, { message: String(error) });
     } finally {
       setCategoriesLoading(false);
     }

@@ -13,14 +13,14 @@ instance.interceptors.request.use(
   async function (config) {
     // 從 localStorage 取得 token
     const { accessToken } = userStore.getState();
-    config.headers['Authorization'] = `Bearer ${accessToken}`;
+    config.headers.Authorization = `Bearer ${accessToken}`;
     // const storage = getLocalStorage(LocalStorageKey.USER_INFO);
     // if (storage?.state?.user?.token) {
     //   config.headers['x-user-token'] = storage.state.user.token;
     // }
     return config;
   },
-  error => {
+  (error) => {
     const { setShowingAlert } = commonStore.getState();
     console.error(error);
     setShowingAlert(true, {
@@ -29,7 +29,7 @@ instance.interceptors.request.use(
     removeLocalStorage(LocalStorageKey.USER_INFO);
     window.location.href = '/';
     return Promise.reject(error);
-  },
+  }
 );
 
 export default instance;

@@ -2,7 +2,7 @@ import ApiPath from '@/config/apiPath';
 import { Categories } from '@/enums/Lists/index.enum';
 import axios from '@/lib/axios';
 import useCommonStore from '@/stores/useCommonStore';
-import { AxiosResponse } from 'axios';
+import { IResponse } from '@/types/response';
 import { useState } from 'react';
 
 export interface IListInfo {
@@ -27,35 +27,44 @@ export interface IIdeaPreviewInfo {
   coverImage: string;
 }
 
-const useGetListInfo = (): {
-  listLoading: boolean;
+const useGetList = (): {
+  isListInfoLoading: boolean;
   listInfo: IListInfo | undefined;
   setListInfo: React.Dispatch<React.SetStateAction<IListInfo | undefined>>;
-  fetchGetListInfo: (listId: string) => Promise<IListInfo | undefined>;
+  fetchGetListInfo: (listID: string) => Promise<IListInfo | undefined>;
 } => {
   const { setShowingAlert } = useCommonStore();
-  const [listLoading, setListLoading] = useState(false);
+  const [isListInfoLoading, setIsListInfoLoading] = useState(false);
   const [listInfo, setListInfo] = useState<IListInfo>();
 
-  const fetchGetListInfo = async (listId: string) => {
-    setListLoading(true);
+  const fetchGetListInfo = async (
+    listID: string,
+    offset?: number,
+    limited?: number
+  ) => {
+    setIsListInfoLoading(true);
+    const _offset = offset || 0;
+    const _limited = limited || 0;
     try {
-      const response: AxiosResponse<IListInfo> = await axios.get(`${ApiPath.lists}/${listId}`);
-      if (response) {
-        setListInfo(response.data);
-        setListLoading(false);
-        return response.data;
+      const response = await axios.get<IResponse<IListInfo>>(
+        // TODO feature of offset & limit
+        `${ApiPath.lists}/${listID}?offset=${_offset}&limit=${_limited}`
+      );
+      if (response.data.content) {
+        setListInfo(response.data.content);
+        setIsListInfoLoading(false);
+        return response.data.content;
       }
     } catch (error) {
-      setShowingAlert(true, { message: JSON.parse(String(error)) });
+      setShowingAlert(true, { message: String(error) });
     } finally {
-      setListLoading(false);
+      setIsListInfoLoading(false);
     }
   };
 
-  return { listLoading, listInfo, setListInfo, fetchGetListInfo };
+  return { isListInfoLoading, listInfo, setListInfo, fetchGetListInfo };
 };
-export default useGetListInfo;
+export default useGetList;
 
 interface IListOwnerInfo {
   id: number; // listID??

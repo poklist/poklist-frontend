@@ -1,7 +1,7 @@
 import ApiPath from '@/config/apiPath';
 import axios from '@/lib/axios';
 import useCommonStore from '@/stores/useCommonStore';
-import { AxiosResponse } from 'axios';
+import { IResponse } from '@/types/response';
 import { useState } from 'react';
 
 const useDeleteList = () => {
@@ -11,13 +11,15 @@ const useDeleteList = () => {
   const fetchDeleteList = async (params: number) => {
     setDeleteListLoading(true);
     try {
-      const response: AxiosResponse<unknown> = await axios.delete(`${ApiPath.lists}/${params}`);
-      if (response) {
+      const response = await axios.delete<IResponse<null>>(
+        `${ApiPath.lists}/${params}`
+      );
+      if (response.data.content) {
         setDeleteListLoading(false);
-        return response.data;
+        return response.data.content;
       }
     } catch (error) {
-      setShowingAlert(true, { message: JSON.parse(String(error)) });
+      setShowingAlert(true, { message: String(error) });
     } finally {
       setDeleteListLoading(false);
     }

@@ -2,7 +2,7 @@ import ApiPath from '@/config/apiPath';
 import axios from '@/lib/axios';
 import { fileToBase64 } from '@/lib/utils';
 import useCommonStore from '@/stores/useCommonStore';
-import { AxiosResponse } from 'axios';
+import { IResponse } from '@/types/response';
 import { useState } from 'react';
 
 export interface ICreateIdeaRequest {
@@ -28,7 +28,7 @@ const useCreateIdea = (): {
   setIdeaData: React.Dispatch<React.SetStateAction<ICreateIdeaRequest>>;
   resetIdeaData: () => void;
   fetchCreateIdea: (
-    ideaFormData: Omit<ICreateIdeaRequest, 'listID'>,
+    ideaFormData: Omit<ICreateIdeaRequest, 'listID'>
   ) => Promise<ICreateIdeaResponse | undefined>;
 } => {
   const { setShowingAlert } = useCommonStore();
@@ -42,10 +42,18 @@ const useCreateIdea = (): {
   });
 
   const resetIdeaData = () => {
-    setIdeaData({ listID: 0, title: '', description: '', externalLink: '', coverImage: null });
+    setIdeaData({
+      listID: 0,
+      title: '',
+      description: '',
+      externalLink: '',
+      coverImage: null,
+    });
   };
 
-  const fetchCreateIdea = async (ideaFormData: Omit<ICreateIdeaRequest, 'listID'>) => {
+  const fetchCreateIdea = async (
+    ideaFormData: Omit<ICreateIdeaRequest, 'listID'>
+  ) => {
     setCreateIdeaLoading(true);
     setIdeaData({ ...ideaData, ...ideaFormData });
     const _params = {
@@ -53,18 +61,23 @@ const useCreateIdea = (): {
       title: ideaFormData.title,
       description: ideaFormData.description,
       externalLink: ideaFormData.externalLink,
-      coverImage: ideaFormData.coverImage ? await fileToBase64(ideaFormData.coverImage) : null, // BASE64
+      coverImage: ideaFormData.coverImage
+        ? await fileToBase64(ideaFormData.coverImage)
+        : null, // BASE64
     };
 
     try {
-      const response: AxiosResponse<ICreateIdeaResponse> = await axios.post(ApiPath.ideas, _params);
-      if (response) {
+      const response = await axios.post<IResponse<ICreateIdeaResponse>>(
+        ApiPath.ideas,
+        _params
+      );
+      if (response.data.content) {
         resetIdeaData();
         setCreateIdeaLoading(false);
-        return response.data;
+        return response.data.content;
       }
     } catch (error) {
-      setShowingAlert(true, { message: JSON.parse(String(error)) });
+      setShowingAlert(true, { message: String(error) });
     } finally {
       setCreateIdeaLoading(false);
     }
