@@ -168,7 +168,7 @@ const EditUserPage: React.FC = () => {
 
   const onSubmit = () => {
     axios.put(`/users/me`, newUserInfo);
-    navigate(`/${user.id}`);
+    navigate(`/${user.userCode}`);
   };
 
   useEffect(() => {
