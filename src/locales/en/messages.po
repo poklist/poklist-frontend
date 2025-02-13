@@ -35,10 +35,6 @@ msgstr "Must be JPG and under 2MB."
 msgid "Upload a cover"
 msgstr "Upload a cover"
 
-#: src/pages/Error/index.tsx
-msgid "Oops something is wrong!"
-msgstr "Oops something is wrong!"
-
 #: src/constants/Home/index.en.ts
 msgid "Join Poklist and share your lists."
 msgstr "Join Poklist and share your lists."
@@ -402,6 +398,10 @@ msgstr "Only approved and verified “Creator Accounts” can log in and create 
 #: src/constants/Home/index.en.ts
 msgid "Contact us"
 msgstr "Contact us"
+
+#: src/pages/Error/index.tsx
+msgid "Oops something is wrong!"
+msgstr "Oops something is wrong!"
 
 #: src/pages/Home/FeatureSection/index.tsx
 msgid "Life Style"

@@ -35,10 +35,6 @@ msgstr "請確認圖片格式為 JPG，且檔案大小不得超過 2MB。"
 msgid "Upload a cover"
 msgstr "封面圖片"
 
-#: src/pages/Error/index.tsx
-msgid "Oops something is wrong!"
-msgstr "哎呀！網頁又在耍脾氣啦！"
-
 #: src/constants/Home/index.en.ts
 msgid "Join Poklist and share your lists."
 msgstr "加入 Poklist，分享靈感！"
@@ -406,6 +402,10 @@ msgstr "聯繫我們"
 #: src/pages/Create/index.tsx
 #~ msgid "欸，標題不能留空喔！"
 #~ msgstr "欸，標題不能留空喔！"
+
+#: src/pages/Error/index.tsx
+msgid "Oops something is wrong!"
+msgstr "哎呀！網頁又在耍脾氣啦！"
 
 #: src/pages/Home/FeatureSection/index.tsx
 msgid "Life Style"
