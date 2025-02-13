@@ -22,7 +22,7 @@ export default function Layout() {
           {/* <LanguageSelector /> */}
           <Outlet />
           <LoadingSpinner isLoading={isLoading} />
-          <ErrorDrawer></ErrorDrawer>
+          <ErrorDrawer />
         </FakePageProvider>
       </DrawerProvider>
     </LanguageProvider>

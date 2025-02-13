@@ -2,11 +2,11 @@ import { Button } from '@/components/ui/button';
 import useDeleteList from '@/hooks/Lists/useDeleteList';
 import useEditList from '@/hooks/Lists/useEditList';
 import { IListInfo, default as useGetList } from '@/hooks/Lists/useGetList';
-import useIsMobile from '@/hooks/useIsMobile';
-import { Header } from '@/pages/Lists/Component/Header';
+import { Header } from '@/pages/Lists/Components/Header';
 import IdeaList from '@/pages/Lists/Manage/IdeasList';
 import ListInfo from '@/pages/Lists/Manage/ListInfo';
 import useCommonStore from '@/stores/useCommonStore';
+import useLayoutStore from '@/stores/useLayoutStore';
 import useUserStore from '@/stores/useUserStore';
 import { Trans } from '@lingui/macro';
 import { useCallback, useEffect } from 'react';
@@ -25,7 +25,7 @@ const ListManagePage: React.FC<ManageListPageProps> = () => {
 
   const { setIsLoading } = useCommonStore();
   const userStore = useUserStore();
-  const isMobile = useIsMobile();
+  const isMobile = useLayoutStore((state) => state.isMobile);
   const { isListInfoLoading, listInfo, setListInfo, fetchGetListInfo } =
     useGetList();
   const { fetchReorderIdea, editListLoading } = useEditList();

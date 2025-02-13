@@ -35,237 +35,6 @@ msgstr "請確認圖片格式為 JPG，且檔案大小不得超過 2MB。"
 msgid "Upload a cover"
 msgstr "封面圖片"
 
-#: src/pages/Idea/Create/Form/index.tsx
-#: src/pages/Idea/Edit/Form/index.tsx
-#: src/pages/Lists/Component/Form/index.tsx
-msgid "Your edits will be lost if you cancel!"
-msgstr "取消後，資料就飛走囉！"
-
-#: src/pages/Idea/Create/Form/index.tsx
-#: src/pages/Lists/Component/Form/index.tsx
-msgid "If you cancel, everything you’ve entered will be lost."
-msgstr "如果取消，所填的內容都會消失。"
-
-#: src/pages/Idea/Create/Form/index.tsx
-#: src/pages/Idea/Edit/Form/index.tsx
-#: src/pages/Lists/Component/Form/index.tsx
-msgid "Hey, the title can’t be left empty!"
-msgstr "欸，標題不能留空喔！"
-
-#: src/pages/Idea/Create/Form/index.tsx
-#: src/pages/Lists/Component/Form/index.tsx
-msgid "Every list needs a title, so fill it in!"
-msgstr "名單都得有個標題，趕快填一下吧！"
-
-#: src/pages/Idea/Create/Form/index.tsx
-#: src/pages/Lists/Component/Form/index.tsx
-msgid "List title is too long!"
-msgstr "名單標題字數太長啦！"
-
-#: src/pages/Idea/Create/Form/index.tsx
-#: src/pages/Idea/Edit/Form/index.tsx
-#: src/pages/Lists/Component/Form/index.tsx
-msgid "Please keep it under {TITLE_MAX_LENGTH} characters."
-msgstr "標題過長，請將字數縮短至 {TITLE_MAX_LENGTH} 個字元以內。"
-
-#: src/pages/Idea/Create/Form/index.tsx
-#: src/pages/Idea/Edit/Form/index.tsx
-#: src/pages/Lists/Component/Form/index.tsx
-msgid "Description is too long!"
-msgstr "標題描述內容超出限制了！"
-
-#: src/pages/Idea/Create/Form/index.tsx
-#: src/pages/Idea/Edit/Form/index.tsx
-#: src/pages/Lists/Component/Form/index.tsx
-msgid "Please keep it under {DESC_MAX_LENGTH} characters."
-msgstr "字數有點爆表，請減到 {DESC_MAX_LENGTH} 個字元以內。"
-
-#: src/pages/Idea/Create/Form/index.tsx
-#: src/pages/Idea/Edit/Form/index.tsx
-msgid "What’s your Idea?"
-msgstr "靈感標題"
-
-#: src/pages/Idea/Create/Form/index.tsx
-#: src/pages/Idea/Edit/Form/index.tsx
-msgid "Describe what this Idea is about"
-msgstr "描述靈感"
-
-#: src/pages/Idea/Create/Form/index.tsx
-#: src/pages/Idea/Edit/Form/index.tsx
-#: src/pages/Lists/Component/Form/index.tsx
-msgid "Link a page"
-msgstr "連結網頁"
-
-#: src/pages/Idea/Create/Form/index.tsx
-#: src/pages/Lists/Component/Form/index.tsx
-#: src/pages/User/Footer/index.tsx
-msgid "Create List"
-msgstr "建立名單"
-
-#: src/pages/Idea/Create/Form/index.tsx
-#: src/pages/Idea/Edit/Form/index.tsx
-#: src/pages/Lists/Component/Form/index.tsx
-#: src/pages/Lists/Component/Form/index.tsx
-#: src/pages/Lists/Component/Form/index.tsx
-#: src/pages/Lists/Component/Form/index.tsx
-msgid "Next"
-msgstr "下一步"
-
-#: src/pages/Idea/Create/index.tsx
-msgid "New Idea"
-msgstr "新靈感"
-
-#: src/pages/Idea/Edit/DeleteButton/index.tsx
-msgid "Are you sure you want to delete this idea?"
-msgstr "確定要刪除此靈感嗎？"
-
-#: src/pages/Idea/Edit/DeleteButton/index.tsx
-msgid "Once deleted, this idea cannot be recovered!"
-msgstr "刪除靈感後將無法復原！"
-
-#: src/pages/Idea/Edit/DeleteButton/index.tsx
-msgid "Confirm Delete"
-msgstr "確定刪除"
-
-#: src/pages/Idea/Edit/DeleteButton/index.tsx
-#: src/pages/Lists/Component/DeleteButton/index.tsx
-msgid "Cancel"
-msgstr "取消"
-
-#: src/pages/Idea/Edit/Form/index.tsx
-msgid "Title is saved, but your idea edits will be lost! Are you sure you want to cancel?"
-msgstr "名單已經存到你的個人專頁了，但剛寫的靈感內容會消失，確定要取消嗎？"
-
-#: src/pages/Idea/Edit/Form/index.tsx
-msgid "Every idea needs a title, so fill it in!"
-msgstr "靈感都得有個標題，趕快填一下吧！"
-
-#: src/pages/Idea/Edit/Form/index.tsx
-msgid "Idea title is too long!"
-msgstr "靈感標題字數太長啦！"
-
-#: src/pages/Idea/Edit/Form/index.tsx
-msgid "Edit Idea"
-msgstr "編輯靈感"
-
-#: src/pages/Idea/Edit/index.tsx
-msgid "Idea"
-msgstr "靈感"
-
-#: src/pages/Lists/Component/DeleteButton/index.tsx
-msgid "Deleting the list title will also erase all ideas!"
-msgstr "刪掉名單標題後，連所有靈感都會消失！"
-
-#: src/pages/Lists/Component/DeleteButton/index.tsx
-msgid "Permanently delete the entire list and all its ideas. This action cannot be undone!"
-msgstr "永久刪除整個名單及所有靈感，這將無法復原！"
-
-#: src/pages/Lists/Component/DeleteButton/index.tsx
-msgid "Delete List and All Ideas"
-msgstr "刪除名單與所有靈感"
-
-#: src/pages/Lists/Component/Form/index.tsx
-msgid "Give your list a title"
-msgstr "輸入名單標題"
-
-#: src/pages/Lists/Component/Form/index.tsx
-msgid "Describe what this title is about"
-msgstr "描述標題"
-
-#: src/pages/Lists/Component/Form/index.tsx
-msgid "Edit List Topic"
-msgstr "編輯名單分類"
-
-#: src/pages/Lists/Component/Form/index.tsx
-msgid "List Topic"
-msgstr "名單主題"
-
-#: src/pages/Lists/Component/Form/index.tsx
-msgid "Choose a topic that vibes with your List."
-msgstr "選擇一項接近此份名單的分類"
-
-#: src/pages/Lists/Component/Form/index.tsx
-msgid "Edit List Title"
-msgstr "編輯名單標題"
-
-#: src/pages/Lists/Create/index.tsx
-#: src/pages/Lists/Edit/index.tsx
-#: src/pages/Lists/Manage/index.tsx
-msgid "List Title"
-msgstr "名單標題"
-
-#: src/pages/Lists/Manage/IdeasList/index.tsx
-msgid "Edit List"
-msgstr "編輯名單"
-
-#: src/pages/Lists/Manage/IdeasList/index.tsx
-msgid "Save New Order"
-msgstr "儲存新排序"
-
-#: src/pages/Lists/Manage/IdeasList/index.tsx
-msgid "Done"
-msgstr "完成"
-
-#: src/pages/Lists/Manage/index.tsx
-msgid "Ideas"
-msgstr "靈感"
-
-#: src/pages/Lists/Manage/index.tsx
-msgid "Tap to edit. Hold & drag to reorder Ideas"
-msgstr "點擊靈感進行編輯，長按可拖曳排序。"
-
-#: src/pages/Lists/Manage/index.tsx
-msgid "Add an idea"
-msgstr "新增靈感"
-
-#: src/pages/Lists/i18n.ts
-msgid "Other"
-msgstr "其他"
-
-#: src/pages/Lists/i18n.ts
-msgid "Lifestyle"
-msgstr "生活風格"
-
-#: src/pages/Lists/i18n.ts
-msgid "Food & Drink"
-msgstr "美食"
-
-#: src/pages/Lists/i18n.ts
-msgid "Culture"
-msgstr "文化"
-
-#: src/pages/Lists/i18n.ts
-msgid "Travel"
-msgstr "旅遊"
-
-#: src/pages/Lists/i18n.ts
-msgid "Entertainment"
-msgstr "娛樂"
-
-#: src/pages/Lists/i18n.ts
-msgid "Tech & Digital"
-msgstr "數位科技"
-
-#: src/pages/Lists/i18n.ts
-msgid "Personal Growth"
-msgstr "個人成長"
-
-#: src/pages/Lists/i18n.ts
-msgid "Health & Fitness"
-msgstr "健康與健身"
-
-#: src/pages/User/Footer/index.tsx
-msgid "Liked"
-msgstr ""
-
-#: src/pages/User/Footer/index.tsx
-msgid "Like"
-msgstr "喜歡"
-
-#: src/pages/User/Footer/index.tsx
-msgid "Copy"
-msgstr "複製"
-
 #: src/constants/Home/index.en.ts
 msgid "Join Poklist and share your lists."
 msgstr "加入 Poklist，分享靈感！"
@@ -689,3 +458,194 @@ msgstr "登入"
 #: src/pages/Home/LoginDrawer/index.tsx
 msgid "Sign in to Poklist with Google"
 msgstr "使用 Google 帳號登入 Poklist"
+
+#: src/pages/Idea/Components/DeleteButton/index.tsx
+msgid "Are you sure you want to delete this idea?"
+msgstr "確定要刪除此靈感嗎？"
+
+#: src/pages/Idea/Components/DeleteButton/index.tsx
+msgid "Once deleted, this idea cannot be recovered!"
+msgstr "刪除靈感後將無法復原！"
+
+#: src/pages/Idea/Components/DeleteButton/index.tsx
+msgid "Confirm Delete"
+msgstr "確定刪除"
+
+#: src/pages/Idea/Components/DeleteButton/index.tsx
+#: src/pages/Lists/Components/DeleteButton/index.tsx
+msgid "Cancel"
+msgstr "取消"
+
+#: src/pages/Idea/Components/Form/index.tsx
+#: src/pages/Lists/Components/Form/index.tsx
+msgid "Your edits will be lost if you cancel!"
+msgstr "取消後，資料就飛走囉！"
+
+#: src/pages/Idea/Components/Form/index.tsx
+msgid "Title is saved, but your idea edits will be lost! Are you sure you want to cancel?"
+msgstr "名單已經存到你的個人專頁了，但剛寫的靈感內容會消失，確定要取消嗎？"
+
+#: src/pages/Idea/Components/Form/index.tsx
+#: src/pages/Lists/Components/Form/index.tsx
+msgid "Hey, the title can’t be left empty!"
+msgstr "欸，標題不能留空喔！"
+
+#: src/pages/Idea/Components/Form/index.tsx
+msgid "Every idea needs a title, so fill it in!"
+msgstr "靈感都得有個標題，趕快填一下吧！"
+
+#: src/pages/Idea/Components/Form/index.tsx
+msgid "Idea title is too long!"
+msgstr "靈感標題字數太長啦！"
+
+#: src/pages/Idea/Components/Form/index.tsx
+#: src/pages/Lists/Components/Form/index.tsx
+msgid "Please keep it under {TITLE_MAX_LENGTH} characters."
+msgstr "標題過長，請將字數縮短至 {TITLE_MAX_LENGTH} 個字元以內。"
+
+#: src/pages/Idea/Components/Form/index.tsx
+#: src/pages/Lists/Components/Form/index.tsx
+msgid "Description is too long!"
+msgstr "標題描述內容超出限制了！"
+
+#: src/pages/Idea/Components/Form/index.tsx
+#: src/pages/Lists/Components/Form/index.tsx
+msgid "Please keep it under {DESC_MAX_LENGTH} characters."
+msgstr "字數有點爆表，請減到 {DESC_MAX_LENGTH} 個字元以內。"
+
+#: src/pages/Idea/Components/Form/index.tsx
+msgid "What’s your Idea?"
+msgstr "靈感標題"
+
+#: src/pages/Idea/Components/Form/index.tsx
+msgid "Describe what this Idea is about"
+msgstr "描述靈感"
+
+#: src/pages/Idea/Components/Form/index.tsx
+#: src/pages/Lists/Components/Form/index.tsx
+msgid "Link a page"
+msgstr "連結網頁"
+
+#: src/pages/Idea/Components/Form/index.tsx
+msgid "Edit Idea"
+msgstr "編輯靈感"
+
+#: src/pages/Idea/Components/Form/index.tsx
+#: src/pages/Idea/Create/index.tsx
+msgid "New Idea"
+msgstr "新靈感"
+
+#: src/pages/Idea/Components/Form/index.tsx
+#: src/pages/Idea/Components/Form/index.tsx
+#: src/pages/Lists/Components/Form/index.tsx
+#: src/pages/Lists/Components/Form/index.tsx
+#: src/pages/Lists/Components/Form/index.tsx
+#: src/pages/Lists/Components/Form/index.tsx
+msgid "Next"
+msgstr "下一步"
+
+#: src/pages/Idea/Edit/index.tsx
+msgid "Idea"
+msgstr "靈感"
+
+#: src/pages/Lists/Components/DeleteButton/index.tsx
+msgid "Deleting the list title will also erase all ideas!"
+msgstr "刪掉名單標題後，連所有靈感都會消失！"
+
+#: src/pages/Lists/Components/DeleteButton/index.tsx
+msgid "Permanently delete the entire list and all its ideas. This action cannot be undone!"
+msgstr "永久刪除整個名單及所有靈感，這將無法復原！"
+
+#: src/pages/Lists/Components/DeleteButton/index.tsx
+msgid "Delete List and All Ideas"
+msgstr "刪除名單與所有靈感"
+
+#: src/pages/Lists/Components/Form/index.tsx
+msgid "If you cancel, everything you’ve entered will be lost."
+msgstr "如果取消，所填的內容都會消失。"
+
+#: src/pages/Lists/Components/Form/index.tsx
+msgid "Every list needs a title, so fill it in!"
+msgstr "名單都得有個標題，趕快填一下吧！"
+
+#: src/pages/Lists/Components/Form/index.tsx
+msgid "List title is too long!"
+msgstr "名單標題字數太長啦！"
+
+#: src/pages/Lists/Components/Form/index.tsx
+msgid "Give your list a title"
+msgstr "輸入名單標題"
+
+#: src/pages/Lists/Components/Form/index.tsx
+msgid "Describe what this title is about"
+msgstr "描述標題"
+
+#: src/pages/Lists/Components/Form/index.tsx
+msgid "Edit List Topic"
+msgstr "編輯名單分類"
+
+#: src/pages/Lists/Components/Form/index.tsx
+msgid "List Topic"
+msgstr "名單主題"
+
+#: src/pages/Lists/Components/Form/index.tsx
+msgid "Choose a topic that vibes with your List."
+msgstr "選擇一項接近此份名單的分類"
+
+#: src/pages/Lists/Components/Form/index.tsx
+#: src/pages/Lists/Manage/IdeasList/index.tsx
+msgid "Edit List"
+msgstr "編輯名單"
+
+#: src/pages/Lists/Components/Form/index.tsx
+msgid "Create Idea List"
+msgstr "建立靈感名單"
+
+#: src/pages/Lists/Create/index.tsx
+#: src/pages/Lists/Edit/index.tsx
+msgid "Idea List"
+msgstr "靈感名單"
+
+#: src/pages/Lists/Manage/IdeasList/index.tsx
+msgid "Save New Order"
+msgstr "儲存新排序"
+
+#: src/pages/Lists/Manage/IdeasList/index.tsx
+msgid "Done"
+msgstr "完成"
+
+#: src/pages/Lists/Manage/index.tsx
+msgid "List Title"
+msgstr "名單標題"
+
+#: src/pages/Lists/Manage/index.tsx
+msgid "Ideas"
+msgstr "靈感"
+
+#: src/pages/Lists/Manage/index.tsx
+msgid "Tap to edit. Hold & drag to reorder Ideas"
+msgstr "點擊靈感進行編輯，長按可拖曳排序。"
+
+#: src/pages/Lists/Manage/index.tsx
+msgid "Add an idea"
+msgstr "新增靈感"
+
+#: src/pages/Lists/i18n.ts
+msgid "Lifestyle"
+msgstr "生活風格"
+
+#: src/pages/User/Footer/index.tsx
+msgid "Liked"
+msgstr ""
+
+#: src/pages/User/Footer/index.tsx
+msgid "Like"
+msgstr "喜歡"
+
+#: src/pages/User/Footer/index.tsx
+msgid "Create List"
+msgstr "建立名單"
+
+#: src/pages/User/Footer/index.tsx
+msgid "Copy"
+msgstr "複製"
