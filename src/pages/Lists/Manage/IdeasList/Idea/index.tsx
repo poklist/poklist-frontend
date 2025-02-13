@@ -77,7 +77,7 @@ const DraggableIdeaRow: React.FC<IdeaProps> = ({
         {idea.coverImage && (
           <img
             src={idea.coverImage}
-            className="h-10 w-10 rounded border border-black-tint-04"
+            className="h-10 max-h-10 min-h-10 w-10 min-w-10 max-w-10 flex-1 rounded border border-black-tint-04 bg-black object-contain"
             alt={`Cover for ${idea.title}`}
           />
         )}

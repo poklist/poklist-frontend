@@ -3,8 +3,8 @@ import useDeleteList from '@/hooks/Lists/useDeleteList';
 import useEditList, { IEditListRequest } from '@/hooks/Lists/useEditList';
 import useGetList from '@/hooks/Lists/useGetList';
 import { base64ToFile } from '@/lib/utils';
-import ListForm from '@/pages/Lists/Component/Form';
-import { Header } from '@/pages/Lists/Component/Header';
+import ListForm from '@/pages/Lists/Components/Form';
+import { Header } from '@/pages/Lists/Components/Header';
 import useCommonStore from '@/stores/useCommonStore';
 import useUserStore from '@/stores/useUserStore';
 import { Trans } from '@lingui/macro';
@@ -100,7 +100,7 @@ const EditListPage: React.FC<EditListPageProps> = () => {
   return (
     // Your component code here
     <>
-      <Header title={<Trans>List Title</Trans>} deleteCallback={onDeleteList} />
+      <Header title={<Trans>Idea List</Trans>} deleteCallback={onDeleteList} />
       <div className="mx-4 mt-6 flex flex-col gap-6">
         <ListForm
           defaultListInfo={listInfo}

@@ -358,9 +358,9 @@ const ListForm: React.FC<IListFormProps> = ({
             <IconClose />
           </div>
           {defaultListInfo ? (
-            <Trans>Edit List Title</Trans>
+            <Trans>Edit List</Trans>
           ) : (
-            <Trans>Create List</Trans>
+            <Trans>Create Idea List</Trans>
           )}
         </div>
         {defaultListInfo ? (

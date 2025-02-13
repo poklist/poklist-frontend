@@ -1,4 +1,4 @@
-import { DeleteButton } from '@/pages/Idea/Edit/DeleteButton';
+import { DeleteButton } from '@/pages/Idea/Components/DeleteButton';
 import React from 'react';
 
 interface IHeaderProps {
@@ -7,7 +7,7 @@ interface IHeaderProps {
 }
 export const Header: React.FC<IHeaderProps> = ({ title, deleteCallback }) => {
   return (
-    <header className="border-b border-b-black-text-01 font-semibold text-t1 px-4 py-2 flex items-center bg-gray-main-03">
+    <header className="flex items-center border-b border-b-black-text-01 bg-gray-main-03 px-4 py-2 text-t1 font-semibold">
       <div className="flex-1">{title}</div>
       {deleteCallback && <DeleteButton deleteCallback={deleteCallback} />}
     </header>

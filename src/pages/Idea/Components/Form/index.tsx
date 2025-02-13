@@ -5,9 +5,10 @@ import IconExteriorLink from '@/components/ui/icons/ExteriorLinkIcon';
 import IconTextarea from '@/components/ui/icons/TextareaIcon';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { ICreateIdeaRequest } from '@/hooks/Ideas/useCreateIdea';
 import { IEditIdeaRequest } from '@/hooks/Ideas/useEditIdea';
 import { IIdeaInfo } from '@/hooks/Ideas/useGetIdea';
-import { cn } from '@/lib/utils';
+import { cn, formatInput } from '@/lib/utils';
 import useCommonStore from '@/stores/useCommonStore';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { t, Trans } from '@lingui/macro';
@@ -21,14 +22,18 @@ const DESC_MAX_LENGTH = 250;
 const FormSchema = z.object({
   title: z.string().min(1).max(TITLE_MAX_LENGTH),
   description: z.string().max(DESC_MAX_LENGTH),
-  externalLink: z.string().url().or(z.literal('')),
-  coverImage: z.instanceof(File).nullable(),
+  externalLink: z.string().url().optional().or(z.literal('')),
+  coverImage: z.instanceof(File).nullable().optional(),
 });
 
 interface IIdeaFormProps {
   previousIdeaInfo?: IIdeaInfo;
   dismissCallback: (isFormNotEdited: boolean) => void;
-  completedCallback: (editedIdeaData: Omit<IEditIdeaRequest, 'id'>) => void;
+  completedCallback: (
+    completedIdeaForm:
+      | Omit<IEditIdeaRequest, 'id'>
+      | Omit<ICreateIdeaRequest, 'listID'>
+  ) => void;
 }
 
 const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
@@ -48,11 +53,31 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
       title: previousIdeaInfo?.title,
       description: previousIdeaInfo?.description,
       externalLink: previousIdeaInfo?.externalLink,
-      coverImage: previousIdeaInfo?.coverImage,
+      coverImage: previousIdeaInfo?.coverImage || null,
     },
   });
 
+  const onInputChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    event.target.value = formatInput(event.target.value);
+  };
+
+  const onTextareaBlur = () => {
+    if (textareaRef.current) {
+      textareaRef.current.scrollTop = 0;
+      setIsTextareaFocus(false);
+    }
+  };
+
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+  const { ref, ...registerRest } = ideaForm.register('description', {
+    onChange: onInputChange,
+    onBlur: onTextareaBlur,
+  });
+
   useEffect(() => {
+    if (!previousIdeaInfo) return;
     const subscription = ideaForm.watch((fields) => {
       const isModified =
         fields.title !== previousIdeaInfo?.title ||
@@ -186,7 +211,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
         <Input
           placeholder={t`What’s your Idea?`}
           className="relative border-none px-0 text-h1 placeholder:text-h1"
-          {...ideaForm.register('title')}
+          {...ideaForm.register('title', { onChange: onInputChange })}
         />
       </div>
       <div className="flex items-start gap-2">
@@ -196,9 +221,12 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
           className={cn(`resize-none border-none p-0`, {
             'line-clamp-1 h-6 min-h-6': !isTextareaFocus,
           })}
-          {...ideaForm.register('description')}
+          {...registerRest}
+          ref={(e) => {
+            ref(e);
+            textareaRef.current = e;
+          }}
           onFocus={() => setIsTextareaFocus(true)}
-          onBlur={() => setIsTextareaFocus(false)}
         />
       </div>
       {isTextareaFocus && (
@@ -239,16 +267,26 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
           >
             <IconClose />
           </div>
-          <Trans>Edit Idea</Trans>
+          {previousIdeaInfo ? (
+            <Trans>Edit Idea</Trans>
+          ) : (
+            <Trans>New Idea</Trans>
+          )}
         </div>
-        <Button
-          disabled={!isFormModified}
-          type="submit"
-          variant="black"
-          shape="rounded8px"
-        >
-          <Trans>Next</Trans>
-        </Button>
+        {previousIdeaInfo ? (
+          <Button
+            disabled={!isFormModified}
+            type="submit"
+            variant="black"
+            shape="rounded8px"
+          >
+            <Trans>Next</Trans>
+          </Button>
+        ) : (
+          <Button type="submit" variant="black" shape="rounded8px">
+            <Trans>Next</Trans>
+          </Button>
+        )}
       </div>
     </form>
   );

@@ -2,12 +2,12 @@ import useDeleteIdea from '@/hooks/Ideas/useDeleteIdea';
 import useEditIdea, { IEditIdeaRequest } from '@/hooks/Ideas/useEditIdea';
 import useGetIdea from '@/hooks/Ideas/useGetIdea';
 import useGetList from '@/hooks/Lists/useGetList';
-import { Header } from '@/pages/Idea/Edit/Header';
+import { Header } from '@/pages/Idea/Components/Header';
 import useCommonStore from '@/stores/useCommonStore';
 import { Trans } from '@lingui/macro';
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import IdeaFormComponent from './Form';
+import IdeaFormComponent from '../Components/Form';
 
 interface EditIdeaPageProps {}
 const EditIdeaPage: React.FC<EditIdeaPageProps> = () => {
@@ -32,7 +32,7 @@ const EditIdeaPage: React.FC<EditIdeaPageProps> = () => {
 
   const onDismissEdit = (isFormNotEdited: boolean) => {
     if (isFormNotEdited) {
-      navigate(`/idea/manage/${ideaInfo?.id}`);
+      navigate(`/list/manage/${ideaInfo?.listID}`);
     }
   };
 
@@ -71,14 +71,24 @@ const EditIdeaPage: React.FC<EditIdeaPageProps> = () => {
     } else {
       setIsLoading(false);
     }
-  }, [isDeleteIdeaLoading, isListInfoLoading, isEditIdeaLoading, isIdeaInfoLoading, setIsLoading]);
+  }, [
+    isDeleteIdeaLoading,
+    isListInfoLoading,
+    isEditIdeaLoading,
+    isIdeaInfoLoading,
+    setIsLoading,
+  ]);
 
   return (
     // Your component code here
     <>
-      {listInfo && <div className="px-4 py-3 border-b-black border-b">{listInfo?.title}</div>}
+      {listInfo && (
+        <div className="border-b border-b-black px-4 py-3">
+          {listInfo?.title}
+        </div>
+      )}
       <Header title={<Trans>Idea</Trans>} deleteCallback={onDeleteIdea} />
-      <div className="mt-4 flex flex-col gap-6 mx-4">
+      <div className="mx-4 mt-4 flex flex-col gap-6">
         <IdeaFormComponent
           previousIdeaInfo={ideaInfo}
           dismissCallback={onDismissEdit}
