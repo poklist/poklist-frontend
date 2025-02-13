@@ -2,11 +2,12 @@ import axios from '@/lib/axios';
 import { ListPreview } from '@/types/List';
 import { IResponse } from '@/types/response';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { TileBackground } from '../TileBackground';
 import { ListSectionSkeleton } from './ListSectionSkeleton';
 
 const ListSection: React.FC = () => {
+  const navigate = useNavigate();
   const { code } = useParams();
   const [listPreviewList, setListPreviewList] = useState<ListPreview[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -40,6 +41,9 @@ const ListSection: React.FC = () => {
             className={`flex min-h-[72px] items-center justify-between ${
               isLastItem ? 'border-b-[3px]' : 'border-b'
             } border-black-text-01 p-4 -tracking-1.1%`}
+            onClick={() => {
+              navigate(`/list/manage/${listPreview.id}`);
+            }}
           >
             <p className="text-[15px] font-semibold text-black-text-01">
               {listPreview.title}

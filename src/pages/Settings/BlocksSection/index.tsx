@@ -75,7 +75,7 @@ const BlocksSection: React.FC = () => {
       {
         decription: 'Delete Account',
         action: () => {
-          navigate('/delete-account');
+          navigate('/account/delete');
         },
       },
       {

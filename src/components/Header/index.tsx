@@ -14,10 +14,10 @@ interface IHeaderProps {
 export const Header: React.FC<IHeaderProps> = ({
   type: headerType = 'default',
 }) => {
-  const { id } = useParams();
+  const { code } = useParams();
   const navigate = useNavigate();
   const { isLoggedIn, user: me } = useUserStore();
-  const isMyPage = id?.toString() === me.id.toString();
+  const isMyPage = code?.toString() === me.userCode.toString();
 
   if (headerType === 'back-to-user') {
     return <BackToUserNav />;
@@ -29,9 +29,8 @@ export const Header: React.FC<IHeaderProps> = ({
         <img
           src={headerPoklist}
           alt="Poklist"
-          onClick={() => navigate('/login') /* TEMP: */}
+          onClick={() => navigate('/home')}
         />
-        {/* )} */}
       </div>
       <div id="header-right" className="flex items-center justify-center gap-4">
         {!isLoggedIn && (
