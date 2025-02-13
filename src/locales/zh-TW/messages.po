@@ -265,3 +265,427 @@ msgstr "喜歡"
 #: src/pages/User/Footer/index.tsx
 msgid "Copy"
 msgstr "複製"
+
+#: src/constants/Home/index.en.ts
+msgid "Join Poklist and share your lists."
+msgstr "加入 Poklist，分享靈感！"
+
+#: src/constants/Home/index.en.ts
+msgid "Currently open only to creator account applications."
+msgstr "目前僅開放創作者申請帳號"
+
+#: src/constants/Home/index.en.ts
+msgid "Sign up"
+msgstr "快速申請"
+
+#: src/constants/Home/index.en.ts
+msgid "Creator Account Login"
+msgstr "創作者帳號登入"
+
+#: src/constants/Home/index.en.ts
+msgid "Can non-creators use Poklist?"
+msgstr "非創作者也能加入嗎？"
+
+#: src/constants/Home/index.en.ts
+msgid "List Your Ideas"
+msgstr "創作我的靈感名單"
+
+#: src/constants/Home/index.en.ts
+msgid "Turn thoughts into lists, discover fresh finds, and follow inspiration"
+msgstr "獵奇有趣的事物，創作新奇的名單，追蹤超有料的好靈感。"
+
+#: src/constants/Home/index.en.ts
+msgid "Inspogirlie"
+msgstr "小資妹"
+
+#: src/constants/Home/index.en.ts
+msgid "Must-Haves for dorm life"
+msgstr "大學宿舍日常必備清單"
+
+#: src/constants/Home/index.en.ts
+msgid "Cozy Bedding:"
+msgstr "舒服的海綿床"
+
+#: src/constants/Home/index.en.ts
+msgid "A plush comforter and extra pillows for a comfy night's sleep."
+msgstr "我發現好在床上的時間比想像的多，有一個舒服的床真的舒適許多。"
+
+#: src/constants/Home/index.en.ts
+msgid "Desk Essentials"
+msgstr "桌上收納盒"
+
+#: src/constants/Home/index.en.ts
+msgid "Target is probably your bf."
+msgstr "桌上的收納盒超重要，讓桌上乾淨又一目暸然。"
+
+#: src/constants/Home/index.en.ts
+msgid "Portable Speaker"
+msgstr "無線隨身音響"
+
+#: src/constants/Home/index.en.ts
+msgid "For study breaks or casual dorm hangouts"
+msgstr "耳機是必備，但無線音響讓聽音樂更自由舒適，超愛的！"
+
+#: src/constants/Home/index.en.ts
+msgid "List Lab"
+msgstr "List Lab"
+
+#: src/constants/Home/index.en.ts
+msgid "Stop-by-Stop Café Journey"
+msgstr "我的週末咖啡日記"
+
+#: src/constants/Home/index.en.ts
+msgid "8:00 AM at Sunrise Café"
+msgstr "早上 8:00 小香咖啡"
+
+#: src/constants/Home/index.en.ts
+msgid "Start your day with a creamy latte and a freshly baked croissant"
+msgstr "我家附近開最早的咖啡！"
+
+#: src/constants/Home/index.en.ts
+msgid "12:30 PM at Artisan Coffee House"
+msgstr "中午 12:30 爵士咖啡館"
+
+#: src/constants/Home/index.en.ts
+msgid "Enjoy a flat white with a hearty avocado toast."
+msgstr "最近週末迷上爵士音樂，這裡真的超放鬆的！"
+
+#: src/constants/Home/index.en.ts
+msgid "3:00 PM at Brew & Bloom"
+msgstr "下午 3:00 Brew & Bloom"
+
+#: src/constants/Home/index.en.ts
+msgid "Sip on a cold brew while indulging in a lavender scone"
+msgstr "完全是衝著他們的點心而來！"
+
+#: src/constants/Home/index.en.ts
+msgid "Campus People"
+msgstr "大學生秘技"
+
+#: src/constants/Home/index.en.ts
+msgid "Notes for Campus Fest"
+msgstr "筆記：去音樂祭前一定要看"
+
+#: src/constants/Home/index.en.ts
+msgid "Essentials"
+msgstr "超基本配備"
+
+#: src/constants/Home/index.en.ts
+msgid "Sunscreen, water bottle, and comfy shoes."
+msgstr "水壺與輕便的鞋子非常重要！防曬乳千萬不要忘了！"
+
+#: src/constants/Home/index.en.ts
+msgid "Extras"
+msgstr "多帶一件"
+
+#: src/constants/Home/index.en.ts
+msgid "A light jacket for when it gets chilly."
+msgstr "Tshirt 最好多帶一件，薄外套絕對不能少！"
+
+#: src/constants/Home/index.en.ts
+msgid "Pro tip:"
+msgstr "超重要秘技"
+
+#: src/constants/Home/index.en.ts
+msgid "Bring a blanket to claim your spot early."
+msgstr "一定要帶地墊與手提袋，佔地的好武器！"
+
+#: src/constants/Home/index.en.ts
+msgid "Travel Lover"
+msgstr "無聊就輸了"
+
+#: src/constants/Home/index.en.ts
+msgid "Travel budgeting checklist"
+msgstr "小資旅遊的好方法"
+
+#: src/constants/Home/index.en.ts
+msgid "Set your total budget"
+msgstr "決定好可花的總金額"
+
+#: src/constants/Home/index.en.ts
+msgid "Break it down into categories: flights, accommodation, food, activities, and extras."
+msgstr "車票、機票與飯店幾乎是固定的費用，抓好總金額就對了！"
+
+#: src/constants/Home/index.en.ts
+msgid "Hunt for Deals"
+msgstr "只搜特惠"
+
+#: src/constants/Home/index.en.ts
+msgid "Use flight comparison tools like Skyscanner or Google Flights"
+msgstr "使用訂票時，打開篩選特惠，先專注特惠價格。"
+
+#: src/constants/Home/index.en.ts
+msgid "Transportation Hacks"
+msgstr "訂票快狠準"
+
+#: src/constants/Home/index.en.ts
+msgid "Book accommodations early through budget-friendly platforms like Hostelworld or Airbnb."
+msgstr "不是越早訂越便宜，有時反而是越晚訂越優惠！"
+
+#: src/constants/Home/index.en.ts
+msgid "Gossip Pie"
+msgstr "八卦生活"
+
+#: src/constants/Home/index.en.ts
+msgid "Binge based on your mood"
+msgstr "按心情的追劇法"
+
+#: src/constants/Home/index.en.ts
+msgid "Relaxing: Moana"
+msgstr "放鬆: 海洋奇緣"
+
+#: src/constants/Home/index.en.ts
+msgid "Moana / A heartwarming and adventurous animated film with stunning visuals and beautiful music that will soothe your soul."
+msgstr "一部充滿溫暖與冒險的動畫電影，畫面美麗，音樂動人，帶來滿滿的療癒感。"
+
+#: src/constants/Home/index.en.ts
+msgid "Tense: Tenet"
+msgstr "緊張: 天能 "
+
+#: src/constants/Home/index.en.ts
+msgid "Directed by Christopher Nolan, this mind-bending action film with time inversion will keep you on the edge of your seat."
+msgstr "克里斯多福諾蘭執導的燒腦動作片，充滿時間逆轉的緊湊劇情，讓你全程屏息。"
+
+#: src/constants/Home/index.en.ts
+msgid "Fun: Dumb and Dumber"
+msgstr "有趣: 阿呆與阿瓜"
+
+#: src/constants/Home/index.en.ts
+msgid "A classic comedy about two clueless friends on a road trip full of ridiculous and laugh-out-loud situations."
+msgstr "兩位完全笨到極致的好朋友，展開一場荒唐的公路旅行，充滿令人哭笑不得的鬧劇！這部經典絕對讓你笑到停不下來。"
+
+#: src/constants/Home/index.en.ts
+msgid "iTech"
+msgstr "讀讀科技"
+
+#: src/constants/Home/index.en.ts
+msgid "How I curate my digital space"
+msgstr "懶人提升效率的APP"
+
+#: src/constants/Home/index.en.ts
+msgid "Notion"
+msgstr "Notion"
+
+#: src/constants/Home/index.en.ts
+msgid "Manage your thoughts and ideas in one single place."
+msgstr "整合筆記與項目管理，效率爆表。一定要去下載!"
+
+#: src/constants/Home/index.en.ts
+msgid "Google Drive"
+msgstr "Google Drive"
+
+#: src/constants/Home/index.en.ts
+msgid "The OG and it's so essential."
+msgstr "最近我連健身運動都用GD! 有興趣的可以跟我說"
+
+#: src/constants/Home/index.en.ts
+msgid "ChatGPT"
+msgstr "ChatGPT"
+
+#: src/constants/Home/index.en.ts
+msgid "Greatly improved my work!"
+msgstr "AI真的省去我50%的工作時間，而且效率還超越"
+
+#: src/constants/Home/index.en.ts
+msgid "Good Habbits"
+msgstr "上班中的妞"
+
+#: src/constants/Home/index.en.ts
+msgid "Atomic Habits - My thoughts"
+msgstr "《原子習慣》讀到的智慧…"
+
+#: src/constants/Home/index.en.ts
+msgid "Start Small to Achieve Big"
+msgstr "從小開始"
+
+#: src/constants/Home/index.en.ts
+msgid "Pressure is the biggest enemy. Don't let it control your momentum."
+msgstr "一口氣想做大事，往往最後一事無成啊！"
+
+#: src/constants/Home/index.en.ts
+msgid "Build Systems, Not Just Goals."
+msgstr "打造一個系統，而非結果！"
+
+#: src/constants/Home/index.en.ts
+msgid "This reminds me that building team is more important than the actual product."
+msgstr "這個超有感的！過去我總是想要有一個厲害的結果。"
+
+#: src/constants/Home/index.en.ts
+msgid "Embrace Your New Identity"
+msgstr "接受新的身份"
+
+#: src/constants/Home/index.en.ts
+msgid "I need to work on this 100%"
+msgstr "這思考非常特別，有時候自己對自己的價值任何能夠改變事情的開始與結果。"
+
+#: src/constants/Home/index.en.ts
+msgid "Pica Pica"
+msgstr "Pica Pica"
+
+#: src/constants/Home/index.en.ts
+msgid "My best protein shake recipe"
+msgstr "高蛋白飲料~原來超簡單做的"
+
+#: src/constants/Home/index.en.ts
+msgid "Step 1: Gather Your Ingredients"
+msgstr "步驟一 ：把所有材料準備好"
+
+#: src/constants/Home/index.en.ts
+msgid "1 scoop of your favorite protein powder (vanilla or chocolate works great!)"
+msgstr "先把東西都放在一起準備好，因為超簡單的！"
+
+#: src/constants/Home/index.en.ts
+msgid "Step 2: Blend the Base"
+msgstr "步驟二: 先把基礎的倒進來"
+
+#: src/constants/Home/index.en.ts
+msgid "Add the almond milk, protein powder, and banana to your blender."
+msgstr "把牛奶與高蛋白先倒在一起，如此就已經做對一半！"
+
+#: src/constants/Home/index.en.ts
+msgid "Step 3: Add the Extras"
+msgstr "步驟三：加入增肌配方"
+
+#: src/constants/Home/index.en.ts
+msgid "Drop in the peanut butter, chia seeds, or flaxseeds for added nutrients."
+msgstr "堅果是超棒的配方，馬上讓你有飽足感又很可口好喝！"
+
+#: src/constants/Home/index.en.ts
+msgid "Jacob PHD"
+msgstr "末日研究生"
+
+#: src/constants/Home/index.en.ts
+msgid "Reasons I swipe left"
+msgstr "絕對左甩的交友檔案"
+
+#: src/constants/Home/index.en.ts
+msgid "The Fish Pic"
+msgstr "太詐騙的照片"
+
+#: src/constants/Home/index.en.ts
+msgid "Congrats on catching that trout, but it's not winning you dates."
+msgstr "老實說...我每次都覺得這麼假的照片也敢放上來，當作大家是瞎子嗎？"
+
+#: src/constants/Home/index.en.ts
+msgid "No Bio, No Effort"
+msgstr "沒有編輯的自介文字"
+
+#: src/constants/Home/index.en.ts
+msgid "If you can't write a sentence, how are you going to hold a conversation?"
+msgstr "有些人的自介人格分裂，然後又錯字連篇，我真心無法違背自己良心右甩。"
+
+#: src/constants/Home/index.en.ts
+msgid "Mirror Selfies with a Dirty Room"
+msgstr "自拍照裡的房間亂到像核爆"
+
+#: src/constants/Home/index.en.ts
+msgid "If you can't clean your room, what's your life looking like?"
+msgstr "這是我的問題，但我眼睛真的很利！哈！"
+
+#: src/constants/Home/index.en.ts
+msgid "About Poklist"
+msgstr "關於Poklist"
+
+#: src/constants/Home/index.en.ts
+msgid "Tutorials"
+msgstr "快速教學"
+
+#: src/constants/Home/index.en.ts
+msgid "FAQ"
+msgstr "問與答"
+
+#: src/constants/Home/index.en.ts
+msgid "Join the Team"
+msgstr "加入團隊"
+
+#: src/constants/Home/index.en.ts
+msgid "Press kit"
+msgstr "媒體報導"
+
+#: src/constants/Home/index.en.ts
+msgid "Contact Us"
+msgstr "聯繫我們"
+
+#: src/constants/Home/index.en.ts
+msgid "Terms"
+msgstr "使用者條款"
+
+#: src/constants/Home/index.en.ts
+msgid "Privacy"
+msgstr "隱私權保護政策"
+
+#: src/constants/Home/index.en.ts
+msgid "Collection Notice"
+msgstr "額外公告"
+
+#: src/constants/Home/index.en.ts
+msgid "Login Error - Creator Account Not Found"
+msgstr "登入錯誤 - 查無此創作者"
+
+#: src/constants/Home/index.en.ts
+msgid "Only approved and verified “Creator Accounts” can log in and create lists. If you have any questions, please contact us."
+msgstr "目前僅限已申請並被認證的「創作者帳號」登入並創作名單。如有疑問，請聯繫我們。"
+
+#: src/constants/Home/index.en.ts
+msgid "Contact us"
+msgstr "聯繫我們"
+
+#: src/pages/Create/index.tsx
+#~ msgid "欸，標題不能留空喔！"
+#~ msgstr "欸，標題不能留空喔！"
+
+#: src/pages/Home/FeatureSection/index.tsx
+msgid "Life Style"
+msgstr "生活風格"
+
+#: src/pages/Home/FeatureSection/index.tsx
+#: src/pages/Lists/i18n.ts
+msgid "Food & Drink"
+msgstr "美食"
+
+#: src/pages/Home/FeatureSection/index.tsx
+#: src/pages/Lists/i18n.ts
+msgid "Culture"
+msgstr "文化"
+
+#: src/pages/Home/FeatureSection/index.tsx
+#: src/pages/Lists/i18n.ts
+msgid "Travel"
+msgstr "旅遊"
+
+#: src/pages/Home/FeatureSection/index.tsx
+#: src/pages/Lists/i18n.ts
+msgid "Entertainment"
+msgstr "娛樂"
+
+#: src/pages/Home/FeatureSection/index.tsx
+#: src/pages/Lists/i18n.ts
+msgid "Tech & Digital"
+msgstr "數位科技"
+
+#: src/pages/Home/FeatureSection/index.tsx
+#: src/pages/Lists/i18n.ts
+msgid "Personal Growth"
+msgstr "個人成長"
+
+#: src/pages/Home/FeatureSection/index.tsx
+#: src/pages/Lists/i18n.ts
+msgid "Health & Fitness"
+msgstr "健康與健身"
+
+#: src/pages/Home/FeatureSection/index.tsx
+#: src/pages/Lists/i18n.ts
+msgid "Other"
+msgstr "其他"
+
+#: src/pages/Home/FeatureSection/index.tsx
+msgid "Lists"
+msgstr "名單"
+
+#: src/pages/Home/Header/index.tsx
+msgid "Sign In"
+msgstr "登入"
+
+#: src/pages/Home/LoginDrawer/index.tsx
+msgid "Sign in to Poklist with Google"
+msgstr "使用 Google 帳號登入 Poklist"
