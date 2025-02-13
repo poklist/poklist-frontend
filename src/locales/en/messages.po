@@ -35,6 +35,426 @@ msgstr "Must be JPG and under 2MB."
 msgid "Upload a cover"
 msgstr "Upload a cover"
 
+#: src/constants/Home/index.en.ts
+msgid "Join Poklist and share your lists."
+msgstr "Join Poklist and share your lists."
+
+#: src/constants/Home/index.en.ts
+msgid "Currently open only to creator account applications."
+msgstr "Currently open only to creator account applications."
+
+#: src/constants/Home/index.en.ts
+msgid "Sign up"
+msgstr "Sign up"
+
+#: src/constants/Home/index.en.ts
+msgid "Creator Account Login"
+msgstr "Creator Account Login"
+
+#: src/constants/Home/index.en.ts
+msgid "Can non-creators use Poklist?"
+msgstr "Can non-creators use Poklist?"
+
+#: src/constants/Home/index.en.ts
+msgid "List Your Ideas"
+msgstr "List Your Ideas"
+
+#: src/constants/Home/index.en.ts
+msgid "Turn thoughts into lists, discover fresh finds, and follow inspiration"
+msgstr "Turn thoughts into lists, discover fresh finds, and follow inspiration"
+
+#: src/constants/Home/index.en.ts
+msgid "Inspogirlie"
+msgstr "Inspogirlie"
+
+#: src/constants/Home/index.en.ts
+msgid "Must-Haves for dorm life"
+msgstr "Must-Haves for dorm life"
+
+#: src/constants/Home/index.en.ts
+msgid "Cozy Bedding:"
+msgstr "Cozy Bedding:"
+
+#: src/constants/Home/index.en.ts
+msgid "A plush comforter and extra pillows for a comfy night's sleep."
+msgstr "A plush comforter and extra pillows for a comfy night's sleep."
+
+#: src/constants/Home/index.en.ts
+msgid "Desk Essentials"
+msgstr "Desk Essentials"
+
+#: src/constants/Home/index.en.ts
+msgid "Target is probably your bf."
+msgstr "Target is probably your bf."
+
+#: src/constants/Home/index.en.ts
+msgid "Portable Speaker"
+msgstr "Portable Speaker"
+
+#: src/constants/Home/index.en.ts
+msgid "For study breaks or casual dorm hangouts"
+msgstr "For study breaks or casual dorm hangouts"
+
+#: src/constants/Home/index.en.ts
+msgid "List Lab"
+msgstr "List Lab"
+
+#: src/constants/Home/index.en.ts
+msgid "Stop-by-Stop Café Journey"
+msgstr "Stop-by-Stop Café Journey"
+
+#: src/constants/Home/index.en.ts
+msgid "8:00 AM at Sunrise Café"
+msgstr "8:00 AM at Sunrise Café"
+
+#: src/constants/Home/index.en.ts
+msgid "Start your day with a creamy latte and a freshly baked croissant"
+msgstr "Start your day with a creamy latte and a freshly baked croissant"
+
+#: src/constants/Home/index.en.ts
+msgid "12:30 PM at Artisan Coffee House"
+msgstr "12:30 PM at Artisan Coffee House"
+
+#: src/constants/Home/index.en.ts
+msgid "Enjoy a flat white with a hearty avocado toast."
+msgstr "Enjoy a flat white with a hearty avocado toast."
+
+#: src/constants/Home/index.en.ts
+msgid "3:00 PM at Brew & Bloom"
+msgstr "3:00 PM at Brew & Bloom"
+
+#: src/constants/Home/index.en.ts
+msgid "Sip on a cold brew while indulging in a lavender scone"
+msgstr "Sip on a cold brew while indulging in a lavender scone"
+
+#: src/constants/Home/index.en.ts
+msgid "Campus People"
+msgstr "Campus People"
+
+#: src/constants/Home/index.en.ts
+msgid "Notes for Campus Fest"
+msgstr "Notes for Campus Fest"
+
+#: src/constants/Home/index.en.ts
+msgid "Essentials"
+msgstr "Essentials"
+
+#: src/constants/Home/index.en.ts
+msgid "Sunscreen, water bottle, and comfy shoes."
+msgstr "Sunscreen, water bottle, and comfy shoes."
+
+#: src/constants/Home/index.en.ts
+msgid "Extras"
+msgstr "Extras"
+
+#: src/constants/Home/index.en.ts
+msgid "A light jacket for when it gets chilly."
+msgstr "A light jacket for when it gets chilly."
+
+#: src/constants/Home/index.en.ts
+msgid "Pro tip:"
+msgstr "Pro tip:"
+
+#: src/constants/Home/index.en.ts
+msgid "Bring a blanket to claim your spot early."
+msgstr "Bring a blanket to claim your spot early."
+
+#: src/constants/Home/index.en.ts
+msgid "Travel Lover"
+msgstr "Travel Lover"
+
+#: src/constants/Home/index.en.ts
+msgid "Travel budgeting checklist"
+msgstr "Travel budgeting checklist"
+
+#: src/constants/Home/index.en.ts
+msgid "Set your total budget"
+msgstr "Set your total budget"
+
+#: src/constants/Home/index.en.ts
+msgid "Break it down into categories: flights, accommodation, food, activities, and extras."
+msgstr "Break it down into categories: flights, accommodation, food, activities, and extras."
+
+#: src/constants/Home/index.en.ts
+msgid "Hunt for Deals"
+msgstr "Hunt for Deals"
+
+#: src/constants/Home/index.en.ts
+msgid "Use flight comparison tools like Skyscanner or Google Flights"
+msgstr "Use flight comparison tools like Skyscanner or Google Flights"
+
+#: src/constants/Home/index.en.ts
+msgid "Transportation Hacks"
+msgstr "Transportation Hacks"
+
+#: src/constants/Home/index.en.ts
+msgid "Book accommodations early through budget-friendly platforms like Hostelworld or Airbnb."
+msgstr "Book accommodations early through budget-friendly platforms like Hostelworld or Airbnb."
+
+#: src/constants/Home/index.en.ts
+msgid "Gossip Pie"
+msgstr "Gossip Pie"
+
+#: src/constants/Home/index.en.ts
+msgid "Binge based on your mood"
+msgstr "Binge based on your mood"
+
+#: src/constants/Home/index.en.ts
+msgid "Relaxing: Moana"
+msgstr "Relaxing: Moana"
+
+#: src/constants/Home/index.en.ts
+msgid "Moana / A heartwarming and adventurous animated film with stunning visuals and beautiful music that will soothe your soul."
+msgstr "Moana / A heartwarming and adventurous animated film with stunning visuals and beautiful music that will soothe your soul."
+
+#: src/constants/Home/index.en.ts
+msgid "Tense: Tenet"
+msgstr "Tense: Tenet"
+
+#: src/constants/Home/index.en.ts
+msgid "Directed by Christopher Nolan, this mind-bending action film with time inversion will keep you on the edge of your seat."
+msgstr "Directed by Christopher Nolan, this mind-bending action film with time inversion will keep you on the edge of your seat."
+
+#: src/constants/Home/index.en.ts
+msgid "Fun: Dumb and Dumber"
+msgstr "Fun: Dumb and Dumber"
+
+#: src/constants/Home/index.en.ts
+msgid "A classic comedy about two clueless friends on a road trip full of ridiculous and laugh-out-loud situations."
+msgstr "A classic comedy about two clueless friends on a road trip full of ridiculous and laugh-out-loud situations."
+
+#: src/constants/Home/index.en.ts
+msgid "iTech"
+msgstr "iTech"
+
+#: src/constants/Home/index.en.ts
+msgid "How I curate my digital space"
+msgstr "How I curate my digital space"
+
+#: src/constants/Home/index.en.ts
+msgid "Notion"
+msgstr "Notion"
+
+#: src/constants/Home/index.en.ts
+msgid "Manage your thoughts and ideas in one single place."
+msgstr "Manage your thoughts and ideas in one single place."
+
+#: src/constants/Home/index.en.ts
+msgid "Google Drive"
+msgstr "Google Drive"
+
+#: src/constants/Home/index.en.ts
+msgid "The OG and it's so essential."
+msgstr "The OG and it's so essential."
+
+#: src/constants/Home/index.en.ts
+msgid "ChatGPT"
+msgstr "ChatGPT"
+
+#: src/constants/Home/index.en.ts
+msgid "Greatly improved my work!"
+msgstr "Greatly improved my work!"
+
+#: src/constants/Home/index.en.ts
+msgid "Good Habbits"
+msgstr "Good Habbits"
+
+#: src/constants/Home/index.en.ts
+msgid "Atomic Habits - My thoughts"
+msgstr "Atomic Habits - My thoughts"
+
+#: src/constants/Home/index.en.ts
+msgid "Start Small to Achieve Big"
+msgstr "Start Small to Achieve Big"
+
+#: src/constants/Home/index.en.ts
+msgid "Pressure is the biggest enemy. Don't let it control your momentum."
+msgstr "Pressure is the biggest enemy. Don't let it control your momentum."
+
+#: src/constants/Home/index.en.ts
+msgid "Build Systems, Not Just Goals."
+msgstr "Build Systems, Not Just Goals."
+
+#: src/constants/Home/index.en.ts
+msgid "This reminds me that building team is more important than the actual product."
+msgstr "This reminds me that building team is more important than the actual product."
+
+#: src/constants/Home/index.en.ts
+msgid "Embrace Your New Identity"
+msgstr "Embrace Your New Identity"
+
+#: src/constants/Home/index.en.ts
+msgid "I need to work on this 100%"
+msgstr "I need to work on this 100%"
+
+#: src/constants/Home/index.en.ts
+msgid "Pica Pica"
+msgstr "Pica Pica"
+
+#: src/constants/Home/index.en.ts
+msgid "My best protein shake recipe"
+msgstr "My best protein shake recipe"
+
+#: src/constants/Home/index.en.ts
+msgid "Step 1: Gather Your Ingredients"
+msgstr "Step 1: Gather Your Ingredients"
+
+#: src/constants/Home/index.en.ts
+msgid "1 scoop of your favorite protein powder (vanilla or chocolate works great!)"
+msgstr "1 scoop of your favorite protein powder (vanilla or chocolate works great!)"
+
+#: src/constants/Home/index.en.ts
+msgid "Step 2: Blend the Base"
+msgstr "Step 2: Blend the Base"
+
+#: src/constants/Home/index.en.ts
+msgid "Add the almond milk, protein powder, and banana to your blender."
+msgstr "Add the almond milk, protein powder, and banana to your blender."
+
+#: src/constants/Home/index.en.ts
+msgid "Step 3: Add the Extras"
+msgstr "Step 3: Add the Extras"
+
+#: src/constants/Home/index.en.ts
+msgid "Drop in the peanut butter, chia seeds, or flaxseeds for added nutrients."
+msgstr "Drop in the peanut butter, chia seeds, or flaxseeds for added nutrients."
+
+#: src/constants/Home/index.en.ts
+msgid "Jacob PHD"
+msgstr "Jacob PHD"
+
+#: src/constants/Home/index.en.ts
+msgid "Reasons I swipe left"
+msgstr "Reasons I swipe left"
+
+#: src/constants/Home/index.en.ts
+msgid "The Fish Pic"
+msgstr "The Fish Pic"
+
+#: src/constants/Home/index.en.ts
+msgid "Congrats on catching that trout, but it's not winning you dates."
+msgstr "Congrats on catching that trout, but it's not winning you dates."
+
+#: src/constants/Home/index.en.ts
+msgid "No Bio, No Effort"
+msgstr "No Bio, No Effort"
+
+#: src/constants/Home/index.en.ts
+msgid "If you can't write a sentence, how are you going to hold a conversation?"
+msgstr "If you can't write a sentence, how are you going to hold a conversation?"
+
+#: src/constants/Home/index.en.ts
+msgid "Mirror Selfies with a Dirty Room"
+msgstr "Mirror Selfies with a Dirty Room"
+
+#: src/constants/Home/index.en.ts
+msgid "If you can't clean your room, what's your life looking like?"
+msgstr "If you can't clean your room, what's your life looking like?"
+
+#: src/constants/Home/index.en.ts
+msgid "About Poklist"
+msgstr "About Poklist"
+
+#: src/constants/Home/index.en.ts
+msgid "Tutorials"
+msgstr "Tutorials"
+
+#: src/constants/Home/index.en.ts
+msgid "FAQ"
+msgstr "FAQ"
+
+#: src/constants/Home/index.en.ts
+msgid "Join the Team"
+msgstr "Join the Team"
+
+#: src/constants/Home/index.en.ts
+msgid "Press kit"
+msgstr "Press kit"
+
+#: src/constants/Home/index.en.ts
+msgid "Contact Us"
+msgstr "Contact Us"
+
+#: src/constants/Home/index.en.ts
+msgid "Terms"
+msgstr "Terms"
+
+#: src/constants/Home/index.en.ts
+msgid "Privacy"
+msgstr "Privacy"
+
+#: src/constants/Home/index.en.ts
+msgid "Collection Notice"
+msgstr "Collection Notice"
+
+#: src/constants/Home/index.en.ts
+msgid "Login Error - Creator Account Not Found"
+msgstr "Login Error - Creator Account Not Found"
+
+#: src/constants/Home/index.en.ts
+msgid "Only approved and verified “Creator Accounts” can log in and create lists. If you have any questions, please contact us."
+msgstr "Only approved and verified “Creator Accounts” can log in and create lists. If you have any questions, please contact us."
+
+#: src/constants/Home/index.en.ts
+msgid "Contact us"
+msgstr "Contact us"
+
+#: src/pages/Home/FeatureSection/index.tsx
+msgid "Life Style"
+msgstr "Life Style"
+
+#: src/pages/Home/FeatureSection/index.tsx
+#: src/pages/Lists/i18n.ts
+msgid "Food & Drink"
+msgstr "Food & Drink"
+
+#: src/pages/Home/FeatureSection/index.tsx
+#: src/pages/Lists/i18n.ts
+msgid "Culture"
+msgstr "Culture"
+
+#: src/pages/Home/FeatureSection/index.tsx
+#: src/pages/Lists/i18n.ts
+msgid "Travel"
+msgstr "Travel"
+
+#: src/pages/Home/FeatureSection/index.tsx
+#: src/pages/Lists/i18n.ts
+msgid "Entertainment"
+msgstr "Entertainment"
+
+#: src/pages/Home/FeatureSection/index.tsx
+#: src/pages/Lists/i18n.ts
+msgid "Tech & Digital"
+msgstr "Tech & Digital"
+
+#: src/pages/Home/FeatureSection/index.tsx
+#: src/pages/Lists/i18n.ts
+msgid "Personal Growth"
+msgstr "Personal Growth"
+
+#: src/pages/Home/FeatureSection/index.tsx
+#: src/pages/Lists/i18n.ts
+msgid "Health & Fitness"
+msgstr "Health & Fitness"
+
+#: src/pages/Home/FeatureSection/index.tsx
+#: src/pages/Lists/i18n.ts
+msgid "Other"
+msgstr "Other"
+
+#: src/pages/Home/FeatureSection/index.tsx
+msgid "Lists"
+msgstr "Lists"
+
+#: src/pages/Home/Header/index.tsx
+msgid "Sign In"
+msgstr "Sign In"
+
+#: src/pages/Home/LoginDrawer/index.tsx
+msgid "Sign in to Poklist with Google"
+msgstr "Sign in to Poklist with Google"
+
 #: src/pages/Idea/Components/DeleteButton/index.tsx
 msgid "Are you sure you want to delete this idea?"
 msgstr "Are you sure you want to delete this idea?"
@@ -207,40 +627,8 @@ msgid "Add an idea"
 msgstr "Add an idea"
 
 #: src/pages/Lists/i18n.ts
-msgid "Other"
-msgstr "Other"
-
-#: src/pages/Lists/i18n.ts
 msgid "Lifestyle"
 msgstr "Lifestyle"
-
-#: src/pages/Lists/i18n.ts
-msgid "Food & Drink"
-msgstr "Food & Drink"
-
-#: src/pages/Lists/i18n.ts
-msgid "Culture"
-msgstr "Culture"
-
-#: src/pages/Lists/i18n.ts
-msgid "Travel"
-msgstr "Travel"
-
-#: src/pages/Lists/i18n.ts
-msgid "Entertainment"
-msgstr "Entertainment"
-
-#: src/pages/Lists/i18n.ts
-msgid "Tech & Digital"
-msgstr "Tech & Digital"
-
-#: src/pages/Lists/i18n.ts
-msgid "Personal Growth"
-msgstr "Personal Growth"
-
-#: src/pages/Lists/i18n.ts
-msgid "Health & Fitness"
-msgstr "Health & Fitness"
 
 #: src/pages/User/Footer/index.tsx
 msgid "Liked"

@@ -4,6 +4,7 @@ import { getLocalStorage, setLocalStorage } from '@/lib/utils';
 import { i18n } from '@lingui/core';
 import { I18nProvider, useLingui } from '@lingui/react';
 import { Fragment, useEffect, useState } from 'react';
+import { Button } from '@/components/ui/button';
 
 export async function activateI18n(locale: Language) {
   const { messages } = await import(`../locales/${locale}/messages.ts`);
@@ -22,10 +23,19 @@ const WatchLocale = ({ children }: { children: React.ReactNode }) => {
   return <Fragment key={lingui.locale}>{children}</Fragment>;
 };
 
-export const LanguageProvider = ({ children }: { children?: React.ReactNode }) => {
+export const LanguageProvider = ({
+  children,
+}: {
+  children?: React.ReactNode;
+}) => {
   useEffect(() => {
-    const userSelectedLanguage = getLocalStorage(LocalStorageKey.SELECTED_LANGUAGE);
-    if (userSelectedLanguage && Object.values(Language).includes(userSelectedLanguage)) {
+    const userSelectedLanguage = getLocalStorage(
+      LocalStorageKey.SELECTED_LANGUAGE
+    );
+    if (
+      userSelectedLanguage &&
+      Object.values(Language).includes(userSelectedLanguage)
+    ) {
       activateI18n(userSelectedLanguage);
     } else {
       activateI18n(Language.EN);
@@ -49,20 +59,58 @@ const atSelectedLanguage = (value: Language) => {
 };
 export const LanguageSelector: React.FC = () => {
   const [language, setLanguage] = useState(Language.EN);
+
   useEffect(() => {
-    const userSelectedLanguage = getLocalStorage(LocalStorageKey.SELECTED_LANGUAGE);
-    console.log(userSelectedLanguage);
-    if (userSelectedLanguage && Object.values(Language).includes(userSelectedLanguage)) {
+    const userSelectedLanguage = getLocalStorage(
+      LocalStorageKey.SELECTED_LANGUAGE
+    );
+    if (
+      userSelectedLanguage &&
+      Object.values(Language).includes(userSelectedLanguage)
+    ) {
       setLanguage(userSelectedLanguage);
     }
-    // Activate the default locale on page load
   }, []);
+
   return (
     <DropdownComponent
       options={i18nOptions}
       defaultValue={language}
-      onSelect={value => atSelectedLanguage(value as Language)}
+      onSelect={(value) => atSelectedLanguage(value as Language)}
       trigger={<>...</>}
     />
+  );
+};
+
+export const LanguageToggleButton: React.FC = () => {
+  const [language, setLanguage] = useState(Language.EN);
+
+  useEffect(() => {
+    const userSelectedLanguage = getLocalStorage(
+      LocalStorageKey.SELECTED_LANGUAGE
+    );
+    if (
+      userSelectedLanguage &&
+      Object.values(Language).includes(userSelectedLanguage)
+    ) {
+      setLanguage(userSelectedLanguage);
+    }
+  }, []);
+
+  const toggleLanguage = () => {
+    const newLanguage = language === Language.EN ? Language.ZH_TW : Language.EN;
+    activateI18n(newLanguage);
+    setLanguage(newLanguage);
+    setLocalStorage(LocalStorageKey.SELECTED_LANGUAGE, newLanguage);
+  };
+
+  return (
+    <Button
+      variant="gray"
+      className="font-semibold text-black hover:text-gray-700"
+      onClick={toggleLanguage}
+    >
+      {language === Language.EN ? '中文' : 'Eng'}
+    </Button>
   );
 };
