@@ -29,9 +29,8 @@ export const Header: React.FC<IHeaderProps> = ({
         <img
           src={headerPoklist}
           alt="Poklist"
-          onClick={() => navigate('/login') /* TEMP: */}
+          onClick={() => navigate('/home')}
         />
-        {/* )} */}
       </div>
       <div id="header-right" className="flex items-center justify-center gap-4">
         {!isLoggedIn && (
