@@ -1,4 +1,4 @@
-const DeleteAccountPage: React.FC = () => {
+const ViewListPage: React.FC = () => {
   return (
     // TODO: account delete page
     <div>
@@ -7,4 +7,4 @@ const DeleteAccountPage: React.FC = () => {
   );
 };
 
-export default DeleteAccountPage;
+export default ViewListPage;

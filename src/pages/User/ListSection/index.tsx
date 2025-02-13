@@ -8,7 +8,7 @@ import { ListSectionSkeleton } from './ListSectionSkeleton';
 
 const ListSection: React.FC = () => {
   const navigate = useNavigate();
-  const { code } = useParams();
+  const { userCode } = useParams();
   const [listPreviewList, setListPreviewList] = useState<ListPreview[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -22,10 +22,10 @@ const ListSection: React.FC = () => {
   };
 
   useEffect(() => {
-    if (code !== undefined) {
-      getListPreviewList(code);
+    if (userCode !== undefined) {
+      getListPreviewList(userCode);
     }
-  }, [code]);
+  }, [userCode]);
 
   if (isLoading) {
     return <ListSectionSkeleton />;

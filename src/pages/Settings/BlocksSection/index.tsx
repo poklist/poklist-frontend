@@ -7,7 +7,7 @@ import LinksBlock from './LinksBlock';
 const BlocksSection: React.FC = () => {
   const navigate = useNavigate();
 
-  const { isLoggedIn, logout } = useUserStore();
+  const { isLoggedIn, logout, user } = useUserStore();
 
   const openLanguageDrawer = () => {}; // TODO:
   const openLocactionDrawer = () => {}; // TODO:
@@ -75,7 +75,7 @@ const BlocksSection: React.FC = () => {
       {
         decription: 'Delete Account',
         action: () => {
-          navigate('/account/delete');
+          navigate(`/${user.userCode}/delete`);
         },
       },
       {

@@ -3,6 +3,7 @@ import IconAdd from '@/components/ui/icons/AddIcon';
 import IconLike from '@/components/ui/icons/LikeIcon';
 import IconLink from '@/components/ui/icons/LinkIcon';
 import { cn, copyHref } from '@/lib/utils';
+import useUserStore from '@/stores/useUserStore';
 import { Trans } from '@lingui/macro';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -15,6 +16,7 @@ const FooterComponent: React.FC<IFooterProps> = () => {
   // May use ReactNode instead
   const location = useLocation();
   const navigate = useNavigate();
+  const { user: me } = useUserStore();
   const isShowLikeButton = location.pathname.startsWith('/list/');
   const [liked, setLiked] = useState(false);
 
@@ -36,7 +38,7 @@ const FooterComponent: React.FC<IFooterProps> = () => {
       <Button
         variant="white"
         className="flex items-center gap-2 text-sm"
-        onClick={() => navigate('/list/create')}
+        onClick={() => navigate(`/${me.userCode}/list/create`)}
       >
         <IconAdd />
         <Trans>Create List</Trans>

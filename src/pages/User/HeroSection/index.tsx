@@ -17,7 +17,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { HeroSectionSkeleton } from './HeroSectionSkeleton';
 
 const HeroSection: React.FC = () => {
-  const { code } = useParams();
+  const { userCode } = useParams();
   const navigate = useNavigate();
   const {
     isLoggedIn,
@@ -38,7 +38,7 @@ const HeroSection: React.FC = () => {
     }
   }, [currentUser]);
 
-  const isMyPage = code?.toString() === me.userCode.toString();
+  const isMyPage = userCode?.toString() === me.userCode.toString();
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -47,7 +47,7 @@ const HeroSection: React.FC = () => {
 
   const follow = () => {
     if (!isLoggedIn) {
-      navigate('/login');
+      navigate('/home');
       return;
     }
     // FUTURE: refactor the follow/unfollow API
@@ -75,9 +75,10 @@ const HeroSection: React.FC = () => {
   };
 
   const goToEditPage = () => {
-    navigate('/account/edit');
+    navigate(`/${me.userCode}/edit`);
   };
 
+  // FUTURE: extract this code segment to a separate hook
   const getUser = async (code: string) => {
     if (!code) return;
     const res = await axios.get<IResponse<User>>(`/${code}/info`);
@@ -135,10 +136,10 @@ const HeroSection: React.FC = () => {
   };
 
   useEffect(() => {
-    if (code !== undefined) {
-      getUser(code);
+    if (userCode !== undefined) {
+      getUser(userCode);
     }
-  }, [code]);
+  }, [userCode]);
 
   if (isLoading) {
     return <HeroSectionSkeleton />;
