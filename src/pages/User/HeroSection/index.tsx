@@ -75,7 +75,7 @@ const HeroSection: React.FC = () => {
   };
 
   const goToEditPage = () => {
-    navigate('/user/edit');
+    navigate('/account/edit');
   };
 
   const getUser = async (code: string) => {

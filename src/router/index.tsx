@@ -19,34 +19,13 @@ const router = createBrowserRouter([
     element: <Layout />,
     errorElement: <ErrorPage />,
     children: [
-      {
-        path: '',
-        element: <Navigate to="/home" replace />,
-      },
-      {
-        path: 'login',
-        element: <Login />,
-      },
-      {
-        path: 'home',
-        element: <Home />,
-      },
-      {
-        path: 'settings',
-        element: <SettingsPage />,
-      },
-      {
-        path: 'delete-account',
-        element: <DeleteAccountPage />,
-      },
-      {
-        path: ':code',
-        element: <UserPage />,
-      },
-      {
-        path: 'user/edit',
-        element: <EditUserPage />,
-      },
+      { path: '', element: <Navigate to="/home" replace /> },
+      { path: 'login', element: <Login /> },
+      { path: 'home', element: <Home /> },
+      { path: 'settings', element: <SettingsPage /> },
+      { path: 'account/delete', element: <DeleteAccountPage /> },
+      { path: ':code', element: <UserPage /> },
+      { path: 'account/edit', element: <EditUserPage /> },
       { path: 'list/create', element: <CreateListPage /> },
       { path: 'list/manage/:id', element: <ListManagementPage /> },
       { path: 'list/edit/:id', element: <EditListPage /> },
