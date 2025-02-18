@@ -1,6 +1,6 @@
-import { Header } from '@/components/Header';
+import FloatingButtonFooter from '@/components/Footer/FloatingButtonFooter';
+import Header from '@/components/Header';
 import MobileContainer from '@/components/ui/containers/MobileContainer';
-import FooterComponent from './Footer';
 import HeroSection from './HeroSection';
 import ListSection from './ListSection';
 
@@ -11,7 +11,7 @@ const UserPage: React.FC = () => {
       <Header />
       <HeroSection />
       <ListSection />
-      <FooterComponent />
+      <FloatingButtonFooter />
     </MobileContainer>
   );
 };

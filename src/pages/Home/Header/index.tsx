@@ -1,16 +1,16 @@
-import { Button } from '@/components/ui/button';
-import { Link, useNavigate } from 'react-router-dom';
 import headerLogo from '@/assets/images/header-poklist.svg';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
 import { LanguageToggleButton } from '@/lib/languageProvider';
 import useUserStore from '@/stores/useUserStore';
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Trans } from '@lingui/macro';
+import { Link, useNavigate } from 'react-router-dom';
 
 interface HeaderProps {
   onSignInClick: () => void;
 }
 
-export const Header = ({ onSignInClick }: HeaderProps) => {
+const Header = ({ onSignInClick }: HeaderProps) => {
   const navigate = useNavigate();
   const { user, isLoggedIn } = useUserStore();
 
@@ -44,3 +44,5 @@ export const Header = ({ onSignInClick }: HeaderProps) => {
     </header>
   );
 };
+
+export default Header;

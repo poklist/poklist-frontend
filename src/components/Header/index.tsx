@@ -5,23 +5,12 @@ import IconSetting from '@/components/ui/icons/SettingIcon';
 import useUserStore from '@/stores/useUserStore';
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { BackToUserNav } from './BackToUserNav';
 
-interface IHeaderProps {
-  type?: 'default' | 'back-to-user' | 'only-title';
-}
-
-export const Header: React.FC<IHeaderProps> = ({
-  type: headerType = 'default',
-}) => {
-  const { code } = useParams();
+const Header: React.FC = () => {
+  const { userCode } = useParams();
   const navigate = useNavigate();
   const { isLoggedIn, user: me } = useUserStore();
-  const isMyPage = code?.toString() === me.userCode.toString();
-
-  if (headerType === 'back-to-user') {
-    return <BackToUserNav />;
-  }
+  const isMyPage = userCode === me.userCode;
 
   return (
     <header className="flex h-14 items-center justify-between px-4 text-t1 font-semibold">
@@ -59,3 +48,5 @@ export const Header: React.FC<IHeaderProps> = ({
     </header>
   );
 };
+
+export default Header;

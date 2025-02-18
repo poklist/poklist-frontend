@@ -3,36 +3,50 @@ import IconAdd from '@/components/ui/icons/AddIcon';
 import IconLike from '@/components/ui/icons/LikeIcon';
 import IconLink from '@/components/ui/icons/LinkIcon';
 import { cn, copyHref } from '@/lib/utils';
+import useSocialStore from '@/stores/useSocialStore';
 import useUserStore from '@/stores/useUserStore';
 import { Trans } from '@lingui/macro';
-import { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface IFooterProps {
-  // Add any props you need for the page
+  hasLikeButton?: boolean;
+  onUnmount?: () => void;
 }
 
-const FooterComponent: React.FC<IFooterProps> = () => {
+const FloatingButtonFooter: React.FC<IFooterProps> = ({
+  hasLikeButton = false,
+  onUnmount,
+}) => {
   // May use ReactNode instead
-  const location = useLocation();
   const navigate = useNavigate();
   const { user: me } = useUserStore();
-  const isShowLikeButton = location.pathname.startsWith('/list/');
-  const [liked, setLiked] = useState(false);
+  const { isLiked, setIsLiked } = useSocialStore();
+
+  useEffect(() => {
+    return () => {
+      // NOTE: because if we use unmount hook of the parent component,
+      // the like status can't be accessed.
+      // so we need to call the onUnmount function.
+      onUnmount?.();
+    };
+  }, [onUnmount]);
 
   return (
     <div className="fixed bottom-2 left-0 flex w-dvw items-center justify-center gap-2">
-      {isShowLikeButton && (
+      {hasLikeButton && (
         <Button
-          onClick={() => setLiked(!liked)}
+          onClick={() => {
+            setIsLiked(!isLiked);
+          }}
           variant="white"
           className="flex items-center gap-1.5 text-sm"
         >
           <IconLike
-            className={cn(liked ? 'stroke-red-warning-01' : 'stroke-black')}
-            fill={liked ? '#EB6052' : 'none'}
+            className={cn(isLiked ? 'stroke-red-warning-01' : 'stroke-black')}
+            fill={isLiked ? '#EB6052' : 'none'}
           />
-          {liked ? <Trans>Liked</Trans> : <Trans>Like</Trans>}
+          <Trans>Like</Trans>
         </Button>
       )}
       <Button
@@ -55,4 +69,4 @@ const FooterComponent: React.FC<IFooterProps> = () => {
   );
 };
 
-export default FooterComponent;
+export default FloatingButtonFooter;

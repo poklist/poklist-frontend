@@ -12,4 +12,15 @@ export interface User {
   isFollowing?: boolean;
 }
 
+export interface UserPreview {
+  id: number;
+  userCode: string;
+  displayName: string;
+  profileImage: string;
+}
+
+export interface IUpdateUserResponse extends User {
+  accessToken: string;
+}
+
 export type SocialLinks = PartialRecord<SocialLinkType, string>;

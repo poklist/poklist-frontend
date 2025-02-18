@@ -1,5 +1,5 @@
 import ApiPath from '@/config/apiPath';
-import { Categories } from '@/enums/Lists/index.enum';
+import { Category } from '@/enums/Lists/index.enum';
 import axios from '@/lib/axios';
 import useCommonStore from '@/stores/useCommonStore';
 import { IResponse } from '@/types/response';
@@ -11,27 +11,33 @@ export interface IListInfo {
   description: string;
   coverImage: string;
   externalLink: string;
-  categoryID: Categories;
+  categoryID: Category;
   likeCount: number;
-  createAt: string; // ISO 8601
-  updateAt: string; // ISO 8601
+  isLiked: boolean;
+  createdAt: string; // ISO 8601
+  updatedAt: string; // ISO 8601
   ideas: IIdeaPreviewInfo[];
   ideasTotalCount: number;
   owner: IListOwnerInfo;
 }
 
 export interface IIdeaPreviewInfo {
-  id: string;
+  id: number;
   title: string;
-  description: string;
-  coverImage: string;
+  description?: string;
+  coverImage?: string;
+  externalLink?: string;
 }
 
 const useGetList = (): {
   isListInfoLoading: boolean;
   listInfo: IListInfo | undefined;
   setListInfo: React.Dispatch<React.SetStateAction<IListInfo | undefined>>;
-  fetchGetListInfo: (listID: string) => Promise<IListInfo | undefined>;
+  fetchGetListInfo: (
+    listID: string,
+    offset?: number,
+    limited?: number
+  ) => Promise<IListInfo | undefined>;
 } => {
   const { setShowingAlert } = useCommonStore();
   const [isListInfoLoading, setIsListInfoLoading] = useState(false);
@@ -66,7 +72,7 @@ const useGetList = (): {
 };
 export default useGetList;
 
-interface IListOwnerInfo {
+export interface IListOwnerInfo {
   id: number; // listID??
   displayName: string;
   userCode: string;

@@ -18,6 +18,32 @@ msgstr ""
 msgid "<0>{0}</0>"
 msgstr "<0>{0}</0>"
 
+#. js-lingui-explicit-id
+#: src/components/FakePage/EditFieldFakePage.tsx
+msgid "Done"
+msgstr ""
+
+#: src/components/Footer/FloatingButtonFooter.tsx
+msgid "Like"
+msgstr "喜歡"
+
+#: src/components/Footer/FloatingButtonFooter.tsx
+msgid "Create List"
+msgstr "建立名單"
+
+#: src/components/Footer/FloatingButtonFooter.tsx
+#: src/pages/Lists/View/IdeaDrawerContent/index.tsx
+msgid "Copy"
+msgstr "複製"
+
+#: src/components/Header/BackToUserHeader.tsx
+msgid "Following"
+msgstr "追蹤中"
+
+#: src/components/Header/BackToUserHeader.tsx
+msgid "Follow"
+msgstr "追蹤"
+
 #: src/components/ImageCropper/index.tsx
 #: src/components/ImageUploader/index.tsx
 msgid "500x500px, JPG, max 2MB"
@@ -631,25 +657,26 @@ msgid "Tap to edit. Hold & drag to reorder Ideas"
 msgstr "點擊靈感進行編輯，長按可拖曳排序。"
 
 #: src/pages/Lists/Manage/index.tsx
+#: src/pages/Lists/View/ListCard/index.tsx
 msgid "Add an idea"
 msgstr "新增靈感"
+
+#: src/pages/Lists/View/ListCard/index.tsx
+msgid "Recently Updated"
+msgstr "最近更新"
+
+#: src/pages/Lists/View/ListCard/index.tsx
+msgid "Listing since"
+msgstr "創單自"
+
+#: src/pages/Lists/View/ListCard/index.tsx
+msgid "Likes"
+msgstr "喜歡"
+
+#: src/pages/Lists/View/ListCard/index.tsx
+msgid "Edit list"
+msgstr "編輯名單"
 
 #: src/pages/Lists/i18n.ts
 msgid "Lifestyle"
 msgstr "生活風格"
-
-#: src/pages/User/Footer/index.tsx
-msgid "Liked"
-msgstr ""
-
-#: src/pages/User/Footer/index.tsx
-msgid "Like"
-msgstr "喜歡"
-
-#: src/pages/User/Footer/index.tsx
-msgid "Create List"
-msgstr "建立名單"
-
-#: src/pages/User/Footer/index.tsx
-msgid "Copy"
-msgstr "複製"

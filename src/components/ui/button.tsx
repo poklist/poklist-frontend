@@ -22,8 +22,9 @@ const buttonVariants = cva(
           'border border-gray-main-03 bg-gray-note-05 text-black-text-01 disabled:opacity-50',
       },
       size: {
-        // sm: 'px-3',
-        md: 'h-8 text-[13px] px-3',
+        sm: 'h-8 text-[13px] px-3',
+        md: 'h-10 text-[15px] px-3',
+        h40: 'h-10 text-[15px] w-full',
         lg: 'h-12 text-[15px] px-8',
         icon: 'h-8 w-8',
       },

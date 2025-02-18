@@ -6,4 +6,7 @@ export interface IEditFieldConfig {
   placeholder?: string;
   characterLimit?: number;
   onFieldValueSet: (value: string | undefined) => void;
+  originalFieldValue?: string;
+  errorMessage?: string;
+  validator?: (value?: string) => boolean;
 }

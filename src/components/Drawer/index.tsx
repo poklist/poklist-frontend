@@ -7,6 +7,7 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from '@/components/ui/drawer';
+import { cn } from '@/lib/utils';
 import React, { createContext, useContext, useState } from 'react';
 
 interface IDrawerContext {
@@ -17,7 +18,9 @@ interface IDrawerContext {
 
 const DrawerContext = createContext<IDrawerContext | undefined>(undefined);
 
-export const DrawerProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const DrawerProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const openDrawer = () => {
@@ -50,11 +53,12 @@ export const useDrawer = () => {
 };
 
 interface IDrawerProps {
-  header: React.ReactNode;
+  header?: React.ReactNode;
   subHeader?: React.ReactNode;
   content?: React.ReactNode;
-  footer: React.ReactNode;
+  footer?: React.ReactNode;
   isShowClose: boolean;
+  className?: string;
 }
 export const DrawerComponent: React.FC<IDrawerProps> = ({
   header,
@@ -62,27 +66,32 @@ export const DrawerComponent: React.FC<IDrawerProps> = ({
   content,
   footer,
   isShowClose,
+  className,
 }) => {
   const { isOpen, closeDrawer } = useDrawer();
   return (
     <Drawer open={isOpen} onOpenChange={closeDrawer}>
-      <DrawerContent className="w-full bottom-0 bg-white shadow">
+      <DrawerContent
+        className={cn('bottom-0 w-full bg-white shadow', className)}
+      >
         {isShowClose && (
           <div className="flex justify-end">
             <DrawerClose
               aria-label="Close"
-              className="h-6 w-6 rounded-full bg-black-text-01 text-center leading-6 text-white mb-3 focus-visible:outline-none"
+              className="mb-3 h-6 w-6 rounded-full bg-black-text-01 text-center leading-6 text-white focus-visible:outline-none"
             >
               <span aria-hidden>×</span>
             </DrawerClose>
           </div>
         )}
-        <DrawerHeader className="relative w-full items-center">
-          <DrawerTitle>{header}</DrawerTitle>
-          {subHeader && <DrawerDescription>{subHeader}</DrawerDescription>}
-        </DrawerHeader>
+        {header && (
+          <DrawerHeader className="relative w-full items-center">
+            <DrawerTitle>{header}</DrawerTitle>
+            {subHeader && <DrawerDescription>{subHeader}</DrawerDescription>}
+          </DrawerHeader>
+        )}
         {content && <>{content}</>}
-        <DrawerFooter className="w-full">{footer}</DrawerFooter>
+        {footer && <DrawerFooter className="w-full">{footer}</DrawerFooter>}
       </DrawerContent>
     </Drawer>
   );

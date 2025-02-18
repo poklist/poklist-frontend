@@ -18,6 +18,32 @@ msgstr ""
 msgid "<0>{0}</0>"
 msgstr ""
 
+#. js-lingui-explicit-id
+#: src/components/FakePage/EditFieldFakePage.tsx
+msgid "Done"
+msgstr "Done"
+
+#: src/components/Footer/FloatingButtonFooter.tsx
+msgid "Like"
+msgstr "Like"
+
+#: src/components/Footer/FloatingButtonFooter.tsx
+msgid "Create List"
+msgstr "Create List"
+
+#: src/components/Footer/FloatingButtonFooter.tsx
+#: src/pages/Lists/View/IdeaDrawerContent/index.tsx
+msgid "Copy"
+msgstr "Copy"
+
+#: src/components/Header/BackToUserHeader.tsx
+msgid "Following"
+msgstr "Following"
+
+#: src/components/Header/BackToUserHeader.tsx
+msgid "Follow"
+msgstr "Follow"
+
 #: src/components/ImageCropper/index.tsx
 #: src/components/ImageUploader/index.tsx
 msgid "500x500px, JPG, max 2MB"
@@ -627,25 +653,26 @@ msgid "Tap to edit. Hold & drag to reorder Ideas"
 msgstr "Tap to edit. Hold & drag to reorder Ideas"
 
 #: src/pages/Lists/Manage/index.tsx
+#: src/pages/Lists/View/ListCard/index.tsx
 msgid "Add an idea"
 msgstr "Add an idea"
+
+#: src/pages/Lists/View/ListCard/index.tsx
+msgid "Recently Updated"
+msgstr "Recently Updated"
+
+#: src/pages/Lists/View/ListCard/index.tsx
+msgid "Listing since"
+msgstr "Listing since"
+
+#: src/pages/Lists/View/ListCard/index.tsx
+msgid "Likes"
+msgstr "Likes"
+
+#: src/pages/Lists/View/ListCard/index.tsx
+msgid "Edit list"
+msgstr "Edit list"
 
 #: src/pages/Lists/i18n.ts
 msgid "Lifestyle"
 msgstr "Lifestyle"
-
-#: src/pages/User/Footer/index.tsx
-msgid "Liked"
-msgstr "Liked"
-
-#: src/pages/User/Footer/index.tsx
-msgid "Like"
-msgstr "Like"
-
-#: src/pages/User/Footer/index.tsx
-msgid "Create List"
-msgstr "Create List"
-
-#: src/pages/User/Footer/index.tsx
-msgid "Copy"
-msgstr "Copy"

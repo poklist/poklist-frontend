@@ -1,20 +1,20 @@
-import { Header } from './Header';
-import { HeroSection } from './HeroSection';
-import { FeatureSection } from './FeatureSection';
-import { Footer } from './Footer';
-import { Divider } from './Divider';
-import { TutorialSection } from './TutorialSection';
 import logo from '@/assets/images/logo-big.png';
 import MobileContainer from '@/components/ui/containers/MobileContainer';
-import { GoogleOAuthProvider } from '@react-oauth/google';
 import {
-  HERO_SECTION,
   FEATURE_SECTION,
-  LIST_SECTION,
-  TUTORIAL_SECTION,
   FOOTER_SECTION,
+  HERO_SECTION,
+  LIST_SECTION,
   SOCIAL_MEDIA,
+  TUTORIAL_SECTION,
 } from '@/constants/Home/index.en';
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import { Divider } from './Divider';
+import { FeatureSection } from './FeatureSection';
+import { Footer } from './Footer';
+import Header from './Header';
+import { HeroSection } from './HeroSection';
+import { TutorialSection } from './TutorialSection';
 
 function HomeContent() {
   const content = {

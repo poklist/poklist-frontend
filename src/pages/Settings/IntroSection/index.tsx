@@ -16,7 +16,7 @@ const IntroSection: React.FC = () => {
         🚀 <strong>We’re in Beta</strong> and want you to be part of the
         journey! Join us, shape the platform, and help us reach the next level.
       </p>
-      <Button variant="black" size="md" className="w-fit self-end">
+      <Button variant="black" size="sm" className="w-fit self-end">
         ✨ Sign up now and start listing!
       </Button>
     </div>
