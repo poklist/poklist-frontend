@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button';
+import { Button, ButtonVariant } from '@/components/ui/button';
 import IconAdd from '@/components/ui/icons/AddIcon';
 import IconLike from '@/components/ui/icons/LikeIcon';
 import IconLink from '@/components/ui/icons/LinkIcon';
@@ -39,7 +39,7 @@ const FloatingButtonFooter: React.FC<IFooterProps> = ({
           onClick={() => {
             setIsLiked(!isLiked);
           }}
-          variant="white"
+          variant={ButtonVariant.WHITE}
           className="flex items-center gap-1.5 text-sm"
         >
           <IconLike
@@ -50,7 +50,7 @@ const FloatingButtonFooter: React.FC<IFooterProps> = ({
         </Button>
       )}
       <Button
-        variant="white"
+        variant={ButtonVariant.WHITE}
         className="flex items-center gap-2 text-sm"
         onClick={() => navigate(`/${me.userCode}/list/create`)}
       >
@@ -59,7 +59,7 @@ const FloatingButtonFooter: React.FC<IFooterProps> = ({
       </Button>
       <Button
         onClick={() => copyHref()}
-        variant="white"
+        variant={ButtonVariant.WHITE}
         className="flex items-center gap-1.5 text-sm"
       >
         <IconLink />

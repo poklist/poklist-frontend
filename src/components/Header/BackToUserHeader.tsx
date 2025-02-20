@@ -3,11 +3,11 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import IconLeftArrow from '@/components/ui/icons/LeftArrowIcon';
 import { IListOwnerInfo } from '@/hooks/Lists/useGetList';
 import useRelationStore from '@/stores/useRelationStore';
+import { User } from '@/types/User';
 import { Trans } from '@lingui/macro';
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button } from '../ui/button';
-import { User } from '@/types/User';
+import { Button, ButtonShape, ButtonSize, ButtonVariant } from '../ui/button';
 
 interface IBackToUserHeaderProps {
   owner?: IListOwnerInfo | User;
@@ -55,9 +55,9 @@ const BackToUserHeader: React.FC<IBackToUserHeaderProps> = ({
       </div>
       {hasFollowButton && (
         <Button
-          variant={isFollowing ? 'subActive' : 'black'}
-          shape="roundedFull"
-          size="sm"
+          variant={isFollowing ? ButtonVariant.SUB_ACTIVE : ButtonVariant.BLACK}
+          shape={ButtonShape.ROUNDED_FULL}
+          size={ButtonSize.SM}
           onClick={() => setIsFollowing(!isFollowing)}
         >
           {isFollowing ? <Trans>Following</Trans> : <Trans>Follow</Trans>}

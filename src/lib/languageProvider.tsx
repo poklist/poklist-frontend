@@ -1,10 +1,10 @@
 import DropdownComponent from '@/components/Dropdown';
+import { Button, ButtonSize, ButtonVariant } from '@/components/ui/button';
 import { Language, LocalStorageKey } from '@/enums/index.enum';
 import { getLocalStorage, setLocalStorage } from '@/lib/utils';
 import { i18n } from '@lingui/core';
 import { I18nProvider, useLingui } from '@lingui/react';
 import { Fragment, useEffect, useState } from 'react';
-import { Button } from '@/components/ui/button';
 
 export async function activateI18n(locale: Language) {
   const { messages } = await import(`../locales/${locale}/messages.ts`);
@@ -106,8 +106,9 @@ export const LanguageToggleButton: React.FC = () => {
 
   return (
     <Button
-      variant="gray"
-      className="font-semibold text-black hover:text-gray-700"
+      variant={ButtonVariant.GRAY}
+      size={ButtonSize.SM}
+      className="font-normal text-black hover:text-gray-700"
       onClick={toggleLanguage}
     >
       {language === Language.EN ? '中文' : 'Eng'}

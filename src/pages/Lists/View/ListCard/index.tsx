@@ -1,5 +1,10 @@
 import { DrawerComponent, useDrawer } from '@/components/Drawer';
-import { Button } from '@/components/ui/button';
+import {
+  Button,
+  ButtonShape,
+  ButtonSize,
+  ButtonVariant,
+} from '@/components/ui/button';
 import LinkIconWrapper from '@/components/ui/wrappers/LinkIconWrapper';
 import ApiPath from '@/config/apiPath';
 import {
@@ -7,7 +12,7 @@ import {
   LINK_PREVIEW_LENGTH,
   RECENTLY_UPDATED_DAYS,
 } from '@/constants/list';
-import { SocialLinkType } from '@/enums/index.enum';
+import { Language, SocialLinkType } from '@/enums/index.enum';
 import { IListInfo } from '@/hooks/Lists/useGetList';
 import axios from '@/lib/axios';
 import { getFormattedTime } from '@/lib/time';
@@ -103,7 +108,8 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
   };
 
   useEffect(() => {
-    const locale = i18n.locale === 'zh-TW' ? 'zh-TW' : 'en-US'; // FUTURE: be aware of the future i18n support
+    const locale =
+      i18n.locale === Language.ZH_TW ? Language.ZH_TW : Language.EN; // FUTURE: be aware of the future i18n support
     setCreatedAtString(getFormattedTime(data.createdAt, locale));
   }, [data.createdAt, i18n.locale]);
 
@@ -150,9 +156,9 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
           {isLoggedIn && user?.id === data.owner.id && (
             <div className="mt-6 flex w-full gap-2">
               <Button
-                variant="black"
-                size="h40"
-                shape="rounded8px"
+                variant={ButtonVariant.BLACK}
+                size={ButtonSize.H40}
+                shape={ButtonShape.ROUNDED_5PX}
                 onClick={() =>
                   navigate(`/${user.userCode}/list/${data.id}/edit`)
                 }
@@ -160,9 +166,9 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
                 <Trans>Edit list</Trans>
               </Button>
               <Button
-                variant="highlighted"
-                size="h40"
-                shape="rounded8px"
+                variant={ButtonVariant.HIGHLIGHTED}
+                size={ButtonSize.H40}
+                shape={ButtonShape.ROUNDED_5PX}
                 onClick={() =>
                   navigate(`/${user.userCode}/list/${data.id}/manage`)
                 }

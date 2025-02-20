@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button';
+import { Button, ButtonShape, ButtonVariant } from '@/components/ui/button';
 import {
   Drawer,
   DrawerClose,
@@ -15,7 +15,9 @@ interface IDeleteButtonProps {
   // Add any props you need for the page
   deleteCallback: () => void;
 }
-export const DeleteButton: React.FC<IDeleteButtonProps> = ({ deleteCallback }) => {
+export const DeleteButton: React.FC<IDeleteButtonProps> = ({
+  deleteCallback,
+}) => {
   const [isDeleteDrawerOpen, setIsDeleteDrawerOpen] = useState(false);
   const openDrawer = () => {
     setIsDeleteDrawerOpen(true);
@@ -28,11 +30,11 @@ export const DeleteButton: React.FC<IDeleteButtonProps> = ({ deleteCallback }) =
     <>
       <IconTrash onClick={() => openDrawer()} className="cursor-pointer" />
       <Drawer open={isDeleteDrawerOpen} onOpenChange={closeDrawer}>
-        <DrawerContent className="w-full bottom-0 bg-white shadow">
+        <DrawerContent className="bottom-0 w-full bg-white shadow">
           <div className="flex justify-end">
             <DrawerClose
               aria-label="Close"
-              className="h-6 w-6 rounded-full bg-black-text-01 text-center leading-6 text-white mb-3 focus-visible:outline-none"
+              className="mb-3 h-6 w-6 rounded-full bg-black-text-01 text-center leading-6 text-white focus-visible:outline-none"
             >
               <span aria-hidden>×</span>
             </DrawerClose>
@@ -45,11 +47,19 @@ export const DeleteButton: React.FC<IDeleteButtonProps> = ({ deleteCallback }) =
               <Trans>Once deleted, this idea cannot be recovered!</Trans>
             </DrawerDescription>
           </DrawerHeader>
-          <div className="flex justify-between items-center mt-4">
-            <Button onClick={() => deleteCallback()} variant="warning" shape="rounded8px">
+          <div className="mt-4 flex items-center justify-between">
+            <Button
+              onClick={() => deleteCallback()}
+              variant={ButtonVariant.WARNING}
+              shape={ButtonShape.ROUNDED_5PX}
+            >
               <Trans>Confirm Delete</Trans>
             </Button>
-            <Button onClick={() => closeDrawer()} variant="black" shape="rounded8px">
+            <Button
+              onClick={() => closeDrawer()}
+              variant={ButtonVariant.BLACK}
+              shape={ButtonShape.ROUNDED_5PX}
+            >
               <Trans>Cancel</Trans>
             </Button>
           </div>

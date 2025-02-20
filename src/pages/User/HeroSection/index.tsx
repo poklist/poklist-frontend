@@ -1,6 +1,11 @@
 import { DrawerComponent, useDrawer } from '@/components/Drawer';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
+import {
+  Button,
+  ButtonShape,
+  ButtonSize,
+  ButtonVariant,
+} from '@/components/ui/button';
 import LinkIconWrapper from '@/components/ui/wrappers/LinkIconWrapper';
 import { SocialLinkType } from '@/enums/index.enum';
 import axios from '@/lib/axios';
@@ -12,6 +17,7 @@ import {
 import useUserStore from '@/stores/useUserStore';
 import { IResponse } from '@/types/response';
 import { User } from '@/types/User';
+import { Trans } from '@lingui/macro';
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { HeroSectionSkeleton } from './HeroSectionSkeleton';
@@ -167,9 +173,9 @@ const HeroSection: React.FC = () => {
           {isMyPage ? (
             <Button
               id="edit-profile-button"
-              variant="black"
-              size="lg"
-              shape="rounded8px"
+              variant={ButtonVariant.BLACK}
+              size={ButtonSize.LG}
+              shape={ButtonShape.ROUNDED_5PX}
               onClick={goToEditPage}
             >
               Edit profile and account
@@ -177,8 +183,8 @@ const HeroSection: React.FC = () => {
           ) : isFollowing ? (
             <Button
               id="unfollow-button"
-              variant="gray"
-              size="lg"
+              variant={ButtonVariant.GRAY}
+              size={ButtonSize.LG}
               onClick={unfollow}
             >
               Following
@@ -186,8 +192,8 @@ const HeroSection: React.FC = () => {
           ) : (
             <Button
               id="follow-button"
-              variant="highlighted"
-              size="lg"
+              variant={ButtonVariant.HIGHLIGHTED}
+              size={ButtonSize.LG}
               onClick={follow}
             >
               Follow
@@ -195,14 +201,20 @@ const HeroSection: React.FC = () => {
           )}
         </div>
         <div id="hero-stats" className="flex gap-2">
-          <p>{currentUser.listCount} Lists</p>
-          <p>{currentUser.followerCount} Followers</p>
-          <p>{currentUser.followingCount} Following</p>
+          <p>
+            {currentUser.listCount} <Trans>Lists</Trans>
+          </p>
+          <p>
+            {currentUser.followerCount} <Trans>Followers</Trans>
+          </p>
+          <p>
+            {currentUser.followingCount} <Trans>Following</Trans>
+          </p>
           <p
             className="cursor-pointer font-semibold"
             onClick={onOpenLinkDrawer}
           >
-            {linkCount} Links
+            {linkCount} <Trans>Links</Trans>
           </p>
         </div>
       </div>

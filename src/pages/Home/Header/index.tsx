@@ -1,6 +1,7 @@
+// FUTURE: merge with src/components/Header/index.tsx
 import headerLogo from '@/assets/images/header-poklist.svg';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
+import { Button, ButtonVariant } from '@/components/ui/button';
 import { LanguageToggleButton } from '@/lib/languageProvider';
 import useUserStore from '@/stores/useUserStore';
 import { Trans } from '@lingui/macro';
@@ -16,7 +17,7 @@ const Header = ({ onSignInClick }: HeaderProps) => {
 
   return (
     <header className="fixed top-0 z-50 w-mobile-max">
-      <div className="mx-auto flex h-16 w-full items-center justify-between px-4">
+      <div className="mx-auto flex h-14 w-full items-center justify-between px-4">
         <Link to="/home">
           <img src={headerLogo} alt="Poklist" className="h-8" />
         </Link>
@@ -32,7 +33,7 @@ const Header = ({ onSignInClick }: HeaderProps) => {
             </Avatar>
           ) : (
             <Button
-              variant="white"
+              variant={ButtonVariant.WHITE}
               className="font-semibold text-black hover:text-gray-700"
               onClick={onSignInClick}
             >

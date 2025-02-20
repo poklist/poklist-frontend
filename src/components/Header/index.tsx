@@ -1,6 +1,6 @@
 import headerPoklist from '@/assets/images/header-poklist.svg';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
+import { Button, ButtonSize, ButtonVariant } from '@/components/ui/button';
 import IconSetting from '@/components/ui/icons/SettingIcon';
 import useUserStore from '@/stores/useUserStore';
 import React from 'react';
@@ -19,11 +19,15 @@ const Header: React.FC = () => {
           src={headerPoklist}
           alt="Poklist"
           onClick={() => navigate('/home')}
+          className="h-8"
         />
       </div>
       <div id="header-right" className="flex items-center justify-center gap-4">
         {!isLoggedIn && (
-          <Button variant="white" onClick={() => navigate('/login')}>
+          <Button
+            variant={ButtonVariant.WHITE}
+            onClick={() => navigate('/login')}
+          >
             Sign In
           </Button>
         )}
@@ -37,8 +41,8 @@ const Header: React.FC = () => {
           </Avatar>
         ) : (
           <Button
-            variant="white"
-            size={'icon'}
+            variant={ButtonVariant.WHITE}
+            size={ButtonSize.ICON}
             onClick={() => navigate('/settings')}
           >
             <IconSetting />

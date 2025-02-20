@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button';
+import { Button, ButtonShape, ButtonVariant } from '@/components/ui/button';
 import IconClose from '@/components/ui/icons/CloseIcon';
 import { IIdeaPreviewInfo } from '@/hooks/Lists/useGetList';
 import { cn } from '@/lib/utils';
@@ -66,15 +66,15 @@ const IdeaListSection: React.FC<IdeaListProps> = ({
         <div className="flex items-center gap-4">
           <Button
             onClick={() => confirmReorderCallback()}
-            variant="subActive"
-            shape="rounded8px"
+            variant={ButtonVariant.SUB_ACTIVE}
+            shape={ButtonShape.ROUNDED_5PX}
           >
             <Trans>Save New Order</Trans>
           </Button>
           <Button
             onClick={() => confirmReorderCallback()}
-            variant="black"
-            shape="rounded8px"
+            variant={ButtonVariant.BLACK}
+            shape={ButtonShape.ROUNDED_5PX}
           >
             <Trans>Done</Trans>
           </Button>

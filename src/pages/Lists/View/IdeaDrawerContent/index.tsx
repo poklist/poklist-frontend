@@ -1,4 +1,9 @@
-import { Button } from '@/components/ui/button';
+import {
+  Button,
+  ButtonShape,
+  ButtonSize,
+  ButtonVariant,
+} from '@/components/ui/button';
 import IconLink from '@/components/ui/icons/LinkIcon';
 import LinkIconWrapper from '@/components/ui/wrappers/LinkIconWrapper';
 import { SocialLinkType } from '@/enums/index.enum';
@@ -54,9 +59,9 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({ data }) => {
           {getFormattedTime(data.createdAt, i18n.locale)}
         </p>
         <Button
-          variant="white"
-          shape="roundedFull"
-          size="md"
+          variant={ButtonVariant.WHITE}
+          shape={ButtonShape.ROUNDED_FULL}
+          size={ButtonSize.MD}
           className="flex gap-1"
           onClick={() => {
             copyHref(`/idea/${data.id}`);

@@ -21,7 +21,7 @@ msgstr "<0>{0}</0>"
 #. js-lingui-explicit-id
 #: src/components/FakePage/EditFieldFakePage.tsx
 msgid "Done"
-msgstr ""
+msgstr "完成"
 
 #: src/components/Footer/FloatingButtonFooter.tsx
 msgid "Like"
@@ -37,6 +37,7 @@ msgid "Copy"
 msgstr "複製"
 
 #: src/components/Header/BackToUserHeader.tsx
+#: src/pages/User/HeroSection/index.tsx
 msgid "Following"
 msgstr "追蹤中"
 
@@ -378,8 +379,9 @@ msgid "If you can't clean your room, what's your life looking like?"
 msgstr "這是我的問題，但我眼睛真的很利！哈！"
 
 #: src/constants/Home/index.en.ts
+#: src/pages/Settings/BlocksSection/index.tsx
 msgid "About Poklist"
-msgstr "關於Poklist"
+msgstr "關於 Poklist"
 
 #: src/constants/Home/index.en.ts
 msgid "Tutorials"
@@ -422,6 +424,7 @@ msgid "Only approved and verified “Creator Accounts” can log in and create l
 msgstr "目前僅限已申請並被認證的「創作者帳號」登入並創作名單。如有疑問，請聯繫我們。"
 
 #: src/constants/Home/index.en.ts
+#: src/pages/Settings/BlocksSection/index.tsx
 msgid "Contact us"
 msgstr "聯繫我們"
 
@@ -478,10 +481,13 @@ msgid "Other"
 msgstr "其他"
 
 #: src/pages/Home/FeatureSection/index.tsx
+#: src/pages/User/HeroSection/index.tsx
 msgid "Lists"
 msgstr "名單"
 
 #: src/pages/Home/Header/index.tsx
+#: src/pages/Settings/BlocksSection/index.tsx
+#: src/pages/Settings/BlocksSection/index.tsx
 msgid "Sign In"
 msgstr "登入"
 
@@ -502,7 +508,6 @@ msgid "Confirm Delete"
 msgstr "確定刪除"
 
 #: src/pages/Idea/Components/DeleteButton/index.tsx
-#: src/pages/Lists/Components/DeleteButton/index.tsx
 msgid "Cancel"
 msgstr "取消"
 
@@ -680,3 +685,95 @@ msgstr "編輯名單"
 #: src/pages/Lists/i18n.ts
 msgid "Lifestyle"
 msgstr "生活風格"
+
+#: src/pages/Settings/BlocksSection/index.tsx
+msgid "Select your language!"
+msgstr "選擇您的語言"
+
+#: src/pages/Settings/BlocksSection/index.tsx
+msgid "Your preferred language for a better experience."
+msgstr "選擇您喜愛的語言，讓使用體驗更順暢。"
+
+#: src/pages/Settings/BlocksSection/index.tsx
+msgid "Taiwan"
+msgstr "台灣"
+
+#: src/pages/Settings/BlocksSection/index.tsx
+msgid "United States"
+msgstr "美國"
+
+#: src/pages/Settings/BlocksSection/index.tsx
+msgid "Select your location!"
+msgstr "選擇您的所在地"
+
+#: src/pages/Settings/BlocksSection/index.tsx
+msgid "Your location for a personalized experience."
+msgstr "選擇您的所在地，讓使用體驗更個人化。"
+
+#: src/pages/Settings/BlocksSection/index.tsx
+msgid "Preference"
+msgstr "偏好設定"
+
+#: src/pages/Settings/BlocksSection/index.tsx
+msgid "Select your preferred language"
+msgstr "選擇您的語言"
+
+#: src/pages/Settings/BlocksSection/index.tsx
+msgid "Select your location"
+msgstr "選擇您的所在地"
+
+#: src/pages/Settings/BlocksSection/index.tsx
+msgid "Quick start guide"
+msgstr "三分鐘上手教學"
+
+#: src/pages/Settings/BlocksSection/index.tsx
+msgid "Check out Poklist"
+msgstr "Poklist 官網"
+
+#: src/pages/Settings/BlocksSection/index.tsx
+msgid "Follow Poklist Threads"
+msgstr "追蹤 Poklist Threads"
+
+#: src/pages/Settings/BlocksSection/index.tsx
+msgid "Join Poklist Discord"
+msgstr "加入 Discord 與我們一起優化 Poklist"
+
+#: src/pages/Settings/BlocksSection/index.tsx
+msgid "Submit feedback or report content"
+msgstr "給予意見或內容檢舉"
+
+#: src/pages/Settings/BlocksSection/index.tsx
+msgid "Others"
+msgstr "其他"
+
+#: src/pages/Settings/BlocksSection/index.tsx
+msgid "About Privacy Policy and Terms of Use"
+msgstr "關於隱私政策與使用條款"
+
+#: src/pages/Settings/BlocksSection/index.tsx
+msgid "Delete Account"
+msgstr "刪除帳號"
+
+#: src/pages/Settings/BlocksSection/index.tsx
+msgid "Sign Out"
+msgstr "登出"
+
+#: src/pages/Settings/IntroSection/index.tsx
+msgid "<0>List Your World.</0><1/><2/> From secret coffee spots and must-have skincare, to binge-worthy shows and game-changing life hacks—create, explore, and share your top picks with the world."
+msgstr "用名單快速分享有趣又有料的靈感，這就是 Poklist！<1/><2/>從排隊必吃的拉麵、好用的保養品，到最近追的影集清單和各種學習密技，無論獵奇還是實用，通通等你來開單分享！"
+
+#: src/pages/Settings/IntroSection/index.tsx
+msgid "🚀 <0>We’re in Beta</0> and want you to be part of the journey! Join us, shape the platform, and help us reach the next level."
+msgstr "🚀 <0>Poklist 正在 Beta 階段</0>，我們誠摯邀請內容創作者申請帳號並開始建立清單。透過 Poklist，幫助你為粉絲提供最直接的價值。我們期待你的加入，一起打造有料的內容！"
+
+#: src/pages/Settings/IntroSection/index.tsx
+msgid "✨ Sign up now and start listing!"
+msgstr "✨ 我是創作者，我想建立名單…"
+
+#: src/pages/User/HeroSection/index.tsx
+msgid "Followers"
+msgstr "粉絲"
+
+#: src/pages/User/HeroSection/index.tsx
+msgid "Links"
+msgstr "個連結"
