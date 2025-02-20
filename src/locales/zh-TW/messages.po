@@ -39,7 +39,7 @@ msgstr "複製"
 #: src/components/Header/BackToUserHeader.tsx
 #: src/pages/User/HeroSection/index.tsx
 msgid "Following"
-msgstr "追蹤中"
+msgstr "正追蹤"
 
 #: src/components/Header/BackToUserHeader.tsx
 msgid "Follow"
