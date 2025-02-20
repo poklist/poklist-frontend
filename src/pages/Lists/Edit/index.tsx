@@ -4,7 +4,7 @@ import useEditList, { IEditListRequest } from '@/hooks/Lists/useEditList';
 import useGetList from '@/hooks/Lists/useGetList';
 import { base64ToFile } from '@/lib/utils';
 import ListForm from '@/pages/Lists/Components/Form';
-import { Header } from '@/pages/Lists/Components/Header';
+import Header from '@/pages/Lists/Components/Header';
 import useCommonStore from '@/stores/useCommonStore';
 import useUserStore from '@/stores/useUserStore';
 import { Trans } from '@lingui/macro';
@@ -40,7 +40,7 @@ const EditListPage: React.FC<EditListPageProps> = () => {
 
   const onDismissEdit = (isFormEmpty: boolean) => {
     if (isFormEmpty) {
-      navigate(`/list/manage/${listInfo?.listID}`);
+      navigate(`/${userStore.user.userCode}/list/${listInfo?.listID}/manage`);
     }
   };
 
@@ -58,7 +58,7 @@ const EditListPage: React.FC<EditListPageProps> = () => {
     });
     const response = await fetchEditList(Number(id), listFormData);
     if (response) {
-      navigate(`/list/manage/${response.id}`);
+      navigate(`/${userStore.user.userCode}/list/${response.id}/manage`);
       return;
     }
   };

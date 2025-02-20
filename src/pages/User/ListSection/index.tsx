@@ -6,26 +6,30 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { TileBackground } from '../TileBackground';
 import { ListSectionSkeleton } from './ListSectionSkeleton';
 
+const MAX_LIST_PREVIEW_COUNT = 99;
+
 const ListSection: React.FC = () => {
   const navigate = useNavigate();
-  const { code } = useParams();
+  const { userCode } = useParams();
   const [listPreviewList, setListPreviewList] = useState<ListPreview[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const getListPreviewList = async (code: string) => {
     if (!code) return;
     // FUTURE: maybe set pagination in the future
-    const res = await axios.get<IResponse<ListPreview[]>>(`/${code}/lists`);
+    const res = await axios.get<IResponse<ListPreview[]>>(
+      `/${code}/lists?offset=${0}&limit=${MAX_LIST_PREVIEW_COUNT}`
+    );
     // TODO: error handling
     setListPreviewList(res.data.content ?? []);
     setIsLoading(false);
   };
 
   useEffect(() => {
-    if (code !== undefined) {
-      getListPreviewList(code);
+    if (userCode !== undefined) {
+      getListPreviewList(userCode);
     }
-  }, [code]);
+  }, [userCode]);
 
   if (isLoading) {
     return <ListSectionSkeleton />;
@@ -42,7 +46,7 @@ const ListSection: React.FC = () => {
               isLastItem ? 'border-b-[3px]' : 'border-b'
             } border-black-text-01 p-4 -tracking-1.1%`}
             onClick={() => {
-              navigate(`/list/manage/${listPreview.id}`);
+              navigate(`/${userCode}/list/${listPreview.id}`);
             }}
           >
             <p className="text-[15px] font-semibold text-black-text-01">

@@ -59,7 +59,7 @@ const DraggableIdeaRow: React.FC<IdeaProps> = ({
   return (
     <Link
       ref={ref}
-      to={`/idea/edit/${idea.id}`}
+      to={`/idea/${idea.id}/edit`}
       key={`idea-${idea.id}`}
       className={cn(`border border-l-gray-main-03 bg-gray-note-05 px-4 py-2`, {
         'opacity-0': isDragging,

@@ -1,6 +1,6 @@
 import IconClose from '@/components/ui/icons/CloseIcon';
 
-import { Button } from '@/components/ui/button';
+import { Button, ButtonShape, ButtonVariant } from '@/components/ui/button';
 import { useEffect, useRef } from 'react';
 
 interface IEditModeFooterProps {
@@ -48,8 +48,8 @@ const EditModeFooter: React.FC<IEditModeFooterProps> = ({
         <p className="text-[17px] font-bold">{title}</p>
       </div>
       <Button
-        variant="black"
-        shape="rounded8px"
+        variant={ButtonVariant.BLACK}
+        shape={ButtonShape.ROUNDED_5PX}
         disabled={!isModified}
         onClick={value ? () => onSave(value) : () => onSave()}
       >

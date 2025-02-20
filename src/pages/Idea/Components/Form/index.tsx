@@ -1,5 +1,5 @@
 import ImageUploader from '@/components/ImageUploader';
-import { Button } from '@/components/ui/button';
+import { Button, ButtonShape, ButtonVariant } from '@/components/ui/button';
 import IconClose from '@/components/ui/icons/CloseIcon';
 import IconExteriorLink from '@/components/ui/icons/ExteriorLinkIcon';
 import IconTextarea from '@/components/ui/icons/TextareaIcon';
@@ -277,13 +277,17 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
           <Button
             disabled={!isFormModified}
             type="submit"
-            variant="black"
-            shape="rounded8px"
+            variant={ButtonVariant.BLACK}
+            shape={ButtonShape.ROUNDED_5PX}
           >
             <Trans>Next</Trans>
           </Button>
         ) : (
-          <Button type="submit" variant="black" shape="rounded8px">
+          <Button
+            type="submit"
+            variant={ButtonVariant.BLACK}
+            shape={ButtonShape.ROUNDED_5PX}
+          >
             <Trans>Next</Trans>
           </Button>
         )}

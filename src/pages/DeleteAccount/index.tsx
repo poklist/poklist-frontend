@@ -1,6 +1,6 @@
 const DeleteAccountPage: React.FC = () => {
   return (
-    // Your component code here
+    // TODO: account delete page
     <div>
       <p>施工中...</p>
     </div>

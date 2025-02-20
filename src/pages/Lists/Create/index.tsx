@@ -1,6 +1,6 @@
 import useCreateList, { ICreateListRequest } from '@/hooks/Lists/useCreateList';
 import ListForm from '@/pages/Lists/Components/Form';
-import { Header } from '@/pages/Lists/Components/Header';
+import Header from '@/pages/Lists/Components/Header';
 import useCommonStore from '@/stores/useCommonStore';
 import useUserStore from '@/stores/useUserStore';
 import { Trans } from '@lingui/macro';

@@ -1,4 +1,5 @@
-import { Button } from '@/components/ui/button';
+import { Button, ButtonSize, ButtonVariant } from '@/components/ui/button';
+import { Trans } from '@lingui/macro';
 
 const IntroSection: React.FC = () => {
   return (
@@ -6,18 +7,28 @@ const IntroSection: React.FC = () => {
       id="intro-to-poklist"
       className="flex flex-col gap-6 px-4 pt-6 text-[15px]"
     >
-      <p>List Your World.</p>
       <p>
-        From secret coffee spots and must-have skincare, to binge-worthy shows
-        and game-changing life hacks—create, explore, and share your top picks
-        with the world.
+        <Trans>
+          <strong>List Your World.</strong>
+          <br />
+          <br /> From secret coffee spots and must-have skincare, to
+          binge-worthy shows and game-changing life hacks—create, explore, and
+          share your top picks with the world.
+        </Trans>
       </p>
       <p>
-        🚀 <strong>We’re in Beta</strong> and want you to be part of the
-        journey! Join us, shape the platform, and help us reach the next level.
+        <Trans>
+          🚀 <strong>We’re in Beta</strong> and want you to be part of the
+          journey! Join us, shape the platform, and help us reach the next
+          level.
+        </Trans>
       </p>
-      <Button variant="black" size="md" className="w-fit self-end">
-        ✨ Sign up now and start listing!
+      <Button
+        variant={ButtonVariant.BLACK}
+        size={ButtonSize.SM}
+        className="w-fit self-end"
+      >
+        <Trans>✨ Sign up now and start listing!</Trans>
       </Button>
     </div>
   );

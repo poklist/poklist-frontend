@@ -1,0 +1,7 @@
+export const DEFAULT_IDEA_FIRST_BATCH_SIZE = 3;
+export const DEFAULT_IDEA_BATCH_SIZE = 10;
+
+export const RECENTLY_UPDATED_DAYS = 7;
+
+export const DESCRIPTION_PREVIEW_LENGTH = 20;
+export const LINK_PREVIEW_LENGTH = 40;

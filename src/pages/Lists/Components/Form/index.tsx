@@ -1,7 +1,7 @@
 import { DrawerComponent, useDrawer } from '@/components/Drawer';
 import ImageUploader from '@/components/ImageUploader';
 import { IChoice, RadioComponent } from '@/components/Radio';
-import { Button } from '@/components/ui/button';
+import { Button, ButtonShape, ButtonVariant } from '@/components/ui/button';
 import IconClose from '@/components/ui/icons/CloseIcon';
 import IconExteriorLink from '@/components/ui/icons/ExteriorLinkIcon';
 import IconTextarea from '@/components/ui/icons/TextareaIcon';
@@ -327,8 +327,8 @@ const ListForm: React.FC<IListFormProps> = ({
             {defaultListInfo ? (
               <Button
                 onClick={() => onCloseCategoryDrawer()}
-                variant="black"
-                shape="rounded8px"
+                variant={ButtonVariant.BLACK}
+                shape={ButtonShape.ROUNDED_5PX}
               >
                 <Trans>Next</Trans>
               </Button>
@@ -336,8 +336,8 @@ const ListForm: React.FC<IListFormProps> = ({
               <Button
                 onClick={listForm.handleSubmit(onSubmit, onSubmitFailed)}
                 type="submit"
-                variant="black"
-                shape="rounded8px"
+                variant={ButtonVariant.BLACK}
+                shape={ButtonShape.ROUNDED_5PX}
               >
                 <Trans>Next</Trans>
               </Button>
@@ -367,8 +367,8 @@ const ListForm: React.FC<IListFormProps> = ({
           <Button
             disabled={!isFormModified}
             type="submit"
-            variant="black"
-            shape="rounded8px"
+            variant={ButtonVariant.BLACK}
+            shape={ButtonShape.ROUNDED_5PX}
           >
             <Trans>Next</Trans>
           </Button>

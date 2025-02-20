@@ -10,6 +10,7 @@ export type UserStoreState = {
   currentUser: User;
 
   login: (token: string) => void;
+  refreshToken: (token: string) => void;
   logout: () => void;
   setUser: (user: User) => void;
   setCurrentUser: (user: User) => void;
@@ -30,6 +31,7 @@ const useUserStore = create<UserStoreState>()(
       currentUser: { ...emptyUser },
 
       login: (token) => set({ isLoggedIn: true, accessToken: token }),
+      refreshToken: (token) => set({ accessToken: token }),
       logout: () =>
         set({
           isLoggedIn: false,

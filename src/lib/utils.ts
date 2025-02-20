@@ -59,9 +59,9 @@ export const isValidInstagramUsername = (username: string) => {
   return regex.test(username);
 };
 
-export const copyHref = () => {
+export const copyHref = (appendedPath: string = '') => {
   const url = window.location.href;
-  navigator.clipboard.writeText(url);
+  navigator.clipboard.writeText(url + appendedPath);
 };
 
 export const extractUsernameFromUrl = (
