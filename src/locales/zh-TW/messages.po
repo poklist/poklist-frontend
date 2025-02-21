@@ -38,10 +38,12 @@ msgstr "複製"
 
 #: src/components/Header/BackToUserHeader.tsx
 #: src/pages/User/HeroSection/index.tsx
+#: src/pages/User/HeroSection/index.tsx
 msgid "Following"
 msgstr "正追蹤"
 
 #: src/components/Header/BackToUserHeader.tsx
+#: src/pages/User/HeroSection/index.tsx
 msgid "Follow"
 msgstr "追蹤"
 
@@ -758,6 +760,10 @@ msgstr "刪除帳號"
 msgid "Sign Out"
 msgstr "登出"
 
+#: src/pages/Settings/BlocksSection/index.tsx
+msgid "Setting Center"
+msgstr "設定中心"
+
 #: src/pages/Settings/IntroSection/index.tsx
 msgid "<0>List Your World.</0><1/><2/> From secret coffee spots and must-have skincare, to binge-worthy shows and game-changing life hacks—create, explore, and share your top picks with the world."
 msgstr "用名單快速分享有趣又有料的靈感，這就是 Poklist！<1/><2/>從排隊必吃的拉麵、好用的保養品，到最近追的影集清單和各種學習密技，無論獵奇還是實用，通通等你來開單分享！"
@@ -769,6 +775,10 @@ msgstr "🚀 <0>Poklist 正在 Beta 階段</0>，我們誠摯邀請內容創作
 #: src/pages/Settings/IntroSection/index.tsx
 msgid "✨ Sign up now and start listing!"
 msgstr "✨ 我是創作者，我想建立名單…"
+
+#: src/pages/User/HeroSection/index.tsx
+msgid "Edit profile and account"
+msgstr "編輯個人檔案與帳號"
 
 #: src/pages/User/HeroSection/index.tsx
 msgid "Followers"

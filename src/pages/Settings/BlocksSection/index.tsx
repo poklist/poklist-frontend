@@ -217,7 +217,7 @@ const BlocksSection: React.FC = () => {
           );
         })}
       </div>
-      <Footer onClose={() => navigate(-1)} title="Setting Center" />
+      <Footer onClose={() => navigate(-1)} title={t`Setting Center`} />
       <DrawerComponent isShowClose={false} content={drawerContent} />
     </>
   );

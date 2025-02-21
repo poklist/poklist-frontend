@@ -38,10 +38,12 @@ msgstr "Copy"
 
 #: src/components/Header/BackToUserHeader.tsx
 #: src/pages/User/HeroSection/index.tsx
+#: src/pages/User/HeroSection/index.tsx
 msgid "Following"
 msgstr "Following"
 
 #: src/components/Header/BackToUserHeader.tsx
+#: src/pages/User/HeroSection/index.tsx
 msgid "Follow"
 msgstr "Follow"
 
@@ -754,6 +756,10 @@ msgstr "Delete Account"
 msgid "Sign Out"
 msgstr "Sign Out"
 
+#: src/pages/Settings/BlocksSection/index.tsx
+msgid "Setting Center"
+msgstr "Setting Center"
+
 #: src/pages/Settings/IntroSection/index.tsx
 msgid "<0>List Your World.</0><1/><2/> From secret coffee spots and must-have skincare, to binge-worthy shows and game-changing life hacks—create, explore, and share your top picks with the world."
 msgstr "<0>List Your World.</0><1/><2/> From secret coffee spots and must-have skincare, to binge-worthy shows and game-changing life hacks—create, explore, and share your top picks with the world."
@@ -765,6 +771,10 @@ msgstr "🚀 <0>We’re in Beta</0> and want you to be part of the journey! Join
 #: src/pages/Settings/IntroSection/index.tsx
 msgid "✨ Sign up now and start listing!"
 msgstr "✨ Sign up now and start listing!"
+
+#: src/pages/User/HeroSection/index.tsx
+msgid "Edit profile and account"
+msgstr "Edit profile and account"
 
 #: src/pages/User/HeroSection/index.tsx
 msgid "Followers"

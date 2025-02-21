@@ -178,7 +178,7 @@ const HeroSection: React.FC = () => {
               shape={ButtonShape.ROUNDED_5PX}
               onClick={goToEditPage}
             >
-              Edit profile and account
+              <Trans>Edit profile and account</Trans>
             </Button>
           ) : isFollowing ? (
             <Button
@@ -187,7 +187,7 @@ const HeroSection: React.FC = () => {
               size={ButtonSize.LG}
               onClick={unfollow}
             >
-              Following
+              <Trans>Following</Trans>
             </Button>
           ) : (
             <Button
@@ -196,7 +196,7 @@ const HeroSection: React.FC = () => {
               size={ButtonSize.LG}
               onClick={follow}
             >
-              Follow
+              <Trans>Follow</Trans>
             </Button>
           )}
         </div>
