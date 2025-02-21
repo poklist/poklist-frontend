@@ -22,7 +22,7 @@ export const EditFieldFakePageComponent: React.FC<IEditFieldConfig> = ({
   const isModified =
     fieldValue !== undefined && fieldValue !== originalFieldValue;
 
-  // FIXME: setFieldValue(originalFieldValue) is not working
+  // FUTURE: set the field value if originalFieldValue is not undefined
 
   return (
     <Dialog open={isOpen} onOpenChange={closeFakePage}>
