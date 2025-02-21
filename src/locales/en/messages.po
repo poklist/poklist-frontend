@@ -18,6 +18,10 @@ msgstr ""
 msgid "<0>{0}</0>"
 msgstr ""
 
+#: src/components/FakePage/EditFieldFakePage.tsx
+msgid "Enter your text here"
+msgstr "Enter your text here"
+
 #. js-lingui-explicit-id
 #: src/components/FakePage/EditFieldFakePage.tsx
 msgid "Done"
