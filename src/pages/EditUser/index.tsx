@@ -186,14 +186,11 @@ const EditUserPage: React.FC = () => {
       `/users/me`,
       newUserInfo
     );
-    console.log('old user code:', user.userCode);
-    console.log('form user code:', newUserInfo.userCode);
     if (response.data.content?.accessToken) {
       console.log('accessToken is updated');
       refreshToken(response.data.content.accessToken);
       setUser({ ...newUserInfo });
     }
-    console.log('new user code:', user.userCode);
     navigate(`/${user.userCode}`);
   };
 

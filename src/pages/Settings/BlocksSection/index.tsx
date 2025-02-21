@@ -114,7 +114,6 @@ const BlocksSection: React.FC = () => {
         </div>
       </>
     );
-    console.log('location', location);
     openDrawer();
   };
 
