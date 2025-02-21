@@ -1,9 +1,9 @@
 import mascotError from '@/assets/images/mascot/mascot-error.svg';
-import { Header } from '@/components/Header';
+import Header from '@/components/Header';
 import MobileContainer from '@/components/ui/containers/MobileContainer';
-import { TileBackground } from '../User/TileBackground';
-import { Trans } from '@lingui/macro';
 import { LanguageProvider } from '@/lib/languageProvider';
+import { Trans } from '@lingui/macro';
+import { TileBackground } from '../User/TileBackground';
 
 export default function ErrorPage() {
   return (

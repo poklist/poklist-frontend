@@ -1,22 +1,23 @@
-import { Button } from '@/components/ui/button';
-import { Link, useNavigate } from 'react-router-dom';
+// FUTURE: merge with src/components/Header/index.tsx
 import headerLogo from '@/assets/images/header-poklist.svg';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button, ButtonVariant } from '@/components/ui/button';
 import { LanguageToggleButton } from '@/lib/languageProvider';
 import useUserStore from '@/stores/useUserStore';
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Trans } from '@lingui/macro';
+import { Link, useNavigate } from 'react-router-dom';
 
 interface HeaderProps {
   onSignInClick: () => void;
 }
 
-export const Header = ({ onSignInClick }: HeaderProps) => {
+const Header = ({ onSignInClick }: HeaderProps) => {
   const navigate = useNavigate();
   const { user, isLoggedIn } = useUserStore();
 
   return (
     <header className="fixed top-0 z-50 w-mobile-max">
-      <div className="mx-auto flex h-16 w-full items-center justify-between px-4">
+      <div className="mx-auto flex h-14 w-full items-center justify-between px-4">
         <Link to="/home">
           <img src={headerLogo} alt="Poklist" className="h-8" />
         </Link>
@@ -32,7 +33,7 @@ export const Header = ({ onSignInClick }: HeaderProps) => {
             </Avatar>
           ) : (
             <Button
-              variant="white"
+              variant={ButtonVariant.WHITE}
               className="font-semibold text-black hover:text-gray-700"
               onClick={onSignInClick}
             >
@@ -44,3 +45,5 @@ export const Header = ({ onSignInClick }: HeaderProps) => {
     </header>
   );
 };
+
+export default Header;

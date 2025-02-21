@@ -8,6 +8,7 @@ import Layout from '@/pages/Layout';
 import CreateListPage from '@/pages/Lists/Create';
 import EditListPage from '@/pages/Lists/Edit';
 import ListManagementPage from '@/pages/Lists/Manage';
+import ViewListPage from '@/pages/Lists/View';
 import Login from '@/pages/Login';
 import SettingsPage from '@/pages/Settings';
 import UserPage from '@/pages/User';
@@ -23,18 +24,18 @@ const router = createBrowserRouter([
       { path: 'login', element: <Login /> },
       { path: 'home', element: <Home /> },
       { path: 'settings', element: <SettingsPage /> },
-      { path: 'account/delete', element: <DeleteAccountPage /> },
-      { path: ':code', element: <UserPage /> },
-      { path: 'account/edit', element: <EditUserPage /> },
-      { path: 'list/create', element: <CreateListPage /> },
-      { path: 'list/manage/:id', element: <ListManagementPage /> },
-      { path: 'list/edit/:id', element: <EditListPage /> },
+      { path: ':userCode', element: <UserPage /> },
+      { path: ':userCode/edit', element: <EditUserPage /> },
+      { path: ':userCode/delete', element: <DeleteAccountPage /> },
+      { path: ':userCode/list/:id', element: <ViewListPage /> },
+      { path: ':userCode/list/:id/idea/:ideaID', element: <ViewListPage /> },
+      { path: ':userCode/list/create', element: <CreateListPage /> },
+      { path: ':userCode/list/:id/manage', element: <ListManagementPage /> },
+      { path: ':userCode/list/:id/edit', element: <EditListPage /> },
       { path: 'idea/create', element: <CreateIdeaPage /> },
-      { path: 'idea/edit/:id', element: <EditIdeaPage /> },
-      {
-        path: '*',
-        element: <ErrorPage />,
-      },
+      { path: 'idea/:id/edit', element: <EditIdeaPage /> },
+      { path: 'error', element: <ErrorPage /> },
+      { path: '*', element: <Navigate to="/error" replace /> },
     ],
   },
 ]);

@@ -1,8 +1,8 @@
-import { Button } from '@/components/ui/button';
+import { Button, ButtonShape, ButtonVariant } from '@/components/ui/button';
 import useDeleteList from '@/hooks/Lists/useDeleteList';
 import useEditList from '@/hooks/Lists/useEditList';
 import { IListInfo, default as useGetList } from '@/hooks/Lists/useGetList';
-import { Header } from '@/pages/Lists/Components/Header';
+import Header from '@/pages/Lists/Components/Header';
 import IdeaList from '@/pages/Lists/Manage/IdeasList';
 import ListInfo from '@/pages/Lists/Manage/ListInfo';
 import useCommonStore from '@/stores/useCommonStore';
@@ -95,8 +95,8 @@ const ListManagePage: React.FC<ManageListPageProps> = () => {
         >
           <Button
             className="w-full text-h2 font-bold"
-            variant="highlighted"
-            shape="rounded8px"
+            variant={ButtonVariant.HIGHLIGHTED}
+            shape={ButtonShape.ROUNDED_8PX}
           >
             <Trans>Add an idea</Trans>
           </Button>

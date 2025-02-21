@@ -4,8 +4,8 @@ export enum EditFieldVariant {
 }
 
 export enum FieldType {
-  DISPLAY_NAME = 'display_name',
-  USER_CODE = 'user_code',
+  DISPLAY_NAME = 'displayName',
+  USER_CODE = 'userCode',
   BIO = 'bio',
-  PROFILE_IMAGE = 'profile_image',
+  PROFILE_IMAGE = 'profileImage',
 }

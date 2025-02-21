@@ -1,7 +1,7 @@
 import { useFakePage } from '@/components/FakePage';
 import { EditFieldFakePageComponent } from '@/components/FakePage/EditFieldFakePage';
 import EditModeFooter from '@/components/Footer/EditModeFooter';
-import { Header } from '@/components/Header';
+import BackToUserHeader from '@/components/Header/BackToUserHeader';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import MobileContainer from '@/components/ui/containers/MobileContainer';
 import { IconCamera } from '@/components/ui/icons/CameraIcon';
@@ -14,12 +14,14 @@ import { getPreviewText, urlPreview } from '@/lib/utils';
 import useEditProfileStore from '@/stores/useEditProfileStore';
 import useUserStore from '@/stores/useUserStore';
 import { IEditFieldConfig } from '@/types/EditField';
+import { IResponse } from '@/types/response';
+import { IUpdateUserResponse } from '@/types/User';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const EditUserPage: React.FC = () => {
   const navigate = useNavigate();
-  const { user } = useUserStore();
+  const { user, setUser, refreshToken } = useUserStore();
   const {
     newUserInfo,
     resetNewUserInfo,
@@ -40,6 +42,7 @@ const EditUserPage: React.FC = () => {
       variant: EditFieldVariant.TEXT,
       placeholder: 'Enter your name here',
       characterLimit: 20,
+      originalFieldValue: user.displayName,
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
           setDisplayName(value);
@@ -53,6 +56,7 @@ const EditUserPage: React.FC = () => {
       variant: EditFieldVariant.TEXT,
       placeholder: 'Enter your username here',
       characterLimit: 30,
+      originalFieldValue: user.userCode,
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
           setUserCode(value);
@@ -66,6 +70,7 @@ const EditUserPage: React.FC = () => {
       variant: EditFieldVariant.TEXT,
       placeholder: 'Enter your bio here',
       characterLimit: 250,
+      originalFieldValue: user.bio,
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
           setBio(value);
@@ -78,7 +83,7 @@ const EditUserPage: React.FC = () => {
       fieldName: 'Profile Image',
       variant: EditFieldVariant.IMAGE,
       onFieldValueSet: (value: string | undefined) => {
-        if (value) {
+        if (value !== undefined) {
           setProfileImage(value);
         } else {
           console.log('value is undefined');
@@ -89,6 +94,7 @@ const EditUserPage: React.FC = () => {
       fieldName: 'Customized Link',
       variant: EditFieldVariant.TEXT,
       placeholder: 'Enter your link here',
+      originalFieldValue: user.socialLinks?.[SocialLinkType.CUSTOMIZED],
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
           setSocialLink(SocialLinkType.CUSTOMIZED, value);
@@ -101,6 +107,7 @@ const EditUserPage: React.FC = () => {
       fieldName: 'Instagram',
       variant: EditFieldVariant.TEXT,
       placeholder: 'Enter your Instagram link here',
+      originalFieldValue: user.socialLinks?.[SocialLinkType.INSTAGRAM],
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
           setSocialLink(SocialLinkType.INSTAGRAM, value);
@@ -113,6 +120,7 @@ const EditUserPage: React.FC = () => {
       fieldName: 'YouTube',
       variant: EditFieldVariant.TEXT,
       placeholder: 'Enter your YouTube link here',
+      originalFieldValue: user.socialLinks?.[SocialLinkType.YOUTUBE],
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
           setSocialLink(SocialLinkType.YOUTUBE, value);
@@ -125,6 +133,7 @@ const EditUserPage: React.FC = () => {
       fieldName: 'TikTok',
       variant: EditFieldVariant.TEXT,
       placeholder: 'Enter your TikTok link here',
+      originalFieldValue: user.socialLinks?.[SocialLinkType.TIKTOK],
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
           setSocialLink(SocialLinkType.TIKTOK, value);
@@ -137,6 +146,7 @@ const EditUserPage: React.FC = () => {
       fieldName: 'Threads',
       variant: EditFieldVariant.TEXT,
       placeholder: 'Enter your Threads link here',
+      originalFieldValue: user.socialLinks?.[SocialLinkType.THREADS],
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
           setSocialLink(SocialLinkType.THREADS, value);
@@ -149,6 +159,7 @@ const EditUserPage: React.FC = () => {
       fieldName: 'LinkedIn',
       variant: EditFieldVariant.TEXT,
       placeholder: 'Enter your LinkedIn link here',
+      originalFieldValue: user.socialLinks?.[SocialLinkType.LINKEDIN],
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
           setSocialLink(SocialLinkType.LINKEDIN, value);
@@ -166,8 +177,20 @@ const EditUserPage: React.FC = () => {
     openFakePage();
   };
 
-  const onSubmit = () => {
-    axios.put(`/users/me`, newUserInfo);
+  const onSubmit = async () => {
+    if (newUserInfo.profileImage === user.profileImage) {
+      console.log('profile image is the same');
+      delete newUserInfo.profileImage;
+    }
+    const response = await axios.put<IResponse<IUpdateUserResponse>>(
+      `/users/me`,
+      newUserInfo
+    );
+    if (response.data.content?.accessToken) {
+      console.log('accessToken is updated');
+      refreshToken(response.data.content.accessToken);
+      setUser({ ...newUserInfo });
+    }
     navigate(`/${user.userCode}`);
   };
 
@@ -181,7 +204,7 @@ const EditUserPage: React.FC = () => {
 
   return (
     <MobileContainer>
-      <Header type="back-to-user" />
+      <BackToUserHeader owner={user} />
       {/* Upload ProfileImageSection */}
       <div id="profile-image" className="flex items-end justify-center pt-6">
         <Avatar className="h-24 w-24">
@@ -285,7 +308,7 @@ const EditUserPage: React.FC = () => {
       </div>
       <EditModeFooter
         isModified={isModified()}
-        onClose={() => navigate(`/${user.id}`)}
+        onClose={() => navigate(`/${user.userCode}`)}
         title={'Edit profile and account'}
         onSave={onSubmit}
       />
