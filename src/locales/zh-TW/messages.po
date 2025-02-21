@@ -20,12 +20,16 @@ msgstr "<0>{0}</0>"
 
 #: src/components/FakePage/EditFieldFakePage.tsx
 msgid "Enter your text here"
-msgstr ""
+msgstr "請輸入內容"
 
 #. js-lingui-explicit-id
 #: src/components/FakePage/EditFieldFakePage.tsx
 msgid "Done"
 msgstr "完成"
+
+#: src/components/Footer/EditModeFooter.tsx
+msgid "Save"
+msgstr "儲存"
 
 #: src/components/Footer/FloatingButtonFooter.tsx
 msgid "Like"
@@ -438,6 +442,72 @@ msgstr "聯繫我們"
 #~ msgid "欸，標題不能留空喔！"
 #~ msgstr "欸，標題不能留空喔！"
 
+#: src/pages/EditUser/index.tsx
+#: src/pages/User/HeroSection/index.tsx
+#~ msgid "Links"
+#~ msgstr "連結"
+
+#: src/pages/EditUser/index.tsx
+#: src/pages/EditUser/index.tsx
+msgid "Name"
+msgstr "姓名"
+
+#: src/pages/EditUser/index.tsx
+msgid "Enter your name here"
+msgstr "輸入你的姓名"
+
+#: src/pages/EditUser/index.tsx
+#: src/pages/EditUser/index.tsx
+msgid "Username"
+msgstr "用戶帳號"
+
+#: src/pages/EditUser/index.tsx
+msgid "Enter your username here"
+msgstr "輸入你的用戶帳號"
+
+#: src/pages/EditUser/index.tsx
+#: src/pages/EditUser/index.tsx
+msgid "Bio"
+msgstr "個人自介"
+
+#: src/pages/EditUser/index.tsx
+msgid "Enter your bio here"
+msgstr "輸入你的個人自介"
+
+#: src/pages/EditUser/index.tsx
+msgid "Profile Image"
+msgstr "個人檔案頭貼"
+
+#: src/pages/EditUser/index.tsx
+msgid "Customized Link"
+msgstr "自訂連結"
+
+#: src/pages/EditUser/index.tsx
+msgid "Add URL"
+msgstr "輸入網址"
+
+#: src/pages/EditUser/index.tsx
+#: src/pages/EditUser/index.tsx
+#: src/pages/EditUser/index.tsx
+#: src/pages/EditUser/index.tsx
+#: src/pages/EditUser/index.tsx
+msgid "Add account"
+msgstr "輸入帳號"
+
+#: src/pages/EditUser/index.tsx
+msgid "Profile"
+msgstr "個人檔案"
+
+#: src/pages/EditUser/index.tsx
+msgctxt "title"
+msgid "Links"
+msgstr "連結"
+
+#: src/pages/EditUser/index.tsx
+#: src/pages/User/HeroSection/index.tsx
+msgid "Edit profile and account"
+msgstr "編輯個人檔案與帳號"
+
 #: src/pages/Error/index.tsx
 msgid "Oops something is wrong!"
 msgstr "哎呀！網頁又在耍脾氣啦！"
@@ -781,13 +851,10 @@ msgid "✨ Sign up now and start listing!"
 msgstr "✨ 我是創作者，我想建立名單…"
 
 #: src/pages/User/HeroSection/index.tsx
-msgid "Edit profile and account"
-msgstr "編輯個人檔案與帳號"
-
-#: src/pages/User/HeroSection/index.tsx
 msgid "Followers"
 msgstr "粉絲"
 
 #: src/pages/User/HeroSection/index.tsx
+msgctxt "count"
 msgid "Links"
 msgstr "個連結"

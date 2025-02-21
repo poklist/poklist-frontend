@@ -27,6 +27,10 @@ msgstr "Enter your text here"
 msgid "Done"
 msgstr "Done"
 
+#: src/components/Footer/EditModeFooter.tsx
+msgid "Save"
+msgstr "Save"
+
 #: src/components/Footer/FloatingButtonFooter.tsx
 msgid "Like"
 msgstr "Like"
@@ -434,6 +438,72 @@ msgstr "Only approved and verified “Creator Accounts” can log in and create 
 msgid "Contact us"
 msgstr "Contact us"
 
+#: src/pages/EditUser/index.tsx
+#: src/pages/User/HeroSection/index.tsx
+#~ msgid "Links"
+#~ msgstr "Links"
+
+#: src/pages/EditUser/index.tsx
+#: src/pages/EditUser/index.tsx
+msgid "Name"
+msgstr "Name"
+
+#: src/pages/EditUser/index.tsx
+msgid "Enter your name here"
+msgstr "Enter your name here"
+
+#: src/pages/EditUser/index.tsx
+#: src/pages/EditUser/index.tsx
+msgid "Username"
+msgstr "Username"
+
+#: src/pages/EditUser/index.tsx
+msgid "Enter your username here"
+msgstr "Enter your username here"
+
+#: src/pages/EditUser/index.tsx
+#: src/pages/EditUser/index.tsx
+msgid "Bio"
+msgstr "Bio"
+
+#: src/pages/EditUser/index.tsx
+msgid "Enter your bio here"
+msgstr "Enter your bio here"
+
+#: src/pages/EditUser/index.tsx
+msgid "Profile Image"
+msgstr "Profile Image"
+
+#: src/pages/EditUser/index.tsx
+msgid "Customized Link"
+msgstr "Customized Link"
+
+#: src/pages/EditUser/index.tsx
+msgid "Add URL"
+msgstr "Add URL"
+
+#: src/pages/EditUser/index.tsx
+#: src/pages/EditUser/index.tsx
+#: src/pages/EditUser/index.tsx
+#: src/pages/EditUser/index.tsx
+#: src/pages/EditUser/index.tsx
+msgid "Add account"
+msgstr "Add account"
+
+#: src/pages/EditUser/index.tsx
+msgid "Profile"
+msgstr "Profile"
+
+#: src/pages/EditUser/index.tsx
+msgctxt "title"
+msgid "Links"
+msgstr "Links"
+
+#: src/pages/EditUser/index.tsx
+#: src/pages/User/HeroSection/index.tsx
+msgid "Edit profile and account"
+msgstr "Edit profile and account"
+
 #: src/pages/Error/index.tsx
 msgid "Oops something is wrong!"
 msgstr "Oops something is wrong!"
@@ -777,13 +847,10 @@ msgid "✨ Sign up now and start listing!"
 msgstr "✨ Sign up now and start listing!"
 
 #: src/pages/User/HeroSection/index.tsx
-msgid "Edit profile and account"
-msgstr "Edit profile and account"
-
-#: src/pages/User/HeroSection/index.tsx
 msgid "Followers"
 msgstr "Followers"
 
 #: src/pages/User/HeroSection/index.tsx
+msgctxt "count"
 msgid "Links"
 msgstr "Links"

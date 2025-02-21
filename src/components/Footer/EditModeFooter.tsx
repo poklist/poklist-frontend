@@ -1,6 +1,7 @@
 import IconClose from '@/components/ui/icons/CloseIcon';
 
 import { Button, ButtonShape, ButtonVariant } from '@/components/ui/button';
+import { t } from '@lingui/macro';
 import { useEffect, useRef } from 'react';
 
 interface IEditModeFooterProps {
@@ -16,7 +17,7 @@ const EditModeFooter: React.FC<IEditModeFooterProps> = ({
   onClose,
   title,
   onSave,
-  onSaveText = 'Save', // TODO: i18n
+  onSaveText = t`Save`,
   value,
   isModified,
 }) => {

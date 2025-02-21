@@ -214,7 +214,7 @@ const HeroSection: React.FC = () => {
             className="cursor-pointer font-semibold"
             onClick={onOpenLinkDrawer}
           >
-            {linkCount} <Trans>Links</Trans>
+            {linkCount} <Trans context="count">Links</Trans>
           </p>
         </div>
       </div>
