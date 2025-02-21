@@ -8,6 +8,7 @@ import {
 import LinkIconWrapper from '@/components/ui/wrappers/LinkIconWrapper';
 import ApiPath from '@/config/apiPath';
 import {
+  DAY_IN_MS,
   DESCRIPTION_PREVIEW_LENGTH,
   LINK_PREVIEW_LENGTH,
   RECENTLY_UPDATED_DAYS,
@@ -54,7 +55,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
   // NOTE: will this result in an error?
   const isUpdatedRecently =
     new Date().getTime() - new Date(data.updatedAt).getTime() <
-    1000 * 60 * 60 * 24 * RECENTLY_UPDATED_DAYS;
+    DAY_IN_MS * RECENTLY_UPDATED_DAYS;
 
   // FUTURE: refactor the drawer content because we may have more than one drawer
   const onClickDescription = () => {
