@@ -34,13 +34,23 @@ const ViewListPage: React.FC = () => {
     }
 
     if (isLiked) {
-      axios.post<IResponse<unknown>>('/like', null, {
-        params: { listID: listID },
-      });
+      axios
+        .post<IResponse<unknown>>('/like', null, {
+          params: { listID: listID },
+        })
+        .catch(() => {
+          console.error('Failed to like the list');
+          // FUTURE: advanced error handling
+        });
     } else {
-      axios.post<IResponse<unknown>>('/unlike', null, {
-        params: { listID: listID },
-      });
+      axios
+        .post<IResponse<unknown>>('/unlike', null, {
+          params: { listID: listID },
+        })
+        .catch(() => {
+          console.error('Failed to unlike the list');
+          // FUTURE: advanced error handling
+        });
     }
   };
 
@@ -50,13 +60,23 @@ const ViewListPage: React.FC = () => {
     }
 
     if (isFollowing) {
-      axios.post<IResponse<unknown>>('/follow', null, {
-        params: { userID: listInfo?.owner?.id },
-      });
+      axios
+        .post<IResponse<unknown>>('/follow', null, {
+          params: { userID: listInfo?.owner?.id },
+        })
+        .catch(() => {
+          console.error('Failed to follow the user');
+          // FUTURE: advanced error handling
+        });
     } else {
-      axios.post<IResponse<unknown>>('/unfollow', null, {
-        params: { userID: listInfo?.owner?.id },
-      });
+      axios
+        .post<IResponse<unknown>>('/unfollow', null, {
+          params: { userID: listInfo?.owner?.id },
+        })
+        .catch(() => {
+          console.error('Failed to unfollow the user');
+          // FUTURE: advanced error handling
+        });
     }
   };
 
