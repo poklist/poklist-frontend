@@ -38,4 +38,5 @@ export default defineConfig({
     outDir: 'dist',
     assetsDir: 'assets',
   },
+  assetsInclude: ['**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.gif', '**/*.svg'],
 });
