@@ -9,7 +9,6 @@ import CreateListPage from '@/pages/Lists/Create';
 import EditListPage from '@/pages/Lists/Edit';
 import ListManagementPage from '@/pages/Lists/Manage';
 import ViewListPage from '@/pages/Lists/View';
-import Login from '@/pages/Login';
 import SettingsPage from '@/pages/Settings';
 import UserPage from '@/pages/User';
 import { createBrowserRouter, Navigate } from 'react-router-dom';
@@ -21,7 +20,7 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       { path: '', element: <Navigate to="/home" replace /> },
-      { path: 'login', element: <Login /> },
+      // { path: 'login', element: <Login /> },
       { path: 'home', element: <Home /> },
       { path: 'settings', element: <SettingsPage /> },
       { path: ':userCode', element: <UserPage /> },

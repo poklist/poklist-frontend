@@ -552,11 +552,6 @@ msgstr "Health & Fitness"
 msgid "Other"
 msgstr "Other"
 
-#: src/pages/Home/FeatureSection/index.tsx
-#: src/pages/User/HeroSection/index.tsx
-msgid "Lists"
-msgstr "Lists"
-
 #: src/pages/Home/Header/index.tsx
 #: src/pages/Settings/BlocksSection/index.tsx
 #: src/pages/Settings/BlocksSection/index.tsx
@@ -845,6 +840,10 @@ msgstr "🚀 <0>We’re in Beta</0> and want you to be part of the journey! Join
 #: src/pages/Settings/IntroSection/index.tsx
 msgid "✨ Sign up now and start listing!"
 msgstr "✨ Sign up now and start listing!"
+
+#: src/pages/User/HeroSection/index.tsx
+msgid "Lists"
+msgstr "Lists"
 
 #: src/pages/User/HeroSection/index.tsx
 msgid "Followers"

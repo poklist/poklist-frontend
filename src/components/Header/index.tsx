@@ -24,10 +24,7 @@ const Header: React.FC = () => {
       </div>
       <div id="header-right" className="flex items-center justify-center gap-4">
         {!isLoggedIn && (
-          <Button
-            variant={ButtonVariant.WHITE}
-            onClick={() => navigate('/login')}
-          >
+          <Button variant={ButtonVariant.WHITE} onClick={() => navigate('/')}>
             Sign In
           </Button>
         )}
