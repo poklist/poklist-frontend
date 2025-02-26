@@ -1,5 +1,5 @@
 import { Category } from '@/enums/Lists/index.enum';
-import { msg } from '@lingui/macro';
+import { msg } from '@lingui/core/macro';
 
 export const CategoriesI18n: Record<number, { id: string }> = {
   [Category.OTHERS]: msg`Other`,

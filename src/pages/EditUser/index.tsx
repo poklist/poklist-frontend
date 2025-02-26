@@ -16,7 +16,8 @@ import useUserStore from '@/stores/useUserStore';
 import { IEditFieldConfig } from '@/types/EditField';
 import { IResponse } from '@/types/response';
 import { IUpdateUserResponse } from '@/types/User';
-import { t, Trans } from '@lingui/macro';
+import { t } from '@lingui/core/macro';
+import { Trans } from '@lingui/react/macro';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 

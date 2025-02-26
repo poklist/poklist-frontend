@@ -1,4 +1,3 @@
-import DeleteAccountPage from '@/pages/DeleteAccount';
 import EditUserPage from '@/pages/EditUser';
 import ErrorPage from '@/pages/Error';
 import Home from '@/pages/Home/index';
@@ -20,12 +19,10 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       { path: '', element: <Navigate to="/home" replace /> },
-      // { path: 'login', element: <Login /> },
       { path: 'home', element: <Home /> },
       { path: 'settings', element: <SettingsPage /> },
       { path: ':userCode', element: <UserPage /> },
       { path: ':userCode/edit', element: <EditUserPage /> },
-      { path: ':userCode/delete', element: <DeleteAccountPage /> },
       { path: ':userCode/list/:id', element: <ViewListPage /> },
       { path: ':userCode/list/:id/idea/:ideaID', element: <ViewListPage /> },
       { path: ':userCode/list/create', element: <CreateListPage /> },
