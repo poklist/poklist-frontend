@@ -1,4 +1,4 @@
-import { Trans } from '@lingui/macro';
+import { Trans } from '@lingui/react/macro';
 import { useState } from 'react';
 import Cropper, { Area, Point } from 'react-easy-crop';
 import { Input } from '../ui/input';

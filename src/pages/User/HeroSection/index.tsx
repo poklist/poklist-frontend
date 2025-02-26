@@ -17,7 +17,7 @@ import {
 import useUserStore from '@/stores/useUserStore';
 import { IResponse } from '@/types/response';
 import { User } from '@/types/User';
-import { Trans } from '@lingui/macro';
+import { Trans } from '@lingui/react/macro';
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { HeroSectionSkeleton } from './HeroSectionSkeleton';
@@ -178,7 +178,7 @@ const HeroSection: React.FC = () => {
               shape={ButtonShape.ROUNDED_5PX}
               onClick={goToEditPage}
             >
-              Edit profile and account
+              <Trans>Edit profile and account</Trans>
             </Button>
           ) : isFollowing ? (
             <Button
@@ -187,7 +187,7 @@ const HeroSection: React.FC = () => {
               size={ButtonSize.LG}
               onClick={unfollow}
             >
-              Following
+              <Trans>Following</Trans>
             </Button>
           ) : (
             <Button
@@ -196,7 +196,7 @@ const HeroSection: React.FC = () => {
               size={ButtonSize.LG}
               onClick={follow}
             >
-              Follow
+              <Trans>Follow</Trans>
             </Button>
           )}
         </div>
@@ -214,7 +214,7 @@ const HeroSection: React.FC = () => {
             className="cursor-pointer font-semibold"
             onClick={onOpenLinkDrawer}
           >
-            {linkCount} <Trans>Links</Trans>
+            {linkCount} <Trans context="count">Links</Trans>
           </p>
         </div>
       </div>

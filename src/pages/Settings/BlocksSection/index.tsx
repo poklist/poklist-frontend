@@ -5,7 +5,8 @@ import { activateI18n } from '@/lib/languageProvider';
 import { getLocalStorage, setLocalStorage } from '@/lib/utils';
 import useUserStore from '@/stores/useUserStore';
 import { ILinksBlock } from '@/types/Settings';
-import { t, Trans } from '@lingui/macro';
+import { t } from '@lingui/core/macro';
+import { Trans } from '@lingui/react/macro';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ButtonRadioGroup } from '../ButtonRadioGroup';
@@ -217,7 +218,7 @@ const BlocksSection: React.FC = () => {
           );
         })}
       </div>
-      <Footer onClose={() => navigate(-1)} title="Setting Center" />
+      <Footer onClose={() => navigate(-1)} title={t`Setting Center`} />
       <DrawerComponent isShowClose={false} content={drawerContent} />
     </>
   );

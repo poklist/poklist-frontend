@@ -1,6 +1,7 @@
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import useAutosizeTextArea from '@/hooks/useAutosizedTextArea';
 import { IEditFieldConfig } from '@/types/EditField';
+import { t } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { useRef, useState } from 'react';
 import { useFakePage } from '.';
@@ -13,7 +14,7 @@ export const EditFieldFakePageComponent: React.FC<IEditFieldConfig> = ({
   variant,
   onFieldValueSet,
   originalFieldValue,
-  placeholder = 'Enter your text here',
+  placeholder = t`Enter your text here`,
   characterLimit,
 }) => {
   const { i18n } = useLingui();

@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "lingui extract && lingui compile && vite",
-    "build": "lingui extract && lingui compile && tsc -b && vite build",
+    "build": "lingui extract && lingui compile && vite build",
+    "tsc": "tsc --noEmit",
     "format": "prettier --write ./src",
     "lint": "eslint .",
     "preview": "vite preview",
@@ -16,8 +17,9 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
-    "@lingui/macro": "^4.13.0",
-    "@lingui/react": "^4.13.0",
+    "@lingui/core": "^5.2",
+    "@lingui/macro": "^5.2",
+    "@lingui/react": "^5.2",
     "@netlify/functions": "^3.0.0",
     "@radix-ui/react-avatar": "^1.1.0",
     "@radix-ui/react-dialog": "^1.1.2",
@@ -48,8 +50,9 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
-    "@lingui/cli": "^4.13.0",
-    "@lingui/vite-plugin": "^4.13.0",
+    "@lingui/babel-plugin-lingui-macro": "^5.2.0",
+    "@lingui/cli": "^5.2.0",
+    "@lingui/vite-plugin": "^5.2.0",
     "@types/node": "^22.5.0",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",

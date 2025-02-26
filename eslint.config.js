@@ -1,15 +1,18 @@
 import js from '@eslint/js';
+import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import react from 'eslint-plugin-react';
-import globals from 'globals';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
+import globals from 'globals';
 import tseslint from 'typescript-eslint';
-const eslintPluginPrettierRecommended = require('eslint-plugin-prettier/recommended');
 
 export default tseslint.config(
-  { ignores: ['dist', 'node_modules', "eslint.config.js"] },
+  { ignores: ['dist', 'node_modules', 'eslint.config.js'] },
   {
-    extends: [js.configs.recommended, ...tseslint.configs.recommendedTypeChecked],
+    extends: [
+      js.configs.recommended,
+      ...tseslint.configs.recommendedTypeChecked,
+    ],
     files: ['**/*.{ts,tsx}'],
     languageOptions: {
       ecmaVersion: 2020,
@@ -37,5 +40,5 @@ export default tseslint.config(
     settings: {
       react: { version: '18.3' },
     },
-  },
+  }
 );

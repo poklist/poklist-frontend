@@ -3,7 +3,7 @@ import IconClose from '@/components/ui/icons/CloseIcon';
 import { IIdeaPreviewInfo } from '@/hooks/Lists/useGetList';
 import { cn } from '@/lib/utils';
 import useUserStore from '@/stores/useUserStore';
-import { Trans } from '@lingui/macro';
+import { Trans } from '@lingui/react/macro';
 import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import DraggableIdeaRow from './Idea';

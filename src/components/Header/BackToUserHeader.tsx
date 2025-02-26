@@ -4,7 +4,7 @@ import IconLeftArrow from '@/components/ui/icons/LeftArrowIcon';
 import { IListOwnerInfo } from '@/hooks/Lists/useGetList';
 import useRelationStore from '@/stores/useRelationStore';
 import { User } from '@/types/User';
-import { Trans } from '@lingui/macro';
+import { Trans } from '@lingui/react/macro';
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, ButtonShape, ButtonSize, ButtonVariant } from '../ui/button';
@@ -35,10 +35,14 @@ const BackToUserHeader: React.FC<IBackToUserHeaderProps> = ({
     }
   };
 
+  const onClickLogo = () => {
+    navigate('/');
+  };
+
   return (
     <header className="flex h-14 items-center justify-between border-b border-black-text-01 p-3">
       <div id="header-left" className="flex items-center justify-center gap-1">
-        <img src={headerP} alt="P" />
+        <img src={headerP} alt="P" onClick={onClickLogo} />
         <div
           className="flex items-center justify-center"
           onClick={onClickBackToUser}

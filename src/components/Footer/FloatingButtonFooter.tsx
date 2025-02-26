@@ -5,7 +5,7 @@ import IconLink from '@/components/ui/icons/LinkIcon';
 import { cn, copyHref } from '@/lib/utils';
 import useSocialStore from '@/stores/useSocialStore';
 import useUserStore from '@/stores/useUserStore';
-import { Trans } from '@lingui/macro';
+import { Trans } from '@lingui/react/macro';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 

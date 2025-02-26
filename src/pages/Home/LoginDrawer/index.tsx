@@ -1,8 +1,8 @@
+import { LoginDrawerProps } from '@/types/Home';
+import { Trans } from '@lingui/react/macro';
 import { GoogleLogin } from '@react-oauth/google';
-import { Trans } from '@lingui/macro';
 import { X } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { LoginDrawerProps } from '@/types/Home';
 
 export const LoginDrawer = ({
   isOpen,

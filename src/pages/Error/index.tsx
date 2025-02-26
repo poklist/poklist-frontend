@@ -2,7 +2,7 @@ import mascotError from '@/assets/images/mascot/mascot-error.svg';
 import Header from '@/components/Header';
 import MobileContainer from '@/components/ui/containers/MobileContainer';
 import { LanguageProvider } from '@/lib/languageProvider';
-import { Trans } from '@lingui/macro';
+import { Trans } from '@lingui/react/macro';
 import { TileBackground } from '../User/TileBackground';
 
 export default function ErrorPage() {

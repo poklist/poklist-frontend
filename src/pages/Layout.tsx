@@ -9,11 +9,7 @@ import { Outlet } from 'react-router-dom';
 
 export default function Layout() {
   const { isLoading } = useCommonStore();
-  // const navigate = useNavigate();
-  // const logout = () => {
-  //   localStorage.removeItem('token');
-  //   navigate('/');
-  // };
+
   return (
     <LanguageProvider>
       <DrawerProvider>

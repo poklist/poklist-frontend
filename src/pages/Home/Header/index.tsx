@@ -1,10 +1,10 @@
 // FUTURE: merge with src/components/Header/index.tsx
 import headerLogo from '@/assets/images/header-poklist.svg';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button, ButtonVariant } from '@/components/ui/button';
+import { Button, ButtonSize, ButtonVariant } from '@/components/ui/button';
 import { LanguageToggleButton } from '@/lib/languageProvider';
 import useUserStore from '@/stores/useUserStore';
-import { Trans } from '@lingui/macro';
+import { Trans } from '@lingui/react/macro';
 import { Link, useNavigate } from 'react-router-dom';
 
 interface HeaderProps {
@@ -34,6 +34,7 @@ const Header = ({ onSignInClick }: HeaderProps) => {
           ) : (
             <Button
               variant={ButtonVariant.WHITE}
+              size={ButtonSize.SM}
               className="font-semibold text-black hover:text-gray-700"
               onClick={onSignInClick}
             >

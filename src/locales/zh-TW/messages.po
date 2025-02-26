@@ -13,15 +13,25 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#. placeholder {0}: choice.label || choice.value
+#. placeholder {0}: alertMessage.message
 #: src/components/Alert/index.tsx
 #: src/components/Radio/index.tsx
 msgid "<0>{0}</0>"
 msgstr "<0>{0}</0>"
 
+#: src/components/FakePage/EditFieldFakePage.tsx
+msgid "Enter your text here"
+msgstr "請輸入內容"
+
 #. js-lingui-explicit-id
 #: src/components/FakePage/EditFieldFakePage.tsx
 msgid "Done"
 msgstr "完成"
+
+#: src/components/Footer/EditModeFooter.tsx
+msgid "Save"
+msgstr "儲存"
 
 #: src/components/Footer/FloatingButtonFooter.tsx
 msgid "Like"
@@ -38,10 +48,12 @@ msgstr "複製"
 
 #: src/components/Header/BackToUserHeader.tsx
 #: src/pages/User/HeroSection/index.tsx
+#: src/pages/User/HeroSection/index.tsx
 msgid "Following"
 msgstr "正追蹤"
 
 #: src/components/Header/BackToUserHeader.tsx
+#: src/pages/User/HeroSection/index.tsx
 msgid "Follow"
 msgstr "追蹤"
 
@@ -428,9 +440,66 @@ msgstr "目前僅限已申請並被認證的「創作者帳號」登入並創作
 msgid "Contact us"
 msgstr "聯繫我們"
 
-#: src/pages/Create/index.tsx
-#~ msgid "欸，標題不能留空喔！"
-#~ msgstr "欸，標題不能留空喔！"
+#: src/pages/EditUser/index.tsx
+#: src/pages/EditUser/index.tsx
+msgid "Name"
+msgstr "姓名"
+
+#: src/pages/EditUser/index.tsx
+msgid "Enter your name here"
+msgstr "輸入你的姓名"
+
+#: src/pages/EditUser/index.tsx
+#: src/pages/EditUser/index.tsx
+msgid "Username"
+msgstr "用戶帳號"
+
+#: src/pages/EditUser/index.tsx
+msgid "Enter your username here"
+msgstr "輸入你的用戶帳號"
+
+#: src/pages/EditUser/index.tsx
+#: src/pages/EditUser/index.tsx
+msgid "Bio"
+msgstr "個人自介"
+
+#: src/pages/EditUser/index.tsx
+msgid "Enter your bio here"
+msgstr "輸入你的個人自介"
+
+#: src/pages/EditUser/index.tsx
+msgid "Profile Image"
+msgstr "個人檔案頭貼"
+
+#: src/pages/EditUser/index.tsx
+msgid "Customized Link"
+msgstr "自訂連結"
+
+#: src/pages/EditUser/index.tsx
+msgid "Add URL"
+msgstr "輸入網址"
+
+#: src/pages/EditUser/index.tsx
+#: src/pages/EditUser/index.tsx
+#: src/pages/EditUser/index.tsx
+#: src/pages/EditUser/index.tsx
+#: src/pages/EditUser/index.tsx
+msgid "Add account"
+msgstr "輸入帳號"
+
+#: src/pages/EditUser/index.tsx
+msgid "Profile"
+msgstr "個人檔案"
+
+#: src/pages/EditUser/index.tsx
+msgctxt "title"
+msgid "Links"
+msgstr "連結"
+
+#: src/pages/EditUser/index.tsx
+#: src/pages/User/HeroSection/index.tsx
+msgid "Edit profile and account"
+msgstr "編輯個人檔案與帳號"
 
 #: src/pages/Error/index.tsx
 msgid "Oops something is wrong!"
@@ -758,6 +827,10 @@ msgstr "刪除帳號"
 msgid "Sign Out"
 msgstr "登出"
 
+#: src/pages/Settings/BlocksSection/index.tsx
+msgid "Setting Center"
+msgstr "設定中心"
+
 #: src/pages/Settings/IntroSection/index.tsx
 msgid "<0>List Your World.</0><1/><2/> From secret coffee spots and must-have skincare, to binge-worthy shows and game-changing life hacks—create, explore, and share your top picks with the world."
 msgstr "用名單快速分享有趣又有料的靈感，這就是 Poklist！<1/><2/>從排隊必吃的拉麵、好用的保養品，到最近追的影集清單和各種學習密技，無論獵奇還是實用，通通等你來開單分享！"
@@ -775,5 +848,6 @@ msgid "Followers"
 msgstr "粉絲"
 
 #: src/pages/User/HeroSection/index.tsx
+msgctxt "count"
 msgid "Links"
 msgstr "個連結"
