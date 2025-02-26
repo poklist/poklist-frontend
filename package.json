@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "lingui extract && lingui compile && vite",
-    "build": "lingui extract && lingui compile && tsc -b && vite build",
+    "build": "lingui extract && lingui compile && vite build",
+    "tsc": "tsc --noEmit",
     "format": "prettier --write ./src",
     "lint": "eslint .",
     "preview": "vite preview",

@@ -28,6 +28,5 @@
     }
   },
 
-  "include": ["**/*.ts", "**/*.tsx", "lingui.config.js"],
   "exclude": ["node_modules"]
 }
