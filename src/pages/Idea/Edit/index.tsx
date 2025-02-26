@@ -4,7 +4,7 @@ import useGetIdea from '@/hooks/Ideas/useGetIdea';
 import useGetList from '@/hooks/Lists/useGetList';
 import Header from '@/pages/Idea/Components/Header';
 import useCommonStore from '@/stores/useCommonStore';
-import { Trans } from '@lingui/macro';
+import { Trans } from '@lingui/react/macro';
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import IdeaFormComponent from '../Components/Form';

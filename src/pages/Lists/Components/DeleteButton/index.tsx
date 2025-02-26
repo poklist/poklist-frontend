@@ -8,7 +8,7 @@ import {
   DrawerTitle,
 } from '@/components/ui/drawer';
 import IconTrash from '@/components/ui/icons/TrashIcon';
-import { Trans } from '@lingui/macro';
+import { Trans } from '@lingui/react/macro';
 import React, { useState } from 'react';
 
 interface IDeleteButtonProps {

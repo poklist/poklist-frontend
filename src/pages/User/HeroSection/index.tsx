@@ -17,7 +17,7 @@ import {
 import useUserStore from '@/stores/useUserStore';
 import { IResponse } from '@/types/response';
 import { User } from '@/types/User';
-import { Trans } from '@lingui/macro';
+import { Trans } from '@lingui/react/macro';
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { HeroSectionSkeleton } from './HeroSectionSkeleton';

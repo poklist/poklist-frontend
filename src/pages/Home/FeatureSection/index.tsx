@@ -3,7 +3,7 @@ import { IMAGES } from '@/constants/Home/images';
 import { Language } from '@/enums/index.enum';
 import { FeatureListSection, FeatureSectionContent } from '@/types/Home';
 import { MessageDescriptor } from '@lingui/core';
-import { msg, t } from '@lingui/macro';
+import { msg, t } from '@lingui/core/macro';
 import { Trans, useLingui } from '@lingui/react';
 import { useMemo, useRef, useState } from 'react';
 

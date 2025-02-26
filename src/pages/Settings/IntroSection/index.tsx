@@ -1,5 +1,5 @@
 import { Button, ButtonSize, ButtonVariant } from '@/components/ui/button';
-import { Trans } from '@lingui/macro';
+import { Trans } from '@lingui/react/macro';
 
 const IntroSection: React.FC = () => {
   return (

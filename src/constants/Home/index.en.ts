@@ -149,7 +149,7 @@ export const LIST_SECTION = {
       },
       {
         id: 2,
-        title: msg`Tense: Tenet `,
+        title: msg`Tense: Tenet`,
         description: msg`Directed by Christopher Nolan, this mind-bending action film with time inversion will keep you on the edge of your seat.`,
         image: IMAGES.list.entertainment.list2,
       },

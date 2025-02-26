@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button, ButtonSize, ButtonVariant } from '@/components/ui/button';
 import { LanguageToggleButton } from '@/lib/languageProvider';
 import useUserStore from '@/stores/useUserStore';
-import { Trans } from '@lingui/macro';
+import { Trans } from '@lingui/react/macro';
 import { Link, useNavigate } from 'react-router-dom';
 
 interface HeaderProps {

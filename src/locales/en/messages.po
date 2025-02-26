@@ -13,6 +13,8 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#. placeholder {0}: choice.label || choice.value
+#. placeholder {0}: alertMessage.message
 #: src/components/Alert/index.tsx
 #: src/components/Radio/index.tsx
 msgid "<0>{0}</0>"
@@ -71,6 +73,10 @@ msgstr "Must be JPG and under 2MB."
 #: src/components/ImageUploader/index.tsx
 msgid "Upload a cover"
 msgstr "Upload a cover"
+
+#: src/constants/Home/index.en.ts
+#~ msgid "Tense: Tenet "
+#~ msgstr "Tense: Tenet "
 
 #: src/constants/Home/index.en.ts
 msgid "Join Poklist and share your lists."
@@ -439,11 +445,6 @@ msgid "Contact us"
 msgstr "Contact us"
 
 #: src/pages/EditUser/index.tsx
-#: src/pages/User/HeroSection/index.tsx
-#~ msgid "Links"
-#~ msgstr "Links"
-
-#: src/pages/EditUser/index.tsx
 #: src/pages/EditUser/index.tsx
 msgid "Name"
 msgstr "Name"
@@ -552,6 +553,11 @@ msgstr "Health & Fitness"
 msgid "Other"
 msgstr "Other"
 
+#: src/pages/Home/FeatureSection/index.tsx
+#: src/pages/User/HeroSection/index.tsx
+msgid "Lists"
+msgstr "Lists"
+
 #: src/pages/Home/Header/index.tsx
 #: src/pages/Settings/BlocksSection/index.tsx
 #: src/pages/Settings/BlocksSection/index.tsx
@@ -577,6 +583,30 @@ msgstr "Confirm Delete"
 #: src/pages/Idea/Components/DeleteButton/index.tsx
 msgid "Cancel"
 msgstr "Cancel"
+
+#: src/pages/Idea/Components/Form/index.tsx
+#~ msgid "Hey, the title can’t be left empty! "
+#~ msgstr "Hey, the title can’t be left empty! "
+
+#: src/pages/Idea/Components/Form/index.tsx
+#~ msgid "Every idea needs a title, so fill it in! "
+#~ msgstr "Every idea needs a title, so fill it in! "
+
+#: src/pages/Idea/Components/Form/index.tsx
+#~ msgid "Idea title is too long! "
+#~ msgstr "Idea title is too long! "
+
+#: src/pages/Idea/Components/Form/index.tsx
+#~ msgid "Please keep it under {TITLE_MAX_LENGTH} characters. "
+#~ msgstr "Please keep it under {TITLE_MAX_LENGTH} characters. "
+
+#: src/pages/Idea/Components/Form/index.tsx
+#~ msgid "Description is too long! "
+#~ msgstr "Description is too long! "
+
+#: src/pages/Idea/Components/Form/index.tsx
+#~ msgid "Please keep it under {DESC_MAX_LENGTH} characters. "
+#~ msgstr "Please keep it under {DESC_MAX_LENGTH} characters. "
 
 #: src/pages/Idea/Components/Form/index.tsx
 #: src/pages/Lists/Components/Form/index.tsx
@@ -840,10 +870,6 @@ msgstr "🚀 <0>We’re in Beta</0> and want you to be part of the journey! Join
 #: src/pages/Settings/IntroSection/index.tsx
 msgid "✨ Sign up now and start listing!"
 msgstr "✨ Sign up now and start listing!"
-
-#: src/pages/User/HeroSection/index.tsx
-msgid "Lists"
-msgstr "Lists"
 
 #: src/pages/User/HeroSection/index.tsx
 msgid "Followers"

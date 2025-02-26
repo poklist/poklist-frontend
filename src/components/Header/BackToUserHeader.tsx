@@ -4,7 +4,7 @@ import IconLeftArrow from '@/components/ui/icons/LeftArrowIcon';
 import { IListOwnerInfo } from '@/hooks/Lists/useGetList';
 import useRelationStore from '@/stores/useRelationStore';
 import { User } from '@/types/User';
-import { Trans } from '@lingui/macro';
+import { Trans } from '@lingui/react/macro';
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, ButtonShape, ButtonSize, ButtonVariant } from '../ui/button';

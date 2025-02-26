@@ -10,8 +10,8 @@ import { SocialLinkType } from '@/enums/index.enum';
 import { getFormattedTime } from '@/lib/time';
 import { copyHref, getPreviewText, urlPreview } from '@/lib/utils';
 import { IdeaDetail } from '@/types/Idea';
-import { Trans } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
+import { Trans } from '@lingui/react/macro';
 
 interface IIdeaDrawerContentProps {
   data: IdeaDetail;

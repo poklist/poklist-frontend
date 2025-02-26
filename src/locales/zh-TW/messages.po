@@ -13,6 +13,8 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#. placeholder {0}: choice.label || choice.value
+#. placeholder {0}: alertMessage.message
 #: src/components/Alert/index.tsx
 #: src/components/Radio/index.tsx
 msgid "<0>{0}</0>"
@@ -438,15 +440,6 @@ msgstr "目前僅限已申請並被認證的「創作者帳號」登入並創作
 msgid "Contact us"
 msgstr "聯繫我們"
 
-#: src/pages/Create/index.tsx
-#~ msgid "欸，標題不能留空喔！"
-#~ msgstr "欸，標題不能留空喔！"
-
-#: src/pages/EditUser/index.tsx
-#: src/pages/User/HeroSection/index.tsx
-#~ msgid "Links"
-#~ msgstr "連結"
-
 #: src/pages/EditUser/index.tsx
 #: src/pages/EditUser/index.tsx
 msgid "Name"
@@ -555,6 +548,11 @@ msgstr "健康與健身"
 #: src/pages/Lists/i18n.ts
 msgid "Other"
 msgstr "其他"
+
+#: src/pages/Home/FeatureSection/index.tsx
+#: src/pages/User/HeroSection/index.tsx
+msgid "Lists"
+msgstr "名單"
 
 #: src/pages/Home/Header/index.tsx
 #: src/pages/Settings/BlocksSection/index.tsx
@@ -844,10 +842,6 @@ msgstr "🚀 <0>Poklist 正在 Beta 階段</0>，我們誠摯邀請內容創作
 #: src/pages/Settings/IntroSection/index.tsx
 msgid "✨ Sign up now and start listing!"
 msgstr "✨ 我是創作者，我想建立名單…"
-
-#: src/pages/User/HeroSection/index.tsx
-msgid "Lists"
-msgstr "名單"
 
 #: src/pages/User/HeroSection/index.tsx
 msgid "Followers"
