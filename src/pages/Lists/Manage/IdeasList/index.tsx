@@ -1,9 +1,9 @@
-import { Button } from '@/components/ui/button';
+import { Button, ButtonShape, ButtonVariant } from '@/components/ui/button';
 import IconClose from '@/components/ui/icons/CloseIcon';
 import { IIdeaPreviewInfo } from '@/hooks/Lists/useGetList';
 import { cn } from '@/lib/utils';
 import useUserStore from '@/stores/useUserStore';
-import { Trans } from '@lingui/macro';
+import { Trans } from '@lingui/react/macro';
 import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import DraggableIdeaRow from './Idea';
@@ -66,15 +66,15 @@ const IdeaListSection: React.FC<IdeaListProps> = ({
         <div className="flex items-center gap-4">
           <Button
             onClick={() => confirmReorderCallback()}
-            variant="subActive"
-            shape="rounded8px"
+            variant={ButtonVariant.SUB_ACTIVE}
+            shape={ButtonShape.ROUNDED_5PX}
           >
             <Trans>Save New Order</Trans>
           </Button>
           <Button
             onClick={() => confirmReorderCallback()}
-            variant="black"
-            shape="rounded8px"
+            variant={ButtonVariant.BLACK}
+            shape={ButtonShape.ROUNDED_5PX}
           >
             <Trans>Done</Trans>
           </Button>

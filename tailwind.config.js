@@ -111,7 +111,7 @@ module.exports = {
         inter: 'Inter, sans-serif',
       },
       backgroundImage: {
-        'user-page-grid': "url('tile.jpeg')",
+        'user-page-grid': "url('/tile.jpeg')",
       },
       backgroundSize: {
         '0.3%': '0.3%',

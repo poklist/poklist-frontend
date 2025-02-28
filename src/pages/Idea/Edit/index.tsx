@@ -2,9 +2,9 @@ import useDeleteIdea from '@/hooks/Ideas/useDeleteIdea';
 import useEditIdea, { IEditIdeaRequest } from '@/hooks/Ideas/useEditIdea';
 import useGetIdea from '@/hooks/Ideas/useGetIdea';
 import useGetList from '@/hooks/Lists/useGetList';
-import { Header } from '@/pages/Idea/Components/Header';
+import Header from '@/pages/Idea/Components/Header';
 import useCommonStore from '@/stores/useCommonStore';
-import { Trans } from '@lingui/macro';
+import { Trans } from '@lingui/react/macro';
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import IdeaFormComponent from '../Components/Form';
@@ -25,14 +25,14 @@ const EditIdeaPage: React.FC<EditIdeaPageProps> = () => {
     if (ideaInfo) {
       const response = await fetchDeleteIdea(ideaInfo.id);
       if (response) {
-        navigate(`/list/manage/${ideaInfo.listID}`);
+        navigate(`/${ideaInfo.owner.userCode}/list/${ideaInfo.listID}/manage`);
       }
     }
   };
 
   const onDismissEdit = (isFormNotEdited: boolean) => {
     if (isFormNotEdited) {
-      navigate(`/list/manage/${ideaInfo?.listID}`);
+      navigate(`/${ideaInfo?.owner.userCode}/list/${ideaInfo?.listID}/manage`);
     }
   };
 
@@ -43,7 +43,7 @@ const EditIdeaPage: React.FC<EditIdeaPageProps> = () => {
     const _params = { ...editedIdea, id: Number(id) };
     const response = await fetchEditIdea(_params);
     if (response) {
-      navigate(`/list/manage/${response.listID}`);
+      navigate(`/${ideaInfo?.owner.userCode}/list/${response.listID}/manage`);
     }
   };
 

@@ -17,7 +17,7 @@ export default function LinkIconWrapper({
   variant,
 }: LinkIconWrapperProps) {
   return (
-    <div className="flex h-8 w-8 items-center justify-center rounded-[8px] bg-gray-main-03">
+    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[8px] bg-gray-main-03">
       {children ? (
         children
       ) : variant === 'customized' ? (

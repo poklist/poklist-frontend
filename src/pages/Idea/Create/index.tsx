@@ -1,8 +1,9 @@
 import useCreateIdea, { ICreateIdeaRequest } from '@/hooks/Ideas/useCreateIdea';
 import IdeaForm from '@/pages/Idea/Components/Form';
-import { Header } from '@/pages/Idea/Components/Header';
+import Header from '@/pages/Idea/Components/Header';
 import useCommonStore from '@/stores/useCommonStore';
-import { Trans } from '@lingui/macro';
+import useUserStore from '@/stores/useUserStore';
+import { Trans } from '@lingui/react/macro';
 import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -18,13 +19,14 @@ const IdeaCreatePage: React.FC<IdeaCreatePageProps> = () => {
     listTitle: string;
   };
   const { setIsLoading } = useCommonStore();
+  const { user: me } = useUserStore();
 
   const { createIdeaLoading, ideaData, setIdeaData, fetchCreateIdea } =
     useCreateIdea();
 
   const onDismissCreate = (isFormEmpty: boolean) => {
     if (isFormEmpty) {
-      navigate(`/list/manage/${listID}`);
+      navigate(`/${me?.userCode}/list/${listID}/manage`);
     }
   };
 
@@ -33,7 +35,7 @@ const IdeaCreatePage: React.FC<IdeaCreatePageProps> = () => {
   ) => {
     const response = await fetchCreateIdea(ideaFormData);
     if (response) {
-      navigate(`/list/manage/${listID}`);
+      navigate(`/${me?.userCode}/list/${listID}/manage`);
     }
   };
 

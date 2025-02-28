@@ -1,7 +1,7 @@
 import { DrawerComponent, useDrawer } from '@/components/Drawer';
 import ImageUploader from '@/components/ImageUploader';
 import { IChoice, RadioComponent } from '@/components/Radio';
-import { Button } from '@/components/ui/button';
+import { Button, ButtonShape, ButtonVariant } from '@/components/ui/button';
 import IconClose from '@/components/ui/icons/CloseIcon';
 import IconExteriorLink from '@/components/ui/icons/ExteriorLinkIcon';
 import IconTextarea from '@/components/ui/icons/TextareaIcon';
@@ -15,7 +15,8 @@ import { CategoriesI18n } from '@/pages/Lists/i18n';
 import useCommonStore from '@/stores/useCommonStore';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { i18n } from '@lingui/core';
-import { t, Trans } from '@lingui/macro';
+import { t } from '@lingui/core/macro';
+import { Trans } from '@lingui/react/macro';
 import React, { useEffect, useRef, useState } from 'react';
 import { Controller, FieldErrors, useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -118,8 +119,8 @@ const ListForm: React.FC<IListFormProps> = ({
     let isFormEmpty = true;
     if (isFormModified) {
       setShowErrorDrawer(true, {
-        title: t`Your edits will be lost if you cancel! `,
-        content: t`If you cancel, everything you’ve entered will be lost. `,
+        title: t`Your edits will be lost if you cancel!`,
+        content: t`If you cancel, everything you’ve entered will be lost.`,
       });
       isFormEmpty = false;
     }
@@ -140,14 +141,14 @@ const ListForm: React.FC<IListFormProps> = ({
       case 'title': {
         if (value.title?.type === 'too_small') {
           setShowErrorDrawer(true, {
-            title: t`Hey, the title can’t be left empty! `,
-            content: t`Every list needs a title, so fill it in! `,
+            title: t`Hey, the title can’t be left empty!`,
+            content: t`Every list needs a title, so fill it in!`,
           });
         }
         if (value.title?.type === 'too_big') {
           setShowErrorDrawer(true, {
-            title: t`List title is too long! `,
-            content: t`Please keep it under ${TITLE_MAX_LENGTH} characters. `,
+            title: t`List title is too long!`,
+            content: t`Please keep it under ${TITLE_MAX_LENGTH} characters.`,
           });
         }
 
@@ -156,8 +157,8 @@ const ListForm: React.FC<IListFormProps> = ({
       case 'description': {
         if (value.description?.type === 'too_big') {
           setShowErrorDrawer(true, {
-            title: t`Description is too long! `,
-            content: t`Please keep it under ${DESC_MAX_LENGTH} characters. `,
+            title: t`Description is too long!`,
+            content: t`Please keep it under ${DESC_MAX_LENGTH} characters.`,
           });
         }
 
@@ -302,7 +303,7 @@ const ListForm: React.FC<IListFormProps> = ({
             <Trans>List Topic</Trans>
           </div>
         }
-        subHeader={<Trans>Choose a topic that vibes with your List. </Trans>}
+        subHeader={<Trans>Choose a topic that vibes with your List.</Trans>}
         content={
           !categoriesLoading && (
             <div className="mb-10 mt-6">
@@ -327,8 +328,8 @@ const ListForm: React.FC<IListFormProps> = ({
             {defaultListInfo ? (
               <Button
                 onClick={() => onCloseCategoryDrawer()}
-                variant="black"
-                shape="rounded8px"
+                variant={ButtonVariant.BLACK}
+                shape={ButtonShape.ROUNDED_5PX}
               >
                 <Trans>Next</Trans>
               </Button>
@@ -336,8 +337,8 @@ const ListForm: React.FC<IListFormProps> = ({
               <Button
                 onClick={listForm.handleSubmit(onSubmit, onSubmitFailed)}
                 type="submit"
-                variant="black"
-                shape="rounded8px"
+                variant={ButtonVariant.BLACK}
+                shape={ButtonShape.ROUNDED_5PX}
               >
                 <Trans>Next</Trans>
               </Button>
@@ -367,8 +368,8 @@ const ListForm: React.FC<IListFormProps> = ({
           <Button
             disabled={!isFormModified}
             type="submit"
-            variant="black"
-            shape="rounded8px"
+            variant={ButtonVariant.BLACK}
+            shape={ButtonShape.ROUNDED_5PX}
           >
             <Trans>Next</Trans>
           </Button>

@@ -1,27 +1,16 @@
 import headerPoklist from '@/assets/images/header-poklist.svg';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
+import { Button, ButtonSize, ButtonVariant } from '@/components/ui/button';
 import IconSetting from '@/components/ui/icons/SettingIcon';
 import useUserStore from '@/stores/useUserStore';
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { BackToUserNav } from './BackToUserNav';
 
-interface IHeaderProps {
-  type?: 'default' | 'back-to-user' | 'only-title';
-}
-
-export const Header: React.FC<IHeaderProps> = ({
-  type: headerType = 'default',
-}) => {
-  const { code } = useParams();
+const Header: React.FC = () => {
+  const { userCode } = useParams();
   const navigate = useNavigate();
   const { isLoggedIn, user: me } = useUserStore();
-  const isMyPage = code?.toString() === me.userCode.toString();
-
-  if (headerType === 'back-to-user') {
-    return <BackToUserNav />;
-  }
+  const isMyPage = userCode === me.userCode;
 
   return (
     <header className="flex h-14 items-center justify-between px-4 text-t1 font-semibold">
@@ -30,11 +19,12 @@ export const Header: React.FC<IHeaderProps> = ({
           src={headerPoklist}
           alt="Poklist"
           onClick={() => navigate('/home')}
+          className="h-8"
         />
       </div>
       <div id="header-right" className="flex items-center justify-center gap-4">
         {!isLoggedIn && (
-          <Button variant="white" onClick={() => navigate('/login')}>
+          <Button variant={ButtonVariant.WHITE} onClick={() => navigate('/')}>
             Sign In
           </Button>
         )}
@@ -48,8 +38,8 @@ export const Header: React.FC<IHeaderProps> = ({
           </Avatar>
         ) : (
           <Button
-            variant="white"
-            size={'icon'}
+            variant={ButtonVariant.WHITE}
+            size={ButtonSize.ICON}
             onClick={() => navigate('/settings')}
           >
             <IconSetting />
@@ -59,3 +49,5 @@ export const Header: React.FC<IHeaderProps> = ({
     </header>
   );
 };
+
+export default Header;

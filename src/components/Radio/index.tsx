@@ -2,7 +2,7 @@ import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { RadioType } from '@/enums/Style/index.enum';
 import { cn } from '@/lib/utils';
-import { Trans } from '@lingui/macro';
+import { Trans } from '@lingui/react/macro';
 import React, { Fragment } from 'react';
 export interface IChoice {
   value: string;
@@ -30,11 +30,14 @@ export const RadioComponent: React.FC<IRadioProps> = ({
     <RadioGroup
       disabled={disabled}
       defaultValue={defaultValue}
-      onValueChange={value => onChange(value)}
+      onValueChange={(value) => onChange(value)}
       className={cn(
         ``,
-        { '': type === RadioType.DEFAULT, 'radio-button': type === RadioType.BUTTON },
-        className,
+        {
+          '': type === RadioType.DEFAULT,
+          'radio-button': type === RadioType.BUTTON,
+        },
+        className
       )}
       {...props}
     >
@@ -43,16 +46,20 @@ export const RadioComponent: React.FC<IRadioProps> = ({
           <RadioGroupItem
             value={choice.value}
             id={`${choice.value}-${index}`}
-            className={cn({ '': type === RadioType.DEFAULT, hidden: type === RadioType.BUTTON })}
+            className={cn({
+              '': type === RadioType.DEFAULT,
+              hidden: type === RadioType.BUTTON,
+            })}
           />
           <Trans>
             <Label
               htmlFor={`${choice.value}-${index}`}
               className={cn({
                 '': type === RadioType.DEFAULT,
-                'py-2 border px-4 rounded border-gray-02 whitespace-nowrap':
+                'whitespace-nowrap rounded border border-gray-02 px-4 py-2':
                   type === RadioType.BUTTON,
-                'bg-yellow-bright-01 border-black-text-01': defaultValue === choice.value,
+                'border-black-text-01 bg-yellow-bright-01':
+                  defaultValue === choice.value,
               })}
             >
               <Trans>{choice.label || choice.value}</Trans>

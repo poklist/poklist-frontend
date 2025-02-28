@@ -13,6 +13,9 @@ interface IIdeaResponse {
   description: string;
   externalLink: string;
   coverImage: string;
+  createdAt: string;
+  updatedAt: string;
+  owner: IIdeaOwnerInfo;
 }
 
 export interface IIdeaInfo {
@@ -22,7 +25,18 @@ export interface IIdeaInfo {
   description: string;
   externalLink: string;
   coverImage: File | null;
+  createdAt: string;
+  updatedAt: string;
+  owner: IIdeaOwnerInfo;
 }
+
+export interface IIdeaOwnerInfo {
+  id: number;
+  displayName: string;
+  userCode: string;
+  profileImage: string; // BASE64
+}
+
 export const useGetIdea = () => {
   const { setShowingAlert } = useCommonStore();
   const [isIdeaInfoLoading, setIsIdeaInfoLoading] = useState(false);

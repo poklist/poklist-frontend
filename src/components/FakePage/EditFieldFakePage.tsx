@@ -1,30 +1,29 @@
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import useAutosizeTextArea from '@/hooks/useAutosizedTextArea';
 import { IEditFieldConfig } from '@/types/EditField';
+import { t } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
 import { useRef, useState } from 'react';
 import { useFakePage } from '.';
 import EditModeFooter from '../Footer/EditModeFooter';
 import ImageCropper from '../ImageCropper';
 import { Textarea } from '../ui/textarea';
 
-interface IEditFieldFakePageProps extends IEditFieldConfig {
-  originalFieldValue?: string;
-  errorMessage?: string;
-  validator?: (value?: string) => boolean;
-}
-
-export const EditFieldFakePageComponent: React.FC<IEditFieldFakePageProps> = ({
+export const EditFieldFakePageComponent: React.FC<IEditFieldConfig> = ({
   fieldName,
   variant,
   onFieldValueSet,
   originalFieldValue,
-  placeholder = 'Enter your text here',
+  placeholder = t`Enter your text here`,
   characterLimit,
 }) => {
+  const { i18n } = useLingui();
   const { isOpen, closeFakePage } = useFakePage();
   const [fieldValue, setFieldValue] = useState<string | undefined>(undefined);
   const isModified =
     fieldValue !== undefined && fieldValue !== originalFieldValue;
+
+  // FUTURE: set the field value if originalFieldValue is not undefined
 
   return (
     <Dialog open={isOpen} onOpenChange={closeFakePage}>
@@ -47,7 +46,7 @@ export const EditFieldFakePageComponent: React.FC<IEditFieldFakePageProps> = ({
             isModified={isModified}
             onClose={closeFakePage}
             title={fieldName}
-            onSaveText="Done"
+            onSaveText={i18n._('Done')}
             onSave={() => {
               onFieldValueSet(fieldValue);
               setFieldValue(undefined);

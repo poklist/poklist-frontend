@@ -13,10 +13,49 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#. placeholder {0}: choice.label || choice.value
+#. placeholder {0}: alertMessage.message
 #: src/components/Alert/index.tsx
 #: src/components/Radio/index.tsx
 msgid "<0>{0}</0>"
 msgstr ""
+
+#: src/components/FakePage/EditFieldFakePage.tsx
+msgid "Enter your text here"
+msgstr "Enter your text here"
+
+#. js-lingui-explicit-id
+#: src/components/FakePage/EditFieldFakePage.tsx
+msgid "Done"
+msgstr "Done"
+
+#: src/components/Footer/EditModeFooter.tsx
+msgid "Save"
+msgstr "Save"
+
+#: src/components/Footer/FloatingButtonFooter.tsx
+msgid "Like"
+msgstr "Like"
+
+#: src/components/Footer/FloatingButtonFooter.tsx
+msgid "Create List"
+msgstr "Create List"
+
+#: src/components/Footer/FloatingButtonFooter.tsx
+#: src/pages/Lists/View/IdeaDrawerContent/index.tsx
+msgid "Copy"
+msgstr "Copy"
+
+#: src/components/Header/BackToUserHeader.tsx
+#: src/pages/User/HeroSection/index.tsx
+#: src/pages/User/HeroSection/index.tsx
+msgid "Following"
+msgstr "Following"
+
+#: src/components/Header/BackToUserHeader.tsx
+#: src/pages/User/HeroSection/index.tsx
+msgid "Follow"
+msgstr "Follow"
 
 #: src/components/ImageCropper/index.tsx
 #: src/components/ImageUploader/index.tsx
@@ -34,6 +73,10 @@ msgstr "Must be JPG and under 2MB."
 #: src/components/ImageUploader/index.tsx
 msgid "Upload a cover"
 msgstr "Upload a cover"
+
+#: src/constants/Home/index.en.ts
+#~ msgid "Tense: Tenet "
+#~ msgstr "Tense: Tenet "
 
 #: src/constants/Home/index.en.ts
 msgid "Join Poklist and share your lists."
@@ -352,6 +395,7 @@ msgid "If you can't clean your room, what's your life looking like?"
 msgstr "If you can't clean your room, what's your life looking like?"
 
 #: src/constants/Home/index.en.ts
+#: src/pages/Settings/BlocksSection/index.tsx
 msgid "About Poklist"
 msgstr "About Poklist"
 
@@ -396,8 +440,70 @@ msgid "Only approved and verified “Creator Accounts” can log in and create l
 msgstr "Only approved and verified “Creator Accounts” can log in and create lists. If you have any questions, please contact us."
 
 #: src/constants/Home/index.en.ts
+#: src/pages/Settings/BlocksSection/index.tsx
 msgid "Contact us"
 msgstr "Contact us"
+
+#: src/pages/EditUser/index.tsx
+#: src/pages/EditUser/index.tsx
+msgid "Name"
+msgstr "Name"
+
+#: src/pages/EditUser/index.tsx
+msgid "Enter your name here"
+msgstr "Enter your name here"
+
+#: src/pages/EditUser/index.tsx
+#: src/pages/EditUser/index.tsx
+msgid "Username"
+msgstr "Username"
+
+#: src/pages/EditUser/index.tsx
+msgid "Enter your username here"
+msgstr "Enter your username here"
+
+#: src/pages/EditUser/index.tsx
+#: src/pages/EditUser/index.tsx
+msgid "Bio"
+msgstr "Bio"
+
+#: src/pages/EditUser/index.tsx
+msgid "Enter your bio here"
+msgstr "Enter your bio here"
+
+#: src/pages/EditUser/index.tsx
+msgid "Profile Image"
+msgstr "Profile Image"
+
+#: src/pages/EditUser/index.tsx
+msgid "Customized Link"
+msgstr "Customized Link"
+
+#: src/pages/EditUser/index.tsx
+msgid "Add URL"
+msgstr "Add URL"
+
+#: src/pages/EditUser/index.tsx
+#: src/pages/EditUser/index.tsx
+#: src/pages/EditUser/index.tsx
+#: src/pages/EditUser/index.tsx
+#: src/pages/EditUser/index.tsx
+msgid "Add account"
+msgstr "Add account"
+
+#: src/pages/EditUser/index.tsx
+msgid "Profile"
+msgstr "Profile"
+
+#: src/pages/EditUser/index.tsx
+msgctxt "title"
+msgid "Links"
+msgstr "Links"
+
+#: src/pages/EditUser/index.tsx
+#: src/pages/User/HeroSection/index.tsx
+msgid "Edit profile and account"
+msgstr "Edit profile and account"
 
 #: src/pages/Error/index.tsx
 msgid "Oops something is wrong!"
@@ -448,10 +554,13 @@ msgid "Other"
 msgstr "Other"
 
 #: src/pages/Home/FeatureSection/index.tsx
+#: src/pages/User/HeroSection/index.tsx
 msgid "Lists"
 msgstr "Lists"
 
 #: src/pages/Home/Header/index.tsx
+#: src/pages/Settings/BlocksSection/index.tsx
+#: src/pages/Settings/BlocksSection/index.tsx
 msgid "Sign In"
 msgstr "Sign In"
 
@@ -472,9 +581,32 @@ msgid "Confirm Delete"
 msgstr "Confirm Delete"
 
 #: src/pages/Idea/Components/DeleteButton/index.tsx
-#: src/pages/Lists/Components/DeleteButton/index.tsx
 msgid "Cancel"
 msgstr "Cancel"
+
+#: src/pages/Idea/Components/Form/index.tsx
+#~ msgid "Hey, the title can’t be left empty! "
+#~ msgstr "Hey, the title can’t be left empty! "
+
+#: src/pages/Idea/Components/Form/index.tsx
+#~ msgid "Every idea needs a title, so fill it in! "
+#~ msgstr "Every idea needs a title, so fill it in! "
+
+#: src/pages/Idea/Components/Form/index.tsx
+#~ msgid "Idea title is too long! "
+#~ msgstr "Idea title is too long! "
+
+#: src/pages/Idea/Components/Form/index.tsx
+#~ msgid "Please keep it under {TITLE_MAX_LENGTH} characters. "
+#~ msgstr "Please keep it under {TITLE_MAX_LENGTH} characters. "
+
+#: src/pages/Idea/Components/Form/index.tsx
+#~ msgid "Description is too long! "
+#~ msgstr "Description is too long! "
+
+#: src/pages/Idea/Components/Form/index.tsx
+#~ msgid "Please keep it under {DESC_MAX_LENGTH} characters. "
+#~ msgstr "Please keep it under {DESC_MAX_LENGTH} characters. "
 
 #: src/pages/Idea/Components/Form/index.tsx
 #: src/pages/Lists/Components/Form/index.tsx
@@ -627,25 +759,123 @@ msgid "Tap to edit. Hold & drag to reorder Ideas"
 msgstr "Tap to edit. Hold & drag to reorder Ideas"
 
 #: src/pages/Lists/Manage/index.tsx
+#: src/pages/Lists/View/ListCard/index.tsx
 msgid "Add an idea"
 msgstr "Add an idea"
+
+#: src/pages/Lists/View/ListCard/index.tsx
+msgid "Recently Updated"
+msgstr "Recently Updated"
+
+#: src/pages/Lists/View/ListCard/index.tsx
+msgid "Listing since"
+msgstr "Listing since"
+
+#: src/pages/Lists/View/ListCard/index.tsx
+msgid "Likes"
+msgstr "Likes"
+
+#: src/pages/Lists/View/ListCard/index.tsx
+msgid "Edit list"
+msgstr "Edit list"
 
 #: src/pages/Lists/i18n.ts
 msgid "Lifestyle"
 msgstr "Lifestyle"
 
-#: src/pages/User/Footer/index.tsx
-msgid "Liked"
-msgstr "Liked"
+#: src/pages/Settings/BlocksSection/index.tsx
+msgid "Select your language!"
+msgstr "Select your language!"
 
-#: src/pages/User/Footer/index.tsx
-msgid "Like"
-msgstr "Like"
+#: src/pages/Settings/BlocksSection/index.tsx
+msgid "Your preferred language for a better experience."
+msgstr "Your preferred language for a better experience."
 
-#: src/pages/User/Footer/index.tsx
-msgid "Create List"
-msgstr "Create List"
+#: src/pages/Settings/BlocksSection/index.tsx
+msgid "Taiwan"
+msgstr "Taiwan"
 
-#: src/pages/User/Footer/index.tsx
-msgid "Copy"
-msgstr "Copy"
+#: src/pages/Settings/BlocksSection/index.tsx
+msgid "United States"
+msgstr "United States"
+
+#: src/pages/Settings/BlocksSection/index.tsx
+msgid "Select your location!"
+msgstr "Select your location!"
+
+#: src/pages/Settings/BlocksSection/index.tsx
+msgid "Your location for a personalized experience."
+msgstr "Your location for a personalized experience."
+
+#: src/pages/Settings/BlocksSection/index.tsx
+msgid "Preference"
+msgstr "Preference"
+
+#: src/pages/Settings/BlocksSection/index.tsx
+msgid "Select your preferred language"
+msgstr "Select your preferred language"
+
+#: src/pages/Settings/BlocksSection/index.tsx
+msgid "Select your location"
+msgstr "Select your location"
+
+#: src/pages/Settings/BlocksSection/index.tsx
+msgid "Quick start guide"
+msgstr "Quick start guide"
+
+#: src/pages/Settings/BlocksSection/index.tsx
+msgid "Check out Poklist"
+msgstr "Check out Poklist"
+
+#: src/pages/Settings/BlocksSection/index.tsx
+msgid "Follow Poklist Threads"
+msgstr "Follow Poklist Threads"
+
+#: src/pages/Settings/BlocksSection/index.tsx
+msgid "Join Poklist Discord"
+msgstr "Join Poklist Discord"
+
+#: src/pages/Settings/BlocksSection/index.tsx
+msgid "Submit feedback or report content"
+msgstr "Submit feedback or report content"
+
+#: src/pages/Settings/BlocksSection/index.tsx
+msgid "Others"
+msgstr "Others"
+
+#: src/pages/Settings/BlocksSection/index.tsx
+msgid "About Privacy Policy and Terms of Use"
+msgstr "About Privacy Policy and Terms of Use"
+
+#: src/pages/Settings/BlocksSection/index.tsx
+msgid "Delete Account"
+msgstr "Delete Account"
+
+#: src/pages/Settings/BlocksSection/index.tsx
+msgid "Sign Out"
+msgstr "Sign Out"
+
+#: src/pages/Settings/BlocksSection/index.tsx
+msgid "Setting Center"
+msgstr "Setting Center"
+
+#: src/pages/Settings/IntroSection/index.tsx
+msgid "<0>List Your World.</0><1/><2/> From secret coffee spots and must-have skincare, to binge-worthy shows and game-changing life hacks—create, explore, and share your top picks with the world."
+msgstr "<0>List Your World.</0><1/><2/> From secret coffee spots and must-have skincare, to binge-worthy shows and game-changing life hacks—create, explore, and share your top picks with the world."
+
+#: src/pages/Settings/IntroSection/index.tsx
+msgid "🚀 <0>We’re in Beta</0> and want you to be part of the journey! Join us, shape the platform, and help us reach the next level."
+msgstr "🚀 <0>We’re in Beta</0> and want you to be part of the journey! Join us, shape the platform, and help us reach the next level."
+
+#: src/pages/Settings/IntroSection/index.tsx
+msgid "✨ Sign up now and start listing!"
+msgstr "✨ Sign up now and start listing!"
+
+#: src/pages/User/HeroSection/index.tsx
+msgid "Followers"
+msgstr "Followers"
+
+#: src/pages/User/HeroSection/index.tsx
+msgctxt "count"
+msgid "Links"
+msgstr "Links"

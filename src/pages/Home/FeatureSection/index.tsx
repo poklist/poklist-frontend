@@ -1,12 +1,11 @@
-import { IMAGES } from '@/constants/Home/images';
-import { useState, useMemo, useRef } from 'react';
 import logo from '@/assets/images/logo-big.png';
-import { FeatureSectionContent, FeatureListSection } from '@/types/Home';
-import { Trans } from '@lingui/react';
-import { msg, Trans as TransMacro } from '@lingui/macro';
-import { MessageDescriptor } from '@lingui/core';
-import { useLingui } from '@lingui/react';
+import { IMAGES } from '@/constants/Home/images';
 import { Language } from '@/enums/index.enum';
+import { FeatureListSection, FeatureSectionContent } from '@/types/Home';
+import { MessageDescriptor } from '@lingui/core';
+import { msg, t } from '@lingui/core/macro';
+import { Trans, useLingui } from '@lingui/react';
+import { useMemo, useRef, useState } from 'react';
 
 interface FeatureSectionProps {
   content: FeatureSectionContent;
@@ -139,8 +138,7 @@ export const FeatureSection = ({
             <div className="flex items-center gap-1">
               <p className="text-t2">{selectedList.account}</p>
               <p className="text-t2">
-                <strong>{selectedList.listCount}</strong>{' '}
-                <TransMacro>Lists</TransMacro>
+                <strong>{selectedList.listCount}</strong> {t`Lists`}
               </p>
             </div>
           </div>

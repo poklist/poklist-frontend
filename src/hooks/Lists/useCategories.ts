@@ -1,12 +1,12 @@
 import ApiPath from '@/config/apiPath';
-import { Categories } from '@/enums/Lists/index.enum';
+import { Category } from '@/enums/Lists/index.enum';
 import axios from '@/lib/axios';
 import useCommonStore from '@/stores/useCommonStore';
 import { IResponse } from '@/types/response';
 import { useState } from 'react';
 
 export interface ICategory {
-  id: Categories;
+  id: Category;
   name: string;
 }
 
