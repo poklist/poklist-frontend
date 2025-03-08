@@ -3,7 +3,6 @@ import { EditFieldFakePageComponent } from '@/components/FakePage/EditFieldFakeP
 import EditModeFooter from '@/components/Footer/EditModeFooter';
 import BackToUserHeader from '@/components/Header/BackToUserHeader';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import MobileContainer from '@/components/ui/containers/MobileContainer';
 import { IconCamera } from '@/components/ui/icons/CameraIcon';
 import LinkIconWrapper from '@/components/ui/wrappers/LinkIconWrapper';
 import { socialLinkStarterMap } from '@/constants/User';
@@ -205,7 +204,7 @@ const EditUserPage: React.FC = () => {
   }, []);
 
   return (
-    <MobileContainer>
+    <>
       <BackToUserHeader owner={user} />
       {/* Upload ProfileImageSection */}
       <div id="profile-image" className="flex items-end justify-center pt-6">
@@ -325,7 +324,7 @@ const EditUserPage: React.FC = () => {
         onSave={onSubmit}
       />
       {fieldConfig && <EditFieldFakePageComponent {...fieldConfig} />}
-    </MobileContainer>
+    </>
   );
 };
 

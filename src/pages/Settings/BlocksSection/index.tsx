@@ -1,5 +1,4 @@
 import { DrawerComponent, useDrawer } from '@/components/Drawer';
-import Footer from '@/components/Footer';
 import { Language, LocalStorageKey, Location } from '@/enums/index.enum';
 import { activateI18n } from '@/lib/languageProvider';
 import { getLocalStorage, setLocalStorage } from '@/lib/utils';
@@ -218,7 +217,6 @@ const BlocksSection: React.FC = () => {
           );
         })}
       </div>
-      <Footer onClose={() => navigate(-1)} title={t`Setting Center`} />
       <DrawerComponent isShowClose={false} content={drawerContent} />
     </>
   );

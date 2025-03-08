@@ -1,5 +1,4 @@
 import logo from '@/assets/images/logo-big.svg';
-import MobileContainer from '@/components/ui/containers/MobileContainer';
 import {
   FEATURE_SECTION,
   FOOTER_SECTION,
@@ -31,7 +30,7 @@ function HomeContent() {
   };
 
   return (
-    <MobileContainer>
+    <>
       <Header onSignInClick={scrollToTop} />
       <main className="flex min-h-screen flex-col">
         <HeroSection content={content.HERO_SECTION} />
@@ -55,7 +54,7 @@ function HomeContent() {
           socialMedia={content.SOCIAL_MEDIA}
         />
       </main>
-    </MobileContainer>
+    </>
   );
 }
 

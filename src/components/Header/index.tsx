@@ -13,7 +13,7 @@ const Header: React.FC = () => {
   const isMyPage = userCode === me.userCode;
 
   return (
-    <header className="flex h-14 items-center justify-between px-4 text-t1 font-semibold">
+    <header className="flex h-14 shrink-0 items-center justify-between px-4 text-t1 font-semibold">
       <div id="header-left" className="flex items-center justify-center gap-4">
         <img
           src={headerPoklist}
