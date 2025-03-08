@@ -53,7 +53,7 @@ const buttonVariants = cva(
         [ButtonVariant.SUB_ACTIVE]:
           'border border-gray-main-03 bg-gray-note-05 text-black-text-01 disabled:opacity-50',
         [ButtonVariant.BRIGHT_GREEN]:
-          'border border-black bg-bright-green text-black-text-01 disabled:opacity-50',
+          'border border-black bg-green-bright-01 text-black-text-01 disabled:opacity-50',
       },
       size: {
         [ButtonSize.SM]: 'h-8 text-[13px] px-3',

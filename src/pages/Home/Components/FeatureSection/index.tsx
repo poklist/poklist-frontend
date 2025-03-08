@@ -184,7 +184,7 @@ export const FeatureSection = ({
             key={key}
             onClick={() => setSelectedCategory(key)}
             className={`rounded-lg border border-black p-1 text-t2 font-semibold text-black-text-01 ${
-              selectedCategory === key ? 'bg-bright-green' : 'bg-white'
+              selectedCategory === key ? 'bg-green-bright-01' : 'bg-white'
             }`}
           >
             <Trans id={label.id} />
