@@ -3,7 +3,7 @@ import ErrorPage from '@/pages/Error';
 import Home from '@/pages/Home/index';
 import CreateIdeaPage from '@/pages/Idea/Create';
 import EditIdeaPage from '@/pages/Idea/Edit';
-import Layout from '@/pages/Layout';
+import Layout from '@/pages/Layout/index';
 import CreateListPage from '@/pages/Lists/Create';
 import EditListPage from '@/pages/Lists/Edit';
 import ListManagementPage from '@/pages/Lists/Manage';

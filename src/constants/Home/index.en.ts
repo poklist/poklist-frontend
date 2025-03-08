@@ -314,22 +314,22 @@ export const FOOTER_SECTION = [
 export const SOCIAL_MEDIA = [
   {
     name: 'Discord',
-    icon: '/src/assets/images/socialMedia/discord-logo.png',
+    icon: IMAGES.socialMedia.discord,
     url: '#',
   },
   {
     name: 'Instagram',
-    icon: '/src/assets/images/socialMedia/instagram-logo.png',
+    icon: IMAGES.socialMedia.instagram,
     url: '#',
   },
   {
     name: 'Threads',
-    icon: '/src/assets/images/socialMedia/threads-logo.png',
+    icon: IMAGES.socialMedia.threads,
     url: '#',
   },
   {
     name: 'LinkedIn',
-    icon: '/src/assets/images/socialMedia/linkedin-logo.png',
+    icon: IMAGES.socialMedia.linkedin,
     url: '#',
   },
 ];

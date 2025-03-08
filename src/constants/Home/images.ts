@@ -55,6 +55,12 @@ import rightTop from '@/assets/images/home/feature/right-top.png';
 import rightMid from '@/assets/images/home/feature/right-mid.png';
 import rightBottom from '@/assets/images/home/feature/right-bottom.png';
 
+// social media
+import discordLogo from '@/assets/images/socialMedia/discord-logo.png';
+import instagramLogo from '@/assets/images/socialMedia/instagram-logo.png';
+import threadsLogo from '@/assets/images/socialMedia/threads-logo.png';
+import linkedinLogo from '@/assets/images/socialMedia/linkedin-logo.png';
+
 export const IMAGES = {
   avatar: {
     lifeStyle: lifeStyleAvatar,
@@ -122,5 +128,11 @@ export const IMAGES = {
     rightTop: rightTop,
     rightMid: rightMid,
     rightBottom: rightBottom,
+  },
+  socialMedia: {
+    discord: discordLogo,
+    instagram: instagramLogo,
+    threads: threadsLogo,
+    linkedin: linkedinLogo,
   },
 };

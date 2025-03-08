@@ -33,7 +33,7 @@ const FloatingButtonFooter: React.FC<IFooterProps> = ({
   }, [onUnmount]);
 
   return (
-    <div className="fixed bottom-2 left-0 flex w-dvw items-center justify-center gap-2">
+    <div className="sticky bottom-2 left-0 flex items-center justify-center gap-2 pt-14 md:max-w-mobile-max">
       {hasLikeButton && (
         <Button
           onClick={() => {

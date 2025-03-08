@@ -9,12 +9,12 @@ import {
   TUTORIAL_SECTION,
 } from '@/constants/Home/index.en';
 import { GoogleOAuthProvider } from '@react-oauth/google';
-import { Divider } from './Divider';
-import { FeatureSection } from './FeatureSection';
-import { Footer } from './Footer';
-import Header from './Header';
-import { HeroSection } from './HeroSection';
-import { TutorialSection } from './TutorialSection';
+import { Divider } from './Components/Divider';
+import { FeatureSection } from './Components/FeatureSection';
+import { Footer } from './Components/Footer';
+import Header from './Components/Header';
+import { HeroSection } from './Components/HeroSection';
+import { TutorialSection } from './Components/TutorialSection';
 
 function HomeContent() {
   const content = {

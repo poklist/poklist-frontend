@@ -509,62 +509,62 @@ msgstr "Edit profile and account"
 msgid "Oops something is wrong!"
 msgstr "Oops something is wrong!"
 
-#: src/pages/Home/FeatureSection/index.tsx
+#: src/pages/Home/Components/FeatureSection/index.tsx
 msgid "Life Style"
 msgstr "Life Style"
 
-#: src/pages/Home/FeatureSection/index.tsx
+#: src/pages/Home/Components/FeatureSection/index.tsx
 #: src/pages/Lists/i18n.ts
 msgid "Food & Drink"
 msgstr "Food & Drink"
 
-#: src/pages/Home/FeatureSection/index.tsx
+#: src/pages/Home/Components/FeatureSection/index.tsx
 #: src/pages/Lists/i18n.ts
 msgid "Culture"
 msgstr "Culture"
 
-#: src/pages/Home/FeatureSection/index.tsx
+#: src/pages/Home/Components/FeatureSection/index.tsx
 #: src/pages/Lists/i18n.ts
 msgid "Travel"
 msgstr "Travel"
 
-#: src/pages/Home/FeatureSection/index.tsx
+#: src/pages/Home/Components/FeatureSection/index.tsx
 #: src/pages/Lists/i18n.ts
 msgid "Entertainment"
 msgstr "Entertainment"
 
-#: src/pages/Home/FeatureSection/index.tsx
+#: src/pages/Home/Components/FeatureSection/index.tsx
 #: src/pages/Lists/i18n.ts
 msgid "Tech & Digital"
 msgstr "Tech & Digital"
 
-#: src/pages/Home/FeatureSection/index.tsx
+#: src/pages/Home/Components/FeatureSection/index.tsx
 #: src/pages/Lists/i18n.ts
 msgid "Personal Growth"
 msgstr "Personal Growth"
 
-#: src/pages/Home/FeatureSection/index.tsx
+#: src/pages/Home/Components/FeatureSection/index.tsx
 #: src/pages/Lists/i18n.ts
 msgid "Health & Fitness"
 msgstr "Health & Fitness"
 
-#: src/pages/Home/FeatureSection/index.tsx
+#: src/pages/Home/Components/FeatureSection/index.tsx
 #: src/pages/Lists/i18n.ts
 msgid "Other"
 msgstr "Other"
 
-#: src/pages/Home/FeatureSection/index.tsx
+#: src/pages/Home/Components/FeatureSection/index.tsx
 #: src/pages/User/HeroSection/index.tsx
 msgid "Lists"
 msgstr "Lists"
 
-#: src/pages/Home/Header/index.tsx
+#: src/pages/Home/Components/Header/index.tsx
 #: src/pages/Settings/BlocksSection/index.tsx
 #: src/pages/Settings/BlocksSection/index.tsx
 msgid "Sign In"
 msgstr "Sign In"
 
-#: src/pages/Home/LoginDrawer/index.tsx
+#: src/pages/Home/Components/LoginDrawer/index.tsx
 msgid "Sign in to Poklist with Google"
 msgstr "Sign in to Poklist with Google"
 

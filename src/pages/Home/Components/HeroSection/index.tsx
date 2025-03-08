@@ -95,7 +95,7 @@ export const HeroSection = ({ content }: HeroSectionProps) => {
       />
 
       <section className="relative flex flex-1 items-center justify-center">
-        <div className="z-10 flex w-full justify-center px-8 pb-10 pt-24">
+        <div className="z-10 flex w-full justify-center px-8 py-10">
           <div className="flex w-full flex-col gap-6">
             <div className="flex flex-col gap-4">
               <div className="flex flex-col">

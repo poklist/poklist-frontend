@@ -201,7 +201,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
   return (
     <form
       onSubmit={ideaForm.handleSubmit(onSubmit, onSubmitFailed)}
-      className="flex flex-col gap-6"
+      className="flex flex-col gap-6 md:max-w-mobile-max"
     >
       <div
         className={cn(`flex items-center`, {
@@ -258,7 +258,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
       </div>
       <div
         ref={submitFooterRef}
-        className="fixed left-0 z-10 flex w-dvw justify-between border-t border-t-gray-main-03 px-4 py-2"
+        className="sticky left-0 z-10 flex w-dvw justify-between border-t border-t-gray-main-03 px-4 py-2"
       >
         <div className="flex items-center gap-2">
           <div

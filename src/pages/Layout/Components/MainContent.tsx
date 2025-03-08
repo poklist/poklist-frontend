@@ -9,7 +9,7 @@ const MainContent = () => {
   const { isLoading } = useCommonStore();
 
   return (
-    <div className="relative h-screen w-full overflow-hidden sm:h-[calc(100vh-120px)] sm:w-mobile-max sm:rounded-lg sm:border sm:border-black">
+    <div className="relative h-screen w-full overflow-hidden sm:h-[calc(100vh-120px)] sm:w-mobile-max sm:rounded-[20px] sm:border sm:border-black">
       <div className="flex h-full flex-col overflow-hidden">
         <div className="sticky top-0 z-50 bg-white">
           <AlertComponent />
