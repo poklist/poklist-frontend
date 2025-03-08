@@ -315,22 +315,22 @@ export const SOCIAL_MEDIA = [
   {
     name: 'Discord',
     icon: IMAGES.socialMedia.discord,
-    url: '#',
+    url: 'https://discord.gg/me8MqJdXKt',
   },
   {
     name: 'Instagram',
     icon: IMAGES.socialMedia.instagram,
-    url: '#',
+    url: 'https://www.instagram.com/poklistapp/',
   },
   {
     name: 'Threads',
     icon: IMAGES.socialMedia.threads,
-    url: '#',
+    url: 'https://www.threads.net/@poklistapp',
   },
   {
     name: 'LinkedIn',
     icon: IMAGES.socialMedia.linkedin,
-    url: '#',
+    url: 'https://www.linkedin.com/company/poklist',
   },
 ];
 export const ERROR_DIALOG = {

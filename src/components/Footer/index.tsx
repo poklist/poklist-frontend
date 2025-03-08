@@ -24,7 +24,7 @@ const Footer: React.FC<IFooterProps> = ({ onClose, title }) => {
   return (
     <div
       ref={submitFooterRef}
-      className="sticky z-10 flex h-14 w-dvw max-w-mobile-max items-center justify-between border-t border-t-gray-main-03 bg-white px-4 py-2"
+      className="sticky z-10 flex h-14 items-center justify-between border-t border-t-gray-main-03 bg-white px-4 py-2 md:max-w-mobile-max"
     >
       <div className="flex items-center gap-2">
         <Button
