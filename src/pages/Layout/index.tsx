@@ -1,23 +1,37 @@
 import { DrawerProvider } from '@/components/Drawer';
 import { FakePageProvider } from '@/components/FakePage';
 import { LanguageProvider } from '@/lib/languageProvider';
+import { useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Background from './Components/Background';
 import BottomNav from './Components/BottomNav';
 import MainContent from './Components/MainContent';
 import PromptText from './Components/PromptText';
 
 export default function Layout() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const redirectWhiteList = ['/home', '/error', '/goToMobile'];
+
+  useEffect(() => {
+    const isMobile =
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      );
+    if (!isMobile && !redirectWhiteList.includes(location.pathname)) {
+      navigate('/goToMobile');
+    }
+  }, [location.pathname]);
+
   return (
     <LanguageProvider>
       <DrawerProvider>
         <FakePageProvider>
           <Background />
-          <div className="flex min-h-screen w-full items-center justify-center">
-            <div className="relative flex w-full flex-col sm:w-mobile-max">
-              <PromptText />
-              <MainContent />
-              <BottomNav />
-            </div>
+          <div className="relative left-1/2 flex w-full -translate-x-1/2 flex-col sm:w-mobile-max">
+            <PromptText />
+            <MainContent />
+            <BottomNav />
           </div>
         </FakePageProvider>
       </DrawerProvider>
