@@ -233,7 +233,7 @@ const ListForm: React.FC<IListFormProps> = ({
   return (
     <form
       onSubmit={listForm.handleSubmit(onSubmit, onSubmitFailed)}
-      className="flex flex-col gap-6"
+      className="flex flex-col gap-6 md:max-w-mobile-max"
     >
       <div
         className={cn(`flex items-center justify-center`, {
@@ -348,7 +348,7 @@ const ListForm: React.FC<IListFormProps> = ({
       />
       <div
         ref={submitFooterRef}
-        className="fixed left-0 z-10 flex w-dvw justify-between border-t border-t-gray-main-03 bg-white px-4 py-2"
+        className="sticky left-0 z-10 flex justify-between border-t border-t-gray-main-03 bg-white py-2 md:max-w-mobile-max"
       >
         <div className="flex items-center gap-2">
           <div

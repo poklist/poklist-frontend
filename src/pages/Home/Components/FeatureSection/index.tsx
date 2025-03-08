@@ -168,7 +168,7 @@ export const FeatureSection = ({
                   <img
                     src={item.image}
                     alt={item.title.id}
-                    className="size-10 self-end"
+                    className="size-10 self-end rounded-lg border border-black"
                   />
                 </div>
               </div>

@@ -505,62 +505,62 @@ msgstr "編輯個人檔案與帳號"
 msgid "Oops something is wrong!"
 msgstr "哎呀！網頁又在耍脾氣啦！"
 
-#: src/pages/Home/FeatureSection/index.tsx
+#: src/pages/Home/Components/FeatureSection/index.tsx
 msgid "Life Style"
 msgstr "生活風格"
 
-#: src/pages/Home/FeatureSection/index.tsx
+#: src/pages/Home/Components/FeatureSection/index.tsx
 #: src/pages/Lists/i18n.ts
 msgid "Food & Drink"
 msgstr "美食"
 
-#: src/pages/Home/FeatureSection/index.tsx
+#: src/pages/Home/Components/FeatureSection/index.tsx
 #: src/pages/Lists/i18n.ts
 msgid "Culture"
 msgstr "文化"
 
-#: src/pages/Home/FeatureSection/index.tsx
+#: src/pages/Home/Components/FeatureSection/index.tsx
 #: src/pages/Lists/i18n.ts
 msgid "Travel"
 msgstr "旅遊"
 
-#: src/pages/Home/FeatureSection/index.tsx
+#: src/pages/Home/Components/FeatureSection/index.tsx
 #: src/pages/Lists/i18n.ts
 msgid "Entertainment"
 msgstr "娛樂"
 
-#: src/pages/Home/FeatureSection/index.tsx
+#: src/pages/Home/Components/FeatureSection/index.tsx
 #: src/pages/Lists/i18n.ts
 msgid "Tech & Digital"
 msgstr "數位科技"
 
-#: src/pages/Home/FeatureSection/index.tsx
+#: src/pages/Home/Components/FeatureSection/index.tsx
 #: src/pages/Lists/i18n.ts
 msgid "Personal Growth"
 msgstr "個人成長"
 
-#: src/pages/Home/FeatureSection/index.tsx
+#: src/pages/Home/Components/FeatureSection/index.tsx
 #: src/pages/Lists/i18n.ts
 msgid "Health & Fitness"
 msgstr "健康與健身"
 
-#: src/pages/Home/FeatureSection/index.tsx
+#: src/pages/Home/Components/FeatureSection/index.tsx
 #: src/pages/Lists/i18n.ts
 msgid "Other"
 msgstr "其他"
 
-#: src/pages/Home/FeatureSection/index.tsx
+#: src/pages/Home/Components/FeatureSection/index.tsx
 #: src/pages/User/HeroSection/index.tsx
 msgid "Lists"
 msgstr "名單"
 
-#: src/pages/Home/Header/index.tsx
+#: src/pages/Home/Components/Header/index.tsx
 #: src/pages/Settings/BlocksSection/index.tsx
 #: src/pages/Settings/BlocksSection/index.tsx
 msgid "Sign In"
 msgstr "登入"
 
-#: src/pages/Home/LoginDrawer/index.tsx
+#: src/pages/Home/Components/LoginDrawer/index.tsx
 msgid "Sign in to Poklist with Google"
 msgstr "使用 Google 帳號登入 Poklist"
 

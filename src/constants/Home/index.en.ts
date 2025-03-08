@@ -13,7 +13,7 @@ export const HERO_SECTION = {
   },
   nonCreatorQuestion: {
     title: msg`Can non-creators use Poklist?`,
-    url: '',
+    url: 'https://opaque-creek-8e5.notion.site/Can-Non-creators-sign-up-1a8a4cd4b98b80f79ddbe17681b6dda3',
   },
 };
 export const FEATURE_SECTION = {
@@ -275,10 +275,13 @@ export const LIST_SECTION = {
   },
 };
 export const TUTORIAL_SECTION = [
-  { title: msg`About Poklist`, url: '' },
+  {
+    title: msg`About Poklist`,
+    url: 'https://opaque-creek-8e5.notion.site/Poklist-About-Poklist-1a8a4cd4b98b80868769d3f690d094ab',
+  },
   {
     title: msg`Tutorials`,
-    url: '',
+    url: 'https://opaque-creek-8e5.notion.site/Quick-Tutorials-1a8a4cd4b98b803baa0bf7256412048a',
   },
   {
     title: msg`FAQ`,
@@ -286,51 +289,51 @@ export const TUTORIAL_SECTION = [
   },
   {
     title: msg`Join the Team`,
-    url: '',
+    url: 'https://opaque-creek-8e5.notion.site/Join-Team-1a8a4cd4b98b8008bedacfadc1cbbcc7',
   },
 ];
 export const FOOTER_SECTION = [
   {
     title: msg`Press kit`,
-    url: '',
+    url: 'https://opaque-creek-8e5.notion.site/1a8a4cd4b98b80a1ba05f8bcbee6fa5d',
   },
   {
     title: msg`Contact Us`,
-    url: '',
+    url: 'https://opaque-creek-8e5.notion.site/1a9a4cd4b98b80109fabf5bc2f1eec71',
   },
   {
     title: msg`Terms`,
-    url: '',
+    url: 'https://opaque-creek-8e5.notion.site/Terms-of-Service-1a9a4cd4b98b80ebb5cee016b5c88089',
   },
   {
     title: msg`Privacy`,
-    url: '',
+    url: 'https://opaque-creek-8e5.notion.site/Privacy-Policy-1a9a4cd4b98b8098a2c4fa29619981dc',
   },
   {
     title: msg`Collection Notice`,
-    url: '',
+    url: 'https://opaque-creek-8e5.notion.site/1a9a4cd4b98b806b98d3d7478b83fb19',
   },
 ];
 export const SOCIAL_MEDIA = [
   {
     name: 'Discord',
-    icon: '/src/assets/images/socialMedia/discord-logo.png',
-    url: '#',
+    icon: IMAGES.socialMedia.discord,
+    url: 'https://discord.gg/me8MqJdXKt',
   },
   {
     name: 'Instagram',
-    icon: '/src/assets/images/socialMedia/instagram-logo.png',
-    url: '#',
+    icon: IMAGES.socialMedia.instagram,
+    url: 'https://www.instagram.com/poklistapp/',
   },
   {
     name: 'Threads',
-    icon: '/src/assets/images/socialMedia/threads-logo.png',
-    url: '#',
+    icon: IMAGES.socialMedia.threads,
+    url: 'https://www.threads.net/@poklistapp',
   },
   {
     name: 'LinkedIn',
-    icon: '/src/assets/images/socialMedia/linkedin-logo.png',
-    url: '#',
+    icon: IMAGES.socialMedia.linkedin,
+    url: 'https://www.linkedin.com/company/poklist',
   },
 ];
 export const ERROR_DIALOG = {

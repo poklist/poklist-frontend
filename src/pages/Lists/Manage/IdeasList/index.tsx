@@ -51,7 +51,7 @@ const IdeaListSection: React.FC<IdeaListProps> = ({
       </div>
       <div
         ref={footerRef}
-        className="fixed left-0 z-10 flex w-dvw justify-between border-t border-t-gray-main-03 bg-white px-4 py-2"
+        className="sticky left-0 z-10 flex justify-between border-t border-t-gray-main-03 bg-white px-4 py-2 md:max-w-mobile-max"
       >
         <div className="flex items-center gap-2">
           <Link

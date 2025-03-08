@@ -27,7 +27,9 @@ export const Footer = ({ content, socialMedia }: FooterProps) => (
               <a
                 key={item.name}
                 href={item.url}
+                target="_blank"
                 className="flex size-8 justify-center rounded-full bg-black"
+                rel="noreferrer"
               >
                 <img src={item.icon} alt={item.name} className="size-fit" />
               </a>
