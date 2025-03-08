@@ -1,4 +1,4 @@
-import logo from '@/assets/images/logo-big.png';
+import logo from '@/assets/images/logo-big.svg';
 import MobileContainer from '@/components/ui/containers/MobileContainer';
 import {
   FEATURE_SECTION,
