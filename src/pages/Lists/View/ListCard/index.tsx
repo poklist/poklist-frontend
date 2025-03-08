@@ -135,7 +135,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
   return (
     <>
       <div className="flex flex-col items-center rounded-[32px] border border-black bg-white py-6">
-        <div className="flex flex-col items-center px-4">
+        <div className="flex w-full flex-col items-center px-4">
           {isUpdatedRecently && (
             <div className="-tracking-0.8% mb-2 flex h-[27px] items-center justify-center rounded-full bg-yellow-bright-01 px-4 text-[13px] font-semibold">
               <Trans>Recently Updated</Trans>
