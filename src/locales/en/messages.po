@@ -509,6 +509,10 @@ msgstr "Edit profile and account"
 msgid "Oops something is wrong!"
 msgstr "Oops something is wrong!"
 
+#: src/pages/GoToMobile/index.tsx
+msgid "Please use mobile device to view the content!"
+msgstr "Please use mobile device to view the content!"
+
 #: src/pages/Home/Components/FeatureSection/index.tsx
 msgid "Life Style"
 msgstr "Life Style"
@@ -855,10 +859,6 @@ msgstr "Delete Account"
 msgid "Sign Out"
 msgstr "Sign Out"
 
-#: src/pages/Settings/BlocksSection/index.tsx
-msgid "Setting Center"
-msgstr "Setting Center"
-
 #: src/pages/Settings/IntroSection/index.tsx
 msgid "<0>List Your World.</0><1/><2/> From secret coffee spots and must-have skincare, to binge-worthy shows and game-changing life hacks—create, explore, and share your top picks with the world."
 msgstr "<0>List Your World.</0><1/><2/> From secret coffee spots and must-have skincare, to binge-worthy shows and game-changing life hacks—create, explore, and share your top picks with the world."
@@ -870,6 +870,10 @@ msgstr "🚀 <0>We’re in Beta</0> and want you to be part of the journey! Join
 #: src/pages/Settings/IntroSection/index.tsx
 msgid "✨ Sign up now and start listing!"
 msgstr "✨ Sign up now and start listing!"
+
+#: src/pages/Settings/index.tsx
+msgid "Setting Center"
+msgstr "Setting Center"
 
 #: src/pages/User/HeroSection/index.tsx
 msgid "Followers"

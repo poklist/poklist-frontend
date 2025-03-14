@@ -16,7 +16,7 @@ const Header = ({ onSignInClick }: HeaderProps) => {
   const { user, isLoggedIn } = useUserStore();
 
   return (
-    <header className="sticky top-4 z-50 w-full">
+    <header className="sticky top-0 z-50 w-full">
       <div className="flex h-14 w-full items-center justify-between px-4">
         <Link to="/home">
           <img src={headerLogo} alt="Poklist" className="h-8" />
