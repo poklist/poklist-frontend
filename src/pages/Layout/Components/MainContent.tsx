@@ -14,7 +14,7 @@ const MainContent = () => {
         <div className="sticky top-0 z-50 bg-white">
           <AlertComponent />
         </div>
-        <div className="flex-1 overflow-y-auto bg-white">
+        <div className="-mr-[3.8px] flex-1 overflow-y-auto bg-white">
           <Outlet />
         </div>
       </div>

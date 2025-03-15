@@ -1,7 +1,7 @@
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import useAutosizeTextArea from '@/hooks/useAutosizedTextArea';
 import { IEditFieldConfig } from '@/types/EditField';
-import { t } from '@lingui/macro';
+import { t } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
 import { useRef, useState } from 'react';
 import { useFakePage } from '.';
@@ -30,7 +30,7 @@ export const EditFieldFakePageComponent: React.FC<IEditFieldConfig> = ({
       <DialogContent className="flex h-screen w-full items-center border-0 bg-transparent p-0">
         <div
           id="edit-field-fake-page"
-          className="z-10 flex h-full w-full max-w-mobile-max flex-col items-center bg-white px-6 py-6"
+          className="z-10 flex h-full w-full flex-col items-center bg-white px-6 py-6 md:max-w-mobile-max"
         >
           {variant === 'text' ? (
             <TextInput
@@ -42,19 +42,19 @@ export const EditFieldFakePageComponent: React.FC<IEditFieldConfig> = ({
           ) : (
             <ImageCropper value={fieldValue ?? ''} onChange={setFieldValue} />
           )}
-          <EditModeFooter
-            isModified={isModified}
-            onClose={closeFakePage}
-            title={fieldName}
-            onSaveText={i18n._('Done')}
-            onSave={() => {
-              onFieldValueSet(fieldValue);
-              setFieldValue(undefined);
-              closeFakePage();
-            }}
-            value={fieldValue}
-          />
         </div>
+        <EditModeFooter
+          isModified={isModified}
+          onClose={closeFakePage}
+          title={fieldName}
+          onSaveText={i18n._('Done')}
+          onSave={() => {
+            onFieldValueSet(fieldValue);
+            setFieldValue(undefined);
+            closeFakePage();
+          }}
+          value={fieldValue}
+        />
       </DialogContent>
     </Dialog>
   );

@@ -1,5 +1,6 @@
 import EditUserPage from '@/pages/EditUser';
 import ErrorPage from '@/pages/Error';
+import GoToMobilePage from '@/pages/GoToMobile';
 import Home from '@/pages/Home/index';
 import CreateIdeaPage from '@/pages/Idea/Create';
 import EditIdeaPage from '@/pages/Idea/Edit';
@@ -31,6 +32,7 @@ const router = createBrowserRouter([
       { path: 'idea/create', element: <CreateIdeaPage /> },
       { path: 'idea/:id/edit', element: <EditIdeaPage /> },
       { path: 'error', element: <ErrorPage /> },
+      { path: 'goToMobile', element: <GoToMobilePage /> },
       { path: '*', element: <Navigate to="/error" replace /> },
     ],
   },

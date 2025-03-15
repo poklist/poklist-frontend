@@ -23,17 +23,17 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({ data }) => {
   const { i18n } = useLingui();
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-start">
       {data.coverImage && (
         <img
           src={data.coverImage}
           alt={data.title}
           width={240}
           height={240}
-          className="mt-6 rounded-[12px] border border-black"
+          className="mt-6 self-center rounded-[12px] border border-black"
         />
       )}
-      <div className="-tracking-2% mt-6 self-start text-[17px] font-bold">
+      <div className="-tracking-2% mt-6 text-[17px] font-bold leading-[1.45]">
         {data.title}
       </div>
       {data.description && (

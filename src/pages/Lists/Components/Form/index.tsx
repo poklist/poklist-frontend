@@ -231,71 +231,74 @@ const ListForm: React.FC<IListFormProps> = ({
     setRadioChoice(_radioChoice);
   }, [categories]);
   return (
-    <form
-      onSubmit={listForm.handleSubmit(onSubmit, onSubmitFailed)}
-      className="flex flex-col gap-6 md:max-w-mobile-max"
-    >
-      <div
-        className={cn(`flex items-center justify-center`, {
-          'before:z-10 before:h-8 before:w-0.5 before:bg-black-text-01':
-            listForm.watch('title') === '',
-        })}
+    <>
+      <form
+        onSubmit={listForm.handleSubmit(onSubmit, onSubmitFailed)}
+        className="flex flex-col gap-6 px-4 md:max-w-mobile-max"
       >
-        <Input
-          placeholder={t`Give your list a title`}
-          className="relative w-min border-none text-h1 placeholder:text-h1"
-          {...listForm.register('title', { onChange: onInputChange })}
-        />
-      </div>
-      <div className="flex items-start gap-2">
-        <IconTextarea className="" />
-        <Textarea
-          placeholder={t`Describe what this title is about`}
-          className={cn(`resize-none border-none p-0`, {
-            'line-clamp-1 h-6 min-h-6': !isTextareaFocus,
-          })}
-          {...registerRest}
-          ref={(e) => {
-            ref(e);
-            textareaRef.current = e;
-          }}
-          onFocus={() => setIsTextareaFocus(true)}
-        />
-      </div>
-      {isTextareaFocus && (
-        <div className="mt-2 flex justify-end text-black-tint-04">
-          {listForm.watch('description').length}/{DESC_MAX_LENGTH}
-        </div>
-      )}
-      <div className="flex items-center gap-2">
-        <IconExteriorLink className="" />
-        <Input
-          {...listForm.register('externalLink')}
-          placeholder={t`Link a page`}
-          className="h-6 w-full border-none p-0"
-        />
-      </div>
-      <div
-        className={cn(`flex items-center sm:justify-start`, {
-          'justify-center': isFieldNotEmpty(listForm.watch('coverImage')),
-        })}
-      >
-        <Controller
-          name="coverImage"
-          control={listForm.control}
-          render={({ field }) => (
-            <ImageUploader file={field.value} callback={onCoverImageChange} />
-          )}
-        />
-      </div>
-      {defaultListInfo && (
         <div
-          onClick={() => onOpenCategoryDrawer()}
-          className="inline-flex h-10 cursor-pointer items-center justify-center whitespace-nowrap rounded-lg bg-black text-h2 font-bold text-white ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:bg-gray-main-03 disabled:text-black-tint-04"
+          className={cn(`flex items-center justify-center`, {
+            'before:z-10 before:h-8 before:w-0.5 before:bg-black-text-01':
+              listForm.watch('title') === '',
+          })}
         >
-          <Trans>Edit List Topic</Trans>
+          <Input
+            placeholder={t`Give your list a title`}
+            className="relative w-min border-none text-h1 placeholder:text-h1"
+            {...listForm.register('title', { onChange: onInputChange })}
+          />
         </div>
-      )}
+        <div className="flex items-start gap-2">
+          <IconTextarea />
+          <Textarea
+            placeholder={t`Describe what this title is about`}
+            className={cn(`resize-none border-none p-0`, {
+              'line-clamp-1 h-6 min-h-6': !isTextareaFocus,
+            })}
+            {...registerRest}
+            ref={(e) => {
+              ref(e);
+              textareaRef.current = e;
+            }}
+            onFocus={() => setIsTextareaFocus(true)}
+          />
+        </div>
+        {isTextareaFocus && (
+          <div className="mt-2 flex justify-end text-black-tint-04">
+            {listForm.watch('description').length}/{DESC_MAX_LENGTH}
+          </div>
+        )}
+        <div className="flex items-center gap-2">
+          <IconExteriorLink />
+          <Input
+            {...listForm.register('externalLink')}
+            placeholder={t`Link a page`}
+            className="h-6 w-full border-none p-0"
+          />
+        </div>
+        <div
+          className={cn(`flex items-center sm:justify-start`, {
+            'justify-center': isFieldNotEmpty(listForm.watch('coverImage')),
+          })}
+        >
+          <Controller
+            name="coverImage"
+            control={listForm.control}
+            render={({ field }) => (
+              <ImageUploader file={field.value} callback={onCoverImageChange} />
+            )}
+          />
+        </div>
+        {defaultListInfo && (
+          <div
+            onClick={() => onOpenCategoryDrawer()}
+            className="inline-flex h-10 cursor-pointer items-center justify-center whitespace-nowrap rounded-lg bg-black text-h2 font-bold text-white ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:bg-gray-main-03 disabled:text-black-tint-04"
+          >
+            <Trans>Edit List Topic</Trans>
+          </div>
+        )}
+      </form>
+
       <DrawerComponent
         isShowClose={false}
         header={
@@ -346,9 +349,10 @@ const ListForm: React.FC<IListFormProps> = ({
           </div>
         }
       />
+      {/* FUTURE: merge into reusable component */}
       <div
         ref={submitFooterRef}
-        className="sticky left-0 z-10 flex justify-between border-t border-t-gray-main-03 bg-white py-2 md:max-w-mobile-max"
+        className="sticky bottom-0 left-0 z-10 flex justify-between border-t border-t-gray-main-03 bg-white px-4 py-2 md:max-w-mobile-max"
       >
         <div className="flex items-center gap-2">
           <div
@@ -382,7 +386,7 @@ const ListForm: React.FC<IListFormProps> = ({
           </div>
         )}
       </div>
-    </form>
+    </>
   );
 };
 export default ListForm;

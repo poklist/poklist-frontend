@@ -77,7 +77,7 @@ const ListManagePage: React.FC<ManageListPageProps> = () => {
   return (
     <>
       <Header title={<Trans>List Title</Trans>} deleteCallback={onDeleteList} />
-      <Link to={`/list/edit/${id}`}>
+      <Link to={`/${userStore.user.userCode}/list/${id}/edit`}>
         <ListInfo listInfo={listInfo} />
       </Link>
       <div className="flex h-12 items-center justify-between bg-black px-4 text-white">

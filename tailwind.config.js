@@ -40,7 +40,6 @@ module.exports = {
         'gray-sub-04': '#F8F7F4',
         'gray-note-05': '#F6F6F6',
         'red-warning-01': '#EB6052',
-        'bright-green': '#89F3E7',
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
