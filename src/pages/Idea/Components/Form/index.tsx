@@ -216,7 +216,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
         />
       </div>
       <div className="flex items-start gap-2">
-        <IconTextarea className="" />
+        <IconTextarea />
         <Textarea
           placeholder={t`Describe what this Idea is about`}
           className={cn(`resize-none border-none p-0`, {
@@ -236,7 +236,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
         </div>
       )}
       <div className="flex items-center gap-2">
-        <IconExteriorLink className="" />
+        <IconExteriorLink />
         <Input
           {...ideaForm.register('externalLink')}
           placeholder={t`Link a page`}

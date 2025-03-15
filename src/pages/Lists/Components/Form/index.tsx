@@ -249,7 +249,7 @@ const ListForm: React.FC<IListFormProps> = ({
           />
         </div>
         <div className="flex items-start gap-2">
-          <IconTextarea className="" />
+          <IconTextarea />
           <Textarea
             placeholder={t`Describe what this title is about`}
             className={cn(`resize-none border-none p-0`, {
@@ -269,7 +269,7 @@ const ListForm: React.FC<IListFormProps> = ({
           </div>
         )}
         <div className="flex items-center gap-2">
-          <IconExteriorLink className="" />
+          <IconExteriorLink />
           <Input
             {...listForm.register('externalLink')}
             placeholder={t`Link a page`}

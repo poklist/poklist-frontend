@@ -155,7 +155,7 @@ export const FeatureSection = ({
             );
 
             return (
-              <div key={item.id} className="">
+              <div key={item.id}>
                 <div className="flex flex-row gap-1">
                   <div className="flex flex-1 flex-col gap-1">
                     <p className="text-t1 font-bold">
