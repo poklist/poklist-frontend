@@ -17,7 +17,7 @@ export default function SiteFooter({ floatingBtnTxts }: SiteFooterProps) {
     <>
       <div
         id="floating-btns"
-        className="sticky bottom-16 right-0 flex w-full justify-center gap-2"
+        className="fixed bottom-16 right-0 flex w-full justify-center gap-2"
       >
         <Button type="button" className="rounded-full">
           {'<'}
@@ -28,7 +28,7 @@ export default function SiteFooter({ floatingBtnTxts }: SiteFooterProps) {
           </Button>
         ))}
       </div>
-      <footer className="sticky bottom-0 right-0 flex h-14 w-full items-center justify-between border-t border-gray-600 px-6">
+      <footer className="fixed bottom-0 right-0 flex h-14 w-full items-center justify-between border-t border-gray-600 px-6">
         <Link className="flex items-center gap-2" to="/home">
           <img src={logo} alt="logo" className="w-20" />
         </Link>

@@ -23,7 +23,7 @@ const AlertComponent: React.FC = ({ className }: { className?: string }) => {
         duration={DELAY_TIME}
         defaultOpen={false}
         className={cn(
-          `sticky mr-72 flex w-full justify-between rounded-lg bg-green-bright-01 px-4 py-3 transition-all data-[state=closed]:animate-swipe-up data-[state=open]:animate-swipe-down`,
+          `fixed mr-72 flex w-full justify-between rounded-lg bg-green-bright-01 px-4 py-3 transition-all data-[state=closed]:animate-swipe-up data-[state=open]:animate-swipe-down`,
           className
         )}
       >

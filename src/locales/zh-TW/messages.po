@@ -506,7 +506,12 @@ msgid "Oops something is wrong!"
 msgstr "哎呀！網頁又在耍脾氣啦！"
 
 #: src/pages/GoToMobile/index.tsx
-msgid "Please use mobile device to view the content!"
+#~ msgid "Please use mobile device to view the content!"
+#~ msgstr ""
+
+#: src/pages/GoToMobile/index.tsx
+#: src/pages/Layout/Components/PromptText.tsx
+msgid "Poklist works best on mobile. Use a mobile device for the best experience."
 msgstr ""
 
 #: src/pages/Home/Components/FeatureSection/index.tsx

@@ -352,7 +352,7 @@ const ListForm: React.FC<IListFormProps> = ({
       {/* FUTURE: merge into reusable component */}
       <div
         ref={submitFooterRef}
-        className="sticky bottom-0 left-0 z-10 flex justify-between border-t border-t-gray-main-03 bg-white px-4 py-2 md:max-w-mobile-max"
+        className="fixed bottom-0 left-0 z-10 flex w-full justify-between border-t border-t-gray-main-03 bg-white px-4 py-2 md:max-w-mobile-max"
       >
         <div className="flex items-center gap-2">
           <div

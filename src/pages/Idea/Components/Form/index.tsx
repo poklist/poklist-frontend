@@ -258,7 +258,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
       </div>
       <div
         ref={submitFooterRef}
-        className="sticky left-0 z-10 flex w-dvw justify-between border-t border-t-gray-main-03 px-4 py-2"
+        className="fixed left-0 z-10 flex w-dvw justify-between border-t border-t-gray-main-03 px-4 py-2"
       >
         <div className="flex items-center gap-2">
           <div

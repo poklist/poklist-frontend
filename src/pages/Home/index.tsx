@@ -14,6 +14,7 @@ import { Footer } from './Components/Footer';
 import Header from './Components/Header';
 import { HeroSection } from './Components/HeroSection';
 import { TutorialSection } from './Components/TutorialSection';
+import { useRef } from 'react';
 
 function HomeContent() {
   const content = {
@@ -24,15 +25,15 @@ function HomeContent() {
     FOOTER_SECTION,
     SOCIAL_MEDIA,
   };
-
+  const frameRef = useRef<HTMLDivElement | null>(null);
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    frameRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
     <>
       <Header onSignInClick={scrollToTop} />
-      <main className="flex min-h-screen flex-col">
+      <main ref={frameRef} className="flex min-h-screen flex-col">
         <HeroSection content={content.HERO_SECTION} />
         {/* Divider */}
         <div className="w-full bg-yellow-bright-01">
