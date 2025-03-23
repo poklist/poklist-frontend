@@ -1,3 +1,5 @@
+import { Trans } from '@lingui/react/macro';
+
 // 底部導航組件
 const BottomNav = () => {
   return (
@@ -7,7 +9,7 @@ const BottomNav = () => {
         target="_blank"
         rel="noreferrer"
       >
-        About
+        <Trans>About</Trans>
       </a>
       <span>|</span>
       <a
@@ -15,7 +17,7 @@ const BottomNav = () => {
         target="_blank"
         rel="noreferrer"
       >
-        Terms
+        <Trans>Terms</Trans>
       </a>
       <span>|</span>
       <a
@@ -23,7 +25,7 @@ const BottomNav = () => {
         target="_blank"
         rel="noreferrer"
       >
-        Privacy
+        <Trans>Privacy</Trans>
       </a>
     </div>
   );

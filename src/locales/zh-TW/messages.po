@@ -419,10 +419,12 @@ msgid "Contact Us"
 msgstr "聯繫我們"
 
 #: src/constants/Home/index.en.ts
+#: src/pages/Layout/Components/BottomNav.tsx
 msgid "Terms"
 msgstr "使用者條款"
 
 #: src/constants/Home/index.en.ts
+#: src/pages/Layout/Components/BottomNav.tsx
 msgid "Privacy"
 msgstr "隱私權保護政策"
 
@@ -658,6 +660,10 @@ msgstr "下一步"
 #: src/pages/Idea/Edit/index.tsx
 msgid "Idea"
 msgstr "靈感"
+
+#: src/pages/Layout/Components/BottomNav.tsx
+msgid "About"
+msgstr "關於我們"
 
 #: src/pages/Layout/Components/PromptText.tsx
 msgid "Poklist works best on mobile. Use a mobile device for the best experience."

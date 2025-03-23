@@ -2,13 +2,10 @@ import mascotPhone from '@/assets/images/mascot/mascot-phone.svg';
 import { LanguageProvider } from '@/lib/languageProvider';
 import Header from '@/pages/Home/Components/Header';
 import { Trans } from '@lingui/react/macro';
-import { TileBackground } from '../User/TileBackground';
 
 export default function GoToMobilePage() {
   return (
     <LanguageProvider>
-      <TileBackground />
-
       <div className="relative z-10 flex min-h-screen flex-col">
         {/* Header */}
         <Header className="bg-transparent" />
