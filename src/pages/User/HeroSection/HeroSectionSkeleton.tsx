@@ -4,7 +4,10 @@ import { Skeleton, Text } from '@radix-ui/themes';
 
 export const HeroSectionSkeleton: React.FC = () => {
   return (
-    <div role="hero" className="flex flex-col items-center gap-4 pb-4 pt-6">
+    <div
+      role="hero"
+      className="flex flex-col items-center gap-4 bg-white pb-4 pt-6"
+    >
       <div id="hero-basic-info" className="flex flex-col items-center gap-2">
         <Skeleton>
           <Avatar className="h-16 w-16"></Avatar>

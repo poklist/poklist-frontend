@@ -3,7 +3,6 @@ import { ListPreview } from '@/types/List';
 import { IResponse } from '@/types/response';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { TileBackground } from '../TileBackground';
 import { ListSectionSkeleton } from './ListSectionSkeleton';
 
 const MAX_LIST_PREVIEW_COUNT = 99;
@@ -36,7 +35,7 @@ const ListSection: React.FC = () => {
   }
 
   return (
-    <div role="list-preview">
+    <div role="list-preview" className="bg-white">
       {listPreviewList.map((listPreview, index) => {
         const isLastItem = index === listPreviewList.length - 1;
         return (
@@ -73,7 +72,6 @@ const ListSection: React.FC = () => {
             <p>Follow and check back soon for surprise lists!</p>
           </div>
         )}
-        <TileBackground />
       </div>
     </div>
   );

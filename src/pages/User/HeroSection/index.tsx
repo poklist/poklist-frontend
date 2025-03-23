@@ -154,7 +154,7 @@ const HeroSection: React.FC = () => {
     <>
       <div
         role="hero"
-        className="flex flex-col items-center gap-4 border-b border-black pb-4 pt-6"
+        className="flex flex-col items-center gap-4 border-b border-black bg-white pb-4 pt-6"
       >
         <div id="hero-basic-info" className="flex flex-col items-center gap-2">
           <Avatar className="h-16 w-16">

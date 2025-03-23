@@ -11,7 +11,7 @@ export default function GoToMobilePage() {
 
       <div className="relative z-10 flex min-h-screen flex-col">
         {/* Header */}
-        <Header />
+        <Header className="bg-transparent" />
 
         {/* 內容 */}
         <div className="flex flex-1 flex-col items-center justify-start pt-28">

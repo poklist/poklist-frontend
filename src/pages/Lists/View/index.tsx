@@ -129,19 +129,21 @@ const ViewListPage: React.FC = () => {
 
   return (
     <>
-      <BackToUserHeader
-        owner={listInfo?.owner}
-        hasFollowButton={!isMyPage}
-        onUnmount={sendFollowingStatusForTheOwner}
-      />
       <Tile20Background />
-      <div className="px-3 pt-4">
-        {listInfo && <ListCard data={listInfo} />}
+      <div className="relative">
+        <BackToUserHeader
+          owner={listInfo?.owner}
+          hasFollowButton={!isMyPage}
+          onUnmount={sendFollowingStatusForTheOwner}
+        />
+        <div className="px-3 pt-4">
+          {listInfo && <ListCard data={listInfo} />}
+        </div>
+        <FloatingButtonFooter
+          hasLikeButton={true}
+          onUnmount={sendReactionForTheList}
+        />
       </div>
-      <FloatingButtonFooter
-        hasLikeButton={true}
-        onUnmount={sendReactionForTheList}
-      />
     </>
   );
 };
