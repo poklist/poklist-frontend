@@ -161,7 +161,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
                 size={ButtonSize.H40}
                 shape={ButtonShape.ROUNDED_5PX}
                 onClick={() =>
-                  navigate(`/${user.userCode}/list/${data.id}/edit`)
+                  navigate(`/${user.userCode}/list/${data.id}/manage`)
                 }
               >
                 <Trans>Edit list</Trans>
@@ -171,7 +171,9 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
                 size={ButtonSize.H40}
                 shape={ButtonShape.ROUNDED_5PX}
                 onClick={() =>
-                  navigate(`/${user.userCode}/list/${data.id}/manage`)
+                  navigate(`/idea/create`, {
+                    state: { listID: Number(data.id), listTitle: data.title },
+                  })
                 }
               >
                 <Trans>Add an idea</Trans>

@@ -1,6 +1,6 @@
 import mascotPhone from '@/assets/images/mascot/mascot-phone.svg';
-import Header from '@/pages/Home/Components/Header';
 import { LanguageProvider } from '@/lib/languageProvider';
+import Header from '@/pages/Home/Components/Header';
 import { Trans } from '@lingui/react/macro';
 import { TileBackground } from '../User/TileBackground';
 

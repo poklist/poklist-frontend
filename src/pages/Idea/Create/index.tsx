@@ -26,7 +26,8 @@ const IdeaCreatePage: React.FC<IdeaCreatePageProps> = () => {
 
   const onDismissCreate = (isFormEmpty: boolean) => {
     if (isFormEmpty) {
-      navigate(`/${me?.userCode}/list/${listID}/manage`);
+      // navigate(`/${me?.userCode}/list/${listID}/manage`);
+      navigate(-1);
     }
   };
 

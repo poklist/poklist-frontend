@@ -506,13 +506,8 @@ msgid "Oops something is wrong!"
 msgstr "哎呀！網頁又在耍脾氣啦！"
 
 #: src/pages/GoToMobile/index.tsx
-#~ msgid "Please use mobile device to view the content!"
-#~ msgstr ""
-
-#: src/pages/GoToMobile/index.tsx
-#: src/pages/Layout/Components/PromptText.tsx
-msgid "Poklist works best on mobile. Use a mobile device for the best experience."
-msgstr ""
+msgid "<0>Poklist works best on mobile.</0><1>Use a mobile device for the best experience.</1>"
+msgstr "<0>Poklist 在手機畫面運作更順暢</0><1>使用行動裝置以取得更好的使用體驗</1>"
 
 #: src/pages/Home/Components/FeatureSection/index.tsx
 msgid "Life Style"
@@ -661,6 +656,10 @@ msgstr "下一步"
 msgid "Idea"
 msgstr "靈感"
 
+#: src/pages/Layout/Components/PromptText.tsx
+msgid "Poklist works best on mobile. Use a mobile device for the best experience."
+msgstr "Poklist 在手機畫面運作更順暢，使用行動裝置以取得更好的使用體驗。"
+
 #: src/pages/Lists/Components/DeleteButton/index.tsx
 msgid "Deleting the list title will also erase all ideas!"
 msgstr "刪掉名單標題後，連所有靈感都會消失！"
@@ -716,6 +715,7 @@ msgstr "建立靈感名單"
 
 #: src/pages/Lists/Create/index.tsx
 #: src/pages/Lists/Edit/index.tsx
+#: src/pages/Lists/Manage/index.tsx
 msgid "Idea List"
 msgstr "靈感名單"
 
@@ -728,21 +728,25 @@ msgid "Done"
 msgstr "完成"
 
 #: src/pages/Lists/Manage/index.tsx
-msgid "List Title"
-msgstr "名單標題"
+#~ msgid "Ideas"
+#~ msgstr "靈感"
 
 #: src/pages/Lists/Manage/index.tsx
-msgid "Ideas"
-msgstr "靈感"
-
-#: src/pages/Lists/Manage/index.tsx
-msgid "Tap to edit. Hold & drag to reorder Ideas"
-msgstr "點擊靈感進行編輯，長按可拖曳排序。"
+msgid "Edit list cover"
+msgstr "編輯名單封面"
 
 #: src/pages/Lists/Manage/index.tsx
 #: src/pages/Lists/View/ListCard/index.tsx
 msgid "Add an idea"
 msgstr "新增靈感"
+
+#: src/pages/Lists/Manage/index.tsx
+msgid "Newly created idea will be shown below, let's add one!"
+msgstr "新增的靈感會在這裡，丟個靈感進來吧！"
+
+#: src/pages/Lists/Manage/index.tsx
+msgid "Tap to edit. Hold & drag to reorder Ideas"
+msgstr "點擊靈感進行編輯，長按可拖曳排序。"
 
 #: src/pages/Lists/View/ListCard/index.tsx
 msgid "Recently Updated"
