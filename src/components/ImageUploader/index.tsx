@@ -3,7 +3,8 @@ import IconPhoto from '@/components/ui/icons/PhotoIcon';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import useCommonStore from '@/stores/useCommonStore';
-import { t, Trans } from '@lingui/macro';
+import { t } from '@lingui/core/macro';
+import { Trans } from '@lingui/react/macro';
 import React from 'react';
 
 interface IImageUploaderProps {
@@ -23,14 +24,17 @@ const ImageUploader: React.FC<IImageUploaderProps> = ({
     const fileList = event.target.files;
     if (fileList && fileList.length > 0) {
       const imageFile = fileList[0];
-      if (imageFile.size <= 2_097_152) {
-        callback(imageFile);
-      } else {
+      if (
+        imageFile.size > 4_194_304 ||
+        (imageFile.type !== 'image/jpeg' && imageFile.type !== 'image/png')
+      ) {
         setShowErrorDrawer(true, {
           title: t`Cover image error!`,
-          content: t`Must be JPG and under 2MB.`,
+          content: t`Must be JPG or PNG and under 4MB.`,
         });
+        return;
       }
+      callback(imageFile);
     }
   };
   return file ? (
@@ -52,7 +56,7 @@ const ImageUploader: React.FC<IImageUploaderProps> = ({
           onChange={(e) => onUploadFile(e)}
           className="hidden"
         />
-        ( <Trans>500x500px, JPG, max 2MB</Trans> )
+        ( <Trans>500x500px, JPG or PNG, max 4MB</Trans> )
       </label>
     </div>
   );

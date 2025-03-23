@@ -58,21 +58,24 @@ msgid "Follow"
 msgstr "Follow"
 
 #: src/components/ImageCropper/index.tsx
-#: src/components/ImageUploader/index.tsx
-msgid "500x500px, JPG, max 2MB"
-msgstr "500x500px, JPG, max 2MB"
+msgid "500x500px, JPG, max 4MB"
+msgstr "500x500px, JPG, max 4MB"
 
 #: src/components/ImageUploader/index.tsx
 msgid "Cover image error!"
 msgstr "Cover image error!"
 
 #: src/components/ImageUploader/index.tsx
-msgid "Must be JPG and under 2MB."
-msgstr "Must be JPG and under 2MB."
+msgid "Must be JPG or PNG and under 4MB."
+msgstr "Must be JPG or PNG and under 4MB."
 
 #: src/components/ImageUploader/index.tsx
 msgid "Upload a cover"
 msgstr "Upload a cover"
+
+#: src/components/ImageUploader/index.tsx
+msgid "500x500px, JPG or PNG, max 4MB"
+msgstr "500x500px, JPG or PNG, max 4MB"
 
 #: src/constants/Home/index.en.ts
 #~ msgid "Tense: Tenet "
@@ -742,10 +745,13 @@ msgid "Create Idea List"
 msgstr "Create Idea List"
 
 #: src/pages/Lists/Create/index.tsx
-#: src/pages/Lists/Edit/index.tsx
 #: src/pages/Lists/Manage/index.tsx
 msgid "Idea List"
 msgstr "Idea List"
+
+#: src/pages/Lists/Edit/index.tsx
+msgid "List Cover"
+msgstr "List Cover"
 
 #: src/pages/Lists/Manage/IdeasList/index.tsx
 msgid "Save New Order"

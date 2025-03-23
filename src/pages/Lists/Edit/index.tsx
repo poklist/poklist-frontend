@@ -105,7 +105,7 @@ const EditListPage: React.FC<EditListPageProps> = () => {
     // Your component code here
     <>
       <Header
-        title={<Trans>Idea List</Trans>}
+        title={<Trans>List Cover</Trans>}
         deleteCallback={onDeleteList}
         backwardCallback={onBackward}
       />

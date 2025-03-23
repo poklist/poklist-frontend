@@ -75,7 +75,7 @@ const ImageCropper: React.FC<IImageCropperProps> = ({ value, onChange }) => {
           />
         </label>
         <div className="text-xs text-gray-storm-01">
-          ( <Trans>500x500px, JPG, max 2MB</Trans> )
+          ( <Trans>500x500px, JPG, max 4MB</Trans> )
         </div>
       </div>
       {!!error && <p className="text-xs text-red-400">{error}</p>}

@@ -58,21 +58,24 @@ msgid "Follow"
 msgstr "追蹤"
 
 #: src/components/ImageCropper/index.tsx
-#: src/components/ImageUploader/index.tsx
-msgid "500x500px, JPG, max 2MB"
-msgstr "500x500像素，限JPG，最大2MB"
+msgid "500x500px, JPG, max 4MB"
+msgstr "500x500像素，限JPG，最大4MB"
 
 #: src/components/ImageUploader/index.tsx
 msgid "Cover image error!"
 msgstr "封面圖片不符合規格！"
 
 #: src/components/ImageUploader/index.tsx
-msgid "Must be JPG and under 2MB."
-msgstr "請確認圖片格式為 JPG，且檔案大小不得超過 2MB。"
+msgid "Must be JPG or PNG and under 4MB."
+msgstr "請確認圖片格式為 JPG 或 PNG，且檔案大小不得超過 4MB。"
 
 #: src/components/ImageUploader/index.tsx
 msgid "Upload a cover"
 msgstr "封面圖片"
+
+#: src/components/ImageUploader/index.tsx
+msgid "500x500px, JPG or PNG, max 4MB"
+msgstr "500x500像素，限 JPG 或 PNG，最大4MB"
 
 #: src/constants/Home/index.en.ts
 msgid "Join Poklist and share your lists."
@@ -714,10 +717,13 @@ msgid "Create Idea List"
 msgstr "建立靈感名單"
 
 #: src/pages/Lists/Create/index.tsx
-#: src/pages/Lists/Edit/index.tsx
 #: src/pages/Lists/Manage/index.tsx
 msgid "Idea List"
 msgstr "靈感名單"
+
+#: src/pages/Lists/Edit/index.tsx
+msgid "List Cover"
+msgstr "名單封面"
 
 #: src/pages/Lists/Manage/IdeasList/index.tsx
 msgid "Save New Order"
