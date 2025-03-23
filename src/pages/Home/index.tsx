@@ -25,13 +25,9 @@ function HomeContent() {
     SOCIAL_MEDIA,
   };
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
   return (
     <>
-      <Header onSignInClick={scrollToTop} />
+      <Header />
       <main className="flex min-h-screen flex-col">
         <HeroSection content={content.HERO_SECTION} />
         {/* Divider */}

@@ -113,7 +113,12 @@ export const HeroSection = ({ content }: HeroSectionProps) => {
                 </p>
               </div>
               <button
-                onClick={() => {}}
+                onClick={() =>
+                  window.open(
+                    'https://opaque-creek-8e5.notion.site/Sign-up-1b0a4cd4b98b80c99c48e78b69b1b0f3',
+                    '_blank'
+                  )
+                }
                 className="w-full rounded-lg border border-black bg-yellow-bright-01 px-8 py-2 text-h2 font-bold text-black-text-01 md:w-auto"
               >
                 <Trans

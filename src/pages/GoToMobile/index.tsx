@@ -1,5 +1,5 @@
-import mascotError from '@/assets/images/mascot/mascot-error.svg';
-import Header from '@/components/Header';
+import mascotPhone from '@/assets/images/mascot/mascot-phone.svg';
+import Header from '@/pages/Home/Components/Header';
 import { LanguageProvider } from '@/lib/languageProvider';
 import { Trans } from '@lingui/react/macro';
 import { TileBackground } from '../User/TileBackground';
@@ -15,11 +15,16 @@ export default function GoToMobilePage() {
 
         {/* 內容 */}
         <div className="flex flex-1 flex-col items-center justify-start pt-28">
-          <div className="flex flex-col items-center gap-6">
-            <img src={mascotError} alt="Error Mascot" className="h-[125px]" />
-            <h2 className="text-center text-[17px] font-bold text-black-text-01">
-              <Trans>Please use mobile device to view the content!</Trans>
-            </h2>
+          <img src={mascotPhone} alt="Mascot Phone" className="h-[125px]" />
+          <div className="mt-6 flex flex-col items-start">
+            <Trans>
+              <p className="text-start text-[17px] font-bold text-black-text-01">
+                Poklist works best on mobile.
+              </p>
+              <p className="text-start text-[17px] font-bold text-black-text-01">
+                Use a mobile device for the best experience.
+              </p>
+            </Trans>
           </div>
         </div>
       </div>

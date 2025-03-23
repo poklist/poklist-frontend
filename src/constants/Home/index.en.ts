@@ -285,7 +285,7 @@ export const TUTORIAL_SECTION = [
   },
   {
     title: msg`FAQ`,
-    url: '',
+    url: 'https://opaque-creek-8e5.notion.site/Q-As-1b7a4cd4b98b80acb0d4ffdc056b4018',
   },
   {
     title: msg`Join the Team`,

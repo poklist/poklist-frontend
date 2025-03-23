@@ -10,7 +10,7 @@ const MaskComponent: React.FC<IMaskProps> = ({ isLoading }) => {
   return (
     <div
       className={cn(
-        `sticky left-0 top-0 z-10 h-screen w-screen bg-black bg-opacity-20 duration-300`,
+        `fixed left-0 top-0 z-10 h-screen w-screen bg-black bg-opacity-20 duration-300`,
         isLoading ? 'animate-show-mask' : 'animate-hide-mask'
       )}
     />
@@ -63,7 +63,7 @@ const LoadingSpinner = ({
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
-          className={cn('sticky left-1/2 top-1/2 z-20 animate-spin', className)}
+          className={cn('fixed left-1/2 top-1/2 z-20 animate-spin', className)}
         >
           <path d="M21 12a9 9 0 1 1-6.219-8.56" />
         </svg>

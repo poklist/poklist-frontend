@@ -28,10 +28,12 @@ export default function Layout() {
       <DrawerProvider>
         <FakePageProvider>
           <Background />
-          <div className="relative left-1/2 flex w-full -translate-x-1/2 flex-col sm:w-mobile-max">
-            <PromptText />
-            <MainContent />
-            <BottomNav />
+          <div className="flex flex-col items-center justify-center">
+            <div className="flex max-h-screen w-full flex-col sm:w-mobile-max">
+              <PromptText />
+              <MainContent />
+              <BottomNav />
+            </div>
           </div>
         </FakePageProvider>
       </DrawerProvider>

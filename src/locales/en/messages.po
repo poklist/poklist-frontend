@@ -510,8 +510,13 @@ msgid "Oops something is wrong!"
 msgstr "Oops something is wrong!"
 
 #: src/pages/GoToMobile/index.tsx
-msgid "Please use mobile device to view the content!"
-msgstr "Please use mobile device to view the content!"
+#~ msgid "Please use mobile device to view the content!"
+#~ msgstr "Please use mobile device to view the content!"
+
+#: src/pages/GoToMobile/index.tsx
+#: src/pages/Layout/Components/PromptText.tsx
+msgid "Poklist works best on mobile. Use a mobile device for the best experience."
+msgstr "Poklist works best on mobile. Use a mobile device for the best experience."
 
 #: src/pages/Home/Components/FeatureSection/index.tsx
 msgid "Life Style"
