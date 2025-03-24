@@ -83,10 +83,6 @@ msgid "500x500px, JPG or PNG, max 4MB"
 msgstr "500x500px, JPG or PNG, max 4MB"
 
 #: src/constants/Home/index.en.ts
-#~ msgid "Tense: Tenet "
-#~ msgstr "Tense: Tenet "
-
-#: src/constants/Home/index.en.ts
 msgid "Join Poklist and share your lists."
 msgstr "Join Poklist and share your lists."
 
@@ -599,30 +595,6 @@ msgid "Cancel"
 msgstr "Cancel"
 
 #: src/pages/Idea/Components/Form/index.tsx
-#~ msgid "Hey, the title can’t be left empty! "
-#~ msgstr "Hey, the title can’t be left empty! "
-
-#: src/pages/Idea/Components/Form/index.tsx
-#~ msgid "Every idea needs a title, so fill it in! "
-#~ msgstr "Every idea needs a title, so fill it in! "
-
-#: src/pages/Idea/Components/Form/index.tsx
-#~ msgid "Idea title is too long! "
-#~ msgstr "Idea title is too long! "
-
-#: src/pages/Idea/Components/Form/index.tsx
-#~ msgid "Please keep it under {TITLE_MAX_LENGTH} characters. "
-#~ msgstr "Please keep it under {TITLE_MAX_LENGTH} characters. "
-
-#: src/pages/Idea/Components/Form/index.tsx
-#~ msgid "Description is too long! "
-#~ msgstr "Description is too long! "
-
-#: src/pages/Idea/Components/Form/index.tsx
-#~ msgid "Please keep it under {DESC_MAX_LENGTH} characters. "
-#~ msgstr "Please keep it under {DESC_MAX_LENGTH} characters. "
-
-#: src/pages/Idea/Components/Form/index.tsx
 #: src/pages/Lists/Components/Form/index.tsx
 msgid "Your edits will be lost if you cancel!"
 msgstr "Your edits will be lost if you cancel!"
@@ -771,10 +743,6 @@ msgstr "Save New Order"
 #: src/pages/Lists/Manage/IdeasList/index.tsx
 msgid "Done"
 msgstr "Done"
-
-#: src/pages/Lists/Manage/index.tsx
-#~ msgid "Ideas"
-#~ msgstr "Ideas"
 
 #: src/pages/Lists/Manage/index.tsx
 msgid "Edit list cover"

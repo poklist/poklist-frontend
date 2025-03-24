@@ -745,10 +745,6 @@ msgid "Done"
 msgstr "完成"
 
 #: src/pages/Lists/Manage/index.tsx
-#~ msgid "Ideas"
-#~ msgstr "靈感"
-
-#: src/pages/Lists/Manage/index.tsx
 msgid "Edit list cover"
 msgstr "編輯名單封面"
 
