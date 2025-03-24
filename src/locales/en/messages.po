@@ -34,6 +34,11 @@ msgid "Save"
 msgstr "Save"
 
 #: src/components/Footer/FloatingButtonFooter.tsx
+#: src/pages/Lists/View/IdeaDrawerContent/index.tsx
+msgid "Copied to clipboard"
+msgstr "Copied to clipboard"
+
+#: src/components/Footer/FloatingButtonFooter.tsx
 msgid "Like"
 msgstr "Like"
 

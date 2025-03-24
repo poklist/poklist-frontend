@@ -7,9 +7,11 @@ import {
 import IconLink from '@/components/ui/icons/LinkIcon';
 import LinkIconWrapper from '@/components/ui/wrappers/LinkIconWrapper';
 import { SocialLinkType } from '@/enums/index.enum';
+import { useToast } from '@/hooks/useToast';
 import { getFormattedTime } from '@/lib/time';
 import { copyHref, getPreviewText, urlPreview } from '@/lib/utils';
 import { IdeaDetail } from '@/types/Idea';
+import { t } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
 import { Trans } from '@lingui/react/macro';
 
@@ -21,6 +23,15 @@ const LINK_PREVIEW_LENGTH = 40;
 
 const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({ data }) => {
   const { i18n } = useLingui();
+  const { toast } = useToast();
+
+  const handleCopyHref = () => {
+    copyHref(`/idea/${data.id}`);
+    toast({
+      title: t`Copied to clipboard`,
+      variant: 'success',
+    });
+  };
 
   return (
     <div className="flex flex-col items-start">
@@ -63,9 +74,7 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({ data }) => {
           shape={ButtonShape.ROUNDED_FULL}
           size={ButtonSize.MD}
           className="flex gap-1"
-          onClick={() => {
-            copyHref(`/idea/${data.id}`);
-          }}
+          onClick={handleCopyHref}
         >
           <IconLink />
           <Trans>Copy</Trans>
