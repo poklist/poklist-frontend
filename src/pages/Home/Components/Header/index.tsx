@@ -4,6 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button, ButtonSize, ButtonVariant } from '@/components/ui/button';
 import axios from '@/lib/axios';
 import { LanguageToggleButton } from '@/lib/languageProvider';
+import { cn } from '@/lib/utils';
 import useUserStore from '@/stores/useUserStore';
 import { LoginInfo } from '@/types/Home';
 import { IResponse } from '@/types/response';
@@ -11,10 +12,14 @@ import { Trans } from '@lingui/react/macro';
 import { CredentialResponse } from '@react-oauth/google';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { LoginDrawer } from '../LoginDrawer';
 import { ErrorDialog } from '../ErrorDialog';
+import { LoginDrawer } from '../LoginDrawer';
 
-const Header = () => {
+interface HeaderProps {
+  className?: string;
+}
+
+const Header = ({ className }: HeaderProps) => {
   const navigate = useNavigate();
   const { login, setUser, user, isLoggedIn } = useUserStore();
   const [showCustomLogin, setShowCustomLogin] = useState(false);
@@ -58,7 +63,7 @@ const Header = () => {
         onClose={() => setShowCustomLogin(false)}
       />
 
-      <header className="sticky top-0 z-50 w-full">
+      <header className={cn('sticky top-0 z-50 w-full', className)}>
         <div className="flex h-14 w-full items-center justify-between px-4">
           <Link to="/home">
             <img src={headerLogo} alt="Poklist" className="h-8" />

@@ -6,9 +6,13 @@ interface IListInfoSectionProps {
 }
 const ListInfoSection: React.FC<IListInfoSectionProps> = ({ listInfo }) => {
   return (
-    <div className="flex flex-col justify-center gap-6 my-6">
-      <div className="font-extrabold text-h1 text-center line-clamp-3">{listInfo?.title}</div>
-      <div className="text-t1 line-clamp-1 text-center font-normal">{listInfo?.description}</div>
+    <div className="my-6 flex flex-col justify-center gap-6 px-4">
+      <div className="line-clamp-3 text-center text-h1 font-extrabold">
+        {listInfo?.title}
+      </div>
+      <div className="line-clamp-1 text-center text-t1 font-normal">
+        {listInfo?.description}
+      </div>
     </div>
   );
 };

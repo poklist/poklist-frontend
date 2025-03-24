@@ -58,21 +58,24 @@ msgid "Follow"
 msgstr "Follow"
 
 #: src/components/ImageCropper/index.tsx
-#: src/components/ImageUploader/index.tsx
-msgid "500x500px, JPG, max 2MB"
-msgstr "500x500px, JPG, max 2MB"
+msgid "500x500px, JPG, max 4MB"
+msgstr "500x500px, JPG, max 4MB"
 
 #: src/components/ImageUploader/index.tsx
 msgid "Cover image error!"
 msgstr "Cover image error!"
 
 #: src/components/ImageUploader/index.tsx
-msgid "Must be JPG and under 2MB."
-msgstr "Must be JPG and under 2MB."
+msgid "Must be JPG or PNG and under 4MB."
+msgstr "Must be JPG or PNG and under 4MB."
 
 #: src/components/ImageUploader/index.tsx
 msgid "Upload a cover"
 msgstr "Upload a cover"
+
+#: src/components/ImageUploader/index.tsx
+msgid "500x500px, JPG or PNG, max 4MB"
+msgstr "500x500px, JPG or PNG, max 4MB"
 
 #: src/constants/Home/index.en.ts
 #~ msgid "Tense: Tenet "
@@ -420,10 +423,12 @@ msgid "Contact Us"
 msgstr "Contact Us"
 
 #: src/constants/Home/index.en.ts
+#: src/pages/Layout/Components/BottomNav.tsx
 msgid "Terms"
 msgstr "Terms"
 
 #: src/constants/Home/index.en.ts
+#: src/pages/Layout/Components/BottomNav.tsx
 msgid "Privacy"
 msgstr "Privacy"
 
@@ -510,13 +515,8 @@ msgid "Oops something is wrong!"
 msgstr "Oops something is wrong!"
 
 #: src/pages/GoToMobile/index.tsx
-#~ msgid "Please use mobile device to view the content!"
-#~ msgstr "Please use mobile device to view the content!"
-
-#: src/pages/GoToMobile/index.tsx
-#: src/pages/Layout/Components/PromptText.tsx
-msgid "Poklist works best on mobile. Use a mobile device for the best experience."
-msgstr "Poklist works best on mobile. Use a mobile device for the best experience."
+msgid "<0>Poklist works best on mobile.</0><1>Use a mobile device for the best experience.</1>"
+msgstr "<0>Poklist works best on mobile.</0><1>Use a mobile device for the best experience.</1>"
 
 #: src/pages/Home/Components/FeatureSection/index.tsx
 msgid "Life Style"
@@ -689,6 +689,14 @@ msgstr "Next"
 msgid "Idea"
 msgstr "Idea"
 
+#: src/pages/Layout/Components/BottomNav.tsx
+msgid "About"
+msgstr "About"
+
+#: src/pages/Layout/Components/PromptText.tsx
+msgid "Poklist works best on mobile. Use a mobile device for the best experience."
+msgstr "Poklist works best on mobile. Use a mobile device for the best experience."
+
 #: src/pages/Lists/Components/DeleteButton/index.tsx
 msgid "Deleting the list title will also erase all ideas!"
 msgstr "Deleting the list title will also erase all ideas!"
@@ -743,9 +751,13 @@ msgid "Create Idea List"
 msgstr "Create Idea List"
 
 #: src/pages/Lists/Create/index.tsx
-#: src/pages/Lists/Edit/index.tsx
+#: src/pages/Lists/Manage/index.tsx
 msgid "Idea List"
 msgstr "Idea List"
+
+#: src/pages/Lists/Edit/index.tsx
+msgid "List Cover"
+msgstr "List Cover"
 
 #: src/pages/Lists/Manage/IdeasList/index.tsx
 msgid "Save New Order"
@@ -756,21 +768,25 @@ msgid "Done"
 msgstr "Done"
 
 #: src/pages/Lists/Manage/index.tsx
-msgid "List Title"
-msgstr "List Title"
+#~ msgid "Ideas"
+#~ msgstr "Ideas"
 
 #: src/pages/Lists/Manage/index.tsx
-msgid "Ideas"
-msgstr "Ideas"
-
-#: src/pages/Lists/Manage/index.tsx
-msgid "Tap to edit. Hold & drag to reorder Ideas"
-msgstr "Tap to edit. Hold & drag to reorder Ideas"
+msgid "Edit list cover"
+msgstr "Edit list cover"
 
 #: src/pages/Lists/Manage/index.tsx
 #: src/pages/Lists/View/ListCard/index.tsx
 msgid "Add an idea"
 msgstr "Add an idea"
+
+#: src/pages/Lists/Manage/index.tsx
+msgid "Newly created idea will be shown below, let's add one!"
+msgstr "Newly created idea will be shown below, let's add one!"
+
+#: src/pages/Lists/Manage/index.tsx
+msgid "Tap to edit. Hold & drag to reorder Ideas"
+msgstr "Tap to edit. Hold & drag to reorder Ideas"
 
 #: src/pages/Lists/View/ListCard/index.tsx
 msgid "Recently Updated"

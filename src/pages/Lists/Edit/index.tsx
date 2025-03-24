@@ -40,8 +40,12 @@ const EditListPage: React.FC<EditListPageProps> = () => {
 
   const onDismissEdit = (isFormEmpty: boolean) => {
     if (isFormEmpty) {
-      navigate(`/${userStore.user.userCode}/list/${listInfo?.listID}/manage`);
+      navigate(`/${userStore.user.userCode}/list/${listInfo?.listID}`);
     }
+  };
+
+  const onBackward = () => {
+    navigate(-1);
   };
 
   const onEditList = async (listFormData: ICreateListRequest) => {
@@ -100,7 +104,11 @@ const EditListPage: React.FC<EditListPageProps> = () => {
   return (
     // Your component code here
     <>
-      <Header title={<Trans>Idea List</Trans>} deleteCallback={onDeleteList} />
+      <Header
+        title={<Trans>List Cover</Trans>}
+        deleteCallback={onDeleteList}
+        backwardCallback={onBackward}
+      />
       <div className="mt-6 flex h-full flex-col gap-6">
         <ListForm
           defaultListInfo={listInfo}

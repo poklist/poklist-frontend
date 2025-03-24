@@ -2,18 +2,28 @@ import headerPoklist from '@/assets/images/header-poklist.svg';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button, ButtonSize, ButtonVariant } from '@/components/ui/button';
 import IconSetting from '@/components/ui/icons/SettingIcon';
+import { cn } from '@/lib/utils';
 import useUserStore from '@/stores/useUserStore';
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  className?: string;
+}
+
+const Header: React.FC<HeaderProps> = ({ className }) => {
   const { userCode } = useParams();
   const navigate = useNavigate();
   const { isLoggedIn, user: me } = useUserStore();
   const isMyPage = userCode === me.userCode;
 
   return (
-    <header className="flex h-14 shrink-0 items-center justify-between px-4 text-t1 font-semibold">
+    <header
+      className={cn(
+        'flex h-14 shrink-0 items-center justify-between bg-white px-4 text-t1 font-semibold',
+        className
+      )}
+    >
       <div id="header-left" className="flex items-center justify-center gap-4">
         <img
           src={headerPoklist}
