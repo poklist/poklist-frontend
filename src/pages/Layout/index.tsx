@@ -28,7 +28,10 @@ export default function Layout() {
       <DrawerProvider>
         <FakePageProvider>
           <Background />
-          <div className="flex flex-col items-center justify-center">
+          <div
+            id="main-content"
+            className="flex flex-col items-center justify-center"
+          >
             <div className="flex max-h-screen w-full flex-col sm:w-mobile-max">
               <PromptText />
               <MainContent />

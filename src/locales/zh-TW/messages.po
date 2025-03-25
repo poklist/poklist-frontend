@@ -34,6 +34,11 @@ msgid "Save"
 msgstr "儲存"
 
 #: src/components/Footer/FloatingButtonFooter.tsx
+#: src/pages/Lists/View/IdeaDrawerContent/index.tsx
+msgid "Copied to clipboard"
+msgstr "已複製到剪貼簿"
+
+#: src/components/Footer/FloatingButtonFooter.tsx
 msgid "Like"
 msgstr "喜歡"
 
@@ -738,10 +743,6 @@ msgstr "儲存新排序"
 #: src/pages/Lists/Manage/IdeasList/index.tsx
 msgid "Done"
 msgstr "完成"
-
-#: src/pages/Lists/Manage/index.tsx
-#~ msgid "Ideas"
-#~ msgstr "靈感"
 
 #: src/pages/Lists/Manage/index.tsx
 msgid "Edit list cover"

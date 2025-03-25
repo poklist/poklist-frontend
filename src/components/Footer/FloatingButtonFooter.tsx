@@ -2,9 +2,11 @@ import { Button, ButtonVariant } from '@/components/ui/button';
 import IconAdd from '@/components/ui/icons/AddIcon';
 import IconLike from '@/components/ui/icons/LikeIcon';
 import IconLink from '@/components/ui/icons/LinkIcon';
+import { useToast } from '@/hooks/useToast';
 import { cn, copyHref } from '@/lib/utils';
 import useSocialStore from '@/stores/useSocialStore';
 import useUserStore from '@/stores/useUserStore';
+import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -20,6 +22,7 @@ const FloatingButtonFooter: React.FC<IFooterProps> = ({
 }) => {
   // May use ReactNode instead
   const navigate = useNavigate();
+  const { toast } = useToast();
   const { user: me } = useUserStore();
   const { isLiked, setIsLiked } = useSocialStore();
 
@@ -32,8 +35,16 @@ const FloatingButtonFooter: React.FC<IFooterProps> = ({
     };
   }, [onUnmount]);
 
+  const handleCopyHref = () => {
+    copyHref();
+    toast({
+      title: t`Copied to clipboard`,
+      variant: 'success',
+    });
+  };
+
   return (
-    <div className="fixed w-full bottom-2 left-0 flex items-center justify-center gap-2 pt-14 md:max-w-mobile-max">
+    <div className="fixed bottom-2 left-0 flex w-full items-center justify-center gap-2 pt-14 md:max-w-mobile-max">
       {hasLikeButton && (
         <Button
           onClick={() => {
@@ -58,7 +69,7 @@ const FloatingButtonFooter: React.FC<IFooterProps> = ({
         <Trans>Create List</Trans>
       </Button>
       <Button
-        onClick={() => copyHref()}
+        onClick={handleCopyHref}
         variant={ButtonVariant.WHITE}
         className="flex items-center gap-1.5 text-sm"
       >
