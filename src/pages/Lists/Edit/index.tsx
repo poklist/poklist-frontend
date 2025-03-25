@@ -31,10 +31,10 @@ const EditListPage: React.FC<EditListPageProps> = () => {
 
   const onDeleteList = async () => {
     if (listInfo) {
-      const response = await fetchDeleteList(listInfo.listID);
-      if (response === null) {
-        navigate(`/${userStore.user.userCode}`);
-      }
+      // TODO: error handling
+      await fetchDeleteList(listInfo.listID);
+      navigate(`/${userStore.user.userCode}`);
+      setIsLoading(false);
     }
   };
 

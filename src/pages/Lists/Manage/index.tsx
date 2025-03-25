@@ -33,10 +33,10 @@ const ListManagePage: React.FC<ManageListPageProps> = () => {
 
   const onDeleteList = async () => {
     if (listInfo) {
-      const response = await fetchDeleteList(listInfo.id);
-      if (response === null) {
-        navigate(`/${userStore.user.userCode}`);
-      }
+      // TODO: error handling
+      await fetchDeleteList(listInfo.id);
+      navigate(`/${userStore.user.userCode}`);
+      setIsLoading(false);
     }
   };
 

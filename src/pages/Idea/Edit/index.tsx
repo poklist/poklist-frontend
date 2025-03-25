@@ -23,10 +23,9 @@ const EditIdeaPage: React.FC<EditIdeaPageProps> = () => {
 
   const onDeleteIdea = async () => {
     if (ideaInfo) {
-      const response = await fetchDeleteIdea(ideaInfo.id);
-      if (response) {
-        navigate(`/${ideaInfo.owner.userCode}/list/${ideaInfo.listID}/manage`);
-      }
+      // TODO: error handling
+      await fetchDeleteIdea(ideaInfo.id);
+      navigate(`/${ideaInfo.owner.userCode}/list/${ideaInfo.listID}/manage`);
     }
   };
 
