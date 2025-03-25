@@ -14,6 +14,10 @@ const useAutosizeTextArea = (
       // We then set the height directly, outside of the render loop
       // Trying to set this with state or a ref will product an incorrect value.
       textAreaRef.style.height = scrollHeight + 'px';
+
+      // Set cursor position to the end
+      textAreaRef.selectionStart = textAreaRef.value.length;
+      textAreaRef.selectionEnd = textAreaRef.value.length;
     }
   }, [textAreaRef, value]);
 };

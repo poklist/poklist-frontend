@@ -19,8 +19,9 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
 
   return (
     <header
+      id="poklist-header"
       className={cn(
-        'flex h-14 shrink-0 items-center justify-between bg-white px-4 text-t1 font-semibold',
+        'sticky top-0 z-50 flex h-14 w-full shrink-0 items-center justify-between bg-white px-4 text-t1 font-semibold',
         className
       )}
     >

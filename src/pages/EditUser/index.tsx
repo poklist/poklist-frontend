@@ -43,7 +43,7 @@ const EditUserPage: React.FC = () => {
       variant: EditFieldVariant.TEXT,
       placeholder: t`Enter your name here`, // FUTURE: interpolation
       characterLimit: 20,
-      originalFieldValue: user.displayName,
+      edittingFieldValue: newUserInfo.displayName,
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
           setDisplayName(value);
@@ -57,7 +57,7 @@ const EditUserPage: React.FC = () => {
       variant: EditFieldVariant.TEXT,
       placeholder: t`Enter your username here`, // FUTURE: interpolation
       characterLimit: 30,
-      originalFieldValue: user.userCode,
+      edittingFieldValue: newUserInfo.userCode,
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
           setUserCode(value);
@@ -71,7 +71,7 @@ const EditUserPage: React.FC = () => {
       variant: EditFieldVariant.TEXT,
       placeholder: t`Enter your bio here`, // FUTURE: interpolation
       characterLimit: 250,
-      originalFieldValue: user.bio,
+      edittingFieldValue: newUserInfo.bio,
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
           setBio(value);
@@ -95,7 +95,7 @@ const EditUserPage: React.FC = () => {
       fieldName: t`Customized Link`,
       variant: EditFieldVariant.TEXT,
       placeholder: t`Add URL`,
-      originalFieldValue: user.socialLinks?.[SocialLinkType.CUSTOMIZED],
+      edittingFieldValue: newUserInfo.socialLinks?.[SocialLinkType.CUSTOMIZED],
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
           setSocialLink(SocialLinkType.CUSTOMIZED, value);
@@ -108,7 +108,7 @@ const EditUserPage: React.FC = () => {
       fieldName: 'Instagram',
       variant: EditFieldVariant.TEXT,
       placeholder: t`Add account`,
-      originalFieldValue: user.socialLinks?.[SocialLinkType.INSTAGRAM],
+      edittingFieldValue: newUserInfo.socialLinks?.[SocialLinkType.INSTAGRAM],
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
           setSocialLink(SocialLinkType.INSTAGRAM, value);
@@ -121,7 +121,7 @@ const EditUserPage: React.FC = () => {
       fieldName: 'YouTube',
       variant: EditFieldVariant.TEXT,
       placeholder: t`Add account`,
-      originalFieldValue: user.socialLinks?.[SocialLinkType.YOUTUBE],
+      edittingFieldValue: newUserInfo.socialLinks?.[SocialLinkType.YOUTUBE],
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
           setSocialLink(SocialLinkType.YOUTUBE, value);
@@ -134,7 +134,7 @@ const EditUserPage: React.FC = () => {
       fieldName: 'TikTok',
       variant: EditFieldVariant.TEXT,
       placeholder: t`Add account`,
-      originalFieldValue: user.socialLinks?.[SocialLinkType.TIKTOK],
+      edittingFieldValue: newUserInfo.socialLinks?.[SocialLinkType.TIKTOK],
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
           setSocialLink(SocialLinkType.TIKTOK, value);
@@ -147,7 +147,7 @@ const EditUserPage: React.FC = () => {
       fieldName: 'Threads',
       variant: EditFieldVariant.TEXT,
       placeholder: t`Add account`,
-      originalFieldValue: user.socialLinks?.[SocialLinkType.THREADS],
+      edittingFieldValue: newUserInfo.socialLinks?.[SocialLinkType.THREADS],
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
           setSocialLink(SocialLinkType.THREADS, value);
@@ -160,7 +160,7 @@ const EditUserPage: React.FC = () => {
       fieldName: 'LinkedIn',
       variant: EditFieldVariant.TEXT,
       placeholder: t`Add account`,
-      originalFieldValue: user.socialLinks?.[SocialLinkType.LINKEDIN],
+      edittingFieldValue: newUserInfo.socialLinks?.[SocialLinkType.LINKEDIN],
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
           setSocialLink(SocialLinkType.LINKEDIN, value);
@@ -227,7 +227,7 @@ const EditUserPage: React.FC = () => {
           </h2>
         </div>
         <div
-          className="flex h-16 cursor-pointer items-center justify-between border-t border-[#F6F6F6] px-2 text-[13px]"
+          className="flex h-16 cursor-pointer items-center justify-between border-t border-gray-note-05 px-2 text-[13px]"
           onClick={() => onOpenFakePage(FieldType.DISPLAY_NAME)}
         >
           <p>
@@ -246,7 +246,7 @@ const EditUserPage: React.FC = () => {
           </>
         </div>
         <div
-          className="flex h-16 cursor-pointer items-center justify-between border-t border-[#F6F6F6] px-2 text-[13px]"
+          className="flex h-16 cursor-pointer items-center justify-between border-t border-gray-note-05 px-2 text-[13px]"
           onClick={() => onOpenFakePage(FieldType.USER_CODE)}
         >
           <p>
@@ -265,7 +265,7 @@ const EditUserPage: React.FC = () => {
           </>
         </div>
         <div
-          className="flex h-16 cursor-pointer items-center justify-between border-t border-[#F6F6F6] px-2 text-[13px]"
+          className="flex h-16 cursor-pointer items-center justify-between border-t border-gray-note-05 px-2 text-[13px]"
           onClick={() => onOpenFakePage(FieldType.BIO)}
         >
           <p>
@@ -295,7 +295,7 @@ const EditUserPage: React.FC = () => {
           return (
             <div
               key={linkType}
-              className="flex h-16 cursor-pointer items-center gap-2 border-t border-[#F6F6F6] px-2 text-[13px]"
+              className="flex h-16 cursor-pointer items-center gap-2 border-t border-gray-note-05 px-2 text-[13px]"
               onClick={() => onOpenFakePage(linkType)}
             >
               <LinkIconWrapper variant={linkType} />

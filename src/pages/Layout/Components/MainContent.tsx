@@ -14,7 +14,10 @@ const MainContent = () => {
         <div className="fixed top-0 z-50 bg-white">
           <AlertComponent />
         </div>
-        <div className="-mr-[3.8px] flex-1 overflow-y-scroll bg-white">
+        <div
+          id="main-content"
+          className="-mr-[3.8px] flex-1 overflow-y-scroll bg-white"
+        >
           <Outlet />
         </div>
       </div>

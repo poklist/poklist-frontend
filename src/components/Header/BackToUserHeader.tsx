@@ -40,7 +40,10 @@ const BackToUserHeader: React.FC<IBackToUserHeaderProps> = ({
   };
 
   return (
-    <header className="flex h-14 items-center justify-between border-b border-black-text-01 bg-white p-3">
+    <header
+      id="back-to-user-header"
+      className="sticky top-0 z-50 flex h-14 items-center justify-between border-b border-black-text-01 bg-white p-3"
+    >
       <div id="header-left" className="flex items-center justify-center gap-1">
         <img src={headerP} alt="P" onClick={onClickLogo} />
         <div
