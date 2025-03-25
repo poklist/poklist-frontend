@@ -169,16 +169,16 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
     completedCallback(data);
   };
 
-  const submitFooterRef = useRef<HTMLDivElement>(null);
+  // const submitFooterRef = useRef<HTMLDivElement>(null);
 
-  const footerPosition = () => {
-    if (submitFooterRef.current && window.visualViewport) {
-      submitFooterRef.current.style.top = `${window.visualViewport.height - submitFooterRef.current.offsetHeight}px`;
-    }
-  };
-  useEffect(() => {
-    footerPosition();
-  }, []);
+  // const footerPosition = () => {
+  //   if (submitFooterRef.current && window.visualViewport) {
+  //     submitFooterRef.current.style.top = `${window.visualViewport.height - submitFooterRef.current.offsetHeight}px`;
+  //   }
+  // };
+  // useEffect(() => {
+  //   footerPosition();
+  // }, []);
 
   useEffect(() => {
     if (!previousIdeaInfo) {
@@ -199,67 +199,67 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
   }, [previousIdeaInfo, setIsLoading]);
 
   return (
-    <form
-      onSubmit={ideaForm.handleSubmit(onSubmit, onSubmitFailed)}
-      className="flex flex-col gap-6 md:max-w-mobile-max"
-    >
-      <div
-        className={cn(`flex items-center`, {
-          'before:z-10 before:h-8 before:w-0.5 before:bg-black-text-01':
-            ideaForm.watch('title') === '',
-        })}
+    <>
+      <form
+        onSubmit={ideaForm.handleSubmit(onSubmit, onSubmitFailed)}
+        className="mx-4 mt-4 flex flex-1 flex-col gap-6 md:max-w-mobile-max"
       >
-        <Input
-          placeholder={t`What’s your Idea?`}
-          className="relative border-none px-0 text-h1 placeholder:text-h1"
-          {...ideaForm.register('title', { onChange: onInputChange })}
-        />
-      </div>
-      <div className="flex items-start gap-2">
-        <IconTextarea />
-        <Textarea
-          placeholder={t`Describe what this Idea is about`}
-          className={cn(`resize-none border-none p-0`, {
-            'line-clamp-1 h-6 min-h-6': !isTextareaFocus,
+        <div
+          className={cn(`flex items-center font-extrabold`, {
+            'before:h-8 before:w-0.5 before:bg-black-text-01':
+              ideaForm.watch('title') === '',
           })}
-          {...registerRest}
-          ref={(e) => {
-            ref(e);
-            textareaRef.current = e;
-          }}
-          onFocus={() => setIsTextareaFocus(true)}
-        />
-      </div>
-      {isTextareaFocus && (
-        <div className="mt-2 flex justify-end text-black-tint-04">
-          {ideaForm.watch('description').length}/{DESC_MAX_LENGTH}
+        >
+          <Input
+            placeholder={t`What’s your Idea?`}
+            className="relative border-none px-0 text-h1 placeholder:text-h1"
+            {...ideaForm.register('title', { onChange: onInputChange })}
+          />
         </div>
-      )}
-      <div className="flex items-center gap-2">
-        <IconExteriorLink />
-        <Input
-          {...ideaForm.register('externalLink')}
-          placeholder={t`Link a page`}
-          className="h-6 w-full border-none p-0"
-        />
-      </div>
-      <div
-        className={cn(`flex items-center sm:justify-start`, {
-          'justify-center': isFieldNotEmpty(ideaForm.watch('coverImage')),
-        })}
-      >
-        <Controller
-          name="coverImage"
-          control={ideaForm.control}
-          render={({ field }) => (
-            <ImageUploader file={field.value} callback={onCoverImageChange} />
-          )}
-        />
-      </div>
-      <div
-        ref={submitFooterRef}
-        className="fixed left-0 z-10 flex w-dvw justify-between border-t border-t-gray-main-03 px-4 py-2"
-      >
+        <div className="flex items-start gap-2">
+          <IconTextarea />
+          <Textarea
+            placeholder={t`Describe what this Idea is about`}
+            className={cn(`resize-none border-none p-0`, {
+              'line-clamp-1 h-6 min-h-6': !isTextareaFocus,
+            })}
+            {...registerRest}
+            ref={(e) => {
+              ref(e);
+              textareaRef.current = e;
+            }}
+            onFocus={() => setIsTextareaFocus(true)}
+          />
+        </div>
+        {isTextareaFocus && (
+          <div className="mt-2 flex justify-end text-black-tint-04">
+            {ideaForm.watch('description').length}/{DESC_MAX_LENGTH}
+          </div>
+        )}
+        <div className="flex items-center gap-2">
+          <IconExteriorLink />
+          <Input
+            {...ideaForm.register('externalLink')}
+            placeholder={t`Link a page`}
+            className="h-6 w-full border-none p-0"
+          />
+        </div>
+        <div
+          className={cn(`flex items-center sm:justify-start`, {
+            'justify-center': isFieldNotEmpty(ideaForm.watch('coverImage')),
+          })}
+        >
+          <Controller
+            name="coverImage"
+            control={ideaForm.control}
+            render={({ field }) => (
+              <ImageUploader file={field.value} callback={onCoverImageChange} />
+            )}
+          />
+        </div>
+      </form>
+
+      <footer className="sticky bottom-0 left-0 z-10 flex w-full justify-between border-t border-t-gray-main-03 px-4 py-2">
         <div className="flex items-center gap-2">
           <div
             onClick={() => onDismiss()}
@@ -292,8 +292,8 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
             <Trans>Next</Trans>
           </Button>
         )}
-      </div>
-    </form>
+      </footer>
+    </>
   );
 };
 export default IdeaFormComponent;

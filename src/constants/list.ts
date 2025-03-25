@@ -1,4 +1,5 @@
 export const DEFAULT_IDEA_FIRST_BATCH_SIZE = 3;
+export const DEFAULT_IDEA_BATCH_SIZE_MAX = 99;
 export const DEFAULT_IDEA_BATCH_SIZE = 10;
 
 export const DAY_IN_MS = 86400000;

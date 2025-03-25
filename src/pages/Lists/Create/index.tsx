@@ -2,7 +2,6 @@ import useCreateList, { ICreateListRequest } from '@/hooks/Lists/useCreateList';
 import ListForm from '@/pages/Lists/Components/Form';
 import Header from '@/pages/Lists/Components/Header';
 import useCommonStore from '@/stores/useCommonStore';
-import useUserStore from '@/stores/useUserStore';
 import { Trans } from '@lingui/react/macro';
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -16,13 +15,12 @@ const CreatePage: React.FC<CreatePageProps> = () => {
   const navigate = useNavigate();
 
   const { setIsLoading } = useCommonStore();
-  const userStore = useUserStore();
 
   const { createListLoading, fetchCreateList } = useCreateList();
 
   const onDismissCreate = (isFormEmpty: boolean) => {
     if (isFormEmpty) {
-      navigate(`/${userStore.user.userCode}`);
+      navigate(-1);
     }
   };
 
@@ -45,7 +43,7 @@ const CreatePage: React.FC<CreatePageProps> = () => {
     // Your component code here
     <>
       <Header title={<Trans>Idea List</Trans>} />
-      <div className="mx-4 mt-6 flex flex-col gap-6">
+      <div className="flex min-h-screen flex-col gap-6">
         <ListForm
           completedCallback={onCreateList}
           dismissCallback={onDismissCreate}

@@ -189,16 +189,16 @@ const ListForm: React.FC<IListFormProps> = ({
     completedCallback(data);
   };
 
-  const submitFooterRef = useRef<HTMLDivElement>(null);
+  // const submitFooterRef = useRef<HTMLDivElement>(null);
 
-  const footerPosition = () => {
-    if (submitFooterRef.current && window.visualViewport) {
-      submitFooterRef.current.style.top = `${window.visualViewport.height - submitFooterRef.current.offsetHeight}px`;
-    }
-  };
+  // const footerPosition = () => {
+  //   if (submitFooterRef.current && window.visualViewport) {
+  //     submitFooterRef.current.style.top = `${window.visualViewport.height - submitFooterRef.current.offsetHeight}px`;
+  //   }
+  // };
   useEffect(() => {
     fetchGetCategories();
-    footerPosition();
+    // footerPosition();
   }, []);
 
   useEffect(() => {
@@ -234,11 +234,11 @@ const ListForm: React.FC<IListFormProps> = ({
     <>
       <form
         onSubmit={listForm.handleSubmit(onSubmit, onSubmitFailed)}
-        className="flex flex-col gap-6 px-4 md:max-w-mobile-max"
+        className="mx-4 mt-6 flex flex-1 flex-col gap-6 px-4 md:max-w-mobile-max"
       >
         <div
-          className={cn(`flex items-center justify-center`, {
-            'before:z-10 before:h-8 before:w-0.5 before:bg-black-text-01':
+          className={cn(`flex items-center justify-center font-extrabold`, {
+            'before:h-8 before:w-0.5 before:bg-black-text-01':
               listForm.watch('title') === '',
           })}
         >
@@ -350,10 +350,7 @@ const ListForm: React.FC<IListFormProps> = ({
         }
       />
       {/* FUTURE: merge into reusable component */}
-      <div
-        ref={submitFooterRef}
-        className="fixed bottom-0 left-0 z-10 flex w-full justify-between border-t border-t-gray-main-03 bg-white px-4 py-2 md:max-w-mobile-max"
-      >
+      <footer className="sticky bottom-0 left-0 z-10 flex w-full justify-between border-t border-t-gray-main-03 bg-white px-4 py-2 md:max-w-mobile-max">
         <div className="flex items-center gap-2">
           <div
             onClick={() => onDismiss()}
@@ -385,7 +382,7 @@ const ListForm: React.FC<IListFormProps> = ({
             <Trans>Next</Trans>
           </div>
         )}
-      </div>
+      </footer>
     </>
   );
 };

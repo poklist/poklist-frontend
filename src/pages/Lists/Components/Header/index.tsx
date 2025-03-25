@@ -35,7 +35,7 @@ const Header: React.FC<IHeaderProps> = ({
           </div>
         )}
       </header>
-      <div id="fixed-header-supporter" className="mt-12 h-[1px]"></div>
+      {/* <div id="fixed-header-supporter" className="mt-12 h-[1px]"></div> */}
     </>
   );
 };

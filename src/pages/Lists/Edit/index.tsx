@@ -109,7 +109,7 @@ const EditListPage: React.FC<EditListPageProps> = () => {
         deleteCallback={onDeleteList}
         backwardCallback={onBackward}
       />
-      <div className="mt-6 flex h-full flex-col gap-6">
+      <div className="flex h-full flex-col gap-6">
         <ListForm
           defaultListInfo={listInfo}
           dismissCallback={onDismissEdit}

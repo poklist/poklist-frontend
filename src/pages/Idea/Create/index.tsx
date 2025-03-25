@@ -55,11 +55,13 @@ const IdeaCreatePage: React.FC<IdeaCreatePageProps> = () => {
   return (
     // Your component code here
     <>
-      <Header title={listTitle} />
-      <div className="border-b border-black-text-01 bg-yellow-bright-01 px-4 py-3 text-t1 font-semibold">
-        <Trans>New Idea</Trans>
+      <div className="sticky top-0 z-10 flex flex-col">
+        <Header title={listTitle} />
+        <div className="border-b border-black-text-01 bg-yellow-bright-01 px-4 py-3 text-t1 font-semibold">
+          <Trans>New Idea</Trans>
+        </div>
       </div>
-      <div className="mx-4 mt-6 flex flex-col gap-6">
+      <div className="flex min-h-screen flex-col gap-6">
         <IdeaForm
           completedCallback={onCreatedIdea}
           dismissCallback={onDismissCreate}

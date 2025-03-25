@@ -1,7 +1,6 @@
 import IconClose from '@/components/ui/icons/CloseIcon';
 
 import { Button } from '@/components/ui/button';
-import { useEffect, useRef } from 'react';
 
 interface IFooterProps {
   onClose: () => void;
@@ -9,23 +8,8 @@ interface IFooterProps {
 }
 
 const Footer: React.FC<IFooterProps> = ({ onClose, title }) => {
-  const submitFooterRef = useRef<HTMLDivElement>(null);
-
-  const footerPosition = () => {
-    if (submitFooterRef.current && window.visualViewport) {
-      submitFooterRef.current.style.top = `${window.visualViewport.height - submitFooterRef.current.offsetHeight}px`;
-    }
-  };
-
-  useEffect(() => {
-    footerPosition();
-  }, []);
-
   return (
-    <div
-      ref={submitFooterRef}
-      className="fixed w-full bottom-0 z-10 flex h-14 items-center justify-between border-t border-t-gray-main-03 bg-white px-4 py-2 md:max-w-mobile-max"
-    >
+    <div className="sticky bottom-0 z-10 flex h-14 w-full items-center justify-between border-t border-t-gray-main-03 bg-white px-4 py-2 md:max-w-mobile-max">
       <div className="flex items-center gap-2">
         <Button
           onClick={onClose}
