@@ -62,7 +62,9 @@ export const DeleteButton: React.FC<IDeleteButtonProps> = ({
               onClick={() => closeDrawer()}
               variant={ButtonVariant.BLACK}
               shape={ButtonShape.ROUNDED_5PX}
-            ></Button>
+            >
+              <Trans>Cancel</Trans>
+            </Button>
           </div>
         </DrawerContent>
       </Drawer>
