@@ -135,7 +135,7 @@ const ListManagePage: React.FC<ManageListPageProps> = () => {
           </DndProvider>
         )}
       </div>
-      <footer className="sticky bottom-0 left-0 z-10 flex w-full justify-between border-t border-t-gray-main-03 bg-white px-4 py-2 md:max-w-mobile-max">
+      <footer className="fixed bottom-0 left-0 z-10 flex w-full justify-between border-t border-t-gray-main-03 bg-white px-4 py-2 sm:sticky md:max-w-mobile-max">
         <div className="flex items-center gap-2">
           <Link
             aria-label="Previous"

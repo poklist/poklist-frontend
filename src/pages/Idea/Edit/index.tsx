@@ -94,7 +94,7 @@ const EditIdeaPage: React.FC<EditIdeaPageProps> = () => {
         </div>
         <Header title={<Trans>Idea</Trans>} deleteCallback={onDeleteIdea} />
       </div>
-      <div className="flex min-h-screen flex-col gap-6">
+      <div className="flex min-h-screen flex-col gap-6 sm:min-h-[calc(100vh-102px)]">
         <IdeaFormComponent
           previousIdeaInfo={ideaInfo}
           dismissCallback={onDismissEdit}

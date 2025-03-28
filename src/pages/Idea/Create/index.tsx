@@ -61,7 +61,7 @@ const IdeaCreatePage: React.FC<IdeaCreatePageProps> = () => {
           <Trans>New Idea</Trans>
         </div>
       </div>
-      <div className="flex min-h-screen flex-col gap-6">
+      <div className="flex min-h-screen flex-col gap-6 sm:min-h-[calc(100vh-196px)]">
         <IdeaForm
           completedCallback={onCreatedIdea}
           dismissCallback={onDismissCreate}

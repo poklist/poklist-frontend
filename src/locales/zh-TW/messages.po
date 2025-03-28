@@ -20,12 +20,17 @@ msgstr ""
 msgid "<0>{0}</0>"
 msgstr "<0>{0}</0>"
 
+#. js-lingui-explicit-id
+#: src/components/FakePage/EditFieldFakePage.tsx
+#~ msgid "Done"
+#~ msgstr "完成"
+
 #: src/components/FakePage/EditFieldFakePage.tsx
 msgid "Enter your text here"
 msgstr "請輸入內容"
 
-#. js-lingui-explicit-id
 #: src/components/FakePage/EditFieldFakePage.tsx
+#: src/pages/Lists/Manage/index.tsx
 msgid "Done"
 msgstr "完成"
 
@@ -591,6 +596,7 @@ msgid "Confirm Delete"
 msgstr "確定刪除"
 
 #: src/pages/Idea/Components/DeleteButton/index.tsx
+#: src/pages/Lists/Components/DeleteButton/index.tsx
 msgid "Cancel"
 msgstr "取消"
 
@@ -719,7 +725,7 @@ msgid "Choose a topic that vibes with your List."
 msgstr "選擇一項接近此份名單的分類"
 
 #: src/pages/Lists/Components/Form/index.tsx
-#: src/pages/Lists/Manage/IdeasList/index.tsx
+#: src/pages/Lists/Manage/index.tsx
 msgid "Edit List"
 msgstr "編輯名單"
 
@@ -735,14 +741,6 @@ msgstr "靈感名單"
 #: src/pages/Lists/Edit/index.tsx
 msgid "List Cover"
 msgstr "名單封面"
-
-#: src/pages/Lists/Manage/IdeasList/index.tsx
-msgid "Save New Order"
-msgstr "儲存新排序"
-
-#: src/pages/Lists/Manage/IdeasList/index.tsx
-msgid "Done"
-msgstr "完成"
 
 #: src/pages/Lists/Manage/index.tsx
 msgid "Edit list cover"
@@ -760,6 +758,10 @@ msgstr "新增的靈感會在這裡，丟個靈感進來吧！"
 #: src/pages/Lists/Manage/index.tsx
 msgid "Tap to edit. Hold & drag to reorder Ideas"
 msgstr "點擊靈感進行編輯，長按可拖曳排序。"
+
+#: src/pages/Lists/Manage/index.tsx
+msgid "Save New Order"
+msgstr "儲存新排序"
 
 #: src/pages/Lists/View/ListCard/index.tsx
 msgid "Recently Updated"

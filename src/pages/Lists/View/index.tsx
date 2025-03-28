@@ -130,7 +130,7 @@ const ViewListPage: React.FC = () => {
   return (
     <>
       <Tile20Background />
-      <div className="relative flex min-h-screen flex-col">
+      <div className="sm:min-h-desktop-container relative flex min-h-screen flex-col">
         <BackToUserHeader
           owner={listInfo?.owner}
           hasFollowButton={!isMyPage}

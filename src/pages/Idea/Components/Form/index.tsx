@@ -259,7 +259,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
         </div>
       </form>
 
-      <footer className="sticky bottom-0 left-0 z-10 flex w-full justify-between border-t border-t-gray-main-03 px-4 py-2">
+      <footer className="fixed bottom-0 left-0 z-10 flex w-full justify-between border-t border-t-gray-main-03 px-4 py-2 sm:sticky">
         <div className="flex items-center gap-2">
           <div
             onClick={() => onDismiss()}
