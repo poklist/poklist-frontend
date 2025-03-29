@@ -47,19 +47,19 @@ import otherList2 from '@/assets/images/home/lists/other/2.png';
 import otherList3 from '@/assets/images/home/lists/other/3.png';
 
 // feature
-import leftTop from '@/assets/images/home/feature/left-top.png';
-import leftBottom from '@/assets/images/home/feature/left-bottom.png';
-import leftMid from '@/assets/images/home/feature/left-mid.png';
-import midTop from '@/assets/images/home/feature/mid-top.png';
-import rightTop from '@/assets/images/home/feature/right-top.png';
-import rightMid from '@/assets/images/home/feature/right-mid.png';
-import rightBottom from '@/assets/images/home/feature/right-bottom.png';
+import leftTop from '@/assets/images/home/feature/left-top.svg';
+import leftBottom from '@/assets/images/home/feature/left-bottom.svg';
+import leftMid from '@/assets/images/home/feature/left-mid.svg';
+import midTop from '@/assets/images/home/feature/mid-top.svg';
+import rightTop from '@/assets/images/home/feature/right-top.svg';
+import rightMid from '@/assets/images/home/feature/right-mid.svg';
+import rightBottom from '@/assets/images/home/feature/right-bottom.svg';
 
 // social media
-import discordLogo from '@/assets/images/socialMedia/discord-logo.png';
-import instagramLogo from '@/assets/images/socialMedia/instagram-logo.png';
-import threadsLogo from '@/assets/images/socialMedia/threads-logo.png';
-import linkedinLogo from '@/assets/images/socialMedia/linkedin-logo.png';
+import discordLogo from '@/assets/images/socialMedia/discord-logo.svg';
+import instagramLogo from '@/assets/images/socialMedia/instagram-logo.svg';
+import threadsLogo from '@/assets/images/socialMedia/threads-logo.svg';
+import linkedinLogo from '@/assets/images/socialMedia/linkedin-logo.svg';
 
 export const IMAGES = {
   avatar: {
