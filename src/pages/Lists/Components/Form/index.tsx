@@ -378,12 +378,17 @@ const ListForm: React.FC<IListFormProps> = ({
             <Trans>Next</Trans>
           </Button>
         ) : (
-          <div
+          <Button
+            variant={
+              listForm.getValues('title') === ''
+                ? ButtonVariant.GRAY
+                : ButtonVariant.BLACK
+            }
+            shape={ButtonShape.ROUNDED_5PX}
             onClick={() => onOpenCategoryDrawer()}
-            className="inline-flex items-center justify-center whitespace-nowrap rounded-[8px] bg-black px-3 py-2 text-sm font-medium text-white ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:bg-gray-main-03 disabled:text-black-tint-04"
           >
             <Trans>Next</Trans>
-          </div>
+          </Button>
         )}
       </div>
     </>
