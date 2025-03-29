@@ -57,7 +57,7 @@ import rightBottom from '@/assets/images/home/feature/right-bottom.svg';
 
 // social media
 import discordLogo from '@/assets/images/socialMedia/discord-logo.svg';
-import instagramLogo from '@/assets/images/socialMedia/instagram-logo.svg';
+import instagramLogo from '@/assets/images/socialMedia/ig-logo.svg';
 import threadsLogo from '@/assets/images/socialMedia/threads-logo.svg';
 import linkedinLogo from '@/assets/images/socialMedia/linkedin-logo.svg';
 
