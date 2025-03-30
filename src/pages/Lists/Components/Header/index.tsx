@@ -16,7 +16,10 @@ const Header: React.FC<IHeaderProps> = ({
   const navigate = useNavigate();
   return (
     <>
-      <header className="fixed z-10 flex h-[49px] w-full items-center justify-center border-b border-b-black-text-01 bg-white px-4 py-2 text-center text-t1 font-semibold">
+      <header
+        id="list-header"
+        className="sticky top-0 z-10 flex h-[49px] w-full items-center justify-center border-b border-b-black-text-01 bg-white px-4 py-2 text-center text-t1 font-semibold"
+      >
         {backwardCallback && (
           <div
             className="absolute left-4 flex h-5 w-5 items-center justify-center"
@@ -32,7 +35,7 @@ const Header: React.FC<IHeaderProps> = ({
           </div>
         )}
       </header>
-      <div id="fixed-header-supporter" className="mt-12 h-[1px]"></div>
+      {/* <div id="fixed-header-supporter" className="mt-12 h-[1px]"></div> */}
     </>
   );
 };

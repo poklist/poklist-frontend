@@ -26,7 +26,6 @@ const SettingsPage: React.FC<SettingsPageProps> = () => {
       <IntroSection />
       <BlocksSection />
       <Footer onClose={handleOnClose} title={t`Setting Center`} />
-      <div className="h-4" />
     </>
   );
 };

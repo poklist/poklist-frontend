@@ -63,7 +63,10 @@ const Header = ({ className }: HeaderProps) => {
         onClose={() => setShowCustomLogin(false)}
       />
 
-      <header className={cn('sticky top-0 z-50 w-full', className)}>
+      <header
+        id="home-header"
+        className={cn('sticky top-0 z-50 w-full', className)}
+      >
         <div className="flex h-14 w-full items-center justify-between px-4">
           <Link to="/home">
             <img src={headerLogo} alt="Poklist" className="h-8" />

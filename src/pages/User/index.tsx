@@ -8,7 +8,7 @@ const UserPage: React.FC = () => {
   return (
     <>
       <TileBackground />
-      <div className="relative">
+      <div className="sm:min-h-desktop-container relative flex min-h-screen flex-col">
         <Header />
         <HeroSection />
         <ListSection />

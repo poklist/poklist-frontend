@@ -7,7 +7,7 @@ interface IHeaderProps {
 }
 const Header: React.FC<IHeaderProps> = ({ title, deleteCallback }) => {
   return (
-    <header className="flex items-center border-b border-b-black-text-01 bg-gray-main-03 px-4 py-2 text-t1 font-semibold">
+    <header className="flex h-12 items-center border-b border-b-black-text-01 bg-gray-main-03 px-4 py-2 text-[15px] text-t1 font-semibold">
       <div className="flex-1">{title}</div>
       {deleteCallback && <DeleteButton deleteCallback={deleteCallback} />}
     </header>

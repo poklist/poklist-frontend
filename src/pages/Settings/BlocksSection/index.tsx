@@ -206,7 +206,10 @@ const BlocksSection: React.FC = () => {
 
   return (
     <>
-      <div id="blocks" className="flex flex-col gap-10 px-4 py-10 text-[15px]">
+      <div
+        id="blocks"
+        className="mb-16 flex flex-col gap-10 px-4 py-4 text-[15px] sm:mb-0"
+      >
         {blocks.map((block) => {
           return (
             <LinksBlock

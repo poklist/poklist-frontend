@@ -1,6 +1,6 @@
 import FloatingButtonFooter from '@/components/Footer/FloatingButtonFooter';
 import BackToUserHeader from '@/components/Header/BackToUserHeader';
-import { DEFAULT_IDEA_FIRST_BATCH_SIZE } from '@/constants/list';
+import { DEFAULT_IDEA_BATCH_SIZE_MAX } from '@/constants/list';
 import useGetList, { IListInfo } from '@/hooks/Lists/useGetList';
 import axios from '@/lib/axios';
 import { Tile20Background } from '@/pages/User/TileBackground';
@@ -86,7 +86,7 @@ const ViewListPage: React.FC = () => {
         const response = await fetchGetListInfo(
           listID,
           0,
-          DEFAULT_IDEA_FIRST_BATCH_SIZE
+          DEFAULT_IDEA_BATCH_SIZE_MAX
         );
         if (response) {
           setListInfo(response);
@@ -130,13 +130,13 @@ const ViewListPage: React.FC = () => {
   return (
     <>
       <Tile20Background />
-      <div className="relative">
+      <div className="sm:min-h-desktop-container relative flex min-h-screen flex-col">
         <BackToUserHeader
           owner={listInfo?.owner}
           hasFollowButton={!isMyPage}
           onUnmount={sendFollowingStatusForTheOwner}
         />
-        <div className="px-3 pt-4">
+        <div className="flex-1 px-3 pt-4">
           {listInfo && <ListCard data={listInfo} />}
         </div>
         <FloatingButtonFooter

@@ -44,7 +44,10 @@ const FloatingButtonFooter: React.FC<IFooterProps> = ({
   };
 
   return (
-    <div className="fixed bottom-2 left-1/2 flex w-fit -translate-x-1/2 items-center justify-center gap-2 md:max-w-mobile-max">
+    <footer
+      id="floating-button-footer"
+      className="fixed inset-x-0 bottom-2 mx-auto flex w-fit items-center justify-center gap-2 sm:sticky md:max-w-mobile-max"
+    >
       {hasLikeButton && (
         <Button
           onClick={() => {
@@ -76,7 +79,7 @@ const FloatingButtonFooter: React.FC<IFooterProps> = ({
         <IconLink />
         <Trans>Copy</Trans>
       </Button>
-    </div>
+    </footer>
   );
 };
 

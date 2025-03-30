@@ -1,4 +1,5 @@
 import { Button, ButtonShape, ButtonVariant } from '@/components/ui/button';
+import IconClose from '@/components/ui/icons/CloseIcon';
 import useDeleteList from '@/hooks/Lists/useDeleteList';
 import useEditList from '@/hooks/Lists/useEditList';
 import { IListInfo, default as useGetList } from '@/hooks/Lists/useGetList';
@@ -60,7 +61,7 @@ const ListManagePage: React.FC<ManageListPageProps> = () => {
   };
 
   useEffect(() => {
-    if (id) fetchGetListInfo(id);
+    if (id) fetchGetListInfo(id, 0, 99);
   }, [id]);
 
   useEffect(() => {
@@ -77,59 +78,91 @@ const ListManagePage: React.FC<ManageListPageProps> = () => {
   return (
     <>
       <Header title={<Trans>Idea List</Trans>} deleteCallback={onDeleteList} />
-      <ListInfo listInfo={listInfo} />
-      <div className="mb-6 px-4">
-        <Link to={`/${userStore.user.userCode}/list/${id}/edit`}>
-          <Button
-            className="w-full text-[17px] font-bold"
-            variant={ButtonVariant.BLACK}
-            shape={ButtonShape.ROUNDED_8PX}
+      <div className="flex min-h-screen flex-col">
+        <ListInfo listInfo={listInfo} />
+        <div className="mb-6 px-4">
+          <Link to={`/${userStore.user.userCode}/list/${id}/edit`}>
+            <Button
+              className="w-full text-[17px] font-bold"
+              variant={ButtonVariant.BLACK}
+              shape={ButtonShape.ROUNDED_8PX}
+            >
+              <Trans>Edit list cover</Trans>
+            </Button>
+          </Link>
+        </div>
+        <div className="mb-4 px-4">
+          <Link
+            to={'/idea/create'}
+            state={{ listID: Number(id), listTitle: listInfo?.title }}
           >
-            <Trans>Edit list cover</Trans>
-          </Button>
-        </Link>
-      </div>
-      <div className="mb-4 px-4">
-        <Link
-          to={'/idea/create'}
-          state={{ listID: Number(id), listTitle: listInfo?.title }}
-        >
-          <Button
-            className="w-full text-[17px] font-bold"
-            variant={ButtonVariant.HIGHLIGHTED}
-            shape={ButtonShape.ROUNDED_8PX}
+            <Button
+              className="w-full text-[17px] font-bold"
+              variant={ButtonVariant.HIGHLIGHTED}
+              shape={ButtonShape.ROUNDED_8PX}
+            >
+              <Trans>Add an idea</Trans>
+            </Button>
+          </Link>
+        </div>
+        <div className="mb-4 px-4 text-[15px] text-black-gray-03">
+          {listInfo?.ideas === undefined || listInfo.ideas.length <= 0 ? (
+            <Trans>
+              Newly created idea will be shown below, let's add one!
+            </Trans>
+          ) : (
+            <Trans>Tap to edit. Hold & drag to reorder Ideas</Trans>
+          )}
+        </div>
+        {isMobile ? (
+          <DndProvider
+            backend={TouchBackend}
+            options={{ enableMouseEvents: true }}
           >
-            <Trans>Add an idea</Trans>
-          </Button>
-        </Link>
-      </div>
-      <div className="mb-4 px-4 text-[15px] text-black-gray-03">
-        {listInfo?.ideas === undefined || listInfo.ideas.length <= 0 ? (
-          <Trans>Newly created idea will be shown below, let's add one!</Trans>
+            <IdeaList
+              ideaList={listInfo?.ideas}
+              reorderCallback={onReorderIdea}
+              confirmReorderCallback={onConfirmReorderIdea}
+            />
+          </DndProvider>
         ) : (
-          <Trans>Tap to edit. Hold & drag to reorder Ideas</Trans>
+          <DndProvider backend={HTML5Backend}>
+            <IdeaList
+              ideaList={listInfo?.ideas}
+              reorderCallback={onReorderIdea}
+              confirmReorderCallback={onConfirmReorderIdea}
+            />
+          </DndProvider>
         )}
       </div>
-      {isMobile ? (
-        <DndProvider
-          backend={TouchBackend}
-          options={{ enableMouseEvents: true }}
-        >
-          <IdeaList
-            ideaList={listInfo?.ideas}
-            reorderCallback={onReorderIdea}
-            confirmReorderCallback={onConfirmReorderIdea}
-          />
-        </DndProvider>
-      ) : (
-        <DndProvider backend={HTML5Backend}>
-          <IdeaList
-            ideaList={listInfo?.ideas}
-            reorderCallback={onReorderIdea}
-            confirmReorderCallback={onConfirmReorderIdea}
-          />
-        </DndProvider>
-      )}
+      <footer className="fixed bottom-0 left-0 z-10 flex w-full justify-between border-t border-t-gray-main-03 bg-white px-4 py-2 sm:sticky md:max-w-mobile-max">
+        <div className="flex items-center gap-2">
+          <Link
+            aria-label="Previous"
+            className="h-auto rounded-full bg-inherit p-0"
+            to={`/${userStore.user.userCode}/list/${id}`}
+          >
+            <IconClose />
+          </Link>
+          <Trans>Edit List</Trans>
+        </div>
+        <div className="flex items-center gap-4">
+          <Button
+            onClick={onConfirmReorderIdea}
+            variant={ButtonVariant.SUB_ACTIVE}
+            shape={ButtonShape.ROUNDED_5PX}
+          >
+            <Trans>Save New Order</Trans>
+          </Button>
+          <Button
+            onClick={onConfirmReorderIdea}
+            variant={ButtonVariant.BLACK}
+            shape={ButtonShape.ROUNDED_5PX}
+          >
+            <Trans>Done</Trans>
+          </Button>
+        </div>
+      </footer>
     </>
   );
 };

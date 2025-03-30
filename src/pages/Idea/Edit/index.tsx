@@ -5,6 +5,7 @@ import useGetList from '@/hooks/Lists/useGetList';
 import Header from '@/pages/Idea/Components/Header';
 import useCommonStore from '@/stores/useCommonStore';
 import { Trans } from '@lingui/react/macro';
+import { Skeleton, Text } from '@radix-ui/themes';
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import IdeaFormComponent from '../Components/Form';
@@ -81,13 +82,19 @@ const EditIdeaPage: React.FC<EditIdeaPageProps> = () => {
   return (
     // Your component code here
     <>
-      {listInfo && (
-        <div className="border-b border-b-black px-4 py-3">
-          {listInfo?.title}
+      <div className="sticky top-0 z-10 flex flex-col">
+        <div className="flex h-12 items-center border-b border-b-black px-4 text-[15px]">
+          {listInfo ? (
+            listInfo?.title
+          ) : (
+            <Text>
+              <Skeleton>Skeleton Placeholder</Skeleton>
+            </Text>
+          )}
         </div>
-      )}
-      <Header title={<Trans>Idea</Trans>} deleteCallback={onDeleteIdea} />
-      <div className="mx-4 mt-4 flex flex-col gap-6">
+        <Header title={<Trans>Idea</Trans>} deleteCallback={onDeleteIdea} />
+      </div>
+      <div className="flex min-h-screen flex-col gap-6 sm:min-h-[calc(100vh-102px)]">
         <IdeaFormComponent
           previousIdeaInfo={ideaInfo}
           dismissCallback={onDismissEdit}

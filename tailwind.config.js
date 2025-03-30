@@ -122,6 +122,15 @@ module.exports = {
       maxWidth: {
         'mobile-max': '430px',
       },
+      height: {
+        'desktop-container': 'calc(100vh - 102px)',
+      },
+      minHeight: {
+        'desktop-container': 'calc(100vh - 102px)',
+      },
+      maxHeight: {
+        'desktop-container': 'calc(100vh - 102px)',
+      },
       letterSpacing: {
         '-1.1%': '-1.1%',
       },

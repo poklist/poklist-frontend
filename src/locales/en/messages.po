@@ -20,12 +20,17 @@ msgstr ""
 msgid "<0>{0}</0>"
 msgstr ""
 
+#. js-lingui-explicit-id
+#: src/components/FakePage/EditFieldFakePage.tsx
+#~ msgid "Done"
+#~ msgstr "Done"
+
 #: src/components/FakePage/EditFieldFakePage.tsx
 msgid "Enter your text here"
 msgstr "Enter your text here"
 
-#. js-lingui-explicit-id
 #: src/components/FakePage/EditFieldFakePage.tsx
+#: src/pages/Lists/Manage/index.tsx
 msgid "Done"
 msgstr "Done"
 
@@ -591,6 +596,7 @@ msgid "Confirm Delete"
 msgstr "Confirm Delete"
 
 #: src/pages/Idea/Components/DeleteButton/index.tsx
+#: src/pages/Lists/Components/DeleteButton/index.tsx
 msgid "Cancel"
 msgstr "Cancel"
 
@@ -719,7 +725,7 @@ msgid "Choose a topic that vibes with your List."
 msgstr "Choose a topic that vibes with your List."
 
 #: src/pages/Lists/Components/Form/index.tsx
-#: src/pages/Lists/Manage/IdeasList/index.tsx
+#: src/pages/Lists/Manage/index.tsx
 msgid "Edit List"
 msgstr "Edit List"
 
@@ -735,14 +741,6 @@ msgstr "Idea List"
 #: src/pages/Lists/Edit/index.tsx
 msgid "List Cover"
 msgstr "List Cover"
-
-#: src/pages/Lists/Manage/IdeasList/index.tsx
-msgid "Save New Order"
-msgstr "Save New Order"
-
-#: src/pages/Lists/Manage/IdeasList/index.tsx
-msgid "Done"
-msgstr "Done"
 
 #: src/pages/Lists/Manage/index.tsx
 msgid "Edit list cover"
@@ -760,6 +758,10 @@ msgstr "Newly created idea will be shown below, let's add one!"
 #: src/pages/Lists/Manage/index.tsx
 msgid "Tap to edit. Hold & drag to reorder Ideas"
 msgstr "Tap to edit. Hold & drag to reorder Ideas"
+
+#: src/pages/Lists/Manage/index.tsx
+msgid "Save New Order"
+msgstr "Save New Order"
 
 #: src/pages/Lists/View/ListCard/index.tsx
 msgid "Recently Updated"

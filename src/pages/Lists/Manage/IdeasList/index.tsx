@@ -1,11 +1,7 @@
-import { Button, ButtonShape, ButtonVariant } from '@/components/ui/button';
-import IconClose from '@/components/ui/icons/CloseIcon';
 import { IIdeaPreviewInfo } from '@/hooks/Lists/useGetList';
 import { cn } from '@/lib/utils';
 import useUserStore from '@/stores/useUserStore';
-import { Trans } from '@lingui/react/macro';
-import React, { useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
 import DraggableIdeaRow from './Idea';
 
 interface IdeaListProps {
@@ -26,20 +22,20 @@ const IdeaListSection: React.FC<IdeaListProps> = ({
     reorderCallback(dragIndex, hoverIndex);
   };
 
-  const footerRef = useRef<HTMLDivElement>(null);
+  // const footerRef = useRef<HTMLDivElement>(null);
 
-  const footerPosition = () => {
-    if (footerRef.current && window.visualViewport) {
-      footerRef.current.style.top = `${window.visualViewport.height - footerRef.current.offsetHeight}px`;
-    }
-  };
-  useEffect(() => {
-    footerPosition();
-  }, []);
+  // const footerPosition = () => {
+  //   if (footerRef.current && window.visualViewport) {
+  //     footerRef.current.style.top = `${window.visualViewport.height - footerRef.current.offsetHeight}px`;
+  //   }
+  // };
+  // useEffect(() => {
+  //   footerPosition();
+  // }, []);
 
   return (
     <>
-      <div className={cn('flex flex-col gap-2')}>
+      <div className={cn('mb-6 flex flex-col gap-2')}>
         {ideaList?.map((idea, index) => (
           <DraggableIdeaRow
             idea={idea}
@@ -48,37 +44,6 @@ const IdeaListSection: React.FC<IdeaListProps> = ({
             hoverCallback={onReorderIdea}
           />
         ))}
-      </div>
-      <div
-        ref={footerRef}
-        className="fixed left-0 z-10 flex w-full justify-between border-t border-t-gray-main-03 bg-white px-4 py-2 md:max-w-mobile-max"
-      >
-        <div className="flex items-center gap-2">
-          <Link
-            aria-label="Previous"
-            className="h-auto rounded-full bg-inherit p-0"
-            to={`/${userStore.user.userCode}`}
-          >
-            <IconClose />
-          </Link>
-          <Trans>Edit List</Trans>
-        </div>
-        <div className="flex items-center gap-4">
-          <Button
-            onClick={() => confirmReorderCallback()}
-            variant={ButtonVariant.SUB_ACTIVE}
-            shape={ButtonShape.ROUNDED_5PX}
-          >
-            <Trans>Save New Order</Trans>
-          </Button>
-          <Button
-            onClick={() => confirmReorderCallback()}
-            variant={ButtonVariant.BLACK}
-            shape={ButtonShape.ROUNDED_5PX}
-          >
-            <Trans>Done</Trans>
-          </Button>
-        </div>
       </div>
     </>
   );

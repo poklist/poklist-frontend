@@ -2,8 +2,7 @@ import { Dialog, DialogContent } from '@/components/ui/dialog';
 import useAutosizeTextArea from '@/hooks/useAutosizedTextArea';
 import { IEditFieldConfig } from '@/types/EditField';
 import { t } from '@lingui/core/macro';
-import { useLingui } from '@lingui/react';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useFakePage } from '.';
 import EditModeFooter from '../Footer/EditModeFooter';
 import ImageCropper from '../ImageCropper';
@@ -13,17 +12,20 @@ export const EditFieldFakePageComponent: React.FC<IEditFieldConfig> = ({
   fieldName,
   variant,
   onFieldValueSet,
-  originalFieldValue,
+  edittingFieldValue,
   placeholder = t`Enter your text here`,
   characterLimit,
 }) => {
-  const { i18n } = useLingui();
   const { isOpen, closeFakePage } = useFakePage();
-  const [fieldValue, setFieldValue] = useState<string | undefined>(undefined);
+  const [fieldValue, setFieldValue] = useState<string>(
+    edittingFieldValue ?? ''
+  );
   const isModified =
-    fieldValue !== undefined && fieldValue !== originalFieldValue;
+    fieldValue !== undefined && fieldValue !== edittingFieldValue;
 
-  // FUTURE: set the field value if originalFieldValue is not undefined
+  useEffect(() => {
+    setFieldValue(edittingFieldValue ?? '');
+  }, [edittingFieldValue]);
 
   return (
     <Dialog open={isOpen} onOpenChange={closeFakePage}>
@@ -34,7 +36,7 @@ export const EditFieldFakePageComponent: React.FC<IEditFieldConfig> = ({
         >
           {variant === 'text' ? (
             <TextInput
-              value={fieldValue ?? ''}
+              value={fieldValue}
               onChange={setFieldValue}
               placeholderText={placeholder}
               characterLimit={characterLimit}
@@ -47,10 +49,9 @@ export const EditFieldFakePageComponent: React.FC<IEditFieldConfig> = ({
           isModified={isModified}
           onClose={closeFakePage}
           title={fieldName}
-          onSaveText={i18n._('Done')}
+          onSaveText={t`Done`}
           onSave={() => {
             onFieldValueSet(fieldValue);
-            setFieldValue(undefined);
             closeFakePage();
           }}
           value={fieldValue}
@@ -78,6 +79,10 @@ const TextInput: React.FC<ITextInputProps> = ({
 
   useAutosizeTextArea(textAreaRef.current, value);
 
+  useEffect(() => {
+    setFieldValue(value);
+  }, [value]);
+
   return (
     <>
       <Textarea
@@ -91,13 +96,11 @@ const TextInput: React.FC<ITextInputProps> = ({
         className="w-full border-0"
         placeholder={placeholderText}
       />
-      <>
-        {characterLimit && (
-          <p className="self-end text-black-gray-03">
-            {fieldValue?.length ?? 0} / {characterLimit}
-          </p>
-        )}
-      </>
+      {characterLimit && (
+        <p className="self-end text-black-gray-03">
+          {fieldValue?.length ?? 0} / {characterLimit}
+        </p>
+      )}
     </>
   );
 };
