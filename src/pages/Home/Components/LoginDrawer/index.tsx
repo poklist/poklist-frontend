@@ -37,7 +37,7 @@ export const LoginDrawer = ({
           onClick={onClose}
         >
           <div
-            className="fixed bottom-0 left-1/2 w-mobile-max -translate-x-1/2 rounded-t-lg bg-white md:bottom-auto md:left-auto md:right-4 md:top-4 md:w-[400px] md:max-w-mobile-max md:translate-x-0 md:rounded-lg"
+            className="fixed bottom-0 left-1/2 max-w-mobile-max -translate-x-1/2 rounded-t-lg bg-white md:bottom-auto md:left-auto md:right-4 md:top-4 md:w-[400px] md:max-w-mobile-max md:translate-x-0 md:rounded-lg"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between border-b border-gray-200 p-3">

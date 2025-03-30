@@ -1,4 +1,4 @@
-import logo from '@/assets/images/logo-big.png';
+import logo from '@/assets/images/logo-big.svg';
 import { IMAGES } from '@/constants/Home/images';
 import { Language } from '@/enums/index.enum';
 import { FeatureListSection, FeatureSectionContent } from '@/types/Home';
