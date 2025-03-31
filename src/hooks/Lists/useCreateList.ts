@@ -1,6 +1,5 @@
 import ApiPath from '@/config/apiPath';
 import axios from '@/lib/axios';
-import { fileToBase64 } from '@/lib/utils';
 import useCommonStore from '@/stores/useCommonStore';
 import { IResponse } from '@/types/response';
 import { useState } from 'react';
@@ -16,7 +15,7 @@ export interface ICreateListRequest {
   title: string;
   description: string;
   externalLink: string;
-  coverImage: File | null;
+  coverImage: string | null;
   categoryID: number;
 }
 
@@ -68,13 +67,12 @@ const useCreateList = (): {
   const fetchCreateList = async (listForm: ICreateListRequest) => {
     setCreateListLoading(true);
     setListData(listForm);
+
     const _params = {
       title: listForm.title,
       description: listForm.description,
       externalLink: listForm.externalLink,
-      coverImage: listForm.coverImage
-        ? await fileToBase64(listForm.coverImage)
-        : null,
+      coverImage: listForm.coverImage,
       categoryID: listForm.categoryID,
     };
 

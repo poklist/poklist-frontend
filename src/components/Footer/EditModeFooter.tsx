@@ -6,10 +6,10 @@ import { t } from '@lingui/core/macro';
 interface IEditModeFooterProps {
   onClose: () => void;
   title: string;
-  onSave: ((value?: string) => void) | (() => void);
+  onSave: (value?: string) => void;
   onSaveText?: string;
   value?: string;
-  isModified: boolean;
+  disabled?: boolean;
 }
 
 const EditModeFooter: React.FC<IEditModeFooterProps> = ({
@@ -18,7 +18,7 @@ const EditModeFooter: React.FC<IEditModeFooterProps> = ({
   onSave,
   onSaveText = t`Save`,
   value,
-  isModified,
+  disabled = true,
 }) => {
   return (
     <footer
@@ -38,8 +38,8 @@ const EditModeFooter: React.FC<IEditModeFooterProps> = ({
       <Button
         variant={ButtonVariant.BLACK}
         shape={ButtonShape.ROUNDED_5PX}
-        disabled={!isModified}
-        onClick={value ? () => onSave(value) : () => onSave()}
+        disabled={disabled}
+        onClick={() => onSave(value)}
       >
         <p className="text-[17px] font-bold">{onSaveText} </p>
       </Button>

@@ -44,6 +44,7 @@ const EditUserPage: React.FC = () => {
       placeholder: t`Enter your name here`, // FUTURE: interpolation
       characterLimit: 20,
       edittingFieldValue: newUserInfo.displayName,
+      allowEmpty: false,
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
           setDisplayName(value);
@@ -58,6 +59,7 @@ const EditUserPage: React.FC = () => {
       placeholder: t`Enter your username here`, // FUTURE: interpolation
       characterLimit: 30,
       edittingFieldValue: newUserInfo.userCode,
+      allowEmpty: false,
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
           setUserCode(value);
@@ -318,12 +320,14 @@ const EditUserPage: React.FC = () => {
         })}
       </div>
       <EditModeFooter
-        isModified={isModified()}
+        disabled={!isModified()}
         onClose={() => navigate(`/${user.userCode}`)}
         title={t`Edit profile and account`}
         onSave={onSubmit}
       />
-      {fieldConfig && <EditFieldFakePageComponent {...fieldConfig} />}
+      {fieldConfig && (
+        <EditFieldFakePageComponent {...fieldConfig} cropShape="round" />
+      )}
     </>
   );
 };

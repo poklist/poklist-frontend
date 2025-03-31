@@ -68,33 +68,38 @@ msgid "Follow"
 msgstr "Follow"
 
 #: src/components/ImageCropper/index.tsx
-msgid "Choose your profile image"
-msgstr "Choose your profile image"
+#~ msgid "500x500px, JPG, max 4MB"
+#~ msgstr "500x500px, JPG, max 4MB"
 
 #: src/components/ImageCropper/index.tsx
-msgid "500x500px, JPG, max 4MB"
-msgstr "500x500px, JPG, max 4MB"
+msgid "Image must be at least 150 x 150 pixels."
+msgstr "Image must be at least 150 x 150 pixels."
+
+#: src/components/ImageCropper/index.tsx
+msgid "Choose your image"
+msgstr "Choose your image"
+
+#: src/components/ImageCropper/index.tsx
+#: src/components/ImageUploader/index.tsx
+msgid "500x500px, JPG or PNG, max 4MB"
+msgstr "500x500px, JPG or PNG, max 4MB"
 
 #: src/components/ImageUploader/index.tsx
 #: src/components/ImageUploader/index.tsx
-msgid "Cover image error!"
-msgstr "Cover image error!"
+#~ msgid "Cover image error!"
+#~ msgstr "Cover image error!"
 
 #: src/components/ImageUploader/index.tsx
-msgid "Must be square."
-msgstr "Must be square."
+#~ msgid "Must be square."
+#~ msgstr "Must be square."
 
 #: src/components/ImageUploader/index.tsx
-msgid "Must be JPG or PNG and under 4MB."
-msgstr "Must be JPG or PNG and under 4MB."
+#~ msgid "Must be JPG or PNG and under 4MB."
+#~ msgstr "Must be JPG or PNG and under 4MB."
 
 #: src/components/ImageUploader/index.tsx
 msgid "Upload a cover"
 msgstr "Upload a cover"
-
-#: src/components/ImageUploader/index.tsx
-msgid "500x500px, JPG or PNG, max 4MB"
-msgstr "500x500px, JPG or PNG, max 4MB"
 
 #: src/constants/Home/index.en.ts
 msgid "Join Poklist and share your lists."
@@ -608,6 +613,11 @@ msgstr "Confirm Delete"
 #: src/pages/Lists/Components/DeleteButton/index.tsx
 msgid "Cancel"
 msgstr "Cancel"
+
+#: src/pages/Idea/Components/Form/index.tsx
+#: src/pages/Lists/Components/Form/index.tsx
+msgid "Cover Image"
+msgstr "Cover Image"
 
 #: src/pages/Idea/Components/Form/index.tsx
 #: src/pages/Lists/Components/Form/index.tsx

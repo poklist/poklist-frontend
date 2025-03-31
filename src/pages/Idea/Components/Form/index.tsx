@@ -1,3 +1,5 @@
+import { useFakePage } from '@/components/FakePage';
+import { EditFieldFakePageComponent } from '@/components/FakePage/EditFieldFakePage';
 import ImageUploader from '@/components/ImageUploader';
 import { Button, ButtonShape, ButtonVariant } from '@/components/ui/button';
 import IconClose from '@/components/ui/icons/CloseIcon';
@@ -5,11 +7,13 @@ import IconExteriorLink from '@/components/ui/icons/ExteriorLinkIcon';
 import IconTextarea from '@/components/ui/icons/TextareaIcon';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { EditFieldVariant } from '@/enums/EditField/index.enum';
 import { ICreateIdeaRequest } from '@/hooks/Ideas/useCreateIdea';
 import { IEditIdeaRequest } from '@/hooks/Ideas/useEditIdea';
 import { IIdeaInfo } from '@/hooks/Ideas/useGetIdea';
 import { cn, formatInput } from '@/lib/utils';
 import useCommonStore from '@/stores/useCommonStore';
+import { IEditFieldConfig } from '@/types/EditField';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
@@ -24,7 +28,7 @@ const FormSchema = z.object({
   title: z.string().min(1).max(TITLE_MAX_LENGTH),
   description: z.string().max(DESC_MAX_LENGTH),
   externalLink: z.string().url().optional().or(z.literal('')),
-  coverImage: z.instanceof(File).nullable().optional(),
+  coverImage: z.string().or(z.literal('')).nullable(), // FUTURE: base64 check
 });
 
 interface IIdeaFormProps {
@@ -48,13 +52,31 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
   const [isTextareaFocus, setIsTextareaFocus] = useState(false);
   const [isFormModified, setIsFormModified] = useState(false);
 
+  const { openFakePage } = useFakePage();
+  const [fieldConfig, setFieldConfig] = useState<IEditFieldConfig>();
+
+  const onOpenFakePage = () => {
+    setFieldConfig({
+      fieldName: t`Cover Image`,
+      variant: EditFieldVariant.IMAGE,
+      onFieldValueSet: (value: string | undefined) => {
+        if (value !== undefined && value !== null) {
+          onCoverImageChange(value);
+        } else {
+          console.log('value is undefined');
+        }
+      },
+    });
+    openFakePage();
+  };
+
   const ideaForm = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       title: previousIdeaInfo?.title,
       description: previousIdeaInfo?.description,
       externalLink: previousIdeaInfo?.externalLink,
-      coverImage: previousIdeaInfo?.coverImage || null,
+      coverImage: previousIdeaInfo?.coverImage,
     },
   });
 
@@ -161,8 +183,8 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
     }
   };
 
-  const onCoverImageChange = (file: File | null) => {
-    ideaForm.setValue('coverImage', file);
+  const onCoverImageChange = (base64: string | null) => {
+    ideaForm.setValue('coverImage', base64);
   };
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
@@ -253,11 +275,13 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
             name="coverImage"
             control={ideaForm.control}
             render={({ field }) => (
-              <ImageUploader file={field.value} callback={onCoverImageChange} />
+              <ImageUploader file={field.value} callback={onOpenFakePage} />
             )}
           />
         </div>
       </form>
+
+      {fieldConfig && <EditFieldFakePageComponent {...fieldConfig} />}
 
       <footer className="fixed bottom-0 left-0 z-10 flex w-full justify-between border-t border-t-gray-main-03 px-4 py-2 sm:sticky">
         <div className="flex items-center gap-2">

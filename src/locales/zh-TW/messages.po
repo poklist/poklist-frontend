@@ -68,33 +68,38 @@ msgid "Follow"
 msgstr "追蹤"
 
 #: src/components/ImageCropper/index.tsx
-msgid "Choose your profile image"
-msgstr "選擇大頭貼圖片"
+#~ msgid "500x500px, JPG, max 4MB"
+#~ msgstr "500x500像素，限JPG，最大4MB"
 
 #: src/components/ImageCropper/index.tsx
-msgid "500x500px, JPG, max 4MB"
-msgstr "500x500像素，限JPG，最大4MB"
+msgid "Image must be at least 150 x 150 pixels."
+msgstr ""
+
+#: src/components/ImageCropper/index.tsx
+msgid "Choose your image"
+msgstr "選擇圖片"
+
+#: src/components/ImageCropper/index.tsx
+#: src/components/ImageUploader/index.tsx
+msgid "500x500px, JPG or PNG, max 4MB"
+msgstr "500x500像素，限 JPG 或 PNG，最大4MB"
 
 #: src/components/ImageUploader/index.tsx
 #: src/components/ImageUploader/index.tsx
-msgid "Cover image error!"
-msgstr "封面圖片不符合規格！"
+#~ msgid "Cover image error!"
+#~ msgstr "封面圖片不符合規格！"
 
 #: src/components/ImageUploader/index.tsx
-msgid "Must be square."
-msgstr "必須是正方形"
+#~ msgid "Must be square."
+#~ msgstr "必須是正方形"
 
 #: src/components/ImageUploader/index.tsx
-msgid "Must be JPG or PNG and under 4MB."
-msgstr "請確認圖片格式為 JPG 或 PNG，且檔案大小不得超過 4MB。"
+#~ msgid "Must be JPG or PNG and under 4MB."
+#~ msgstr "請確認圖片格式為 JPG 或 PNG，且檔案大小不得超過 4MB。"
 
 #: src/components/ImageUploader/index.tsx
 msgid "Upload a cover"
 msgstr "封面圖片"
-
-#: src/components/ImageUploader/index.tsx
-msgid "500x500px, JPG or PNG, max 4MB"
-msgstr "500x500像素，限 JPG 或 PNG，最大4MB"
 
 #: src/constants/Home/index.en.ts
 msgid "Join Poklist and share your lists."
@@ -608,6 +613,11 @@ msgstr "確定刪除"
 #: src/pages/Lists/Components/DeleteButton/index.tsx
 msgid "Cancel"
 msgstr "取消"
+
+#: src/pages/Idea/Components/Form/index.tsx
+#: src/pages/Lists/Components/Form/index.tsx
+msgid "Cover Image"
+msgstr ""
 
 #: src/pages/Idea/Components/Form/index.tsx
 #: src/pages/Lists/Components/Form/index.tsx
