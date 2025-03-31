@@ -50,8 +50,8 @@ const ListForm: React.FC<IListFormProps> = ({
     useCommonStore();
   const { openDrawer, closeDrawer } = useDrawer();
   const { categoriesLoading, categories, fetchGetCategories } = useCategories();
+
   const onOpenCategoryDrawer = () => {
-    if (listForm.getValues('title') === '') return;
     openDrawer();
   };
 
@@ -233,7 +233,10 @@ const ListForm: React.FC<IListFormProps> = ({
   return (
     <>
       <form
-        onSubmit={listForm.handleSubmit(onSubmit, onSubmitFailed)}
+        onSubmit={() => {
+          console.log('[ON SUBMIT] listForm.getValues()', listForm.getValues());
+          listForm.handleSubmit(onSubmit, onSubmitFailed)();
+        }}
         className="mx-4 mt-6 flex flex-1 flex-col gap-6 px-4 md:max-w-mobile-max"
       >
         <div
@@ -365,28 +368,17 @@ const ListForm: React.FC<IListFormProps> = ({
             <Trans>Create Idea List</Trans>
           )}
         </div>
-        {defaultListInfo ? (
-          <Button
-            disabled={!isFormModified}
-            type="submit"
-            variant={ButtonVariant.BLACK}
-            shape={ButtonShape.ROUNDED_5PX}
-          >
-            <Trans>Next</Trans>
-          </Button>
-        ) : (
-          <Button
-            variant={
-              listForm.getValues('title') === ''
-                ? ButtonVariant.GRAY
-                : ButtonVariant.BLACK
-            }
-            shape={ButtonShape.ROUNDED_5PX}
-            onClick={() => onOpenCategoryDrawer()}
-          >
-            <Trans>Next</Trans>
-          </Button>
-        )}
+        <Button
+          disabled={
+            (defaultListInfo !== undefined && !isFormModified) ||
+            listForm.getValues('title') === ''
+          }
+          variant={ButtonVariant.BLACK}
+          shape={ButtonShape.ROUNDED_5PX}
+          onClick={() => listForm.handleSubmit(onSubmit, onSubmitFailed)()}
+        >
+          <Trans>Next</Trans>
+        </Button>
       </footer>
     </>
   );

@@ -274,24 +274,18 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
             <Trans>New Idea</Trans>
           )}
         </div>
-        {previousIdeaInfo ? (
-          <Button
-            disabled={!isFormModified}
-            type="submit"
-            variant={ButtonVariant.BLACK}
-            shape={ButtonShape.ROUNDED_5PX}
-          >
-            <Trans>Next</Trans>
-          </Button>
-        ) : (
-          <Button
-            type="submit"
-            variant={ButtonVariant.BLACK}
-            shape={ButtonShape.ROUNDED_5PX}
-          >
-            <Trans>Next</Trans>
-          </Button>
-        )}
+
+        <Button
+          disabled={
+            (previousIdeaInfo !== undefined && !isFormModified) ||
+            ideaForm.getValues('title') === ''
+          }
+          variant={ButtonVariant.BLACK}
+          shape={ButtonShape.ROUNDED_5PX}
+          onClick={() => ideaForm.handleSubmit(onSubmit, onSubmitFailed)()}
+        >
+          <Trans>Next</Trans>
+        </Button>
       </footer>
     </>
   );
