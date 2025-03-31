@@ -68,12 +68,21 @@ msgid "Follow"
 msgstr "追蹤"
 
 #: src/components/ImageCropper/index.tsx
+msgid "Choose your profile image"
+msgstr "選擇大頭貼圖片"
+
+#: src/components/ImageCropper/index.tsx
 msgid "500x500px, JPG, max 4MB"
 msgstr "500x500像素，限JPG，最大4MB"
 
 #: src/components/ImageUploader/index.tsx
+#: src/components/ImageUploader/index.tsx
 msgid "Cover image error!"
 msgstr "封面圖片不符合規格！"
+
+#: src/components/ImageUploader/index.tsx
+msgid "Must be square."
+msgstr "必須是正方形"
 
 #: src/components/ImageUploader/index.tsx
 msgid "Must be JPG or PNG and under 4MB."
@@ -660,8 +669,6 @@ msgid "New Idea"
 msgstr "新靈感"
 
 #: src/pages/Idea/Components/Form/index.tsx
-#: src/pages/Idea/Components/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
 #: src/pages/Lists/Components/Form/index.tsx
 #: src/pages/Lists/Components/Form/index.tsx
 #: src/pages/Lists/Components/Form/index.tsx

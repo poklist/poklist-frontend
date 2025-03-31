@@ -32,7 +32,7 @@ export const EditFieldFakePageComponent: React.FC<IEditFieldConfig> = ({
       <DialogContent className="flex h-screen w-full items-center border-0 bg-transparent p-0">
         <div
           id="edit-field-fake-page"
-          className="z-10 flex h-full w-full flex-col items-center bg-white px-6 py-6 md:max-w-mobile-max"
+          className="z-10 flex h-full w-full flex-col items-center bg-white px-6 pb-6 pt-20 sm:pt-6 md:max-w-mobile-max"
         >
           {variant === 'text' ? (
             <TextInput

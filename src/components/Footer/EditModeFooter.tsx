@@ -23,7 +23,7 @@ const EditModeFooter: React.FC<IEditModeFooterProps> = ({
   return (
     <footer
       id="edit-mode-footer"
-      className="fixed bottom-0 flex h-14 w-full items-center justify-between border-t border-t-gray-main-03 bg-white px-4 py-2 sm:sticky"
+      className="fixed bottom-0 z-10 flex h-14 w-full items-center justify-between border-t border-t-gray-main-03 bg-white px-4 py-2 sm:sticky"
     >
       <div className="flex items-center gap-2">
         <Button

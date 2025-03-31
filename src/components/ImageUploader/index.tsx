@@ -24,6 +24,20 @@ const ImageUploader: React.FC<IImageUploaderProps> = ({
     const fileList = event.target.files;
     if (fileList && fileList.length > 0) {
       const imageFile = fileList[0];
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.src = e.target?.result as string;
+        if (img.width !== img.height) {
+          setShowErrorDrawer(true, {
+            title: t`Cover image error!`,
+            content: t`Must be square.`,
+          });
+          return;
+        }
+      };
+      reader.readAsDataURL(imageFile);
+
       if (
         imageFile.size > 4_194_304 ||
         (imageFile.type !== 'image/jpeg' && imageFile.type !== 'image/png')
