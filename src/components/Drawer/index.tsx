@@ -57,6 +57,8 @@ interface IDrawerProps {
   subHeader?: React.ReactNode;
   content?: React.ReactNode;
   footer?: React.ReactNode;
+  startFooter?: React.ReactNode;
+  endFooter?: React.ReactNode;
   isShowClose: boolean;
   className?: string;
 }
@@ -64,7 +66,8 @@ export const DrawerComponent: React.FC<IDrawerProps> = ({
   header,
   subHeader,
   content,
-  footer,
+  startFooter,
+  endFooter,
   isShowClose,
   className,
 }) => {
@@ -84,14 +87,36 @@ export const DrawerComponent: React.FC<IDrawerProps> = ({
             </DrawerClose>
           </div>
         )}
+
         {header && (
           <DrawerHeader className="relative w-full items-center">
-            <DrawerTitle>{header}</DrawerTitle>
+            <DrawerTitle className="mb-1 w-fit font-bold text-black-text-01">
+              {header}
+            </DrawerTitle>
             {subHeader && <DrawerDescription>{subHeader}</DrawerDescription>}
           </DrawerHeader>
         )}
         {content && <>{content}</>}
-        {footer && <DrawerFooter className="w-full">{footer}</DrawerFooter>}
+
+        {/* 同時有 startFooter 和 endFooter */}
+        {startFooter && endFooter && (
+          <DrawerFooter className="flex w-full flex-row items-center justify-between">
+            <div>{startFooter}</div>
+            <div>{endFooter}</div>
+          </DrawerFooter>
+        )}
+
+        {/* 只有 startFooter */}
+        {startFooter && !endFooter && (
+          <DrawerFooter className="w-full">{startFooter}</DrawerFooter>
+        )}
+
+        {/* 只有 endFooter 或 footer */}
+        {!startFooter && endFooter && (
+          <DrawerFooter className="flex w-full flex-row justify-end">
+            {endFooter}
+          </DrawerFooter>
+        )}
       </DrawerContent>
     </Drawer>
   );

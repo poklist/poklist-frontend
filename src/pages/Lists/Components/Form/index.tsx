@@ -301,11 +301,7 @@ const ListForm: React.FC<IListFormProps> = ({
 
       <DrawerComponent
         isShowClose={false}
-        header={
-          <div className="mb-1 w-fit font-bold text-black-text-01">
-            <Trans>List Topic</Trans>
-          </div>
-        }
+        header={<Trans>List Topic</Trans>}
         subHeader={<Trans>Choose a topic that vibes with your List.</Trans>}
         content={
           !categoriesLoading && (
@@ -326,7 +322,7 @@ const ListForm: React.FC<IListFormProps> = ({
             </div>
           )
         }
-        footer={
+        endFooter={
           <div className="flex justify-end">
             {defaultListInfo ? (
               <Button
