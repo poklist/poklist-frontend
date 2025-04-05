@@ -1,4 +1,5 @@
 import { DrawerComponent, useDrawer } from '@/components/Drawer';
+import { DrawerIds } from '@/constants/Drawer';
 import { useFakePage } from '@/components/FakePage';
 import { EditFieldFakePageComponent } from '@/components/FakePage/EditFieldFakePage';
 import ImageUploader from '@/components/ImageUploader';
@@ -46,9 +47,6 @@ interface IListFormProps {
   completedCallback: (listData: ICreateListRequest) => void;
 }
 
-// 定義類別選擇抽屜的ID
-const CATEGORY_DRAWER_ID = 'category-drawer';
-
 const ListForm: React.FC<IListFormProps> = ({
   defaultListInfo,
   dismissCallback,
@@ -56,7 +54,7 @@ const ListForm: React.FC<IListFormProps> = ({
 }) => {
   const { setErrorDrawerMessage, setShowingAlert, setIsLoading } =
     useCommonStore();
-  const { openDrawer, closeDrawer } = useDrawer(CATEGORY_DRAWER_ID);
+  const { openDrawer, closeDrawer } = useDrawer(DrawerIds.CATEGORY_DRAWER_ID);
   const { categoriesLoading, categories, fetchGetCategories } = useCategories();
 
   const { openFakePage } = useFakePage();
@@ -330,7 +328,7 @@ const ListForm: React.FC<IListFormProps> = ({
       </form>
 
       <DrawerComponent
-        drawerId={CATEGORY_DRAWER_ID}
+        drawerId={DrawerIds.CATEGORY_DRAWER_ID}
         isShowClose={false}
         header={<Trans>List Topic</Trans>}
         subHeader={<Trans>Choose a topic that vibes with your List.</Trans>}

@@ -1,18 +1,16 @@
 import useCommonStore from '@/stores/useCommonStore';
 import React, { useEffect } from 'react';
 import { DrawerComponent, useDrawer } from '../Drawer';
+import { DrawerIds } from '@/constants/Drawer';
 
 export interface IErrorDrawerMessage {
   title: string;
   content: string;
 }
 
-// 錯誤抽屜的唯一ID
-export const ERROR_DRAWER_ID = 'error-drawer';
-
 export const ErrorDrawer: React.FC = () => {
   const { errorDrawerMessage, setErrorDrawerMessage } = useCommonStore();
-  const { openDrawer, closeDrawer } = useDrawer(ERROR_DRAWER_ID);
+  const { openDrawer, closeDrawer } = useDrawer(DrawerIds.ERROR_DRAWER_ID);
 
   // 當errorDrawerMessage有內容時，打開抽屜
   useEffect(() => {
@@ -35,7 +33,7 @@ export const ErrorDrawer: React.FC = () => {
 
   return (
     <DrawerComponent
-      drawerId={ERROR_DRAWER_ID}
+      drawerId={DrawerIds.ERROR_DRAWER_ID}
       isShowClose={true}
       header={errorDrawerMessage.title}
       subHeader={errorDrawerMessage.content}

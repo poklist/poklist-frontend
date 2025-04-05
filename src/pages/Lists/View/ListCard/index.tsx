@@ -1,4 +1,5 @@
 import { DrawerComponent, useDrawer } from '@/components/Drawer';
+import { DrawerIds } from '@/constants/Drawer';
 import {
   Button,
   ButtonShape,
@@ -42,7 +43,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
 
   const { isLoggedIn, user } = useUserStore();
 
-  const { openDrawer } = useDrawer();
+  const { openDrawer } = useDrawer(DrawerIds.LIST_CARD_DRAWER_ID);
   const { setShowingAlert } = useCommonStore();
   const [drawerContent, setDrawerContent] = useState<React.ReactNode>(null);
   const [ideaMap, setIdeaMap] = useState<{
@@ -250,6 +251,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
         {/* TODO: See more button */}
       </div>
       <DrawerComponent
+        drawerId={DrawerIds.LIST_CARD_DRAWER_ID}
         isShowClose={false}
         content={drawerContent}
         className="px-6"

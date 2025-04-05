@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ButtonRadioGroup } from '../ButtonRadioGroup';
 import LinksBlock from './LinksBlock';
+import { DrawerIds } from '@/constants/Drawer';
 
 const BlocksSection: React.FC = () => {
   const navigate = useNavigate();
@@ -220,7 +221,11 @@ const BlocksSection: React.FC = () => {
           );
         })}
       </div>
-      <DrawerComponent isShowClose={false} content={drawerContent} />
+      <DrawerComponent
+        drawerId={DrawerIds.SETTINGS_DRAWER_ID}
+        isShowClose={false}
+        content={drawerContent}
+      />
     </>
   );
 };

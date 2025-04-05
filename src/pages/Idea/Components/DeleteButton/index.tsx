@@ -3,6 +3,7 @@ import { Button, ButtonShape, ButtonVariant } from '@/components/ui/button';
 import IconTrash from '@/components/ui/icons/TrashIcon';
 import { Trans } from '@lingui/react/macro';
 import React from 'react';
+import { DrawerIds } from '@/constants/Drawer';
 
 interface IDeleteButtonProps {
   // Add any props you need for the page
@@ -11,7 +12,9 @@ interface IDeleteButtonProps {
 export const DeleteButton: React.FC<IDeleteButtonProps> = ({
   deleteCallback,
 }) => {
-  const { openDrawer, closeDrawer } = useDrawer();
+  const { openDrawer, closeDrawer } = useDrawer(
+    DrawerIds.DELETE_IDEA_DRAWER_ID
+  );
 
   return (
     <>
@@ -21,6 +24,7 @@ export const DeleteButton: React.FC<IDeleteButtonProps> = ({
         aria-label="Delete"
       />
       <DrawerComponent
+        drawerId={DrawerIds.DELETE_IDEA_DRAWER_ID}
         isShowClose={true}
         header={<Trans>Are you sure you want to delete this idea?</Trans>}
         subHeader={<Trans>Once deleted, this idea cannot be recovered!</Trans>}
