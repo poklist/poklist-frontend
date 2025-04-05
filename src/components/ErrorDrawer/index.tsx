@@ -1,38 +1,46 @@
-import { cn } from '@/lib/utils';
 import useCommonStore from '@/stores/useCommonStore';
-import React from 'react';
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerHeader,
-  DrawerTitle,
-} from '../ui/drawer';
+import React, { useEffect } from 'react';
+import { DrawerComponent, useDrawer } from '../Drawer';
 
 export interface IErrorDrawerMessage {
   title: string;
   content: string;
 }
 
-export const ErrorDrawer: React.FC = ({ className }: { className?: string }) => {
-  const { isShowErrorDrawer, setShowErrorDrawer, errorDrawerMessage } = useCommonStore();
+// 錯誤抽屜的唯一ID
+export const ERROR_DRAWER_ID = 'error-drawer';
+
+export const ErrorDrawer: React.FC = () => {
+  const { errorDrawerMessage, setErrorDrawerMessage } = useCommonStore();
+  const { openDrawer, closeDrawer } = useDrawer(ERROR_DRAWER_ID);
+
+  // 當errorDrawerMessage有內容時，打開抽屜
+  useEffect(() => {
+    if (errorDrawerMessage.title || errorDrawerMessage.content) {
+      openDrawer();
+    }
+  }, [errorDrawerMessage, openDrawer]);
+
+  // 當抽屜關閉時，清除錯誤訊息
+  const handleClose = () => {
+    closeDrawer();
+    // 清除錯誤訊息
+    setErrorDrawerMessage({ title: '', content: '' });
+  };
+
+  // 如果沒有錯誤訊息內容，則不渲染抽屜
+  if (!errorDrawerMessage.title && !errorDrawerMessage.content) {
+    return null;
+  }
+
   return (
-    <Drawer open={isShowErrorDrawer} onOpenChange={setShowErrorDrawer}>
-      <DrawerContent className={cn(`bottom-0 bg-white shadow`, className)}>
-        <div className="flex justify-end">
-          <DrawerClose
-            aria-label="Close"
-            className="h-6 w-6 rounded-full bg-black-text-01 text-center leading-6 text-white mb-3 focus-visible:outline-none"
-          >
-            <span aria-hidden>×</span>
-          </DrawerClose>
-        </div>
-        <DrawerHeader className="relative w-full items-center">
-          <DrawerTitle>{errorDrawerMessage.title}</DrawerTitle>
-          <DrawerDescription>{errorDrawerMessage.content}</DrawerDescription>
-        </DrawerHeader>
-      </DrawerContent>
-    </Drawer>
+    <DrawerComponent
+      drawerId={ERROR_DRAWER_ID}
+      isShowClose={true}
+      header={errorDrawerMessage.title}
+      subHeader={errorDrawerMessage.content}
+      // 提供自定義的關閉處理函數
+      onClose={handleClose}
+    />
   );
 };

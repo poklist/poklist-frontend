@@ -46,7 +46,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
   dismissCallback,
   completedCallback,
 }) => {
-  const { setShowErrorDrawer, setShowingAlert, setIsLoading } =
+  const { setErrorDrawerMessage, setShowingAlert, setIsLoading } =
     useCommonStore();
 
   const [isTextareaFocus, setIsTextareaFocus] = useState(false);
@@ -124,7 +124,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
   const onDismiss = () => {
     let isFormEmpty = true;
     if (isFormModified) {
-      setShowErrorDrawer(true, {
+      setErrorDrawerMessage({
         title: t`Your edits will be lost if you cancel!`,
         content: t`Title is saved, but your idea edits will be lost! Are you sure you want to cancel?`,
       });
@@ -146,13 +146,13 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
     switch (errorKey) {
       case 'title': {
         if (value.title?.type === 'too_small') {
-          setShowErrorDrawer(true, {
-            title: t`Hey, the title can’t be left empty!`,
+          setErrorDrawerMessage({
+            title: t`Hey, the title can't be left empty!`,
             content: t`Every idea needs a title, so fill it in!`,
           });
         }
         if (value.title?.type === 'too_big') {
-          setShowErrorDrawer(true, {
+          setErrorDrawerMessage({
             title: t`Idea title is too long!`,
             content: t`Please keep it under ${TITLE_MAX_LENGTH} characters.`,
           });
@@ -162,7 +162,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
       }
       case 'description': {
         if (value.description?.type === 'too_big') {
-          setShowErrorDrawer(true, {
+          setErrorDrawerMessage({
             title: t`Description is too long!`,
             content: t`Please keep it under ${DESC_MAX_LENGTH} characters.`,
           });
@@ -233,7 +233,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
           })}
         >
           <Input
-            placeholder={t`What’s your Idea?`}
+            placeholder={t`What's your Idea?`}
             className="relative border-none px-0 text-h1 placeholder:text-h1"
             {...ideaForm.register('title', { onChange: onInputChange })}
           />

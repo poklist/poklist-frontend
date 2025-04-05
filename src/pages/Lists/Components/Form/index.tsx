@@ -46,14 +46,17 @@ interface IListFormProps {
   completedCallback: (listData: ICreateListRequest) => void;
 }
 
+// 定義類別選擇抽屜的ID
+const CATEGORY_DRAWER_ID = 'category-drawer';
+
 const ListForm: React.FC<IListFormProps> = ({
   defaultListInfo,
   dismissCallback,
   completedCallback,
 }) => {
-  const { setShowErrorDrawer, setShowingAlert, setIsLoading } =
+  const { setErrorDrawerMessage, setShowingAlert, setIsLoading } =
     useCommonStore();
-  const { openDrawer, closeDrawer } = useDrawer();
+  const { openDrawer, closeDrawer } = useDrawer(CATEGORY_DRAWER_ID);
   const { categoriesLoading, categories, fetchGetCategories } = useCategories();
 
   const { openFakePage } = useFakePage();
@@ -141,9 +144,9 @@ const ListForm: React.FC<IListFormProps> = ({
   const onDismiss = () => {
     let isFormEmpty = true;
     if (isFormModified) {
-      setShowErrorDrawer(true, {
+      setErrorDrawerMessage({
         title: t`Your edits will be lost if you cancel!`,
-        content: t`If you cancel, everything you’ve entered will be lost.`,
+        content: t`If you cancel, everything you've entered will be lost.`,
       });
       isFormEmpty = false;
     }
@@ -164,13 +167,13 @@ const ListForm: React.FC<IListFormProps> = ({
     switch (errorKey) {
       case 'title': {
         if (value.title?.type === 'too_small') {
-          setShowErrorDrawer(true, {
-            title: t`Hey, the title can’t be left empty!`,
+          setErrorDrawerMessage({
+            title: t`Hey, the title can't be left empty!`,
             content: t`Every list needs a title, so fill it in!`,
           });
         }
         if (value.title?.type === 'too_big') {
-          setShowErrorDrawer(true, {
+          setErrorDrawerMessage({
             title: t`List title is too long!`,
             content: t`Please keep it under ${TITLE_MAX_LENGTH} characters.`,
           });
@@ -180,7 +183,7 @@ const ListForm: React.FC<IListFormProps> = ({
       }
       case 'description': {
         if (value.description?.type === 'too_big') {
-          setShowErrorDrawer(true, {
+          setErrorDrawerMessage({
             title: t`Description is too long!`,
             content: t`Please keep it under ${DESC_MAX_LENGTH} characters.`,
           });
@@ -327,6 +330,7 @@ const ListForm: React.FC<IListFormProps> = ({
       </form>
 
       <DrawerComponent
+        drawerId={CATEGORY_DRAWER_ID}
         isShowClose={false}
         header={<Trans>List Topic</Trans>}
         subHeader={<Trans>Choose a topic that vibes with your List.</Trans>}
