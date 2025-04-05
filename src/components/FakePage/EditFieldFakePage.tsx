@@ -1,4 +1,5 @@
 import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { EditFieldVariant } from '@/enums/EditField/index.enum';
 import useAutosizeTextArea from '@/hooks/useAutosizedTextArea';
 import { IEditFieldConfig } from '@/types/EditField';
 import { t } from '@lingui/core/macro';
@@ -15,16 +16,27 @@ export const EditFieldFakePageComponent: React.FC<IEditFieldConfig> = ({
   edittingFieldValue,
   placeholder = t`Enter your text here`,
   characterLimit,
+  allowEmpty = true,
+  cropShape = 'rect',
 }) => {
   const { isOpen, closeFakePage } = useFakePage();
   const [fieldValue, setFieldValue] = useState<string>(
     edittingFieldValue ?? ''
   );
-  const isModified =
-    fieldValue !== undefined && fieldValue !== edittingFieldValue;
+  const isSaveDisabled =
+    variant === EditFieldVariant.TEXT &&
+    ((!allowEmpty && !fieldValue) || fieldValue === edittingFieldValue);
 
   useEffect(() => {
-    setFieldValue(edittingFieldValue ?? '');
+    if (isOpen === false) {
+      setFieldValue('');
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (variant === EditFieldVariant.TEXT) {
+      setFieldValue(edittingFieldValue ?? '');
+    }
   }, [edittingFieldValue]);
 
   return (
@@ -32,7 +44,7 @@ export const EditFieldFakePageComponent: React.FC<IEditFieldConfig> = ({
       <DialogContent className="flex h-screen w-full items-center border-0 bg-transparent p-0">
         <div
           id="edit-field-fake-page"
-          className="z-10 flex h-full w-full flex-col items-center bg-white px-6 py-6 md:max-w-mobile-max"
+          className="z-10 flex h-full w-full flex-col items-center bg-white px-6 pb-6 pt-20 sm:pt-6 md:max-w-mobile-max"
         >
           {variant === 'text' ? (
             <TextInput
@@ -42,12 +54,16 @@ export const EditFieldFakePageComponent: React.FC<IEditFieldConfig> = ({
               characterLimit={characterLimit}
             />
           ) : (
-            <ImageCropper value={fieldValue ?? ''} onChange={setFieldValue} />
+            <ImageCropper
+              value={fieldValue ?? ''}
+              onChange={setFieldValue}
+              cropShape={cropShape}
+            />
           )}
         </div>
         <EditModeFooter
-          isModified={isModified}
-          onClose={closeFakePage}
+          disabled={isSaveDisabled}
+          onClose={() => closeFakePage()}
           title={fieldName}
           onSaveText={t`Done`}
           onSave={() => {
