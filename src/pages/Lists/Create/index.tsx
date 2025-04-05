@@ -2,6 +2,7 @@ import useCreateList, { ICreateListRequest } from '@/hooks/Lists/useCreateList';
 import ListForm from '@/pages/Lists/Components/Form';
 import Header from '@/pages/Lists/Components/Header';
 import useCommonStore from '@/stores/useCommonStore';
+import useUserStore from '@/stores/useUserStore';
 import { Trans } from '@lingui/react/macro';
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -15,6 +16,7 @@ const CreatePage: React.FC<CreatePageProps> = () => {
   const navigate = useNavigate();
 
   const { setIsLoading } = useCommonStore();
+  const { user } = useUserStore();
 
   const { createListLoading, fetchCreateList } = useCreateList();
 
@@ -35,7 +37,7 @@ const CreatePage: React.FC<CreatePageProps> = () => {
   const onCreateList = async (listData: ICreateListRequest) => {
     const response = await fetchCreateList(listData);
     if (response) {
-      navigate(`/list/manage/${response.id}`);
+      navigate(`/${user.userCode}/list/${response.id}/manage`);
     }
   };
 

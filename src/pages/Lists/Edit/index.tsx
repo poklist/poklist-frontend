@@ -2,7 +2,6 @@ import { ICreateListRequest } from '@/hooks/Lists/useCreateList';
 import useDeleteList from '@/hooks/Lists/useDeleteList';
 import useEditList, { IEditListRequest } from '@/hooks/Lists/useEditList';
 import useGetList from '@/hooks/Lists/useGetList';
-import { base64ToFile } from '@/lib/utils';
 import ListForm from '@/pages/Lists/Components/Form';
 import Header from '@/pages/Lists/Components/Header';
 import useCommonStore from '@/stores/useCommonStore';
@@ -49,6 +48,7 @@ const EditListPage: React.FC<EditListPageProps> = () => {
   };
 
   const onEditList = async (listFormData: ICreateListRequest) => {
+    console.log('listFormData', listFormData);
     if (!listInfo) {
       return;
     }
@@ -71,16 +71,12 @@ const EditListPage: React.FC<EditListPageProps> = () => {
       const _fetchGetListInfo = async () => {
         const response = await fetchGetListInfo(id);
         if (response) {
-          const coverImage =
-            response.coverImage.length > 0
-              ? await base64ToFile(response.coverImage)
-              : null;
           setListInfo({
             listID: response.id,
             title: response.title,
             description: response.description,
             externalLink: response.externalLink,
-            coverImage,
+            coverImage: response.coverImage,
             categoryID: response.categoryID,
           });
         }

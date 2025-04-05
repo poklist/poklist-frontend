@@ -1,6 +1,5 @@
 import ApiPath from '@/config/apiPath';
 import axios from '@/lib/axios';
-import { fileToBase64 } from '@/lib/utils';
 import useCommonStore from '@/stores/useCommonStore';
 import { IResponse } from '@/types/response';
 import { AxiosResponse } from 'axios';
@@ -11,7 +10,7 @@ export interface IEditIdeaRequest {
   title: string;
   description: string;
   externalLink?: string;
-  coverImage?: File | null;
+  coverImage?: string | null;
 }
 
 export interface IEditIdeaResponse {
@@ -31,9 +30,7 @@ const useEditIdea = () => {
     setIsEditIdeaLoading(true);
     const _params = {
       ...params,
-      coverImage: params.coverImage
-        ? await fileToBase64(params.coverImage)
-        : null,
+      coverImage: params.coverImage,
     };
     try {
       const response: AxiosResponse<IResponse<IEditIdeaResponse>> =

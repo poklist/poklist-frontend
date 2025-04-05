@@ -4,7 +4,6 @@ import {
   ICreateListResponse,
 } from '@/hooks/Lists/useCreateList';
 import axios from '@/lib/axios';
-import { fileToBase64 } from '@/lib/utils';
 import useCommonStore from '@/stores/useCommonStore';
 import { IResponse } from '@/types/response';
 import { useState } from 'react';
@@ -29,9 +28,7 @@ const useEditList = () => {
       title: editListRequest.title,
       description: editListRequest.description,
       externalLink: editListRequest.externalLink,
-      coverImage: editListRequest.coverImage
-        ? await fileToBase64(editListRequest.coverImage)
-        : null,
+      coverImage: editListRequest.coverImage,
       categoryID: editListRequest.categoryID,
     };
     try {

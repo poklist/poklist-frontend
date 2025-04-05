@@ -1,6 +1,5 @@
 import ApiPath from '@/config/apiPath';
 import axios from '@/lib/axios';
-import { base64ToFile } from '@/lib/utils';
 import useCommonStore from '@/stores/useCommonStore';
 import { IResponse } from '@/types/response';
 import { AxiosResponse } from 'axios';
@@ -24,7 +23,7 @@ export interface IIdeaInfo {
   title: string;
   description: string;
   externalLink: string;
-  coverImage: File | null;
+  coverImage: string | null;
   createdAt: string;
   updatedAt: string;
   owner: IIdeaOwnerInfo;
@@ -49,11 +48,7 @@ export const useGetIdea = () => {
         `${ApiPath.ideas}/${params}`
       );
       if (response.data.content) {
-        const coverImage =
-          response.data.content.coverImage.length > 0
-            ? await base64ToFile(response.data.content.coverImage)
-            : null;
-        const _ideaInfo = { ...response.data.content, coverImage };
+        const _ideaInfo = { ...response.data.content };
         setIdeaInfo(_ideaInfo);
         setIsIdeaInfoLoading(false);
         return _ideaInfo;

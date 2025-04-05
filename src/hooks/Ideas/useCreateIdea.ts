@@ -1,6 +1,5 @@
 import ApiPath from '@/config/apiPath';
 import axios from '@/lib/axios';
-import { fileToBase64 } from '@/lib/utils';
 import useCommonStore from '@/stores/useCommonStore';
 import { IResponse } from '@/types/response';
 import { useState } from 'react';
@@ -10,7 +9,7 @@ export interface ICreateIdeaRequest {
   title: string;
   description: string;
   externalLink?: string;
-  coverImage?: File | null;
+  coverImage?: string | null;
 }
 
 export interface ICreateIdeaResponse {
@@ -63,9 +62,7 @@ const useCreateIdea = (): {
       title: ideaFormData.title,
       description: ideaFormData.description,
       externalLink: ideaFormData.externalLink,
-      coverImage: ideaFormData.coverImage
-        ? await fileToBase64(ideaFormData.coverImage)
-        : null, // BASE64
+      coverImage: ideaFormData.coverImage,
     };
 
     try {

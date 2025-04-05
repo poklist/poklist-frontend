@@ -35,7 +35,7 @@ const ListSection: React.FC = () => {
   }
 
   return (
-    <div role="list-preview" className="flex-1 bg-transparent">
+    <div role="list-preview" className="mb-10 flex-1 bg-transparent sm:mb-0">
       <div className="flex flex-col bg-white">
         {listPreviewList.map((listPreview, index) => {
           const isLastItem = index === listPreviewList.length - 1;
