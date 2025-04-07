@@ -84,14 +84,19 @@ const HeroSection: React.FC = () => {
   // FUTURE: extract this code segment to a separate hook
   const getUser = async (code: string) => {
     if (!code) return;
-    const res = await axios.get<IResponse<User>>(`/${code}/info`);
-    if (!res.data.content) {
-      throw new Error('No user data');
+    try {
+      const res = await axios.get<IResponse<User>>(`/${code}/info`);
+      if (!res.data.content) {
+        throw new Error('No content');
+      }
+      setCurrentUser({ ...res.data.content }); // deep copy
+      if (res.data.content?.id === me.id) {
+        setUser(res.data.content);
+      }
+    } catch (err) {
+      navigate('/error');
     }
-    setCurrentUser({ ...res.data.content }); // deep copy
-    if (res.data.content?.id === me.id) {
-      setUser(res.data.content);
-    }
+
     setIsLoading(false);
   };
 

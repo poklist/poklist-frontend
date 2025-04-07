@@ -130,13 +130,13 @@ const ViewListPage: React.FC = () => {
   return (
     <>
       <Tile20Background />
-      <div className="sm:min-h-desktop-container relative flex min-h-screen flex-col">
+      <div className="relative flex min-h-screen flex-col sm:min-h-desktop-container">
         <BackToUserHeader
           owner={listInfo?.owner}
           hasFollowButton={!isMyPage}
           onUnmount={sendFollowingStatusForTheOwner}
         />
-        <div className="flex-1 px-3 pt-4">
+        <div className="mb-[55px] flex-1 px-3 pt-4">
           {listInfo && <ListCard data={listInfo} />}
         </div>
         <FloatingButtonFooter

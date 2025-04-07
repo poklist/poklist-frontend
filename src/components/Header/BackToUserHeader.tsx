@@ -79,7 +79,7 @@ const BackToUserHeader: React.FC<IBackToUserHeaderProps> = ({
           </Button>
         )}
       </header>
-      <div className="h-14 sm:hidden" />
+      {/* <div className="h-14 sm:hidden" /> */}
     </>
   );
 };
