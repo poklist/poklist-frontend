@@ -9,16 +9,12 @@ import {
 import LinkIconWrapper from '@/components/ui/wrappers/LinkIconWrapper';
 import { SocialLinkType } from '@/enums/index.enum';
 import axios from '@/lib/axios';
-import {
-  extractUsernameFromUrl,
-  getPreviewText,
-  urlPreview,
-} from '@/lib/utils';
+import { extractUsernameFromUrl, urlPreview } from '@/lib/utils';
 import useUserStore from '@/stores/useUserStore';
 import { IResponse } from '@/types/response';
 import { User } from '@/types/User';
 import { Trans } from '@lingui/react/macro';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { HeroSectionSkeleton } from './HeroSectionSkeleton';
 
@@ -35,6 +31,7 @@ const HeroSection: React.FC = () => {
   const { openDrawer } = useDrawer();
   const [drawerContent, setDrawerContent] = useState<React.ReactNode>(null);
   const [isFollowing, setIsFollowing] = useState<boolean>(false);
+  const bioRef = useRef<HTMLParagraphElement>(null);
 
   const linkCount = useMemo(() => {
     if (currentUser.socialLinks !== undefined) {
@@ -100,6 +97,14 @@ const HeroSection: React.FC = () => {
 
   // FUTURE: refactor the drawer content because we may have more than one drawer
   const onOpenBioDrawer = () => {
+    // FUTURE: extract this logic to a separate hook/utility function
+    if (
+      bioRef.current?.scrollHeight === undefined ||
+      bioRef.current?.clientHeight === undefined ||
+      bioRef.current.scrollHeight <= bioRef.current.clientHeight
+    ) {
+      return;
+    }
     setDrawerContent(<p>{currentUser.bio}</p>);
     openDrawer();
   };
@@ -164,8 +169,12 @@ const HeroSection: React.FC = () => {
           <p className="text-[17px] font-bold">{currentUser.displayName}</p>
           <p className="text-[13px] font-semibold">@{currentUser.userCode}</p>
           {currentUser.bio && (
-            <p className="text-[13px] font-normal" onClick={onOpenBioDrawer}>
-              {getPreviewText(currentUser.bio, 20)}
+            <p
+              ref={bioRef}
+              className="line-clamp-1 max-w-[350px] text-[13px] font-normal"
+              onClick={onOpenBioDrawer}
+            >
+              {currentUser.bio}
             </p>
           )}
         </div>

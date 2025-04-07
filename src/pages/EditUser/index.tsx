@@ -9,7 +9,7 @@ import { socialLinkStarterMap } from '@/constants/User';
 import { EditFieldVariant, FieldType } from '@/enums/EditField/index.enum';
 import { SocialLinkType } from '@/enums/index.enum';
 import axios from '@/lib/axios';
-import { getPreviewText, urlPreview } from '@/lib/utils';
+import { urlPreview } from '@/lib/utils';
 import useEditProfileStore from '@/stores/useEditProfileStore';
 import useUserStore from '@/stores/useUserStore';
 import { IEditFieldConfig } from '@/types/EditField';
@@ -275,8 +275,8 @@ const EditUserPage: React.FC = () => {
           </p>
           <>
             {newUserInfo.bio ? (
-              <p className="text-right text-black-text-01">
-                {getPreviewText(newUserInfo.bio, 20)}
+              <p className="line-clamp-1 max-w-[240px] text-right text-black-text-01">
+                {newUserInfo.bio}
               </p>
             ) : (
               <p className="text-right text-gray-storm-01">
