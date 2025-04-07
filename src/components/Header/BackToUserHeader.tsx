@@ -5,29 +5,25 @@ import { IListOwnerInfo } from '@/hooks/Lists/useGetList';
 import useRelationStore from '@/stores/useRelationStore';
 import { User } from '@/types/User';
 import { Trans } from '@lingui/react/macro';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, ButtonShape, ButtonSize, ButtonVariant } from '../ui/button';
 
 interface IBackToUserHeaderProps {
   owner?: IListOwnerInfo | User;
   hasFollowButton?: boolean;
-  onUnmount?: () => void;
+  onClickFollow?: () => void;
+  onClickUnfollow?: () => void;
 }
 
 const BackToUserHeader: React.FC<IBackToUserHeaderProps> = ({
   owner,
   hasFollowButton = false,
-  onUnmount,
+  onClickFollow,
+  onClickUnfollow,
 }) => {
   const navigate = useNavigate();
   const { isFollowing, setIsFollowing } = useRelationStore();
-
-  useEffect(() => {
-    return () => {
-      onUnmount?.();
-    };
-  }, [onUnmount]);
 
   const onClickBackToUser = () => {
     if (owner) {
@@ -73,7 +69,13 @@ const BackToUserHeader: React.FC<IBackToUserHeaderProps> = ({
             }
             shape={ButtonShape.ROUNDED_FULL}
             size={ButtonSize.SM}
-            onClick={() => setIsFollowing(!isFollowing)}
+            onClick={() => {
+              if (isFollowing) {
+                onClickUnfollow?.();
+              } else {
+                onClickFollow?.();
+              }
+            }}
           >
             {isFollowing ? <Trans>Following</Trans> : <Trans>Follow</Trans>}
           </Button>

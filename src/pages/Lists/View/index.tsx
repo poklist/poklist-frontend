@@ -2,6 +2,8 @@ import FloatingButtonFooter from '@/components/Footer/FloatingButtonFooter';
 import BackToUserHeader from '@/components/Header/BackToUserHeader';
 import { DEFAULT_IDEA_BATCH_SIZE_MAX } from '@/constants/list';
 import useGetList, { IListInfo } from '@/hooks/Lists/useGetList';
+import { useSocialAction } from '@/hooks/useSocialAction';
+import { useToast } from '@/hooks/useToast';
 import axios from '@/lib/axios';
 import { Tile20Background } from '@/pages/User/TileBackground';
 import useCommonStore from '@/stores/useCommonStore';
@@ -10,13 +12,14 @@ import useSocialStore from '@/stores/useSocialStore';
 import useUserStore from '@/stores/useUserStore';
 import { IResponse } from '@/types/response';
 import { User } from '@/types/User';
+import { t } from '@lingui/core/macro';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import ListCard from './ListCard';
 
 const ViewListPage: React.FC = () => {
   const { userCode: listOwnerUserCode, id: listID } = useParams();
-  const { user: me } = useUserStore();
+  const { user: me, isLoggedIn } = useUserStore();
   const isMyPage = listOwnerUserCode === me.userCode;
 
   const { setIsLoading } = useCommonStore();
@@ -24,35 +27,76 @@ const ViewListPage: React.FC = () => {
   const { isListInfoLoading, fetchGetListInfo } = useGetList();
   const [listInfo, setListInfo] = useState<IListInfo>();
   const [listOwnerInfo, setListOwnerInfo] = useState<User>();
-  const { isLiked, originalIsLiked, initializeLikeStatus } = useSocialStore();
-  const { isFollowing, originalIsFollowing, initializeFollowingStatus } =
-    useRelationStore();
+  const { isLiked, setIsLiked, originalIsLiked, initializeLikeStatus } =
+    useSocialStore();
+  const {
+    isFollowing,
+    setIsFollowing,
+    originalIsFollowing,
+    initializeFollowingStatus,
+  } = useRelationStore();
+  const { toast } = useToast();
 
-  const sendReactionForTheList = () => {
-    if (isLiked === originalIsLiked) {
-      return;
-    }
-
-    if (isLiked) {
-      axios
-        .post<IResponse<unknown>>('/like', null, {
-          params: { listID: listID },
-        })
-        .catch(() => {
-          console.error('Failed to like the list');
-          // FUTURE: advanced error handling
-        });
-    } else {
-      axios
-        .post<IResponse<unknown>>('/unlike', null, {
-          params: { listID: listID },
-        })
-        .catch(() => {
-          console.error('Failed to unlike the list');
-          // FUTURE: advanced error handling
-        });
-    }
-  };
+  const { debouncedMutate: like } = useSocialAction({
+    actionKey: 'like',
+    url: '/like',
+    method: 'POST',
+    shouldAllow: () => isLoggedIn,
+    onNotAllowed: () => {
+      toast({
+        title: t`Please login to do this action`,
+        variant: 'destructive',
+      });
+    },
+    onOptimisticUpdate: () => {
+      setIsLiked(true);
+    },
+  });
+  const { debouncedMutate: unlike } = useSocialAction({
+    actionKey: 'unlike',
+    url: '/unlike',
+    method: 'POST',
+    shouldAllow: () => isLoggedIn,
+    onNotAllowed: () => {
+      toast({
+        title: t`Please login to do this action`,
+        variant: 'destructive',
+      });
+    },
+    onOptimisticUpdate: () => {
+      setIsLiked(false);
+    },
+  });
+  const { debouncedMutate: follow } = useSocialAction({
+    actionKey: 'follow',
+    url: '/follow',
+    method: 'POST',
+    shouldAllow: () => isLoggedIn,
+    onNotAllowed: () => {
+      toast({
+        title: t`Please login to do this action`,
+        variant: 'destructive',
+      });
+    },
+    onOptimisticUpdate: () => {
+      setIsFollowing(true);
+    },
+  });
+  const { debouncedMutate: unfollow } = useSocialAction({
+    actionKey: 'unfollow',
+    url: '/unfollow',
+    method: 'POST',
+    shouldAllow: () => isLoggedIn,
+    onNotAllowed: () => {
+      toast({
+        title: t`Please login to do this action`,
+        variant: 'destructive',
+      });
+    },
+    onOptimisticUpdate: () => {
+      setIsFollowing(false);
+    },
+  });
 
   const sendFollowingStatusForTheOwner = () => {
     if (isFollowing === originalIsFollowing) {
@@ -134,14 +178,20 @@ const ViewListPage: React.FC = () => {
         <BackToUserHeader
           owner={listInfo?.owner}
           hasFollowButton={!isMyPage}
-          onUnmount={sendFollowingStatusForTheOwner}
+          onClickFollow={() =>
+            follow({ params: { userID: listOwnerInfo?.id } })
+          }
+          onClickUnfollow={() =>
+            unfollow({ params: { userID: listOwnerInfo?.id } })
+          }
         />
         <div className="mb-[55px] flex-1 px-3 pt-4">
           {listInfo && <ListCard data={listInfo} />}
         </div>
         <FloatingButtonFooter
           hasLikeButton={true}
-          onUnmount={sendReactionForTheList}
+          onClickLike={() => like({ params: { listID: listID } })}
+          onClickUnlike={() => unlike({ params: { listID: listID } })}
         />
       </div>
     </>
