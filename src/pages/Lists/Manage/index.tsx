@@ -107,9 +107,7 @@ const ListManagePage: React.FC<ManageListPageProps> = () => {
         </div>
         <div className="mb-4 px-4 text-[15px] text-black-gray-03">
           {listInfo?.ideas === undefined || listInfo.ideas.length <= 0 ? (
-            <Trans>
-              Newly created idea will be shown below, let's add one!
-            </Trans>
+            <Trans>Your ideas live here. Create one!</Trans>
           ) : (
             <Trans>Tap to edit. Hold & drag to reorder Ideas</Trans>
           )}
