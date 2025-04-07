@@ -615,6 +615,10 @@ msgid "Cancel"
 msgstr "Cancel"
 
 #: src/pages/Idea/Components/Form/index.tsx
+#~ msgid "Describe what this idea is about"
+#~ msgstr "Describe what this idea is about"
+
+#: src/pages/Idea/Components/Form/index.tsx
 #: src/pages/Lists/Components/Form/index.tsx
 msgid "Cover Image"
 msgstr "Cover Image"
@@ -769,8 +773,8 @@ msgid "Add an idea"
 msgstr "Add an idea"
 
 #: src/pages/Lists/Manage/index.tsx
-msgid "Newly created idea will be shown below, let's add one!"
-msgstr "Newly created idea will be shown below, let's add one!"
+msgid "Your ideas live here. Create one!"
+msgstr "Your ideas live here. Create one!"
 
 #: src/pages/Lists/Manage/index.tsx
 msgid "Tap to edit. Hold & drag to reorder Ideas"

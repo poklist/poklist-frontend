@@ -48,7 +48,6 @@ const EditListPage: React.FC<EditListPageProps> = () => {
   };
 
   const onEditList = async (listFormData: ICreateListRequest) => {
-    console.log('listFormData', listFormData);
     if (!listInfo) {
       return;
     }

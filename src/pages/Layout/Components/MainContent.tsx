@@ -16,7 +16,7 @@ const MainContent = () => {
         </div>
         <div
           id="main-content"
-          className="-mr-[3.8px] flex-1 overflow-y-scroll bg-white"
+          className="-mr-[3.8px] flex-1 overflow-x-hidden overflow-y-scroll bg-white"
         >
           <Outlet />
         </div>

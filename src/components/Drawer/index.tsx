@@ -8,7 +8,7 @@ import {
   DrawerTitle,
 } from '@/components/ui/drawer';
 import { cn } from '@/lib/utils';
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
 interface IDrawerContext {
   isOpen: boolean;
@@ -69,6 +69,13 @@ export const DrawerComponent: React.FC<IDrawerProps> = ({
   className,
 }) => {
   const { isOpen, closeDrawer } = useDrawer();
+
+  useEffect(() => {
+    return () => {
+      closeDrawer();
+    };
+  }, []);
+
   return (
     <Drawer open={isOpen} onOpenChange={closeDrawer}>
       <DrawerContent

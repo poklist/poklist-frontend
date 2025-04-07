@@ -158,7 +158,6 @@ const ListForm: React.FC<IListFormProps> = ({
       coverImage?: File | null | undefined;
     }>
   ) => {
-    console.log('value', value);
     const errorKey = Object.keys(value)[0];
     // TODO 目前解法
     switch (errorKey) {
@@ -210,7 +209,6 @@ const ListForm: React.FC<IListFormProps> = ({
   };
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
-    console.log('data', data);
     completedCallback(data);
   };
 
@@ -403,7 +401,6 @@ const ListForm: React.FC<IListFormProps> = ({
           variant={ButtonVariant.BLACK}
           shape={ButtonShape.ROUNDED_5PX}
           onClick={() => {
-            console.log('listForm', listForm.getValues());
             listForm.handleSubmit(onSubmit, onSubmitFailed)();
           }}
         >

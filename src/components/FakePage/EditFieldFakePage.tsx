@@ -28,12 +28,6 @@ export const EditFieldFakePageComponent: React.FC<IEditFieldConfig> = ({
     ((!allowEmpty && !fieldValue) || fieldValue === edittingFieldValue);
 
   useEffect(() => {
-    if (isOpen === false) {
-      setFieldValue('');
-    }
-  }, [isOpen]);
-
-  useEffect(() => {
     if (variant === EditFieldVariant.TEXT) {
       setFieldValue(edittingFieldValue ?? '');
     }
