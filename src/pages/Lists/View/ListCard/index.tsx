@@ -34,7 +34,8 @@ interface IListCardProps {
 }
 
 const ListCard: React.FC<IListCardProps> = ({ data }) => {
-  const { ideaID } = useParams();
+  const { userCode: listOwnerUserCode, id: listID, ideaID } = useParams();
+
   const { i18n } = useLingui();
   const navigate = useNavigate();
   const location = useLocation();
@@ -120,7 +121,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
 
   useEffect(() => {
     if (ideaID) {
-      navigate(`/${user.userCode}/list/${data.id}`, {
+      navigate(`/${listOwnerUserCode}/list/${listID}`, {
         state: { ideaID: Number(ideaID) },
       });
     }
