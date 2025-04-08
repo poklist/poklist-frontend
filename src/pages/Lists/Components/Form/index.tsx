@@ -25,7 +25,7 @@ import { Trans } from '@lingui/react/macro';
 import React, { useEffect, useRef, useState } from 'react';
 import { Controller, FieldErrors, useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { useNavigate } from 'react-router-dom';
+import useStrictNavigate from '@/hooks/useStrictNavigate';
 
 const TITLE_MAX_LENGTH = 60;
 const DESC_MAX_LENGTH = 250;
@@ -265,7 +265,7 @@ const ListForm: React.FC<IListFormProps> = ({
     setRadioChoice(_radioChoice);
   }, [categories]);
 
-  const navigate = useNavigate();
+  const navigateTo = useStrictNavigate();
 
   return (
     <>
@@ -390,7 +390,7 @@ const ListForm: React.FC<IListFormProps> = ({
           <Button
             onClick={() => {
               closeCancelDrawer();
-              navigate(-1);
+              navigateTo.backward();
             }}
             variant={ButtonVariant.WARNING}
             shape={ButtonShape.ROUNDED_5PX}
