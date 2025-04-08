@@ -14,7 +14,7 @@ import { DrawerIds } from '@/constants/Drawer';
 
 const BlocksSection: React.FC = () => {
   const navigate = useNavigate();
-  const { openDrawer } = useDrawer();
+  const { openDrawer } = useDrawer(DrawerIds.SETTINGS_DRAWER_ID);
   const { isLoggedIn, logout } = useUserStore();
   const [drawerContent, setDrawerContent] = useState<React.ReactNode>(null);
 
@@ -57,7 +57,7 @@ const BlocksSection: React.FC = () => {
     const onLanguageChange = (value: string[]) => {
       const newLanguage = value[0] as Language;
       // TODO: error handling
-      activateI18n(newLanguage);
+      void activateI18n(newLanguage);
       setLanguage(newLanguage);
       setLocalStorage(LocalStorageKey.SELECTED_LANGUAGE, newLanguage);
     };
