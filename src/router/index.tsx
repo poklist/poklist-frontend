@@ -23,6 +23,10 @@ const router = createBrowserRouter([
       { path: '', element: <Navigate to="/home" replace /> },
       { path: 'home', element: <Home /> },
       { path: 'settings', element: <SettingsPage /> },
+      { path: 'error', element: <ErrorPage /> },
+      { path: 'goToMobile', element: <GoToMobilePage /> },
+      { path: 'idea/create', element: <CreateIdeaPage /> },
+      { path: 'idea/:id/edit', element: <EditIdeaPage /> },
       {
         path: ':userCode',
         element: <UserRouteLayout />,
@@ -42,11 +46,6 @@ const router = createBrowserRouter([
           { path: 'list/:id/edit', element: <EditListPage /> },
         ],
       },
-
-      { path: 'idea/create', element: <CreateIdeaPage /> },
-      { path: 'idea/:id/edit', element: <EditIdeaPage /> },
-      { path: 'error', element: <ErrorPage /> },
-      { path: 'goToMobile', element: <GoToMobilePage /> },
       { path: '*', element: <Navigate to="/error" replace /> },
     ],
   },

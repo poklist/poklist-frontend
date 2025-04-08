@@ -7,18 +7,19 @@ import { cn } from '@/lib/utils';
 import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
 import useUserStore from '@/stores/useUserStore';
 import React from 'react';
-import { useNavigate, useOutletContext } from 'react-router-dom';
+import { useOutletContext } from 'react-router-dom';
 
 interface HeaderProps {
   className?: string;
 }
 
 const Header: React.FC<HeaderProps> = ({ className }) => {
-  const { userCode } = useOutletContext<UserRouteLayoutContextType>();
-  const navigate = useNavigate();
   const navigateTo = useStrictNavigate();
+
+  // NOTE: This is a workaround to prevent the userCode from being null
+  const outletContext = useOutletContext<UserRouteLayoutContextType | null>();
   const { isLoggedIn, user: me } = useUserStore();
-  const isMyPage = userCode === me.userCode;
+  const isMyPage = outletContext?.userCode === me.userCode;
 
   return (
     <>
