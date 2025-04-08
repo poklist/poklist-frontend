@@ -174,6 +174,13 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
 
         break;
       }
+      case 'coverImage': {
+        setErrorDrawerMessage({
+          title: t`Required cover image`,
+          content: t`Please upload a cover image.`,
+        });
+        break;
+      }
       case 'externalLink': {
         setShowingAlert(true, {
           message: value.externalLink?.message || 'Invalid url',

@@ -163,6 +163,7 @@ const ListForm: React.FC<IListFormProps> = ({
   ) => {
     console.log('value', value);
     const errorKey = Object.keys(value)[0];
+    console.log('errorKey', errorKey);
     // TODO 目前解法
     switch (errorKey) {
       case 'title': {
@@ -189,6 +190,13 @@ const ListForm: React.FC<IListFormProps> = ({
           });
         }
 
+        break;
+      }
+      case 'coverImage': {
+        setErrorDrawerMessage({
+          title: t`Required cover image`,
+          content: t`Please upload a cover image.`,
+        });
         break;
       }
       case 'externalLink': {
@@ -265,7 +273,7 @@ const ListForm: React.FC<IListFormProps> = ({
     <>
       <form
         onSubmit={() => {
-          listForm.handleSubmit(onSubmit, onSubmitFailed)();
+          void listForm.handleSubmit(onSubmit, onSubmitFailed)();
         }}
         className="mx-4 mt-6 flex flex-1 flex-col gap-6 px-4 md:max-w-mobile-max"
       >
@@ -357,26 +365,16 @@ const ListForm: React.FC<IListFormProps> = ({
           )
         }
         endFooter={
-          <div className="flex justify-end">
-            {defaultListInfo ? (
-              <Button
-                onClick={() => onCloseCategoryDrawer()}
-                variant={ButtonVariant.BLACK}
-                shape={ButtonShape.ROUNDED_5PX}
-              >
-                <Trans>Next</Trans>
-              </Button>
-            ) : (
-              <Button
-                onClick={listForm.handleSubmit(onSubmit, onSubmitFailed)}
-                type="submit"
-                variant={ButtonVariant.BLACK}
-                shape={ButtonShape.ROUNDED_5PX}
-              >
-                <Trans>Next</Trans>
-              </Button>
-            )}
-          </div>
+          <Button
+            onClick={() =>
+              void listForm.handleSubmit(onSubmit, onSubmitFailed)()
+            }
+            type="submit"
+            variant={ButtonVariant.BLACK}
+            shape={ButtonShape.ROUNDED_5PX}
+          >
+            <Trans>Next</Trans>
+          </Button>
         }
       />
 
@@ -438,10 +436,7 @@ const ListForm: React.FC<IListFormProps> = ({
           }
           variant={ButtonVariant.BLACK}
           shape={ButtonShape.ROUNDED_5PX}
-          onClick={() => {
-            console.log('listForm', listForm.getValues());
-            listForm.handleSubmit(onSubmit, onSubmitFailed)();
-          }}
+          onClick={() => onOpenCategoryDrawer()}
         >
           <Trans>Next</Trans>
         </Button>
