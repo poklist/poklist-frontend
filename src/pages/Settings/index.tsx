@@ -11,18 +11,22 @@ interface SettingsPageProps {
 }
 
 const SettingsPage: React.FC<SettingsPageProps> = () => {
-  const { user: me } = useUserStore();
+  const { user: me, isLoggedIn } = useUserStore();
   const navigateTo = useStrictNavigate();
 
   const handleOnClose = () => {
     // FUTURE: if history is not empty, navigate to the previous page; otherwise, navigate to the user page
-    navigateTo.user(me.userCode);
+    if (isLoggedIn) {
+      navigateTo.user(me.userCode);
+    } else {
+      navigateTo.home();
+    }
   };
 
   return (
     // Your component code here
     <>
-      <BackToUserHeader owner={me} />
+      <BackToUserHeader owner={me.id !== 0 ? me : undefined} />
       <IntroSection />
       <BlocksSection />
       <Footer onClose={handleOnClose} title={t`Setting Center`} />
