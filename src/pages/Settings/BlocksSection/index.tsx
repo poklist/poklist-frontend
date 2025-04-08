@@ -1,5 +1,6 @@
 import { DrawerComponent, useDrawer } from '@/components/Drawer';
 import { Language, LocalStorageKey, Location } from '@/enums/index.enum';
+import useStrictNavigate from '@/hooks/useStrictNavigate';
 import { activateI18n } from '@/lib/languageProvider';
 import { getLocalStorage, setLocalStorage } from '@/lib/utils';
 import useUserStore from '@/stores/useUserStore';
@@ -7,12 +8,11 @@ import { ILinksBlock } from '@/types/Settings';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { ButtonRadioGroup } from '../ButtonRadioGroup';
 import LinksBlock from './LinksBlock';
 
 const BlocksSection: React.FC = () => {
-  const navigate = useNavigate();
+  const navigateTo = useStrictNavigate();
   const { openDrawer } = useDrawer();
   const { isLoggedIn, logout } = useUserStore();
   const [drawerContent, setDrawerContent] = useState<React.ReactNode>(null);
@@ -188,7 +188,7 @@ const BlocksSection: React.FC = () => {
         decription: t`Sign Out`,
         action: () => {
           logout();
-          navigate('/');
+          navigateTo.home();
         },
       },
     ];
@@ -197,7 +197,7 @@ const BlocksSection: React.FC = () => {
       {
         decription: t`Sign In`,
         action: () => {
-          navigate('/home');
+          navigateTo.home();
         },
       },
     ];

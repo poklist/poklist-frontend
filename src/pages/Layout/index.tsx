@@ -1,15 +1,16 @@
 import { DrawerProvider } from '@/components/Drawer';
 import { FakePageProvider } from '@/components/FakePage';
+import useStrictNavigate from '@/hooks/useStrictNavigate';
 import { LanguageProvider } from '@/lib/languageProvider';
 import { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import Background from './Components/Background';
 import BottomNav from './Components/BottomNav';
 import MainContent from './Components/MainContent';
 import PromptText from './Components/PromptText';
 
 export default function Layout() {
-  const navigate = useNavigate();
+  const navigateTo = useStrictNavigate();
   const location = useLocation();
   const redirectWhiteList = ['/home', '/error', '/goToMobile'];
 
@@ -19,7 +20,7 @@ export default function Layout() {
         navigator.userAgent
       );
     if (!isMobile && !redirectWhiteList.includes(location.pathname)) {
-      navigate('/goToMobile');
+      navigateTo.goToMobile();
     }
   }, [location.pathname]);
 

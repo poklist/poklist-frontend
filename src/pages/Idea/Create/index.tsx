@@ -1,18 +1,19 @@
 import useCreateIdea, { ICreateIdeaRequest } from '@/hooks/Ideas/useCreateIdea';
+import useStrictNavigate from '@/hooks/useStrictNavigate';
 import IdeaForm from '@/pages/Idea/Components/Form';
 import Header from '@/pages/Idea/Components/Header';
 import useCommonStore from '@/stores/useCommonStore';
 import useUserStore from '@/stores/useUserStore';
 import { Trans } from '@lingui/react/macro';
 import React, { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 interface IdeaCreatePageProps {
   // Add any props you need for the page
 }
 
 const IdeaCreatePage: React.FC<IdeaCreatePageProps> = () => {
-  const navigate = useNavigate();
+  const navigateTo = useStrictNavigate();
   const location = useLocation();
   const { listID, listTitle } = location.state as {
     listID: number;
@@ -26,8 +27,7 @@ const IdeaCreatePage: React.FC<IdeaCreatePageProps> = () => {
 
   const onDismissCreate = (isFormEmpty: boolean) => {
     if (isFormEmpty) {
-      // navigate(`/${me?.userCode}/list/${listID}/manage`);
-      navigate(-1);
+      navigateTo.backward();
     }
   };
 
@@ -36,7 +36,7 @@ const IdeaCreatePage: React.FC<IdeaCreatePageProps> = () => {
   ) => {
     const response = await fetchCreateIdea(ideaFormData);
     if (response) {
-      navigate(`/${me?.userCode}/list/${listID}/manage`);
+      navigateTo.manageList(me?.userCode, listID.toString());
     }
   };
 

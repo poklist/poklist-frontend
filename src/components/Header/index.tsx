@@ -2,18 +2,21 @@ import headerPoklist from '@/assets/images/header-poklist.svg';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button, ButtonSize, ButtonVariant } from '@/components/ui/button';
 import IconSetting from '@/components/ui/icons/SettingIcon';
+import useStrictNavigate from '@/hooks/useStrictNavigate';
 import { cn } from '@/lib/utils';
+import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
 import useUserStore from '@/stores/useUserStore';
 import React from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 
 interface HeaderProps {
   className?: string;
 }
 
 const Header: React.FC<HeaderProps> = ({ className }) => {
-  const { userCode } = useParams();
+  const { userCode } = useOutletContext<UserRouteLayoutContextType>();
   const navigate = useNavigate();
+  const navigateTo = useStrictNavigate();
   const { isLoggedIn, user: me } = useUserStore();
   const isMyPage = userCode === me.userCode;
 
@@ -33,7 +36,7 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
           <img
             src={headerPoklist}
             alt="Poklist"
-            onClick={() => navigate('/home')}
+            onClick={() => navigateTo.home()}
             className="h-8"
           />
         </div>
@@ -42,14 +45,17 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
           className="flex items-center justify-center gap-4"
         >
           {!isLoggedIn && (
-            <Button variant={ButtonVariant.WHITE} onClick={() => navigate('/')}>
+            <Button
+              variant={ButtonVariant.WHITE}
+              onClick={() => navigateTo.home()}
+            >
               Sign In
             </Button>
           )}
           {isLoggedIn && !isMyPage ? (
             <Avatar
               className="h-8 w-8 cursor-pointer"
-              onClick={() => navigate(`/${me.userCode}`)}
+              onClick={() => navigateTo.user(me.userCode)}
             >
               <AvatarImage src={me.profileImage} />
               <AvatarFallback>{me.displayName[0]}</AvatarFallback>
@@ -58,7 +64,7 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
             <Button
               variant={ButtonVariant.WHITE}
               size={ButtonSize.ICON}
-              onClick={() => navigate('/settings')}
+              onClick={() => navigateTo.settings()}
             >
               <IconSetting />
             </Button>

@@ -2,13 +2,13 @@ import { Button, ButtonVariant } from '@/components/ui/button';
 import IconAdd from '@/components/ui/icons/AddIcon';
 import IconLike from '@/components/ui/icons/LikeIcon';
 import IconLink from '@/components/ui/icons/LinkIcon';
+import useStrictNavigate from '@/hooks/useStrictNavigate';
 import { useToast } from '@/hooks/useToast';
 import { cn, copyHref } from '@/lib/utils';
 import useSocialStore from '@/stores/useSocialStore';
 import useUserStore from '@/stores/useUserStore';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
-import { useNavigate } from 'react-router-dom';
 
 interface IFooterProps {
   hasLikeButton?: boolean;
@@ -21,12 +21,10 @@ const FloatingButtonFooter: React.FC<IFooterProps> = ({
   onClickLike,
   onClickUnlike,
 }) => {
-  // May use ReactNode instead
-  const navigate = useNavigate();
   const { toast } = useToast();
   const { user: me } = useUserStore();
-  const { isLiked, setIsLiked } = useSocialStore();
-
+  const { isLiked } = useSocialStore();
+  const navigateTo = useStrictNavigate();
   const handleCopyHref = () => {
     copyHref();
     toast({
@@ -62,7 +60,7 @@ const FloatingButtonFooter: React.FC<IFooterProps> = ({
       <Button
         variant={ButtonVariant.WHITE}
         className="flex items-center gap-2 text-sm"
-        onClick={() => navigate(`/${me.userCode}/list/create`)}
+        onClick={() => navigateTo.createList(me.userCode)}
       >
         <IconAdd />
         <Trans>Create List</Trans>

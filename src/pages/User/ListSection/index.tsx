@@ -1,15 +1,17 @@
+import useStrictNavigate from '@/hooks/useStrictNavigate';
 import axios from '@/lib/axios';
+import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
 import { ListPreview } from '@/types/List';
 import { IResponse } from '@/types/response';
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useOutletContext } from 'react-router-dom';
 import { ListSectionSkeleton } from './ListSectionSkeleton';
 
 const MAX_LIST_PREVIEW_COUNT = 99;
 
 const ListSection: React.FC = () => {
-  const navigate = useNavigate();
-  const { userCode } = useParams();
+  const navigateTo = useStrictNavigate();
+  const { userCode } = useOutletContext<UserRouteLayoutContextType>();
   const [listPreviewList, setListPreviewList] = useState<ListPreview[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -46,7 +48,7 @@ const ListSection: React.FC = () => {
                 isLastItem ? 'border-b-[3px]' : 'border-b'
               } border-black-text-01 p-4 -tracking-1.1%`}
               onClick={() => {
-                navigate(`/${userCode}/list/${listPreview.id}`);
+                navigateTo.viewList(userCode, listPreview.id.toString());
               }}
             >
               <p className="text-[15px] font-semibold text-black-text-01">

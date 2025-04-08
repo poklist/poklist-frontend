@@ -2,11 +2,11 @@ import headerP from '@/assets/images/header-p.svg';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import IconLeftArrow from '@/components/ui/icons/LeftArrowIcon';
 import { IListOwnerInfo } from '@/hooks/Lists/useGetList';
+import useStrictNavigate from '@/hooks/useStrictNavigate';
 import useRelationStore from '@/stores/useRelationStore';
 import { User } from '@/types/User';
 import { Trans } from '@lingui/react/macro';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Button, ButtonShape, ButtonSize, ButtonVariant } from '../ui/button';
 
 interface IBackToUserHeaderProps {
@@ -22,17 +22,16 @@ const BackToUserHeader: React.FC<IBackToUserHeaderProps> = ({
   onClickFollow,
   onClickUnfollow,
 }) => {
-  const navigate = useNavigate();
-  const { isFollowing, setIsFollowing } = useRelationStore();
-
+  const { isFollowing } = useRelationStore();
+  const navigateTo = useStrictNavigate();
   const onClickBackToUser = () => {
     if (owner) {
-      navigate(`/${owner.userCode}`);
+      navigateTo.user(owner.userCode);
     }
   };
 
   const onClickLogo = () => {
-    navigate('/');
+    navigateTo.home();
   };
 
   return (

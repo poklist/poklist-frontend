@@ -9,21 +9,24 @@ import {
 import LinkIconWrapper from '@/components/ui/wrappers/LinkIconWrapper';
 import { SocialLinkType } from '@/enums/index.enum';
 import { SocialActionType, useSocialAction } from '@/hooks/useSocialAction';
+import useStrictNavigate from '@/hooks/useStrictNavigate';
 import { useToast } from '@/hooks/useToast';
 import axios from '@/lib/axios';
 import { extractUsernameFromUrl, urlPreview } from '@/lib/utils';
+import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
 import useUserStore from '@/stores/useUserStore';
 import { IResponse } from '@/types/response';
 import { User } from '@/types/User';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useOutletContext } from 'react-router-dom';
 import { HeroSectionSkeleton } from './HeroSectionSkeleton';
 
 const HeroSection: React.FC = () => {
-  const { userCode } = useParams();
-  const navigate = useNavigate();
+  const { userCode } = useOutletContext<UserRouteLayoutContextType>();
+
+  const navigateTo = useStrictNavigate();
   const {
     isLoggedIn,
     user: me,
@@ -85,7 +88,7 @@ const HeroSection: React.FC = () => {
   }, [isLoggedIn, currentUser.isFollowing]);
 
   const goToEditPage = () => {
-    navigate(`/${me.userCode}/edit`);
+    navigateTo.editUser(me.userCode);
   };
 
   // FUTURE: extract this code segment to a separate hook
@@ -101,7 +104,7 @@ const HeroSection: React.FC = () => {
         setUser(res.data.content);
       }
     } catch (err) {
-      navigate('/error');
+      navigateTo.error();
     }
 
     setIsLoading(false);

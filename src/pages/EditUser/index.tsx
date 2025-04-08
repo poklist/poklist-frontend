@@ -8,6 +8,7 @@ import LinkIconWrapper from '@/components/ui/wrappers/LinkIconWrapper';
 import { socialLinkStarterMap } from '@/constants/User';
 import { EditFieldVariant, FieldType } from '@/enums/EditField/index.enum';
 import { SocialLinkType } from '@/enums/index.enum';
+import useStrictNavigate from '@/hooks/useStrictNavigate';
 import axios from '@/lib/axios';
 import { urlPreview } from '@/lib/utils';
 import useEditProfileStore from '@/stores/useEditProfileStore';
@@ -18,10 +19,9 @@ import { IUpdateUserResponse } from '@/types/User';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 const EditUserPage: React.FC = () => {
-  const navigate = useNavigate();
+  const navigateTo = useStrictNavigate();
   const { user, setUser, refreshToken } = useUserStore();
   const {
     newUserInfo,
@@ -192,11 +192,11 @@ const EditUserPage: React.FC = () => {
           refreshToken(response.data.content.accessToken);
         }
         setUser({ ...newUserInfo });
-        navigate(`/${newUserInfo.userCode}`);
+        navigateTo.user(newUserInfo.userCode);
       })
       .catch((error) => {
         console.error(error);
-        navigate(`/${user.userCode}`);
+        navigateTo.user(user.userCode);
       });
   };
 
@@ -324,7 +324,7 @@ const EditUserPage: React.FC = () => {
       </div>
       <EditModeFooter
         disabled={!isModified()}
-        onClose={() => navigate(`/${user.userCode}`)}
+        onClose={() => navigateTo.user(user.userCode)}
         title={t`Edit profile and account`}
         onSave={onSubmit}
       />

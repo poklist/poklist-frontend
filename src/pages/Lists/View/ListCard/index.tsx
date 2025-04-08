@@ -14,9 +14,11 @@ import {
 } from '@/constants/list';
 import { Language, SocialLinkType } from '@/enums/index.enum';
 import { IListInfo } from '@/hooks/Lists/useGetList';
+import useStrictNavigate from '@/hooks/useStrictNavigate';
 import axios from '@/lib/axios';
 import { getFormattedTime } from '@/lib/time';
 import { urlPreview } from '@/lib/utils';
+import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
 import { CategoriesI18n } from '@/pages/Lists/i18n';
 import useCommonStore from '@/stores/useCommonStore';
 import useUserStore from '@/stores/useUserStore';
@@ -26,7 +28,7 @@ import { useLingui } from '@lingui/react';
 import { Trans } from '@lingui/react/macro';
 import { AxiosResponse } from 'axios';
 import { useEffect, useRef, useState } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useOutletContext, useParams } from 'react-router-dom';
 import IdeaDrawerContent from '../IdeaDrawerContent';
 
 interface IListCardProps {
@@ -34,10 +36,12 @@ interface IListCardProps {
 }
 
 const ListCard: React.FC<IListCardProps> = ({ data }) => {
-  const { userCode: listOwnerUserCode, id: listID, ideaID } = useParams();
+  const { userCode: listOwnerUserCode } =
+    useOutletContext<UserRouteLayoutContextType>();
+  const { id: listID, ideaID } = useParams();
 
   const { i18n } = useLingui();
-  const navigate = useNavigate();
+  const navigateTo = useStrictNavigate();
   const location = useLocation();
 
   const { isLoggedIn, user } = useUserStore();
@@ -120,12 +124,10 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
   }, [data.createdAt, i18n.locale]);
 
   useEffect(() => {
-    if (ideaID) {
-      navigate(`/${listOwnerUserCode}/list/${listID}`, {
-        state: { ideaID: Number(ideaID) },
-      });
+    if (listID && ideaID) {
+      navigateTo.viewList(listOwnerUserCode, listID, ideaID);
     }
-  }, [ideaID, navigate, user.userCode, data.id]);
+  }, [ideaID, listID, navigateTo, user.userCode]);
 
   useEffect(() => {
     if (location.state?.ideaID) {
@@ -166,7 +168,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
                 size={ButtonSize.H40}
                 shape={ButtonShape.ROUNDED_5PX}
                 onClick={() =>
-                  navigate(`/${user.userCode}/list/${data.id}/manage`)
+                  navigateTo.manageList(user.userCode, data.id.toString())
                 }
               >
                 <Trans>Edit list</Trans>
@@ -176,7 +178,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
                 size={ButtonSize.H40}
                 shape={ButtonShape.ROUNDED_5PX}
                 onClick={() =>
-                  navigate(`/idea/create`, {
+                  navigateTo.createIdea({
                     state: { listID: Number(data.id), listTitle: data.title },
                   })
                 }
