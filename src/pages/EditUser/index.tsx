@@ -185,16 +185,19 @@ const EditUserPage: React.FC = () => {
       console.log('profile image is the same');
       delete newUserInfo.profileImage;
     }
-    const response = await axios.put<IResponse<IUpdateUserResponse>>(
-      `/users/me`,
-      newUserInfo
-    );
-    if (response.data.content?.accessToken) {
-      console.log('accessToken is updated');
-      refreshToken(response.data.content.accessToken);
-      setUser({ ...newUserInfo });
-    }
-    navigate(`/${user.userCode}`);
+    await axios
+      .put<IResponse<IUpdateUserResponse>>(`/users/me`, newUserInfo)
+      .then((response) => {
+        if (response.data.content?.accessToken) {
+          refreshToken(response.data.content.accessToken);
+        }
+        setUser({ ...newUserInfo });
+        navigate(`/${newUserInfo.userCode}`);
+      })
+      .catch((error) => {
+        console.error(error);
+        navigate(`/${user.userCode}`);
+      });
   };
 
   useEffect(() => {
