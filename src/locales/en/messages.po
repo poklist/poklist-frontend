@@ -620,22 +620,18 @@ msgstr "Cancel"
 
 #: src/pages/Idea/Components/Form/index.tsx
 #: src/pages/Lists/Components/Form/index.tsx
+#~ msgid "Hey, the title can’t be left empty!"
+#~ msgstr "Hey, the title can’t be left empty!"
+
+#: src/pages/Idea/Components/Form/index.tsx
+#: src/pages/Lists/Components/Form/index.tsx
 msgid "Cover Image"
 msgstr "Cover Image"
 
 #: src/pages/Idea/Components/Form/index.tsx
 #: src/pages/Lists/Components/Form/index.tsx
-msgid "Your edits will be lost if you cancel!"
-msgstr "Your edits will be lost if you cancel!"
-
-#: src/pages/Idea/Components/Form/index.tsx
-msgid "Title is saved, but your idea edits will be lost! Are you sure you want to cancel?"
-msgstr "Title is saved, but your idea edits will be lost! Are you sure you want to cancel?"
-
-#: src/pages/Idea/Components/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
-msgid "Hey, the title can’t be left empty!"
-msgstr "Hey, the title can’t be left empty!"
+msgid "Hey, the title can't be left empty!"
+msgstr "Hey, the title can't be left empty!"
 
 #: src/pages/Idea/Components/Form/index.tsx
 msgid "Every idea needs a title, so fill it in!"
@@ -661,8 +657,18 @@ msgid "Please keep it under {DESC_MAX_LENGTH} characters."
 msgstr "Please keep it under {DESC_MAX_LENGTH} characters."
 
 #: src/pages/Idea/Components/Form/index.tsx
-msgid "What’s your Idea?"
-msgstr "What’s your Idea?"
+#: src/pages/Lists/Components/Form/index.tsx
+msgid "Required cover image"
+msgstr "Required cover image"
+
+#: src/pages/Idea/Components/Form/index.tsx
+#: src/pages/Lists/Components/Form/index.tsx
+msgid "Please upload a cover image."
+msgstr "Please upload a cover image."
+
+#: src/pages/Idea/Components/Form/index.tsx
+msgid "What's your Idea?"
+msgstr "What's your Idea?"
 
 #: src/pages/Idea/Components/Form/index.tsx
 msgid "Describe what this idea is about"
@@ -674,6 +680,25 @@ msgid "Link a page"
 msgstr "Link a page"
 
 #: src/pages/Idea/Components/Form/index.tsx
+#: src/pages/Lists/Components/Form/index.tsx
+msgid "Your edits will be lost if you cancel!"
+msgstr "Your edits will be lost if you cancel!"
+
+#: src/pages/Idea/Components/Form/index.tsx
+msgid "Title is saved, but your idea edits will be lost! Are you sure you want to cancel?"
+msgstr "Title is saved, but your idea edits will be lost! Are you sure you want to cancel?"
+
+#: src/pages/Idea/Components/Form/index.tsx
+#: src/pages/Lists/Components/Form/index.tsx
+msgid "Cancel Editing"
+msgstr "Cancel Editing"
+
+#: src/pages/Idea/Components/Form/index.tsx
+#: src/pages/Lists/Components/Form/index.tsx
+msgid "Continue Editing"
+msgstr "Continue Editing"
+
+#: src/pages/Idea/Components/Form/index.tsx
 msgid "Edit Idea"
 msgstr "Edit Idea"
 
@@ -683,7 +708,6 @@ msgid "New Idea"
 msgstr "New Idea"
 
 #: src/pages/Idea/Components/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
 #: src/pages/Lists/Components/Form/index.tsx
 #: src/pages/Lists/Components/Form/index.tsx
 msgid "Next"
@@ -714,8 +738,8 @@ msgid "Delete List and All Ideas"
 msgstr "Delete List and All Ideas"
 
 #: src/pages/Lists/Components/Form/index.tsx
-msgid "If you cancel, everything you’ve entered will be lost."
-msgstr "If you cancel, everything you’ve entered will be lost."
+#~ msgid "If you cancel, everything you’ve entered will be lost."
+#~ msgstr "If you cancel, everything you’ve entered will be lost."
 
 #: src/pages/Lists/Components/Form/index.tsx
 msgid "Every list needs a title, so fill it in!"
@@ -744,6 +768,10 @@ msgstr "List Topic"
 #: src/pages/Lists/Components/Form/index.tsx
 msgid "Choose a topic that vibes with your List."
 msgstr "Choose a topic that vibes with your List."
+
+#: src/pages/Lists/Components/Form/index.tsx
+msgid "If you cancel, everything you've entered will be lost."
+msgstr "If you cancel, everything you've entered will be lost."
 
 #: src/pages/Lists/Components/Form/index.tsx
 #: src/pages/Lists/Manage/index.tsx
