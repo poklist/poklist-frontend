@@ -1,4 +1,5 @@
 import { DrawerComponent, useDrawer } from '@/components/Drawer';
+import { DrawerIds } from '@/constants/Drawer';
 import { Language, LocalStorageKey, Location } from '@/enums/index.enum';
 import useStrictNavigate from '@/hooks/useStrictNavigate';
 import { activateI18n } from '@/lib/languageProvider';
@@ -10,7 +11,6 @@ import { Trans } from '@lingui/react/macro';
 import { useEffect, useState } from 'react';
 import { ButtonRadioGroup } from '../ButtonRadioGroup';
 import LinksBlock from './LinksBlock';
-import { DrawerIds } from '@/constants/Drawer';
 
 const BlocksSection: React.FC = () => {
   const navigateTo = useStrictNavigate();
@@ -78,7 +78,7 @@ const BlocksSection: React.FC = () => {
         </div>
       </>
     );
-    openDrawer();
+    openDrawer(DrawerIds.SETTINGS_DRAWER_ID);
   };
 
   const openLocactionDrawer = () => {
@@ -115,7 +115,7 @@ const BlocksSection: React.FC = () => {
         </div>
       </>
     );
-    openDrawer();
+    openDrawer(DrawerIds.SETTINGS_DRAWER_ID);
   };
 
   const blocks: ILinksBlock[] = [

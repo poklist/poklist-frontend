@@ -45,21 +45,23 @@ const BackToUserHeader: React.FC<IBackToUserHeaderProps> = ({
           className="flex items-center justify-center gap-1"
         >
           <img src={headerP} alt="P" onClick={onClickLogo} />
-          <div
-            className="flex items-center justify-center"
-            onClick={onClickBackToUser}
-          >
-            <span className="flex h-5 w-5 items-center justify-center">
-              <IconLeftArrow />
-            </span>
-            <Avatar className="ml-1 h-6 w-6">
-              <AvatarImage src={owner?.profileImage} />
-              <AvatarFallback>{owner?.displayName?.[0]}</AvatarFallback>
-            </Avatar>
-            <p className="font-regular ml-2 text-[15px]">
-              {owner?.displayName}
-            </p>
-          </div>
+          {owner && (
+            <div
+              className="flex items-center justify-center"
+              onClick={onClickBackToUser}
+            >
+              <span className="flex h-5 w-5 items-center justify-center">
+                <IconLeftArrow />
+              </span>
+              <Avatar className="ml-1 h-6 w-6">
+                <AvatarImage src={owner?.profileImage} />
+                <AvatarFallback>{owner?.displayName?.[0]}</AvatarFallback>
+              </Avatar>
+              <p className="font-regular ml-2 text-[15px]">
+                {owner?.displayName}
+              </p>
+            </div>
+          )}
         </div>
         {hasFollowButton && (
           <Button

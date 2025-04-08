@@ -11,7 +11,7 @@ export default function UserRouteLayout() {
 
   if (!rawUserCode?.startsWith('@')) {
     // Prevent capturing userCode that does not start with @, such as conflicting with /home or /settings
-    navigateTo.home();
+    navigateTo.error();
   }
 
   // ✅ Pass to context or props etc.: Remove the prefix @

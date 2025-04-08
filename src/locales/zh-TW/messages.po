@@ -616,22 +616,18 @@ msgstr "取消"
 
 #: src/pages/Idea/Components/Form/index.tsx
 #: src/pages/Lists/Components/Form/index.tsx
+#~ msgid "Hey, the title can’t be left empty!"
+#~ msgstr "欸，標題不能留空喔！"
+
+#: src/pages/Idea/Components/Form/index.tsx
+#: src/pages/Lists/Components/Form/index.tsx
 msgid "Cover Image"
 msgstr "封面圖片"
 
 #: src/pages/Idea/Components/Form/index.tsx
 #: src/pages/Lists/Components/Form/index.tsx
-msgid "Your edits will be lost if you cancel!"
-msgstr "取消後，資料就飛走囉！"
-
-#: src/pages/Idea/Components/Form/index.tsx
-msgid "Title is saved, but your idea edits will be lost! Are you sure you want to cancel?"
-msgstr "名單已經存到你的個人專頁了，但剛寫的靈感內容會消失，確定要取消嗎？"
-
-#: src/pages/Idea/Components/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
-msgid "Hey, the title can’t be left empty!"
-msgstr "欸，標題不能留空喔！"
+msgid "Hey, the title can't be left empty!"
+msgstr ""
 
 #: src/pages/Idea/Components/Form/index.tsx
 msgid "Every idea needs a title, so fill it in!"
@@ -657,7 +653,17 @@ msgid "Please keep it under {DESC_MAX_LENGTH} characters."
 msgstr "字數有點爆表，請減到 {DESC_MAX_LENGTH} 個字元以內。"
 
 #: src/pages/Idea/Components/Form/index.tsx
-msgid "What’s your Idea?"
+#: src/pages/Lists/Components/Form/index.tsx
+msgid "Required cover image"
+msgstr "需要封面圖片"
+
+#: src/pages/Idea/Components/Form/index.tsx
+#: src/pages/Lists/Components/Form/index.tsx
+msgid "Please upload a cover image."
+msgstr "請上傳封面圖片。"
+
+#: src/pages/Idea/Components/Form/index.tsx
+msgid "What's your Idea?"
 msgstr "靈感標題"
 
 #: src/pages/Idea/Components/Form/index.tsx
@@ -670,6 +676,25 @@ msgid "Link a page"
 msgstr "連結網頁"
 
 #: src/pages/Idea/Components/Form/index.tsx
+#: src/pages/Lists/Components/Form/index.tsx
+msgid "Your edits will be lost if you cancel!"
+msgstr "取消後，資料就飛走囉！"
+
+#: src/pages/Idea/Components/Form/index.tsx
+msgid "Title is saved, but your idea edits will be lost! Are you sure you want to cancel?"
+msgstr "名單已經存到你的個人專頁了，但剛寫的靈感內容會消失，確定要取消嗎？"
+
+#: src/pages/Idea/Components/Form/index.tsx
+#: src/pages/Lists/Components/Form/index.tsx
+msgid "Cancel Editing"
+msgstr "取消編輯"
+
+#: src/pages/Idea/Components/Form/index.tsx
+#: src/pages/Lists/Components/Form/index.tsx
+msgid "Continue Editing"
+msgstr "繼續編輯"
+
+#: src/pages/Idea/Components/Form/index.tsx
 msgid "Edit Idea"
 msgstr "編輯靈感"
 
@@ -679,7 +704,6 @@ msgid "New Idea"
 msgstr "新靈感"
 
 #: src/pages/Idea/Components/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
 #: src/pages/Lists/Components/Form/index.tsx
 #: src/pages/Lists/Components/Form/index.tsx
 msgid "Next"
@@ -710,8 +734,8 @@ msgid "Delete List and All Ideas"
 msgstr "刪除名單與所有靈感"
 
 #: src/pages/Lists/Components/Form/index.tsx
-msgid "If you cancel, everything you’ve entered will be lost."
-msgstr "如果取消，所填的內容都會消失。"
+#~ msgid "If you cancel, everything you’ve entered will be lost."
+#~ msgstr "如果取消，所填的內容都會消失。"
 
 #: src/pages/Lists/Components/Form/index.tsx
 msgid "Every list needs a title, so fill it in!"
@@ -740,6 +764,10 @@ msgstr "名單主題"
 #: src/pages/Lists/Components/Form/index.tsx
 msgid "Choose a topic that vibes with your List."
 msgstr "選擇一項接近此份名單的分類"
+
+#: src/pages/Lists/Components/Form/index.tsx
+msgid "If you cancel, everything you've entered will be lost."
+msgstr "如果取消，所填的內容都會消失"
 
 #: src/pages/Lists/Components/Form/index.tsx
 #: src/pages/Lists/Manage/index.tsx
