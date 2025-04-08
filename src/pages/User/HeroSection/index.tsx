@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/button';
 import LinkIconWrapper from '@/components/ui/wrappers/LinkIconWrapper';
 import { SocialLinkType } from '@/enums/index.enum';
-import { useSocialAction } from '@/hooks/useSocialAction';
+import { SocialActionType, useSocialAction } from '@/hooks/useSocialAction';
 import { useToast } from '@/hooks/useToast';
 import axios from '@/lib/axios';
 import { extractUsernameFromUrl, urlPreview } from '@/lib/utils';
@@ -38,6 +38,7 @@ const HeroSection: React.FC = () => {
   const { toast } = useToast();
   const { debouncedMutate: follow } = useSocialAction({
     actionKey: 'follow',
+    debounceGroupKey: SocialActionType.FOLLOW,
     url: '/follow',
     method: 'POST',
     shouldAllow: () => isLoggedIn,
@@ -53,6 +54,7 @@ const HeroSection: React.FC = () => {
   });
   const { debouncedMutate: unfollow } = useSocialAction({
     actionKey: 'unfollow',
+    debounceGroupKey: SocialActionType.FOLLOW,
     url: '/unfollow',
     method: 'POST',
     shouldAllow: () => isLoggedIn,

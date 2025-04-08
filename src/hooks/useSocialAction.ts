@@ -1,8 +1,7 @@
 import axios from '@/lib/axios';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Method } from 'axios';
-import debounce from 'lodash.debounce';
-import { useMemo } from 'react';
+import { useRef } from 'react';
 
 interface AxiosPayload {
   params?: Record<string, any>;
@@ -14,6 +13,7 @@ interface SocialActionOptions {
   url: string;
   method?: Method; // POST / DELETE 等
   debounceMs?: number;
+  debounceGroupKey: SocialActionType;
   optimisticUpdate?: (queryClient: any, variables: AxiosPayload) => void;
 
   shouldAllow?: () => boolean; // ✅ Pre-fire check
@@ -25,10 +25,18 @@ interface SocialActionOptions {
   onError?: (error?: any, variables?: AxiosPayload) => void; // ✅ Custom handling on error
 }
 
+export enum SocialActionType {
+  LIKE = 'like',
+  FOLLOW = 'follow',
+}
+
+const debounceMap = new Map<SocialActionType, ReturnType<typeof setTimeout>>();
+
 export const useSocialAction = ({
   actionKey,
   url,
   method = 'POST',
+  debounceGroupKey,
   debounceMs = 5000,
   optimisticUpdate,
   shouldAllow,
@@ -39,16 +47,21 @@ export const useSocialAction = ({
   onError,
 }: SocialActionOptions) => {
   const queryClient = useQueryClient();
+  const latestParamsRef = useRef<any>(null);
 
   const mutation = useMutation({
     mutationKey: [actionKey],
-    mutationFn: async ({ params, data }: AxiosPayload) => {
-      return axios.request({
+    mutationFn: async (variables: AxiosPayload) => {
+      latestParamsRef.current = variables;
+
+      const config = {
         url,
         method,
-        params,
-        data,
-      });
+        ...(variables?.params && { params: variables.params }),
+        ...(variables?.data && { data: variables.data }),
+      };
+
+      return axios.request(config);
     },
     onMutate: async (variables: AxiosPayload) => {
       if (optimisticUpdate) {
@@ -71,21 +84,39 @@ export const useSocialAction = ({
     },
   });
 
-  const debouncedMutate = useMemo(() => {
-    return (variables: AxiosPayload) => {
-      if (shouldAllow && !shouldAllow()) {
-        onNotAllowed?.();
-        return;
-      }
-      onOptimisticUpdate?.();
-      debounce((variables: AxiosPayload) => {
-        mutation.mutate(variables);
-      }, debounceMs)(variables);
-    };
-  }, [debounceMs, mutation, shouldAllow, onNotAllowed, onOptimisticUpdate]);
+  const debouncedMutate = (variables: AxiosPayload) => {
+    if (shouldAllow && !shouldAllow()) {
+      onNotAllowed?.();
+      return;
+    }
+
+    const existingTimer = debounceMap.get(debounceGroupKey);
+    if (existingTimer) {
+      clearTimeout(existingTimer);
+    }
+
+    onOptimisticUpdate?.();
+
+    const timer = setTimeout(() => {
+      mutation.mutate(variables);
+      debounceMap.delete(debounceGroupKey);
+    }, debounceMs);
+
+    debounceMap.set(debounceGroupKey, timer);
+  };
+
+  const cancelPending = () => {
+    const existingTimer = debounceMap.get(debounceGroupKey);
+    if (existingTimer) {
+      clearTimeout(existingTimer);
+      debounceMap.delete(debounceGroupKey);
+    }
+  };
 
   return {
     ...mutation,
     debouncedMutate, // 支援參數的 debounce mutate
+    cancelPending,
+    isLoading: mutation.isPending,
   };
 };

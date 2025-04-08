@@ -72,8 +72,8 @@ msgstr "追蹤"
 #~ msgstr "500x500像素，限JPG，最大4MB"
 
 #: src/components/ImageCropper/index.tsx
-msgid "Image must be at least 150 x 150 pixels."
-msgstr ""
+msgid "Image must be at least 150x150px."
+msgstr "圖片必須至少 150x150 像素"
 
 #: src/components/ImageCropper/index.tsx
 msgid "Choose your image"
@@ -615,13 +615,9 @@ msgid "Cancel"
 msgstr "取消"
 
 #: src/pages/Idea/Components/Form/index.tsx
-#~ msgid "Describe what this idea is about"
-#~ msgstr "描述靈感"
-
-#: src/pages/Idea/Components/Form/index.tsx
 #: src/pages/Lists/Components/Form/index.tsx
 msgid "Cover Image"
-msgstr ""
+msgstr "封面圖片"
 
 #: src/pages/Idea/Components/Form/index.tsx
 #: src/pages/Lists/Components/Form/index.tsx
@@ -665,8 +661,8 @@ msgid "What’s your Idea?"
 msgstr "靈感標題"
 
 #: src/pages/Idea/Components/Form/index.tsx
-msgid "Describe what this Idea is about"
-msgstr ""
+msgid "Describe what this idea is about"
+msgstr "描述靈感"
 
 #: src/pages/Idea/Components/Form/index.tsx
 #: src/pages/Lists/Components/Form/index.tsx
@@ -799,6 +795,15 @@ msgstr "喜歡"
 #: src/pages/Lists/View/ListCard/index.tsx
 msgid "Edit list"
 msgstr "編輯名單"
+
+#: src/pages/Lists/View/index.tsx
+#: src/pages/Lists/View/index.tsx
+#: src/pages/Lists/View/index.tsx
+#: src/pages/Lists/View/index.tsx
+#: src/pages/User/HeroSection/index.tsx
+#: src/pages/User/HeroSection/index.tsx
+msgid "Please login to do this action"
+msgstr "請先登入以進行此操作"
 
 #: src/pages/Lists/i18n.ts
 msgid "Lifestyle"

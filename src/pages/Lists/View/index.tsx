@@ -2,7 +2,7 @@ import FloatingButtonFooter from '@/components/Footer/FloatingButtonFooter';
 import BackToUserHeader from '@/components/Header/BackToUserHeader';
 import { DEFAULT_IDEA_BATCH_SIZE_MAX } from '@/constants/list';
 import useGetList, { IListInfo } from '@/hooks/Lists/useGetList';
-import { useSocialAction } from '@/hooks/useSocialAction';
+import { SocialActionType, useSocialAction } from '@/hooks/useSocialAction';
 import { useToast } from '@/hooks/useToast';
 import axios from '@/lib/axios';
 import { Tile20Background } from '@/pages/User/TileBackground';
@@ -39,6 +39,7 @@ const ViewListPage: React.FC = () => {
 
   const { debouncedMutate: like } = useSocialAction({
     actionKey: 'like',
+    debounceGroupKey: SocialActionType.LIKE,
     url: '/like',
     method: 'POST',
     shouldAllow: () => isLoggedIn,
@@ -54,6 +55,7 @@ const ViewListPage: React.FC = () => {
   });
   const { debouncedMutate: unlike } = useSocialAction({
     actionKey: 'unlike',
+    debounceGroupKey: SocialActionType.LIKE,
     url: '/unlike',
     method: 'POST',
     shouldAllow: () => isLoggedIn,
@@ -69,6 +71,7 @@ const ViewListPage: React.FC = () => {
   });
   const { debouncedMutate: follow } = useSocialAction({
     actionKey: 'follow',
+    debounceGroupKey: SocialActionType.FOLLOW,
     url: '/follow',
     method: 'POST',
     shouldAllow: () => isLoggedIn,
@@ -84,6 +87,7 @@ const ViewListPage: React.FC = () => {
   });
   const { debouncedMutate: unfollow } = useSocialAction({
     actionKey: 'unfollow',
+    debounceGroupKey: SocialActionType.FOLLOW,
     url: '/unfollow',
     method: 'POST',
     shouldAllow: () => isLoggedIn,
