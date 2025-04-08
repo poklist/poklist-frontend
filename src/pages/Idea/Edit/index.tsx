@@ -2,20 +2,23 @@ import useDeleteIdea from '@/hooks/Ideas/useDeleteIdea';
 import useEditIdea, { IEditIdeaRequest } from '@/hooks/Ideas/useEditIdea';
 import useGetIdea from '@/hooks/Ideas/useGetIdea';
 import useGetList from '@/hooks/Lists/useGetList';
+import useStrictNavigate from '@/hooks/useStrictNavigate';
 import Header from '@/pages/Idea/Components/Header';
 import useCommonStore from '@/stores/useCommonStore';
+import useUserStore from '@/stores/useUserStore';
 import { Trans } from '@lingui/react/macro';
 import { Skeleton, Text } from '@radix-ui/themes';
 import { useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import IdeaFormComponent from '../Components/Form';
 
 interface EditIdeaPageProps {}
 const EditIdeaPage: React.FC<EditIdeaPageProps> = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
+  const navigateTo = useStrictNavigate();
 
   const { setIsLoading } = useCommonStore();
+  const { user: me } = useUserStore();
 
   const { ideaInfo, isIdeaInfoLoading, fetchIdeaInfo } = useGetIdea();
   const { isDeleteIdeaLoading, fetchDeleteIdea } = useDeleteIdea();
@@ -26,13 +29,13 @@ const EditIdeaPage: React.FC<EditIdeaPageProps> = () => {
     if (ideaInfo) {
       // TODO: error handling
       await fetchDeleteIdea(ideaInfo.id);
-      navigate(`/${ideaInfo.owner.userCode}/list/${ideaInfo.listID}/manage`);
+      navigateTo.manageList(me.userCode, ideaInfo.listID.toString());
     }
   };
 
   const onDismissEdit = (isFormNotEdited: boolean) => {
-    if (isFormNotEdited) {
-      navigate(`/${ideaInfo?.owner.userCode}/list/${ideaInfo?.listID}/manage`);
+    if (ideaInfo && isFormNotEdited) {
+      navigateTo.manageList(me.userCode, ideaInfo.listID.toString());
     }
   };
 
@@ -43,7 +46,7 @@ const EditIdeaPage: React.FC<EditIdeaPageProps> = () => {
     const _params = { ...editedIdea, id: Number(id) };
     const response = await fetchEditIdea(_params);
     if (response) {
-      navigate(`/${ideaInfo?.owner.userCode}/list/${response.listID}/manage`);
+      navigateTo.manageList(me.userCode, response.listID.toString());
     }
   };
 

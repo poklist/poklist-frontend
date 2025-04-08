@@ -1,8 +1,8 @@
 import Footer from '@/components/Footer';
 import BackToUserHeader from '@/components/Header/BackToUserHeader';
+import useStrictNavigate from '@/hooks/useStrictNavigate';
 import useUserStore from '@/stores/useUserStore';
 import { t } from '@lingui/core/macro';
-import { useNavigate } from 'react-router-dom';
 import BlocksSection from './BlocksSection';
 import IntroSection from './IntroSection';
 
@@ -12,11 +12,11 @@ interface SettingsPageProps {
 
 const SettingsPage: React.FC<SettingsPageProps> = () => {
   const { user: me } = useUserStore();
-  const navigate = useNavigate();
+  const navigateTo = useStrictNavigate();
 
   const handleOnClose = () => {
     // FUTURE: if history is not empty, navigate to the previous page; otherwise, navigate to the user page
-    navigate(`/${me.userCode}`);
+    navigateTo.user(me.userCode);
   };
 
   return (

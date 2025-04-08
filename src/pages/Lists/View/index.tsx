@@ -5,6 +5,7 @@ import useGetList, { IListInfo } from '@/hooks/Lists/useGetList';
 import { SocialActionType, useSocialAction } from '@/hooks/useSocialAction';
 import { useToast } from '@/hooks/useToast';
 import axios from '@/lib/axios';
+import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
 import { Tile20Background } from '@/pages/User/TileBackground';
 import useCommonStore from '@/stores/useCommonStore';
 import useRelationStore from '@/stores/useRelationStore';
@@ -14,11 +15,13 @@ import { IResponse } from '@/types/response';
 import { User } from '@/types/User';
 import { t } from '@lingui/core/macro';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useOutletContext, useParams } from 'react-router-dom';
 import ListCard from './ListCard';
 
 const ViewListPage: React.FC = () => {
-  const { userCode: listOwnerUserCode, id: listID } = useParams();
+  const { userCode: listOwnerUserCode } =
+    useOutletContext<UserRouteLayoutContextType>();
+  const { id: listID } = useParams();
   const { user: me, isLoggedIn } = useUserStore();
   const isMyPage = listOwnerUserCode === me.userCode;
 
@@ -27,8 +30,7 @@ const ViewListPage: React.FC = () => {
   const { isListInfoLoading, fetchGetListInfo } = useGetList();
   const [listInfo, setListInfo] = useState<IListInfo>();
   const [listOwnerInfo, setListOwnerInfo] = useState<User>();
-  const { isLiked, setIsLiked, originalIsLiked, initializeLikeStatus } =
-    useSocialStore();
+  const { setIsLiked, initializeLikeStatus } = useSocialStore();
   const {
     isFollowing,
     setIsFollowing,
@@ -101,32 +103,6 @@ const ViewListPage: React.FC = () => {
       setIsFollowing(false);
     },
   });
-
-  const sendFollowingStatusForTheOwner = () => {
-    if (isFollowing === originalIsFollowing) {
-      return;
-    }
-
-    if (isFollowing) {
-      axios
-        .post<IResponse<unknown>>('/follow', null, {
-          params: { userID: listInfo?.owner?.id },
-        })
-        .catch(() => {
-          console.error('Failed to follow the user');
-          // FUTURE: advanced error handling
-        });
-    } else {
-      axios
-        .post<IResponse<unknown>>('/unfollow', null, {
-          params: { userID: listInfo?.owner?.id },
-        })
-        .catch(() => {
-          console.error('Failed to unfollow the user');
-          // FUTURE: advanced error handling
-        });
-    }
-  };
 
   useEffect(() => {
     if (listID) {

@@ -2,13 +2,14 @@ import { ICreateListRequest } from '@/hooks/Lists/useCreateList';
 import useDeleteList from '@/hooks/Lists/useDeleteList';
 import useEditList, { IEditListRequest } from '@/hooks/Lists/useEditList';
 import useGetList from '@/hooks/Lists/useGetList';
+import useStrictNavigate from '@/hooks/useStrictNavigate';
 import ListForm from '@/pages/Lists/Components/Form';
 import Header from '@/pages/Lists/Components/Header';
 import useCommonStore from '@/stores/useCommonStore';
 import useUserStore from '@/stores/useUserStore';
 import { Trans } from '@lingui/react/macro';
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 interface EditListPageProps {
   // Add any props you need for the page
@@ -17,7 +18,7 @@ interface EditListPageProps {
 const EditListPage: React.FC<EditListPageProps> = () => {
   // Render the page here
   const { id } = useParams();
-  const navigate = useNavigate();
+  const navigateTo = useStrictNavigate();
 
   const { setIsLoading } = useCommonStore();
   const userStore = useUserStore();
@@ -32,19 +33,22 @@ const EditListPage: React.FC<EditListPageProps> = () => {
     if (listInfo) {
       // TODO: error handling
       await fetchDeleteList(listInfo.listID);
-      navigate(`/${userStore.user.userCode}`);
+      navigateTo.user(userStore.user.userCode);
       setIsLoading(false);
     }
   };
 
   const onDismissEdit = (isFormEmpty: boolean) => {
-    if (isFormEmpty) {
-      navigate(`/${userStore.user.userCode}/list/${listInfo?.listID}`);
+    if (listInfo && isFormEmpty) {
+      navigateTo.manageList(
+        userStore.user.userCode,
+        listInfo.listID.toString()
+      );
     }
   };
 
   const onBackward = () => {
-    navigate(-1);
+    navigateTo.backward();
   };
 
   const onEditList = async (listFormData: ICreateListRequest) => {
@@ -61,7 +65,7 @@ const EditListPage: React.FC<EditListPageProps> = () => {
     });
     const response = await fetchEditList(Number(id), listFormData);
     if (response) {
-      navigate(`/${userStore.user.userCode}/list/${response.id}/manage`);
+      navigateTo.manageList(userStore.user.userCode, response.id.toString());
       return;
     }
   };

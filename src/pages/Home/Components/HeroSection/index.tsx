@@ -1,18 +1,17 @@
-import { useNavigate } from 'react-router-dom';
-import useUserStore from '@/stores/useUserStore';
-import { ChevronRight } from 'lucide-react';
-import { HeroSectionProps, LoginInfo } from '@/types/Home';
-import { CredentialResponse } from '@react-oauth/google';
-import { useState, useEffect, useRef } from 'react';
+import useStrictNavigate from '@/hooks/useStrictNavigate';
 import axios from '@/lib/axios';
+import useUserStore from '@/stores/useUserStore';
+import '@/types/global';
+import { HeroSectionProps, LoginInfo } from '@/types/Home';
 import { IResponse } from '@/types/response';
 import { Trans } from '@lingui/react';
-import { LoginDrawer } from '../LoginDrawer';
+import { CredentialResponse } from '@react-oauth/google';
+import { ChevronRight } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 import { ErrorDialog } from '../ErrorDialog';
-import '@/types/global';
-
+import { LoginDrawer } from '../LoginDrawer';
 export const HeroSection = ({ content }: HeroSectionProps) => {
-  const navigate = useNavigate();
+  const navigateTo = useStrictNavigate();
   const { login, setUser, isLoggedIn, user } = useUserStore();
   const [showCustomLogin, setShowCustomLogin] = useState(false);
   const [showErrorDialog, setShowErrorDialog] = useState(false);
@@ -30,7 +29,7 @@ export const HeroSection = ({ content }: HeroSectionProps) => {
       const userData = res.data.content?.user;
       setUser(userData);
       setShowCustomLogin(false);
-      navigate(`/${userData.userCode}`);
+      navigateTo.user(userData.userCode);
     } catch (error) {
       setShowCustomLogin(false);
       setShowErrorDialog(true);
@@ -73,7 +72,7 @@ export const HeroSection = ({ content }: HeroSectionProps) => {
 
   const handleSignIn = () => {
     if (isLoggedIn && user?.userCode) {
-      navigate(`/${user.userCode}`);
+      navigateTo.user(user.userCode);
     } else {
       setShowCustomLogin(true);
     }
