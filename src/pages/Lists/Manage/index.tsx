@@ -3,6 +3,7 @@ import IconClose from '@/components/ui/icons/CloseIcon';
 import useDeleteList from '@/hooks/Lists/useDeleteList';
 import useEditList from '@/hooks/Lists/useEditList';
 import { IListInfo, default as useGetList } from '@/hooks/Lists/useGetList';
+import useStrictNavigate from '@/hooks/useStrictNavigate';
 import Header from '@/pages/Lists/Components/Header';
 import IdeaList from '@/pages/Lists/Manage/IdeasList';
 import ListInfo from '@/pages/Lists/Manage/ListInfo';
@@ -14,7 +15,7 @@ import { useCallback, useEffect } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { TouchBackend } from 'react-dnd-touch-backend';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 interface ManageListPageProps {
   // Add any props you need for the page
@@ -22,7 +23,7 @@ interface ManageListPageProps {
 
 const ListManagePage: React.FC<ManageListPageProps> = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
+  const navigateTo = useStrictNavigate();
 
   const { setIsLoading } = useCommonStore();
   const userStore = useUserStore();
@@ -36,7 +37,7 @@ const ListManagePage: React.FC<ManageListPageProps> = () => {
     if (listInfo) {
       // TODO: error handling
       await fetchDeleteList(listInfo.id);
-      navigate(`/${userStore.user.userCode}`);
+      navigateTo.user(userStore.user.userCode);
       setIsLoading(false);
     }
   };
@@ -81,35 +82,38 @@ const ListManagePage: React.FC<ManageListPageProps> = () => {
       <div className="flex min-h-screen flex-col">
         <ListInfo listInfo={listInfo} />
         <div className="mb-6 px-4">
-          <Link to={`/${userStore.user.userCode}/list/${id}/edit`}>
-            <Button
-              className="w-full text-[17px] font-bold"
-              variant={ButtonVariant.BLACK}
-              shape={ButtonShape.ROUNDED_8PX}
-            >
-              <Trans>Edit list cover</Trans>
-            </Button>
-          </Link>
+          <Button
+            className="w-full text-[17px] font-bold"
+            variant={ButtonVariant.BLACK}
+            shape={ButtonShape.ROUNDED_8PX}
+            onClick={() =>
+              id === undefined
+                ? navigateTo.error()
+                : navigateTo.editList(userStore.user.userCode, id)
+            }
+          >
+            <Trans>Edit list cover</Trans>
+          </Button>
         </div>
         <div className="mb-4 px-4">
-          <Link
-            to={'/idea/create'}
-            state={{ listID: Number(id), listTitle: listInfo?.title }}
+          <Button
+            className="w-full text-[17px] font-bold"
+            variant={ButtonVariant.HIGHLIGHTED}
+            shape={ButtonShape.ROUNDED_8PX}
+            onClick={() =>
+              id === undefined
+                ? navigateTo.error()
+                : navigateTo.createIdea({
+                    state: { listID: Number(id), listTitle: listInfo?.title },
+                  })
+            }
           >
-            <Button
-              className="w-full text-[17px] font-bold"
-              variant={ButtonVariant.HIGHLIGHTED}
-              shape={ButtonShape.ROUNDED_8PX}
-            >
-              <Trans>Add an idea</Trans>
-            </Button>
-          </Link>
+            <Trans>Add an idea</Trans>
+          </Button>
         </div>
         <div className="mb-4 px-4 text-[15px] text-black-gray-03">
           {listInfo?.ideas === undefined || listInfo.ideas.length <= 0 ? (
-            <Trans>
-              Newly created idea will be shown below, let's add one!
-            </Trans>
+            <Trans>Your ideas live here. Create one!</Trans>
           ) : (
             <Trans>Tap to edit. Hold & drag to reorder Ideas</Trans>
           )}
@@ -137,13 +141,13 @@ const ListManagePage: React.FC<ManageListPageProps> = () => {
       </div>
       <footer className="fixed bottom-0 left-0 z-10 flex w-full justify-between border-t border-t-gray-main-03 bg-white px-4 py-2 sm:sticky md:max-w-mobile-max">
         <div className="flex items-center gap-2">
-          <Link
-            aria-label="Previous"
-            className="h-auto rounded-full bg-inherit p-0"
-            to={`/${userStore.user.userCode}/list/${id}`}
-          >
-            <IconClose />
-          </Link>
+          <IconClose
+            onClick={() =>
+              id === undefined
+                ? navigateTo.error()
+                : navigateTo.viewList(userStore.user.userCode, id)
+            }
+          />
           <Trans>Edit List</Trans>
         </div>
         <div className="flex items-center gap-4">

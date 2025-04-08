@@ -72,8 +72,8 @@ msgstr "Follow"
 #~ msgstr "500x500px, JPG, max 4MB"
 
 #: src/components/ImageCropper/index.tsx
-msgid "Image must be at least 150 x 150 pixels."
-msgstr "Image must be at least 150 x 150 pixels."
+msgid "Image must be at least 150x150px."
+msgstr "Image must be at least 150x150px."
 
 #: src/components/ImageCropper/index.tsx
 msgid "Choose your image"
@@ -615,6 +615,10 @@ msgid "Cancel"
 msgstr "Cancel"
 
 #: src/pages/Idea/Components/Form/index.tsx
+#~ msgid "Describe what this Idea is about"
+#~ msgstr "Describe what this Idea is about"
+
+#: src/pages/Idea/Components/Form/index.tsx
 #: src/pages/Lists/Components/Form/index.tsx
 msgid "Cover Image"
 msgstr "Cover Image"
@@ -661,8 +665,8 @@ msgid "What’s your Idea?"
 msgstr "What’s your Idea?"
 
 #: src/pages/Idea/Components/Form/index.tsx
-msgid "Describe what this Idea is about"
-msgstr "Describe what this Idea is about"
+msgid "Describe what this idea is about"
+msgstr "Describe what this idea is about"
 
 #: src/pages/Idea/Components/Form/index.tsx
 #: src/pages/Lists/Components/Form/index.tsx
@@ -769,8 +773,8 @@ msgid "Add an idea"
 msgstr "Add an idea"
 
 #: src/pages/Lists/Manage/index.tsx
-msgid "Newly created idea will be shown below, let's add one!"
-msgstr "Newly created idea will be shown below, let's add one!"
+msgid "Your ideas live here. Create one!"
+msgstr "Your ideas live here. Create one!"
 
 #: src/pages/Lists/Manage/index.tsx
 msgid "Tap to edit. Hold & drag to reorder Ideas"
@@ -795,6 +799,15 @@ msgstr "Likes"
 #: src/pages/Lists/View/ListCard/index.tsx
 msgid "Edit list"
 msgstr "Edit list"
+
+#: src/pages/Lists/View/index.tsx
+#: src/pages/Lists/View/index.tsx
+#: src/pages/Lists/View/index.tsx
+#: src/pages/Lists/View/index.tsx
+#: src/pages/User/HeroSection/index.tsx
+#: src/pages/User/HeroSection/index.tsx
+msgid "Please login to do this action"
+msgstr "Please login to do this action"
 
 #: src/pages/Lists/i18n.ts
 msgid "Lifestyle"

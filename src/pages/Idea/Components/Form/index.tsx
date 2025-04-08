@@ -252,7 +252,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
         <div className="flex items-start gap-2">
           <IconTextarea />
           <Textarea
-            placeholder={t`Describe what this Idea is about`}
+            placeholder={t`Describe what this idea is about`}
             className={cn(`resize-none border-none p-0`, {
               'line-clamp-1 h-6 min-h-6': !isTextareaFocus,
             })}

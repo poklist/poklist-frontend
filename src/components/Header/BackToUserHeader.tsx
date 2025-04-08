@@ -2,41 +2,36 @@ import headerP from '@/assets/images/header-p.svg';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import IconLeftArrow from '@/components/ui/icons/LeftArrowIcon';
 import { IListOwnerInfo } from '@/hooks/Lists/useGetList';
+import useStrictNavigate from '@/hooks/useStrictNavigate';
 import useRelationStore from '@/stores/useRelationStore';
 import { User } from '@/types/User';
 import { Trans } from '@lingui/react/macro';
-import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
 import { Button, ButtonShape, ButtonSize, ButtonVariant } from '../ui/button';
 
 interface IBackToUserHeaderProps {
   owner?: IListOwnerInfo | User;
   hasFollowButton?: boolean;
-  onUnmount?: () => void;
+  onClickFollow?: () => void;
+  onClickUnfollow?: () => void;
 }
 
 const BackToUserHeader: React.FC<IBackToUserHeaderProps> = ({
   owner,
   hasFollowButton = false,
-  onUnmount,
+  onClickFollow,
+  onClickUnfollow,
 }) => {
-  const navigate = useNavigate();
-  const { isFollowing, setIsFollowing } = useRelationStore();
-
-  useEffect(() => {
-    return () => {
-      onUnmount?.();
-    };
-  }, [onUnmount]);
-
+  const { isFollowing } = useRelationStore();
+  const navigateTo = useStrictNavigate();
   const onClickBackToUser = () => {
     if (owner) {
-      navigate(`/${owner.userCode}`);
+      navigateTo.user(owner.userCode);
     }
   };
 
   const onClickLogo = () => {
-    navigate('/');
+    navigateTo.home();
   };
 
   return (
@@ -73,13 +68,19 @@ const BackToUserHeader: React.FC<IBackToUserHeaderProps> = ({
             }
             shape={ButtonShape.ROUNDED_FULL}
             size={ButtonSize.SM}
-            onClick={() => setIsFollowing(!isFollowing)}
+            onClick={() => {
+              if (isFollowing) {
+                onClickUnfollow?.();
+              } else {
+                onClickFollow?.();
+              }
+            }}
           >
             {isFollowing ? <Trans>Following</Trans> : <Trans>Follow</Trans>}
           </Button>
         )}
       </header>
-      <div className="h-14 sm:hidden" />
+      {/* <div className="h-14 sm:hidden" /> */}
     </>
   );
 };

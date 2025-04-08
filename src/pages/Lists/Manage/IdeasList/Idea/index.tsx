@@ -1,9 +1,9 @@
 import { DragAndDropItems } from '@/constants/DragAndDrop';
 import { IIdeaPreviewInfo } from '@/hooks/Lists/useGetList';
+import useStrictNavigate from '@/hooks/useStrictNavigate';
 import { cn } from '@/lib/utils';
 import { useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
-import { Link } from 'react-router-dom';
 
 interface IdeaProps {
   idea: IIdeaPreviewInfo;
@@ -16,7 +16,8 @@ const DraggableIdeaRow: React.FC<IdeaProps> = ({
   index,
   hoverCallback,
 }) => {
-  const ref = useRef<HTMLAnchorElement | null>(null);
+  const ref = useRef<HTMLDivElement | null>(null);
+  const navigateTo = useStrictNavigate();
 
   const [{ isDragging }, dragRef] = useDrag(() => ({
     type: DragAndDropItems.IDEA,
@@ -57,9 +58,9 @@ const DraggableIdeaRow: React.FC<IdeaProps> = ({
   dragRef(dropRef(ref));
 
   return (
-    <Link
+    <div
       ref={ref}
-      to={`/idea/${idea.id}/edit`}
+      onClick={() => navigateTo.editIdea(idea.id.toString())}
       key={`idea-${idea.id}`}
       className={cn(`border border-l-gray-main-03 bg-gray-note-05 px-4 py-2`, {
         'opacity-0': isDragging,
@@ -82,7 +83,7 @@ const DraggableIdeaRow: React.FC<IdeaProps> = ({
           />
         )}
       </div>
-    </Link>
+    </div>
   );
 };
 

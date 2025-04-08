@@ -8,7 +8,7 @@ import {
   DrawerTitle,
 } from '@/components/ui/drawer';
 import { cn } from '@/lib/utils';
-import React, { createContext, useContext, useCallback, useState } from 'react';
+import React, { createContext, useContext, useEffect, useCallback, useState } from 'react';
 
 interface IDrawerContext {
   openDrawers: Set<string>;

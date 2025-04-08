@@ -45,6 +45,7 @@ export const base64ToFile = async (base64: string) => {
   });
 };
 
+// DEPRECATED: use line-clamp instead
 export const getPreviewText = (text: string, length: number = 20) => {
   return text.slice(0, length) + (text.length > length ? '...' : '');
 };

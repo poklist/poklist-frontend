@@ -2,6 +2,7 @@
 import headerLogo from '@/assets/images/header-poklist.svg';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button, ButtonSize, ButtonVariant } from '@/components/ui/button';
+import useStrictNavigate from '@/hooks/useStrictNavigate';
 import axios from '@/lib/axios';
 import { LanguageToggleButton } from '@/lib/languageProvider';
 import { cn } from '@/lib/utils';
@@ -11,7 +12,6 @@ import { IResponse } from '@/types/response';
 import { Trans } from '@lingui/react/macro';
 import { CredentialResponse } from '@react-oauth/google';
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
 import { ErrorDialog } from '../ErrorDialog';
 import { LoginDrawer } from '../LoginDrawer';
 
@@ -20,7 +20,7 @@ interface HeaderProps {
 }
 
 const Header = ({ className }: HeaderProps) => {
-  const navigate = useNavigate();
+  const navigateTo = useStrictNavigate();
   const { login, setUser, user, isLoggedIn } = useUserStore();
   const [showCustomLogin, setShowCustomLogin] = useState(false);
   const [showErrorDialog, setShowErrorDialog] = useState(false);
@@ -37,7 +37,7 @@ const Header = ({ className }: HeaderProps) => {
       const userData = res.data.content?.user;
       setUser(userData);
       setShowCustomLogin(false);
-      navigate(`/${userData.userCode}`);
+      navigateTo.user(userData.userCode);
     } catch (error) {
       setShowCustomLogin(false);
       setShowErrorDialog(true);
@@ -68,15 +68,18 @@ const Header = ({ className }: HeaderProps) => {
         className={cn('sticky top-0 z-50 w-full', className)}
       >
         <div className="flex h-14 w-full items-center justify-between px-4">
-          <Link to="/home">
-            <img src={headerLogo} alt="Poklist" className="h-8" />
-          </Link>
+          <img
+            src={headerLogo}
+            alt="Poklist"
+            className="h-8"
+            onClick={() => navigateTo.home()}
+          />
           <div className="flex items-center gap-4">
             <LanguageToggleButton />
             {isLoggedIn ? (
               <Avatar
                 className="h-8 w-8 cursor-pointer"
-                onClick={() => navigate(`/${user.userCode}`)}
+                onClick={() => navigateTo.user(user.userCode)}
               >
                 <AvatarImage src={user.profileImage} />
                 <AvatarFallback>{user.displayName?.[0]}</AvatarFallback>

@@ -8,24 +8,26 @@ import {
 } from '@/components/ui/button';
 import LinkIconWrapper from '@/components/ui/wrappers/LinkIconWrapper';
 import { SocialLinkType } from '@/enums/index.enum';
+import { SocialActionType, useSocialAction } from '@/hooks/useSocialAction';
+import useStrictNavigate from '@/hooks/useStrictNavigate';
+import { useToast } from '@/hooks/useToast';
 import axios from '@/lib/axios';
-import {
-  extractUsernameFromUrl,
-  getPreviewText,
-  urlPreview,
-} from '@/lib/utils';
+import { extractUsernameFromUrl, urlPreview } from '@/lib/utils';
+import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
 import useUserStore from '@/stores/useUserStore';
 import { IResponse } from '@/types/response';
 import { User } from '@/types/User';
+import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
-import { useEffect, useMemo, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { useOutletContext } from 'react-router-dom';
 import { HeroSectionSkeleton } from './HeroSectionSkeleton';
 import { DrawerIds } from '@/constants/Drawer';
 
 const HeroSection: React.FC = () => {
-  const { userCode } = useParams();
-  const navigate = useNavigate();
+  const { userCode } = useOutletContext<UserRouteLayoutContextType>();
+
+  const navigateTo = useStrictNavigate();
   const {
     isLoggedIn,
     user: me,
@@ -36,6 +38,40 @@ const HeroSection: React.FC = () => {
   const { openDrawer } = useDrawer();
   const [drawerContent, setDrawerContent] = useState<React.ReactNode>(null);
   const [isFollowing, setIsFollowing] = useState<boolean>(false);
+  const bioRef = useRef<HTMLParagraphElement>(null);
+  const { toast } = useToast();
+  const { debouncedMutate: follow } = useSocialAction({
+    actionKey: 'follow',
+    debounceGroupKey: SocialActionType.FOLLOW,
+    url: '/follow',
+    method: 'POST',
+    shouldAllow: () => isLoggedIn,
+    onNotAllowed: () => {
+      toast({
+        title: t`Please login to do this action`,
+        variant: 'destructive',
+      });
+    },
+    onOptimisticUpdate: () => {
+      setIsFollowing(true);
+    },
+  });
+  const { debouncedMutate: unfollow } = useSocialAction({
+    actionKey: 'unfollow',
+    debounceGroupKey: SocialActionType.FOLLOW,
+    url: '/unfollow',
+    method: 'POST',
+    shouldAllow: () => isLoggedIn,
+    onNotAllowed: () => {
+      toast({
+        title: t`Please login to do this action`,
+        variant: 'destructive',
+      });
+    },
+    onOptimisticUpdate: () => {
+      setIsFollowing(false);
+    },
+  });
 
   const linkCount = useMemo(() => {
     if (currentUser.socialLinks !== undefined) {
@@ -52,55 +88,39 @@ const HeroSection: React.FC = () => {
     setIsFollowing(isLoggedIn && currentUser.isFollowing === true);
   }, [isLoggedIn, currentUser.isFollowing]);
 
-  const follow = () => {
-    if (!isLoggedIn) {
-      navigate('/home');
-      return;
-    }
-    // FUTURE: refactor the follow/unfollow API
-    axios
-      .post('/follow', null, { params: { userID: currentUser.id } })
-      .then(() => {
-        // TODO: success message
-        setIsFollowing(true);
-      })
-      .catch(() => {
-        // TODO: error message
-      });
-  };
-
-  const unfollow = () => {
-    axios
-      .post('/unfollow', null, { params: { userID: currentUser.id } })
-      .then(() => {
-        // TODO: success message
-        setIsFollowing(false);
-      })
-      .catch(() => {
-        // TODO: error message
-      });
-  };
-
   const goToEditPage = () => {
-    navigate(`/${me.userCode}/edit`);
+    navigateTo.editUser(me.userCode);
   };
 
   // FUTURE: extract this code segment to a separate hook
   const getUser = async (code: string) => {
     if (!code) return;
-    const res = await axios.get<IResponse<User>>(`/${code}/info`);
-    if (!res.data.content) {
-      throw new Error('No user data');
+    try {
+      const res = await axios.get<IResponse<User>>(`/${code}/info`);
+      if (!res.data.content) {
+        throw new Error('No content');
+      }
+      setCurrentUser({ ...res.data.content }); // deep copy
+      if (res.data.content?.id === me.id) {
+        setUser(res.data.content);
+      }
+    } catch (err) {
+      navigateTo.error();
     }
-    setCurrentUser({ ...res.data.content }); // deep copy
-    if (res.data.content?.id === me.id) {
-      setUser(res.data.content);
-    }
+
     setIsLoading(false);
   };
 
   // FUTURE: refactor the drawer content because we may have more than one drawer
   const onOpenBioDrawer = () => {
+    // FUTURE: extract this logic to a separate hook/utility function
+    if (
+      bioRef.current?.scrollHeight === undefined ||
+      bioRef.current?.clientHeight === undefined ||
+      bioRef.current.scrollHeight <= bioRef.current.clientHeight
+    ) {
+      return;
+    }
     setDrawerContent(<p>{currentUser.bio}</p>);
     openDrawer();
   };
@@ -165,8 +185,12 @@ const HeroSection: React.FC = () => {
           <p className="text-[17px] font-bold">{currentUser.displayName}</p>
           <p className="text-[13px] font-semibold">@{currentUser.userCode}</p>
           {currentUser.bio && (
-            <p className="text-[13px] font-normal" onClick={onOpenBioDrawer}>
-              {getPreviewText(currentUser.bio, 20)}
+            <p
+              ref={bioRef}
+              className="line-clamp-1 max-w-[350px] text-[13px] font-normal"
+              onClick={onOpenBioDrawer}
+            >
+              {currentUser.bio}
             </p>
           )}
         </div>
@@ -186,7 +210,7 @@ const HeroSection: React.FC = () => {
               id="unfollow-button"
               variant={ButtonVariant.GRAY}
               size={ButtonSize.LG}
-              onClick={unfollow}
+              onClick={() => unfollow({ params: { userID: currentUser.id } })}
             >
               <Trans>Following</Trans>
             </Button>
@@ -195,7 +219,7 @@ const HeroSection: React.FC = () => {
               id="follow-button"
               variant={ButtonVariant.HIGHLIGHTED}
               size={ButtonSize.LG}
-              onClick={follow}
+              onClick={() => follow({ params: { userID: currentUser.id } })}
             >
               <Trans>Follow</Trans>
             </Button>

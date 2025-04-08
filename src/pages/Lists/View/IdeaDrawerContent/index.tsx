@@ -9,7 +9,7 @@ import LinkIconWrapper from '@/components/ui/wrappers/LinkIconWrapper';
 import { SocialLinkType } from '@/enums/index.enum';
 import { useToast } from '@/hooks/useToast';
 import { getFormattedTime } from '@/lib/time';
-import { copyHref, getPreviewText, urlPreview } from '@/lib/utils';
+import { copyHref, urlPreview } from '@/lib/utils';
 import { IdeaDetail } from '@/types/Idea';
 import { t } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
@@ -60,8 +60,8 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({ data }) => {
           }}
         >
           <LinkIconWrapper variant={SocialLinkType.CUSTOMIZED} />
-          <p>
-            {getPreviewText(urlPreview(data.externalLink), LINK_PREVIEW_LENGTH)}
+          <p className="line-clamp-1 max-w-[160px]">
+            {urlPreview(data.externalLink)}
           </p>
         </div>
       )}

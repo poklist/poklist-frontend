@@ -8,8 +8,9 @@ import LinkIconWrapper from '@/components/ui/wrappers/LinkIconWrapper';
 import { socialLinkStarterMap } from '@/constants/User';
 import { EditFieldVariant, FieldType } from '@/enums/EditField/index.enum';
 import { SocialLinkType } from '@/enums/index.enum';
+import useStrictNavigate from '@/hooks/useStrictNavigate';
 import axios from '@/lib/axios';
-import { getPreviewText, urlPreview } from '@/lib/utils';
+import { urlPreview } from '@/lib/utils';
 import useEditProfileStore from '@/stores/useEditProfileStore';
 import useUserStore from '@/stores/useUserStore';
 import { IEditFieldConfig } from '@/types/EditField';
@@ -18,10 +19,9 @@ import { IUpdateUserResponse } from '@/types/User';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 const EditUserPage: React.FC = () => {
-  const navigate = useNavigate();
+  const navigateTo = useStrictNavigate();
   const { user, setUser, refreshToken } = useUserStore();
   const {
     newUserInfo,
@@ -185,16 +185,19 @@ const EditUserPage: React.FC = () => {
       console.log('profile image is the same');
       delete newUserInfo.profileImage;
     }
-    const response = await axios.put<IResponse<IUpdateUserResponse>>(
-      `/users/me`,
-      newUserInfo
-    );
-    if (response.data.content?.accessToken) {
-      console.log('accessToken is updated');
-      refreshToken(response.data.content.accessToken);
-      setUser({ ...newUserInfo });
-    }
-    navigate(`/${user.userCode}`);
+    await axios
+      .put<IResponse<IUpdateUserResponse>>(`/users/me`, newUserInfo)
+      .then((response) => {
+        if (response.data.content?.accessToken) {
+          refreshToken(response.data.content.accessToken);
+        }
+        setUser({ ...newUserInfo });
+        navigateTo.user(newUserInfo.userCode);
+      })
+      .catch((error) => {
+        console.error(error);
+        navigateTo.user(user.userCode);
+      });
   };
 
   useEffect(() => {
@@ -275,8 +278,8 @@ const EditUserPage: React.FC = () => {
           </p>
           <>
             {newUserInfo.bio ? (
-              <p className="text-right text-black-text-01">
-                {getPreviewText(newUserInfo.bio, 20)}
+              <p className="line-clamp-1 max-w-[240px] text-right text-black-text-01">
+                {newUserInfo.bio}
               </p>
             ) : (
               <p className="text-right text-gray-storm-01">
@@ -321,7 +324,7 @@ const EditUserPage: React.FC = () => {
       </div>
       <EditModeFooter
         disabled={!isModified()}
-        onClose={() => navigate(`/${user.userCode}`)}
+        onClose={() => navigateTo.user(user.userCode)}
         title={t`Edit profile and account`}
         onSave={onSubmit}
       />

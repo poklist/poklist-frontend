@@ -41,7 +41,7 @@ const ImageCropper: React.FC<IImageCropperProps> = ({
           e.currentTarget as HTMLImageElement;
         if (naturalWidth < MIN_DIMENSION || naturalHeight < MIN_DIMENSION) {
           // FUTURE: hint/warning design discussion
-          setError(t`Image must be at least 150 x 150 pixels.`);
+          setError(t`Image must be at least 150x150px.`);
           return setImgSrc('');
         }
       });

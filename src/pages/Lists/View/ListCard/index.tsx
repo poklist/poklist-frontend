@@ -11,14 +11,15 @@ import ApiPath from '@/config/apiPath';
 import {
   DAY_IN_MS,
   DESCRIPTION_PREVIEW_LENGTH,
-  LINK_PREVIEW_LENGTH,
   RECENTLY_UPDATED_DAYS,
 } from '@/constants/list';
 import { Language, SocialLinkType } from '@/enums/index.enum';
 import { IListInfo } from '@/hooks/Lists/useGetList';
+import useStrictNavigate from '@/hooks/useStrictNavigate';
 import axios from '@/lib/axios';
 import { getFormattedTime } from '@/lib/time';
-import { getPreviewText, urlPreview } from '@/lib/utils';
+import { urlPreview } from '@/lib/utils';
+import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
 import { CategoriesI18n } from '@/pages/Lists/i18n';
 import useCommonStore from '@/stores/useCommonStore';
 import useUserStore from '@/stores/useUserStore';
@@ -27,8 +28,8 @@ import { IResponse } from '@/types/response';
 import { useLingui } from '@lingui/react';
 import { Trans } from '@lingui/react/macro';
 import { AxiosResponse } from 'axios';
-import { useEffect, useState } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { useLocation, useOutletContext, useParams } from 'react-router-dom';
 import IdeaDrawerContent from '../IdeaDrawerContent';
 
 interface IListCardProps {
@@ -36,9 +37,12 @@ interface IListCardProps {
 }
 
 const ListCard: React.FC<IListCardProps> = ({ data }) => {
-  const { ideaID } = useParams();
+  const { userCode: listOwnerUserCode } =
+    useOutletContext<UserRouteLayoutContextType>();
+  const { id: listID, ideaID } = useParams();
+
   const { i18n } = useLingui();
-  const navigate = useNavigate();
+  const navigateTo = useStrictNavigate();
   const location = useLocation();
 
   const { isLoggedIn, user } = useUserStore();
@@ -49,9 +53,9 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
   const [ideaMap, setIdeaMap] = useState<{
     [id: number]: IdeaDetail;
   }>();
-
   // FUTURE: move to custom hook?
   const [createdAtString, setCreatedAtString] = useState('');
+  const externalLinkRef = useRef<HTMLDivElement>(null);
 
   // NOTE: will this result in an error?
   const isUpdatedRecently =
@@ -68,7 +72,12 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
   };
 
   const onClickExternalLink = () => {
-    if (urlPreview(data.externalLink).length <= LINK_PREVIEW_LENGTH) {
+    if (
+      externalLinkRef.current?.scrollHeight === undefined ||
+      externalLinkRef.current?.clientHeight === undefined ||
+      externalLinkRef.current.scrollHeight <=
+        externalLinkRef.current.clientHeight
+    ) {
       window.open(data.externalLink, '_blank');
       return;
     }
@@ -116,12 +125,10 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
   }, [data.createdAt, i18n.locale]);
 
   useEffect(() => {
-    if (ideaID) {
-      navigate(`/${user.userCode}/list/${data.id}`, {
-        state: { ideaID: Number(ideaID) },
-      });
+    if (listID && ideaID) {
+      navigateTo.viewList(listOwnerUserCode, listID, ideaID);
     }
-  }, [ideaID, navigate, user.userCode, data.id]);
+  }, [ideaID, listID, navigateTo, user.userCode]);
 
   useEffect(() => {
     if (location.state?.ideaID) {
@@ -162,7 +169,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
                 size={ButtonSize.H40}
                 shape={ButtonShape.ROUNDED_5PX}
                 onClick={() =>
-                  navigate(`/${user.userCode}/list/${data.id}/manage`)
+                  navigateTo.manageList(user.userCode, data.id.toString())
                 }
               >
                 <Trans>Edit list</Trans>
@@ -172,7 +179,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
                 size={ButtonSize.H40}
                 shape={ButtonShape.ROUNDED_5PX}
                 onClick={() =>
-                  navigate(`/idea/create`, {
+                  navigateTo.createIdea({
                     state: { listID: Number(data.id), listTitle: data.title },
                   })
                 }
@@ -183,23 +190,20 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
           )}
           {data.description && (
             <div
-              className="mt-6 text-[15px] -tracking-1.1%"
+              className="mt-6 line-clamp-1 text-[15px] -tracking-1.1%"
               onClick={onClickDescription}
             >
-              {getPreviewText(data.description, DESCRIPTION_PREVIEW_LENGTH)}
+              {data.description}
             </div>
           )}
           {data.externalLink && (
             <div
-              className="mt-4 flex h-8 cursor-pointer items-center gap-2 self-start px-2 text-[13px]"
+              className="mt-4 flex h-8 cursor-pointer items-center gap-2 self-start text-[13px]"
               onClick={onClickExternalLink}
             >
               <LinkIconWrapper variant={SocialLinkType.CUSTOMIZED} />
-              <p>
-                {getPreviewText(
-                  urlPreview(data.externalLink),
-                  LINK_PREVIEW_LENGTH
-                )}
+              <p ref={externalLinkRef} className="line-clamp-1">
+                {urlPreview(data.externalLink)}
               </p>
             </div>
           )}
@@ -227,11 +231,8 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
                       {idea.title}
                     </p>
                     {idea.description && (
-                      <p className="text-[13px] text-black-text-01">
-                        {getPreviewText(
-                          idea.description,
-                          DESCRIPTION_PREVIEW_LENGTH
-                        )}
+                      <p className="line-clamp-1 max-w-[64%] text-[13px] text-gray-storm-01">
+                        {idea.description}
                       </p>
                     )}
                   </div>

@@ -1,7 +1,7 @@
 import IconLeftArrow from '@/components/ui/icons/LeftArrowIcon';
+import useStrictNavigate from '@/hooks/useStrictNavigate';
 import { DeleteButton } from '@/pages/Lists/Components/DeleteButton';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 
 interface IHeaderProps {
   title: React.ReactNode;
@@ -13,7 +13,7 @@ const Header: React.FC<IHeaderProps> = ({
   deleteCallback,
   backwardCallback,
 }) => {
-  const navigate = useNavigate();
+  const navigateTo = useStrictNavigate();
   return (
     <>
       <header
@@ -23,7 +23,7 @@ const Header: React.FC<IHeaderProps> = ({
         {backwardCallback && (
           <div
             className="absolute left-4 flex h-5 w-5 items-center justify-center"
-            onClick={() => navigate(-1)}
+            onClick={() => navigateTo.backward()}
           >
             <IconLeftArrow height={10} />
           </div>
