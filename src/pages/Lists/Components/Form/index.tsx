@@ -25,6 +25,7 @@ import { Trans } from '@lingui/react/macro';
 import React, { useEffect, useRef, useState } from 'react';
 import { Controller, FieldErrors, useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { useNavigate } from 'react-router-dom';
 
 const TITLE_MAX_LENGTH = 60;
 const DESC_MAX_LENGTH = 250;
@@ -54,7 +55,10 @@ const ListForm: React.FC<IListFormProps> = ({
 }) => {
   const { setErrorDrawerMessage, setShowingAlert, setIsLoading } =
     useCommonStore();
-  const { openDrawer, closeDrawer } = useDrawer(DrawerIds.CATEGORY_DRAWER_ID);
+  const { openDrawer: openCategoryDrawer, closeDrawer: closeCategoryDrawer } =
+    useDrawer(DrawerIds.CATEGORY_DRAWER_ID);
+  const { openDrawer: openCancelDrawer, closeDrawer: closeCancelDrawer } =
+    useDrawer(DrawerIds.CANCEL_CONFIRM_DRAWER_ID);
   const { categoriesLoading, categories, fetchGetCategories } = useCategories();
 
   const { openFakePage } = useFakePage();
@@ -76,11 +80,11 @@ const ListForm: React.FC<IListFormProps> = ({
   };
 
   const onOpenCategoryDrawer = () => {
-    openDrawer();
+    openCategoryDrawer();
   };
 
   const onCloseCategoryDrawer = () => {
-    closeDrawer();
+    closeCategoryDrawer();
   };
 
   const [isTextareaFocus, setIsTextareaFocus] = useState(false);
@@ -142,13 +146,11 @@ const ListForm: React.FC<IListFormProps> = ({
   const onDismiss = () => {
     let isFormEmpty = true;
     if (isFormModified) {
-      setErrorDrawerMessage({
-        title: t`Your edits will be lost if you cancel!`,
-        content: t`If you cancel, everything you've entered will be lost.`,
-      });
+      openCancelDrawer();
       isFormEmpty = false;
+    } else {
+      dismissCallback(isFormEmpty);
     }
-    dismissCallback(isFormEmpty);
   };
 
   const onSubmitFailed = (
@@ -256,6 +258,9 @@ const ListForm: React.FC<IListFormProps> = ({
     });
     setRadioChoice(_radioChoice);
   }, [categories]);
+
+  const navigate = useNavigate();
+
   return (
     <>
       <form
@@ -372,6 +377,39 @@ const ListForm: React.FC<IListFormProps> = ({
               </Button>
             )}
           </div>
+        }
+      />
+
+      <DrawerComponent
+        drawerId={DrawerIds.CANCEL_CONFIRM_DRAWER_ID}
+        isShowClose={false}
+        header={<Trans>Your edits will be lost if you cancel!</Trans>}
+        subHeader={
+          <Trans>
+            If you cancel, everything you&apos;ve entered will be lost.
+          </Trans>
+        }
+        content={<></>}
+        startFooter={
+          <Button
+            onClick={() => {
+              closeCancelDrawer();
+              navigate(-1);
+            }}
+            variant={ButtonVariant.WARNING}
+            shape={ButtonShape.ROUNDED_5PX}
+          >
+            <Trans>Cancel Editing</Trans>
+          </Button>
+        }
+        endFooter={
+          <Button
+            onClick={() => closeCancelDrawer()}
+            variant={ButtonVariant.BLACK}
+            shape={ButtonShape.ROUNDED_5PX}
+          >
+            <Trans>Continue Editing</Trans>
+          </Button>
         }
       />
 

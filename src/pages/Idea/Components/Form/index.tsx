@@ -1,6 +1,8 @@
 import { useFakePage } from '@/components/FakePage';
 import { EditFieldFakePageComponent } from '@/components/FakePage/EditFieldFakePage';
 import ImageUploader from '@/components/ImageUploader';
+import { DrawerComponent, useDrawer } from '@/components/Drawer';
+import { DrawerIds } from '@/constants/Drawer';
 import { Button, ButtonShape, ButtonVariant } from '@/components/ui/button';
 import IconClose from '@/components/ui/icons/CloseIcon';
 import IconExteriorLink from '@/components/ui/icons/ExteriorLinkIcon';
@@ -20,6 +22,7 @@ import { Trans } from '@lingui/react/macro';
 import React, { useEffect, useRef, useState } from 'react';
 import { Controller, FieldErrors, useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { useNavigate } from 'react-router-dom';
 
 const TITLE_MAX_LENGTH = 60;
 const DESC_MAX_LENGTH = 250;
@@ -48,6 +51,9 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
 }) => {
   const { setErrorDrawerMessage, setShowingAlert, setIsLoading } =
     useCommonStore();
+  const { openDrawer: openCancelDrawer, closeDrawer: closeCancelDrawer } =
+    useDrawer(DrawerIds.CANCEL_CONFIRM_DRAWER_ID);
+  const navigate = useNavigate();
 
   const [isTextareaFocus, setIsTextareaFocus] = useState(false);
   const [isFormModified, setIsFormModified] = useState(false);
@@ -124,13 +130,11 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
   const onDismiss = () => {
     let isFormEmpty = true;
     if (isFormModified) {
-      setErrorDrawerMessage({
-        title: t`Your edits will be lost if you cancel!`,
-        content: t`Title is saved, but your idea edits will be lost! Are you sure you want to cancel?`,
-      });
+      openCancelDrawer();
       isFormEmpty = false;
+    } else {
+      dismissCallback(isFormEmpty);
     }
-    dismissCallback(isFormEmpty);
   };
 
   const onSubmitFailed = (
@@ -282,6 +286,40 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
       </form>
 
       {fieldConfig && <EditFieldFakePageComponent {...fieldConfig} />}
+
+      <DrawerComponent
+        drawerId={DrawerIds.CANCEL_CONFIRM_DRAWER_ID}
+        isShowClose={false}
+        header={<Trans>Your edits will be lost if you cancel!</Trans>}
+        subHeader={
+          <Trans>
+            Title is saved, but your idea edits will be lost! Are you sure you
+            want to cancel?
+          </Trans>
+        }
+        content={<></>}
+        startFooter={
+          <Button
+            onClick={() => {
+              closeCancelDrawer();
+              navigate(-1);
+            }}
+            variant={ButtonVariant.WARNING}
+            shape={ButtonShape.ROUNDED_5PX}
+          >
+            <Trans>Cancel Editing</Trans>
+          </Button>
+        }
+        endFooter={
+          <Button
+            onClick={() => closeCancelDrawer()}
+            variant={ButtonVariant.BLACK}
+            shape={ButtonShape.ROUNDED_5PX}
+          >
+            <Trans>Continue Editing</Trans>
+          </Button>
+        }
+      />
 
       <footer className="fixed bottom-0 left-0 z-10 flex w-full justify-between border-t border-t-gray-main-03 px-4 py-2 sm:sticky">
         <div className="flex items-center gap-2">
