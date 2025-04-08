@@ -8,11 +8,14 @@ import {
 } from '@/components/ui/button';
 import LinkIconWrapper from '@/components/ui/wrappers/LinkIconWrapper';
 import { SocialLinkType } from '@/enums/index.enum';
+import { SocialActionType, useSocialAction } from '@/hooks/useSocialAction';
+import { useToast } from '@/hooks/useToast';
 import axios from '@/lib/axios';
 import { extractUsernameFromUrl, urlPreview } from '@/lib/utils';
 import useUserStore from '@/stores/useUserStore';
 import { IResponse } from '@/types/response';
 import { User } from '@/types/User';
+import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -32,6 +35,39 @@ const HeroSection: React.FC = () => {
   const [drawerContent, setDrawerContent] = useState<React.ReactNode>(null);
   const [isFollowing, setIsFollowing] = useState<boolean>(false);
   const bioRef = useRef<HTMLParagraphElement>(null);
+  const { toast } = useToast();
+  const { debouncedMutate: follow } = useSocialAction({
+    actionKey: 'follow',
+    debounceGroupKey: SocialActionType.FOLLOW,
+    url: '/follow',
+    method: 'POST',
+    shouldAllow: () => isLoggedIn,
+    onNotAllowed: () => {
+      toast({
+        title: t`Please login to do this action`,
+        variant: 'destructive',
+      });
+    },
+    onOptimisticUpdate: () => {
+      setIsFollowing(true);
+    },
+  });
+  const { debouncedMutate: unfollow } = useSocialAction({
+    actionKey: 'unfollow',
+    debounceGroupKey: SocialActionType.FOLLOW,
+    url: '/unfollow',
+    method: 'POST',
+    shouldAllow: () => isLoggedIn,
+    onNotAllowed: () => {
+      toast({
+        title: t`Please login to do this action`,
+        variant: 'destructive',
+      });
+    },
+    onOptimisticUpdate: () => {
+      setIsFollowing(false);
+    },
+  });
 
   const linkCount = useMemo(() => {
     if (currentUser.socialLinks !== undefined) {
@@ -47,35 +83,6 @@ const HeroSection: React.FC = () => {
   useEffect(() => {
     setIsFollowing(isLoggedIn && currentUser.isFollowing === true);
   }, [isLoggedIn, currentUser.isFollowing]);
-
-  const follow = () => {
-    if (!isLoggedIn) {
-      navigate('/home');
-      return;
-    }
-    // FUTURE: refactor the follow/unfollow API
-    axios
-      .post('/follow', null, { params: { userID: currentUser.id } })
-      .then(() => {
-        // TODO: success message
-        setIsFollowing(true);
-      })
-      .catch(() => {
-        // TODO: error message
-      });
-  };
-
-  const unfollow = () => {
-    axios
-      .post('/unfollow', null, { params: { userID: currentUser.id } })
-      .then(() => {
-        // TODO: success message
-        setIsFollowing(false);
-      })
-      .catch(() => {
-        // TODO: error message
-      });
-  };
 
   const goToEditPage = () => {
     navigate(`/${me.userCode}/edit`);
@@ -199,7 +206,7 @@ const HeroSection: React.FC = () => {
               id="unfollow-button"
               variant={ButtonVariant.GRAY}
               size={ButtonSize.LG}
-              onClick={unfollow}
+              onClick={() => unfollow({ params: { userID: currentUser.id } })}
             >
               <Trans>Following</Trans>
             </Button>
@@ -208,7 +215,7 @@ const HeroSection: React.FC = () => {
               id="follow-button"
               variant={ButtonVariant.HIGHLIGHTED}
               size={ButtonSize.LG}
-              onClick={follow}
+              onClick={() => follow({ params: { userID: currentUser.id } })}
             >
               <Trans>Follow</Trans>
             </Button>

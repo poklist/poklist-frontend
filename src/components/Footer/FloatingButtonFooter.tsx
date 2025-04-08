@@ -8,32 +8,24 @@ import useSocialStore from '@/stores/useSocialStore';
 import useUserStore from '@/stores/useUserStore';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 interface IFooterProps {
   hasLikeButton?: boolean;
-  onUnmount?: () => void;
+  onClickLike?: () => void;
+  onClickUnlike?: () => void;
 }
 
 const FloatingButtonFooter: React.FC<IFooterProps> = ({
   hasLikeButton = false,
-  onUnmount,
+  onClickLike,
+  onClickUnlike,
 }) => {
   // May use ReactNode instead
   const navigate = useNavigate();
   const { toast } = useToast();
   const { user: me } = useUserStore();
   const { isLiked, setIsLiked } = useSocialStore();
-
-  useEffect(() => {
-    return () => {
-      // NOTE: because if we use unmount hook of the parent component,
-      // the like status can't be accessed.
-      // so we need to call the onUnmount function.
-      onUnmount?.();
-    };
-  }, [onUnmount]);
 
   const handleCopyHref = () => {
     copyHref();
@@ -51,7 +43,11 @@ const FloatingButtonFooter: React.FC<IFooterProps> = ({
       {hasLikeButton && (
         <Button
           onClick={() => {
-            setIsLiked(!isLiked);
+            if (isLiked) {
+              onClickUnlike?.();
+            } else {
+              onClickLike?.();
+            }
           }}
           variant={ButtonVariant.WHITE}
           className="flex items-center gap-1.5 text-sm"
