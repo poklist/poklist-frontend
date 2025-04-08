@@ -22,6 +22,7 @@ import { Trans } from '@lingui/react/macro';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { HeroSectionSkeleton } from './HeroSectionSkeleton';
+import { DrawerIds } from '@/constants/Drawer';
 
 const HeroSection: React.FC = () => {
   const { userCode } = useOutletContext<UserRouteLayoutContextType>();
@@ -243,6 +244,7 @@ const HeroSection: React.FC = () => {
         </div>
       </div>
       <DrawerComponent
+        drawerId={DrawerIds.USER_HERO_SECTION_DRAWER_ID}
         isShowClose={false}
         header={<></>}
         subHeader={<></>}

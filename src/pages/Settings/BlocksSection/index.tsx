@@ -10,6 +10,7 @@ import { Trans } from '@lingui/react/macro';
 import { useEffect, useState } from 'react';
 import { ButtonRadioGroup } from '../ButtonRadioGroup';
 import LinksBlock from './LinksBlock';
+import { DrawerIds } from '@/constants/Drawer';
 
 const BlocksSection: React.FC = () => {
   const navigateTo = useStrictNavigate();
@@ -56,7 +57,7 @@ const BlocksSection: React.FC = () => {
     const onLanguageChange = (value: string[]) => {
       const newLanguage = value[0] as Language;
       // TODO: error handling
-      activateI18n(newLanguage);
+      void activateI18n(newLanguage);
       setLanguage(newLanguage);
       setLocalStorage(LocalStorageKey.SELECTED_LANGUAGE, newLanguage);
     };
@@ -220,7 +221,11 @@ const BlocksSection: React.FC = () => {
           );
         })}
       </div>
-      <DrawerComponent isShowClose={false} content={drawerContent} />
+      <DrawerComponent
+        drawerId={DrawerIds.SETTINGS_DRAWER_ID}
+        isShowClose={false}
+        content={drawerContent}
+      />
     </>
   );
 };

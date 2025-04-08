@@ -1,4 +1,5 @@
 import { DrawerComponent, useDrawer } from '@/components/Drawer';
+import { DrawerIds } from '@/constants/Drawer';
 import { useFakePage } from '@/components/FakePage';
 import { EditFieldFakePageComponent } from '@/components/FakePage/EditFieldFakePage';
 import ImageUploader from '@/components/ImageUploader';
@@ -24,6 +25,7 @@ import { Trans } from '@lingui/react/macro';
 import React, { useEffect, useRef, useState } from 'react';
 import { Controller, FieldErrors, useForm } from 'react-hook-form';
 import { z } from 'zod';
+import useStrictNavigate from '@/hooks/useStrictNavigate';
 
 const TITLE_MAX_LENGTH = 60;
 const DESC_MAX_LENGTH = 250;
@@ -51,9 +53,12 @@ const ListForm: React.FC<IListFormProps> = ({
   dismissCallback,
   completedCallback,
 }) => {
-  const { setShowErrorDrawer, setShowingAlert, setIsLoading } =
+  const { setErrorDrawerMessage, setShowingAlert, setIsLoading } =
     useCommonStore();
-  const { openDrawer, closeDrawer } = useDrawer();
+  const { openDrawer: openCategoryDrawer, closeDrawer: closeCategoryDrawer } =
+    useDrawer(DrawerIds.CATEGORY_DRAWER_ID);
+  const { openDrawer: openCancelDrawer, closeDrawer: closeCancelDrawer } =
+    useDrawer(DrawerIds.CANCEL_CONFIRM_DRAWER_ID);
   const { categoriesLoading, categories, fetchGetCategories } = useCategories();
 
   const { openFakePage } = useFakePage();
@@ -75,11 +80,11 @@ const ListForm: React.FC<IListFormProps> = ({
   };
 
   const onOpenCategoryDrawer = () => {
-    openDrawer();
+    openCategoryDrawer();
   };
 
   const onCloseCategoryDrawer = () => {
-    closeDrawer();
+    closeCategoryDrawer();
   };
 
   const [isTextareaFocus, setIsTextareaFocus] = useState(false);
@@ -141,13 +146,11 @@ const ListForm: React.FC<IListFormProps> = ({
   const onDismiss = () => {
     let isFormEmpty = true;
     if (isFormModified) {
-      setShowErrorDrawer(true, {
-        title: t`Your edits will be lost if you cancel!`,
-        content: t`If you cancel, everything you’ve entered will be lost.`,
-      });
+      openCancelDrawer();
       isFormEmpty = false;
+    } else {
+      dismissCallback(isFormEmpty);
     }
-    dismissCallback(isFormEmpty);
   };
 
   const onSubmitFailed = (
@@ -159,17 +162,18 @@ const ListForm: React.FC<IListFormProps> = ({
     }>
   ) => {
     const errorKey = Object.keys(value)[0];
+    console.log('errorKey', errorKey);
     // TODO 目前解法
     switch (errorKey) {
       case 'title': {
         if (value.title?.type === 'too_small') {
-          setShowErrorDrawer(true, {
-            title: t`Hey, the title can’t be left empty!`,
+          setErrorDrawerMessage({
+            title: t`Hey, the title can't be left empty!`,
             content: t`Every list needs a title, so fill it in!`,
           });
         }
         if (value.title?.type === 'too_big') {
-          setShowErrorDrawer(true, {
+          setErrorDrawerMessage({
             title: t`List title is too long!`,
             content: t`Please keep it under ${TITLE_MAX_LENGTH} characters.`,
           });
@@ -179,12 +183,19 @@ const ListForm: React.FC<IListFormProps> = ({
       }
       case 'description': {
         if (value.description?.type === 'too_big') {
-          setShowErrorDrawer(true, {
+          setErrorDrawerMessage({
             title: t`Description is too long!`,
             content: t`Please keep it under ${DESC_MAX_LENGTH} characters.`,
           });
         }
 
+        break;
+      }
+      case 'coverImage': {
+        setErrorDrawerMessage({
+          title: t`Required cover image`,
+          content: t`Please upload a cover image.`,
+        });
         break;
       }
       case 'externalLink': {
@@ -253,11 +264,14 @@ const ListForm: React.FC<IListFormProps> = ({
     });
     setRadioChoice(_radioChoice);
   }, [categories]);
+
+  const navigateTo = useStrictNavigate();
+
   return (
     <>
       <form
         onSubmit={() => {
-          listForm.handleSubmit(onSubmit, onSubmitFailed)();
+          void listForm.handleSubmit(onSubmit, onSubmitFailed)();
         }}
         className="mx-4 mt-6 flex flex-1 flex-col gap-6 px-4 md:max-w-mobile-max"
       >
@@ -325,12 +339,9 @@ const ListForm: React.FC<IListFormProps> = ({
       </form>
 
       <DrawerComponent
+        drawerId={DrawerIds.CATEGORY_DRAWER_ID}
         isShowClose={false}
-        header={
-          <div className="mb-1 w-fit font-bold text-black-text-01">
-            <Trans>List Topic</Trans>
-          </div>
-        }
+        header={<Trans>List Topic</Trans>}
         subHeader={<Trans>Choose a topic that vibes with your List.</Trans>}
         content={
           !categoriesLoading && (
@@ -351,27 +362,50 @@ const ListForm: React.FC<IListFormProps> = ({
             </div>
           )
         }
-        footer={
-          <div className="flex justify-end">
-            {defaultListInfo ? (
-              <Button
-                onClick={() => onCloseCategoryDrawer()}
-                variant={ButtonVariant.BLACK}
-                shape={ButtonShape.ROUNDED_5PX}
-              >
-                <Trans>Next</Trans>
-              </Button>
-            ) : (
-              <Button
-                onClick={listForm.handleSubmit(onSubmit, onSubmitFailed)}
-                type="submit"
-                variant={ButtonVariant.BLACK}
-                shape={ButtonShape.ROUNDED_5PX}
-              >
-                <Trans>Next</Trans>
-              </Button>
-            )}
-          </div>
+        endFooter={
+          <Button
+            onClick={() =>
+              void listForm.handleSubmit(onSubmit, onSubmitFailed)()
+            }
+            type="submit"
+            variant={ButtonVariant.BLACK}
+            shape={ButtonShape.ROUNDED_5PX}
+          >
+            <Trans>Next</Trans>
+          </Button>
+        }
+      />
+
+      <DrawerComponent
+        drawerId={DrawerIds.CANCEL_CONFIRM_DRAWER_ID}
+        isShowClose={false}
+        header={<Trans>Your edits will be lost if you cancel!</Trans>}
+        subHeader={
+          <Trans>
+            If you cancel, everything you&apos;ve entered will be lost.
+          </Trans>
+        }
+        content={<></>}
+        startFooter={
+          <Button
+            onClick={() => {
+              closeCancelDrawer();
+              navigateTo.backward();
+            }}
+            variant={ButtonVariant.WARNING}
+            shape={ButtonShape.ROUNDED_5PX}
+          >
+            <Trans>Cancel Editing</Trans>
+          </Button>
+        }
+        endFooter={
+          <Button
+            onClick={() => closeCancelDrawer()}
+            variant={ButtonVariant.BLACK}
+            shape={ButtonShape.ROUNDED_5PX}
+          >
+            <Trans>Continue Editing</Trans>
+          </Button>
         }
       />
 
@@ -400,9 +434,7 @@ const ListForm: React.FC<IListFormProps> = ({
           }
           variant={ButtonVariant.BLACK}
           shape={ButtonShape.ROUNDED_5PX}
-          onClick={() => {
-            listForm.handleSubmit(onSubmit, onSubmitFailed)();
-          }}
+          onClick={() => onOpenCategoryDrawer()}
         >
           <Trans>Next</Trans>
         </Button>
