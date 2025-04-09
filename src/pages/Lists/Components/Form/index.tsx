@@ -58,7 +58,7 @@ const ListForm: React.FC<IListFormProps> = ({
   const { openDrawer: openCategoryDrawer, closeDrawer: closeCategoryDrawer } =
     useDrawer(DrawerIds.CATEGORY_DRAWER_ID);
   const { openDrawer: openCancelDrawer, closeDrawer: closeCancelDrawer } =
-    useDrawer(DrawerIds.CANCEL_CONFIRM_DRAWER_ID);
+    useDrawer(DrawerIds.CANCEL_LIST_FORM_CONFIRM_DRAWER_ID);
   const { categoriesLoading, categories, fetchGetCategories } = useCategories();
 
   const { openFakePage } = useFakePage();
@@ -161,6 +161,7 @@ const ListForm: React.FC<IListFormProps> = ({
       coverImage?: File | null | undefined;
     }>
   ) => {
+    console.log('value', value);
     const errorKey = Object.keys(value)[0];
     console.log('errorKey', errorKey);
     // TODO 目前解法
@@ -191,13 +192,6 @@ const ListForm: React.FC<IListFormProps> = ({
 
         break;
       }
-      case 'coverImage': {
-        setErrorDrawerMessage({
-          title: t`Required cover image`,
-          content: t`Please upload a cover image.`,
-        });
-        break;
-      }
       case 'externalLink': {
         setShowingAlert(true, {
           message: value.externalLink?.message || 'Invalid url',
@@ -220,6 +214,7 @@ const ListForm: React.FC<IListFormProps> = ({
   };
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
+    console.log('data', data);
     completedCallback(data);
   };
 
@@ -363,21 +358,31 @@ const ListForm: React.FC<IListFormProps> = ({
           )
         }
         endFooter={
-          <Button
-            onClick={() =>
-              void listForm.handleSubmit(onSubmit, onSubmitFailed)()
-            }
-            type="submit"
-            variant={ButtonVariant.BLACK}
-            shape={ButtonShape.ROUNDED_5PX}
-          >
-            <Trans>Next</Trans>
-          </Button>
+          defaultListInfo ? (
+            <Button
+              onClick={() => onCloseCategoryDrawer()}
+              variant={ButtonVariant.BLACK}
+              shape={ButtonShape.ROUNDED_5PX}
+            >
+              <Trans>Next</Trans>
+            </Button>
+          ) : (
+            <Button
+              onClick={() =>
+                void listForm.handleSubmit(onSubmit, onSubmitFailed)()
+              }
+              type="submit"
+              variant={ButtonVariant.BLACK}
+              shape={ButtonShape.ROUNDED_5PX}
+            >
+              <Trans>Next</Trans>
+            </Button>
+          )
         }
       />
 
       <DrawerComponent
-        drawerId={DrawerIds.CANCEL_CONFIRM_DRAWER_ID}
+        drawerId={DrawerIds.CANCEL_LIST_FORM_CONFIRM_DRAWER_ID}
         isShowClose={false}
         header={<Trans>Your edits will be lost if you cancel!</Trans>}
         subHeader={
@@ -427,17 +432,31 @@ const ListForm: React.FC<IListFormProps> = ({
             <Trans>Create Idea List</Trans>
           )}
         </div>
-        <Button
-          disabled={
-            (defaultListInfo !== undefined && !isFormModified) ||
-            listForm.getValues('title') === ''
-          }
-          variant={ButtonVariant.BLACK}
-          shape={ButtonShape.ROUNDED_5PX}
-          onClick={() => onOpenCategoryDrawer()}
-        >
-          <Trans>Next</Trans>
-        </Button>
+        {defaultListInfo ? (
+          <Button
+            disabled={!isFormModified}
+            type="submit"
+            variant={ButtonVariant.BLACK}
+            shape={ButtonShape.ROUNDED_5PX}
+            onClick={() => {
+              void listForm.handleSubmit(onSubmit, onSubmitFailed)();
+            }}
+          >
+            <Trans>Next</Trans>
+          </Button>
+        ) : (
+          <Button
+            variant={
+              listForm.getValues('title') === ''
+                ? ButtonVariant.GRAY
+                : ButtonVariant.BLACK
+            }
+            shape={ButtonShape.ROUNDED_5PX}
+            onClick={() => onOpenCategoryDrawer()}
+          >
+            <Trans>Next</Trans>
+          </Button>
+        )}
       </footer>
     </>
   );
