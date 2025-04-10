@@ -161,9 +161,8 @@ const ListForm: React.FC<IListFormProps> = ({
       coverImage?: File | null | undefined;
     }>
   ) => {
-    console.log('value', value);
+    console.log('SubmitFailed Value', value);
     const errorKey = Object.keys(value)[0];
-    console.log('errorKey', errorKey);
     // TODO 目前解法
     switch (errorKey) {
       case 'title': {
@@ -214,7 +213,6 @@ const ListForm: React.FC<IListFormProps> = ({
   };
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
-    console.log('data', data);
     completedCallback(data);
   };
 
