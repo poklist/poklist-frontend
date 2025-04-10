@@ -53,7 +53,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
   const { setErrorDrawerMessage, setShowingAlert, setIsLoading } =
     useCommonStore();
   const { openDrawer: openCancelDrawer, closeDrawer: closeCancelDrawer } =
-    useDrawer(DrawerIds.CANCEL_CONFIRM_DRAWER_ID);
+    useDrawer(DrawerIds.CANCEL_IDEA_FORM_CONFIRM_DRAWER_ID);
   const navigateTo = useStrictNavigate();
 
   const [isTextareaFocus, setIsTextareaFocus] = useState(false);
@@ -175,13 +175,6 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
 
         break;
       }
-      case 'coverImage': {
-        setErrorDrawerMessage({
-          title: t`Required cover image`,
-          content: t`Please upload a cover image.`,
-        });
-        break;
-      }
       case 'externalLink': {
         setShowingAlert(true, {
           message: value.externalLink?.message || 'Invalid url',
@@ -296,7 +289,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
       {fieldConfig && <EditFieldFakePageComponent {...fieldConfig} />}
 
       <DrawerComponent
-        drawerId={DrawerIds.CANCEL_CONFIRM_DRAWER_ID}
+        drawerId={DrawerIds.CANCEL_IDEA_FORM_CONFIRM_DRAWER_ID}
         isShowClose={false}
         header={<Trans>Your edits will be lost if you cancel!</Trans>}
         subHeader={
