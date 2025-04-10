@@ -228,6 +228,12 @@ const ListForm: React.FC<IListFormProps> = ({
   useEffect(() => {
     fetchGetCategories();
     // footerPosition();
+
+    // 組件卸載時關閉抽屜
+    return () => {
+      closeCategoryDrawer();
+      closeCancelDrawer();
+    };
   }, []);
 
   useEffect(() => {
