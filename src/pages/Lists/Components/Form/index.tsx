@@ -1,5 +1,4 @@
 import { DrawerComponent, useDrawer } from '@/components/Drawer';
-import { DrawerIds } from '@/constants/Drawer';
 import { useFakePage } from '@/components/FakePage';
 import { EditFieldFakePageComponent } from '@/components/FakePage/EditFieldFakePage';
 import ImageUploader from '@/components/ImageUploader';
@@ -10,10 +9,12 @@ import IconExteriorLink from '@/components/ui/icons/ExteriorLinkIcon';
 import IconTextarea from '@/components/ui/icons/TextareaIcon';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { DrawerIds } from '@/constants/Drawer';
 import { EditFieldVariant } from '@/enums/EditField/index.enum';
 import { RadioType } from '@/enums/Style/index.enum';
 import useCategories from '@/hooks/Lists/useCategories';
 import { ICreateListRequest } from '@/hooks/Lists/useCreateList';
+import useStrictNavigate from '@/hooks/useStrictNavigate';
 import { cn, formatInput } from '@/lib/utils';
 import { CategoriesI18n } from '@/pages/Lists/i18n';
 import useCommonStore from '@/stores/useCommonStore';
@@ -25,7 +26,6 @@ import { Trans } from '@lingui/react/macro';
 import React, { useEffect, useRef, useState } from 'react';
 import { Controller, FieldErrors, useForm } from 'react-hook-form';
 import { z } from 'zod';
-import useStrictNavigate from '@/hooks/useStrictNavigate';
 
 const TITLE_MAX_LENGTH = 60;
 const DESC_MAX_LENGTH = 250;
@@ -34,11 +34,7 @@ const FormSchema = z.object({
   title: z.string().min(1).max(TITLE_MAX_LENGTH),
   description: z.string().max(DESC_MAX_LENGTH),
   externalLink: z.string().url().or(z.literal('')),
-  coverImage: z.string().or(z.literal('')).nullable(), // FUTURE: base64 check
-  // coverImage: z
-  //   .instanceof(File)
-  //   .nullable()
-  //   .transform((value) => value ?? null),
+  coverImage: z.string().or(z.literal('')).nullable().optional(), // FUTURE: base64 check
   categoryID: z.number().nonnegative(),
 });
 

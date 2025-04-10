@@ -15,7 +15,7 @@ export interface ICreateListRequest {
   title: string;
   description: string;
   externalLink: string;
-  coverImage: string | null;
+  coverImage?: string | null;
   categoryID: number;
 }
 
