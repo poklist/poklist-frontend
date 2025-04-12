@@ -22,8 +22,8 @@ msgstr "<0>{0}</0>"
 
 #. js-lingui-explicit-id
 #: src/components/FakePage/EditFieldFakePage.tsx
-#~ msgid "Done"
-#~ msgstr "完成"
+#~ msgid "Enter your text here"
+#~ msgstr "請輸入內容"
 
 #: src/components/FakePage/EditFieldFakePage.tsx
 msgid "Enter your text here"
@@ -68,10 +68,6 @@ msgid "Follow"
 msgstr "追蹤"
 
 #: src/components/ImageCropper/index.tsx
-#~ msgid "500x500px, JPG, max 4MB"
-#~ msgstr "500x500像素，限JPG，最大4MB"
-
-#: src/components/ImageCropper/index.tsx
 msgid "Image must be at least 150x150px."
 msgstr "圖片必須至少 150x150 像素"
 
@@ -83,19 +79,6 @@ msgstr "選擇圖片"
 #: src/components/ImageUploader/index.tsx
 msgid "500x500px, JPG or PNG, max 4MB"
 msgstr "500x500像素，限 JPG 或 PNG，最大4MB"
-
-#: src/components/ImageUploader/index.tsx
-#: src/components/ImageUploader/index.tsx
-#~ msgid "Cover image error!"
-#~ msgstr "封面圖片不符合規格！"
-
-#: src/components/ImageUploader/index.tsx
-#~ msgid "Must be square."
-#~ msgstr "必須是正方形"
-
-#: src/components/ImageUploader/index.tsx
-#~ msgid "Must be JPG or PNG and under 4MB."
-#~ msgstr "請確認圖片格式為 JPG 或 PNG，且檔案大小不得超過 4MB。"
 
 #: src/components/ImageUploader/index.tsx
 msgid "Upload a cover"
@@ -616,18 +599,13 @@ msgstr "取消"
 
 #: src/pages/Idea/Components/Form/index.tsx
 #: src/pages/Lists/Components/Form/index.tsx
-#~ msgid "Hey, the title can’t be left empty!"
-#~ msgstr "欸，標題不能留空喔！"
-
-#: src/pages/Idea/Components/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
 msgid "Cover Image"
 msgstr "封面圖片"
 
 #: src/pages/Idea/Components/Form/index.tsx
 #: src/pages/Lists/Components/Form/index.tsx
 msgid "Hey, the title can't be left empty!"
-msgstr ""
+msgstr "欸，標題不能留空喔！"
 
 #: src/pages/Idea/Components/Form/index.tsx
 msgid "Every idea needs a title, so fill it in!"
@@ -651,16 +629,6 @@ msgstr "標題描述內容超出限制了！"
 #: src/pages/Lists/Components/Form/index.tsx
 msgid "Please keep it under {DESC_MAX_LENGTH} characters."
 msgstr "字數有點爆表，請減到 {DESC_MAX_LENGTH} 個字元以內。"
-
-#: src/pages/Idea/Components/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
-msgid "Required cover image"
-msgstr "需要封面圖片"
-
-#: src/pages/Idea/Components/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
-msgid "Please upload a cover image."
-msgstr "請上傳封面圖片。"
 
 #: src/pages/Idea/Components/Form/index.tsx
 msgid "What's your Idea?"
@@ -706,6 +674,8 @@ msgstr "新靈感"
 #: src/pages/Idea/Components/Form/index.tsx
 #: src/pages/Lists/Components/Form/index.tsx
 #: src/pages/Lists/Components/Form/index.tsx
+#: src/pages/Lists/Components/Form/index.tsx
+#: src/pages/Lists/Components/Form/index.tsx
 msgid "Next"
 msgstr "下一步"
 
@@ -732,10 +702,6 @@ msgstr "永久刪除整個名單及所有靈感，這將無法復原！"
 #: src/pages/Lists/Components/DeleteButton/index.tsx
 msgid "Delete List and All Ideas"
 msgstr "刪除名單與所有靈感"
-
-#: src/pages/Lists/Components/Form/index.tsx
-#~ msgid "If you cancel, everything you’ve entered will be lost."
-#~ msgstr "如果取消，所填的內容都會消失。"
 
 #: src/pages/Lists/Components/Form/index.tsx
 msgid "Every list needs a title, so fill it in!"

@@ -22,8 +22,8 @@ msgstr ""
 
 #. js-lingui-explicit-id
 #: src/components/FakePage/EditFieldFakePage.tsx
-#~ msgid "Done"
-#~ msgstr "Done"
+#~ msgid "Enter your text here"
+#~ msgstr "Enter your text here"
 
 #: src/components/FakePage/EditFieldFakePage.tsx
 msgid "Enter your text here"
@@ -68,10 +68,6 @@ msgid "Follow"
 msgstr "Follow"
 
 #: src/components/ImageCropper/index.tsx
-#~ msgid "500x500px, JPG, max 4MB"
-#~ msgstr "500x500px, JPG, max 4MB"
-
-#: src/components/ImageCropper/index.tsx
 msgid "Image must be at least 150x150px."
 msgstr "Image must be at least 150x150px."
 
@@ -83,19 +79,6 @@ msgstr "Choose your image"
 #: src/components/ImageUploader/index.tsx
 msgid "500x500px, JPG or PNG, max 4MB"
 msgstr "500x500px, JPG or PNG, max 4MB"
-
-#: src/components/ImageUploader/index.tsx
-#: src/components/ImageUploader/index.tsx
-#~ msgid "Cover image error!"
-#~ msgstr "Cover image error!"
-
-#: src/components/ImageUploader/index.tsx
-#~ msgid "Must be square."
-#~ msgstr "Must be square."
-
-#: src/components/ImageUploader/index.tsx
-#~ msgid "Must be JPG or PNG and under 4MB."
-#~ msgstr "Must be JPG or PNG and under 4MB."
 
 #: src/components/ImageUploader/index.tsx
 msgid "Upload a cover"
@@ -615,15 +598,6 @@ msgid "Cancel"
 msgstr "Cancel"
 
 #: src/pages/Idea/Components/Form/index.tsx
-#~ msgid "Describe what this Idea is about"
-#~ msgstr "Describe what this Idea is about"
-
-#: src/pages/Idea/Components/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
-#~ msgid "Hey, the title can’t be left empty!"
-#~ msgstr "Hey, the title can’t be left empty!"
-
-#: src/pages/Idea/Components/Form/index.tsx
 #: src/pages/Lists/Components/Form/index.tsx
 msgid "Cover Image"
 msgstr "Cover Image"
@@ -655,16 +629,6 @@ msgstr "Description is too long!"
 #: src/pages/Lists/Components/Form/index.tsx
 msgid "Please keep it under {DESC_MAX_LENGTH} characters."
 msgstr "Please keep it under {DESC_MAX_LENGTH} characters."
-
-#: src/pages/Idea/Components/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
-msgid "Required cover image"
-msgstr "Required cover image"
-
-#: src/pages/Idea/Components/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
-msgid "Please upload a cover image."
-msgstr "Please upload a cover image."
 
 #: src/pages/Idea/Components/Form/index.tsx
 msgid "What's your Idea?"
@@ -710,6 +674,8 @@ msgstr "New Idea"
 #: src/pages/Idea/Components/Form/index.tsx
 #: src/pages/Lists/Components/Form/index.tsx
 #: src/pages/Lists/Components/Form/index.tsx
+#: src/pages/Lists/Components/Form/index.tsx
+#: src/pages/Lists/Components/Form/index.tsx
 msgid "Next"
 msgstr "Next"
 
@@ -736,10 +702,6 @@ msgstr "Permanently delete the entire list and all its ideas. This action cannot
 #: src/pages/Lists/Components/DeleteButton/index.tsx
 msgid "Delete List and All Ideas"
 msgstr "Delete List and All Ideas"
-
-#: src/pages/Lists/Components/Form/index.tsx
-#~ msgid "If you cancel, everything you’ve entered will be lost."
-#~ msgstr "If you cancel, everything you’ve entered will be lost."
 
 #: src/pages/Lists/Components/Form/index.tsx
 msgid "Every list needs a title, so fill it in!"
