@@ -22,7 +22,7 @@ import { useEffect, useState } from 'react';
 
 const EditUserPage: React.FC = () => {
   const navigateTo = useStrictNavigate();
-  const { user, setUser, refreshToken } = useUserStore();
+  const { user, setMe: setUser, refreshToken } = useUserStore();
   const {
     newUserInfo,
     resetNewUserInfo,

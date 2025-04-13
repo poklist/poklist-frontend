@@ -20,18 +20,12 @@ export const useList = ({
   staleTime = 1000 * 60, // 1 minute
   gcTime = 1000 * 60 * 5, // 5 minutes
 }: UseListOptions) => {
-  console.log('useList called with listID:', listID); // Debug log
-
   const query = useQuery({
     queryKey: ['list', listID, offset, limit],
     queryFn: async () => {
       if (!listID) {
         throw new Error('listID is required');
       }
-      console.log('Fetching list data...', {
-        listID,
-        time: new Date().toISOString(),
-      }); // Debug log
       const response = await axios.get<IResponse<List>>(
         `${ApiPath.lists}/${listID}`,
         {
@@ -51,14 +45,6 @@ export const useList = ({
     refetchOnReconnect: false, // 不要在重新連線時重新請求
     initialData: undefined,
     refetchInterval: false,
-  });
-
-  // Debug log for query status changes
-  console.log('Query status:', {
-    status: query.status,
-    isFetching: query.isFetching,
-    dataUpdatedAt: query.dataUpdatedAt,
-    time: new Date().toISOString(),
   });
 
   return {

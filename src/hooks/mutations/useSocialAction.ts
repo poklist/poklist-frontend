@@ -16,7 +16,7 @@ interface SocialActionOptions {
   onOptimisticUpdate?: () => void;
 
   onUnauthorized?: () => void; // ✅ Handling for unauthorized access on backend error
-  onSuccess?: (data?: any, variables?: AxiosPayload) => void; // ✅ Custom handling on success
+  onSuccess?: (res?: any, variables?: AxiosPayload) => void; // ✅ Custom handling on success
   onError?: (error?: any, variables?: AxiosPayload) => void; // ✅ Custom handling on error
 }
 

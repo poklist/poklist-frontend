@@ -13,14 +13,12 @@ import {
   SocialActionType,
   useSocialAction,
 } from '@/hooks/mutations/useSocialAction';
+import { useUser } from '@/hooks/queries/useUser';
 import useStrictNavigate from '@/hooks/useStrictNavigate';
 import { useToast } from '@/hooks/useToast';
-import axios from '@/lib/axios';
 import { extractUsernameFromUrl, urlPreview } from '@/lib/utils';
 import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
 import useUserStore from '@/stores/useUserStore';
-import { IResponse } from '@/types/response';
-import { User } from '@/types/User';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -31,18 +29,18 @@ const HeroSection: React.FC = () => {
   const { userCode } = useOutletContext<UserRouteLayoutContextType>();
 
   const navigateTo = useStrictNavigate();
-  const {
-    isLoggedIn,
-    user: me,
-    setUser,
-    currentUser,
-    setCurrentUser,
-  } = useUserStore();
+  const { isLoggedIn, user: me, setMe } = useUserStore();
   const { openDrawer } = useDrawer();
   const [drawerContent, setDrawerContent] = useState<React.ReactNode>(null);
   const [isFollowing, setIsFollowing] = useState<boolean>(false);
   const bioRef = useRef<HTMLParagraphElement>(null);
   const { toast } = useToast();
+
+  const isMyPage = userCode?.toString() === me.userCode.toString();
+  const { data: currentUser, isLoading } = useUser({
+    userCode,
+  });
+
   const { debouncedMutate: follow } = useSocialAction({
     actionKey: 'follow',
     debounceGroupKey: SocialActionType.FOLLOW,
@@ -75,42 +73,22 @@ const HeroSection: React.FC = () => {
   });
 
   const linkCount = useMemo(() => {
-    if (currentUser.socialLinks !== undefined) {
+    if (currentUser?.socialLinks !== undefined) {
       return Object.keys(currentUser.socialLinks).length;
     } else {
       return 0;
     }
   }, [currentUser]);
 
-  const isMyPage = userCode?.toString() === me.userCode.toString();
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  useEffect(() => {
+    if (isMyPage && currentUser) {
+      setMe({ ...currentUser });
+    }
+  }, [isMyPage, currentUser, setMe]);
 
   useEffect(() => {
-    setIsFollowing(isLoggedIn && currentUser.isFollowing === true);
-  }, [isLoggedIn, currentUser.isFollowing]);
-
-  const goToEditPage = () => {
-    navigateTo.editUser(me.userCode);
-  };
-
-  // FUTURE: extract this code segment to a separate hook
-  const getUser = async (code: string) => {
-    if (!code) return;
-    try {
-      const res = await axios.get<IResponse<User>>(`/${code}/info`);
-      if (!res.data.content) {
-        throw new Error('No content');
-      }
-      setCurrentUser({ ...res.data.content }); // deep copy
-      if (res.data.content?.id === me.id) {
-        setUser(res.data.content);
-      }
-    } catch (err) {
-      navigateTo.error();
-    }
-
-    setIsLoading(false);
-  };
+    setIsFollowing(isLoggedIn && currentUser?.isFollowing === true);
+  }, [isLoggedIn, currentUser?.isFollowing]);
 
   // FUTURE: refactor the drawer content because we may have more than one drawer
   const onOpenBioDrawer = () => {
@@ -122,12 +100,12 @@ const HeroSection: React.FC = () => {
     ) {
       return;
     }
-    setDrawerContent(<p>{currentUser.bio}</p>);
+    setDrawerContent(<p>{currentUser?.bio}</p>);
     openDrawer(DrawerIds.USER_HERO_SECTION_DRAWER_ID);
   };
 
   const onOpenLinkDrawer = () => {
-    if (currentUser.socialLinks === undefined) {
+    if (currentUser?.socialLinks === undefined) {
       return;
     }
     const socialLinkTypeList = Object.entries(currentUser.socialLinks) as [
@@ -163,13 +141,7 @@ const HeroSection: React.FC = () => {
     openDrawer(DrawerIds.USER_HERO_SECTION_DRAWER_ID);
   };
 
-  useEffect(() => {
-    if (userCode !== undefined) {
-      getUser(userCode);
-    }
-  }, [userCode]);
-
-  if (isLoading) {
+  if (isLoading || !currentUser) {
     return <HeroSectionSkeleton />;
   }
   return (
@@ -202,7 +174,7 @@ const HeroSection: React.FC = () => {
               variant={ButtonVariant.BLACK}
               size={ButtonSize.LG}
               shape={ButtonShape.ROUNDED_5PX}
-              onClick={goToEditPage}
+              onClick={() => navigateTo.editUser(me.userCode)}
             >
               <Trans>Edit profile and account</Trans>
             </Button>

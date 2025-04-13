@@ -30,7 +30,6 @@ msgid "Enter your text here"
 msgstr "Enter your text here"
 
 #: src/components/FakePage/EditFieldFakePage.tsx
-#: src/pages/Lists/Manage/index.tsx
 msgid "Done"
 msgstr "Done"
 
