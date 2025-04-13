@@ -1,22 +1,18 @@
-import { IIdeaPreviewInfo } from '@/hooks/Lists/useGetList';
 import { cn } from '@/lib/utils';
-import useUserStore from '@/stores/useUserStore';
+import { IdeaPreview } from '@/types/Idea';
 import React from 'react';
 import DraggableIdeaRow from './Idea';
 
 interface IdeaListProps {
   // Add any props you need for the page
-  ideaList?: IIdeaPreviewInfo[];
+  ideaList?: IdeaPreview[];
   reorderCallback: (dragIndex: number, hoverIndex: number) => void;
-  confirmReorderCallback: () => void;
 }
 
 const IdeaListSection: React.FC<IdeaListProps> = ({
   ideaList,
   reorderCallback,
-  confirmReorderCallback,
 }) => {
-  const userStore = useUserStore();
   const onReorderIdea = (dragIndex: number, hoverIndex: number) => {
     if (!ideaList) return;
     reorderCallback(dragIndex, hoverIndex);

@@ -5,9 +5,9 @@ import {
 } from '@/hooks/Lists/useCreateList';
 import axios from '@/lib/axios';
 import useCommonStore from '@/stores/useCommonStore';
+import { IdeaPreview } from '@/types/Idea';
 import { IResponse } from '@/types/response';
 import { useState } from 'react';
-import { IIdeaPreviewInfo } from './useGetList';
 
 export interface IEditListRequest extends ICreateListRequest {
   listID: number;
@@ -46,10 +46,7 @@ const useEditList = () => {
     }
   };
 
-  const fetchReorderIdea = async (
-    listID: string,
-    ideaList: IIdeaPreviewInfo[]
-  ) => {
+  const fetchReorderIdea = async (listID: string, ideaList: IdeaPreview[]) => {
     setEditListLoading(true);
     const _params: { ideaOrder: number[] } = { ideaOrder: [] };
     ideaList.forEach((idea) => {

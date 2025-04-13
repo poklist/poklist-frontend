@@ -1,3 +1,6 @@
+import { SocialLinkType } from '@/enums/index.enum';
+import { PartialRecord } from '../common';
+
 export interface User {
   id: number;
   displayName: string;
@@ -14,9 +17,9 @@ export interface User {
 
 export interface UserPreview {
   id: number;
-  userCode: string;
   displayName: string;
-  profileImage: string;
+  userCode: string;
+  profileImage: string; // BASE64
 }
 
 export interface IUpdateUserResponse extends User {

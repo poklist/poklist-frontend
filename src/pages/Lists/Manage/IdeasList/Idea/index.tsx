@@ -1,12 +1,12 @@
 import { DragAndDropItems } from '@/constants/DragAndDrop';
-import { IIdeaPreviewInfo } from '@/hooks/Lists/useGetList';
 import useStrictNavigate from '@/hooks/useStrictNavigate';
 import { cn } from '@/lib/utils';
+import { IdeaPreview } from '@/types/Idea';
 import { useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 
 interface IdeaProps {
-  idea: IIdeaPreviewInfo;
+  idea: IdeaPreview;
   index: number;
   hoverCallback: (dragIndex: number, hoverIndex: number) => void;
 }
@@ -27,33 +27,31 @@ const DraggableIdeaRow: React.FC<IdeaProps> = ({
     }),
   }));
 
-  const [, dropRef] = useDrop<{ idea: IIdeaPreviewInfo; index: number }>(
-    () => ({
-      accept: DragAndDropItems.IDEA,
-      collect: (monitor) => ({ handlerId: monitor.getHandlerId() }),
-      hover(ideaInfo, monitor) {
-        if (!ref.current) return;
-        const dragIndex = ideaInfo.index;
-        const hoverIndex = index;
-        if (dragIndex === hoverIndex) {
-          return;
-        }
-        const hoverBoundingRect = ref.current.getBoundingClientRect();
-        const hoverMiddleY =
-          (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
-        const clientOffset = monitor.getClientOffset();
-        const hoverClientY = (clientOffset?.y || 0) - hoverBoundingRect.top;
-        if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-          return;
-        }
-        if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-          return;
-        }
-        hoverCallback(dragIndex, hoverIndex);
-        ideaInfo.index = hoverIndex;
-      },
-    })
-  );
+  const [, dropRef] = useDrop<{ idea: IdeaPreview; index: number }>(() => ({
+    accept: DragAndDropItems.IDEA,
+    collect: (monitor) => ({ handlerId: monitor.getHandlerId() }),
+    hover(ideaInfo, monitor) {
+      if (!ref.current) return;
+      const dragIndex = ideaInfo.index;
+      const hoverIndex = index;
+      if (dragIndex === hoverIndex) {
+        return;
+      }
+      const hoverBoundingRect = ref.current.getBoundingClientRect();
+      const hoverMiddleY =
+        (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+      const clientOffset = monitor.getClientOffset();
+      const hoverClientY = (clientOffset?.y || 0) - hoverBoundingRect.top;
+      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+        return;
+      }
+      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+        return;
+      }
+      hoverCallback(dragIndex, hoverIndex);
+      ideaInfo.index = hoverIndex;
+    },
+  }));
 
   dragRef(dropRef(ref));
 

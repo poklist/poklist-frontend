@@ -1,3 +1,5 @@
+// DEPRECATED
+
 import ApiPath from '@/config/apiPath';
 import { Category } from '@/enums/Lists/index.enum';
 import axios from '@/lib/axios';

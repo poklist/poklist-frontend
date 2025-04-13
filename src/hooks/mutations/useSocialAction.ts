@@ -1,12 +1,7 @@
-import axios from '@/lib/axios';
+import axios, { AxiosPayload } from '@/lib/axios';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Method } from 'axios';
 import { useRef } from 'react';
-
-interface AxiosPayload {
-  params?: Record<string, any>;
-  data?: any;
-}
 
 interface SocialActionOptions {
   actionKey: string; // 用於 cache key，例如 ["posts"]

@@ -1,12 +1,13 @@
 import { ICreateListRequest } from '@/hooks/Lists/useCreateList';
 import useDeleteList from '@/hooks/Lists/useDeleteList';
-import useEditList, { IEditListRequest } from '@/hooks/Lists/useEditList';
-import useGetList from '@/hooks/Lists/useGetList';
+import useEditList from '@/hooks/Lists/useEditList';
+import { useList } from '@/hooks/queries/useList';
 import useStrictNavigate from '@/hooks/useStrictNavigate';
 import ListForm from '@/pages/Lists/Components/Form';
 import Header from '@/pages/Lists/Components/Header';
 import useCommonStore from '@/stores/useCommonStore';
 import useUserStore from '@/stores/useUserStore';
+import { ListCover } from '@/types/List';
 import { Trans } from '@lingui/react/macro';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -23,27 +24,26 @@ const EditListPage: React.FC<EditListPageProps> = () => {
   const { setIsLoading } = useCommonStore();
   const userStore = useUserStore();
 
-  const { isListInfoLoading, fetchGetListInfo } = useGetList();
+  const { data: list, isLoading: isListInfoLoading } = useList({
+    listID: id,
+  });
   const { editListLoading, fetchEditList } = useEditList();
   const { deleteListLoading, fetchDeleteList } = useDeleteList();
 
-  const [listInfo, setListInfo] = useState<IEditListRequest>();
+  const [listCoverDraft, setListCoverDraft] = useState<ListCover>();
 
   const onDeleteList = async () => {
-    if (listInfo) {
+    if (list) {
       // TODO: error handling
-      await fetchDeleteList(listInfo.listID);
+      await fetchDeleteList(list.id);
       navigateTo.user(userStore.user.userCode);
       setIsLoading(false);
     }
   };
 
   const onDismissEdit = (isFormEmpty: boolean) => {
-    if (listInfo && isFormEmpty) {
-      navigateTo.manageList(
-        userStore.user.userCode,
-        listInfo.listID.toString()
-      );
+    if (list && isFormEmpty) {
+      navigateTo.manageList(userStore.user.userCode, list.id.toString());
     }
   };
 
@@ -52,11 +52,11 @@ const EditListPage: React.FC<EditListPageProps> = () => {
   };
 
   const onEditList = async (listFormData: ICreateListRequest) => {
-    if (!listInfo) {
+    if (!list) {
       return;
     }
-    setListInfo({
-      ...listInfo,
+    setListCoverDraft({
+      ...list,
       title: listFormData.title,
       description: listFormData.description,
       externalLink: listFormData.externalLink,
@@ -69,24 +69,6 @@ const EditListPage: React.FC<EditListPageProps> = () => {
       return;
     }
   };
-  useEffect(() => {
-    if (id) {
-      const _fetchGetListInfo = async () => {
-        const response = await fetchGetListInfo(id);
-        if (response) {
-          setListInfo({
-            listID: response.id,
-            title: response.title,
-            description: response.description,
-            externalLink: response.externalLink,
-            coverImage: response.coverImage,
-            categoryID: response.categoryID,
-          });
-        }
-      };
-      _fetchGetListInfo();
-    }
-  }, [id]);
 
   useEffect(() => {
     if (editListLoading) {
@@ -100,6 +82,12 @@ const EditListPage: React.FC<EditListPageProps> = () => {
     }
   }, [editListLoading, deleteListLoading, isListInfoLoading, setIsLoading]);
 
+  useEffect(() => {
+    if (list) {
+      setListCoverDraft(list);
+    }
+  }, [list]);
+
   return (
     // Your component code here
     <>
@@ -110,7 +98,7 @@ const EditListPage: React.FC<EditListPageProps> = () => {
       />
       <div className="flex h-full flex-col gap-6">
         <ListForm
-          defaultListInfo={listInfo}
+          defaultListInfo={listCoverDraft}
           dismissCallback={onDismissEdit}
           completedCallback={onEditList}
         />

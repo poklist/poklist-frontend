@@ -7,8 +7,12 @@ import {
   ButtonVariant,
 } from '@/components/ui/button';
 import LinkIconWrapper from '@/components/ui/wrappers/LinkIconWrapper';
+import { DrawerIds } from '@/constants/Drawer';
 import { SocialLinkType } from '@/enums/index.enum';
-import { SocialActionType, useSocialAction } from '@/hooks/useSocialAction';
+import {
+  SocialActionType,
+  useSocialAction,
+} from '@/hooks/mutations/useSocialAction';
 import useStrictNavigate from '@/hooks/useStrictNavigate';
 import { useToast } from '@/hooks/useToast';
 import axios from '@/lib/axios';
@@ -22,7 +26,6 @@ import { Trans } from '@lingui/react/macro';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { HeroSectionSkeleton } from './HeroSectionSkeleton';
-import { DrawerIds } from '@/constants/Drawer';
 
 const HeroSection: React.FC = () => {
   const { userCode } = useOutletContext<UserRouteLayoutContextType>();
@@ -44,7 +47,6 @@ const HeroSection: React.FC = () => {
     actionKey: 'follow',
     debounceGroupKey: SocialActionType.FOLLOW,
     url: '/follow',
-    method: 'POST',
     shouldAllow: () => isLoggedIn,
     onNotAllowed: () => {
       toast({
@@ -60,7 +62,6 @@ const HeroSection: React.FC = () => {
     actionKey: 'unfollow',
     debounceGroupKey: SocialActionType.FOLLOW,
     url: '/unfollow',
-    method: 'POST',
     shouldAllow: () => isLoggedIn,
     onNotAllowed: () => {
       toast({
@@ -122,7 +123,7 @@ const HeroSection: React.FC = () => {
       return;
     }
     setDrawerContent(<p>{currentUser.bio}</p>);
-    openDrawer();
+    openDrawer(DrawerIds.USER_HERO_SECTION_DRAWER_ID);
   };
 
   const onOpenLinkDrawer = () => {
@@ -159,7 +160,7 @@ const HeroSection: React.FC = () => {
         )}
       </div>
     );
-    openDrawer();
+    openDrawer(DrawerIds.USER_HERO_SECTION_DRAWER_ID);
   };
 
   useEffect(() => {

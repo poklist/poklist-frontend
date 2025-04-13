@@ -1,17 +1,18 @@
 import FloatingButtonFooter from '@/components/Footer/FloatingButtonFooter';
 import BackToUserHeader from '@/components/Header/BackToUserHeader';
 import { DEFAULT_IDEA_BATCH_SIZE_MAX } from '@/constants/list';
-import useGetList, { IListInfo } from '@/hooks/Lists/useGetList';
-import { SocialActionType, useSocialAction } from '@/hooks/useSocialAction';
+import {
+  SocialActionType,
+  useSocialAction,
+} from '@/hooks/mutations/useSocialAction';
+import { useList } from '@/hooks/queries/useList';
 import { useToast } from '@/hooks/useToast';
-import axios from '@/lib/axios';
 import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
 import { Tile20Background } from '@/pages/User/TileBackground';
 import useCommonStore from '@/stores/useCommonStore';
 import useRelationStore from '@/stores/useRelationStore';
 import useSocialStore from '@/stores/useSocialStore';
 import useUserStore from '@/stores/useUserStore';
-import { IResponse } from '@/types/response';
 import { User } from '@/types/User';
 import { t } from '@lingui/core/macro';
 import { useEffect, useState } from 'react';
@@ -27,23 +28,21 @@ const ViewListPage: React.FC = () => {
 
   const { setIsLoading } = useCommonStore();
 
-  const { isListInfoLoading, fetchGetListInfo } = useGetList();
-  const [listInfo, setListInfo] = useState<IListInfo>();
   const [listOwnerInfo, setListOwnerInfo] = useState<User>();
-  const { setIsLiked, initializeLikeStatus } = useSocialStore();
-  const {
-    isFollowing,
-    setIsFollowing,
-    originalIsFollowing,
-    initializeFollowingStatus,
-  } = useRelationStore();
+  const { setIsLiked } = useSocialStore();
+  const { setIsFollowing } = useRelationStore();
   const { toast } = useToast();
+
+  const { data: list, isLoading: isListLoading } = useList({
+    listID: listID,
+    offset: 0,
+    limit: DEFAULT_IDEA_BATCH_SIZE_MAX,
+  });
 
   const { debouncedMutate: like } = useSocialAction({
     actionKey: 'like',
     debounceGroupKey: SocialActionType.LIKE,
     url: '/like',
-    method: 'POST',
     shouldAllow: () => isLoggedIn,
     onNotAllowed: () => {
       toast({
@@ -59,7 +58,6 @@ const ViewListPage: React.FC = () => {
     actionKey: 'unlike',
     debounceGroupKey: SocialActionType.LIKE,
     url: '/unlike',
-    method: 'POST',
     shouldAllow: () => isLoggedIn,
     onNotAllowed: () => {
       toast({
@@ -75,7 +73,6 @@ const ViewListPage: React.FC = () => {
     actionKey: 'follow',
     debounceGroupKey: SocialActionType.FOLLOW,
     url: '/follow',
-    method: 'POST',
     shouldAllow: () => isLoggedIn,
     onNotAllowed: () => {
       toast({
@@ -91,7 +88,6 @@ const ViewListPage: React.FC = () => {
     actionKey: 'unfollow',
     debounceGroupKey: SocialActionType.FOLLOW,
     url: '/unfollow',
-    method: 'POST',
     shouldAllow: () => isLoggedIn,
     onNotAllowed: () => {
       toast({
@@ -105,50 +101,19 @@ const ViewListPage: React.FC = () => {
   });
 
   useEffect(() => {
-    if (listID) {
-      const _fetchGetListInfo = async () => {
-        const response = await fetchGetListInfo(
-          listID,
-          0,
-          DEFAULT_IDEA_BATCH_SIZE_MAX
-        );
-        if (response) {
-          setListInfo(response);
-        }
-      };
-      _fetchGetListInfo();
-    }
-  }, [listID]);
-
-  // FUTURE: refactor the code into custom hook
-  useEffect(() => {
-    if (listOwnerUserCode) {
-      const _fetchGetUserInfo = async () => {
-        const res = await axios.get<IResponse<User>>(
-          `/${listOwnerUserCode}/info`
-        );
-        if (res.data.content) {
-          setListOwnerInfo(res.data.content);
-        }
-      };
-      _fetchGetUserInfo();
-    }
-  }, [listOwnerUserCode]);
-
-  useEffect(() => {
-    if (isListInfoLoading) {
+    if (isListLoading) {
       setIsLoading(true);
     } else {
       setIsLoading(false);
     }
-  }, [isListInfoLoading, setIsLoading]);
+  }, [isListLoading, setIsLoading]);
 
   useEffect(() => {
-    initializeLikeStatus(listInfo?.isLiked ?? false);
-  }, [listInfo?.isLiked]);
+    setIsLiked(list?.isLiked ?? false);
+  }, [list?.isLiked]);
 
   useEffect(() => {
-    initializeFollowingStatus(listOwnerInfo?.isFollowing ?? false);
+    setIsFollowing(listOwnerInfo?.isFollowing ?? false);
   }, [listOwnerInfo?.isFollowing]);
 
   return (
@@ -156,7 +121,7 @@ const ViewListPage: React.FC = () => {
       <Tile20Background />
       <div className="relative flex min-h-screen flex-col sm:min-h-desktop-container">
         <BackToUserHeader
-          owner={listInfo?.owner}
+          owner={list?.owner}
           hasFollowButton={!isMyPage}
           onClickFollow={() =>
             follow({ params: { userID: listOwnerInfo?.id } })
@@ -166,7 +131,7 @@ const ViewListPage: React.FC = () => {
           }
         />
         <div className="mb-[55px] flex-1 px-3 pt-4">
-          {listInfo && <ListCard data={listInfo} />}
+          {list && <ListCard data={list} />}
         </div>
         <FloatingButtonFooter
           hasLikeButton={true}
