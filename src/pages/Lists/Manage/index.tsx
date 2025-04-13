@@ -2,7 +2,11 @@ import { Button, ButtonShape, ButtonVariant } from '@/components/ui/button';
 import IconClose from '@/components/ui/icons/CloseIcon';
 import useDeleteList from '@/hooks/Lists/useDeleteList';
 import useEditList from '@/hooks/Lists/useEditList';
-import { IListInfo, default as useGetList } from '@/hooks/Lists/useGetList';
+import {
+  IIdeaPreviewInfo,
+  IListInfo,
+  default as useGetList,
+} from '@/hooks/Lists/useGetList';
 import useStrictNavigate from '@/hooks/useStrictNavigate';
 import Header from '@/pages/Lists/Components/Header';
 import IdeaList from '@/pages/Lists/Manage/IdeasList';
@@ -11,7 +15,7 @@ import useCommonStore from '@/stores/useCommonStore';
 import useLayoutStore from '@/stores/useLayoutStore';
 import useUserStore from '@/stores/useUserStore';
 import { Trans } from '@lingui/react/macro';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { TouchBackend } from 'react-dnd-touch-backend';
@@ -32,6 +36,9 @@ const ListManagePage: React.FC<ManageListPageProps> = () => {
     useGetList();
   const { fetchReorderIdea, editListLoading } = useEditList();
   const { deleteListLoading, fetchDeleteList } = useDeleteList();
+
+  const [originalOrder, setOriginalOrder] = useState<IIdeaPreviewInfo[]>([]);
+  const [isOrderModified, setIsOrderModified] = useState(false);
 
   const onDeleteList = async () => {
     if (listInfo) {
@@ -66,6 +73,21 @@ const ListManagePage: React.FC<ManageListPageProps> = () => {
   }, [id]);
 
   useEffect(() => {
+    if (listInfo?.ideas) {
+      if (originalOrder.length === 0) {
+        setOriginalOrder(listInfo.ideas);
+      } else {
+        setIsOrderModified(false);
+        for (let i = 0; i < originalOrder.length; i++) {
+          if (originalOrder[i].id !== listInfo.ideas[i].id) {
+            setIsOrderModified(true);
+          }
+        }
+      }
+    }
+  }, [listInfo]);
+
+  useEffect(() => {
     if (isListInfoLoading) {
       setIsLoading(true);
     } else if (editListLoading) {
@@ -76,6 +98,7 @@ const ListManagePage: React.FC<ManageListPageProps> = () => {
       setIsLoading(false);
     }
   }, [isListInfoLoading, editListLoading, deleteListLoading]);
+
   return (
     <>
       <Header title={<Trans>Idea List</Trans>} deleteCallback={onDeleteList} />
@@ -152,18 +175,12 @@ const ListManagePage: React.FC<ManageListPageProps> = () => {
         </div>
         <div className="flex items-center gap-4">
           <Button
-            onClick={onConfirmReorderIdea}
-            variant={ButtonVariant.SUB_ACTIVE}
-            shape={ButtonShape.ROUNDED_5PX}
-          >
-            <Trans>Save New Order</Trans>
-          </Button>
-          <Button
+            disabled={!isOrderModified}
             onClick={onConfirmReorderIdea}
             variant={ButtonVariant.BLACK}
             shape={ButtonShape.ROUNDED_5PX}
           >
-            <Trans>Done</Trans>
+            <Trans>Save New Order</Trans>
           </Button>
         </div>
       </footer>
