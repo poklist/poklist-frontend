@@ -21,7 +21,7 @@ interface HeaderProps {
 
 const Header = ({ className }: HeaderProps) => {
   const navigateTo = useStrictNavigate();
-  const { login, setUser, user, isLoggedIn } = useUserStore();
+  const { login, setMe: setUser, user, isLoggedIn } = useUserStore();
   const [showCustomLogin, setShowCustomLogin] = useState(false);
   const [showErrorDialog, setShowErrorDialog] = useState(false);
 

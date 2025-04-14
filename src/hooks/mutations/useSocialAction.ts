@@ -1,12 +1,7 @@
-import axios from '@/lib/axios';
+import axios, { AxiosPayload } from '@/lib/axios';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Method } from 'axios';
 import { useRef } from 'react';
-
-interface AxiosPayload {
-  params?: Record<string, any>;
-  data?: any;
-}
 
 interface SocialActionOptions {
   actionKey: string; // 用於 cache key，例如 ["posts"]
@@ -21,7 +16,7 @@ interface SocialActionOptions {
   onOptimisticUpdate?: () => void;
 
   onUnauthorized?: () => void; // ✅ Handling for unauthorized access on backend error
-  onSuccess?: (data?: any, variables?: AxiosPayload) => void; // ✅ Custom handling on success
+  onSuccess?: (res?: any, variables?: AxiosPayload) => void; // ✅ Custom handling on success
   onError?: (error?: any, variables?: AxiosPayload) => void; // ✅ Custom handling on error
 }
 

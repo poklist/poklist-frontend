@@ -1,8 +1,8 @@
-import { IListInfo } from '@/hooks/Lists/useGetList';
+import { List } from '@/types/List';
 import React from 'react';
 
 interface IListInfoSectionProps {
-  listInfo: IListInfo | undefined;
+  listInfo: List | undefined;
 }
 const ListInfoSection: React.FC<IListInfoSectionProps> = ({ listInfo }) => {
   return (

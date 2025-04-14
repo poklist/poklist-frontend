@@ -1,5 +1,4 @@
 import { DrawerComponent, useDrawer } from '@/components/Drawer';
-import { DrawerIds } from '@/constants/Drawer';
 import {
   Button,
   ButtonShape,
@@ -8,13 +7,13 @@ import {
 } from '@/components/ui/button';
 import LinkIconWrapper from '@/components/ui/wrappers/LinkIconWrapper';
 import ApiPath from '@/config/apiPath';
+import { DrawerIds } from '@/constants/Drawer';
 import {
   DAY_IN_MS,
   DESCRIPTION_PREVIEW_LENGTH,
   RECENTLY_UPDATED_DAYS,
 } from '@/constants/list';
 import { Language, SocialLinkType } from '@/enums/index.enum';
-import { IListInfo } from '@/hooks/Lists/useGetList';
 import useStrictNavigate from '@/hooks/useStrictNavigate';
 import axios from '@/lib/axios';
 import { getFormattedTime } from '@/lib/time';
@@ -24,6 +23,7 @@ import { CategoriesI18n } from '@/pages/Lists/i18n';
 import useCommonStore from '@/stores/useCommonStore';
 import useUserStore from '@/stores/useUserStore';
 import { IdeaDetail } from '@/types/Idea';
+import { List } from '@/types/List';
 import { IResponse } from '@/types/response';
 import { useLingui } from '@lingui/react';
 import { Trans } from '@lingui/react/macro';
@@ -33,7 +33,7 @@ import { useLocation, useOutletContext, useParams } from 'react-router-dom';
 import IdeaDrawerContent from '../IdeaDrawerContent';
 
 interface IListCardProps {
-  data: IListInfo;
+  data: List;
 }
 
 const ListCard: React.FC<IListCardProps> = ({ data }) => {

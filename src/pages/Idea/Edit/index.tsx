@@ -1,7 +1,7 @@
 import useDeleteIdea from '@/hooks/Ideas/useDeleteIdea';
 import useEditIdea, { IEditIdeaRequest } from '@/hooks/Ideas/useEditIdea';
 import useGetIdea from '@/hooks/Ideas/useGetIdea';
-import useGetList from '@/hooks/Lists/useGetList';
+import { useList } from '@/hooks/queries/useList';
 import useStrictNavigate from '@/hooks/useStrictNavigate';
 import Header from '@/pages/Idea/Components/Header';
 import useCommonStore from '@/stores/useCommonStore';
@@ -23,7 +23,9 @@ const EditIdeaPage: React.FC<EditIdeaPageProps> = () => {
   const { ideaInfo, isIdeaInfoLoading, fetchIdeaInfo } = useGetIdea();
   const { isDeleteIdeaLoading, fetchDeleteIdea } = useDeleteIdea();
   const { isEditIdeaLoading, fetchEditIdea } = useEditIdea();
-  const { isListInfoLoading, listInfo, fetchGetListInfo } = useGetList();
+  const { data: list, isLoading: isListLoading } = useList({
+    listID: ideaInfo?.listID.toString(),
+  });
 
   const onDeleteIdea = async () => {
     if (ideaInfo) {
@@ -57,17 +59,11 @@ const EditIdeaPage: React.FC<EditIdeaPageProps> = () => {
   }, [id]);
 
   useEffect(() => {
-    if (ideaInfo) {
-      fetchGetListInfo(String(ideaInfo.listID));
-    }
-  }, [ideaInfo]);
-
-  useEffect(() => {
     if (isIdeaInfoLoading) {
       setIsLoading(true);
     } else if (isDeleteIdeaLoading) {
       setIsLoading(true);
-    } else if (isListInfoLoading) {
+    } else if (isListLoading) {
       setIsLoading(true);
     } else if (isEditIdeaLoading) {
       setIsLoading(true);
@@ -76,7 +72,7 @@ const EditIdeaPage: React.FC<EditIdeaPageProps> = () => {
     }
   }, [
     isDeleteIdeaLoading,
-    isListInfoLoading,
+    isListLoading,
     isEditIdeaLoading,
     isIdeaInfoLoading,
     setIsLoading,
@@ -87,8 +83,8 @@ const EditIdeaPage: React.FC<EditIdeaPageProps> = () => {
     <>
       <div className="sticky top-0 z-10 flex flex-col">
         <div className="flex h-12 items-center border-b border-b-black px-4 text-[15px]">
-          {listInfo ? (
-            listInfo?.title
+          {list ? (
+            list?.title
           ) : (
             <Text>
               <Skeleton>Skeleton Placeholder</Skeleton>

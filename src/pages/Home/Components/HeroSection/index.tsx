@@ -12,7 +12,7 @@ import { ErrorDialog } from '../ErrorDialog';
 import { LoginDrawer } from '../LoginDrawer';
 export const HeroSection = ({ content }: HeroSectionProps) => {
   const navigateTo = useStrictNavigate();
-  const { login, setUser, isLoggedIn, user } = useUserStore();
+  const { login, setMe: setUser, isLoggedIn, user } = useUserStore();
   const [showCustomLogin, setShowCustomLogin] = useState(false);
   const [showErrorDialog, setShowErrorDialog] = useState(false);
   const scriptRef = useRef<HTMLScriptElement | null>(null);

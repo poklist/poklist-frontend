@@ -12,8 +12,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { DrawerIds } from '@/constants/Drawer';
 import { EditFieldVariant } from '@/enums/EditField/index.enum';
 import { RadioType } from '@/enums/Style/index.enum';
-import useCategories from '@/hooks/Lists/useCategories';
 import { ICreateListRequest } from '@/hooks/Lists/useCreateList';
+import { useCategories } from '@/hooks/queries/useCategories';
 import useStrictNavigate from '@/hooks/useStrictNavigate';
 import { cn, formatInput } from '@/lib/utils';
 import { CategoriesI18n } from '@/pages/Lists/i18n';
@@ -55,7 +55,7 @@ const ListForm: React.FC<IListFormProps> = ({
     useDrawer(DrawerIds.CATEGORY_DRAWER_ID);
   const { openDrawer: openCancelDrawer, closeDrawer: closeCancelDrawer } =
     useDrawer(DrawerIds.CANCEL_LIST_FORM_CONFIRM_DRAWER_ID);
-  const { categoriesLoading, categories, fetchGetCategories } = useCategories();
+  const { data: categories, isLoading: categoriesLoading } = useCategories();
 
   const { openFakePage } = useFakePage();
   const [fieldConfig, setFieldConfig] = useState<IEditFieldConfig>();
@@ -220,7 +220,6 @@ const ListForm: React.FC<IListFormProps> = ({
   //   }
   // };
   useEffect(() => {
-    fetchGetCategories();
     // footerPosition();
 
     // 組件卸載時關閉抽屜
@@ -252,6 +251,7 @@ const ListForm: React.FC<IListFormProps> = ({
   const [radioChoice, setRadioChoice] = useState<IChoice[]>([]);
 
   useEffect(() => {
+    if (!categories) return;
     const _radioChoice = categories.map((_category) => {
       const { id: value } = { id: String(_category.id) };
       const label = i18n._(CategoriesI18n[_category.id]);

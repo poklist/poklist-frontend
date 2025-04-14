@@ -33,3 +33,8 @@ instance.interceptors.request.use(
 );
 
 export default instance;
+
+export interface AxiosPayload {
+  params?: Record<string, any>;
+  data?: any;
+}

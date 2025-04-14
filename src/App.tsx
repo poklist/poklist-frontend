@@ -3,15 +3,20 @@ import router from '@/router';
 import { Theme } from '@radix-ui/themes';
 import '@radix-ui/themes/styles.css';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { RouterProvider } from 'react-router-dom';
 import { Toaster } from './components/ui/toaster';
 
+// 將 QueryClient 實例化移到組件外部
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      retry: 1, // Retry at most 1 time on failure
-      staleTime: 1000 * 60, // Data within 1 minute is not refetched
-      refetchOnWindowFocus: false, // Do not automatically refetch when switching back to the screen
+      retry: 1,
+      staleTime: 1000 * 60,
+      gcTime: 1000 * 60 * 5,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
     },
   },
 });
@@ -26,6 +31,7 @@ function App() {
         </Theme>
         {/* Need to be outside of Theme or the toast will behind of the dialog */}
         <Toaster />
+        <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </>
   );

@@ -3,12 +3,15 @@ export interface IdeaPreview {
   title: string;
   description?: string;
   coverImage?: string;
+  externalLink?: string;
 }
 
-export interface IdeaDetail extends IdeaPreview {
-  externalLink?: string;
+export interface IdeaDetail {
   createdAt: string;
   updatedAt: string;
+}
+
+export interface Idea extends IdeaPreview, IdeaDetail {
   listID: number;
   ownerID: number;
 }

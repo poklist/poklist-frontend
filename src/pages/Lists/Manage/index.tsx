@@ -2,11 +2,7 @@ import { Button, ButtonShape, ButtonVariant } from '@/components/ui/button';
 import IconClose from '@/components/ui/icons/CloseIcon';
 import useDeleteList from '@/hooks/Lists/useDeleteList';
 import useEditList from '@/hooks/Lists/useEditList';
-import {
-  IIdeaPreviewInfo,
-  IListInfo,
-  default as useGetList,
-} from '@/hooks/Lists/useGetList';
+import { useList } from '@/hooks/queries/useList';
 import useStrictNavigate from '@/hooks/useStrictNavigate';
 import Header from '@/pages/Lists/Components/Header';
 import IdeaList from '@/pages/Lists/Manage/IdeasList';
@@ -14,6 +10,7 @@ import ListInfo from '@/pages/Lists/Manage/ListInfo';
 import useCommonStore from '@/stores/useCommonStore';
 import useLayoutStore from '@/stores/useLayoutStore';
 import useUserStore from '@/stores/useUserStore';
+import { List } from '@/types/List';
 import { Trans } from '@lingui/react/macro';
 import { useCallback, useEffect, useState } from 'react';
 import { DndProvider } from 'react-dnd';
@@ -32,63 +29,59 @@ const ListManagePage: React.FC<ManageListPageProps> = () => {
   const { setIsLoading } = useCommonStore();
   const userStore = useUserStore();
   const isMobile = useLayoutStore((state) => state.isMobile);
-  const { isListInfoLoading, listInfo, setListInfo, fetchGetListInfo } =
-    useGetList();
+  const { data: list, isLoading: isListLoading } = useList({ listID: id });
+  const [listDraft, setListDraft] = useState<List>();
   const { fetchReorderIdea, editListLoading } = useEditList();
   const { deleteListLoading, fetchDeleteList } = useDeleteList();
 
-  const [originalOrder, setOriginalOrder] = useState<IIdeaPreviewInfo[]>([]);
   const [isOrderModified, setIsOrderModified] = useState(false);
 
   const onDeleteList = async () => {
-    if (listInfo) {
+    if (list) {
       // TODO: error handling
-      await fetchDeleteList(listInfo.id);
+      await fetchDeleteList(list.id);
       navigateTo.user(userStore.user.userCode);
       setIsLoading(false);
     }
   };
 
   const onReorderIdea = useCallback((dragIndex: number, hoverIndex: number) => {
-    setListInfo((previousListInfo: IListInfo | undefined) => {
-      if (!previousListInfo?.ideas) return previousListInfo;
-      const ideaOrderList = [...previousListInfo.ideas];
+    setListDraft((originalList: List | undefined) => {
+      if (!originalList?.ideas) return originalList;
+      const ideaOrderList = [...originalList.ideas];
       const [reorderIdea] = ideaOrderList.splice(dragIndex, 1);
       ideaOrderList.splice(hoverIndex, 0, reorderIdea);
       return {
-        ...previousListInfo,
+        ...originalList,
         ideas: ideaOrderList,
       };
     });
   }, []);
 
   const onConfirmReorderIdea = () => {
-    if (id && listInfo?.ideas) {
-      fetchReorderIdea(id, listInfo.ideas);
+    if (id && listDraft?.ideas) {
+      fetchReorderIdea(id, listDraft.ideas);
     }
   };
 
   useEffect(() => {
-    if (id) fetchGetListInfo(id, 0, 99);
-  }, [id]);
+    if (!list) return;
+    setListDraft(list);
+  }, [list]);
 
   useEffect(() => {
-    if (listInfo?.ideas) {
-      if (originalOrder.length === 0) {
-        setOriginalOrder(listInfo.ideas);
-      } else {
-        setIsOrderModified(false);
-        for (let i = 0; i < originalOrder.length; i++) {
-          if (originalOrder[i].id !== listInfo.ideas[i].id) {
-            setIsOrderModified(true);
-          }
+    if (listDraft?.ideas) {
+      setIsOrderModified(false);
+      for (let i = 0; i < listDraft.ideas.length; i++) {
+        if (listDraft.ideas[i].id !== list?.ideas[i].id) {
+          setIsOrderModified(true);
         }
       }
     }
-  }, [listInfo]);
+  }, [listDraft]);
 
   useEffect(() => {
-    if (isListInfoLoading) {
+    if (isListLoading) {
       setIsLoading(true);
     } else if (editListLoading) {
       setIsLoading(true);
@@ -97,13 +90,13 @@ const ListManagePage: React.FC<ManageListPageProps> = () => {
     } else {
       setIsLoading(false);
     }
-  }, [isListInfoLoading, editListLoading, deleteListLoading]);
+  }, [isListLoading, editListLoading, deleteListLoading]);
 
   return (
     <>
       <Header title={<Trans>Idea List</Trans>} deleteCallback={onDeleteList} />
       <div className="flex min-h-screen flex-col">
-        <ListInfo listInfo={listInfo} />
+        <ListInfo listInfo={listDraft} />
         <div className="mb-6 px-4">
           <Button
             className="w-full text-[17px] font-bold"
@@ -127,7 +120,10 @@ const ListManagePage: React.FC<ManageListPageProps> = () => {
               id === undefined
                 ? navigateTo.error()
                 : navigateTo.createIdea({
-                    state: { listID: Number(id), listTitle: listInfo?.title },
+                    state: {
+                      listID: Number(id),
+                      listTitle: listDraft?.title,
+                    },
                   })
             }
           >
@@ -135,7 +131,7 @@ const ListManagePage: React.FC<ManageListPageProps> = () => {
           </Button>
         </div>
         <div className="mb-4 px-4 text-[15px] text-black-gray-03">
-          {listInfo?.ideas === undefined || listInfo.ideas.length <= 0 ? (
+          {listDraft?.ideas === undefined || listDraft?.ideas.length <= 0 ? (
             <Trans>Your ideas live here. Create one!</Trans>
           ) : (
             <Trans>Tap to edit. Hold & drag to reorder Ideas</Trans>
@@ -147,17 +143,15 @@ const ListManagePage: React.FC<ManageListPageProps> = () => {
             options={{ enableMouseEvents: true }}
           >
             <IdeaList
-              ideaList={listInfo?.ideas}
+              ideaList={listDraft?.ideas}
               reorderCallback={onReorderIdea}
-              confirmReorderCallback={onConfirmReorderIdea}
             />
           </DndProvider>
         ) : (
           <DndProvider backend={HTML5Backend}>
             <IdeaList
-              ideaList={listInfo?.ideas}
+              ideaList={listDraft?.ideas}
               reorderCallback={onReorderIdea}
-              confirmReorderCallback={onConfirmReorderIdea}
             />
           </DndProvider>
         )}

@@ -7,3 +7,5 @@ export const RECENTLY_UPDATED_DAYS = 7;
 
 export const DESCRIPTION_PREVIEW_LENGTH = 20;
 export const LINK_PREVIEW_LENGTH = 40;
+
+export const MAX_LIST_PREVIEW_COUNT = 99;

@@ -1,16 +1,15 @@
 import headerP from '@/assets/images/header-p.svg';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import IconLeftArrow from '@/components/ui/icons/LeftArrowIcon';
-import { IListOwnerInfo } from '@/hooks/Lists/useGetList';
 import useStrictNavigate from '@/hooks/useStrictNavigate';
 import useRelationStore from '@/stores/useRelationStore';
-import { User } from '@/types/User';
+import { User, UserPreview } from '@/types/User';
 import { Trans } from '@lingui/react/macro';
 import React from 'react';
 import { Button, ButtonShape, ButtonSize, ButtonVariant } from '../ui/button';
 
 interface IBackToUserHeaderProps {
-  owner?: IListOwnerInfo | User;
+  owner?: UserPreview | User;
   hasFollowButton?: boolean;
   onClickFollow?: () => void;
   onClickUnfollow?: () => void;
