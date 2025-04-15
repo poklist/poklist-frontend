@@ -1,18 +1,19 @@
+import { DrawerComponent, useDrawer } from '@/components/Drawer';
 import { useFakePage } from '@/components/FakePage';
 import { EditFieldFakePageComponent } from '@/components/FakePage/EditFieldFakePage';
 import ImageUploader from '@/components/ImageUploader';
-import { DrawerComponent, useDrawer } from '@/components/Drawer';
-import { DrawerIds } from '@/constants/Drawer';
 import { Button, ButtonShape, ButtonVariant } from '@/components/ui/button';
 import IconClose from '@/components/ui/icons/CloseIcon';
 import IconExteriorLink from '@/components/ui/icons/ExteriorLinkIcon';
 import IconTextarea from '@/components/ui/icons/TextareaIcon';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { DrawerIds } from '@/constants/Drawer';
 import { EditFieldVariant } from '@/enums/EditField/index.enum';
 import { ICreateIdeaRequest } from '@/hooks/Ideas/useCreateIdea';
 import { IEditIdeaRequest } from '@/hooks/Ideas/useEditIdea';
 import { IIdeaInfo } from '@/hooks/Ideas/useGetIdea';
+import useStrictNavigate from '@/hooks/useStrictNavigate';
 import { cn, formatInput } from '@/lib/utils';
 import useCommonStore from '@/stores/useCommonStore';
 import { IEditFieldConfig } from '@/types/EditField';
@@ -22,8 +23,6 @@ import { Trans } from '@lingui/react/macro';
 import React, { useEffect, useRef, useState } from 'react';
 import { Controller, FieldErrors, useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { useNavigate } from 'react-router-dom';
-import useStrictNavigate from '@/hooks/useStrictNavigate';
 
 const TITLE_MAX_LENGTH = 60;
 const DESC_MAX_LENGTH = 250;
@@ -32,7 +31,7 @@ const FormSchema = z.object({
   title: z.string().min(1).max(TITLE_MAX_LENGTH),
   description: z.string().max(DESC_MAX_LENGTH),
   externalLink: z.string().url().optional().or(z.literal('')),
-  coverImage: z.string().or(z.literal('')).nullable(), // FUTURE: base64 check
+  coverImage: z.string().or(z.literal('')).nullable().optional(), // FUTURE: base64 check
 });
 
 interface IIdeaFormProps {
