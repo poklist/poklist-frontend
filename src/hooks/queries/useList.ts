@@ -1,5 +1,5 @@
 import ApiPath from '@/config/apiPath';
-import { DEFAULT_IDEA_BATCH_SIZE_MAX } from '@/constants/list';
+import { Idea } from '@/constants/list';
 import axios from '@/lib/axios';
 import { List } from '@/types/List';
 import { IResponse } from '@/types/response';
@@ -15,8 +15,8 @@ interface UseListOptions {
 
 export const useList = ({
   listID,
-  offset = 0,
-  limit = DEFAULT_IDEA_BATCH_SIZE_MAX,
+  offset = Idea.DEFAULT_FIRST_BATCH_OFFSET,
+  limit = Idea.DEFAULT_BATCH_SIZE,
   staleTime = 1000 * 60, // 1 minute
   gcTime = 1000 * 60 * 5, // 5 minutes
 }: UseListOptions) => {

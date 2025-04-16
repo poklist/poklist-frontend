@@ -1,6 +1,10 @@
-export const DEFAULT_IDEA_FIRST_BATCH_SIZE = 3;
-export const DEFAULT_IDEA_BATCH_SIZE_MAX = 99;
-export const DEFAULT_IDEA_BATCH_SIZE = 10;
+export namespace Idea {
+  export const DEFAULT_FIRST_BATCH_OFFSET = 0;
+  export const DEFAULT_BATCH_SIZE_MAX = 99;
+  export const DEFAULT_FIRST_BATCH_SIZE = 3;
+  // export const DEFAULT_BATCH_SIZE = 10;
+  export const DEFAULT_BATCH_SIZE = DEFAULT_BATCH_SIZE_MAX;
+}
 
 export const DAY_IN_MS = 86400000;
 export const RECENTLY_UPDATED_DAYS = 7;

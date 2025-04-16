@@ -1,5 +1,5 @@
 export interface IResponse<T> {
-  code?: number;
+  code?: string | number;
   message?: string;
   content?: T;
   offset?: number;

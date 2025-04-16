@@ -6,7 +6,6 @@ import {
   ButtonVariant,
 } from '@/components/ui/button';
 import LinkIconWrapper from '@/components/ui/wrappers/LinkIconWrapper';
-import ApiPath from '@/config/apiPath';
 import { DrawerIds } from '@/constants/Drawer';
 import {
   DAY_IN_MS,
@@ -14,20 +13,17 @@ import {
   RECENTLY_UPDATED_DAYS,
 } from '@/constants/list';
 import { Language, SocialLinkType } from '@/enums/index.enum';
+import { useIdea } from '@/hooks/queries/useIdea';
 import useStrictNavigate from '@/hooks/useStrictNavigate';
-import axios from '@/lib/axios';
 import { getFormattedTime, parsePostgresDate } from '@/lib/time';
 import { urlPreview } from '@/lib/utils';
 import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
 import { CategoriesI18n } from '@/pages/Lists/i18n';
 import useCommonStore from '@/stores/useCommonStore';
 import useUserStore from '@/stores/useUserStore';
-import { IdeaDetail } from '@/types/Idea';
 import { List } from '@/types/List';
-import { IResponse } from '@/types/response';
 import { useLingui } from '@lingui/react';
 import { Trans } from '@lingui/react/macro';
-import { AxiosResponse } from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import { useLocation, useOutletContext, useParams } from 'react-router-dom';
 import IdeaDrawerContent from '../IdeaDrawerContent';
@@ -50,12 +46,30 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
   const { openDrawer } = useDrawer(DrawerIds.LIST_CARD_DRAWER_ID);
   const { setShowingAlert } = useCommonStore();
   const [drawerContent, setDrawerContent] = useState<React.ReactNode>(null);
-  const [ideaMap, setIdeaMap] = useState<{
-    [id: number]: IdeaDetail;
-  }>();
+  const [selectedIdeaID, setSelectedIdeaID] = useState<number | null>(null);
   // FUTURE: move to custom hook?
   const [createdAtString, setCreatedAtString] = useState('');
   const externalLinkRef = useRef<HTMLDivElement>(null);
+
+  const { idea, isLoading, isError } = useIdea({
+    ideaID: selectedIdeaID?.toString(),
+    enabled: !!selectedIdeaID,
+  });
+
+  useEffect(() => {
+    if (isError) {
+      setShowingAlert(true, { message: 'Failed to fetch idea detail' });
+      setSelectedIdeaID(null);
+    }
+  }, [isError, setShowingAlert]);
+
+  useEffect(() => {
+    if (idea && selectedIdeaID) {
+      setDrawerContent(<IdeaDrawerContent data={idea} />);
+      openDrawer();
+      setSelectedIdeaID(null);
+    }
+  }, [idea, selectedIdeaID, openDrawer]);
 
   const isUpdatedRecently = () => {
     try {
@@ -112,24 +126,8 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
     openDrawer();
   };
 
-  const onClickIdea = async (ideaID: number) => {
-    let ideaDetail: IdeaDetail | undefined;
-    if (ideaMap?.[ideaID] === undefined) {
-      const response: AxiosResponse<IResponse<IdeaDetail>> = await axios.get(
-        `${ApiPath.ideas}/${ideaID}`
-      );
-      ideaDetail = response.data.content;
-    } else {
-      ideaDetail = ideaMap[ideaID];
-    }
-
-    if (ideaDetail) {
-      setIdeaMap((prev) => ({ ...prev, [ideaID]: ideaDetail }));
-      setDrawerContent(<IdeaDrawerContent data={ideaDetail} />);
-      openDrawer();
-    } else {
-      setShowingAlert(true, { message: 'Failed to fetch idea detail' });
-    }
+  const onClickIdea = (ideaID: number) => {
+    setSelectedIdeaID(ideaID);
   };
 
   useEffect(() => {
@@ -146,13 +144,10 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
 
   useEffect(() => {
     if (location.state?.ideaID) {
-      const _onClickIdea = async () => {
-        await onClickIdea(location.state.ideaID);
-      };
-      _onClickIdea();
+      onClickIdea(location.state.ideaID);
       location.state.ideaID = undefined;
     }
-  }, [location.state?.ideaID, onClickIdea]);
+  }, [location.state?.ideaID]);
 
   return (
     <>

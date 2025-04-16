@@ -10,13 +10,11 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { DrawerIds } from '@/constants/Drawer';
 import { EditFieldVariant } from '@/enums/EditField/index.enum';
-import { ICreateIdeaRequest } from '@/hooks/Ideas/useCreateIdea';
-import { IEditIdeaRequest } from '@/hooks/Ideas/useEditIdea';
-import { IIdeaInfo } from '@/hooks/Ideas/useGetIdea';
 import useStrictNavigate from '@/hooks/useStrictNavigate';
 import { cn, formatInput } from '@/lib/utils';
 import useCommonStore from '@/stores/useCommonStore';
 import { IEditFieldConfig } from '@/types/EditField';
+import { IdeaBody, IdeaResponse } from '@/types/Idea';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
@@ -29,19 +27,15 @@ const DESC_MAX_LENGTH = 250;
 
 const FormSchema = z.object({
   title: z.string().min(1).max(TITLE_MAX_LENGTH),
-  description: z.string().max(DESC_MAX_LENGTH),
+  description: z.string().max(DESC_MAX_LENGTH).optional(),
   externalLink: z.string().url().optional().or(z.literal('')),
   coverImage: z.string().or(z.literal('')).nullable().optional(), // FUTURE: base64 check
 });
 
 interface IIdeaFormProps {
-  previousIdeaInfo?: IIdeaInfo;
+  previousIdeaInfo?: IdeaResponse;
   dismissCallback: (isFormNotEdited: boolean) => void;
-  completedCallback: (
-    completedIdeaForm:
-      | Omit<IEditIdeaRequest, 'id'>
-      | Omit<ICreateIdeaRequest, 'listID'>
-  ) => void;
+  completedCallback: (completedIdeaForm: IdeaBody) => void;
 }
 
 const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
@@ -259,7 +253,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
         </div>
         {isTextareaFocus && (
           <div className="mt-2 flex justify-end text-black-tint-04">
-            {ideaForm.watch('description').length}/{DESC_MAX_LENGTH}
+            {ideaForm.watch('description')?.length ?? 0}/{DESC_MAX_LENGTH}
           </div>
         )}
         <div className="flex items-center gap-2">

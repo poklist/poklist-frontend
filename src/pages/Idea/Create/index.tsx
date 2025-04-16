@@ -1,9 +1,10 @@
-import useCreateIdea, { ICreateIdeaRequest } from '@/hooks/Ideas/useCreateIdea';
+import { useCreateIdea } from '@/hooks/mutations/useCreateIdea';
 import useStrictNavigate from '@/hooks/useStrictNavigate';
 import IdeaForm from '@/pages/Idea/Components/Form';
 import Header from '@/pages/Idea/Components/Header';
 import useCommonStore from '@/stores/useCommonStore';
 import useUserStore from '@/stores/useUserStore';
+import { IdeaBody } from '@/types/Idea';
 import { Trans } from '@lingui/react/macro';
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -22,8 +23,7 @@ const IdeaCreatePage: React.FC<IdeaCreatePageProps> = () => {
   const { setIsLoading } = useCommonStore();
   const { user: me } = useUserStore();
 
-  const { createIdeaLoading, ideaData, setIdeaData, fetchCreateIdea } =
-    useCreateIdea();
+  const { mutate: createIdea, isPending: createIdeaLoading } = useCreateIdea();
 
   const onDismissCreate = (isFormEmpty: boolean) => {
     if (isFormEmpty) {
@@ -31,19 +31,20 @@ const IdeaCreatePage: React.FC<IdeaCreatePageProps> = () => {
     }
   };
 
-  const onCreatedIdea = async (
-    ideaFormData: Omit<ICreateIdeaRequest, 'listID'>
-  ) => {
-    const response = await fetchCreateIdea(ideaFormData);
-    if (response) {
-      navigateTo.manageList(me?.userCode, listID.toString());
-    }
+  const onCreatedIdea = async (ideaFormData: IdeaBody) => {
+    createIdea(
+      { ...ideaFormData, listID },
+      {
+        onSuccess: () => {
+          navigateTo.manageList(me?.userCode, listID.toString());
+        },
+        onError: () => {
+          // TODO: show error message
+          setIsLoading(false);
+        },
+      }
+    );
   };
-
-  useEffect(() => {
-    setIdeaData({ ...ideaData, listID });
-  }, []);
-
   useEffect(() => {
     if (createIdeaLoading) {
       setIsLoading(true);

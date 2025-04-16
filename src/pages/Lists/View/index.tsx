@@ -1,6 +1,6 @@
 import FloatingButtonFooter from '@/components/Footer/FloatingButtonFooter';
 import BackToUserHeader from '@/components/Header/BackToUserHeader';
-import { DEFAULT_IDEA_BATCH_SIZE_MAX } from '@/constants/list';
+import { Idea } from '@/constants/list';
 import {
   SocialActionType,
   useSocialAction,
@@ -36,7 +36,7 @@ const ViewListPage: React.FC = () => {
   const { data: list, isLoading: isListLoading } = useList({
     listID: listID,
     offset: 0,
-    limit: DEFAULT_IDEA_BATCH_SIZE_MAX,
+    limit: Idea.DEFAULT_BATCH_SIZE_MAX,
   });
 
   const { debouncedMutate: like } = useSocialAction({
