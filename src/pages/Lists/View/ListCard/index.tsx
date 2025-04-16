@@ -16,7 +16,7 @@ import {
 import { Language, SocialLinkType } from '@/enums/index.enum';
 import useStrictNavigate from '@/hooks/useStrictNavigate';
 import axios from '@/lib/axios';
-import { getFormattedTime } from '@/lib/time';
+import { getFormattedTime, parsePostgresDate } from '@/lib/time';
 import { urlPreview } from '@/lib/utils';
 import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
 import { CategoriesI18n } from '@/pages/Lists/i18n';
@@ -57,10 +57,24 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
   const [createdAtString, setCreatedAtString] = useState('');
   const externalLinkRef = useRef<HTMLDivElement>(null);
 
-  // NOTE: will this result in an error?
-  const isUpdatedRecently =
-    new Date().getTime() - new Date(data.updatedAt).getTime() <
-    DAY_IN_MS * RECENTLY_UPDATED_DAYS;
+  const isUpdatedRecently = () => {
+    try {
+      const currentTime = new Date().getTime();
+      const updatedDate = parsePostgresDate(data.updatedAt);
+
+      if (!updatedDate) {
+        console.error('Invalid date:', data.updatedAt);
+        return false;
+      }
+
+      return (
+        currentTime - updatedDate.getTime() < DAY_IN_MS * RECENTLY_UPDATED_DAYS
+      );
+    } catch (error) {
+      console.error('Error checking update time:', error);
+      return false;
+    }
+  };
 
   // FUTURE: refactor the drawer content because we may have more than one drawer
   const onClickDescription = () => {
@@ -144,7 +158,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
     <>
       <div className="flex flex-col items-center rounded-[32px] border border-black bg-white py-6">
         <div className="flex w-full flex-col items-center px-4">
-          {isUpdatedRecently && (
+          {isUpdatedRecently() && (
             <div className="-tracking-0.8% mb-2 flex h-[27px] items-center justify-center rounded-full bg-yellow-bright-01 px-4 text-[13px] font-semibold">
               <Trans>Recently Updated</Trans>
             </div>
