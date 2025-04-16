@@ -1,13 +1,12 @@
-import { ICreateListRequest } from '@/hooks/Lists/useCreateList';
-import useDeleteList from '@/hooks/Lists/useDeleteList';
-import useEditList from '@/hooks/Lists/useEditList';
+import { useDeleteList } from '@/hooks/mutations/useDeleteList';
+import { useEditList } from '@/hooks/mutations/useEditList';
 import { useList } from '@/hooks/queries/useList';
 import useStrictNavigate from '@/hooks/useStrictNavigate';
 import ListForm from '@/pages/Lists/Components/Form';
 import Header from '@/pages/Lists/Components/Header';
 import useCommonStore from '@/stores/useCommonStore';
 import useUserStore from '@/stores/useUserStore';
-import { ListCover } from '@/types/List';
+import { ListBody, ListCover } from '@/types/List';
 import { Trans } from '@lingui/react/macro';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -27,17 +26,24 @@ const EditListPage: React.FC<EditListPageProps> = () => {
   const { data: list, isLoading: isListInfoLoading } = useList({
     listID: id,
   });
-  const { editListLoading, fetchEditList } = useEditList();
-  const { deleteListLoading, fetchDeleteList } = useDeleteList();
+  const { isEditListLoading, editList } = useEditList({
+    userCode: userStore.user.userCode,
+  });
+  const { deleteList, isDeleteListLoading } = useDeleteList({
+    userCode: userStore.user.userCode,
+  });
 
   const [listCoverDraft, setListCoverDraft] = useState<ListCover>();
 
   const onDeleteList = async () => {
     if (list) {
       // TODO: error handling
-      await fetchDeleteList(list.id);
-      navigateTo.user(userStore.user.userCode);
-      setIsLoading(false);
+      deleteList(list.id, {
+        onSuccess: () => {
+          navigateTo.user(userStore.user.userCode);
+          setIsLoading(false);
+        },
+      });
     }
   };
 
@@ -51,10 +57,11 @@ const EditListPage: React.FC<EditListPageProps> = () => {
     navigateTo.backward();
   };
 
-  const onEditList = async (listFormData: ICreateListRequest) => {
+  const onEditList = async (listFormData: ListBody) => {
     if (!list) {
       return;
     }
+    // TODO: maybe no need to update listCoverDraft
     setListCoverDraft({
       ...list,
       title: listFormData.title,
@@ -63,24 +70,33 @@ const EditListPage: React.FC<EditListPageProps> = () => {
       coverImage: listFormData.coverImage,
       categoryID: listFormData.categoryID,
     });
-    const response = await fetchEditList(Number(id), listFormData);
-    if (response) {
-      navigateTo.manageList(userStore.user.userCode, response.id.toString());
-      return;
-    }
+    editList(
+      {
+        listID: Number(id),
+        editListRequest: listFormData,
+      },
+      {
+        onSuccess: (data) => {
+          if (!data) {
+            throw new Error('Failed to edit list');
+          }
+          navigateTo.manageList(userStore.user.userCode, data.id.toString());
+        },
+      }
+    );
   };
 
   useEffect(() => {
-    if (editListLoading) {
+    if (isEditListLoading) {
       setIsLoading(true);
-    } else if (deleteListLoading) {
+    } else if (isDeleteListLoading) {
       setIsLoading(true);
     } else if (isListInfoLoading) {
       setIsLoading(true);
     } else {
       setIsLoading(false);
     }
-  }, [editListLoading, deleteListLoading, isListInfoLoading, setIsLoading]);
+  }, [isEditListLoading, isDeleteListLoading, isListInfoLoading, setIsLoading]);
 
   useEffect(() => {
     if (list) {

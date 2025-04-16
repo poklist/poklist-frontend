@@ -12,13 +12,13 @@ import { Textarea } from '@/components/ui/textarea';
 import { DrawerIds } from '@/constants/Drawer';
 import { EditFieldVariant } from '@/enums/EditField/index.enum';
 import { RadioType } from '@/enums/Style/index.enum';
-import { ICreateListRequest } from '@/hooks/Lists/useCreateList';
 import { useCategories } from '@/hooks/queries/useCategories';
 import useStrictNavigate from '@/hooks/useStrictNavigate';
 import { cn, formatInput } from '@/lib/utils';
 import { CategoriesI18n } from '@/pages/Lists/i18n';
 import useCommonStore from '@/stores/useCommonStore';
 import { IEditFieldConfig } from '@/types/EditField';
+import { ListBody } from '@/types/List';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { i18n } from '@lingui/core';
 import { t } from '@lingui/core/macro';
@@ -39,9 +39,9 @@ const FormSchema = z.object({
 });
 
 interface IListFormProps {
-  defaultListInfo?: ICreateListRequest;
+  defaultListInfo?: ListBody;
   dismissCallback: (isFormEmpty: boolean) => void;
-  completedCallback: (listData: ICreateListRequest) => void;
+  completedCallback: (listData: ListBody) => void;
 }
 
 const ListForm: React.FC<IListFormProps> = ({

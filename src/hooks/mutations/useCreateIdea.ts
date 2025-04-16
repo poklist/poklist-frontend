@@ -2,6 +2,7 @@ import ApiPath from '@/config/apiPath';
 import axios from '@/lib/axios';
 import useCommonStore from '@/stores/useCommonStore';
 import { CreateIdeaRequest, CreateIdeaResponse } from '@/types/Idea';
+import { IResponse } from '@/types/response';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 interface UseCreateIdeaOptions {
@@ -17,9 +18,8 @@ export const useCreateIdea = ({
   const { setShowingAlert } = useCommonStore();
 
   const mutation = useMutation({
-    mutationKey: ['ideas'],
     mutationFn: async (ideaData: CreateIdeaRequest) => {
-      const response = await axios.post<{ content: CreateIdeaResponse }>(
+      const response = await axios.post<IResponse<CreateIdeaResponse>>(
         ApiPath.ideas,
         ideaData
       );
@@ -27,6 +27,10 @@ export const useCreateIdea = ({
     },
     onSuccess: (data) => {
       // 使相關的查詢失效，強制重新獲取
+      if (!data) {
+        throw new Error('Failed to create idea');
+      }
+
       queryClient.invalidateQueries({ queryKey: ['ideas'] });
       queryClient.invalidateQueries({ queryKey: ['list', data.listID] });
       onSuccess?.(data);

@@ -51,7 +51,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
   const [createdAtString, setCreatedAtString] = useState('');
   const externalLinkRef = useRef<HTMLDivElement>(null);
 
-  const { idea, isLoading, isError } = useIdea({
+  const { idea, isError } = useIdea({
     ideaID: selectedIdeaID?.toString(),
     enabled: !!selectedIdeaID,
   });

@@ -35,8 +35,8 @@ const ViewListPage: React.FC = () => {
 
   const { data: list, isLoading: isListLoading } = useList({
     listID: listID,
-    offset: 0,
-    limit: Idea.DEFAULT_BATCH_SIZE_MAX,
+    offset: Idea.DEFAULT_FIRST_BATCH_OFFSET,
+    limit: Idea.DEFAULT_BATCH_SIZE,
   });
 
   const { debouncedMutate: like } = useSocialAction({

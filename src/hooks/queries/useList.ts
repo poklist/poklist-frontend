@@ -11,6 +11,7 @@ interface UseListOptions {
   limit?: number;
   staleTime?: number;
   gcTime?: number;
+  enabled?: boolean;
 }
 
 export const useList = ({
@@ -19,6 +20,7 @@ export const useList = ({
   limit = Idea.DEFAULT_BATCH_SIZE,
   staleTime = 1000 * 60, // 1 minute
   gcTime = 1000 * 60 * 5, // 5 minutes
+  enabled = true,
 }: UseListOptions) => {
   const query = useQuery({
     queryKey: ['list', listID, offset, limit],
@@ -39,7 +41,7 @@ export const useList = ({
     },
     staleTime,
     gcTime,
-    enabled: !!listID,
+    enabled: enabled && !!listID,
     refetchOnMount: false, // 不要在被掛載時重新請求
     refetchOnWindowFocus: false, // 不要在視窗獲得焦點時重新請求
     refetchOnReconnect: false, // 不要在重新連線時重新請求

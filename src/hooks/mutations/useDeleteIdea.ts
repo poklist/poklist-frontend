@@ -28,7 +28,7 @@ const useDeleteIdea = ({ listID }: UseDeleteIdeaOptions) => {
       queryClient.removeQueries({ queryKey: ['idea', ideaID.toString()] });
 
       // Invalidate and refetch the list
-      queryClient.invalidateQueries({
+      queryClient.refetchQueries({
         queryKey: [
           'list',
           listID,
