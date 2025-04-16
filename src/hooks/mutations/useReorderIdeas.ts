@@ -1,4 +1,5 @@
 import ApiPath from '@/config/apiPath';
+import { Idea } from '@/constants/list';
 import axios from '@/lib/axios';
 import useCommonStore from '@/stores/useCommonStore';
 import { IResponse } from '@/types/response';
@@ -6,12 +7,16 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 interface UseReorderIdeasOptions {
   listID: string;
+  offset?: number;
+  limit?: number;
   onSuccess?: (data: unknown) => void;
   onError?: (error: any) => void;
 }
 
 export const useReorderIdeas = ({
   listID,
+  offset = Idea.DEFAULT_FIRST_BATCH_OFFSET,
+  limit = Idea.DEFAULT_BATCH_SIZE,
   onSuccess,
   onError,
 }: UseReorderIdeasOptions) => {
@@ -32,7 +37,7 @@ export const useReorderIdeas = ({
     },
     onSuccess: (data) => {
       // 使列表緩存失效，觸發重新獲取
-      queryClient.invalidateQueries({ queryKey: ['list', listID] });
+      queryClient.refetchQueries({ queryKey: ['list', listID, offset, limit] });
       onSuccess?.(data);
     },
     onError: (error) => {

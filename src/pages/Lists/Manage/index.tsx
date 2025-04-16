@@ -70,7 +70,14 @@ const ListManagePage: React.FC<ManageListPageProps> = () => {
 
   const onConfirmReorderIdea = () => {
     if (id && ideasDraft) {
-      reorderIdeas({ ideaOrder: ideasDraft.map((idea) => idea.id) });
+      reorderIdeas(
+        { ideaOrder: ideasDraft.map((idea) => idea.id) },
+        {
+          onSuccess: () => {
+            setIsOrderModified(false);
+          },
+        }
+      );
     }
   };
 
