@@ -232,15 +232,15 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
               return (
                 <div
                   key={idea.title}
-                  className="flex min-h-[65px] items-center justify-between border-t-[1px] border-gray-main-03 p-4 -tracking-1.1%"
+                  className="flex min-h-[65px] items-center justify-between gap-2 border-t-[1px] border-gray-main-03 p-4 -tracking-1.1%"
                   onClick={() => onClickIdea(idea.id)}
                 >
-                  <div className="flex flex-col gap-2">
+                  <div className="flex w-full flex-col gap-2">
                     <p className="text-[15px] font-semibold text-black-text-01">
                       {idea.title}
                     </p>
                     {idea.description && (
-                      <p className="line-clamp-1 max-w-[64%] text-[13px] text-gray-storm-01">
+                      <p className="line-clamp-1 max-w-[80%] text-[13px] text-gray-storm-01">
                         {idea.description}
                       </p>
                     )}
