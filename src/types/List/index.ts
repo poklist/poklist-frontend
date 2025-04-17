@@ -2,6 +2,14 @@ import { Category as CategoryEnum } from '@/enums/Lists/index.enum';
 import { IdeaPreview } from '../Idea';
 import { UserPreview } from '../User';
 
+export interface ListBody {
+  title: string;
+  description: string;
+  coverImage?: string | null;
+  externalLink: string;
+  categoryID: number;
+}
+
 export interface ListPreview {
   id: number;
   title: string;
@@ -9,9 +17,8 @@ export interface ListPreview {
   coverImage?: string | null;
 }
 
-export interface ListCover extends ListPreview {
-  externalLink: string;
-  categoryID: number;
+export interface ListCover extends ListBody {
+  id: number;
 }
 
 export interface ListSocialStats {
@@ -37,6 +44,8 @@ export interface List
   ideaTotalCount: number;
   owner: UserPreview;
 }
+
+export type CreateListResponse = Omit<ListCover, 'coverImage'>;
 
 export interface Category {
   id: CategoryEnum;

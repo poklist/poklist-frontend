@@ -1,4 +1,4 @@
-import { MAX_LIST_PREVIEW_COUNT } from '@/constants/list';
+import { List } from '@/constants/list';
 import axios from '@/lib/axios';
 import { ListPreview } from '@/types/List';
 import { IResponse } from '@/types/response';
@@ -14,8 +14,8 @@ interface UseListPreviewsOptions {
 
 export const useListPreviews = ({
   userCode,
-  offset = 0,
-  limit = MAX_LIST_PREVIEW_COUNT,
+  offset = List.DEFAULT_FIRST_BATCH_OFFSET,
+  limit = List.DEFAULT_BATCH_SIZE,
   staleTime = 1000 * 60, // 1 minute
   gcTime = 1000 * 60 * 5, // 5 minutes
 }: UseListPreviewsOptions) => {

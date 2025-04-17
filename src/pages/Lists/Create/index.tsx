@@ -1,9 +1,10 @@
-import useCreateList, { ICreateListRequest } from '@/hooks/Lists/useCreateList';
+import { useCreateList } from '@/hooks/mutations/useCreateList';
 import useStrictNavigate from '@/hooks/useStrictNavigate';
 import ListForm from '@/pages/Lists/Components/Form';
 import Header from '@/pages/Lists/Components/Header';
 import useCommonStore from '@/stores/useCommonStore';
 import useUserStore from '@/stores/useUserStore';
+import { ListBody } from '@/types/List';
 import { Trans } from '@lingui/react/macro';
 import React, { useEffect } from 'react';
 
@@ -12,13 +13,13 @@ interface CreatePageProps {
 }
 
 const CreatePage: React.FC<CreatePageProps> = () => {
-  // Render the page here
   const navigateTo = useStrictNavigate();
-
   const { setIsLoading } = useCommonStore();
   const { user } = useUserStore();
 
-  const { createListLoading, fetchCreateList } = useCreateList();
+  const { createList, isCreateListLoading } = useCreateList({
+    userCode: user.userCode,
+  });
 
   const onDismissCreate = (isFormEmpty: boolean) => {
     if (isFormEmpty) {
@@ -27,18 +28,22 @@ const CreatePage: React.FC<CreatePageProps> = () => {
   };
 
   useEffect(() => {
-    if (createListLoading) {
+    if (isCreateListLoading) {
       setIsLoading(true);
     } else {
       setIsLoading(false);
     }
-  }, [createListLoading, setIsLoading]);
+  }, [isCreateListLoading, setIsLoading]);
 
-  const onCreateList = async (listData: ICreateListRequest) => {
-    const response = await fetchCreateList(listData);
-    if (response) {
-      navigateTo.manageList(user.userCode, response.id.toString());
-    }
+  const onCreateList = async (listData: ListBody) => {
+    createList(listData, {
+      onSuccess: (data) => {
+        if (!data) {
+          throw new Error('Failed to create list');
+        }
+        navigateTo.manageList(user.userCode, data.id.toString());
+      },
+    });
   };
 
   return (

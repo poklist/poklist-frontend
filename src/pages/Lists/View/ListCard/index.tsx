@@ -6,7 +6,6 @@ import {
   ButtonVariant,
 } from '@/components/ui/button';
 import LinkIconWrapper from '@/components/ui/wrappers/LinkIconWrapper';
-import ApiPath from '@/config/apiPath';
 import { DrawerIds } from '@/constants/Drawer';
 import {
   DAY_IN_MS,
@@ -14,20 +13,17 @@ import {
   RECENTLY_UPDATED_DAYS,
 } from '@/constants/list';
 import { Language, SocialLinkType } from '@/enums/index.enum';
+import { useIdea } from '@/hooks/queries/useIdea';
 import useStrictNavigate from '@/hooks/useStrictNavigate';
-import axios from '@/lib/axios';
-import { getFormattedTime } from '@/lib/time';
+import { getFormattedTime, parsePostgresDate } from '@/lib/time';
 import { urlPreview } from '@/lib/utils';
 import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
 import { CategoriesI18n } from '@/pages/Lists/i18n';
 import useCommonStore from '@/stores/useCommonStore';
 import useUserStore from '@/stores/useUserStore';
-import { IdeaDetail } from '@/types/Idea';
 import { List } from '@/types/List';
-import { IResponse } from '@/types/response';
 import { useLingui } from '@lingui/react';
 import { Trans } from '@lingui/react/macro';
-import { AxiosResponse } from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import { useLocation, useOutletContext, useParams } from 'react-router-dom';
 import IdeaDrawerContent from '../IdeaDrawerContent';
@@ -50,17 +46,49 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
   const { openDrawer } = useDrawer(DrawerIds.LIST_CARD_DRAWER_ID);
   const { setShowingAlert } = useCommonStore();
   const [drawerContent, setDrawerContent] = useState<React.ReactNode>(null);
-  const [ideaMap, setIdeaMap] = useState<{
-    [id: number]: IdeaDetail;
-  }>();
+  const [selectedIdeaID, setSelectedIdeaID] = useState<number | null>(null);
   // FUTURE: move to custom hook?
   const [createdAtString, setCreatedAtString] = useState('');
   const externalLinkRef = useRef<HTMLDivElement>(null);
 
-  // NOTE: will this result in an error?
-  const isUpdatedRecently =
-    new Date().getTime() - new Date(data.updatedAt).getTime() <
-    DAY_IN_MS * RECENTLY_UPDATED_DAYS;
+  const { idea, isError } = useIdea({
+    ideaID: selectedIdeaID?.toString(),
+    enabled: !!selectedIdeaID,
+  });
+
+  useEffect(() => {
+    if (isError) {
+      setShowingAlert(true, { message: 'Failed to fetch idea detail' });
+      setSelectedIdeaID(null);
+    }
+  }, [isError, setShowingAlert]);
+
+  useEffect(() => {
+    if (idea && selectedIdeaID) {
+      setDrawerContent(<IdeaDrawerContent data={idea} />);
+      openDrawer();
+      setSelectedIdeaID(null);
+    }
+  }, [idea, selectedIdeaID, openDrawer]);
+
+  const isUpdatedRecently = () => {
+    try {
+      const currentTime = new Date().getTime();
+      const updatedDate = parsePostgresDate(data.updatedAt);
+
+      if (!updatedDate) {
+        console.error('Invalid date:', data.updatedAt);
+        return false;
+      }
+
+      return (
+        currentTime - updatedDate.getTime() < DAY_IN_MS * RECENTLY_UPDATED_DAYS
+      );
+    } catch (error) {
+      console.error('Error checking update time:', error);
+      return false;
+    }
+  };
 
   // FUTURE: refactor the drawer content because we may have more than one drawer
   const onClickDescription = () => {
@@ -98,24 +126,8 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
     openDrawer();
   };
 
-  const onClickIdea = async (ideaID: number) => {
-    let ideaDetail: IdeaDetail | undefined;
-    if (ideaMap?.[ideaID] === undefined) {
-      const response: AxiosResponse<IResponse<IdeaDetail>> = await axios.get(
-        `${ApiPath.ideas}/${ideaID}`
-      );
-      ideaDetail = response.data.content;
-    } else {
-      ideaDetail = ideaMap[ideaID];
-    }
-
-    if (ideaDetail) {
-      setIdeaMap((prev) => ({ ...prev, [ideaID]: ideaDetail }));
-      setDrawerContent(<IdeaDrawerContent data={ideaDetail} />);
-      openDrawer();
-    } else {
-      setShowingAlert(true, { message: 'Failed to fetch idea detail' });
-    }
+  const onClickIdea = (ideaID: number) => {
+    setSelectedIdeaID(ideaID);
   };
 
   useEffect(() => {
@@ -132,19 +144,16 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
 
   useEffect(() => {
     if (location.state?.ideaID) {
-      const _onClickIdea = async () => {
-        await onClickIdea(location.state.ideaID);
-      };
-      _onClickIdea();
+      onClickIdea(location.state.ideaID);
       location.state.ideaID = undefined;
     }
-  }, [location.state?.ideaID, onClickIdea]);
+  }, [location.state?.ideaID]);
 
   return (
     <>
       <div className="flex flex-col items-center rounded-[32px] border border-black bg-white py-6">
         <div className="flex w-full flex-col items-center px-4">
-          {isUpdatedRecently && (
+          {isUpdatedRecently() && (
             <div className="-tracking-0.8% mb-2 flex h-[27px] items-center justify-center rounded-full bg-yellow-bright-01 px-4 text-[13px] font-semibold">
               <Trans>Recently Updated</Trans>
             </div>
@@ -223,15 +232,15 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
               return (
                 <div
                   key={idea.title}
-                  className="flex min-h-[65px] items-center justify-between border-t-[1px] border-gray-main-03 p-4 -tracking-1.1%"
+                  className="flex min-h-[65px] items-center justify-between gap-2 border-t-[1px] border-gray-main-03 p-4 -tracking-1.1%"
                   onClick={() => onClickIdea(idea.id)}
                 >
-                  <div className="flex flex-col gap-2">
+                  <div className="flex w-full flex-col gap-2">
                     <p className="text-[15px] font-semibold text-black-text-01">
                       {idea.title}
                     </p>
                     {idea.description && (
-                      <p className="line-clamp-1 max-w-[64%] text-[13px] text-gray-storm-01">
+                      <p className="line-clamp-1 max-w-[80%] text-[13px] text-gray-storm-01">
                         {idea.description}
                       </p>
                     )}

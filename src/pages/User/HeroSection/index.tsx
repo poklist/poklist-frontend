@@ -37,9 +37,20 @@ const HeroSection: React.FC = () => {
   const { toast } = useToast();
 
   const isMyPage = userCode?.toString() === me.userCode.toString();
-  const { data: currentUser, isLoading } = useUser({
+  const {
+    data: currentUser,
+    isLoading,
+    isError,
+  } = useUser({
     userCode,
   });
+
+  useEffect(() => {
+    if (isError) {
+      // TODO: error handling 404 page
+      navigateTo.error();
+    }
+  }, [isError, navigateTo]);
 
   const { debouncedMutate: follow } = useSocialAction({
     actionKey: 'follow',

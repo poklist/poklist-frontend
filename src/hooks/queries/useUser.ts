@@ -7,7 +7,6 @@ interface UseUserOptions {
   userCode?: string;
   staleTime?: number;
   gcTime?: number;
-  onSuccess?: (data: User) => void;
 }
 
 export const useUser = ({
