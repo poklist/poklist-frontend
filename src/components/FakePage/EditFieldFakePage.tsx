@@ -19,6 +19,7 @@ export const EditFieldFakePageComponent: React.FC<IEditFieldConfig> = ({
   allowEmpty = true,
   cropShape = 'rect',
   validator,
+  trimmer,
 }) => {
   const { isOpen, closeFakePage } = useFakePage();
   const [fieldValue, setFieldValue] = useState<string>(
@@ -48,6 +49,7 @@ export const EditFieldFakePageComponent: React.FC<IEditFieldConfig> = ({
               placeholderText={placeholder}
               characterLimit={characterLimit}
               validator={validator}
+              trimmer={trimmer}
             />
           ) : (
             <ImageCropper
@@ -79,6 +81,7 @@ interface ITextInputProps {
   placeholderText: string;
   characterLimit?: number;
   validator?: (value: string) => boolean;
+  trimmer?: (value: string) => string;
 }
 
 const TextInput: React.FC<ITextInputProps> = ({
@@ -87,6 +90,7 @@ const TextInput: React.FC<ITextInputProps> = ({
   placeholderText,
   characterLimit,
   validator,
+  trimmer,
 }) => {
   const [fieldValue, setFieldValue] = useState<string | undefined>(value);
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
@@ -118,6 +122,28 @@ const TextInput: React.FC<ITextInputProps> = ({
     }
   };
 
+  const handlePaste = (e: React.ClipboardEvent<HTMLTextAreaElement>) => {
+    e.preventDefault();
+    let pastedText = e.clipboardData.getData('text');
+
+    // Check against all social link starters
+    console.log('trimmer', trimmer);
+    if (trimmer) {
+      pastedText = trimmer(pastedText);
+    }
+
+    const textarea = e.currentTarget;
+    const start = textarea.selectionStart ?? 0;
+    const end = textarea.selectionEnd ?? 0;
+    const newValue =
+      (fieldValue?.slice(0, start) ?? '') +
+      pastedText +
+      (fieldValue?.slice(end) ?? '');
+
+    setFieldValue(newValue);
+    onChange(newValue);
+  };
+
   return (
     <>
       <Textarea
@@ -126,6 +152,7 @@ const TextInput: React.FC<ITextInputProps> = ({
         maxLength={characterLimit}
         onChange={handleInput}
         onBeforeInput={handleBeforeInput}
+        onPaste={handlePaste}
         className="w-full border-0"
         placeholder={placeholderText}
       />

@@ -16,7 +16,11 @@ import {
 import { useUser } from '@/hooks/queries/useUser';
 import useStrictNavigate from '@/hooks/useStrictNavigate';
 import { useToast } from '@/hooks/useToast';
-import { extractUsernameFromUrl, urlPreview } from '@/lib/utils';
+import {
+  ensureProtocol,
+  extractUsernameFromUrl,
+  urlPreview,
+} from '@/lib/utils';
 import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
 import useUserStore from '@/stores/useUserStore';
 import { t } from '@lingui/core/macro';
@@ -127,6 +131,7 @@ const HeroSection: React.FC = () => {
       <div className="flex flex-col gap-4">
         {socialLinkTypeList.map(
           ([linkType, link]: [SocialLinkType, string]) => {
+            console.log(`linkType=${linkType}, link=${link}`);
             return (
               <div
                 key={linkType}
@@ -135,7 +140,7 @@ const HeroSection: React.FC = () => {
                 <LinkIconWrapper variant={linkType} />
                 <a
                   className="text-black-text-01"
-                  href={link}
+                  href={ensureProtocol(link)}
                   target="_blank"
                   rel="noopener noreferrer"
                 >

@@ -3,5 +3,6 @@ export const validateUserCode = (value: string): boolean => {
   if (blacklist.some((word) => value.includes(word))) {
     return false;
   }
-  return /^[a-z0-9][a-z0-9._]*[a-z0-9]?$/.test(value);
+  // FUTURE: add error message to return
+  return /^[a-z0-9][a-z0-9._]*[a-z0-9]$/.test(value);
 };

@@ -12,4 +12,6 @@ export interface IEditFieldConfig {
   // UI Control
   allowEmpty?: boolean;
   cropShape?: 'round' | 'rect';
+  // Special Operation
+  trimmer?: (value: string) => string;
 }

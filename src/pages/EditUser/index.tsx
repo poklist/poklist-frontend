@@ -10,7 +10,7 @@ import { EditFieldVariant, FieldType } from '@/enums/EditField/index.enum';
 import { SocialLinkType } from '@/enums/index.enum';
 import { useEditProfile } from '@/hooks/mutations/useEditProfile';
 import useStrictNavigate from '@/hooks/useStrictNavigate';
-import { urlPreview } from '@/lib/utils';
+import { extractUsernameFromUrl, urlPreview } from '@/lib/utils';
 import { validateUserCode } from '@/lib/validator';
 import useEditProfileStore from '@/stores/useEditProfileStore';
 import useUserStore from '@/stores/useUserStore';
@@ -111,10 +111,19 @@ const EditUserPage: React.FC = () => {
       fieldName: 'Instagram',
       variant: EditFieldVariant.TEXT,
       placeholder: t`Add account`,
-      edittingFieldValue: newUserInfo.socialLinks?.[SocialLinkType.INSTAGRAM],
+      edittingFieldValue: extractUsernameFromUrl(
+        SocialLinkType.INSTAGRAM,
+        newUserInfo.socialLinks?.[SocialLinkType.INSTAGRAM]
+      ),
+      trimmer: (value: string) => {
+        return extractUsernameFromUrl(SocialLinkType.INSTAGRAM, value) ?? '';
+      },
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
-          setSocialLink(SocialLinkType.INSTAGRAM, value);
+          setSocialLink(
+            SocialLinkType.INSTAGRAM,
+            `${socialLinkStarterMap[SocialLinkType.INSTAGRAM]}${value}`
+          );
         } else {
           console.log('value is undefined');
         }
@@ -124,10 +133,19 @@ const EditUserPage: React.FC = () => {
       fieldName: 'YouTube',
       variant: EditFieldVariant.TEXT,
       placeholder: t`Add account`,
-      edittingFieldValue: newUserInfo.socialLinks?.[SocialLinkType.YOUTUBE],
+      edittingFieldValue: extractUsernameFromUrl(
+        SocialLinkType.YOUTUBE,
+        newUserInfo.socialLinks?.[SocialLinkType.YOUTUBE]
+      ),
+      trimmer: (value: string) => {
+        return extractUsernameFromUrl(SocialLinkType.YOUTUBE, value) ?? '';
+      },
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
-          setSocialLink(SocialLinkType.YOUTUBE, value);
+          setSocialLink(
+            SocialLinkType.YOUTUBE,
+            `${socialLinkStarterMap[SocialLinkType.YOUTUBE]}${value}`
+          );
         } else {
           console.log('value is undefined');
         }
@@ -137,10 +155,19 @@ const EditUserPage: React.FC = () => {
       fieldName: 'TikTok',
       variant: EditFieldVariant.TEXT,
       placeholder: t`Add account`,
-      edittingFieldValue: newUserInfo.socialLinks?.[SocialLinkType.TIKTOK],
+      edittingFieldValue: extractUsernameFromUrl(
+        SocialLinkType.TIKTOK,
+        newUserInfo.socialLinks?.[SocialLinkType.TIKTOK]
+      ),
+      trimmer: (value: string) => {
+        return extractUsernameFromUrl(SocialLinkType.TIKTOK, value) ?? '';
+      },
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
-          setSocialLink(SocialLinkType.TIKTOK, value);
+          setSocialLink(
+            SocialLinkType.TIKTOK,
+            `${socialLinkStarterMap[SocialLinkType.TIKTOK]}${value}`
+          );
         } else {
           console.log('value is undefined');
         }
@@ -150,10 +177,19 @@ const EditUserPage: React.FC = () => {
       fieldName: 'Threads',
       variant: EditFieldVariant.TEXT,
       placeholder: t`Add account`,
-      edittingFieldValue: newUserInfo.socialLinks?.[SocialLinkType.THREADS],
+      edittingFieldValue: extractUsernameFromUrl(
+        SocialLinkType.THREADS,
+        newUserInfo.socialLinks?.[SocialLinkType.THREADS]
+      ),
+      trimmer: (value: string) => {
+        return extractUsernameFromUrl(SocialLinkType.THREADS, value) ?? '';
+      },
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
-          setSocialLink(SocialLinkType.THREADS, value);
+          setSocialLink(
+            SocialLinkType.THREADS,
+            `${socialLinkStarterMap[SocialLinkType.THREADS]}${value}`
+          );
         } else {
           console.log('value is undefined');
         }
@@ -163,10 +199,19 @@ const EditUserPage: React.FC = () => {
       fieldName: 'LinkedIn',
       variant: EditFieldVariant.TEXT,
       placeholder: t`Add account`,
-      edittingFieldValue: newUserInfo.socialLinks?.[SocialLinkType.LINKEDIN],
+      edittingFieldValue: extractUsernameFromUrl(
+        SocialLinkType.LINKEDIN,
+        newUserInfo.socialLinks?.[SocialLinkType.LINKEDIN]
+      ),
+      trimmer: (value: string) => {
+        return extractUsernameFromUrl(SocialLinkType.LINKEDIN, value) ?? '';
+      },
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
-          setSocialLink(SocialLinkType.LINKEDIN, value);
+          setSocialLink(
+            SocialLinkType.LINKEDIN,
+            `${socialLinkStarterMap[SocialLinkType.LINKEDIN]}${value}`
+          );
         } else {
           console.log('value is undefined');
         }
