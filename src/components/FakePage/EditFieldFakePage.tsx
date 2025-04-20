@@ -127,7 +127,6 @@ const TextInput: React.FC<ITextInputProps> = ({
     let pastedText = e.clipboardData.getData('text');
 
     // Check against all social link starters
-    console.log('trimmer', trimmer);
     if (trimmer) {
       pastedText = trimmer(pastedText);
     }

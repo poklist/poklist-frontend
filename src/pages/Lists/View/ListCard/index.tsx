@@ -20,6 +20,7 @@ import { urlPreview } from '@/lib/utils';
 import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
 import { CategoriesI18n } from '@/pages/Lists/i18n';
 import useCommonStore from '@/stores/useCommonStore';
+import useSocialStore from '@/stores/useSocialStore';
 import useUserStore from '@/stores/useUserStore';
 import { List } from '@/types/List';
 import { useLingui } from '@lingui/react';
@@ -42,14 +43,23 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
   const location = useLocation();
 
   const { isLoggedIn, me } = useUserStore();
-
+  const { isLiked } = useSocialStore();
   const { openDrawer } = useDrawer(DrawerIds.LIST_CARD_DRAWER_ID);
   const { setShowingAlert } = useCommonStore();
   const [drawerContent, setDrawerContent] = useState<React.ReactNode>(null);
   const [selectedIdeaID, setSelectedIdeaID] = useState<number | null>(null);
   // FUTURE: move to custom hook?
   const [createdAtString, setCreatedAtString] = useState('');
+  const [likeCount, setLikeCount] = useState(data.likeCount);
   const externalLinkRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (isLiked) {
+      setLikeCount(likeCount + 1);
+    } else {
+      setLikeCount(likeCount - 1);
+    }
+  }, [isLiked]);
 
   const { idea, isError } = useIdea({
     ideaID: selectedIdeaID?.toString(),
@@ -168,7 +178,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
             <p>{i18n._(CategoriesI18n[data.categoryID])}</p>
             <p>•</p>
             <p>
-              {data.likeCount} <Trans>Likes</Trans>
+              {likeCount} <Trans>Likes</Trans>
             </p>
           </div>
           {isLoggedIn && me?.id === data.owner.id && (
