@@ -22,7 +22,7 @@ export interface UserPreview {
   profileImage: string; // BASE64
 }
 
-export interface IUpdateUserResponse extends User {
+export interface UpdateUserResponse extends User {
   accessToken: string;
 }
 

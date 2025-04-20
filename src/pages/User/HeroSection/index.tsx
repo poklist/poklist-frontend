@@ -29,7 +29,7 @@ const HeroSection: React.FC = () => {
   const { userCode } = useOutletContext<UserRouteLayoutContextType>();
 
   const navigateTo = useStrictNavigate();
-  const { isLoggedIn, user: me, setMe } = useUserStore();
+  const { isLoggedIn, me, setMe } = useUserStore();
   const { openDrawer } = useDrawer();
   const [drawerContent, setDrawerContent] = useState<React.ReactNode>(null);
   const [isFollowing, setIsFollowing] = useState<boolean>(false);

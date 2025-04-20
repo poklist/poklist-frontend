@@ -41,7 +41,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
   const navigateTo = useStrictNavigate();
   const location = useLocation();
 
-  const { isLoggedIn, user } = useUserStore();
+  const { isLoggedIn, me } = useUserStore();
 
   const { openDrawer } = useDrawer(DrawerIds.LIST_CARD_DRAWER_ID);
   const { setShowingAlert } = useCommonStore();
@@ -140,7 +140,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
     if (listID && ideaID) {
       navigateTo.viewList(listOwnerUserCode, listID, ideaID);
     }
-  }, [ideaID, listID, navigateTo, user.userCode]);
+  }, [ideaID, listID, navigateTo, me.userCode]);
 
   useEffect(() => {
     if (location.state?.ideaID) {
@@ -171,14 +171,14 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
               {data.likeCount} <Trans>Likes</Trans>
             </p>
           </div>
-          {isLoggedIn && user?.id === data.owner.id && (
+          {isLoggedIn && me?.id === data.owner.id && (
             <div className="mt-6 flex w-full gap-2">
               <Button
                 variant={ButtonVariant.BLACK}
                 size={ButtonSize.H40}
                 shape={ButtonShape.ROUNDED_5PX}
                 onClick={() =>
-                  navigateTo.manageList(user.userCode, data.id.toString())
+                  navigateTo.manageList(me.userCode, data.id.toString())
                 }
               >
                 <Trans>Edit list</Trans>

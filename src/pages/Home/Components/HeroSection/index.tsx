@@ -12,7 +12,7 @@ import { ErrorDialog } from '../ErrorDialog';
 import { LoginDrawer } from '../LoginDrawer';
 export const HeroSection = ({ content }: HeroSectionProps) => {
   const navigateTo = useStrictNavigate();
-  const { login, setMe: setUser, isLoggedIn, user } = useUserStore();
+  const { login, setMe, isLoggedIn, me } = useUserStore();
   const [showCustomLogin, setShowCustomLogin] = useState(false);
   const [showErrorDialog, setShowErrorDialog] = useState(false);
   const scriptRef = useRef<HTMLScriptElement | null>(null);
@@ -27,7 +27,7 @@ export const HeroSection = ({ content }: HeroSectionProps) => {
       }
       login(res.data.content?.accessToken);
       const userData = res.data.content?.user;
-      setUser(userData);
+      setMe(userData);
       setShowCustomLogin(false);
       navigateTo.user(userData.userCode);
     } catch (error) {
@@ -71,8 +71,8 @@ export const HeroSection = ({ content }: HeroSectionProps) => {
   }, [isLoggedIn]);
 
   const handleSignIn = () => {
-    if (isLoggedIn && user?.userCode) {
-      navigateTo.user(user.userCode);
+    if (isLoggedIn && me?.userCode) {
+      navigateTo.user(me.userCode);
     } else {
       setShowCustomLogin(true);
     }

@@ -21,7 +21,7 @@ interface HeaderProps {
 
 const Header = ({ className }: HeaderProps) => {
   const navigateTo = useStrictNavigate();
-  const { login, setMe: setUser, user, isLoggedIn } = useUserStore();
+  const { login, setMe, me, isLoggedIn } = useUserStore();
   const [showCustomLogin, setShowCustomLogin] = useState(false);
   const [showErrorDialog, setShowErrorDialog] = useState(false);
 
@@ -35,7 +35,7 @@ const Header = ({ className }: HeaderProps) => {
       }
       login(res.data.content?.accessToken);
       const userData = res.data.content?.user;
-      setUser(userData);
+      setMe(userData);
       setShowCustomLogin(false);
       navigateTo.user(userData.userCode);
     } catch (error) {
@@ -79,10 +79,10 @@ const Header = ({ className }: HeaderProps) => {
             {isLoggedIn ? (
               <Avatar
                 className="h-8 w-8 cursor-pointer"
-                onClick={() => navigateTo.user(user.userCode)}
+                onClick={() => navigateTo.user(me.userCode)}
               >
-                <AvatarImage src={user.profileImage} />
-                <AvatarFallback>{user.displayName?.[0]}</AvatarFallback>
+                <AvatarImage src={me.profileImage} />
+                <AvatarFallback>{me.displayName?.[0]}</AvatarFallback>
               </Avatar>
             ) : (
               <Button

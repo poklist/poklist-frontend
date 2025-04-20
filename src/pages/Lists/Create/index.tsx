@@ -15,10 +15,10 @@ interface CreatePageProps {
 const CreatePage: React.FC<CreatePageProps> = () => {
   const navigateTo = useStrictNavigate();
   const { setIsLoading } = useCommonStore();
-  const { user } = useUserStore();
+  const { me } = useUserStore();
 
   const { createList, isCreateListLoading } = useCreateList({
-    userCode: user.userCode,
+    userCode: me.userCode,
   });
 
   const onDismissCreate = (isFormEmpty: boolean) => {
@@ -41,7 +41,7 @@ const CreatePage: React.FC<CreatePageProps> = () => {
         if (!data) {
           throw new Error('Failed to create list');
         }
-        navigateTo.manageList(user.userCode, data.id.toString());
+        navigateTo.manageList(me.userCode, data.id.toString());
       },
     });
   };

@@ -23,7 +23,7 @@ const ViewListPage: React.FC = () => {
   const { userCode: listOwnerUserCode } =
     useOutletContext<UserRouteLayoutContextType>();
   const { id: listID } = useParams();
-  const { user: me, isLoggedIn } = useUserStore();
+  const { me, isLoggedIn } = useUserStore();
   const isMyPage = listOwnerUserCode === me.userCode;
 
   const { setIsLoading } = useCommonStore();

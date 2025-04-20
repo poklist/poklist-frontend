@@ -21,7 +21,7 @@ const IdeaCreatePage: React.FC<IdeaCreatePageProps> = () => {
     listTitle: string;
   };
   const { setIsLoading } = useCommonStore();
-  const { user: me } = useUserStore();
+  const { me } = useUserStore();
 
   const { mutate: createIdea, isPending: createIdeaLoading } = useCreateIdea();
 

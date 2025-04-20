@@ -20,7 +20,7 @@ const EditIdeaPage: React.FC<EditIdeaPageProps> = () => {
   const [isDeleting, setIsDeleting] = useState(false);
 
   const { setIsLoading } = useCommonStore();
-  const { user: me } = useUserStore();
+  const { me } = useUserStore();
 
   const { idea, isLoading: isIdeaLoading } = useIdea({
     ideaID: id,

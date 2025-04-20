@@ -8,21 +8,19 @@ import LinkIconWrapper from '@/components/ui/wrappers/LinkIconWrapper';
 import { socialLinkStarterMap } from '@/constants/User';
 import { EditFieldVariant, FieldType } from '@/enums/EditField/index.enum';
 import { SocialLinkType } from '@/enums/index.enum';
+import { useEditProfile } from '@/hooks/mutations/useEditProfile';
 import useStrictNavigate from '@/hooks/useStrictNavigate';
-import axios from '@/lib/axios';
 import { urlPreview } from '@/lib/utils';
 import useEditProfileStore from '@/stores/useEditProfileStore';
 import useUserStore from '@/stores/useUserStore';
 import { IEditFieldConfig } from '@/types/EditField';
-import { IResponse } from '@/types/response';
-import { IUpdateUserResponse } from '@/types/User';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
 import { useEffect, useState } from 'react';
 
 const EditUserPage: React.FC = () => {
   const navigateTo = useStrictNavigate();
-  const { user, setMe: setUser, refreshToken } = useUserStore();
+  const { me } = useUserStore();
   const {
     newUserInfo,
     resetNewUserInfo,
@@ -34,6 +32,7 @@ const EditUserPage: React.FC = () => {
     isModified,
   } = useEditProfileStore();
 
+  const { editProfile } = useEditProfile();
   const { openFakePage, closeFakePage } = useFakePage();
   const socialLinkTypeList = Object.values(SocialLinkType);
 
@@ -181,23 +180,7 @@ const EditUserPage: React.FC = () => {
   };
 
   const onSubmit = async () => {
-    if (newUserInfo.profileImage === user.profileImage) {
-      console.log('profile image is the same');
-      delete newUserInfo.profileImage;
-    }
-    await axios
-      .put<IResponse<IUpdateUserResponse>>(`/users/me`, newUserInfo)
-      .then((response) => {
-        if (response.data.content?.accessToken) {
-          refreshToken(response.data.content.accessToken);
-        }
-        setUser({ ...newUserInfo });
-        navigateTo.user(newUserInfo.userCode);
-      })
-      .catch((error) => {
-        console.error(error);
-        navigateTo.user(user.userCode);
-      });
+    editProfile({ newUserInfo });
   };
 
   useEffect(() => {
@@ -210,7 +193,7 @@ const EditUserPage: React.FC = () => {
 
   return (
     <>
-      <BackToUserHeader owner={user} />
+      <BackToUserHeader owner={me} />
       {/* Upload ProfileImageSection */}
       <div id="profile-image" className="flex items-end justify-center pt-6">
         <Avatar className="h-24 w-24">
@@ -324,7 +307,7 @@ const EditUserPage: React.FC = () => {
       </div>
       <EditModeFooter
         disabled={!isModified()}
-        onClose={() => navigateTo.user(user.userCode)}
+        onClose={() => navigateTo.user(me.userCode)}
         title={t`Edit profile and account`}
         onSave={onSubmit}
       />
