@@ -273,7 +273,13 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
             name="coverImage"
             control={ideaForm.control}
             render={({ field }) => (
-              <ImageUploader file={field.value} callback={onOpenFakePage} />
+              <ImageUploader
+                file={field.value}
+                callback={onOpenFakePage}
+                onRemove={() => {
+                  ideaForm.setValue('coverImage', null);
+                }}
+              />
             )}
           />
         </div>

@@ -8,49 +8,23 @@ interface IImageUploaderProps {
   file: string | null | undefined;
   callback: () => void;
   className?: string;
+  onRemove?: () => void;
 }
 
 const ImageUploader: React.FC<IImageUploaderProps> = ({
   file,
   callback,
   className,
+  onRemove,
 }) => {
-  // const onUploadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const fileList = event.target.files;
-  //   if (fileList && fileList.length > 0) {
-  //     const imageFile = fileList[0];
-  //     const reader = new FileReader();
-  //     reader.onload = (e) => {
-  //       const img = new Image();
-  //       img.src = e.target?.result as string;
-  //       if (img.width !== img.height) {
-  //         setShowErrorDrawer(true, {
-  //           title: t`Cover image error!`,
-  //           content: t`Must be square.`,
-  //         });
-  //         return;
-  //       }
-  //     };
-  //     reader.readAsDataURL(imageFile);
-
-  //     if (
-  //       imageFile.size > 4_194_304 ||
-  //       (imageFile.type !== 'image/jpeg' && imageFile.type !== 'image/png')
-  //     ) {
-  //       setShowErrorDrawer(true, {
-  //         title: t`Cover image error!`,
-  //         content: t`Must be JPG or PNG and under 4MB.`,
-  //       });
-  //       return;
-  //     }
-  //     callback(imageFile);
-  //   }
-  // };
-
   return (
     <div onClick={() => callback()}>
       {file ? (
-        <ImagePreviewComponent className={cn(className)} file={file ?? null} />
+        <ImagePreviewComponent
+          className={cn(className)}
+          file={file ?? null}
+          onClickClose={() => onRemove?.()}
+        />
       ) : (
         <div className={cn(`flex items-start gap-2`, className)}>
           <IconPhoto />
