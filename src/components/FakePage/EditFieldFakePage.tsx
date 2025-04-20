@@ -87,7 +87,7 @@ const TextInput: React.FC<ITextInputProps> = ({
   const [fieldValue, setFieldValue] = useState<string | undefined>(value);
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
-  useAutosizeTextArea(textAreaRef.current, value);
+  useAutosizeTextArea(textAreaRef, value);
 
   useEffect(() => {
     setFieldValue(value);
