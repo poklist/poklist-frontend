@@ -20,12 +20,13 @@ export const useEditProfile = ({
 
   const mutation = useMutation({
     mutationFn: async ({ newUserInfo }: { newUserInfo: User }) => {
-      if (newUserInfo.profileImage === me.profileImage) {
-        delete newUserInfo.profileImage;
+      const params = { ...newUserInfo };
+      if (params.profileImage === me.profileImage) {
+        delete params.profileImage;
       }
       const response = await axios.put<IResponse<UpdateUserResponse>>(
         `/users/me`,
-        newUserInfo
+        params
       );
       return response.data.content;
     },
