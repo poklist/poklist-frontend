@@ -11,6 +11,7 @@ import { SocialLinkType } from '@/enums/index.enum';
 import { useEditProfile } from '@/hooks/mutations/useEditProfile';
 import useStrictNavigate from '@/hooks/useStrictNavigate';
 import { urlPreview } from '@/lib/utils';
+import { validateUserCode } from '@/lib/validator';
 import useEditProfileStore from '@/stores/useEditProfileStore';
 import useUserStore from '@/stores/useUserStore';
 import { IEditFieldConfig } from '@/types/EditField';
@@ -59,6 +60,7 @@ const EditUserPage: React.FC = () => {
       characterLimit: 30,
       edittingFieldValue: newUserInfo.userCode,
       allowEmpty: false,
+      validator: validateUserCode,
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
           setUserCode(value);

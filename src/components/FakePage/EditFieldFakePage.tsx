@@ -18,6 +18,7 @@ export const EditFieldFakePageComponent: React.FC<IEditFieldConfig> = ({
   characterLimit,
   allowEmpty = true,
   cropShape = 'rect',
+  validator,
 }) => {
   const { isOpen, closeFakePage } = useFakePage();
   const [fieldValue, setFieldValue] = useState<string>(
@@ -33,6 +34,10 @@ export const EditFieldFakePageComponent: React.FC<IEditFieldConfig> = ({
     }
   }, [edittingFieldValue]);
 
+  useEffect(() => {
+    console.log(`validator=${validator}`);
+  }, [validator]);
+
   return (
     <Dialog open={isOpen} onOpenChange={closeFakePage}>
       <DialogContent className="flex h-screen w-full items-center border-0 bg-transparent p-0">
@@ -46,6 +51,7 @@ export const EditFieldFakePageComponent: React.FC<IEditFieldConfig> = ({
               onChange={setFieldValue}
               placeholderText={placeholder}
               characterLimit={characterLimit}
+              validator={validator}
             />
           ) : (
             <ImageCropper
@@ -76,6 +82,7 @@ interface ITextInputProps {
   onChange: (value: string) => void;
   placeholderText: string;
   characterLimit?: number;
+  validator?: (value: string) => boolean;
 }
 
 const TextInput: React.FC<ITextInputProps> = ({
@@ -83,6 +90,7 @@ const TextInput: React.FC<ITextInputProps> = ({
   onChange,
   placeholderText,
   characterLimit,
+  validator,
 }) => {
   const [fieldValue, setFieldValue] = useState<string | undefined>(value);
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
@@ -93,16 +101,26 @@ const TextInput: React.FC<ITextInputProps> = ({
     setFieldValue(value);
   }, [value]);
 
+  const handleInput = (newValue: string) => {
+    const passed = validator === undefined || validator(newValue);
+    if (!passed) {
+      if (textAreaRef.current) {
+        // rollback the input value
+        textAreaRef.current.value = fieldValue ?? '';
+      }
+      return;
+    }
+    setFieldValue(newValue);
+    onChange(newValue);
+  };
+
   return (
     <>
       <Textarea
         ref={textAreaRef}
         value={fieldValue}
         maxLength={characterLimit}
-        onChange={(e) => {
-          setFieldValue(e.target.value);
-          onChange(e.target.value);
-        }}
+        onChange={(e) => handleInput(e.target.value)}
         className="w-full border-0"
         placeholder={placeholderText}
       />

@@ -8,7 +8,7 @@ export interface IEditFieldConfig {
   onFieldValueSet: (value: string | undefined) => void;
   edittingFieldValue?: string | null;
   errorMessage?: string;
-  validator?: (value?: string) => boolean;
+  validator?: (value: string) => boolean;
   // UI Control
   allowEmpty?: boolean;
   cropShape?: 'round' | 'rect';
