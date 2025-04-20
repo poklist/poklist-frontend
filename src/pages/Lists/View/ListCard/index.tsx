@@ -227,7 +227,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
           )}
         </div>
         {data.ideas.length > 0 && (
-          <div className="mt-4 flex w-full flex-col gap-2">
+          <div className="mt-4 flex w-full flex-col">
             {data.ideas.map((idea) => {
               return (
                 <div
