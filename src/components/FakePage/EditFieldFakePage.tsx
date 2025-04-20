@@ -34,10 +34,6 @@ export const EditFieldFakePageComponent: React.FC<IEditFieldConfig> = ({
     }
   }, [edittingFieldValue]);
 
-  useEffect(() => {
-    console.log(`validator=${validator}`);
-  }, [validator]);
-
   return (
     <Dialog open={isOpen} onOpenChange={closeFakePage}>
       <DialogContent className="flex h-screen w-full items-center border-0 bg-transparent p-0">
@@ -101,17 +97,25 @@ const TextInput: React.FC<ITextInputProps> = ({
     setFieldValue(value);
   }, [value]);
 
-  const handleInput = (newValue: string) => {
-    const passed = validator === undefined || validator(newValue);
-    if (!passed) {
-      if (textAreaRef.current) {
-        // rollback the input value
-        textAreaRef.current.value = fieldValue ?? '';
-      }
-      return;
-    }
+  const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newValue = e.target.value;
     setFieldValue(newValue);
     onChange(newValue);
+  };
+
+  const handleBeforeInput = (
+    e: React.FormEvent<HTMLTextAreaElement> & { data: string }
+  ) => {
+    const textarea = e.currentTarget;
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const newValue =
+      fieldValue?.slice(0, start) + e.data + fieldValue?.slice(end);
+    const passed = validator === undefined || validator(newValue);
+    if (!passed) {
+      e.preventDefault();
+      return;
+    }
   };
 
   return (
@@ -120,7 +124,8 @@ const TextInput: React.FC<ITextInputProps> = ({
         ref={textAreaRef}
         value={fieldValue}
         maxLength={characterLimit}
-        onChange={(e) => handleInput(e.target.value)}
+        onChange={handleInput}
+        onBeforeInput={handleBeforeInput}
         className="w-full border-0"
         placeholder={placeholderText}
       />
