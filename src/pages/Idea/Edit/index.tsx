@@ -58,6 +58,9 @@ const EditIdeaPage: React.FC<EditIdeaPageProps> = () => {
       return;
     }
     const _params = { ...editedIdea, id: Number(id) };
+    if (editedIdea.coverImage === idea.coverImage) {
+      delete _params.coverImage;
+    }
     editIdea(_params, {
       onSuccess: (data) => {
         navigateTo.manageList(me.userCode, data.listID.toString());
