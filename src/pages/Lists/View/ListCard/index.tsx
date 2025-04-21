@@ -20,6 +20,7 @@ import { urlPreview } from '@/lib/utils';
 import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
 import { CategoriesI18n } from '@/pages/Lists/i18n';
 import useCommonStore from '@/stores/useCommonStore';
+import useSocialStore from '@/stores/useSocialStore';
 import useUserStore from '@/stores/useUserStore';
 import { List } from '@/types/List';
 import { useLingui } from '@lingui/react';
@@ -41,15 +42,33 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
   const navigateTo = useStrictNavigate();
   const location = useLocation();
 
-  const { isLoggedIn, user } = useUserStore();
-
+  const { isLoggedIn, me } = useUserStore();
+  const { isLiked } = useSocialStore();
   const { openDrawer } = useDrawer(DrawerIds.LIST_CARD_DRAWER_ID);
   const { setShowingAlert } = useCommonStore();
   const [drawerContent, setDrawerContent] = useState<React.ReactNode>(null);
   const [selectedIdeaID, setSelectedIdeaID] = useState<number | null>(null);
   // FUTURE: move to custom hook?
   const [createdAtString, setCreatedAtString] = useState('');
+  // Use useState to manage like count, initial value from data.likeCount
+  const [likeCount, setLikeCount] = useState(data.likeCount);
   const externalLinkRef = useRef<HTMLDivElement>(null);
+  // Use useRef to track isLiked changes, preventing likeCount updates on first render
+  const prevIsLikedRef = useRef(isLiked);
+
+  // Listen to isLiked changes, only update likeCount when actual changes occur
+  useEffect(() => {
+    // Decrease likeCount when isLiked changes from true to false
+    if (prevIsLikedRef.current === true && isLiked === false) {
+      setLikeCount(likeCount - 1);
+    }
+    // Increase likeCount when isLiked changes from false to true
+    else if (prevIsLikedRef.current === false && isLiked === true) {
+      setLikeCount(likeCount + 1);
+    }
+    // Update prevIsLikedRef for next comparison
+    prevIsLikedRef.current = isLiked;
+  }, [isLiked]);
 
   const { idea, isError } = useIdea({
     ideaID: selectedIdeaID?.toString(),
@@ -140,7 +159,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
     if (listID && ideaID) {
       navigateTo.viewList(listOwnerUserCode, listID, ideaID);
     }
-  }, [ideaID, listID, navigateTo, user.userCode]);
+  }, [ideaID, listID, navigateTo, me.userCode]);
 
   useEffect(() => {
     if (location.state?.ideaID) {
@@ -168,17 +187,17 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
             <p>{i18n._(CategoriesI18n[data.categoryID])}</p>
             <p>•</p>
             <p>
-              {data.likeCount} <Trans>Likes</Trans>
+              {likeCount} <Trans>Likes</Trans>
             </p>
           </div>
-          {isLoggedIn && user?.id === data.owner.id && (
+          {isLoggedIn && me?.id === data.owner.id && (
             <div className="mt-6 flex w-full gap-2">
               <Button
                 variant={ButtonVariant.BLACK}
                 size={ButtonSize.H40}
                 shape={ButtonShape.ROUNDED_5PX}
                 onClick={() =>
-                  navigateTo.manageList(user.userCode, data.id.toString())
+                  navigateTo.manageList(me.userCode, data.id.toString())
                 }
               >
                 <Trans>Edit list</Trans>
@@ -227,7 +246,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
           )}
         </div>
         {data.ideas.length > 0 && (
-          <div className="mt-4 flex w-full flex-col gap-2">
+          <div className="mt-4 flex w-full flex-col">
             {data.ideas.map((idea) => {
               return (
                 <div

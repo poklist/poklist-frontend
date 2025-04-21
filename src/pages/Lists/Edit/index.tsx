@@ -27,10 +27,10 @@ const EditListPage: React.FC<EditListPageProps> = () => {
     listID: id,
   });
   const { isEditListLoading, editList } = useEditList({
-    userCode: userStore.user.userCode,
+    userCode: userStore.me.userCode,
   });
   const { deleteList, isDeleteListLoading } = useDeleteList({
-    userCode: userStore.user.userCode,
+    userCode: userStore.me.userCode,
   });
 
   const [listCoverDraft, setListCoverDraft] = useState<ListCover>();
@@ -40,7 +40,7 @@ const EditListPage: React.FC<EditListPageProps> = () => {
       // TODO: error handling
       deleteList(list.id, {
         onSuccess: () => {
-          navigateTo.user(userStore.user.userCode);
+          navigateTo.user(userStore.me.userCode);
           setIsLoading(false);
         },
       });
@@ -49,7 +49,7 @@ const EditListPage: React.FC<EditListPageProps> = () => {
 
   const onDismissEdit = (isFormEmpty: boolean) => {
     if (list && isFormEmpty) {
-      navigateTo.manageList(userStore.user.userCode, list.id.toString());
+      navigateTo.manageList(userStore.me.userCode, list.id.toString());
     }
   };
 
@@ -80,7 +80,7 @@ const EditListPage: React.FC<EditListPageProps> = () => {
           if (!data) {
             throw new Error('Failed to edit list');
           }
-          navigateTo.manageList(userStore.user.userCode, data.id.toString());
+          navigateTo.manageList(userStore.me.userCode, data.id.toString());
         },
       }
     );
@@ -107,11 +107,7 @@ const EditListPage: React.FC<EditListPageProps> = () => {
   return (
     // Your component code here
     <>
-      <Header
-        title={<Trans>List Cover</Trans>}
-        deleteCallback={onDeleteList}
-        backwardCallback={onBackward}
-      />
+      <Header title={<Trans>List Cover</Trans>} deleteCallback={onDeleteList} />
       <div className="flex h-full flex-col gap-6">
         <ListForm
           defaultListInfo={listCoverDraft}

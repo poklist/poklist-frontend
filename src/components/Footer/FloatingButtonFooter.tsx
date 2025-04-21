@@ -22,7 +22,7 @@ const FloatingButtonFooter: React.FC<IFooterProps> = ({
   onClickUnlike,
 }) => {
   const { toast } = useToast();
-  const { user: me } = useUserStore();
+  const { me } = useUserStore();
   const { isLiked } = useSocialStore();
   const navigateTo = useStrictNavigate();
   const handleCopyHref = () => {

@@ -40,7 +40,7 @@ const ListManagePage: React.FC<ManageListPageProps> = () => {
     listID: id ?? '',
   });
   const { deleteList, isDeleteListLoading } = useDeleteList({
-    userCode: userStore.user.userCode,
+    userCode: userStore.me.userCode,
   });
 
   const [isOrderModified, setIsOrderModified] = useState(false);
@@ -51,7 +51,7 @@ const ListManagePage: React.FC<ManageListPageProps> = () => {
       setIsDeleting(true);
       deleteList(list.id, {
         onSuccess: () => {
-          navigateTo.user(userStore.user.userCode);
+          navigateTo.user(userStore.me.userCode);
           setIsLoading(false);
         },
       });
@@ -122,7 +122,7 @@ const ListManagePage: React.FC<ManageListPageProps> = () => {
             onClick={() =>
               id === undefined
                 ? navigateTo.error()
-                : navigateTo.editList(userStore.user.userCode, id)
+                : navigateTo.editList(userStore.me.userCode, id)
             }
           >
             <Trans>Edit list cover</Trans>
@@ -173,7 +173,7 @@ const ListManagePage: React.FC<ManageListPageProps> = () => {
             onClick={() =>
               id === undefined
                 ? navigateTo.error()
-                : navigateTo.viewList(userStore.user.userCode, id)
+                : navigateTo.viewList(userStore.me.userCode, id)
             }
           />
           <Trans>Edit List</Trans>

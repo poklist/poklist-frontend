@@ -18,7 +18,7 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
 
   // NOTE: This is a workaround to prevent the userCode from being null
   const outletContext = useOutletContext<UserRouteLayoutContextType | null>();
-  const { isLoggedIn, user: me } = useUserStore();
+  const { isLoggedIn, me } = useUserStore();
   const isMyPage = outletContext?.userCode === me.userCode;
 
   return (

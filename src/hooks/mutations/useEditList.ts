@@ -12,8 +12,6 @@ interface UseEditListOptions {
   listLimit?: number;
   ideaOffset?: number;
   ideaLimit?: number;
-  onSuccess?: (data: CreateListResponse) => void;
-  onError?: (error: any) => void;
 }
 
 export const useEditList = ({
@@ -22,8 +20,6 @@ export const useEditList = ({
   listLimit = List.DEFAULT_BATCH_SIZE,
   ideaOffset = Idea.DEFAULT_FIRST_BATCH_OFFSET,
   ideaLimit = Idea.DEFAULT_BATCH_SIZE,
-  onSuccess,
-  onError,
 }: UseEditListOptions) => {
   const { setShowingAlert } = useCommonStore();
   const queryClient = useQueryClient();
@@ -47,24 +43,24 @@ export const useEditList = ({
           categoryID: editListRequest.categoryID,
         }
       );
-      return response.data.content;
-    },
-    onSuccess: (data, { listID }) => {
-      // Invalidate the list cache, trigger refetching
-      if (!data) {
+      if (!response.data.content) {
         throw new Error('Failed to edit list');
       }
-      queryClient.refetchQueries({
+      return response.data.content;
+    },
+    onSuccess: async (data) => {
+      // Invalidate the list cache, trigger refetching
+
+      await queryClient.invalidateQueries({
         queryKey: ['lists', userCode, listOffset, listLimit],
       });
-      queryClient.refetchQueries({
-        queryKey: ['list', listID, ideaOffset, ideaLimit],
+      // NOTE: I changed to listID to data.id.toString() to make the refetch work but idk why
+      await queryClient.refetchQueries({
+        queryKey: ['list', data.id.toString(), ideaOffset, ideaLimit],
       });
-      onSuccess?.(data);
     },
     onError: (error) => {
       setShowingAlert(true, { message: String(error) });
-      onError?.(error);
     },
   });
 

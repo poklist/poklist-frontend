@@ -8,21 +8,20 @@ import LinkIconWrapper from '@/components/ui/wrappers/LinkIconWrapper';
 import { socialLinkStarterMap } from '@/constants/User';
 import { EditFieldVariant, FieldType } from '@/enums/EditField/index.enum';
 import { SocialLinkType } from '@/enums/index.enum';
+import { useEditProfile } from '@/hooks/mutations/useEditProfile';
 import useStrictNavigate from '@/hooks/useStrictNavigate';
-import axios from '@/lib/axios';
-import { urlPreview } from '@/lib/utils';
+import { extractUsernameFromUrl, urlPreview } from '@/lib/utils';
+import { validateUserCode } from '@/lib/validator';
 import useEditProfileStore from '@/stores/useEditProfileStore';
 import useUserStore from '@/stores/useUserStore';
 import { IEditFieldConfig } from '@/types/EditField';
-import { IResponse } from '@/types/response';
-import { IUpdateUserResponse } from '@/types/User';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
 import { useEffect, useState } from 'react';
 
 const EditUserPage: React.FC = () => {
   const navigateTo = useStrictNavigate();
-  const { user, setMe: setUser, refreshToken } = useUserStore();
+  const { me } = useUserStore();
   const {
     newUserInfo,
     resetNewUserInfo,
@@ -34,6 +33,7 @@ const EditUserPage: React.FC = () => {
     isModified,
   } = useEditProfileStore();
 
+  const { editProfile } = useEditProfile();
   const { openFakePage, closeFakePage } = useFakePage();
   const socialLinkTypeList = Object.values(SocialLinkType);
 
@@ -60,6 +60,7 @@ const EditUserPage: React.FC = () => {
       characterLimit: 30,
       edittingFieldValue: newUserInfo.userCode,
       allowEmpty: false,
+      validator: validateUserCode,
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
           setUserCode(value);
@@ -110,10 +111,19 @@ const EditUserPage: React.FC = () => {
       fieldName: 'Instagram',
       variant: EditFieldVariant.TEXT,
       placeholder: t`Add account`,
-      edittingFieldValue: newUserInfo.socialLinks?.[SocialLinkType.INSTAGRAM],
+      edittingFieldValue: extractUsernameFromUrl(
+        SocialLinkType.INSTAGRAM,
+        newUserInfo.socialLinks?.[SocialLinkType.INSTAGRAM]
+      ),
+      trimmer: (value: string) => {
+        return extractUsernameFromUrl(SocialLinkType.INSTAGRAM, value) ?? '';
+      },
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
-          setSocialLink(SocialLinkType.INSTAGRAM, value);
+          setSocialLink(
+            SocialLinkType.INSTAGRAM,
+            `${socialLinkStarterMap[SocialLinkType.INSTAGRAM]}${value}`
+          );
         } else {
           console.log('value is undefined');
         }
@@ -123,10 +133,19 @@ const EditUserPage: React.FC = () => {
       fieldName: 'YouTube',
       variant: EditFieldVariant.TEXT,
       placeholder: t`Add account`,
-      edittingFieldValue: newUserInfo.socialLinks?.[SocialLinkType.YOUTUBE],
+      edittingFieldValue: extractUsernameFromUrl(
+        SocialLinkType.YOUTUBE,
+        newUserInfo.socialLinks?.[SocialLinkType.YOUTUBE]
+      ),
+      trimmer: (value: string) => {
+        return extractUsernameFromUrl(SocialLinkType.YOUTUBE, value) ?? '';
+      },
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
-          setSocialLink(SocialLinkType.YOUTUBE, value);
+          setSocialLink(
+            SocialLinkType.YOUTUBE,
+            `${socialLinkStarterMap[SocialLinkType.YOUTUBE]}${value}`
+          );
         } else {
           console.log('value is undefined');
         }
@@ -136,10 +155,19 @@ const EditUserPage: React.FC = () => {
       fieldName: 'TikTok',
       variant: EditFieldVariant.TEXT,
       placeholder: t`Add account`,
-      edittingFieldValue: newUserInfo.socialLinks?.[SocialLinkType.TIKTOK],
+      edittingFieldValue: extractUsernameFromUrl(
+        SocialLinkType.TIKTOK,
+        newUserInfo.socialLinks?.[SocialLinkType.TIKTOK]
+      ),
+      trimmer: (value: string) => {
+        return extractUsernameFromUrl(SocialLinkType.TIKTOK, value) ?? '';
+      },
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
-          setSocialLink(SocialLinkType.TIKTOK, value);
+          setSocialLink(
+            SocialLinkType.TIKTOK,
+            `${socialLinkStarterMap[SocialLinkType.TIKTOK]}${value}`
+          );
         } else {
           console.log('value is undefined');
         }
@@ -149,10 +177,19 @@ const EditUserPage: React.FC = () => {
       fieldName: 'Threads',
       variant: EditFieldVariant.TEXT,
       placeholder: t`Add account`,
-      edittingFieldValue: newUserInfo.socialLinks?.[SocialLinkType.THREADS],
+      edittingFieldValue: extractUsernameFromUrl(
+        SocialLinkType.THREADS,
+        newUserInfo.socialLinks?.[SocialLinkType.THREADS]
+      ),
+      trimmer: (value: string) => {
+        return extractUsernameFromUrl(SocialLinkType.THREADS, value) ?? '';
+      },
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
-          setSocialLink(SocialLinkType.THREADS, value);
+          setSocialLink(
+            SocialLinkType.THREADS,
+            `${socialLinkStarterMap[SocialLinkType.THREADS]}${value}`
+          );
         } else {
           console.log('value is undefined');
         }
@@ -162,10 +199,19 @@ const EditUserPage: React.FC = () => {
       fieldName: 'LinkedIn',
       variant: EditFieldVariant.TEXT,
       placeholder: t`Add account`,
-      edittingFieldValue: newUserInfo.socialLinks?.[SocialLinkType.LINKEDIN],
+      edittingFieldValue: extractUsernameFromUrl(
+        SocialLinkType.LINKEDIN,
+        newUserInfo.socialLinks?.[SocialLinkType.LINKEDIN]
+      ),
+      trimmer: (value: string) => {
+        return extractUsernameFromUrl(SocialLinkType.LINKEDIN, value) ?? '';
+      },
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
-          setSocialLink(SocialLinkType.LINKEDIN, value);
+          setSocialLink(
+            SocialLinkType.LINKEDIN,
+            `${socialLinkStarterMap[SocialLinkType.LINKEDIN]}${value}`
+          );
         } else {
           console.log('value is undefined');
         }
@@ -181,23 +227,7 @@ const EditUserPage: React.FC = () => {
   };
 
   const onSubmit = async () => {
-    if (newUserInfo.profileImage === user.profileImage) {
-      console.log('profile image is the same');
-      delete newUserInfo.profileImage;
-    }
-    await axios
-      .put<IResponse<IUpdateUserResponse>>(`/users/me`, newUserInfo)
-      .then((response) => {
-        if (response.data.content?.accessToken) {
-          refreshToken(response.data.content.accessToken);
-        }
-        setUser({ ...newUserInfo });
-        navigateTo.user(newUserInfo.userCode);
-      })
-      .catch((error) => {
-        console.error(error);
-        navigateTo.user(user.userCode);
-      });
+    editProfile({ newUserInfo });
   };
 
   useEffect(() => {
@@ -210,7 +240,7 @@ const EditUserPage: React.FC = () => {
 
   return (
     <>
-      <BackToUserHeader owner={user} />
+      <BackToUserHeader owner={me} />
       {/* Upload ProfileImageSection */}
       <div id="profile-image" className="flex items-end justify-center pt-6">
         <Avatar className="h-24 w-24">
@@ -324,7 +354,7 @@ const EditUserPage: React.FC = () => {
       </div>
       <EditModeFooter
         disabled={!isModified()}
-        onClose={() => navigateTo.user(user.userCode)}
+        onClose={() => navigateTo.user(me.userCode)}
         title={t`Edit profile and account`}
         onSave={onSubmit}
       />

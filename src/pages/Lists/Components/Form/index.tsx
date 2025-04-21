@@ -319,7 +319,13 @@ const ListForm: React.FC<IListFormProps> = ({
             name="coverImage"
             control={listForm.control}
             render={({ field }) => (
-              <ImageUploader file={field.value} callback={onOpenFakePage} />
+              <ImageUploader
+                file={field.value}
+                callback={onOpenFakePage}
+                onRemove={() => {
+                  listForm.setValue('coverImage', null);
+                }}
+              />
             )}
           />
         </div>

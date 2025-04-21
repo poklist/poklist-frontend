@@ -20,7 +20,7 @@ const EditIdeaPage: React.FC<EditIdeaPageProps> = () => {
   const [isDeleting, setIsDeleting] = useState(false);
 
   const { setIsLoading } = useCommonStore();
-  const { user: me } = useUserStore();
+  const { me } = useUserStore();
 
   const { idea, isLoading: isIdeaLoading } = useIdea({
     ideaID: id,
@@ -58,6 +58,9 @@ const EditIdeaPage: React.FC<EditIdeaPageProps> = () => {
       return;
     }
     const _params = { ...editedIdea, id: Number(id) };
+    if (editedIdea.coverImage === idea.coverImage) {
+      delete _params.coverImage;
+    }
     editIdea(_params, {
       onSuccess: (data) => {
         navigateTo.manageList(me.userCode, data.listID.toString());
@@ -88,7 +91,7 @@ const EditIdeaPage: React.FC<EditIdeaPageProps> = () => {
   return (
     <>
       <div className="sticky top-0 z-10 flex flex-col">
-        <div className="flex h-12 items-center border-b border-b-black px-4 text-[15px]">
+        <div className="flex h-12 items-center border-b border-b-black bg-white px-4 text-[15px]">
           {list ? (
             list?.title
           ) : (

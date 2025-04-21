@@ -273,7 +273,13 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
             name="coverImage"
             control={ideaForm.control}
             render={({ field }) => (
-              <ImageUploader file={field.value} callback={onOpenFakePage} />
+              <ImageUploader
+                file={field.value}
+                callback={onOpenFakePage}
+                onRemove={() => {
+                  ideaForm.setValue('coverImage', null);
+                }}
+              />
             )}
           />
         </div>
@@ -315,7 +321,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
         }
       />
 
-      <footer className="fixed bottom-0 left-0 z-10 flex w-full justify-between border-t border-t-gray-main-03 px-4 py-2 sm:sticky">
+      <footer className="fixed bottom-0 left-0 z-10 flex w-full justify-between border-t border-t-gray-main-03 bg-white px-4 py-2 sm:sticky">
         <div className="flex items-center gap-2">
           <div
             onClick={() => onDismiss()}

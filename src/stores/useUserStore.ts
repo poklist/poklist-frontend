@@ -6,14 +6,12 @@ import { User } from '@/types/User';
 export type UserStoreState = {
   isLoggedIn: boolean;
   accessToken: string;
-  user: User;
-  // currentUser: User;
+  me: User;
 
   login: (token: string) => void;
   refreshToken: (token: string) => void;
   logout: () => void;
   setMe: (user: User) => void;
-  // setCurrentUser: (user: User) => void;
 };
 
 export const emptyUser: User = {
@@ -27,8 +25,7 @@ const useUserStore = create<UserStoreState>()(
     (set) => ({
       isLoggedIn: false,
       accessToken: '',
-      user: { ...emptyUser },
-      // currentUser: { ...emptyUser },
+      me: { ...emptyUser },
 
       login: (token) => set({ isLoggedIn: true, accessToken: token }),
       refreshToken: (token) => set({ accessToken: token }),
@@ -36,14 +33,11 @@ const useUserStore = create<UserStoreState>()(
         set({
           isLoggedIn: false,
           accessToken: '',
-          user: { ...emptyUser },
+          me: { ...emptyUser },
         }),
       setMe: (user) => {
-        set({ user });
+        set({ me: user });
       },
-      // setCurrentUser: (user) => {
-      //   set({ currentUser: user });
-      // },
     }),
     { name: 'user-storage' }
   )

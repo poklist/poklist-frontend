@@ -25,9 +25,12 @@ const ImagePreviewComponent: React.FC<ImagePreviewProps> = ({
       />
       {onClickClose && (
         <Button
-          onClick={onClickClose}
+          onClick={(e) => {
+            e.stopPropagation();
+            onClickClose();
+          }}
           aria-label="Reset Cover Image"
-          className="absolute right-4 top-4 h-auto rounded-full bg-inherit p-0"
+          className="absolute right-4 top-4 h-auto rounded-full border-0 bg-inherit bg-white p-0"
         >
           <IconClose width={32} height={32} />
         </Button>

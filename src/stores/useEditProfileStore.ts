@@ -18,11 +18,11 @@ export type EditProfileStoreState = {
 
 const useEditProfileStore = create<EditProfileStoreState>((set, get) => ({
   newUserInfo: {
-    ...useUserStore.getState().user,
+    ...useUserStore.getState().me,
   },
   setNewUserInfo: (user: User) => set({ newUserInfo: user }),
   resetNewUserInfo: () =>
-    set({ newUserInfo: { ...useUserStore.getState().user } }),
+    set({ newUserInfo: { ...useUserStore.getState().me } }),
   setDisplayName: (value: string) =>
     set({ newUserInfo: { ...get().newUserInfo, displayName: value } }),
   setProfileImage: (file: string) =>
@@ -40,7 +40,7 @@ const useEditProfileStore = create<EditProfileStoreState>((set, get) => ({
     }),
 
   isModified: () => {
-    const originalUserInfo = useUserStore.getState().user;
+    const originalUserInfo = useUserStore.getState().me;
     if (
       get().newUserInfo.displayName !== '' &&
       get().newUserInfo.displayName !== originalUserInfo.displayName

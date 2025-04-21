@@ -18,6 +18,8 @@ export const EditFieldFakePageComponent: React.FC<IEditFieldConfig> = ({
   characterLimit,
   allowEmpty = true,
   cropShape = 'rect',
+  validator,
+  trimmer,
 }) => {
   const { isOpen, closeFakePage } = useFakePage();
   const [fieldValue, setFieldValue] = useState<string>(
@@ -35,10 +37,10 @@ export const EditFieldFakePageComponent: React.FC<IEditFieldConfig> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={closeFakePage}>
-      <DialogContent className="flex h-screen w-full items-center border-0 bg-transparent p-0">
+      <DialogContent className="flex h-[100dvh] w-full items-center border-0 bg-transparent p-0">
         <div
           id="edit-field-fake-page"
-          className="z-10 flex h-full w-full flex-col items-center bg-white px-6 pb-6 pt-20 sm:pt-6 md:max-w-mobile-max"
+          className="z-10 flex h-full w-full flex-col items-center bg-white px-6 pb-6 pt-10 sm:pt-6 md:max-w-mobile-max"
         >
           {variant === 'text' ? (
             <TextInput
@@ -46,6 +48,8 @@ export const EditFieldFakePageComponent: React.FC<IEditFieldConfig> = ({
               onChange={setFieldValue}
               placeholderText={placeholder}
               characterLimit={characterLimit}
+              validator={validator}
+              trimmer={trimmer}
             />
           ) : (
             <ImageCropper
@@ -76,6 +80,8 @@ interface ITextInputProps {
   onChange: (value: string) => void;
   placeholderText: string;
   characterLimit?: number;
+  validator?: (value: string) => boolean;
+  trimmer?: (value: string) => string;
 }
 
 const TextInput: React.FC<ITextInputProps> = ({
@@ -83,15 +89,59 @@ const TextInput: React.FC<ITextInputProps> = ({
   onChange,
   placeholderText,
   characterLimit,
+  validator,
+  trimmer,
 }) => {
   const [fieldValue, setFieldValue] = useState<string | undefined>(value);
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
-  useAutosizeTextArea(textAreaRef.current, value);
+  useAutosizeTextArea(textAreaRef, value);
 
   useEffect(() => {
     setFieldValue(value);
   }, [value]);
+
+  const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newValue = e.target.value;
+    setFieldValue(newValue);
+    onChange(newValue);
+  };
+
+  const handleBeforeInput = (
+    e: React.FormEvent<HTMLTextAreaElement> & { data: string }
+  ) => {
+    const textarea = e.currentTarget;
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const newValue =
+      fieldValue?.slice(0, start) + e.data + fieldValue?.slice(end);
+    const passed = validator === undefined || validator(newValue);
+    if (!passed) {
+      e.preventDefault();
+      return;
+    }
+  };
+
+  const handlePaste = (e: React.ClipboardEvent<HTMLTextAreaElement>) => {
+    e.preventDefault();
+    let pastedText = e.clipboardData.getData('text');
+
+    // Check against all social link starters
+    if (trimmer) {
+      pastedText = trimmer(pastedText);
+    }
+
+    const textarea = e.currentTarget;
+    const start = textarea.selectionStart ?? 0;
+    const end = textarea.selectionEnd ?? 0;
+    const newValue =
+      (fieldValue?.slice(0, start) ?? '') +
+      pastedText +
+      (fieldValue?.slice(end) ?? '');
+
+    setFieldValue(newValue);
+    onChange(newValue);
+  };
 
   return (
     <>
@@ -99,10 +149,9 @@ const TextInput: React.FC<ITextInputProps> = ({
         ref={textAreaRef}
         value={fieldValue}
         maxLength={characterLimit}
-        onChange={(e) => {
-          setFieldValue(e.target.value);
-          onChange(e.target.value);
-        }}
+        onChange={handleInput}
+        onBeforeInput={handleBeforeInput}
+        onPaste={handlePaste}
         className="w-full border-0"
         placeholder={placeholderText}
       />

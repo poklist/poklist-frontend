@@ -11,7 +11,7 @@ interface SettingsPageProps {
 }
 
 const SettingsPage: React.FC<SettingsPageProps> = () => {
-  const { user: me, isLoggedIn } = useUserStore();
+  const { me, isLoggedIn } = useUserStore();
   const navigateTo = useStrictNavigate();
 
   const handleOnClose = () => {
