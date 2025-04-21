@@ -50,15 +50,24 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
   const [selectedIdeaID, setSelectedIdeaID] = useState<number | null>(null);
   // FUTURE: move to custom hook?
   const [createdAtString, setCreatedAtString] = useState('');
+  // Use useState to manage like count, initial value from data.likeCount
   const [likeCount, setLikeCount] = useState(data.likeCount);
   const externalLinkRef = useRef<HTMLDivElement>(null);
+  // Use useRef to track isLiked changes, preventing likeCount updates on first render
+  const prevIsLikedRef = useRef(isLiked);
 
+  // Listen to isLiked changes, only update likeCount when actual changes occur
   useEffect(() => {
-    if (isLiked) {
-      setLikeCount(likeCount + 1);
-    } else {
+    // Decrease likeCount when isLiked changes from true to false
+    if (prevIsLikedRef.current === true && isLiked === false) {
       setLikeCount(likeCount - 1);
     }
+    // Increase likeCount when isLiked changes from false to true
+    else if (prevIsLikedRef.current === false && isLiked === true) {
+      setLikeCount(likeCount + 1);
+    }
+    // Update prevIsLikedRef for next comparison
+    prevIsLikedRef.current = isLiked;
   }, [isLiked]);
 
   const { idea, isError } = useIdea({

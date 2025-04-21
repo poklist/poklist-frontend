@@ -131,7 +131,6 @@ const HeroSection: React.FC = () => {
       <div className="flex flex-col gap-4">
         {socialLinkTypeList.map(
           ([linkType, link]: [SocialLinkType, string]) => {
-            console.log(`linkType=${linkType}, link=${link}`);
             return (
               <div
                 key={linkType}

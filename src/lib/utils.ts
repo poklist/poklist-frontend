@@ -2,6 +2,7 @@ import { socialLinkStarterMap } from '@/constants/User';
 import { LocalStorageKey, SocialLinkType } from '@/enums/index.enum';
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { z } from 'zod';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -88,7 +89,8 @@ export const extractUsernameFromUrl = (
 
 export const ensureProtocol = (url: string): string => {
   if (!url) return url;
-  return url.match(/^https?:\/\//) ? url : `https://${url}`;
+  const parsedUrl = z.string().url().safeParse(url);
+  return parsedUrl.success ? url : `https://${url}`;
 };
 
 export const formatInput = (targetValue: string): string => {
