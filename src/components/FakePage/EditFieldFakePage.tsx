@@ -101,10 +101,34 @@ const TextInput: React.FC<ITextInputProps> = ({
     setFieldValue(value);
   }, [value]);
 
+  const [isComposing, setIsComposing] = useState(false);
+  const [offset, setOffset] = useState<{ start: number; end: number }>({
+    start: 0,
+    end: 0,
+  });
+  const [needUpdateCursor, setNeedUpdateCursor] = useState(false);
+
+  const handleCompositionStart = (
+    e: React.CompositionEvent<HTMLTextAreaElement>
+  ) => {
+    const textarea = e.currentTarget;
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    console.log(
+      `[handleCompositionStart] fieldValue: ${fieldValue}, start: ${start}, end: ${end}`
+    );
+    setIsComposing(true);
+    setOffset({ start, end });
+  };
+
   const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const newValue = e.target.value;
-    setFieldValue(newValue);
-    onChange(newValue);
+    if (isComposing) {
+      setNeedUpdateCursor(true);
+    } else {
+      const newValue = e.target.value;
+      setFieldValue(newValue);
+      onChange(newValue);
+    }
   };
 
   const handleBeforeInput = (
@@ -116,32 +140,26 @@ const TextInput: React.FC<ITextInputProps> = ({
     const newValue =
       fieldValue?.slice(0, start) + e.data + fieldValue?.slice(end);
     const passed = validator === undefined || validator(newValue);
+    console.log(
+      `[handleBeforeInput] event: ${e.data}, newValue: ${newValue}, passed: ${passed}`
+    );
     if (!passed) {
       e.preventDefault();
       return;
     }
   };
 
-  const handlePaste = (e: React.ClipboardEvent<HTMLTextAreaElement>) => {
-    e.preventDefault();
-    let pastedText = e.clipboardData.getData('text');
+  useEffect(() => {
+    const textarea = textAreaRef.current;
+    if (!textarea) return;
 
-    // Check against all social link starters
-    if (trimmer) {
-      pastedText = trimmer(pastedText);
+    if (isComposing && needUpdateCursor) {
+      textarea.selectionStart = offset.start;
+      textarea.selectionEnd = offset.end;
+      setNeedUpdateCursor(false);
+      setIsComposing(false);
     }
-
-    const textarea = e.currentTarget;
-    const start = textarea.selectionStart ?? 0;
-    const end = textarea.selectionEnd ?? 0;
-    const newValue =
-      (fieldValue?.slice(0, start) ?? '') +
-      pastedText +
-      (fieldValue?.slice(end) ?? '');
-
-    setFieldValue(newValue);
-    onChange(newValue);
-  };
+  }, [textAreaRef.current?.selectionStart, textAreaRef.current?.selectionEnd]);
 
   return (
     <>
@@ -151,9 +169,9 @@ const TextInput: React.FC<ITextInputProps> = ({
         maxLength={characterLimit}
         onChange={handleInput}
         onBeforeInput={handleBeforeInput}
-        onPaste={handlePaste}
         className="w-full border-0"
         placeholder={placeholderText}
+        onCompositionStart={handleCompositionStart}
       />
       {characterLimit && (
         <p className="self-end text-black-gray-03">
