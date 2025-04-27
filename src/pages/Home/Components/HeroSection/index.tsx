@@ -1,5 +1,6 @@
 import useStrictNavigate from '@/hooks/useStrictNavigate';
 import axios from '@/lib/axios';
+import useAuthStore from '@/stores/useAuthStore';
 import useUserStore from '@/stores/useUserStore';
 import '@/types/global';
 import { HeroSectionProps, LoginInfo } from '@/types/Home';
@@ -12,7 +13,8 @@ import { ErrorDialog } from '../ErrorDialog';
 import { LoginDrawer } from '../LoginDrawer';
 export const HeroSection = ({ content }: HeroSectionProps) => {
   const navigateTo = useStrictNavigate();
-  const { login, setMe, isLoggedIn, me } = useUserStore();
+  const { login, isLoggedIn } = useAuthStore();
+  const { setMe, me } = useUserStore();
   const [showCustomLogin, setShowCustomLogin] = useState(false);
   const [showErrorDialog, setShowErrorDialog] = useState(false);
   const scriptRef = useRef<HTMLScriptElement | null>(null);

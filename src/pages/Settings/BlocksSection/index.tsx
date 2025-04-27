@@ -4,7 +4,7 @@ import { Language, LocalStorageKey, Location } from '@/enums/index.enum';
 import useStrictNavigate from '@/hooks/useStrictNavigate';
 import { activateI18n } from '@/lib/languageProvider';
 import { getLocalStorage, setLocalStorage } from '@/lib/utils';
-import useUserStore from '@/stores/useUserStore';
+import useAuthStore from '@/stores/useAuthStore';
 import { ILinksBlock } from '@/types/Settings';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
@@ -15,7 +15,7 @@ import LinksBlock from './LinksBlock';
 const BlocksSection: React.FC = () => {
   const navigateTo = useStrictNavigate();
   const { openDrawer } = useDrawer();
-  const { isLoggedIn, logout } = useUserStore();
+  const { isLoggedIn, logout } = useAuthStore();
   const [drawerContent, setDrawerContent] = useState<React.ReactNode>(null);
 
   const [language, setLanguage] = useState(Language.EN);

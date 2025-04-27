@@ -19,6 +19,7 @@ import { getFormattedTime, parsePostgresDate } from '@/lib/time';
 import { urlPreview } from '@/lib/utils';
 import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
 import { CategoriesI18n } from '@/pages/Lists/i18n';
+import useAuthStore from '@/stores/useAuthStore';
 import useCommonStore from '@/stores/useCommonStore';
 import useSocialStore from '@/stores/useSocialStore';
 import useUserStore from '@/stores/useUserStore';
@@ -42,7 +43,8 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
   const navigateTo = useStrictNavigate();
   const location = useLocation();
 
-  const { isLoggedIn, me } = useUserStore();
+  const { isLoggedIn } = useAuthStore();
+  const { me } = useUserStore();
   const { isLiked } = useSocialStore();
   const { openDrawer } = useDrawer(DrawerIds.LIST_CARD_DRAWER_ID);
   const { setShowingAlert } = useCommonStore();

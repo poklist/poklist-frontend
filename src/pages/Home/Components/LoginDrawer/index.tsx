@@ -55,10 +55,7 @@ export const LoginDrawer = ({
             <div className="flex justify-center p-3">
               <GoogleLogin
                 onSuccess={onLogin}
-                onError={() => {
-                  console.log('Login Failed');
-                  onError();
-                }}
+                onError={onError}
                 useOneTap={false}
                 type="standard"
                 theme="outline"

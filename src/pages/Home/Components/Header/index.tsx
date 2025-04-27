@@ -6,6 +6,7 @@ import useStrictNavigate from '@/hooks/useStrictNavigate';
 import axios from '@/lib/axios';
 import { LanguageToggleButton } from '@/lib/languageProvider';
 import { cn } from '@/lib/utils';
+import useAuthStore from '@/stores/useAuthStore';
 import useUserStore from '@/stores/useUserStore';
 import { LoginInfo } from '@/types/Home';
 import { IResponse } from '@/types/response';
@@ -21,7 +22,8 @@ interface HeaderProps {
 
 const Header = ({ className }: HeaderProps) => {
   const navigateTo = useStrictNavigate();
-  const { login, setMe, me, isLoggedIn } = useUserStore();
+  const { login, isLoggedIn } = useAuthStore();
+  const { setMe, me } = useUserStore();
   const [showCustomLogin, setShowCustomLogin] = useState(false);
   const [showErrorDialog, setShowErrorDialog] = useState(false);
 

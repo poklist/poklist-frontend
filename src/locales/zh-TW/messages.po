@@ -451,6 +451,10 @@ msgstr "目前僅限已申請並被認證的「創作者帳號」登入並創作
 msgid "Contact us"
 msgstr "聯繫我們"
 
+#: src/hooks/useCheckStorage.ts
+msgid "The app is outdated, please login again"
+msgstr "網頁更新，請重新登入"
+
 #: src/pages/EditUser/index.tsx
 #: src/pages/EditUser/index.tsx
 msgid "Name"

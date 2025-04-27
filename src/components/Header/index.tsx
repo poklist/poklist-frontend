@@ -5,6 +5,7 @@ import IconSetting from '@/components/ui/icons/SettingIcon';
 import useStrictNavigate from '@/hooks/useStrictNavigate';
 import { cn } from '@/lib/utils';
 import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
+import useAuthStore from '@/stores/useAuthStore';
 import useUserStore from '@/stores/useUserStore';
 import React from 'react';
 import { useOutletContext } from 'react-router-dom';
@@ -18,7 +19,8 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
 
   // NOTE: This is a workaround to prevent the userCode from being null
   const outletContext = useOutletContext<UserRouteLayoutContextType | null>();
-  const { isLoggedIn, me } = useUserStore();
+  const { isLoggedIn } = useAuthStore();
+  const { me } = useUserStore();
   const isMyPage = outletContext?.userCode === me.userCode;
 
   return (

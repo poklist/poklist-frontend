@@ -22,6 +22,7 @@ import {
   urlPreview,
 } from '@/lib/utils';
 import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
+import useAuthStore from '@/stores/useAuthStore';
 import useUserStore from '@/stores/useUserStore';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
@@ -33,7 +34,8 @@ const HeroSection: React.FC = () => {
   const { userCode } = useOutletContext<UserRouteLayoutContextType>();
 
   const navigateTo = useStrictNavigate();
-  const { isLoggedIn, me, setMe } = useUserStore();
+  const { isLoggedIn } = useAuthStore();
+  const { me, setMe } = useUserStore();
   const { openDrawer } = useDrawer();
   const [drawerContent, setDrawerContent] = useState<React.ReactNode>(null);
   const [isFollowing, setIsFollowing] = useState<boolean>(false);

@@ -9,6 +9,7 @@ import { useList } from '@/hooks/queries/useList';
 import { useToast } from '@/hooks/useToast';
 import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
 import { Tile20Background } from '@/pages/User/TileBackground';
+import useAuthStore from '@/stores/useAuthStore';
 import useCommonStore from '@/stores/useCommonStore';
 import useRelationStore from '@/stores/useRelationStore';
 import useSocialStore from '@/stores/useSocialStore';
@@ -23,7 +24,8 @@ const ViewListPage: React.FC = () => {
   const { userCode: listOwnerUserCode } =
     useOutletContext<UserRouteLayoutContextType>();
   const { id: listID } = useParams();
-  const { me, isLoggedIn } = useUserStore();
+  const { isLoggedIn } = useAuthStore();
+  const { me } = useUserStore();
   const isMyPage = listOwnerUserCode === me.userCode;
 
   const { setIsLoading } = useCommonStore();
