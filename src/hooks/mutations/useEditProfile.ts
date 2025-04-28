@@ -1,5 +1,6 @@
 import useStrictNavigate from '@/hooks/useStrictNavigate';
 import axios from '@/lib/axios';
+import useAuthStore from '@/stores/useAuthStore';
 import useUserStore from '@/stores/useUserStore';
 import { IResponse } from '@/types/response';
 import { UpdateUserResponse, User } from '@/types/User';
@@ -14,7 +15,8 @@ export const useEditProfile = ({
   onSuccess,
   onError,
 }: UseEditProfileOptions = {}) => {
-  const { refreshToken, setMe, me } = useUserStore();
+  const { setAccessToken } = useAuthStore();
+  const { setMe, me } = useUserStore();
   const navigateTo = useStrictNavigate();
   const queryClient = useQueryClient();
 
@@ -36,7 +38,7 @@ export const useEditProfile = ({
       }
       const [newUserCode, oldUserCode] = [data.userCode, me.userCode];
       if (data?.accessToken) {
-        refreshToken(data.accessToken);
+        setAccessToken(data.accessToken);
       }
       // NOTE: if we don't await, the profile image might not be updated before navigation
       await queryClient.refetchQueries({ queryKey: ['user', newUserCode] });
