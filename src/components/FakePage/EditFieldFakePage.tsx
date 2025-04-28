@@ -114,9 +114,7 @@ const TextInput: React.FC<ITextInputProps> = ({
     const textarea = e.currentTarget;
     const start = textarea.selectionStart;
     const end = textarea.selectionEnd;
-    console.log(
-      `[handleCompositionStart] fieldValue: ${fieldValue}, start: ${start}, end: ${end}`
-    );
+
     setIsComposing(true);
     setOffset({ start, end });
   };
@@ -140,9 +138,7 @@ const TextInput: React.FC<ITextInputProps> = ({
     const newValue =
       fieldValue?.slice(0, start) + e.data + fieldValue?.slice(end);
     const passed = validator === undefined || validator(newValue);
-    console.log(
-      `[handleBeforeInput] event: ${e.data}, newValue: ${newValue}, passed: ${passed}`
-    );
+
     if (!passed) {
       e.preventDefault();
       return;

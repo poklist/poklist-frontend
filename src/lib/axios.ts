@@ -22,7 +22,6 @@ instance.interceptors.request.use(
     setShowingAlert(true, {
       message: error,
     });
-    removeLocalStorage(LocalStorageKey.USER_INFO);
     window.location.href = '/';
     return Promise.reject(error);
   }

@@ -4,7 +4,10 @@ import useAuthStore from '@/stores/useAuthStore';
 import useUserStore from '@/stores/useUserStore';
 import { IResponse } from '@/types/response';
 import { UpdateUserResponse, User } from '@/types/User';
+import { t } from '@lingui/core/macro';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
+import { toast } from '../useToast';
 
 interface UseEditProfileOptions {
   onSuccess?: (data: UpdateUserResponse) => void;
@@ -15,7 +18,7 @@ export const useEditProfile = ({
   onSuccess,
   onError,
 }: UseEditProfileOptions = {}) => {
-  const { setAccessToken } = useAuthStore();
+  const { setAccessToken, logout } = useAuthStore();
   const { setMe, me } = useUserStore();
   const navigateTo = useStrictNavigate();
   const queryClient = useQueryClient();
@@ -49,7 +52,15 @@ export const useEditProfile = ({
       onSuccess?.(data);
       navigateTo.user(newUserCode);
     },
-    onError: (error) => {
+    onError: (error: AxiosError<IResponse<any>>) => {
+      if (error.response?.status === 401) {
+        logout();
+        navigateTo.home();
+        toast({
+          title: t`Please login again`,
+          variant: 'success',
+        });
+      }
       console.error(error);
       navigateTo.user(me.userCode);
       onError?.(error);
