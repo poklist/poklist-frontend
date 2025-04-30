@@ -157,7 +157,6 @@ const ListForm: React.FC<IListFormProps> = ({
       coverImage?: File | null | undefined;
     }>
   ) => {
-    console.log('SubmitFailed Value', value);
     const errorKey = Object.keys(value)[0];
     // TODO 目前解法
     switch (errorKey) {

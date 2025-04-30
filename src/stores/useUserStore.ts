@@ -3,16 +3,11 @@ import { persist } from 'zustand/middleware';
 
 import { User } from '@/types/User';
 
-export type UserStoreState = {
-  isLoggedIn: boolean;
-  accessToken: string;
+export interface UserStoreState {
   me: User;
-
-  login: (token: string) => void;
-  refreshToken: (token: string) => void;
-  logout: () => void;
   setMe: (user: User) => void;
-};
+  resetMe: () => void;
+}
 
 export const emptyUser: User = {
   id: 0,
@@ -23,20 +18,12 @@ export const emptyUser: User = {
 const useUserStore = create<UserStoreState>()(
   persist(
     (set) => ({
-      isLoggedIn: false,
-      accessToken: '',
       me: { ...emptyUser },
-
-      login: (token) => set({ isLoggedIn: true, accessToken: token }),
-      refreshToken: (token) => set({ accessToken: token }),
-      logout: () =>
-        set({
-          isLoggedIn: false,
-          accessToken: '',
-          me: { ...emptyUser },
-        }),
       setMe: (user) => {
         set({ me: user });
+      },
+      resetMe: () => {
+        set({ me: emptyUser });
       },
     }),
     { name: 'user-storage' }

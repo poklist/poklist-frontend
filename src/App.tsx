@@ -21,8 +21,10 @@ const queryClient = new QueryClient({
   },
 });
 
-function App() {
+const App = () => {
   useIsMobile();
+  // Check and migrate storage on app initialization
+
   return (
     <>
       <QueryClientProvider client={queryClient}>
@@ -35,6 +37,6 @@ function App() {
       </QueryClientProvider>
     </>
   );
-}
+};
 
 export default App;

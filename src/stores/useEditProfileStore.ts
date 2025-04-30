@@ -3,7 +3,7 @@ import { User } from '@/types/User';
 import { create } from 'zustand';
 import useUserStore from './useUserStore';
 
-export type EditProfileStoreState = {
+export interface EditProfileStoreState {
   newUserInfo: User;
   setNewUserInfo: (user: User) => void;
   resetNewUserInfo: () => void;
@@ -14,7 +14,7 @@ export type EditProfileStoreState = {
   setBio: (value: string) => void;
   setSocialLink: (type: SocialLinkType, value: string) => void;
   isModified: () => boolean;
-};
+}
 
 const useEditProfileStore = create<EditProfileStoreState>((set, get) => ({
   newUserInfo: {

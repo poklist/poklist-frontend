@@ -1,5 +1,6 @@
 import { DrawerProvider } from '@/components/Drawer';
 import { FakePageProvider } from '@/components/FakePage';
+import useCheckStorage from '@/hooks/useCheckStorage';
 import useStrictNavigate from '@/hooks/useStrictNavigate';
 import { LanguageProvider } from '@/lib/languageProvider';
 import { useEffect } from 'react';
@@ -13,6 +14,8 @@ export default function Layout() {
   const navigateTo = useStrictNavigate();
   const location = useLocation();
   const redirectWhiteList = ['/home', '/error', '/goToMobile'];
+
+  useCheckStorage();
 
   useEffect(() => {
     const isMobile =

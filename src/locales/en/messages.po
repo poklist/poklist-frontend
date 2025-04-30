@@ -451,6 +451,14 @@ msgstr "Only approved and verified “Creator Accounts” can log in and create 
 msgid "Contact us"
 msgstr "Contact us"
 
+#: src/hooks/mutations/useEditProfile.ts
+msgid "Please login again"
+msgstr "Please login again"
+
+#: src/hooks/useCheckStorage.ts
+msgid "The app is outdated, please login again"
+msgstr "The app is outdated, please login again"
+
 #: src/pages/EditUser/index.tsx
 #: src/pages/EditUser/index.tsx
 msgid "Name"

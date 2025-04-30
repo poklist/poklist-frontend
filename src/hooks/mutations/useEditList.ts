@@ -50,7 +50,6 @@ export const useEditList = ({
     },
     onSuccess: async (data) => {
       // Invalidate the list cache, trigger refetching
-
       await queryClient.invalidateQueries({
         queryKey: ['lists', userCode, listOffset, listLimit],
       });

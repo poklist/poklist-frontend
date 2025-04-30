@@ -1,6 +1,7 @@
 import Footer from '@/components/Footer';
 import BackToUserHeader from '@/components/Header/BackToUserHeader';
 import useStrictNavigate from '@/hooks/useStrictNavigate';
+import useAuthStore from '@/stores/useAuthStore';
 import useUserStore from '@/stores/useUserStore';
 import { t } from '@lingui/core/macro';
 import BlocksSection from './BlocksSection';
@@ -11,7 +12,8 @@ interface SettingsPageProps {
 }
 
 const SettingsPage: React.FC<SettingsPageProps> = () => {
-  const { me, isLoggedIn } = useUserStore();
+  const { isLoggedIn } = useAuthStore();
+  const { me } = useUserStore();
   const navigateTo = useStrictNavigate();
 
   const handleOnClose = () => {

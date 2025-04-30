@@ -24,6 +24,7 @@ const EditUserPage: React.FC = () => {
   const { me } = useUserStore();
   const {
     newUserInfo,
+    setNewUserInfo,
     resetNewUserInfo,
     setDisplayName,
     setProfileImage,
@@ -231,6 +232,7 @@ const EditUserPage: React.FC = () => {
   };
 
   useEffect(() => {
+    setNewUserInfo(me);
     // onUnmounted
     return () => {
       closeFakePage();
