@@ -119,6 +119,18 @@ const TextInput: React.FC<ITextInputProps> = ({
     setOffset({ start, end });
   };
 
+  const handleCompositionEnd = (
+    e: React.CompositionEvent<HTMLTextAreaElement>
+  ) => {
+    setIsComposing(false);
+
+    const newValue = e.currentTarget.value;
+    if (validator === undefined || validator(newValue)) {
+      setFieldValue(newValue);
+      onChange(newValue);
+    }
+  };
+
   const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     if (isComposing) {
       setNeedUpdateCursor(true);
@@ -168,6 +180,7 @@ const TextInput: React.FC<ITextInputProps> = ({
         className="w-full border-0"
         placeholder={placeholderText}
         onCompositionStart={handleCompositionStart}
+        onCompositionEnd={handleCompositionEnd}
       />
       {characterLimit && (
         <p className="self-end text-black-gray-03">
