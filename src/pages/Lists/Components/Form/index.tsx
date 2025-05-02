@@ -322,7 +322,7 @@ const ListForm: React.FC<IListFormProps> = ({
                 file={field.value}
                 callback={onOpenFakePage}
                 onRemove={() => {
-                  listForm.setValue('coverImage', null);
+                  listForm.setValue('coverImage', '');
                 }}
               />
             )}
