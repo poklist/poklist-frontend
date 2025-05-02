@@ -101,7 +101,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
 
   useEffect(() => {
     if (!previousIdeaInfo) return;
-    const subscription = ideaForm.watch((fields) => {
+    const subscription = ideaForm.watch(fields => {
       const isModified =
         fields.title !== previousIdeaInfo?.title ||
         fields.description !== previousIdeaInfo?.description ||
@@ -221,7 +221,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
   return (
     <>
       <form
-        onSubmit={ideaForm.handleSubmit(onSubmit, onSubmitFailed)}
+        onSubmit={() => void ideaForm.handleSubmit(onSubmit, onSubmitFailed)()}
         className="mx-4 mt-4 flex flex-1 flex-col gap-6 md:max-w-mobile-max"
       >
         <div
@@ -244,7 +244,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
               'line-clamp-1 h-6 min-h-6': !isTextareaFocus,
             })}
             {...registerRest}
-            ref={(e) => {
+            ref={e => {
               ref(e);
               textareaRef.current = e;
             }}
@@ -344,9 +344,9 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
           }
           variant={ButtonVariant.BLACK}
           shape={ButtonShape.ROUNDED_5PX}
-          onClick={() => ideaForm.handleSubmit(onSubmit, onSubmitFailed)()}
+          onClick={() => void ideaForm.handleSubmit(onSubmit, onSubmitFailed)()}
         >
-          <Trans>Next</Trans>
+          <Trans>Done</Trans>
         </Button>
       </footer>
     </>

@@ -9,18 +9,18 @@ import { Trans } from '@lingui/react/macro';
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
-interface IdeaCreatePageProps {
-  // Add any props you need for the page
-}
+// interface IdeaCreatePageProps {
+//   // Add any props you need for the page
+// }
 
-const IdeaCreatePage: React.FC<IdeaCreatePageProps> = () => {
+const IdeaCreatePage: React.FC = () => {
   const navigateTo = useStrictNavigate();
   const location = useLocation();
   const { listID, listTitle } = location.state as {
     listID: number;
     listTitle: string;
   };
-  const { setIsLoading } = useCommonStore();
+  const { setIsLoading, setShowingAlert } = useCommonStore();
   const { me } = useUserStore();
 
   const { mutate: createIdea, isPending: createIdeaLoading } = useCreateIdea();
@@ -31,15 +31,15 @@ const IdeaCreatePage: React.FC<IdeaCreatePageProps> = () => {
     }
   };
 
-  const onCreatedIdea = async (ideaFormData: IdeaBody) => {
+  const onCreatedIdea = (ideaFormData: IdeaBody) => {
     createIdea(
       { ...ideaFormData, listID },
       {
         onSuccess: () => {
           navigateTo.manageList(me?.userCode, listID.toString());
         },
-        onError: () => {
-          // TODO: show error message
+        onError: (error: Error) => {
+          setShowingAlert(true, { message: String(error) });
           setIsLoading(false);
         },
       }

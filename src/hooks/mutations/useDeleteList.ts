@@ -10,7 +10,7 @@ interface UseDeleteListOptions {
   offset?: number;
   limit?: number;
   onSuccess?: () => void;
-  onError?: (error: any) => void;
+  onError?: (error: Error) => void;
 }
 
 export const useDeleteList = ({
@@ -33,18 +33,18 @@ export const useDeleteList = ({
       }
       return;
     },
-    onSuccess: (_, listID) => {
+    onSuccess: async (_, listID) => {
       // 移除已刪除列表的快取
       queryClient.removeQueries({ queryKey: ['list', listID.toString()] });
 
       // 重新獲取列表預覽資料
-      queryClient.refetchQueries({
+      await queryClient.refetchQueries({
         queryKey: ['lists', userCode, offset, limit],
       });
 
       onSuccess?.();
     },
-    onError: (error) => {
+    onError: error => {
       setShowingAlert(true, { message: String(error) });
       onError?.(error);
     },

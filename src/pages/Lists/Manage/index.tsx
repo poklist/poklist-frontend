@@ -18,17 +18,17 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { TouchBackend } from 'react-dnd-touch-backend';
 import { useParams } from 'react-router-dom';
 
-interface ManageListPageProps {
-  // Add any props you need for the page
-}
+// interface ManageListPageProps {
+//   // Add any props you need for the page
+// }
 
-const ListManagePage: React.FC<ManageListPageProps> = () => {
+const ListManagePage: React.FC = () => {
   const { id } = useParams();
   const navigateTo = useStrictNavigate();
 
   const { setIsLoading } = useCommonStore();
   const userStore = useUserStore();
-  const isMobile = useLayoutStore((state) => state.isMobile);
+  const isMobile = useLayoutStore(state => state.isMobile);
   const [isDeleting, setIsDeleting] = useState(false);
   const { data: list, isLoading: isListLoading } = useList({
     listID: id,
@@ -45,7 +45,7 @@ const ListManagePage: React.FC<ManageListPageProps> = () => {
 
   const [isOrderModified, setIsOrderModified] = useState(false);
 
-  const onDeleteList = async () => {
+  const onDeleteList = () => {
     if (list) {
       // TODO: error handling
       setIsDeleting(true);
@@ -71,7 +71,7 @@ const ListManagePage: React.FC<ManageListPageProps> = () => {
   const onConfirmReorderIdea = () => {
     if (id && ideasDraft) {
       reorderIdeas(
-        { ideaOrder: ideasDraft.map((idea) => idea.id) },
+        { ideaOrder: ideasDraft.map(idea => idea.id) },
         {
           onSuccess: () => {
             setIsOrderModified(false);
