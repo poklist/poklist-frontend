@@ -30,7 +30,10 @@ export const DeleteButton: React.FC<IDeleteButtonProps> = ({
         subHeader={<Trans>Once deleted, this idea cannot be recovered!</Trans>}
         startFooter={
           <Button
-            onClick={() => deleteCallback()}
+            onClick={() => {
+              deleteCallback();
+              closeDrawer();
+            }}
             variant={ButtonVariant.WARNING}
             shape={ButtonShape.ROUNDED_5PX}
           >
