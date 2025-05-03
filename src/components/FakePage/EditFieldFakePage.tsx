@@ -65,8 +65,11 @@ export const EditFieldFakePageComponent: React.FC<IEditFieldConfig> = ({
           title={fieldName}
           onSaveText={t`Done`}
           onSave={() => {
-            onFieldValueSet(fieldValue);
-            closeFakePage();
+            if (validator === undefined || validator(fieldValue)) {
+              onFieldValueSet(fieldValue);
+              closeFakePage();
+            }
+            return;
           }}
           value={fieldValue}
         />
@@ -101,73 +104,11 @@ const TextInput: React.FC<ITextInputProps> = ({
     setFieldValue(value);
   }, [value]);
 
-  const [isComposing, setIsComposing] = useState(false);
-  const [offset, setOffset] = useState<{ start: number; end: number }>({
-    start: 0,
-    end: 0,
-  });
-  const [needUpdateCursor, setNeedUpdateCursor] = useState(false);
-
-  const handleCompositionStart = (
-    e: React.CompositionEvent<HTMLTextAreaElement>
-  ) => {
-    const textarea = e.currentTarget;
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-
-    setIsComposing(true);
-    setOffset({ start, end });
-  };
-
-  const handleCompositionEnd = (
-    e: React.CompositionEvent<HTMLTextAreaElement>
-  ) => {
-    setIsComposing(false);
-
-    const newValue = e.currentTarget.value;
-    if (validator === undefined || validator(newValue)) {
-      setFieldValue(newValue);
-      onChange(newValue);
-    }
-  };
-
   const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    if (isComposing) {
-      setNeedUpdateCursor(true);
-    } else {
-      const newValue = e.target.value;
-      setFieldValue(newValue);
-      onChange(newValue);
-    }
+    const newValue = e.target.value;
+    setFieldValue(newValue);
+    onChange(newValue);
   };
-
-  const handleBeforeInput = (
-    e: React.FormEvent<HTMLTextAreaElement> & { data: string }
-  ) => {
-    const textarea = e.currentTarget;
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-    const newValue =
-      fieldValue?.slice(0, start) + e.data + fieldValue?.slice(end);
-    const passed = validator === undefined || validator(newValue);
-
-    if (!passed) {
-      e.preventDefault();
-      return;
-    }
-  };
-
-  useEffect(() => {
-    const textarea = textAreaRef.current;
-    if (!textarea) return;
-
-    if (isComposing && needUpdateCursor) {
-      textarea.selectionStart = offset.start;
-      textarea.selectionEnd = offset.end;
-      setNeedUpdateCursor(false);
-      setIsComposing(false);
-    }
-  }, [textAreaRef.current?.selectionStart, textAreaRef.current?.selectionEnd]);
 
   return (
     <>
@@ -176,11 +117,8 @@ const TextInput: React.FC<ITextInputProps> = ({
         value={fieldValue}
         maxLength={characterLimit}
         onChange={handleInput}
-        onBeforeInput={handleBeforeInput}
         className="w-full border-0"
         placeholder={placeholderText}
-        onCompositionStart={handleCompositionStart}
-        onCompositionEnd={handleCompositionEnd}
       />
       {characterLimit && (
         <p className="self-end text-black-gray-03">
