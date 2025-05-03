@@ -69,7 +69,6 @@ export const EditFieldFakePageComponent: React.FC<IEditFieldConfig> = ({
               onFieldValueSet(fieldValue);
               closeFakePage();
             }
-            return;
           }}
           value={fieldValue}
         />
@@ -110,6 +109,22 @@ const TextInput: React.FC<ITextInputProps> = ({
     onChange(newValue);
   };
 
+  const handleBeforeInput = (
+    e: React.FormEvent<HTMLTextAreaElement> & { data: string }
+  ) => {
+    const textarea = e.currentTarget;
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const newValue =
+      fieldValue?.slice(0, start) + e.data + fieldValue?.slice(end);
+    const passed = validator === undefined || validator(newValue);
+
+    if (!passed) {
+      e.preventDefault();
+      return;
+    }
+  };
+
   return (
     <>
       <Textarea
@@ -117,6 +132,7 @@ const TextInput: React.FC<ITextInputProps> = ({
         value={fieldValue}
         maxLength={characterLimit}
         onChange={handleInput}
+        onBeforeInput={handleBeforeInput}
         className="w-full border-0"
         placeholder={placeholderText}
       />
