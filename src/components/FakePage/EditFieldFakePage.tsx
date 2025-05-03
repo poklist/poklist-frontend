@@ -69,6 +69,7 @@ export const EditFieldFakePageComponent: React.FC<IEditFieldConfig> = ({
               onFieldValueSet(fieldValue);
               closeFakePage();
             }
+            return;
           }}
           value={fieldValue}
         />
