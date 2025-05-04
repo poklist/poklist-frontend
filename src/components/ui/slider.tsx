@@ -5,7 +5,7 @@ import React from 'react';
 const Slider = React.forwardRef<
   React.ElementRef<typeof SliderPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof SliderPrimitive.Root>
->(({ value, onChange, className, ...props }, ref) => (
+>(({ className, ...props }, ref) => (
   <form>
     <SliderPrimitive.Root
       ref={ref}
