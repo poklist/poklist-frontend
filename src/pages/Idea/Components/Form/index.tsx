@@ -101,7 +101,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
 
   useEffect(() => {
     if (!previousIdeaInfo) return;
-    const subscription = ideaForm.watch(fields => {
+    const subscription = ideaForm.watch((fields) => {
       const isModified =
         fields.title !== previousIdeaInfo?.title ||
         fields.description !== previousIdeaInfo?.description ||
@@ -244,7 +244,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
               'line-clamp-1 h-6 min-h-6': !isTextareaFocus,
             })}
             {...registerRest}
-            ref={e => {
+            ref={(e) => {
               ref(e);
               textareaRef.current = e;
             }}

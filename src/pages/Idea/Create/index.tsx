@@ -9,10 +9,6 @@ import { Trans } from '@lingui/react/macro';
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
-// interface IdeaCreatePageProps {
-//   // Add any props you need for the page
-// }
-
 const IdeaCreatePage: React.FC = () => {
   const navigateTo = useStrictNavigate();
   const location = useLocation();

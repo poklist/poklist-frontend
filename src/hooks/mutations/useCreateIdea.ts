@@ -25,20 +25,19 @@ export const useCreateIdea = ({
       );
       return response.data.content;
     },
-    onSuccess: async data => {
+    onSuccess: async (data) => {
       // 使相關的查詢失效，強制重新獲取
       if (!data) {
         throw new Error('Failed to create idea');
       }
 
       await queryClient.invalidateQueries({ queryKey: ['ideas'] });
-      await queryClient.invalidateQueries({
+      await queryClient.refetchQueries({
         queryKey: ['list', data.listID.toString()],
-        refetchType: 'inactive',
       });
       onSuccess?.(data);
     },
-    onError: error => {
+    onError: (error) => {
       setShowingAlert(true, { message: String(error) });
       onError?.(error);
     },
