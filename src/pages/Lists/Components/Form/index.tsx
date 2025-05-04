@@ -283,18 +283,27 @@ const ListForm: React.FC<IListFormProps> = ({
         </div>
         <div className="flex items-start gap-2">
           <IconTextarea />
-          <Textarea
-            placeholder={t`Describe what this title is about`}
-            className={cn(`resize-none border-none p-0`, {
-              'line-clamp-1 h-6 min-h-6': !isTextareaFocus,
-            })}
-            {...registerRest}
-            ref={(e) => {
-              ref(e);
-              textareaRef.current = e;
-            }}
-            onFocus={() => setIsTextareaFocus(true)}
-          />
+          {isTextareaFocus ? (
+            <Textarea
+              placeholder={t`Describe what this title is about`}
+              className={cn(`resize-none border-none p-0`, {
+                'line-clamp-1 h-6 min-h-6': !isTextareaFocus,
+              })}
+              {...registerRest}
+              ref={(e) => {
+                ref(e);
+                textareaRef.current = e;
+              }}
+              onFocus={() => setIsTextareaFocus(true)}
+            />
+          ) : (
+            <div
+              className="line-clamp-1 h-6 w-full border-none p-0"
+              onClick={() => setIsTextareaFocus(true)}
+            >
+              {listForm.watch('description')}
+            </div>
+          )}
         </div>
         {isTextareaFocus && (
           <div className="mt-2 flex justify-end text-black-tint-04">
