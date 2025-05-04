@@ -7,7 +7,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 interface UseCreateIdeaOptions {
   onSuccess?: (data: CreateIdeaResponse) => void;
-  onError?: (error: any) => void;
+  onError?: (error: Error) => void;
 }
 
 export const useCreateIdea = ({
@@ -25,14 +25,16 @@ export const useCreateIdea = ({
       );
       return response.data.content;
     },
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       // 使相關的查詢失效，強制重新獲取
       if (!data) {
         throw new Error('Failed to create idea');
       }
 
-      queryClient.invalidateQueries({ queryKey: ['ideas'] });
-      queryClient.invalidateQueries({ queryKey: ['list', data.listID] });
+      await queryClient.invalidateQueries({ queryKey: ['ideas'] });
+      await queryClient.refetchQueries({
+        queryKey: ['list', data.listID.toString()],
+      });
       onSuccess?.(data);
     },
     onError: (error) => {

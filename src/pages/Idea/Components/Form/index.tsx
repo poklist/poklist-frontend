@@ -221,7 +221,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
   return (
     <>
       <form
-        onSubmit={ideaForm.handleSubmit(onSubmit, onSubmitFailed)}
+        onSubmit={() => void ideaForm.handleSubmit(onSubmit, onSubmitFailed)()}
         className="mx-4 mt-4 flex flex-1 flex-col gap-6 md:max-w-mobile-max"
       >
         <div
@@ -344,9 +344,9 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
           }
           variant={ButtonVariant.BLACK}
           shape={ButtonShape.ROUNDED_5PX}
-          onClick={() => ideaForm.handleSubmit(onSubmit, onSubmitFailed)()}
+          onClick={() => void ideaForm.handleSubmit(onSubmit, onSubmitFailed)()}
         >
-          <Trans>Next</Trans>
+          <Trans>Done</Trans>
         </Button>
       </footer>
     </>

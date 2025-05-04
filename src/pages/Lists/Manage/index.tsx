@@ -18,11 +18,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { TouchBackend } from 'react-dnd-touch-backend';
 import { useParams } from 'react-router-dom';
 
-interface ManageListPageProps {
-  // Add any props you need for the page
-}
-
-const ListManagePage: React.FC<ManageListPageProps> = () => {
+const ListManagePage: React.FC = () => {
   const { id } = useParams();
   const navigateTo = useStrictNavigate();
 
@@ -45,7 +41,7 @@ const ListManagePage: React.FC<ManageListPageProps> = () => {
 
   const [isOrderModified, setIsOrderModified] = useState(false);
 
-  const onDeleteList = async () => {
+  const onDeleteList = () => {
     if (list) {
       // TODO: error handling
       setIsDeleting(true);
