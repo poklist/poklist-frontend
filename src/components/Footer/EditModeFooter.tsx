@@ -7,7 +7,7 @@ interface IEditModeFooterProps {
   onClose: () => void;
   title: string;
   onSave: (value?: string) => void;
-  onSaveText?: string;
+  onSaveText?: string; // FUTURE: rename to saveButtonText, but need to discuss with team
   value?: string;
   disabled?: boolean;
 }

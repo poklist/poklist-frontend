@@ -101,7 +101,7 @@ const EditUserPage: React.FC = () => {
       placeholder: t`Add URL`,
       edittingFieldValue: newUserInfo.socialLinks?.[SocialLinkType.CUSTOMIZED],
       onFieldValueSet: (value: string | undefined) => {
-        if (value) {
+        if (value !== undefined) {
           setSocialLink(SocialLinkType.CUSTOMIZED, value);
         } else {
           console.log('value is undefined');
@@ -120,10 +120,12 @@ const EditUserPage: React.FC = () => {
         return extractUsernameFromUrl(SocialLinkType.INSTAGRAM, value) ?? '';
       },
       onFieldValueSet: (value: string | undefined) => {
-        if (value) {
+        if (value !== undefined) {
           setSocialLink(
             SocialLinkType.INSTAGRAM,
-            `${socialLinkStarterMap[SocialLinkType.INSTAGRAM]}${value}`
+            value.length > 0
+              ? `${socialLinkStarterMap[SocialLinkType.INSTAGRAM]}${value}`
+              : ''
           );
         } else {
           console.log('value is undefined');
@@ -142,10 +144,12 @@ const EditUserPage: React.FC = () => {
         return extractUsernameFromUrl(SocialLinkType.YOUTUBE, value) ?? '';
       },
       onFieldValueSet: (value: string | undefined) => {
-        if (value) {
+        if (value !== undefined) {
           setSocialLink(
             SocialLinkType.YOUTUBE,
-            `${socialLinkStarterMap[SocialLinkType.YOUTUBE]}${value}`
+            value.length > 0
+              ? `${socialLinkStarterMap[SocialLinkType.YOUTUBE]}${value}`
+              : ''
           );
         } else {
           console.log('value is undefined');
@@ -164,10 +168,12 @@ const EditUserPage: React.FC = () => {
         return extractUsernameFromUrl(SocialLinkType.TIKTOK, value) ?? '';
       },
       onFieldValueSet: (value: string | undefined) => {
-        if (value) {
+        if (value !== undefined) {
           setSocialLink(
             SocialLinkType.TIKTOK,
-            `${socialLinkStarterMap[SocialLinkType.TIKTOK]}${value}`
+            value.length > 0
+              ? `${socialLinkStarterMap[SocialLinkType.TIKTOK]}${value}`
+              : ''
           );
         } else {
           console.log('value is undefined');
@@ -186,10 +192,12 @@ const EditUserPage: React.FC = () => {
         return extractUsernameFromUrl(SocialLinkType.THREADS, value) ?? '';
       },
       onFieldValueSet: (value: string | undefined) => {
-        if (value) {
+        if (value !== undefined) {
           setSocialLink(
             SocialLinkType.THREADS,
-            `${socialLinkStarterMap[SocialLinkType.THREADS]}${value}`
+            value.length > 0
+              ? `${socialLinkStarterMap[SocialLinkType.THREADS]}${value}`
+              : ''
           );
         } else {
           console.log('value is undefined');
@@ -208,10 +216,12 @@ const EditUserPage: React.FC = () => {
         return extractUsernameFromUrl(SocialLinkType.LINKEDIN, value) ?? '';
       },
       onFieldValueSet: (value: string | undefined) => {
-        if (value) {
+        if (value !== undefined) {
           setSocialLink(
             SocialLinkType.LINKEDIN,
-            `${socialLinkStarterMap[SocialLinkType.LINKEDIN]}${value}`
+            value.length > 0
+              ? `${socialLinkStarterMap[SocialLinkType.LINKEDIN]}${value}`
+              : ''
           );
         } else {
           console.log('value is undefined');
