@@ -1,6 +1,6 @@
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import Cropper, { Area, Point } from 'react-easy-crop';
 import { Input } from '../ui/input';
 import { Slider } from '../ui/slider';
@@ -24,6 +24,8 @@ const ImageCropper: React.FC<IImageCropperProps> = ({
   const [zoom, setZoom] = useState(1);
   const [imgSrc, setImgSrc] = useState(value);
   const [error, setError] = useState('');
+  // Throttle ref to limit zoom updates frequency
+  const lastZoomUpdateRef = useRef<number>(0);
 
   const onSelectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -63,8 +65,19 @@ const ImageCropper: React.FC<IImageCropperProps> = ({
     }
   };
 
-  const onZoomChange = (zoom: number) => {
-    setZoom(zoom);
+  // Handle Cropper pinch/drag zoom with throttle
+  const handleCropperZoomChange = (zoomValue: number) => {
+    const now = Date.now();
+    // throttle to at most ~30ms per update (~33fps)
+    if (now - lastZoomUpdateRef.current > 30) {
+      setZoom(zoomValue);
+      lastZoomUpdateRef.current = now;
+    }
+  };
+
+  // Immediate slider-driven zoom updates
+  const handleSliderChange = (value: number[]) => {
+    setZoom(value[0]);
   };
 
   return (
@@ -102,7 +115,7 @@ const ImageCropper: React.FC<IImageCropperProps> = ({
               showGrid={false}
               onCropChange={onCropChange}
               onCropComplete={onCropComplete}
-              onZoomChange={onZoomChange}
+              onZoomChange={handleCropperZoomChange}
             />
           </div>
           <div id="cropper-ratio-controls">
@@ -114,7 +127,7 @@ const ImageCropper: React.FC<IImageCropperProps> = ({
               defaultValue={[1]}
               value={[zoom]}
               aria-labelledby="Zoom"
-              onValueChange={(value: number[]) => onZoomChange(value[0])}
+              onValueChange={handleSliderChange}
             />
           </div>
         </>
