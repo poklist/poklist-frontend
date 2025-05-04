@@ -32,7 +32,10 @@ export const useCreateIdea = ({
       }
 
       await queryClient.invalidateQueries({ queryKey: ['ideas'] });
-      queryClient.removeQueries({ queryKey: ['list', data.listID.toString()] });
+      await queryClient.invalidateQueries({
+        queryKey: ['list', data.listID.toString()],
+        refetchType: 'inactive',
+      });
       onSuccess?.(data);
     },
     onError: error => {
