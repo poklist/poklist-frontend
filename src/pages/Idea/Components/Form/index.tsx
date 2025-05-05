@@ -86,18 +86,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
     event.target.value = formatInput(event.target.value);
   };
 
-  const onTextareaBlur = () => {
-    if (textareaRef.current) {
-      textareaRef.current.scrollTop = 0;
-      setIsTextareaFocus(false);
-    }
-  };
-
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
-  const { ref, ...registerRest } = ideaForm.register('description', {
-    onChange: onInputChange,
-    onBlur: onTextareaBlur,
-  });
 
   useEffect(() => {
     if (!previousIdeaInfo) return;
@@ -189,17 +178,6 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
     completedCallback(data);
   };
 
-  // const submitFooterRef = useRef<HTMLDivElement>(null);
-
-  // const footerPosition = () => {
-  //   if (submitFooterRef.current && window.visualViewport) {
-  //     submitFooterRef.current.style.top = `${window.visualViewport.height - submitFooterRef.current.offsetHeight}px`;
-  //   }
-  // };
-  // useEffect(() => {
-  //   footerPosition();
-  // }, []);
-
   useEffect(() => {
     if (!previousIdeaInfo) {
       return;
@@ -238,22 +216,59 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
         </div>
         <div className="flex items-start gap-2">
           <IconTextarea />
-          <Textarea
-            placeholder={t`Describe what this idea is about`}
-            className={cn(`resize-none border-none p-0`, {
-              'line-clamp-1 h-6 min-h-6': !isTextareaFocus,
-            })}
-            {...registerRest}
-            ref={(e) => {
-              ref(e);
-              textareaRef.current = e;
+          <Controller
+            name="description"
+            control={ideaForm.control}
+            render={({ field }) => {
+              const isEmpty = !field.value;
+              if (!isTextareaFocus) {
+                return (
+                  <div
+                    className={cn(
+                      'line-clamp-1 h-6 w-full cursor-text border-none p-0',
+                      isEmpty && 'text-black-gray-03'
+                    )}
+                    onClick={() => {
+                      setIsTextareaFocus(true);
+                      setTimeout(() => {
+                        const el = textareaRef.current;
+                        if (el) {
+                          el.focus();
+                          const len = el.value.length;
+                          el.setSelectionRange(len, len);
+                          el.scrollTop = el.scrollHeight;
+                        }
+                      }, 0);
+                    }}
+                  >
+                    {field.value || t`Describe what this idea is about`}
+                  </div>
+                );
+              }
+              return (
+                <Textarea
+                  placeholder={t`Describe what this idea is about`}
+                  className="resize-none border-none p-0 leading-[1.45]"
+                  {...field}
+                  onChange={(e) => field.onChange(formatInput(e.target.value))}
+                  onBlur={() => {
+                    field.onBlur();
+                    textareaRef.current && (textareaRef.current.scrollTop = 0);
+                    setIsTextareaFocus(false);
+                  }}
+                  onFocus={() => setIsTextareaFocus(true)}
+                  ref={(el) => {
+                    field.ref(el);
+                    textareaRef.current = el;
+                  }}
+                />
+              );
             }}
-            onFocus={() => setIsTextareaFocus(true)}
           />
         </div>
         {isTextareaFocus && (
           <div className="mt-2 flex justify-end text-black-tint-04">
-            {ideaForm.watch('description')?.length ?? 0}/{DESC_MAX_LENGTH}
+            {ideaForm.getValues('description')?.length ?? 0}/{DESC_MAX_LENGTH}
           </div>
         )}
         <div className="flex items-center gap-2">

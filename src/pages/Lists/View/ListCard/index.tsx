@@ -182,7 +182,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
           <div className="tracking-0.8% text-[13px]">
             <Trans>Listing since</Trans> {createdAtString}
           </div>
-          <div className="-tracking-2% mt-4 text-[26px] font-extrabold">
+          <div className="-tracking-2% mt-4 text-center text-[26px] font-extrabold">
             {data.title}
           </div>
           <div className="tracking-0.8% mt-4 flex gap-2 text-[13px]">
@@ -220,7 +220,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
           )}
           {data.description && (
             <div
-              className="mt-6 line-clamp-1 text-[15px] -tracking-1.1%"
+              className="mt-6 line-clamp-1 w-full text-[15px] -tracking-1.1%"
               onClick={onClickDescription}
             >
               {data.description}
