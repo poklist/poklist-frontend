@@ -458,11 +458,13 @@ const ListForm: React.FC<IListFormProps> = ({
           >
             <IconClose />
           </div>
-          {defaultListInfo ? (
-            <Trans>Edit List</Trans>
-          ) : (
-            <Trans>Create Idea List</Trans>
-          )}
+          <p className="text-[17px] font-bold">
+            {defaultListInfo ? (
+              <Trans>Edit List</Trans>
+            ) : (
+              <Trans>Create Idea List</Trans>
+            )}
+          </p>
         </div>
         {defaultListInfo ? (
           <Button
