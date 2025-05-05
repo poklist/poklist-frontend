@@ -238,27 +238,18 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
         </div>
         <div className="flex items-start gap-2">
           <IconTextarea />
-          {isTextareaFocus ? (
-            <Textarea
-              placeholder={t`Describe what this idea is about`}
-              className={cn(`resize-none border-none p-0`, {
-                'line-clamp-1 h-6 min-h-6': !isTextareaFocus,
-              })}
-              {...registerRest}
-              ref={(e) => {
-                ref(e);
-                textareaRef.current = e;
-              }}
-              onFocus={() => setIsTextareaFocus(true)}
-            />
-          ) : (
-            <div
-              className="line-clamp-1 h-6 w-full border-none p-0"
-              onClick={() => setIsTextareaFocus(true)}
-            >
-              {ideaForm.watch('description')}
-            </div>
-          )}
+          <Textarea
+            placeholder={t`Describe what this idea is about`}
+            className={cn(`resize-none border-none p-0`, {
+              'line-clamp-1 h-6 min-h-6': !isTextareaFocus,
+            })}
+            {...registerRest}
+            ref={(e) => {
+              ref(e);
+              textareaRef.current = e;
+            }}
+            onFocus={() => setIsTextareaFocus(true)}
+          />
         </div>
         {isTextareaFocus && (
           <div className="mt-2 flex justify-end text-black-tint-04">
