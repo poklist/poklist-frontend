@@ -286,7 +286,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
                 file={field.value}
                 callback={onOpenFakePage}
                 onRemove={() => {
-                  ideaForm.setValue('coverImage', null);
+                  ideaForm.setValue('coverImage', '');
                 }}
               />
             )}

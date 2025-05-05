@@ -5,7 +5,7 @@ import { FeatureListSection, FeatureSectionContent } from '@/types/Home';
 import { MessageDescriptor } from '@lingui/core';
 import { msg, t } from '@lingui/core/macro';
 import { Trans, useLingui } from '@lingui/react';
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState, useEffect, useCallback } from 'react';
 
 interface FeatureSectionProps {
   content: FeatureSectionContent;
@@ -19,13 +19,13 @@ interface Category {
 
 const truncateText = (text: string, containerWidth: number, locale: string) => {
   // 根據語言設置不同的字符寬度
-  const charWidth = locale === Language.ZH_TW ? 18 : 10; // 中文字符寬度較大
+  const charWidth = locale === Language.ZH_TW.toString() ? 18 : 10; // 中文字符寬度較大
   // 根據容器寬度計算可顯示的字符數
   const maxChars = Math.floor((containerWidth - 40) / charWidth); // 減去一些 padding 和 margin
 
   // 設置最小和最大字符數限制
-  const minChars = locale === Language.ZH_TW ? 18 : 35;
-  const maxAllowedChars = locale === Language.ZH_TW ? 20 : 40;
+  const minChars = locale === Language.ZH_TW.toString() ? 18 : 35;
+  const maxAllowedChars = locale === Language.ZH_TW.toString() ? 20 : 40;
 
   // 根據計算結果和限制來決定最終的字符數
   const finalMaxChars = Math.min(Math.max(maxChars, minChars), maxAllowedChars);
@@ -55,17 +55,53 @@ export const FeatureSection = ({
     { key: 'other', label: msg`Other` },
   ];
 
+  // preload all images
+  useEffect(() => {
+    const preloadImages = () => {
+      // preload avatar images
+      Object.values(IMAGES.avatar).forEach((src) => {
+        const img = new Image();
+        img.src = src;
+      });
+
+      // preload list images
+      Object.keys(IMAGES.list).forEach((category) => {
+        Object.values(
+          IMAGES.list[category as keyof typeof IMAGES.list]
+        ).forEach((src) => {
+          const img = new Image();
+          img.src = src;
+        });
+      });
+
+      // preload feature images
+      Object.values(IMAGES.feature).forEach((src) => {
+        const img = new Image();
+        img.src = src;
+      });
+    };
+
+    preloadImages();
+  }, []);
+
   const selectedList =
     listContent[selectedCategory as keyof typeof listContent];
 
-  const getTranslatedAndTruncated = (
-    descriptor: MessageDescriptor,
-    index: number
-  ) => {
-    const translated = i18n._(descriptor.id);
-    const containerWidth = descriptionRefs.current[index]?.offsetWidth || 0;
-    return truncateText(String(translated), containerWidth, i18n.locale);
-  };
+  const getTranslatedAndTruncated = useCallback(
+    (descriptor: MessageDescriptor, index: number) => {
+      const translated = i18n._(descriptor.id);
+      const containerWidth = descriptionRefs.current[index]?.offsetWidth || 0;
+      return truncateText(String(translated), containerWidth, i18n.locale);
+    },
+    [i18n, descriptionRefs]
+  );
+
+  // precalculate all description texts
+  const truncatedDescriptions = useMemo(() => {
+    return selectedList.lists.map((item, index) =>
+      getTranslatedAndTruncated(item.description, index)
+    );
+  }, [selectedList.lists, getTranslatedAndTruncated]);
 
   return (
     <section className="relative flex flex-col gap-2 bg-yellow-bright-01 px-4 pb-6 pt-14">
@@ -148,32 +184,28 @@ export const FeatureSection = ({
         </h2>
         <div className="my-4 h-px w-full bg-[#F1F1F1]" />
         <div className="flex flex-col gap-4">
-          {selectedList.lists.map((item, index) => {
-            const truncatedDescription = useMemo(
-              () => getTranslatedAndTruncated(item.description, index),
-              [item.description.id, i18n.locale]
-            );
-
-            return (
-              <div key={item.id}>
-                <div className="flex flex-row gap-1">
-                  <div className="flex flex-1 flex-col gap-1">
-                    <p className="text-t1 font-bold">
-                      <Trans id={item.title.id} />
-                    </p>
-                    <p className="text-t2 text-gray-600">
-                      {truncatedDescription}
-                    </p>
-                  </div>
-                  <img
-                    src={item.image}
-                    alt={item.title.id}
-                    className="size-10 self-end rounded-lg border border-black"
-                  />
+          {selectedList.lists.map((item, index) => (
+            <div key={item.id}>
+              <div className="flex flex-row gap-1">
+                <div className="flex flex-1 flex-col gap-1">
+                  <p className="text-t1 font-bold">
+                    <Trans id={item.title.id} />
+                  </p>
+                  <p
+                    className="text-t2 text-gray-600"
+                    ref={(el) => (descriptionRefs.current[index] = el)}
+                  >
+                    {truncatedDescriptions[index]}
+                  </p>
                 </div>
+                <img
+                  src={item.image}
+                  alt={item.title.id}
+                  className="size-10 self-end rounded-lg border border-black"
+                />
               </div>
-            );
-          })}
+            </div>
+          ))}
         </div>
       </div>
 

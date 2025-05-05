@@ -65,8 +65,11 @@ export const EditFieldFakePageComponent: React.FC<IEditFieldConfig> = ({
           title={fieldName}
           onSaveText={t`Done`}
           onSave={() => {
-            onFieldValueSet(fieldValue);
-            closeFakePage();
+            if (validator === undefined || validator(fieldValue)) {
+              onFieldValueSet(fieldValue);
+              closeFakePage();
+            }
+            return;
           }}
           value={fieldValue}
         />
@@ -101,32 +104,10 @@ const TextInput: React.FC<ITextInputProps> = ({
     setFieldValue(value);
   }, [value]);
 
-  const [isComposing, setIsComposing] = useState(false);
-  const [offset, setOffset] = useState<{ start: number; end: number }>({
-    start: 0,
-    end: 0,
-  });
-  const [needUpdateCursor, setNeedUpdateCursor] = useState(false);
-
-  const handleCompositionStart = (
-    e: React.CompositionEvent<HTMLTextAreaElement>
-  ) => {
-    const textarea = e.currentTarget;
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-
-    setIsComposing(true);
-    setOffset({ start, end });
-  };
-
   const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    if (isComposing) {
-      setNeedUpdateCursor(true);
-    } else {
-      const newValue = e.target.value;
-      setFieldValue(newValue);
-      onChange(newValue);
-    }
+    const newValue = e.target.value;
+    setFieldValue(newValue);
+    onChange(newValue);
   };
 
   const handleBeforeInput = (
@@ -145,18 +126,6 @@ const TextInput: React.FC<ITextInputProps> = ({
     }
   };
 
-  useEffect(() => {
-    const textarea = textAreaRef.current;
-    if (!textarea) return;
-
-    if (isComposing && needUpdateCursor) {
-      textarea.selectionStart = offset.start;
-      textarea.selectionEnd = offset.end;
-      setNeedUpdateCursor(false);
-      setIsComposing(false);
-    }
-  }, [textAreaRef.current?.selectionStart, textAreaRef.current?.selectionEnd]);
-
   return (
     <>
       <Textarea
@@ -167,7 +136,6 @@ const TextInput: React.FC<ITextInputProps> = ({
         onBeforeInput={handleBeforeInput}
         className="w-full border-0"
         placeholder={placeholderText}
-        onCompositionStart={handleCompositionStart}
       />
       {characterLimit && (
         <p className="self-end text-black-gray-03">
