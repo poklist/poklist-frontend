@@ -34,7 +34,7 @@ const HeroSection: React.FC = () => {
   const { userCode } = useOutletContext<UserRouteLayoutContextType>();
 
   const navigateTo = useStrictNavigate();
-  const { isLoggedIn } = useAuthStore();
+  const { isLoggedIn, logout } = useAuthStore();
   const { me, setMe } = useUserStore();
   const { openDrawer } = useDrawer();
   const [drawerContent, setDrawerContent] = useState<React.ReactNode>(null);
@@ -54,9 +54,18 @@ const HeroSection: React.FC = () => {
   useEffect(() => {
     if (isError) {
       // TODO: error handling 404 page
-      navigateTo.error();
+      if (isMyPage) {
+        logout();
+        navigateTo.home();
+        toast({
+          title: t`The login session is expired, please login again`,
+          variant: 'success', // FUTURE: redefined variant
+        });
+      } else {
+        navigateTo.error();
+      }
     }
-  }, [isError, navigateTo]);
+  }, [isError]);
 
   const { debouncedMutate: follow } = useSocialAction({
     actionKey: 'follow',

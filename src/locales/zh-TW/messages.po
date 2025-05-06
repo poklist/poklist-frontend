@@ -30,6 +30,7 @@ msgid "Enter your text here"
 msgstr "請輸入內容"
 
 #: src/components/FakePage/EditFieldFakePage.tsx
+#: src/pages/Idea/Components/Form/index.tsx
 msgid "Done"
 msgstr "完成"
 
@@ -642,6 +643,7 @@ msgid "What's your Idea?"
 msgstr "靈感標題"
 
 #: src/pages/Idea/Components/Form/index.tsx
+#: src/pages/Idea/Components/Form/index.tsx
 msgid "Describe what this idea is about"
 msgstr "描述靈感"
 
@@ -677,14 +679,6 @@ msgstr "編輯靈感"
 #: src/pages/Idea/Create/index.tsx
 msgid "New Idea"
 msgstr "新靈感"
-
-#: src/pages/Idea/Components/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
-msgid "Next"
-msgstr "下一步"
 
 #: src/pages/Idea/Edit/index.tsx
 msgid "Idea"
@@ -723,6 +717,7 @@ msgid "Give your list a title"
 msgstr "輸入名單標題"
 
 #: src/pages/Lists/Components/Form/index.tsx
+#: src/pages/Lists/Components/Form/index.tsx
 msgid "Describe what this title is about"
 msgstr "描述標題"
 
@@ -737,6 +732,13 @@ msgstr "名單主題"
 #: src/pages/Lists/Components/Form/index.tsx
 msgid "Choose a topic that vibes with your List."
 msgstr "選擇一項接近此份名單的分類"
+
+#: src/pages/Lists/Components/Form/index.tsx
+#: src/pages/Lists/Components/Form/index.tsx
+#: src/pages/Lists/Components/Form/index.tsx
+#: src/pages/Lists/Components/Form/index.tsx
+msgid "Next"
+msgstr "下一步"
 
 #: src/pages/Lists/Components/Form/index.tsx
 msgid "If you cancel, everything you've entered will be lost."
@@ -897,6 +899,10 @@ msgstr "✨ 我是創作者，我想建立名單…"
 #: src/pages/Settings/index.tsx
 msgid "Setting Center"
 msgstr "設定中心"
+
+#: src/pages/User/HeroSection/index.tsx
+msgid "The login session is expired, please login again"
+msgstr "登入已過期，請重新登入"
 
 #: src/pages/User/HeroSection/index.tsx
 msgid "Followers"
