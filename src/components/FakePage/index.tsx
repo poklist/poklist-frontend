@@ -51,7 +51,10 @@ export const FakePageComponent: React.FC<IFakePageProps> = ({ content }) => {
   const { isOpen, closeFakePage } = useFakePage();
   return (
     <Dialog open={isOpen} onOpenChange={closeFakePage}>
-      <DialogContent className="bottom-0 h-screen w-full bg-white shadow">
+      <DialogContent
+        className="bottom-0 h-screen w-full bg-white shadow"
+        aria-describedby="fake-page-content"
+      >
         {content}
       </DialogContent>
     </Dialog>

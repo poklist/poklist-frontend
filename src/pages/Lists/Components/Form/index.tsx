@@ -32,7 +32,7 @@ const DESC_MAX_LENGTH = 250;
 
 const FormSchema = z.object({
   title: z.string().min(1).max(TITLE_MAX_LENGTH),
-  description: z.string().max(DESC_MAX_LENGTH),
+  description: z.string().max(DESC_MAX_LENGTH).optional(),
   externalLink: z.string().url().or(z.literal('')),
   coverImage: z.string().or(z.literal('')).nullable().optional(), // FUTURE: base64 check
   categoryID: z.number().nonnegative(),
@@ -103,18 +103,7 @@ const ListForm: React.FC<IListFormProps> = ({
     event.target.value = formatInput(event.target.value);
   };
 
-  const onTextareaBlur = () => {
-    if (textareaRef.current) {
-      textareaRef.current.scrollTop = 0;
-      setIsTextareaFocus(false);
-    }
-  };
-
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
-  const { ref, ...registerRest } = listForm.register('description', {
-    onChange: onInputChange,
-    onBlur: onTextareaBlur,
-  });
 
   useEffect(() => {
     if (!defaultListInfo) return;
@@ -283,31 +272,59 @@ const ListForm: React.FC<IListFormProps> = ({
         </div>
         <div className="flex items-start gap-2">
           <IconTextarea />
-          {isTextareaFocus ? (
-            <Textarea
-              placeholder={t`Describe what this title is about`}
-              className={cn(`resize-none border-none p-0`, {
-                'line-clamp-1 h-6 min-h-6': !isTextareaFocus,
-              })}
-              {...registerRest}
-              ref={(e) => {
-                ref(e);
-                textareaRef.current = e;
-              }}
-              onFocus={() => setIsTextareaFocus(true)}
-            />
-          ) : (
-            <div
-              className="line-clamp-1 h-6 w-full border-none p-0"
-              onClick={() => setIsTextareaFocus(true)}
-            >
-              {listForm.watch('description')}
-            </div>
-          )}
+          <Controller
+            name="description"
+            control={listForm.control}
+            render={({ field }) => {
+              if (!isTextareaFocus) {
+                const isEmpty = !field.value;
+                return (
+                  <div
+                    className={cn(
+                      'line-clamp-1 h-6 w-full cursor-text border-none p-0',
+                      isEmpty && 'text-black-gray-03'
+                    )}
+                    onClick={() => {
+                      setIsTextareaFocus(true);
+                      setTimeout(() => {
+                        const el = textareaRef.current;
+                        if (el) {
+                          el.focus();
+                          const len = el.value.length;
+                          el.setSelectionRange(len, len);
+                          el.scrollTop = el.scrollHeight;
+                        }
+                      }, 0);
+                    }}
+                  >
+                    {field.value || t`Describe what this title is about`}
+                  </div>
+                );
+              }
+              return (
+                <Textarea
+                  placeholder={t`Describe what this title is about`}
+                  className="resize-none border-none p-0 leading-[1.45]"
+                  {...field}
+                  onChange={(e) => field.onChange(formatInput(e.target.value))}
+                  onBlur={() => {
+                    field.onBlur();
+                    textareaRef.current && (textareaRef.current.scrollTop = 0);
+                    setIsTextareaFocus(false);
+                  }}
+                  onFocus={() => setIsTextareaFocus(true)}
+                  ref={(el) => {
+                    field.ref(el);
+                    textareaRef.current = el;
+                  }}
+                />
+              );
+            }}
+          />
         </div>
         {isTextareaFocus && (
           <div className="mt-2 flex justify-end text-black-tint-04">
-            {listForm.watch('description').length}/{DESC_MAX_LENGTH}
+            {listForm.getValues('description')?.length ?? 0}/{DESC_MAX_LENGTH}
           </div>
         )}
         <div className="flex items-center gap-2">
@@ -315,7 +332,7 @@ const ListForm: React.FC<IListFormProps> = ({
           <Input
             {...listForm.register('externalLink')}
             placeholder={t`Link a page`}
-            className="h-6 w-full border-none p-0"
+            className="line-clamp-1 h-6 w-full border-none p-0"
           />
         </div>
         <div
@@ -440,11 +457,13 @@ const ListForm: React.FC<IListFormProps> = ({
           >
             <IconClose />
           </div>
-          {defaultListInfo ? (
-            <Trans>Edit List</Trans>
-          ) : (
-            <Trans>Create Idea List</Trans>
-          )}
+          <p className="text-[17px] font-bold">
+            {defaultListInfo ? (
+              <Trans>Edit List</Trans>
+            ) : (
+              <Trans>Create Idea List</Trans>
+            )}
+          </p>
         </div>
         {defaultListInfo ? (
           <Button

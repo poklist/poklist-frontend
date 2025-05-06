@@ -4,7 +4,7 @@ import { UserPreview } from '../User';
 
 export interface ListBody {
   title: string;
-  description: string;
+  description?: string;
   coverImage?: string | null;
   externalLink: string;
   categoryID: number;

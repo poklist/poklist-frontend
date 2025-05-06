@@ -37,7 +37,10 @@ export const EditFieldFakePageComponent: React.FC<IEditFieldConfig> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={closeFakePage}>
-      <DialogContent className="flex h-[100dvh] w-full items-center border-0 bg-transparent p-0">
+      <DialogContent
+        className="flex h-[100dvh] w-full items-center border-0 bg-transparent p-0"
+        aria-describedby="edit-field-fake-page"
+      >
         <div
           id="edit-field-fake-page"
           className="z-10 flex h-full w-full flex-col items-center bg-white px-6 pb-6 pt-10 sm:pt-6 md:max-w-mobile-max"
