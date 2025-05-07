@@ -29,9 +29,6 @@ export const useUser = ({
     staleTime,
     gcTime,
     enabled: !!userCode,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
   });
 
   return {

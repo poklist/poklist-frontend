@@ -30,6 +30,7 @@ msgid "Enter your text here"
 msgstr "Enter your text here"
 
 #: src/components/FakePage/EditFieldFakePage.tsx
+#: src/pages/Idea/Components/Form/index.tsx
 msgid "Done"
 msgstr "Done"
 
@@ -642,6 +643,7 @@ msgid "What's your Idea?"
 msgstr "What's your Idea?"
 
 #: src/pages/Idea/Components/Form/index.tsx
+#: src/pages/Idea/Components/Form/index.tsx
 msgid "Describe what this idea is about"
 msgstr "Describe what this idea is about"
 
@@ -677,14 +679,6 @@ msgstr "Edit Idea"
 #: src/pages/Idea/Create/index.tsx
 msgid "New Idea"
 msgstr "New Idea"
-
-#: src/pages/Idea/Components/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
-msgid "Next"
-msgstr "Next"
 
 #: src/pages/Idea/Edit/index.tsx
 msgid "Idea"
@@ -723,6 +717,7 @@ msgid "Give your list a title"
 msgstr "Give your list a title"
 
 #: src/pages/Lists/Components/Form/index.tsx
+#: src/pages/Lists/Components/Form/index.tsx
 msgid "Describe what this title is about"
 msgstr "Describe what this title is about"
 
@@ -737,6 +732,13 @@ msgstr "List Topic"
 #: src/pages/Lists/Components/Form/index.tsx
 msgid "Choose a topic that vibes with your List."
 msgstr "Choose a topic that vibes with your List."
+
+#: src/pages/Lists/Components/Form/index.tsx
+#: src/pages/Lists/Components/Form/index.tsx
+#: src/pages/Lists/Components/Form/index.tsx
+#: src/pages/Lists/Components/Form/index.tsx
+msgid "Next"
+msgstr "Next"
 
 #: src/pages/Lists/Components/Form/index.tsx
 msgid "If you cancel, everything you've entered will be lost."
@@ -897,6 +899,10 @@ msgstr "✨ Sign up now and start listing!"
 #: src/pages/Settings/index.tsx
 msgid "Setting Center"
 msgstr "Setting Center"
+
+#: src/pages/User/HeroSection/index.tsx
+msgid "The login session is expired, please login again"
+msgstr "The login session is expired, please login again"
 
 #: src/pages/User/HeroSection/index.tsx
 msgid "Followers"
