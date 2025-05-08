@@ -13,7 +13,7 @@ import PromptText from './Components/PromptText';
 export default function Layout() {
   const navigateTo = useStrictNavigate();
   const location = useLocation();
-  const redirectWhiteList = ['/home', '/error', '/goToMobile'];
+  const redirectWhiteList = ['/error', '/goToMobile'];
 
   useCheckStorage();
 
