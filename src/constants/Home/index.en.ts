@@ -1,21 +1,6 @@
 import { msg } from '@lingui/core/macro';
 import { IMAGES } from './images';
 
-export const HERO_SECTION = {
-  joinInformation: {
-    title: msg`Join Poklist and share your lists.`,
-    descriprion: msg`Currently open only to creator account applications.`,
-    buttonText: msg`Sign up`,
-  },
-  accountOwner: {
-    title: '',
-    buttonText: msg`Creator Account Login`,
-  },
-  nonCreatorQuestion: {
-    title: msg`Can non-creators use Poklist?`,
-    url: 'https://opaque-creek-8e5.notion.site/Can-Non-creators-sign-up-1a8a4cd4b98b80f79ddbe17681b6dda3',
-  },
-};
 export const FEATURE_SECTION = {
   title: msg`List Your Ideas`,
   description: msg`Turn thoughts into lists, discover fresh finds, and follow inspiration`,

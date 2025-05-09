@@ -2,7 +2,6 @@ import logo from '@/assets/images/logo-big.svg';
 import {
   FEATURE_SECTION,
   FOOTER_SECTION,
-  HERO_SECTION,
   LIST_SECTION,
   SOCIAL_MEDIA,
   TUTORIAL_SECTION,
@@ -11,13 +10,11 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import { Divider } from './Components/Divider';
 import { FeatureSection } from './Components/FeatureSection';
 import { Footer } from './Components/Footer';
-import Header from './Components/Header';
-import { HeroSection } from './Components/HeroSection';
+import Header from '@/components/Header';
 import { TutorialSection } from './Components/TutorialSection';
 
 function HomeContent() {
   const content = {
-    HERO_SECTION,
     FEATURE_SECTION,
     LIST_SECTION,
     TUTORIAL_SECTION,
@@ -29,7 +26,6 @@ function HomeContent() {
     <>
       <Header />
       <main className="flex min-h-screen flex-col">
-        <HeroSection content={content.HERO_SECTION} />
         {/* Divider */}
         <div className="w-full bg-yellow-bright-01">
           <div className="h-px bg-black" />
@@ -55,7 +51,7 @@ function HomeContent() {
 }
 
 export default function Home() {
-  const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+  const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID as string;
 
   return (
     <GoogleOAuthProvider clientId={clientId}>
