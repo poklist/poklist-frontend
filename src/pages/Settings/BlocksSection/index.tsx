@@ -189,7 +189,7 @@ const BlocksSection: React.FC = () => {
         decription: t`Sign Out`,
         action: () => {
           logout();
-          navigateTo.home();
+          navigateTo.discovery();
         },
       },
     ];
@@ -198,7 +198,7 @@ const BlocksSection: React.FC = () => {
       {
         decription: t`Sign In`,
         action: () => {
-          navigateTo.home();
+          navigateTo.discovery();
         },
       },
     ];

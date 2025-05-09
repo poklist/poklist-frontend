@@ -8,7 +8,7 @@ import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
 import useAuthStore from '@/stores/useAuthStore';
 import useUserStore from '@/stores/useUserStore';
 import React from 'react';
-import { useOutletContext } from 'react-router-dom';
+import { Link, useOutletContext } from 'react-router-dom';
 
 interface HeaderProps {
   className?: string;
@@ -36,12 +36,13 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
           id="header-left"
           className="flex items-center justify-center gap-4"
         >
-          <img
-            src={headerPoklist}
-            alt="Poklist"
-            onClick={() => navigateTo.home()}
-            className="h-8"
-          />
+          <Link to="/discovery" reloadDocument>
+            <img
+              src={headerPoklist}
+              alt="Poklist"
+              className="h-8 cursor-pointer"
+            />
+          </Link>
         </div>
         <div
           id="header-right"

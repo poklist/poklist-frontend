@@ -21,7 +21,7 @@ const SettingsPage: React.FC<SettingsPageProps> = () => {
     if (isLoggedIn) {
       navigateTo.user(me.userCode);
     } else {
-      navigateTo.home();
+      navigateTo.discovery();
     }
   };
 

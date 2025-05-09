@@ -1,6 +1,6 @@
 import mascotPhone from '@/assets/images/mascot/mascot-phone.svg';
 import { LanguageProvider } from '@/lib/languageProvider';
-import Header from '@/pages/Home/Components/Header';
+import Header from '@/components/Header';
 import { Trans } from '@lingui/react/macro';
 
 export default function GoToMobilePage() {

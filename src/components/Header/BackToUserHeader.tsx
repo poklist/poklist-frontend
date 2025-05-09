@@ -30,7 +30,7 @@ const BackToUserHeader: React.FC<IBackToUserHeaderProps> = ({
   };
 
   const onClickLogo = () => {
-    navigateTo.home();
+    navigateTo.discovery();
   };
 
   return (

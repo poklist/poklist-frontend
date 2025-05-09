@@ -55,7 +55,7 @@ export const useEditProfile = ({
     onError: (error: AxiosError<IResponse<any>>) => {
       if (error.response?.status === 401) {
         logout();
-        navigateTo.home();
+        navigateTo.discovery();
         toast({
           title: t`Please login again`,
           variant: 'success',
