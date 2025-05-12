@@ -3,9 +3,14 @@ import SectionTitle from '../SectionTitle';
 import TileList from '../TileList';
 import { OfficialCollection } from '@/types/Discovery';
 import { t } from '@lingui/core/macro';
+import TileSectionSkeleton from './TileSectionSkeleton';
 
 const TileSection = () => {
-  const { officialCollections = [] } = useOfficialCollections({});
+  const { officialCollections = [], isLoading } = useOfficialCollections({});
+
+  if (isLoading) {
+    return <TileSectionSkeleton />;
+  }
 
   return (
     <section className="flex flex-1 flex-col bg-white">

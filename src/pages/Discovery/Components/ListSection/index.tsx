@@ -12,6 +12,7 @@ import {
   ButtonSize,
   ButtonVariant,
 } from '@/components/ui/button';
+import ListSectionSkeleton from './ListSectionSkeleton';
 
 // initial display count
 const INITIAL_DISPLAY_COUNT = 5;
@@ -42,13 +43,12 @@ const ListSection = () => {
     others: t`Lists that just get it`,
   };
 
-  const { categories } = useCategories();
-  const { latestListGroups = {} } = useLatestListGroups({});
-
+  const { categories, categoriesLoading } = useCategories();
+  const { latestListGroups = {}, isLoading: groupsLoading } =
+    useLatestListGroups({});
   const [expandedCategories, setExpandedCategories] = useState<
     Record<string, boolean>
   >({});
-
   const processedListGroups = useMemo(() => {
     const result: Record<string, LatestList[]> = {};
     Object.entries(latestListGroups).forEach(([key, value]) => {
@@ -56,6 +56,10 @@ const ListSection = () => {
     });
     return result;
   }, [latestListGroups]);
+
+  if (categoriesLoading || groupsLoading) {
+    return <ListSectionSkeleton />;
+  }
 
   // expand category
   const expandCategory = (categoryId: number | string) => {
