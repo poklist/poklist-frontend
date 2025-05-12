@@ -477,6 +477,94 @@ msgid "Sign in"
 msgstr "登入"
 
 #: src/pages/Discovery/Components/ListSection/index.tsx
+#: src/pages/Lists/i18n.ts
+msgid "Lifestyle"
+msgstr "生活風格"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+#: src/pages/Home/Components/FeatureSection/index.tsx
+#: src/pages/Lists/i18n.ts
+msgid "Food & Drink"
+msgstr "美食"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+#: src/pages/Home/Components/FeatureSection/index.tsx
+#: src/pages/Lists/i18n.ts
+msgid "Culture"
+msgstr "文化"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+#: src/pages/Home/Components/FeatureSection/index.tsx
+#: src/pages/Lists/i18n.ts
+msgid "Travel"
+msgstr "旅遊"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+#: src/pages/Home/Components/FeatureSection/index.tsx
+#: src/pages/Lists/i18n.ts
+msgid "Entertainment"
+msgstr "娛樂"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+#: src/pages/Home/Components/FeatureSection/index.tsx
+#: src/pages/Lists/i18n.ts
+msgid "Tech & Digital"
+msgstr "數位科技"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+#: src/pages/Home/Components/FeatureSection/index.tsx
+#: src/pages/Lists/i18n.ts
+msgid "Personal Growth"
+msgstr "個人成長"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+#: src/pages/Home/Components/FeatureSection/index.tsx
+#: src/pages/Lists/i18n.ts
+msgid "Health & Fitness"
+msgstr "健康與健身"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+#: src/pages/Settings/BlocksSection/index.tsx
+msgid "Others"
+msgstr "其他"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+msgid "Lists that vibe right"
+msgstr "這 vibe 我可以"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+msgid "Lists that taste like wow"
+msgstr "好想吃吃喝喝"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+msgid "Lists that show your colors"
+msgstr "有點溫度的東西"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+msgid "Lists that go to places"
+msgstr "出去玩耍的私筆記"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+msgid "Lists that stream good times"
+msgstr "耳機一戴，世界走開"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+msgid "Lists that tap into the future"
+msgstr "正在生成的浪潮"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+msgid "Lists that build better you"
+msgstr "慢慢懂的一些事"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+msgid "Lists that make you sweat"
+msgstr "練出好狀態"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+msgid "Lists that just get it"
+msgstr "喜歡的都在這"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
 msgid "<0>Recently updated</0>"
 msgstr "<0>最近更新</0>"
 
@@ -511,6 +599,14 @@ msgstr "，並確認您已年滿 13 歲。"
 #: src/pages/Discovery/Components/SectionTitle/index.tsx
 msgid "<0>{title}</0><1>{subtitle}</1>"
 msgstr ""
+
+#: src/pages/Discovery/Components/TileSection/index.tsx
+msgid "Fresh lists from our pocket"
+msgstr "這些靈感名單超有感"
+
+#: src/pages/Discovery/Components/TileSection/index.tsx
+msgid "Updated weekly"
+msgstr "每週精選更新"
 
 #: src/pages/EditUser/index.tsx
 #: src/pages/EditUser/index.tsx
@@ -584,41 +680,6 @@ msgstr "<0>Poklist 在手機畫面運作更順暢</0><1>使用行動裝置以取
 #: src/pages/Home/Components/FeatureSection/index.tsx
 msgid "Life Style"
 msgstr "生活風格"
-
-#: src/pages/Home/Components/FeatureSection/index.tsx
-#: src/pages/Lists/i18n.ts
-msgid "Food & Drink"
-msgstr "美食"
-
-#: src/pages/Home/Components/FeatureSection/index.tsx
-#: src/pages/Lists/i18n.ts
-msgid "Culture"
-msgstr "文化"
-
-#: src/pages/Home/Components/FeatureSection/index.tsx
-#: src/pages/Lists/i18n.ts
-msgid "Travel"
-msgstr "旅遊"
-
-#: src/pages/Home/Components/FeatureSection/index.tsx
-#: src/pages/Lists/i18n.ts
-msgid "Entertainment"
-msgstr "娛樂"
-
-#: src/pages/Home/Components/FeatureSection/index.tsx
-#: src/pages/Lists/i18n.ts
-msgid "Tech & Digital"
-msgstr "數位科技"
-
-#: src/pages/Home/Components/FeatureSection/index.tsx
-#: src/pages/Lists/i18n.ts
-msgid "Personal Growth"
-msgstr "個人成長"
-
-#: src/pages/Home/Components/FeatureSection/index.tsx
-#: src/pages/Lists/i18n.ts
-msgid "Health & Fitness"
-msgstr "健康與健身"
 
 #: src/pages/Home/Components/FeatureSection/index.tsx
 #: src/pages/Lists/i18n.ts
@@ -854,10 +915,6 @@ msgstr "編輯名單"
 msgid "Please login to do this action"
 msgstr "請先登入以進行此操作"
 
-#: src/pages/Lists/i18n.ts
-msgid "Lifestyle"
-msgstr "生活風格"
-
 #: src/pages/Settings/BlocksSection/index.tsx
 msgid "Select your language!"
 msgstr "選擇您的語言"
@@ -913,10 +970,6 @@ msgstr "加入 Discord 與我們一起優化 Poklist"
 #: src/pages/Settings/BlocksSection/index.tsx
 msgid "Submit feedback or report content"
 msgstr "給予意見或內容檢舉"
-
-#: src/pages/Settings/BlocksSection/index.tsx
-msgid "Others"
-msgstr "其他"
 
 #: src/pages/Settings/BlocksSection/index.tsx
 msgid "About Privacy Policy and Terms of Use"

@@ -5,6 +5,7 @@ import { useLatestListGroups } from '@/hooks/queries/useLatestListGroups';
 import { useMemo, useState } from 'react';
 import { LatestList } from '@/types/Discovery';
 import { Trans } from '@lingui/react/macro';
+import { t } from '@lingui/core/macro';
 import {
   Button,
   ButtonShape,
@@ -12,24 +13,35 @@ import {
   ButtonVariant,
 } from '@/components/ui/button';
 
-const CATEGORY_TITLES: Record<string, string> = {
-  lifestyle: 'Lists that vibe right',
-  food: 'Lists that taste like wow',
-  culture: 'Lists that show your colors',
-  traveling: 'Lists that go to places',
-  entertainment: 'Lists that stream good times',
-  technology: 'Lists that tap into the future',
-  growth: 'Lists that build better you',
-  health: 'Lists that make you sweat',
-  others: 'Lists that just get it',
-};
-
 // initial display count
 const INITIAL_DISPLAY_COUNT = 5;
 // expanded display count
 const EXPANDED_DISPLAY_COUNT = 10;
 
 const ListSection = () => {
+  const CATEGORY_NAMES: Record<string, string> = {
+    lifestyle: t`Lifestyle`,
+    food: t`Food & Drink`,
+    culture: t`Culture`,
+    traveling: t`Travel`,
+    entertainment: t`Entertainment`,
+    technology: t`Tech & Digital`,
+    growth: t`Personal Growth`,
+    health: t`Health & Fitness`,
+    others: t`Others`,
+  };
+  const CATEGORY_TITLES: Record<string, string> = {
+    lifestyle: t`Lists that vibe right`,
+    food: t`Lists that taste like wow`,
+    culture: t`Lists that show your colors`,
+    traveling: t`Lists that go to places`,
+    entertainment: t`Lists that stream good times`,
+    technology: t`Lists that tap into the future`,
+    growth: t`Lists that build better you`,
+    health: t`Lists that make you sweat`,
+    others: t`Lists that just get it`,
+  };
+
   const { categories } = useCategories();
   const { latestListGroups = {} } = useLatestListGroups({});
 
@@ -76,7 +88,7 @@ const ListSection = () => {
           <div key={category.id}>
             <SectionTitle
               title={CATEGORY_TITLES[categoryNameLower]}
-              subtitle={category.name}
+              subtitle={CATEGORY_NAMES[categoryNameLower]}
             />
             <Trans>
               <h2 className="p-4 text-h2 font-bold text-black-text-01">
