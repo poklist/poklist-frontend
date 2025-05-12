@@ -11,7 +11,9 @@ const TileList = ({
   return (
     <Link to={`/`} className="flex flex-col gap-2">
       <header className="flex items-center justify-start">
-        <h1 className="text-t1 font-semibold">{officialCollection.title}</h1>
+        <h1 className="line-clamp-2 text-t1 font-semibold">
+          {officialCollection.title}
+        </h1>
       </header>
       <div>
         <img
@@ -27,7 +29,7 @@ const TileList = ({
             {officialCollection.owner.userCode[0]}
           </AvatarFallback>
         </Avatar>
-        <p className="text-t3 text-black">
+        <p className="line-clamp-1 text-t3 text-black">
           {officialCollection.owner.displayName}
         </p>
       </footer>

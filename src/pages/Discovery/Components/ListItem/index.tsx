@@ -14,7 +14,7 @@ const ListItem = ({ listItem }: { listItem: LatestList }) => {
           <AvatarImage src={listItem.owner.profileImage} />
           <AvatarFallback>{listItem.owner.userCode[0]}</AvatarFallback>
         </Avatar>
-        <p className="text-t1 font-semibold text-black-text-01">
+        <p className="line-clamp-1 text-t1 font-semibold text-black-text-01">
           {listItem.title}
         </p>
       </div>
