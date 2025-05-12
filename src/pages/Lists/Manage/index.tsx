@@ -52,7 +52,9 @@ const ListManagePage: React.FC = () => {
 
   const onReorderIdea = useCallback((event: DropEvent<IdeaPreview>) => {
     if (!event.changed) return;
+
     setIdeasDraft(event.list);
+    setIsOrderModified(event.changed);
   }, []);
 
   const onConfirmReorderIdea = () => {
@@ -71,14 +73,6 @@ const ListManagePage: React.FC = () => {
     if (!list) return;
     setIdeasDraft(list.ideas);
   }, [list]);
-
-  useEffect(() => {
-    if (!ideasDraft || !list?.ideas) return;
-    const isModified = ideasDraft.some(
-      (idea, index) => idea.id !== list.ideas[index]?.id
-    );
-    setIsOrderModified(isModified);
-  }, [ideasDraft, list?.ideas]);
 
   useEffect(() => {
     if (isListLoading || isReorderIdeasLoading || isDeleteListLoading) {
