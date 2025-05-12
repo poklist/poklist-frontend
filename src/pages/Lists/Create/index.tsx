@@ -8,11 +8,7 @@ import { ListBody } from '@/types/List';
 import { Trans } from '@lingui/react/macro';
 import React, { useEffect } from 'react';
 
-interface CreatePageProps {
-  // Add any props you need for the page
-}
-
-const CreatePage: React.FC<CreatePageProps> = () => {
+const CreatePage: React.FC = () => {
   const navigateTo = useStrictNavigate();
   const { setIsLoading } = useCommonStore();
   const { me } = useUserStore();
@@ -35,7 +31,7 @@ const CreatePage: React.FC<CreatePageProps> = () => {
     }
   }, [isCreateListLoading, setIsLoading]);
 
-  const onCreateList = async (listData: ListBody) => {
+  const onCreateList = (listData: ListBody) => {
     createList(listData, {
       onSuccess: (data) => {
         if (!data) {
