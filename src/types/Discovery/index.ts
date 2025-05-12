@@ -5,6 +5,7 @@ interface ListOwner {
   id: number;
   profileImage: string;
   userCode: string;
+  displayName: string;
 }
 
 export interface OfficialCollection {

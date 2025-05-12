@@ -85,24 +85,24 @@ msgid "Upload a cover"
 msgstr "封面圖片"
 
 #: src/constants/Home/index.en.ts
-msgid "Join Poklist and share your lists."
-msgstr "加入 Poklist，分享靈感！"
+#~ msgid "Join Poklist and share your lists."
+#~ msgstr "加入 Poklist，分享靈感！"
 
 #: src/constants/Home/index.en.ts
-msgid "Currently open only to creator account applications."
-msgstr "目前僅開放創作者申請帳號"
+#~ msgid "Currently open only to creator account applications."
+#~ msgstr "目前僅開放創作者申請帳號"
 
 #: src/constants/Home/index.en.ts
-msgid "Sign up"
-msgstr "快速申請"
+#~ msgid "Sign up"
+#~ msgstr "快速申請"
 
 #: src/constants/Home/index.en.ts
-msgid "Creator Account Login"
-msgstr "創作者帳號登入"
+#~ msgid "Creator Account Login"
+#~ msgstr "創作者帳號登入"
 
 #: src/constants/Home/index.en.ts
-msgid "Can non-creators use Poklist?"
-msgstr "非創作者也能加入嗎？"
+#~ msgid "Can non-creators use Poklist?"
+#~ msgstr "非創作者也能加入嗎？"
 
 #: src/constants/Home/index.en.ts
 msgid "List Your Ideas"
@@ -460,6 +460,58 @@ msgstr "請重新登入"
 msgid "The app is outdated, please login again"
 msgstr "網頁更新，請重新登入"
 
+#: src/pages/Discovery/Components/FooterSection/index.tsx
+msgid "<0>Your lists say more than posts ever could.</0><1><2>Next wave of content</2><3/></1>"
+msgstr "<0>你的生活精選，比誰都有料</0><1><2>下個內容浪潮</2><3/></1>"
+
+#: src/pages/Discovery/Components/HeaderSection/index.tsx
+msgid "<0>My life in my lists</0><1>Invitation only. Ready to join?</1>"
+msgstr "<0>靈感都在我的名單裡</0><1>歡迎受邀朋友申請帳號！</1>"
+
+#: src/pages/Discovery/Components/HeaderSection/index.tsx
+msgid "Create your account"
+msgstr "申請帳號"
+
+#: src/pages/Discovery/Components/HeaderSection/index.tsx
+msgid "Sign in"
+msgstr "登入"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+msgid "<0>Recently updated</0>"
+msgstr "<0>最近更新</0>"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+msgid "See more"
+msgstr "展開更多"
+
+#: src/pages/Discovery/Components/LoginDrawer/index.tsx
+msgid "New to Relist? Get started!"
+msgstr "第一次登入 RELIST ？立即申請"
+
+#: src/pages/Discovery/Components/LoginDrawer/index.tsx
+msgid "By continuing, you agree to our"
+msgstr "登入或註冊即表示您已閱讀並同意我們的"
+
+#: src/pages/Discovery/Components/LoginDrawer/index.tsx
+msgid "Terms of Service"
+msgstr "《使用者條款》"
+
+#: src/pages/Discovery/Components/LoginDrawer/index.tsx
+msgid ","
+msgstr "與"
+
+#: src/pages/Discovery/Components/LoginDrawer/index.tsx
+msgid "Privacy Policy."
+msgstr "《隱私權保護政策》"
+
+#: src/pages/Discovery/Components/LoginDrawer/index.tsx
+msgid "You confirm you're 13+."
+msgstr "，並確認您已年滿 13 歲。"
+
+#: src/pages/Discovery/Components/SectionTitle/index.tsx
+msgid "<0>{title}</0><1>{subtitle}</1>"
+msgstr ""
+
 #: src/pages/EditUser/index.tsx
 #: src/pages/EditUser/index.tsx
 msgid "Name"
@@ -578,15 +630,9 @@ msgstr "其他"
 msgid "Lists"
 msgstr "名單"
 
-#: src/pages/Home/Components/Header/index.tsx
-#: src/pages/Settings/BlocksSection/index.tsx
-#: src/pages/Settings/BlocksSection/index.tsx
-msgid "Sign In"
-msgstr "登入"
-
 #: src/pages/Home/Components/LoginDrawer/index.tsx
-msgid "Sign in to Poklist with Google"
-msgstr "使用 Google 帳號登入 Poklist"
+#~ msgid "Sign in to Poklist with Google"
+#~ msgstr "使用 Google 帳號登入 Poklist"
 
 #: src/pages/Idea/Components/DeleteButton/index.tsx
 msgid "Are you sure you want to delete this idea?"
@@ -875,6 +921,11 @@ msgstr "其他"
 #: src/pages/Settings/BlocksSection/index.tsx
 msgid "About Privacy Policy and Terms of Use"
 msgstr "關於隱私政策與使用條款"
+
+#: src/pages/Settings/BlocksSection/index.tsx
+#: src/pages/Settings/BlocksSection/index.tsx
+msgid "Sign In"
+msgstr "登入"
 
 #: src/pages/Settings/BlocksSection/index.tsx
 msgid "Delete Account"

@@ -28,7 +28,7 @@ const TileList = ({
           </AvatarFallback>
         </Avatar>
         <p className="text-t3 text-black">
-          {officialCollection.owner.userCode}
+          {officialCollection.owner.displayName}
         </p>
       </footer>
     </Link>

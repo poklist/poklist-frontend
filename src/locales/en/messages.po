@@ -85,24 +85,24 @@ msgid "Upload a cover"
 msgstr "Upload a cover"
 
 #: src/constants/Home/index.en.ts
-msgid "Join Poklist and share your lists."
-msgstr "Join Poklist and share your lists."
+#~ msgid "Join Poklist and share your lists."
+#~ msgstr "Join Poklist and share your lists."
 
 #: src/constants/Home/index.en.ts
-msgid "Currently open only to creator account applications."
-msgstr "Currently open only to creator account applications."
+#~ msgid "Currently open only to creator account applications."
+#~ msgstr "Currently open only to creator account applications."
 
 #: src/constants/Home/index.en.ts
-msgid "Sign up"
-msgstr "Sign up"
+#~ msgid "Sign up"
+#~ msgstr "Sign up"
 
 #: src/constants/Home/index.en.ts
-msgid "Creator Account Login"
-msgstr "Creator Account Login"
+#~ msgid "Creator Account Login"
+#~ msgstr "Creator Account Login"
 
 #: src/constants/Home/index.en.ts
-msgid "Can non-creators use Poklist?"
-msgstr "Can non-creators use Poklist?"
+#~ msgid "Can non-creators use Poklist?"
+#~ msgstr "Can non-creators use Poklist?"
 
 #: src/constants/Home/index.en.ts
 msgid "List Your Ideas"
@@ -460,6 +460,58 @@ msgstr "Please login again"
 msgid "The app is outdated, please login again"
 msgstr "The app is outdated, please login again"
 
+#: src/pages/Discovery/Components/FooterSection/index.tsx
+msgid "<0>Your lists say more than posts ever could.</0><1><2>Next wave of content</2><3/></1>"
+msgstr "<0>Your lists say more than posts ever could.</0><1><2>Next wave of content</2><3/></1>"
+
+#: src/pages/Discovery/Components/HeaderSection/index.tsx
+msgid "<0>My life in my lists</0><1>Invitation only. Ready to join?</1>"
+msgstr "<0>My life in my lists</0><1>Invitation only. Ready to join?</1>"
+
+#: src/pages/Discovery/Components/HeaderSection/index.tsx
+msgid "Create your account"
+msgstr "Create your account"
+
+#: src/pages/Discovery/Components/HeaderSection/index.tsx
+msgid "Sign in"
+msgstr "Sign in"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+msgid "<0>Recently updated</0>"
+msgstr "<0>Recently updated</0>"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+msgid "See more"
+msgstr "See more"
+
+#: src/pages/Discovery/Components/LoginDrawer/index.tsx
+msgid "New to Relist? Get started!"
+msgstr "New to Relist? Get started!"
+
+#: src/pages/Discovery/Components/LoginDrawer/index.tsx
+msgid "By continuing, you agree to our"
+msgstr "By continuing, you agree to our"
+
+#: src/pages/Discovery/Components/LoginDrawer/index.tsx
+msgid "Terms of Service"
+msgstr "Terms of Service"
+
+#: src/pages/Discovery/Components/LoginDrawer/index.tsx
+msgid ","
+msgstr ","
+
+#: src/pages/Discovery/Components/LoginDrawer/index.tsx
+msgid "Privacy Policy."
+msgstr "Privacy Policy."
+
+#: src/pages/Discovery/Components/LoginDrawer/index.tsx
+msgid "You confirm you're 13+."
+msgstr "You confirm you're 13+."
+
+#: src/pages/Discovery/Components/SectionTitle/index.tsx
+msgid "<0>{title}</0><1>{subtitle}</1>"
+msgstr "<0>{title}</0><1>{subtitle}</1>"
+
 #: src/pages/EditUser/index.tsx
 #: src/pages/EditUser/index.tsx
 msgid "Name"
@@ -578,15 +630,9 @@ msgstr "Other"
 msgid "Lists"
 msgstr "Lists"
 
-#: src/pages/Home/Components/Header/index.tsx
-#: src/pages/Settings/BlocksSection/index.tsx
-#: src/pages/Settings/BlocksSection/index.tsx
-msgid "Sign In"
-msgstr "Sign In"
-
 #: src/pages/Home/Components/LoginDrawer/index.tsx
-msgid "Sign in to Poklist with Google"
-msgstr "Sign in to Poklist with Google"
+#~ msgid "Sign in to Poklist with Google"
+#~ msgstr "Sign in to Poklist with Google"
 
 #: src/pages/Idea/Components/DeleteButton/index.tsx
 msgid "Are you sure you want to delete this idea?"
@@ -875,6 +921,11 @@ msgstr "Others"
 #: src/pages/Settings/BlocksSection/index.tsx
 msgid "About Privacy Policy and Terms of Use"
 msgstr "About Privacy Policy and Terms of Use"
+
+#: src/pages/Settings/BlocksSection/index.tsx
+#: src/pages/Settings/BlocksSection/index.tsx
+msgid "Sign In"
+msgstr "Sign In"
 
 #: src/pages/Settings/BlocksSection/index.tsx
 msgid "Delete Account"

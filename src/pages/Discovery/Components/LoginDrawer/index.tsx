@@ -26,7 +26,7 @@ export const LoginDrawer = ({
 
   useEffect(() => {
     const updateWidth = () => {
-      setButtonWidth(window.innerWidth - 56);
+      setButtonWidth(window.innerWidth - 144);
     };
 
     updateWidth();
@@ -56,8 +56,11 @@ export const LoginDrawer = ({
 
   return (
     <Drawer open={isOpen} onOpenChange={onClose}>
-      <DrawerContent className="rounded-t-lg bg-white px-0 py-0">
-        <div className="flex flex-col justify-center gap-5 px-7 pt-9">
+      <DrawerContent
+        aria-describedby="login-drawer-description"
+        className="bg-white px-0 py-0"
+      >
+        <div className="flex flex-col justify-center gap-6 px-[72px] pt-8">
           <GoogleLogin
             onSuccess={(credentialResponse) => {
               void handleGoogleLogin(credentialResponse);
@@ -65,38 +68,31 @@ export const LoginDrawer = ({
             onError={onError}
             useOneTap={false}
             type="standard"
-            theme="filled_black"
+            theme="outline"
             size="large"
             text="signin_with"
-            shape="rectangular"
+            shape="pill"
             width={buttonWidth.toString()}
           />
           <Button
-            variant={ButtonVariant.WHITE}
+            variant={ButtonVariant.BLACK}
             size={ButtonSize.LG}
-            shape={ButtonShape.ROUNDED_8PX}
+            shape={ButtonShape.ROUNDED_FULL}
             onClick={() => {}}
           >
-            <Trans>首次使用Relist？立即申請</Trans>
+            <Trans>New to Relist? Get started!</Trans>
           </Button>
         </div>
-        <div className="px-12 py-8 text-center text-sm text-[#909090]">
-          <Trans>登入或註冊時，表示你已閱讀並同意Relist</Trans>
-          <a
-            href="#"
-            target="_blank"
-            className="text-[#1989B9] hover:underline"
-          >
-            <Trans>資料使用條款</Trans>
+        <div className="px-[50px] pb-8 pt-6 text-center text-sm text-[#909090]">
+          <Trans>By continuing, you agree to our</Trans>
+          <a href="#" target="_blank" className="text-black-text-01">
+            <Trans>Terms of Service</Trans>
           </a>
-          <Trans>與</Trans>
-          <a
-            href="#"
-            target="_blank"
-            className="text-[#1989B9] hover:underline"
-          >
-            <Trans>服務使用條款</Trans>
+          <Trans>,</Trans>
+          <a href="#" target="_blank" className="text-black-text-01">
+            <Trans>Privacy Policy.</Trans>
           </a>
+          <Trans>You confirm you&apos;re 13+.</Trans>
         </div>
       </DrawerContent>
     </Drawer>

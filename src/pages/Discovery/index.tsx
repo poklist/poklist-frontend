@@ -3,6 +3,7 @@ import { HeaderSection } from './Components/HeaderSection';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import TileSection from './Components/TileSection';
 import ListSection from './Components/ListSection';
+import FooterSection from './Components/FooterSection';
 
 const DiscoveryContent = () => {
   return (
@@ -11,6 +12,7 @@ const DiscoveryContent = () => {
       <HeaderSection />
       <TileSection />
       <ListSection />
+      <FooterSection />
     </>
   );
 };

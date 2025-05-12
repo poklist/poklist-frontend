@@ -80,7 +80,7 @@ export const HeaderSection = () => {
                 )
               }
             >
-              <Trans>Get started</Trans>
+              <Trans>Create your account</Trans>
             </Button>
             <Button
               variant={ButtonVariant.WHITE}
