@@ -1,4 +1,4 @@
-import logo from '@/assets/images/logo-big.svg';
+import Header from '@/components/Header';
 import {
   FEATURE_SECTION,
   FOOTER_SECTION,
@@ -10,8 +10,6 @@ import {
 import { Divider } from './Components/Divider';
 import { FeatureSection } from './Components/FeatureSection';
 import { Footer } from './Components/Footer';
-import Header from './Components/Header';
-import { HeroSection } from './Components/HeroSection';
 import { TutorialSection } from './Components/TutorialSection';
 
 export default function Home() {
@@ -26,13 +24,8 @@ export default function Home() {
 
   return (
     <>
-      <Header />
+      <Header className="bg-transparent" />
       <main className="flex min-h-screen flex-col">
-        <HeroSection content={content.HERO_SECTION} />
-        {/* Divider */}
-        <div className="w-full bg-yellow-bright-01">
-          <div className="h-px bg-black" />
-        </div>
         <FeatureSection
           content={content.FEATURE_SECTION}
           listContent={content.LIST_SECTION}
@@ -40,10 +33,6 @@ export default function Home() {
         <Divider />
         <TutorialSection content={content.TUTORIAL_SECTION} />
         <Divider />
-        {/* Logo */}
-        <div className="flex justify-center bg-yellow-bright-01 pb-4">
-          <img src={logo} alt="Poklist Logo" className="h-[150.84px]" />
-        </div>
         <Footer
           content={content.FOOTER_SECTION}
           socialMedia={content.SOCIAL_MEDIA}

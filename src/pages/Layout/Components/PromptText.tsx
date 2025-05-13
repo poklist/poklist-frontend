@@ -8,7 +8,7 @@ const PromptText = () => {
       <img src={phoneMobile} alt="Device Phone Mobile" className="h-5" />
       <p className="text-start text-t1 font-bold text-black-text-01">
         <Trans>
-          Poklist works best on mobile. Use a mobile device for the best
+          Relist works best on mobile. Use a mobile device for the best
           experience.
         </Trans>
       </p>

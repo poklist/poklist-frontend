@@ -1,4 +1,4 @@
-import headerP from '@/assets/images/header-p.svg';
+import logoR from '@/assets/images/logo-r.svg';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import IconLeftArrow from '@/components/ui/icons/LeftArrowIcon';
 import useStrictNavigate from '@/hooks/useStrictNavigate';
@@ -60,7 +60,7 @@ const BackToUserHeader: React.FC<IBackToUserHeaderProps> = ({
           id="header-left"
           className="flex items-center justify-center gap-1"
         >
-          <img src={headerP} alt="P" onClick={handleClickLogo} />
+          <img src={logoR} alt="P" onClick={handleClickLogo} />
           {owner && (
             <div
               className="flex items-center justify-center"

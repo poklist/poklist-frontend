@@ -1,11 +1,10 @@
-import logo from '@/assets/images/logo-big.svg';
 import { IMAGES } from '@/constants/Home/images';
 import { Language } from '@/enums/index.enum';
 import { FeatureListSection, FeatureSectionContent } from '@/types/Home';
 import { MessageDescriptor } from '@lingui/core';
 import { msg, t } from '@lingui/core/macro';
 import { Trans, useLingui } from '@lingui/react';
-import { useMemo, useRef, useState, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 interface FeatureSectionProps {
   content: FeatureSectionContent;
@@ -104,63 +103,17 @@ export const FeatureSection = ({
   }, [selectedList.lists, getTranslatedAndTruncated]);
 
   return (
-    <section className="relative flex flex-col gap-2 bg-yellow-bright-01 px-4 pb-6 pt-14">
-      {/* Decorative Images */}
-      <div id="decorative-images">
-        <img
-          src={IMAGES.feature.rightTop}
-          alt=""
-          className="absolute right-7 top-9 h-[42px] w-[54px]"
-        />
-        <img
-          src={IMAGES.feature.rightMid}
-          alt=""
-          className="absolute right-12 top-[114px] h-[34px] w-[35px]"
-        />
-        <img
-          src={IMAGES.feature.rightBottom}
-          alt=""
-          className="absolute right-6 top-64 h-11 w-11"
-        />
-        <img
-          src={IMAGES.feature.midTop}
-          alt=""
-          className="absolute left-[166px] top-6 h-8 w-8"
-        />
-        <img
-          src={IMAGES.feature.leftTop}
-          alt=""
-          className="absolute left-9 top-12 h-8 w-[37px]"
-        />
-        <img
-          src={IMAGES.feature.leftMid}
-          alt=""
-          className="absolute left-4 top-[114px] h-20 w-20"
-        />
-        <img
-          src={IMAGES.feature.leftBottom}
-          alt=""
-          className="absolute left-16 top-[17rem] h-14 w-14"
-        />
-      </div>
-
-      {/* Logo */}
-      <img
-        src={logo}
-        alt="Poklist Logo"
-        className="z-10 h-24 w-60 self-center"
-      />
-
+    <section className="relative flex flex-col bg-yellow-bright-01 px-4 pb-6 pt-6">
       {/* Feature Section Title */}
-      <h1 className="mt-4 text-center text-h1 font-bold">
+      <h1 className="text-center text-h1 font-extrabold">
         <Trans id={content.title.id} />
       </h1>
-      <p className="mb-8 px-4 text-center text-h2 font-bold">
+      <p className="mt-2 px-4 text-center text-h2 font-bold">
         <Trans id={content.description.id} />
       </p>
 
       {/* List Content */}
-      <div className="mx-6 mb-4 mt-6 rounded-3xl border-[1px] border-black bg-white px-4 py-8">
+      <div className="mx-6 mb-4 mt-4 rounded-3xl border-[1px] border-black bg-white px-4 py-8">
         <div className="mb-4 flex items-center gap-1">
           <img
             src={selectedList.userAvatar}

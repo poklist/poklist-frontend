@@ -3,13 +3,14 @@ import { LoginDrawer } from '@/components/Drawer/LoginDrawer';
 import { ErrorDrawer } from '@/components/ErrorDrawer';
 import LoadingSpinner from '@/components/Loading';
 import useStrictNavigate from '@/hooks/useStrictNavigate';
-import { LoginErrorDialog } from '@/pages/Home/Components/ErrorDialog';
+import { cn } from '@/lib/utils';
 import useCommonStore from '@/stores/useCommonStore';
 import { useUIStore } from '@/stores/useUIStore';
 import { User } from '@/types/User';
+import { t } from '@lingui/core/macro';
 import { GoogleOAuthProvider } from '@react-oauth/google';
-import { useEffect, useRef, useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { useEffect, useRef } from 'react';
+import { Outlet, useLocation } from 'react-router-dom';
 
 // 主要內容區域組件
 const MainContent = () => {
@@ -23,7 +24,7 @@ const MainContent = () => {
     setIsLoginDrawerOpen,
   } = useCommonStore();
   const { setScrollToTop } = useUIStore();
-  const [showErrorDialog, setShowErrorDialog] = useState(false);
+  const isHomePage = useLocation().pathname === '/home';
 
   const mainContentRef = useRef<HTMLDivElement>(null);
 
@@ -36,15 +37,19 @@ const MainContent = () => {
   const handleGoogleLogin = async (user: User) => {
     if (!user) {
       setIsLoginDrawerOpen(false);
-      setErrorDrawerMessage({
-        title: 'Login Error - Creator Account Not Found',
-        content:
-          'Only approved and verified “Creator Accounts” can log in and create lists. If you have any questions, please contact us.',
-      });
+      handleLoginError();
       return;
     }
     setIsLoginDrawerOpen(false);
     navigateTo.user(user.userCode);
+  };
+
+  const handleLoginError = () => {
+    setIsLoginDrawerOpen(false);
+    setErrorDrawerMessage({
+      title: t`Right now, only invited users can log in`,
+      content: t`Already got your invite? Jump in and apply now!`,
+    });
   };
 
   return (
@@ -56,7 +61,12 @@ const MainContent = () => {
         <div
           ref={mainContentRef}
           id="main-content"
-          className="-mr-[3.8px] flex-1 overflow-x-hidden overflow-y-scroll bg-white"
+          className={cn(
+            '-mr-[3.8px] flex-1 overflow-x-hidden overflow-y-scroll bg-white',
+            {
+              'bg-yellow-bright-01': isHomePage,
+            }
+          )}
         >
           <Outlet />
         </div>
@@ -70,15 +80,9 @@ const MainContent = () => {
           isOpen={isLoginDrawerOpen}
           onClose={() => setIsLoginDrawerOpen(false)}
           onLogin={handleGoogleLogin}
-          onError={() => setShowErrorDialog(true)}
+          onError={handleLoginError}
         />
       </GoogleOAuthProvider>
-
-      {/* FUTURE: Extract to a common component */}
-      <LoginErrorDialog
-        open={showErrorDialog}
-        onOpenChange={setShowErrorDialog}
-      />
     </div>
   );
 };
