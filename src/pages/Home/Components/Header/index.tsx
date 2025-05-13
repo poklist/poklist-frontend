@@ -1,20 +1,15 @@
 // FUTURE: merge with src/components/Header/index.tsx
 import headerLogo from '@/assets/images/header-poklist.svg';
+import { LanguageToggleButton } from '@/components/Language';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button, ButtonSize, ButtonVariant } from '@/components/ui/button';
 import useStrictNavigate from '@/hooks/useStrictNavigate';
-import axios from '@/lib/axios';
-import { LanguageToggleButton } from '@/lib/languageProvider';
 import { cn } from '@/lib/utils';
 import useAuthStore from '@/stores/useAuthStore';
+import useCommonStore from '@/stores/useCommonStore';
+import { useUIStore } from '@/stores/useUIStore';
 import useUserStore from '@/stores/useUserStore';
-import { LoginInfo } from '@/types/Home';
-import { IResponse } from '@/types/response';
 import { Trans } from '@lingui/react/macro';
-import { CredentialResponse } from '@react-oauth/google';
-import { useState } from 'react';
-import { ErrorDialog } from '../ErrorDialog';
-import { LoginDrawer } from '../LoginDrawer';
 
 interface HeaderProps {
   className?: string;
@@ -22,49 +17,16 @@ interface HeaderProps {
 
 const Header = ({ className }: HeaderProps) => {
   const navigateTo = useStrictNavigate();
-  const { login, isLoggedIn } = useAuthStore();
-  const { setMe, me } = useUserStore();
-  const [showCustomLogin, setShowCustomLogin] = useState(false);
-  const [showErrorDialog, setShowErrorDialog] = useState(false);
-
-  const handleGoogleLogin = async (response: CredentialResponse) => {
-    try {
-      const res = await axios.post<IResponse<LoginInfo>>('/auth/google', {
-        idToken: response.credential,
-      });
-      if (!res.data.content?.accessToken) {
-        throw new Error('No access token');
-      }
-      login(res.data.content?.accessToken);
-      const userData = res.data.content?.user;
-      setMe(userData);
-      setShowCustomLogin(false);
-      navigateTo.user(userData.userCode);
-    } catch (error) {
-      setShowCustomLogin(false);
-      setShowErrorDialog(true);
-    }
-  };
-
+  const { isLoggedIn } = useAuthStore();
+  const { me } = useUserStore();
+  const { setIsLoginDrawerOpen } = useCommonStore();
+  const { scrollToTop } = useUIStore();
   const handleSignIn = () => {
-    setShowCustomLogin(true);
+    setIsLoginDrawerOpen(true);
   };
 
   return (
     <>
-      <LoginDrawer
-        isOpen={showCustomLogin}
-        onClose={() => setShowCustomLogin(false)}
-        onLogin={handleGoogleLogin}
-        onError={() => setShowErrorDialog(true)}
-      />
-
-      <ErrorDialog
-        open={showErrorDialog}
-        onOpenChange={setShowErrorDialog}
-        onClose={() => setShowCustomLogin(false)}
-      />
-
       <header
         id="home-header"
         className={cn('sticky top-0 z-50 w-full', className)}
@@ -74,7 +36,7 @@ const Header = ({ className }: HeaderProps) => {
             src={headerLogo}
             alt="Poklist"
             className="h-8"
-            onClick={() => navigateTo.home()}
+            onClick={scrollToTop}
           />
           <div className="flex items-center gap-4">
             <LanguageToggleButton />

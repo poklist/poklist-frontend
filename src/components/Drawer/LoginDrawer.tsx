@@ -1,23 +1,26 @@
-import { Trans } from '@lingui/react/macro';
-import { GoogleLogin, CredentialResponse } from '@react-oauth/google';
-import axios from '@/lib/axios';
-import { IResponse } from '@/types/response';
-import { Drawer, DrawerContent } from '@/components/ui/drawer';
 import {
   Button,
   ButtonShape,
   ButtonSize,
   ButtonVariant,
 } from '@/components/ui/button';
+import { Drawer, DrawerContent } from '@/components/ui/drawer';
+import { ExternalLinks } from '@/constants/externalLink';
+import axios from '@/lib/axios';
+import { openWindow } from '@/lib/openLink';
 import useAuthStore from '@/stores/useAuthStore';
 import useUserStore from '@/stores/useUserStore';
-import { useEffect, useState } from 'react';
+import { IResponse } from '@/types/response';
 import { User } from '@/types/User';
+import { i18n } from '@lingui/core';
+import { Trans } from '@lingui/react/macro';
+import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
+import { useEffect, useState } from 'react';
 
 export interface LoginDrawerProps {
   isOpen: boolean;
   onClose: () => void;
-  onLogin: (success: boolean) => void;
+  onLogin: (user: User) => void;
   onError: () => void;
 }
 export interface LoginInfo {
@@ -56,9 +59,7 @@ export const LoginDrawer = ({
       login(res.data.content?.accessToken);
       const userData = res.data.content?.user;
       setMe(userData);
-
-      // callback to notify parent component of successful login and pass user ID
-      onLogin(true);
+      onLogin(userData);
     } catch (error) {
       console.error('Google login failed:', error);
       onError();
@@ -89,21 +90,35 @@ export const LoginDrawer = ({
             variant={ButtonVariant.BLACK}
             size={ButtonSize.LG}
             shape={ButtonShape.ROUNDED_FULL}
-            onClick={() => {}}
+            onClick={() => openWindow(ExternalLinks.SIGNUP)}
           >
             <Trans>New to Relist? Get started!</Trans>
           </Button>
         </div>
-        <div className="px-[50px] pb-8 pt-6 text-center text-sm text-[#909090]">
-          <Trans>By continuing, you agree to our</Trans>
-          <a href="#" target="_blank" className="text-black-text-01">
-            <Trans>Terms of Service</Trans>
-          </a>
-          <Trans>,</Trans>
-          <a href="#" target="_blank" className="text-black-text-01">
-            <Trans>Privacy Policy.</Trans>
-          </a>
-          <Trans>You confirm you&apos;re 13+.</Trans>
+        <div className="px-[50px] pb-8 pt-6 text-center text-[13px] text-[#909090]">
+          <Trans>
+            By continuing, you agree to our{' '}
+            <span
+              className={
+                'cursor-pointer text-black-text-01' +
+                (i18n.locale === 'en' ? ' underline decoration-[#909090]' : '')
+              }
+              onClick={() => openWindow(ExternalLinks.TERMS)}
+            >
+              Terms of Service
+            </span>
+            ,{' '}
+            <span
+              className={
+                'cursor-pointer text-black-text-01' +
+                (i18n.locale === 'en' ? ' underline decoration-[#909090]' : '')
+              }
+              onClick={() => openWindow(ExternalLinks.PRIVACY)}
+            >
+              Privacy Policy
+            </span>
+            . You confirm you&apos;re 13+.
+          </Trans>
         </div>
       </DrawerContent>
     </Drawer>

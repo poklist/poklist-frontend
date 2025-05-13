@@ -6,12 +6,28 @@ import { i18n } from '@lingui/core';
 import { I18nProvider, useLingui } from '@lingui/react';
 import { Fragment, useEffect, useState } from 'react';
 
+/**
+ * Activates a specific language in the application
+ *
+ * This asynchronously loads the messages for the specified locale
+ * and then activates the language in the i18n system.
+ *
+ * @param locale - The language code to activate
+ */
 export async function activateI18n(locale: Language) {
-  const { messages } = await import(`../locales/${locale}/messages.ts`);
+  const { messages } = await import(`../../locales/${locale}/messages.ts`);
   i18n.load(locale, messages);
   i18n.activate(locale);
 }
 
+/**
+ * A component that forces re-rendering when the locale changes
+ *
+ * This is necessary to ensure that string translations are updated
+ * when the language changes.
+ *
+ * @internal This is an internal component not meant for direct usage
+ */
 const WatchLocale = ({ children }: { children: React.ReactNode }) => {
   const { i18n: lingui } = useLingui();
   // Skip render when locale isn't loaded
@@ -23,6 +39,20 @@ const WatchLocale = ({ children }: { children: React.ReactNode }) => {
   return <Fragment key={lingui.locale}>{children}</Fragment>;
 };
 
+/**
+ * Main Language Provider component
+ *
+ * This component should wrap any part of your application that requires
+ * internationalization. It loads the user's preferred language from localStorage
+ * or defaults to English if none is found.
+ *
+ * @example
+ * ```tsx
+ * <LanguageProvider>
+ *   <App />
+ * </LanguageProvider>
+ * ```
+ */
 export const LanguageProvider = ({
   children,
 }: {
@@ -49,14 +79,30 @@ export const LanguageProvider = ({
   );
 };
 
+// Available language options for the selectors
 const i18nOptions = [
   { label: 'English', value: Language.EN },
   { label: '繁體中文', value: Language.ZH_TW },
 ];
+
+/**
+ * Changes the active language and stores the selection in localStorage
+ *
+ * @param value - The language code to activate
+ */
 const atSelectedLanguage = (value: Language) => {
   activateI18n(value);
   setLocalStorage(LocalStorageKey.SELECTED_LANGUAGE, value);
 };
+
+/**
+ * A dropdown selector for choosing the application language
+ *
+ * @example
+ * ```tsx
+ * <LanguageSelector />
+ * ```
+ */
 export const LanguageSelector: React.FC = () => {
   const [language, setLanguage] = useState(Language.EN);
 
@@ -82,6 +128,17 @@ export const LanguageSelector: React.FC = () => {
   );
 };
 
+/**
+ * A simple button that toggles between available languages
+ *
+ * This component provides a more compact alternative to the full LanguageSelector.
+ * It cycles through available languages when clicked.
+ *
+ * @example
+ * ```tsx
+ * <LanguageToggleButton />
+ * ```
+ */
 export const LanguageToggleButton: React.FC = () => {
   const [language, setLanguage] = useState(Language.EN);
 

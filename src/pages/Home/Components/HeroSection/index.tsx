@@ -9,7 +9,7 @@ import { Trans } from '@lingui/react';
 import { CredentialResponse } from '@react-oauth/google';
 import { ChevronRight } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import { ErrorDialog } from '../ErrorDialog';
+import { LoginErrorDialog } from '../ErrorDialog';
 import { LoginDrawer } from '../LoginDrawer';
 export const HeroSection = ({ content }: HeroSectionProps) => {
   const navigateTo = useStrictNavigate();
@@ -89,7 +89,7 @@ export const HeroSection = ({ content }: HeroSectionProps) => {
         onError={() => setShowErrorDialog(true)}
       />
 
-      <ErrorDialog
+      <LoginErrorDialog
         open={showErrorDialog}
         onOpenChange={setShowErrorDialog}
         onClose={() => setShowCustomLogin(false)}

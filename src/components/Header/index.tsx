@@ -49,6 +49,7 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
         >
           {!isLoggedIn && (
             <Button
+              size={ButtonSize.SM}
               variant={ButtonVariant.WHITE}
               onClick={() => navigateTo.home()}
             >

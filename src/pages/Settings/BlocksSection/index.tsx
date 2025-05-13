@@ -1,8 +1,8 @@
 import { DrawerComponent, useDrawer } from '@/components/Drawer';
+import { activateI18n } from '@/components/Language';
 import { DrawerIds } from '@/constants/Drawer';
 import { Language, LocalStorageKey, Location } from '@/enums/index.enum';
 import useStrictNavigate from '@/hooks/useStrictNavigate';
-import { activateI18n } from '@/lib/languageProvider';
 import { getLocalStorage, setLocalStorage } from '@/lib/utils';
 import useAuthStore from '@/stores/useAuthStore';
 import { ILinksBlock } from '@/types/Settings';

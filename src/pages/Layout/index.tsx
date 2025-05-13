@@ -1,8 +1,8 @@
 import { DrawerProvider } from '@/components/Drawer';
 import { FakePageProvider } from '@/components/FakePage';
+import { LanguageProvider } from '@/components/Language';
 import useCheckStorage from '@/hooks/useCheckStorage';
 import useStrictNavigate from '@/hooks/useStrictNavigate';
-import { LanguageProvider } from '@/lib/languageProvider';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import Background from './Components/Background';

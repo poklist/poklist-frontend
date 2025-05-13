@@ -20,6 +20,14 @@ msgstr ""
 msgid "<0>{0}</0>"
 msgstr ""
 
+#: src/components/Drawer/LoginDrawer.tsx
+msgid "New to Relist? Get started!"
+msgstr "New to Relist? Get started!"
+
+#: src/components/Drawer/LoginDrawer.tsx
+msgid "By continuing, you agree to our <0>Terms of Service</0>, <1>Privacy Policy</1>. You confirm you're 13+."
+msgstr "By continuing, you agree to our <0>Terms of Service</0>, <1>Privacy Policy</1>. You confirm you're 13+."
+
 #. js-lingui-explicit-id
 #: src/components/FakePage/EditFieldFakePage.tsx
 #~ msgid "Enter your text here"

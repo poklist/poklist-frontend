@@ -7,7 +7,6 @@ import {
   SOCIAL_MEDIA,
   TUTORIAL_SECTION,
 } from '@/constants/Home/index.en';
-import { GoogleOAuthProvider } from '@react-oauth/google';
 import { Divider } from './Components/Divider';
 import { FeatureSection } from './Components/FeatureSection';
 import { Footer } from './Components/Footer';
@@ -15,7 +14,7 @@ import Header from './Components/Header';
 import { HeroSection } from './Components/HeroSection';
 import { TutorialSection } from './Components/TutorialSection';
 
-function HomeContent() {
+export default function Home() {
   const content = {
     HERO_SECTION,
     FEATURE_SECTION,
@@ -51,15 +50,5 @@ function HomeContent() {
         />
       </main>
     </>
-  );
-}
-
-export default function Home() {
-  const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
-
-  return (
-    <GoogleOAuthProvider clientId={clientId}>
-      <HomeContent />
-    </GoogleOAuthProvider>
   );
 }

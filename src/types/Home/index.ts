@@ -14,7 +14,7 @@ export interface LoginDrawerProps {
 export interface ErrorDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onClose: () => void;
+  onClose?: () => void;
 }
 
 // HeroSection Types

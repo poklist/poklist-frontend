@@ -1,5 +1,5 @@
 import mascotPhone from '@/assets/images/mascot/mascot-phone.svg';
-import { LanguageProvider } from '@/lib/languageProvider';
+import { LanguageProvider } from '@/components/Language';
 import Header from '@/pages/Home/Components/Header';
 import { Trans } from '@lingui/react/macro';
 

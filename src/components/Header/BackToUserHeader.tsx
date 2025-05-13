@@ -2,6 +2,8 @@ import headerP from '@/assets/images/header-p.svg';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import IconLeftArrow from '@/components/ui/icons/LeftArrowIcon';
 import useStrictNavigate from '@/hooks/useStrictNavigate';
+import useAuthStore from '@/stores/useAuthStore';
+import useCommonStore from '@/stores/useCommonStore';
 import useRelationStore from '@/stores/useRelationStore';
 import { User, UserPreview } from '@/types/User';
 import { Trans } from '@lingui/react/macro';
@@ -23,14 +25,29 @@ const BackToUserHeader: React.FC<IBackToUserHeaderProps> = ({
 }) => {
   const { isFollowing } = useRelationStore();
   const navigateTo = useStrictNavigate();
-  const onClickBackToUser = () => {
+  const { setIsLoginDrawerOpen } = useCommonStore();
+  const { isLoggedIn } = useAuthStore();
+
+  const handleClickBackToUser = () => {
     if (owner) {
       navigateTo.user(owner.userCode);
     }
   };
 
-  const onClickLogo = () => {
+  const handleClickLogo = () => {
     navigateTo.home();
+  };
+
+  const handleFollow = () => {
+    if (!isLoggedIn) {
+      setIsLoginDrawerOpen(true);
+      return;
+    }
+    if (isFollowing) {
+      onClickUnfollow?.();
+    } else {
+      onClickFollow?.();
+    }
   };
 
   return (
@@ -43,11 +60,11 @@ const BackToUserHeader: React.FC<IBackToUserHeaderProps> = ({
           id="header-left"
           className="flex items-center justify-center gap-1"
         >
-          <img src={headerP} alt="P" onClick={onClickLogo} />
+          <img src={headerP} alt="P" onClick={handleClickLogo} />
           {owner && (
             <div
               className="flex items-center justify-center"
-              onClick={onClickBackToUser}
+              onClick={handleClickBackToUser}
             >
               <span className="flex h-5 w-5 items-center justify-center">
                 <IconLeftArrow />
@@ -69,19 +86,12 @@ const BackToUserHeader: React.FC<IBackToUserHeaderProps> = ({
             }
             shape={ButtonShape.ROUNDED_FULL}
             size={ButtonSize.SM}
-            onClick={() => {
-              if (isFollowing) {
-                onClickUnfollow?.();
-              } else {
-                onClickFollow?.();
-              }
-            }}
+            onClick={handleFollow}
           >
             {isFollowing ? <Trans>Following</Trans> : <Trans>Follow</Trans>}
           </Button>
         )}
       </header>
-      {/* <div className="h-14 sm:hidden" /> */}
     </>
   );
 };
