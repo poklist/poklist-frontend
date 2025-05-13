@@ -4,12 +4,14 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import TileSection from './Components/TileSection';
 import ListSection from './Components/ListSection';
 import FooterSection from './Components/FooterSection';
+import useAuthStore from '@/stores/useAuthStore';
 
 const DiscoveryContent = () => {
+  const { isLoggedIn } = useAuthStore();
   return (
     <>
       <Header />
-      <HeaderSection />
+      {isLoggedIn ? <></> : <HeaderSection />}
       <TileSection />
       <ListSection />
       <FooterSection />

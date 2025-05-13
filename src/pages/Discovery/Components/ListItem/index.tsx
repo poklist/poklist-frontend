@@ -1,13 +1,17 @@
-import { Link } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { LatestList } from '@/types/Discovery';
+import useStrictNavigate from '@/hooks/useStrictNavigate';
 
 const ListItem = ({ listItem }: { listItem: LatestList }) => {
+  const navigateTo = useStrictNavigate();
+
   return (
-    <Link
-      to={`/`}
+    <div
       className="flex flex-row items-center justify-between border-t border-gray-02 p-4"
+      onClick={() => {
+        navigateTo.viewList(listItem.owner.userCode, listItem.id.toString());
+      }}
     >
       <div className="flex flex-row items-center justify-start gap-2">
         <Avatar className="size-10">
@@ -19,7 +23,7 @@ const ListItem = ({ listItem }: { listItem: LatestList }) => {
         </p>
       </div>
       <ChevronRight className="h-5 w-5" />
-    </Link>
+    </div>
   );
 };
 

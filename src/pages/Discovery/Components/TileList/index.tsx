@@ -1,15 +1,25 @@
 import { AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Avatar } from '@/components/ui/avatar';
+import useStrictNavigate from '@/hooks/useStrictNavigate';
 import { OfficialCollection } from '@/types/Discovery';
-import { Link } from 'react-router-dom';
 
 const TileList = ({
   officialCollection,
 }: {
   officialCollection: OfficialCollection;
 }) => {
+  const navigateTo = useStrictNavigate();
+
   return (
-    <Link to={`/`} className="flex flex-col gap-2">
+    <div
+      className="flex flex-col gap-2"
+      onClick={() => {
+        navigateTo.viewList(
+          officialCollection.owner.userCode,
+          officialCollection.id.toString()
+        );
+      }}
+    >
       <header className="flex items-center justify-start">
         <h1 className="line-clamp-2 text-t1 font-semibold">
           {officialCollection.title}
@@ -33,7 +43,7 @@ const TileList = ({
           {officialCollection.owner.displayName}
         </p>
       </footer>
-    </Link>
+    </div>
   );
 };
 
