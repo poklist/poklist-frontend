@@ -4,26 +4,26 @@ import { ErrorDrawer } from '@/components/ErrorDrawer';
 import LoadingSpinner from '@/components/Loading';
 import useStrictNavigate from '@/hooks/useStrictNavigate';
 import { cn } from '@/lib/utils';
+import { LoginErrorDialog } from '@/pages/Home/Components/LoginErrorDialog';
 import useCommonStore from '@/stores/useCommonStore';
+import useLayoutStore from '@/stores/useLayoutStore';
 import { useUIStore } from '@/stores/useUIStore';
 import { User } from '@/types/User';
-import { t } from '@lingui/core/macro';
 import { GoogleOAuthProvider } from '@react-oauth/google';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 
 // 主要內容區域組件
 const MainContent = () => {
   const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
+  const { isMobile } = useLayoutStore();
+
   const navigateTo = useStrictNavigate();
-  const {
-    isLoading,
-    setErrorDrawerMessage,
-    isLoginDrawerOpen,
-    setIsLoginDrawerOpen,
-  } = useCommonStore();
+  const { isLoading, isLoginDrawerOpen, setIsLoginDrawerOpen } =
+    useCommonStore();
   const { setScrollToTop } = useUIStore();
+  const [isLoginErrorDialogOpen, setIsLoginErrorDialogOpen] = useState(false);
   const isHomePage = useLocation().pathname === '/home';
 
   const mainContentRef = useRef<HTMLDivElement>(null);
@@ -46,14 +46,16 @@ const MainContent = () => {
 
   const handleLoginError = () => {
     setIsLoginDrawerOpen(false);
-    setErrorDrawerMessage({
-      title: t`Right now, only invited users can log in`,
-      content: t`Already got your invite? Jump in and apply now!`,
-    });
+    setIsLoginErrorDialogOpen(true);
   };
 
   return (
-    <div className="relative h-screen w-full overflow-hidden sm:w-mobile-max sm:rounded-[20px] sm:border sm:border-black">
+    <div
+      className={cn('relative h-screen w-full overflow-hidden', {
+        'sm:w-mobile-max sm:rounded-[20px] sm:border sm:border-black':
+          !isMobile,
+      })}
+    >
       <div className="flex h-full flex-col overflow-hidden">
         <div className="fixed top-0 z-50 bg-white">
           <AlertComponent />
@@ -74,6 +76,12 @@ const MainContent = () => {
 
       <LoadingSpinner isLoading={isLoading} />
       <ErrorDrawer />
+
+      <LoginErrorDialog
+        open={isLoginErrorDialogOpen}
+        onOpenChange={setIsLoginErrorDialogOpen}
+        onClose={() => setIsLoginErrorDialogOpen(false)}
+      />
 
       <GoogleOAuthProvider clientId={clientId}>
         <LoginDrawer
