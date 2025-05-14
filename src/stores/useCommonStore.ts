@@ -13,6 +13,9 @@ export type CommonStoreState = {
 
   errorDrawerMessage: IErrorDrawerMessage;
   setErrorDrawerMessage: (errorMessage: IErrorDrawerMessage) => void;
+
+  isLoginDrawerOpen: boolean;
+  setIsLoginDrawerOpen: (isOpen: boolean) => void;
 };
 
 const useCommonStore = create<CommonStoreState>((set) => ({
@@ -40,6 +43,9 @@ const useCommonStore = create<CommonStoreState>((set) => ({
   setErrorDrawerMessage: (errorMessage) => {
     set({ errorDrawerMessage: errorMessage });
   },
+
+  isLoginDrawerOpen: false,
+  setIsLoginDrawerOpen: (isOpen) => set({ isLoginDrawerOpen: isOpen }),
 }));
 
 export default useCommonStore;

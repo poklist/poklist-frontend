@@ -1,8 +1,8 @@
 import { DrawerComponent, useDrawer } from '@/components/Drawer';
+import { activateI18n } from '@/components/Language';
 import { DrawerIds } from '@/constants/Drawer';
 import { Language, LocalStorageKey, Location } from '@/enums/index.enum';
 import useStrictNavigate from '@/hooks/useStrictNavigate';
-import { activateI18n } from '@/lib/languageProvider';
 import { getLocalStorage, setLocalStorage } from '@/lib/utils';
 import useAuthStore from '@/stores/useAuthStore';
 import { ILinksBlock } from '@/types/Settings';
@@ -133,22 +133,22 @@ const BlocksSection: React.FC = () => {
       ],
     },
     {
-      title: t`About Poklist`,
+      title: t`About Relist`,
       actionItems: [
         {
           decription: t`Quick start guide`,
           // TODO:
         },
         {
-          decription: t`Check out Poklist`,
+          decription: t`Check out Relist`,
           // TODO:
         },
         {
-          decription: t`Follow Poklist Threads`,
+          decription: t`Follow Relist Threads`,
           // TODO:
         },
         {
-          decription: t`Join Poklist Discord`,
+          decription: t`Join Relist Discord`,
           link: 'https://discord.gg/Jq2hSYUFJC',
         },
         {

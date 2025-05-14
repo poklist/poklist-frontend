@@ -1,3 +1,4 @@
+import logoRelist from '@/assets/images/logo-relist.svg';
 import { FooterLink, SocialMediaLink } from '@/types/Home';
 import { Trans } from '@lingui/react';
 
@@ -7,10 +8,14 @@ interface FooterProps {
 }
 
 export const Footer = ({ content, socialMedia }: FooterProps) => (
-  <section className="flex w-full flex-col bg-yellow-bright-01 px-8 pb-20 pt-2">
+  <section className="flex w-full flex-col bg-yellow-bright-01 px-8 pb-20">
     <div className="w-full">
       <div className="flex flex-col justify-between md:flex-row">
         <div className="flex flex-col">
+          {/* Logo */}
+          <div className="flex justify-start bg-yellow-bright-01 py-10">
+            <img src={logoRelist} alt="Relist Logo" className="h-6" />
+          </div>
           <div className="mb-8 flex flex-col items-start gap-3">
             {content.map((item) => (
               <a
