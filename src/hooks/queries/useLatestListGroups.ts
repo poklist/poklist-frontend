@@ -6,11 +6,13 @@ import { LatestListGroup } from '@/types/Discovery';
 interface UseLatestListGroupsOptions {
   staleTime?: number;
   gcTime?: number;
+  enabled?: boolean;
 }
 
 export const useLatestListGroups = ({
   staleTime = 1000 * 60, // 1 minute
   gcTime = 1000 * 60 * 5, // 5 minutes
+  enabled = true,
 }: UseLatestListGroupsOptions) => {
   const query = useQuery({
     queryKey: ['latestListGroups'],
@@ -22,7 +24,7 @@ export const useLatestListGroups = ({
     },
     staleTime,
     gcTime,
-    enabled: true,
+    enabled,
   });
 
   return {

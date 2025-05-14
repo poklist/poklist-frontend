@@ -29,6 +29,7 @@ const TileList = ({
         <img
           src={officialCollection.coverImage}
           alt="Official Collection Cover Image"
+          loading="lazy"
           className="size-[202px] rounded-lg border border-black object-cover"
         />
       </div>

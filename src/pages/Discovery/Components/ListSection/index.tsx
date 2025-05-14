@@ -2,7 +2,7 @@ import { useCategories } from '@/hooks/queries/useCategories';
 import ListItem from '../ListItem';
 import SectionTitle from '../SectionTitle';
 import { useLatestListGroups } from '@/hooks/queries/useLatestListGroups';
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useRef, useEffect } from 'react';
 import { LatestList } from '@/types/Discovery';
 import { Trans } from '@lingui/react/macro';
 import { t } from '@lingui/core/macro';
@@ -18,6 +18,9 @@ import ListSectionSkeleton from './ListSectionSkeleton';
 const INITIAL_DISPLAY_COUNT = 5;
 // expanded display count
 const EXPANDED_DISPLAY_COUNT = 10;
+
+// 存儲節點ID，用於檢測返回訪問
+const SESSION_VISITED_KEY = 'discovery_list_section_visited';
 
 const ListSection = () => {
   const CATEGORY_NAMES: Record<string, string> = {
@@ -43,9 +46,68 @@ const ListSection = () => {
     others: t`Lists that just get it`,
   };
 
+  // 懶加載相關狀態
+  const [isVisible, setIsVisible] = useState(() => {
+    // 檢查是否為返回訪問
+    const hasVisitedBefore =
+      sessionStorage.getItem(SESSION_VISITED_KEY) === 'true';
+    // 返回訪問直接設為可見，避免與ScrollRestoration衝突
+    return hasVisitedBefore;
+  });
+  const sectionRef = useRef(null);
+
+  // 記錄訪問狀態
+  useEffect(() => {
+    // 標記已訪問，便於下次返回時判斷
+    sessionStorage.setItem(SESSION_VISITED_KEY, 'true');
+
+    // 如果有指定滾動位置但內容尚未載入，需要先設為可見
+    if (
+      window.location.hash ||
+      (window.history.state && 'scroll' in window.history.state)
+    ) {
+      setIsVisible(true);
+    }
+
+    // 清理函數
+    return () => {
+      // 組件卸載時不要清除訪問狀態，以便返回時識別
+    };
+  }, []);
+
+  // 使用 Intersection Observer 檢測組件是否進入視口
+  useEffect(() => {
+    // 如果已經可見，不需要再觀察
+    if (isVisible) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1, rootMargin: '200px 0px' }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (observer) {
+        observer.disconnect();
+      }
+    };
+  }, [isVisible]);
+
+  // 只在組件可見時加載數據
   const { categories, categoriesLoading } = useCategories();
   const { latestListGroups = {}, isLoading: groupsLoading } =
-    useLatestListGroups({});
+    useLatestListGroups({
+      enabled: isVisible,
+    });
+
   const [expandedCategories, setExpandedCategories] = useState<
     Record<string, boolean>
   >({});
@@ -57,11 +119,7 @@ const ListSection = () => {
     return result;
   }, [latestListGroups]);
 
-  if (categoriesLoading || groupsLoading) {
-    return <ListSectionSkeleton />;
-  }
-
-  // expand category
+  // 擴展類別
   const expandCategory = (categoryId: number | string) => {
     setExpandedCategories((prev) => ({
       ...prev,
@@ -69,8 +127,18 @@ const ListSection = () => {
     }));
   };
 
+  // 如果組件還不可見，顯示一個占位符
+  if (!isVisible) {
+    return <div ref={sectionRef} className="min-h-[200px]" />;
+  }
+
+  // 數據加載中顯示骨架屏
+  if (categoriesLoading || groupsLoading) {
+    return <ListSectionSkeleton />;
+  }
+
   return (
-    <section className="flex flex-1 flex-col bg-white">
+    <section ref={sectionRef} className="flex flex-1 flex-col bg-white">
       {categories.map((category) => {
         const categoryNameLower = category.name.toLowerCase();
         const lists = processedListGroups[categoryNameLower] || [];
