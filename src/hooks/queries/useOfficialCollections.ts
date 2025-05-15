@@ -9,8 +9,8 @@ interface UseOfficialCollectionsOptions {
 }
 
 export const useOfficialCollections = ({
-  staleTime = 1000 * 60 * 30, // 30 minutes
-  gcTime = 1000 * 60 * 120, // 2 hours
+  staleTime = 1000 * 60, // 1 minute
+  gcTime = 1000 * 60 * 5, // 5 minutes
 }: UseOfficialCollectionsOptions) => {
   const query = useQuery({
     queryKey: ['officialCollections'],
