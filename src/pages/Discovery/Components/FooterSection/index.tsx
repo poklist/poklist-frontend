@@ -1,4 +1,3 @@
-import logo from '@/assets/images/logo-big.svg';
 import { Footer } from '@/pages/Home/Components/Footer';
 import { ChevronRight } from 'lucide-react';
 import { FOOTER_SECTION, SOCIAL_MEDIA } from '@/constants/Home/index.en';
@@ -32,10 +31,6 @@ const FooterSection = () => {
               <ChevronRight className="h-5 w-5" />
             </div>
           </Trans>
-        </div>
-        {/* Logo */}
-        <div className="flex justify-center bg-yellow-bright-01 pb-4">
-          <img src={logo} alt="Poklist Logo" className="h-[150.84px]" />
         </div>
         <Footer
           content={content.FOOTER_SECTION}

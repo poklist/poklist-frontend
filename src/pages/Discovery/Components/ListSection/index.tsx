@@ -13,6 +13,7 @@ import {
   ButtonVariant,
 } from '@/components/ui/button';
 import ListSectionSkeleton from './ListSectionSkeleton';
+import { useUIStore } from '@/stores/useUIStore';
 
 // initial display count
 const INITIAL_DISPLAY_COUNT = 5;
@@ -45,6 +46,9 @@ const ListSection = () => {
     health: t`Lists that make you sweat`,
     others: t`Lists that just get it`,
   };
+
+  // 從 UIStore 獲取展開類別的狀態與方法
+  const { expandedCategories, expandCategory } = useUIStore();
 
   // 懶加載相關狀態
   const [isVisible, setIsVisible] = useState(() => {
@@ -108,9 +112,6 @@ const ListSection = () => {
       enabled: isVisible,
     });
 
-  const [expandedCategories, setExpandedCategories] = useState<
-    Record<string, boolean>
-  >({});
   const processedListGroups = useMemo(() => {
     const result: Record<string, LatestList[]> = {};
     Object.entries(latestListGroups).forEach(([key, value]) => {
@@ -118,14 +119,6 @@ const ListSection = () => {
     });
     return result;
   }, [latestListGroups]);
-
-  // 擴展類別
-  const expandCategory = (categoryId: number | string) => {
-    setExpandedCategories((prev) => ({
-      ...prev,
-      [categoryId]: true,
-    }));
-  };
 
   // 如果組件還不可見，顯示一個占位符
   if (!isVisible) {
@@ -139,7 +132,7 @@ const ListSection = () => {
 
   return (
     <section ref={sectionRef} className="flex flex-1 flex-col bg-white">
-      {categories.map((category) => {
+      {categories?.map((category) => {
         const categoryNameLower = category.name.toLowerCase();
         const lists = processedListGroups[categoryNameLower] || [];
 

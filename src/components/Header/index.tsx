@@ -27,7 +27,7 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
   const { setIsLoginDrawerOpen } = useCommonStore();
   const { scrollToTop } = useUIStore();
 
-  const isHomePage = useLocation().pathname === '/home';
+  const isDiscoveryPage = useLocation().pathname === '/discovery';
   const isMyPage = outletContext?.userCode === me.userCode;
 
   const handleClickSignIn = () => {
@@ -35,11 +35,8 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
   };
 
   const handleClickLogo = () => {
-    if (isHomePage) {
-      scrollToTop();
-    } else {
-      navigateTo.home();
-    }
+    scrollToTop();
+    navigateTo.discovery();
   };
 
   return (
@@ -66,7 +63,7 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
           id="header-right"
           className="flex items-center justify-center gap-4"
         >
-          {isHomePage && <LanguageToggleButton />}
+          {isDiscoveryPage && <LanguageToggleButton />}
           {!isLoggedIn && (
             <Button
               size={ButtonSize.SM}
@@ -85,7 +82,7 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
               <AvatarFallback>{me.displayName[0]}</AvatarFallback>
             </Avatar>
           )}
-          {!isHomePage && (!isLoggedIn || (isLoggedIn && isMyPage)) && (
+          {!isDiscoveryPage && (!isLoggedIn || (isLoggedIn && isMyPage)) && (
             <Button
               variant={ButtonVariant.WHITE}
               size={ButtonSize.ICON}

@@ -4,13 +4,15 @@ import useUserStore from '@/stores/useUserStore';
 import '@/types/global';
 import { Trans } from '@lingui/react/macro';
 import { useEffect, useState } from 'react';
-import { LoginDrawer } from '@/pages/Discovery/Components/LoginDrawer';
+import { LoginDrawer } from '@/components/Drawer/LoginDrawer';
 import {
   Button,
   ButtonShape,
   ButtonSize,
   ButtonVariant,
 } from '@/components/ui/button';
+import { User } from '@/types/User';
+
 export const HeaderSection = () => {
   const navigateTo = useStrictNavigate();
   const { isLoggedIn } = useAuthStore();
@@ -18,9 +20,10 @@ export const HeaderSection = () => {
   const [showCustomLogin, setShowCustomLogin] = useState(false);
 
   // Simplified login success handler, only responsible for closing login window
-  const handleLoginSuccess = (success: boolean) => {
+  const handleLoginSuccess = (user: User) => {
     setShowCustomLogin(false);
-    if (success) {
+    // Use user data for navigation if needed
+    if (user) {
       navigateTo.discovery();
     }
   };
