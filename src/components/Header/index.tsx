@@ -7,7 +7,6 @@ import { cn } from '@/lib/utils';
 import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
 import useAuthStore from '@/stores/useAuthStore';
 import useCommonStore from '@/stores/useCommonStore';
-import { useUIStore } from '@/stores/useUIStore';
 import useUserStore from '@/stores/useUserStore';
 import React from 'react';
 import { useLocation, useOutletContext } from 'react-router-dom';
@@ -25,7 +24,6 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
   const { isLoggedIn } = useAuthStore();
   const { me } = useUserStore();
   const { setIsLoginDrawerOpen } = useCommonStore();
-  const { scrollToTop } = useUIStore();
 
   const isDiscoveryPage = useLocation().pathname === '/discovery';
   const isMyPage = outletContext?.userCode === me.userCode;
@@ -35,8 +33,9 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
   };
 
   const handleClickLogo = () => {
-    scrollToTop();
-    navigateTo.discovery();
+    // 清除 discovery 頁面的滾動位置紀錄
+    sessionStorage.removeItem('scroll_pos_/discovery');
+    window.location.href = '/discovery';
   };
 
   return (

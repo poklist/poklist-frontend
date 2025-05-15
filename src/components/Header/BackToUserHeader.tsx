@@ -8,7 +8,6 @@ import { User, UserPreview } from '@/types/User';
 import { Trans } from '@lingui/react/macro';
 import React from 'react';
 import { Button, ButtonShape, ButtonSize, ButtonVariant } from '../ui/button';
-import { useUIStore } from '@/stores/useUIStore';
 
 interface IBackToUserHeaderProps {
   owner?: UserPreview | User;
@@ -27,7 +26,6 @@ const BackToUserHeader: React.FC<IBackToUserHeaderProps> = ({
   const navigateTo = useStrictNavigate();
   const { setIsLoginDrawerOpen } = useCommonStore();
   const { isLoggedIn } = useAuthStore();
-  const { scrollToTop } = useUIStore();
 
   const handleClickBackToUser = () => {
     if (owner) {
@@ -36,8 +34,9 @@ const BackToUserHeader: React.FC<IBackToUserHeaderProps> = ({
   };
 
   const handleClickLogo = () => {
-    scrollToTop();
-    navigateTo.discovery();
+    // 清除 discovery 頁面的滾動位置紀錄
+    sessionStorage.removeItem('scroll_pos_/discovery');
+    window.location.href = '/discovery';
   };
 
   const handleFollow = () => {
