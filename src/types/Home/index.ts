@@ -4,7 +4,7 @@ import { MessageDescriptor } from '@lingui/core';
 export interface ErrorDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onClose: () => void;
+  onClose?: () => void;
 }
 
 // Feature Section Types

@@ -1,6 +1,6 @@
 import mascotError from '@/assets/images/mascot/mascot-error.svg';
 import Header from '@/components/Header';
-import { LanguageProvider } from '@/lib/languageProvider';
+import { LanguageProvider } from '@/components/Language';
 import { Trans } from '@lingui/react/macro';
 import { TileBackground } from '../User/TileBackground';
 

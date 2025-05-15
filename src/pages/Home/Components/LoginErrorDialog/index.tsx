@@ -1,9 +1,9 @@
-import { Trans } from '@lingui/react';
-import { X } from 'lucide-react';
 import { ERROR_DIALOG } from '@/constants/Home/index.en';
 import { ErrorDialogProps } from '@/types/Home';
+import { Trans } from '@lingui/react';
+import { X } from 'lucide-react';
 
-export const ErrorDialog = ({
+export const LoginErrorDialog = ({
   open,
   onOpenChange,
   onClose,
@@ -44,7 +44,7 @@ export const ErrorDialog = ({
           <button
             onClick={() => {
               onOpenChange(false);
-              onClose();
+              onClose?.();
             }}
             className="w-fit rounded-lg border border-black bg-black px-3 py-2 text-h2 font-bold text-white"
           >

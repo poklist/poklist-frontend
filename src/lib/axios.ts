@@ -1,7 +1,5 @@
 import axios from 'axios';
 
-import { LocalStorageKey } from '@/enums/index.enum';
-import { removeLocalStorage } from '@/lib/utils';
 import authStore from '@/stores/useAuthStore';
 import commonStore from '@/stores/useCommonStore';
 

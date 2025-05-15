@@ -5,6 +5,8 @@ import IconLink from '@/components/ui/icons/LinkIcon';
 import useStrictNavigate from '@/hooks/useStrictNavigate';
 import { useToast } from '@/hooks/useToast';
 import { cn, copyHref } from '@/lib/utils';
+import useAuthStore from '@/stores/useAuthStore';
+import useCommonStore from '@/stores/useCommonStore';
 import useSocialStore from '@/stores/useSocialStore';
 import useUserStore from '@/stores/useUserStore';
 import { t } from '@lingui/core/macro';
@@ -23,6 +25,8 @@ const FloatingButtonFooter: React.FC<IFooterProps> = ({
 }) => {
   const { toast } = useToast();
   const { me } = useUserStore();
+  const { isLoggedIn } = useAuthStore();
+  const { setIsLoginDrawerOpen } = useCommonStore();
   const { isLiked } = useSocialStore();
   const navigateTo = useStrictNavigate();
   const handleCopyHref = () => {
@@ -31,6 +35,14 @@ const FloatingButtonFooter: React.FC<IFooterProps> = ({
       title: t`Copied to clipboard`,
       variant: 'success',
     });
+  };
+
+  const handleCreateList = () => {
+    if (!isLoggedIn) {
+      setIsLoginDrawerOpen(true);
+    } else {
+      navigateTo.createList(me.userCode);
+    }
   };
 
   return (
@@ -60,7 +72,7 @@ const FloatingButtonFooter: React.FC<IFooterProps> = ({
       <Button
         variant={ButtonVariant.WHITE}
         className="flex items-center gap-2 text-sm"
-        onClick={() => navigateTo.createList(me.userCode)}
+        onClick={handleCreateList}
       >
         <IconAdd />
         <Trans>Create List</Trans>

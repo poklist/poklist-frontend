@@ -1,8 +1,10 @@
 import { DrawerProvider } from '@/components/Drawer';
 import { FakePageProvider } from '@/components/FakePage';
+import { LanguageProvider } from '@/components/Language';
 import useCheckStorage from '@/hooks/useCheckStorage';
 import useStrictNavigate from '@/hooks/useStrictNavigate';
-import { LanguageProvider } from '@/lib/languageProvider';
+import { cn } from '@/lib/utils';
+import useLayoutStore from '@/stores/useLayoutStore';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import Background from './Components/Background';
@@ -12,6 +14,7 @@ import PromptText from './Components/PromptText';
 
 export default function Layout() {
   const navigateTo = useStrictNavigate();
+  const { isMobile } = useLayoutStore();
   const location = useLocation();
   const redirectWhiteList = ['/error', '/goToMobile'];
 
@@ -33,7 +36,11 @@ export default function Layout() {
         <FakePageProvider>
           <Background />
           <div className="flex flex-col items-center justify-center">
-            <div className="flex max-h-screen w-full flex-col sm:w-mobile-max">
+            <div
+              className={cn('flex max-h-screen w-full flex-col', {
+                'sm:w-mobile-max': !isMobile,
+              })}
+            >
               <PromptText />
               <MainContent />
               <BottomNav />

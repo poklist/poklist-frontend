@@ -1,4 +1,4 @@
-import headerPoklist from '@/assets/images/header-poklist.svg';
+import logoRelist from '@/assets/images/logo-relist.svg';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button, ButtonSize, ButtonVariant } from '@/components/ui/button';
 import IconSetting from '@/components/ui/icons/SettingIcon';
@@ -6,9 +6,12 @@ import useStrictNavigate from '@/hooks/useStrictNavigate';
 import { cn } from '@/lib/utils';
 import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
 import useAuthStore from '@/stores/useAuthStore';
+import useCommonStore from '@/stores/useCommonStore';
+import { useUIStore } from '@/stores/useUIStore';
 import useUserStore from '@/stores/useUserStore';
 import React from 'react';
-import { Link, useOutletContext } from 'react-router-dom';
+import { useLocation, useOutletContext } from 'react-router-dom';
+import { LanguageToggleButton } from '../Language';
 
 interface HeaderProps {
   className?: string;
@@ -21,7 +24,23 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
   const outletContext = useOutletContext<UserRouteLayoutContextType | null>();
   const { isLoggedIn } = useAuthStore();
   const { me } = useUserStore();
+  const { setIsLoginDrawerOpen } = useCommonStore();
+  const { scrollToTop } = useUIStore();
+
+  const isHomePage = useLocation().pathname === '/home';
   const isMyPage = outletContext?.userCode === me.userCode;
+
+  const handleClickSignIn = () => {
+    setIsLoginDrawerOpen(true);
+  };
+
+  const handleClickLogo = () => {
+    if (isHomePage) {
+      scrollToTop();
+    } else {
+      navigateTo.home();
+    }
+  };
 
   return (
     <>
@@ -36,27 +55,28 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
           id="header-left"
           className="flex items-center justify-center gap-4"
         >
-          <Link to="/discovery" reloadDocument>
-            <img
-              src={headerPoklist}
-              alt="Poklist"
-              className="h-8 cursor-pointer"
-            />
-          </Link>
+          <img
+            src={logoRelist}
+            alt="Relist"
+            onClick={handleClickLogo}
+            className="h-8"
+          />
         </div>
         <div
           id="header-right"
           className="flex items-center justify-center gap-4"
         >
+          {isHomePage && <LanguageToggleButton />}
           {!isLoggedIn && (
             <Button
+              size={ButtonSize.SM}
               variant={ButtonVariant.WHITE}
-              onClick={() => navigateTo.home()}
+              onClick={handleClickSignIn}
             >
               Sign In
             </Button>
           )}
-          {isLoggedIn && !isMyPage ? (
+          {isLoggedIn && !isMyPage && (
             <Avatar
               className="h-8 w-8 cursor-pointer"
               onClick={() => navigateTo.user(me.userCode)}
@@ -64,7 +84,8 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
               <AvatarImage src={me.profileImage} />
               <AvatarFallback>{me.displayName[0]}</AvatarFallback>
             </Avatar>
-          ) : (
+          )}
+          {!isHomePage && (!isLoggedIn || (isLoggedIn && isMyPage)) && (
             <Button
               variant={ButtonVariant.WHITE}
               size={ButtonSize.ICON}

@@ -20,10 +20,13 @@ msgstr ""
 msgid "<0>{0}</0>"
 msgstr ""
 
-#. js-lingui-explicit-id
-#: src/components/FakePage/EditFieldFakePage.tsx
-#~ msgid "Enter your text here"
-#~ msgstr "Enter your text here"
+#: src/components/Drawer/LoginDrawer.tsx
+msgid "New to Relist? Get started!"
+msgstr "New to Relist? Get started!"
+
+#: src/components/Drawer/LoginDrawer.tsx
+msgid "By continuing, you agree to our <0>Terms of Service</0>, <1>Privacy Policy</1>. You confirm you're 13+."
+msgstr "By continuing, you agree to our <0>Terms of Service</0>, <1>Privacy Policy</1>. You confirm you're 13+."
 
 #: src/components/FakePage/EditFieldFakePage.tsx
 msgid "Enter your text here"
@@ -85,8 +88,8 @@ msgid "Upload a cover"
 msgstr "Upload a cover"
 
 #: src/constants/Home/index.en.ts
-#~ msgid "Join Poklist and share your lists."
-#~ msgstr "Join Poklist and share your lists."
+msgid "Join Relist and share your lists."
+msgstr "Join Relist and share your lists."
 
 #: src/constants/Home/index.en.ts
 #~ msgid "Currently open only to creator account applications."
@@ -101,16 +104,16 @@ msgstr "Upload a cover"
 #~ msgstr "Creator Account Login"
 
 #: src/constants/Home/index.en.ts
-#~ msgid "Can non-creators use Poklist?"
-#~ msgstr "Can non-creators use Poklist?"
+msgid "Can non-creators use Relist?"
+msgstr "Can non-creators use Relist?"
 
 #: src/constants/Home/index.en.ts
-msgid "List Your Ideas"
-msgstr "List Your Ideas"
+msgid "Real impact is simple"
+msgstr "Real impact is simple"
 
 #: src/constants/Home/index.en.ts
-msgid "Turn thoughts into lists, discover fresh finds, and follow inspiration"
-msgstr "Turn thoughts into lists, discover fresh finds, and follow inspiration"
+msgid "Turn your picks into a following"
+msgstr "Turn your picks into a following"
 
 #: src/constants/Home/index.en.ts
 msgid "Inspogirlie"
@@ -401,9 +404,9 @@ msgid "If you can't clean your room, what's your life looking like?"
 msgstr "If you can't clean your room, what's your life looking like?"
 
 #: src/constants/Home/index.en.ts
-#: src/pages/Settings/BlocksSection/index.tsx
-msgid "About Poklist"
-msgstr "About Poklist"
+#: src/pages/Layout/Components/BottomNav.tsx
+msgid "About"
+msgstr "About"
 
 #: src/constants/Home/index.en.ts
 msgid "Tutorials"
@@ -674,8 +677,8 @@ msgid "Oops something is wrong!"
 msgstr "Oops something is wrong!"
 
 #: src/pages/GoToMobile/index.tsx
-msgid "<0>Poklist works best on mobile.</0><1>Use a mobile device for the best experience.</1>"
-msgstr "<0>Poklist works best on mobile.</0><1>Use a mobile device for the best experience.</1>"
+msgid "<0>Relist works best on mobile.</0><1>Use a mobile device for the best experience.</1>"
+msgstr "<0>Relist works best on mobile.</0><1>Use a mobile device for the best experience.</1>"
 
 #: src/pages/Home/Components/FeatureSection/index.tsx
 msgid "Life Style"
@@ -690,10 +693,6 @@ msgstr "Other"
 #: src/pages/User/HeroSection/index.tsx
 msgid "Lists"
 msgstr "Lists"
-
-#: src/pages/Home/Components/LoginDrawer/index.tsx
-#~ msgid "Sign in to Poklist with Google"
-#~ msgstr "Sign in to Poklist with Google"
 
 #: src/pages/Idea/Components/DeleteButton/index.tsx
 msgid "Are you sure you want to delete this idea?"
@@ -791,13 +790,17 @@ msgstr "New Idea"
 msgid "Idea"
 msgstr "Idea"
 
-#: src/pages/Layout/Components/BottomNav.tsx
-msgid "About"
-msgstr "About"
+#: src/pages/Layout/Components/MainContent.tsx
+msgid "Right now, only invited users can log in"
+msgstr "Right now, only invited users can log in"
+
+#: src/pages/Layout/Components/MainContent.tsx
+msgid "Already got your invite? Jump in and apply now!"
+msgstr "Already got your invite? Jump in and apply now!"
 
 #: src/pages/Layout/Components/PromptText.tsx
-msgid "Poklist works best on mobile. Use a mobile device for the best experience."
-msgstr "Poklist works best on mobile. Use a mobile device for the best experience."
+msgid "Relist works best on mobile. Use a mobile device for the best experience."
+msgstr "Relist works best on mobile. Use a mobile device for the best experience."
 
 #: src/pages/Lists/Components/DeleteButton/index.tsx
 msgid "Deleting the list title will also erase all ideas!"
@@ -952,20 +955,24 @@ msgid "Select your location"
 msgstr "Select your location"
 
 #: src/pages/Settings/BlocksSection/index.tsx
+msgid "About Relist"
+msgstr "About Relist"
+
+#: src/pages/Settings/BlocksSection/index.tsx
 msgid "Quick start guide"
 msgstr "Quick start guide"
 
 #: src/pages/Settings/BlocksSection/index.tsx
-msgid "Check out Poklist"
-msgstr "Check out Poklist"
+msgid "Check out Relist"
+msgstr "Check out Relist"
 
 #: src/pages/Settings/BlocksSection/index.tsx
-msgid "Follow Poklist Threads"
-msgstr "Follow Poklist Threads"
+msgid "Follow Relist Threads"
+msgstr "Follow Relist Threads"
 
 #: src/pages/Settings/BlocksSection/index.tsx
-msgid "Join Poklist Discord"
-msgstr "Join Poklist Discord"
+msgid "Join Relist Discord"
+msgstr "Join Relist Discord"
 
 #: src/pages/Settings/BlocksSection/index.tsx
 msgid "Submit feedback or report content"

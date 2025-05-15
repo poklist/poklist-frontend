@@ -1,10 +1,27 @@
 import { msg } from '@lingui/core/macro';
+import { ExternalLinks } from '../externalLink';
 import { IMAGES } from './images';
 
-export const FEATURE_SECTION = {
-  title: msg`List Your Ideas`,
-  description: msg`Turn thoughts into lists, discover fresh finds, and follow inspiration`,
+export const HERO_SECTION = {
+  joinInformation: {
+    title: msg`Join Relist and share your lists.`,
+    descriprion: msg`Currently open only to creator account applications.`,
+    buttonText: msg`Sign up`,
+  },
+  accountOwner: {
+    title: '',
+    buttonText: msg`Creator Account Login`,
+  },
+  nonCreatorQuestion: {
+    title: msg`Can non-creators use Relist?`,
+    url: 'https://opaque-creek-8e5.notion.site/Can-Non-creators-sign-up-1a8a4cd4b98b80f79ddbe17681b6dda3',
+  },
 };
+export const FEATURE_SECTION = {
+  title: msg`Real impact is simple`,
+  description: msg`Turn your picks into a following`,
+};
+
 export const LIST_SECTION = {
   lifeStyle: {
     title: 'Lifestyle',
@@ -261,42 +278,42 @@ export const LIST_SECTION = {
 };
 export const TUTORIAL_SECTION = [
   {
-    title: msg`About Poklist`,
-    url: 'https://opaque-creek-8e5.notion.site/Poklist-About-Poklist-1a8a4cd4b98b80868769d3f690d094ab',
+    title: msg`About`,
+    url: ExternalLinks.ABOUT,
   },
   {
     title: msg`Tutorials`,
-    url: 'https://opaque-creek-8e5.notion.site/Quick-Tutorials-1a8a4cd4b98b803baa0bf7256412048a',
+    url: ExternalLinks.TUTORIALS,
   },
   {
     title: msg`FAQ`,
-    url: 'https://opaque-creek-8e5.notion.site/Q-As-1b7a4cd4b98b80acb0d4ffdc056b4018',
+    url: ExternalLinks.FAQ,
   },
   {
     title: msg`Join the Team`,
-    url: 'https://opaque-creek-8e5.notion.site/Join-Team-1a8a4cd4b98b8008bedacfadc1cbbcc7',
+    url: ExternalLinks.JOIN_TEAM,
   },
 ];
 export const FOOTER_SECTION = [
   {
     title: msg`Press kit`,
-    url: 'https://opaque-creek-8e5.notion.site/1a8a4cd4b98b80a1ba05f8bcbee6fa5d',
+    url: ExternalLinks.PRESS,
   },
   {
     title: msg`Contact Us`,
-    url: 'https://opaque-creek-8e5.notion.site/1a9a4cd4b98b80109fabf5bc2f1eec71',
+    url: ExternalLinks.CONTACT_US,
   },
   {
     title: msg`Terms`,
-    url: 'https://opaque-creek-8e5.notion.site/Terms-of-Service-1a9a4cd4b98b80ebb5cee016b5c88089',
+    url: ExternalLinks.TERMS,
   },
   {
     title: msg`Privacy`,
-    url: 'https://opaque-creek-8e5.notion.site/Privacy-Policy-1a9a4cd4b98b8098a2c4fa29619981dc',
+    url: ExternalLinks.PRIVACY,
   },
   {
     title: msg`Collection Notice`,
-    url: 'https://opaque-creek-8e5.notion.site/1a9a4cd4b98b806b98d3d7478b83fb19',
+    url: ExternalLinks.COLLECTION_NOTICE,
   },
 ];
 export const SOCIAL_MEDIA = [
