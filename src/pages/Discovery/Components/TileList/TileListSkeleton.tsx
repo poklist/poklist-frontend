@@ -13,7 +13,7 @@ const TileListSkeleton = ({
         ))}
       </header>
       <div>
-        <Skeleton className="size-[202px] rounded-lg border border-black object-cover" />
+        <Skeleton className="h-[202px] max-w-[202px] rounded-lg border border-black object-cover" />
       </div>
       <footer className="flex flex-row items-center justify-start gap-1">
         <Skeleton className="size-6 rounded-full" />

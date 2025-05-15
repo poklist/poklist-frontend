@@ -13,16 +13,18 @@ const ListItem = ({ listItem }: { listItem: LatestList }) => {
         navigateTo.viewList(listItem.owner.userCode, listItem.id.toString());
       }}
     >
-      <div className="flex flex-row items-center justify-start gap-2">
-        <Avatar className="size-10">
+      <div className="flex min-w-0 flex-1 flex-row items-center gap-2 overflow-hidden">
+        <Avatar className="size-10 flex-shrink-0">
           <AvatarImage src={listItem.owner.profileImage} />
           <AvatarFallback>{listItem.owner.userCode[0]}</AvatarFallback>
         </Avatar>
-        <p className="line-clamp-1 text-t1 font-semibold text-black-text-01">
-          {listItem.title}
-        </p>
+        <div className="min-w-0 flex-1 overflow-hidden">
+          <p className="overflow-hidden text-ellipsis whitespace-nowrap text-t1 font-semibold text-black-text-01">
+            {listItem.title}
+          </p>
+        </div>
       </div>
-      <ChevronRight className="h-5 w-5" />
+      <ChevronRight className="ml-4 h-5 w-5 flex-shrink-0" />
     </div>
   );
 };
