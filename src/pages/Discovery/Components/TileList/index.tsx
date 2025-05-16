@@ -2,6 +2,12 @@ import { AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Avatar } from '@/components/ui/avatar';
 import useStrictNavigate from '@/hooks/useStrictNavigate';
 import { OfficialCollection } from '@/types/Discovery';
+import randomImage1 from '@/assets/images/officialCover/random-image-1.png';
+import randomImage2 from '@/assets/images/officialCover/random-image-2.png';
+import randomImage3 from '@/assets/images/officialCover/random-image-3.png';
+import randomImage4 from '@/assets/images/officialCover/random-image-4.png';
+
+const fallbackImages = [randomImage1, randomImage2, randomImage3, randomImage4];
 
 const TileList = ({
   officialCollection,
@@ -9,6 +15,15 @@ const TileList = ({
   officialCollection: OfficialCollection;
 }) => {
   const navigateTo = useStrictNavigate();
+
+  // 隨機選擇一張圖片作為封面圖的備用方案
+  const getRandomImage = () => {
+    const randomIndex = Math.floor(Math.random() * fallbackImages.length);
+    return fallbackImages[randomIndex];
+  };
+
+  // 如果封面圖不存在，則使用隨機圖片
+  const coverImage = officialCollection.coverImage || getRandomImage();
 
   return (
     <div
@@ -27,7 +42,7 @@ const TileList = ({
       </header>
       <div>
         <img
-          src={officialCollection.coverImage}
+          src={coverImage}
           alt="Official Collection Cover Image"
           loading="lazy"
           className="size-[202px] rounded-lg border border-black object-cover"
