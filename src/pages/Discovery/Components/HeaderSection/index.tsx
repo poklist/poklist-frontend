@@ -1,9 +1,3 @@
-import useStrictNavigate from '@/hooks/useStrictNavigate';
-import useAuthStore from '@/stores/useAuthStore';
-import useUserStore from '@/stores/useUserStore';
-import '@/types/global';
-import { Trans } from '@lingui/react/macro';
-import { useEffect, useState } from 'react';
 import { LoginDrawer } from '@/components/Drawer/LoginDrawer';
 import {
   Button,
@@ -11,10 +5,18 @@ import {
   ButtonSize,
   ButtonVariant,
 } from '@/components/ui/button';
+import { ExternalLinks } from '@/constants/externalLink';
+import useStrictNavigation from '@/hooks/useStrictNavigate';
+import { openWindow } from '@/lib/openLink';
+import useAuthStore from '@/stores/useAuthStore';
+import useUserStore from '@/stores/useUserStore';
+import '@/types/global';
 import { User } from '@/types/User';
+import { Trans } from '@lingui/react/macro';
+import { useEffect, useState } from 'react';
 
 export const HeaderSection = () => {
-  const navigateTo = useStrictNavigate();
+  const navigateTo = useStrictNavigation();
   const { isLoggedIn } = useAuthStore();
   const { me } = useUserStore();
   const [showCustomLogin, setShowCustomLogin] = useState(false);
@@ -76,12 +78,7 @@ export const HeaderSection = () => {
               variant={ButtonVariant.BLACK}
               size={ButtonSize.MD}
               shape={ButtonShape.ROUNDED_8PX}
-              onClick={() =>
-                window.open(
-                  'https://opaque-creek-8e5.notion.site/Sign-up-1b0a4cd4b98b80c99c48e78b69b1b0f3',
-                  '_blank'
-                )
-              }
+              onClick={() => openWindow(ExternalLinks.SIGNUP)}
             >
               <Trans>Create your account</Trans>
             </Button>

@@ -1,65 +1,65 @@
 // avatar
-import lifeStyleAvatar from '@/assets/images/home/avatar/life-style.png';
-import foodAndDrinkAvatar from '@/assets/images/home/avatar/food-drink.png';
-import travelAvatar from '@/assets/images/home/avatar/travel.png';
-import cultureAvatar from '@/assets/images/home/avatar/culture.png';
-import entertainmentAvatar from '@/assets/images/home/avatar/entertainment.png';
-import personalGrowthAvatar from '@/assets/images/home/avatar/personal-growth.png';
-import techAndDigitalAvatar from '@/assets/images/home/avatar/tech-digital.png';
-import healthAndFitnessAvatar from '@/assets/images/home/avatar/health-fitness.png';
-import otherAvatar from '@/assets/images/home/avatar/other.png';
+import cultureAvatar from '@/assets/images/official/avatar/culture.png';
+import entertainmentAvatar from '@/assets/images/official/avatar/entertainment.png';
+import foodAndDrinkAvatar from '@/assets/images/official/avatar/food-drink.png';
+import healthAndFitnessAvatar from '@/assets/images/official/avatar/health-fitness.png';
+import lifeStyleAvatar from '@/assets/images/official/avatar/life-style.png';
+import otherAvatar from '@/assets/images/official/avatar/other.png';
+import personalGrowthAvatar from '@/assets/images/official/avatar/personal-growth.png';
+import techAndDigitalAvatar from '@/assets/images/official/avatar/tech-digital.png';
+import travelAvatar from '@/assets/images/official/avatar/travel.png';
 
 // list
-import lifeStyleList1 from '@/assets/images/home/lists/lifeStyle/1.png';
-import lifeStyleList2 from '@/assets/images/home/lists/lifeStyle/2.png';
-import lifeStyleList3 from '@/assets/images/home/lists/lifeStyle/3.png';
+import lifeStyleList1 from '@/assets/images/official/lists/lifeStyle/1.png';
+import lifeStyleList2 from '@/assets/images/official/lists/lifeStyle/2.png';
+import lifeStyleList3 from '@/assets/images/official/lists/lifeStyle/3.png';
 
-import foodAndDrinkList1 from '@/assets/images/home/lists/foodAndDrink/1.png';
-import foodAndDrinkList2 from '@/assets/images/home/lists/foodAndDrink/2.png';
-import foodAndDrinkList3 from '@/assets/images/home/lists/foodAndDrink/3.png';
+import foodAndDrinkList1 from '@/assets/images/official/lists/foodAndDrink/1.png';
+import foodAndDrinkList2 from '@/assets/images/official/lists/foodAndDrink/2.png';
+import foodAndDrinkList3 from '@/assets/images/official/lists/foodAndDrink/3.png';
 
-import travelList1 from '@/assets/images/home/lists/travel/1.png';
-import travelList2 from '@/assets/images/home/lists/travel/2.png';
-import travelList3 from '@/assets/images/home/lists/travel/3.png';
+import travelList1 from '@/assets/images/official/lists/travel/1.png';
+import travelList2 from '@/assets/images/official/lists/travel/2.png';
+import travelList3 from '@/assets/images/official/lists/travel/3.png';
 
-import cultureList1 from '@/assets/images/home/lists/culture/1.png';
-import cultureList2 from '@/assets/images/home/lists/culture/2.png';
-import cultureList3 from '@/assets/images/home/lists/culture/3.png';
+import cultureList1 from '@/assets/images/official/lists/culture/1.png';
+import cultureList2 from '@/assets/images/official/lists/culture/2.png';
+import cultureList3 from '@/assets/images/official/lists/culture/3.png';
 
-import entertainmentList1 from '@/assets/images/home/lists/entertainment/1.png';
-import entertainmentList2 from '@/assets/images/home/lists/entertainment/2.png';
-import entertainmentList3 from '@/assets/images/home/lists/entertainment/3.jpg';
+import entertainmentList1 from '@/assets/images/official/lists/entertainment/1.png';
+import entertainmentList2 from '@/assets/images/official/lists/entertainment/2.png';
+import entertainmentList3 from '@/assets/images/official/lists/entertainment/3.jpg';
 
-import techAndDigitalList1 from '@/assets/images/home/lists/techAndDigital/1.png';
-import techAndDigitalList2 from '@/assets/images/home/lists/techAndDigital/2.png';
-import techAndDigitalList3 from '@/assets/images/home/lists/techAndDigital/3.png';
+import techAndDigitalList1 from '@/assets/images/official/lists/techAndDigital/1.png';
+import techAndDigitalList2 from '@/assets/images/official/lists/techAndDigital/2.png';
+import techAndDigitalList3 from '@/assets/images/official/lists/techAndDigital/3.png';
 
-import personalGrowthList1 from '@/assets/images/home/lists/personalGrowth/1.png';
-import personalGrowthList2 from '@/assets/images/home/lists/personalGrowth/2.png';
-import personalGrowthList3 from '@/assets/images/home/lists/personalGrowth/3.png';
+import personalGrowthList1 from '@/assets/images/official/lists/personalGrowth/1.png';
+import personalGrowthList2 from '@/assets/images/official/lists/personalGrowth/2.png';
+import personalGrowthList3 from '@/assets/images/official/lists/personalGrowth/3.png';
 
-import healthAndFitnessList1 from '@/assets/images/home/lists/healthAndFitness/1.jpg';
-import healthAndFitnessList2 from '@/assets/images/home/lists/healthAndFitness/2.jpg';
-import healthAndFitnessList3 from '@/assets/images/home/lists/healthAndFitness/3.jpg';
+import healthAndFitnessList1 from '@/assets/images/official/lists/healthAndFitness/1.jpg';
+import healthAndFitnessList2 from '@/assets/images/official/lists/healthAndFitness/2.jpg';
+import healthAndFitnessList3 from '@/assets/images/official/lists/healthAndFitness/3.jpg';
 
-import otherList1 from '@/assets/images/home/lists/other/1.png';
-import otherList2 from '@/assets/images/home/lists/other/2.png';
-import otherList3 from '@/assets/images/home/lists/other/3.png';
+import otherList1 from '@/assets/images/official/lists/other/1.png';
+import otherList2 from '@/assets/images/official/lists/other/2.png';
+import otherList3 from '@/assets/images/official/lists/other/3.png';
 
 // feature
-import leftTop from '@/assets/images/home/feature/left-top.svg';
-import leftBottom from '@/assets/images/home/feature/left-bottom.svg';
-import leftMid from '@/assets/images/home/feature/left-mid.svg';
-import midTop from '@/assets/images/home/feature/mid-top.svg';
-import rightTop from '@/assets/images/home/feature/right-top.svg';
-import rightMid from '@/assets/images/home/feature/right-mid.svg';
-import rightBottom from '@/assets/images/home/feature/right-bottom.svg';
+import leftBottom from '@/assets/images/official/feature/left-bottom.svg';
+import leftMid from '@/assets/images/official/feature/left-mid.svg';
+import leftTop from '@/assets/images/official/feature/left-top.svg';
+import midTop from '@/assets/images/official/feature/mid-top.svg';
+import rightBottom from '@/assets/images/official/feature/right-bottom.svg';
+import rightMid from '@/assets/images/official/feature/right-mid.svg';
+import rightTop from '@/assets/images/official/feature/right-top.svg';
 
 // social media
 import discordLogo from '@/assets/images/socialMedia/discord-logo.svg';
 import instagramLogo from '@/assets/images/socialMedia/ig-logo.svg';
-import threadsLogo from '@/assets/images/socialMedia/threads-logo.svg';
 import linkedinLogo from '@/assets/images/socialMedia/linkedin-logo.svg';
+import threadsLogo from '@/assets/images/socialMedia/threads-logo.svg';
 
 export const IMAGES = {
   avatar: {

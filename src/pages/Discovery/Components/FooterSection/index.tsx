@@ -1,8 +1,8 @@
-import { Footer } from '@/pages/Home/Components/Footer';
-import { ChevronRight } from 'lucide-react';
 import { FOOTER_SECTION, SOCIAL_MEDIA } from '@/constants/Home/index.en';
-import useStrictNavigate from '@/hooks/useStrictNavigate';
+import useStrictNavigation from '@/hooks/useStrictNavigate';
+import { Footer } from '@/pages/Official/Components/Footer';
 import { Trans } from '@lingui/react/macro';
+import { ChevronRight } from 'lucide-react';
 
 const FooterSection = () => {
   const content = {
@@ -10,7 +10,7 @@ const FooterSection = () => {
     SOCIAL_MEDIA,
   };
 
-  const navigateTo = useStrictNavigate();
+  const navigateTo = useStrictNavigation();
 
   return (
     <>
@@ -23,7 +23,7 @@ const FooterSection = () => {
 
             <div
               className="flex flex-row items-center gap-2"
-              onClick={() => navigateTo.home()}
+              onClick={() => navigateTo.official()}
             >
               <p className="text-h1 font-bold text-black-text-01">
                 Next wave of content

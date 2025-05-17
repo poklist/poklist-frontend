@@ -2,7 +2,7 @@ import { DrawerProvider } from '@/components/Drawer';
 import { FakePageProvider } from '@/components/FakePage';
 import { LanguageProvider } from '@/components/Language';
 import useCheckStorage from '@/hooks/useCheckStorage';
-import useStrictNavigate from '@/hooks/useStrictNavigate';
+import useStrictNavigation from '@/hooks/useStrictNavigate';
 import { cn } from '@/lib/utils';
 import useLayoutStore from '@/stores/useLayoutStore';
 import { useEffect } from 'react';
@@ -13,7 +13,7 @@ import MainContent from './Components/MainContent';
 import PromptText from './Components/PromptText';
 
 export default function Layout() {
-  const navigateTo = useStrictNavigate();
+  const navigateTo = useStrictNavigation();
   const { isMobile } = useLayoutStore();
   const location = useLocation();
   const redirectWhiteList = ['/error', '/goToMobile'];

@@ -14,7 +14,7 @@ import {
   useSocialAction,
 } from '@/hooks/mutations/useSocialAction';
 import { useUser } from '@/hooks/queries/useUser';
-import useStrictNavigate from '@/hooks/useStrictNavigate';
+import useStrictNavigation from '@/hooks/useStrictNavigate';
 import { useToast } from '@/hooks/useToast';
 import {
   ensureProtocol,
@@ -33,7 +33,7 @@ import { HeroSectionSkeleton } from './HeroSectionSkeleton';
 const HeroSection: React.FC = () => {
   const { userCode } = useOutletContext<UserRouteLayoutContextType>();
 
-  const navigateTo = useStrictNavigate();
+  const navigateTo = useStrictNavigation();
   const { isLoggedIn, logout } = useAuthStore();
   const { me, setMe } = useUserStore();
   const { openDrawer } = useDrawer();

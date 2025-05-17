@@ -1,4 +1,4 @@
-import useStrictNavigate from '@/hooks/useStrictNavigate';
+import useStrictNavigation from '@/hooks/useStrictNavigate';
 import axios from '@/lib/axios';
 import useAuthStore from '@/stores/useAuthStore';
 import useUserStore from '@/stores/useUserStore';
@@ -20,7 +20,7 @@ export const useEditProfile = ({
 }: UseEditProfileOptions = {}) => {
   const { setAccessToken, logout } = useAuthStore();
   const { setMe, me } = useUserStore();
-  const navigateTo = useStrictNavigate();
+  const navigateTo = useStrictNavigation();
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
