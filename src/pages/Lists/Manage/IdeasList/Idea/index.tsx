@@ -1,5 +1,5 @@
 import { DragAndDropItems } from '@/constants/DragAndDrop';
-import useStrictNavigate from '@/hooks/useStrictNavigate';
+import useStrictNavigation from '@/hooks/useStrictNavigate';
 import { cn } from '@/lib/utils';
 import { IdeaPreview } from '@/types/Idea';
 import { useRef } from 'react';
@@ -17,7 +17,7 @@ const DraggableIdeaRow: React.FC<IdeaProps> = ({
   hoverCallback,
 }) => {
   const ref = useRef<HTMLDivElement | null>(null);
-  const navigateTo = useStrictNavigate();
+  const navigateTo = useStrictNavigation();
 
   const [{ isDragging }, dragRef] = useDrag(() => ({
     type: DragAndDropItems.IDEA,

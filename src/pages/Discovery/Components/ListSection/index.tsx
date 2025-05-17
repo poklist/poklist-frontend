@@ -1,19 +1,19 @@
-import { useCategories } from '@/hooks/queries/useCategories';
-import ListItem from '../ListItem';
-import SectionTitle from '../SectionTitle';
-import { useLatestListGroups } from '@/hooks/queries/useLatestListGroups';
-import { useMemo, useState, useRef, useEffect } from 'react';
-import { LatestList } from '@/types/Discovery';
-import { Trans } from '@lingui/react/macro';
-import { t } from '@lingui/core/macro';
 import {
   Button,
   ButtonShape,
   ButtonSize,
   ButtonVariant,
 } from '@/components/ui/button';
-import ListSectionSkeleton from './ListSectionSkeleton';
+import { useCategories } from '@/hooks/queries/useCategories';
+import { useLatestListGroups } from '@/hooks/queries/useLatestListGroups';
 import { useUIStore } from '@/stores/useUIStore';
+import { LatestList } from '@/types/Discovery';
+import { t } from '@lingui/core/macro';
+import { Trans } from '@lingui/react/macro';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import ListItem from '../ListItem';
+import SectionTitle from '../SectionTitle';
+import ListSectionSkeleton from './ListSectionSkeleton';
 
 // initial display count
 const INITIAL_DISPLAY_COUNT = 5;

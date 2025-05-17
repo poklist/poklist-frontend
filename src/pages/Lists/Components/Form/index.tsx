@@ -13,7 +13,7 @@ import { DrawerIds } from '@/constants/Drawer';
 import { EditFieldVariant } from '@/enums/EditField/index.enum';
 import { RadioType } from '@/enums/Style/index.enum';
 import { useCategories } from '@/hooks/queries/useCategories';
-import useStrictNavigate from '@/hooks/useStrictNavigate';
+import useStrictNavigation from '@/hooks/useStrictNavigate';
 import { cn, formatInput } from '@/lib/utils';
 import { CategoriesI18n } from '@/pages/Lists/i18n';
 import useCommonStore from '@/stores/useCommonStore';
@@ -200,17 +200,8 @@ const ListForm: React.FC<IListFormProps> = ({
     completedCallback(data);
   };
 
-  // const submitFooterRef = useRef<HTMLDivElement>(null);
-
-  // const footerPosition = () => {
-  //   if (submitFooterRef.current && window.visualViewport) {
-  //     submitFooterRef.current.style.top = `${window.visualViewport.height - submitFooterRef.current.offsetHeight}px`;
-  //   }
-  // };
   useEffect(() => {
-    // footerPosition();
-
-    // 組件卸載時關閉抽屜
+    // Close drawers when the component is unmounted
     return () => {
       closeCategoryDrawer();
       closeCancelDrawer();
@@ -248,7 +239,7 @@ const ListForm: React.FC<IListFormProps> = ({
     setRadioChoice(_radioChoice);
   }, [categories]);
 
-  const navigateTo = useStrictNavigate();
+  const navigateTo = useStrictNavigation();
 
   return (
     <>

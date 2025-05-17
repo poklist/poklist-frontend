@@ -325,17 +325,17 @@ export const SOCIAL_MEDIA = [
   {
     name: 'Instagram',
     icon: IMAGES.socialMedia.instagram,
-    url: 'https://www.instagram.com/poklistapp/',
+    url: 'https://www.instagram.com/relist.cc',
   },
   {
     name: 'Threads',
     icon: IMAGES.socialMedia.threads,
-    url: 'https://www.threads.net/@poklistapp',
+    url: 'https://www.threads.net/@relist.cc',
   },
   {
     name: 'LinkedIn',
     icon: IMAGES.socialMedia.linkedin,
-    url: 'https://www.linkedin.com/company/poklist',
+    url: 'https://www.linkedin.com/company/relistapp',
   },
 ];
 export const ERROR_DIALOG = {

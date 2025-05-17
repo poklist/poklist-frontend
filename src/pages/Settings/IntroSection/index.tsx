@@ -4,7 +4,7 @@ import { Trans } from '@lingui/react/macro';
 const IntroSection: React.FC = () => {
   return (
     <div
-      id="intro-to-poklist"
+      id="intro-to-relist"
       className="flex flex-col gap-6 px-4 pt-6 text-[15px]"
     >
       <p>

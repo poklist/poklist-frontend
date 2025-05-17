@@ -1,12 +1,19 @@
+import { StaticRoutes } from '@/router';
 import { NavigateOptions, useNavigate } from 'react-router-dom';
 
-const useStrictNavigate = () => {
+const useStrictNavigation = () => {
   const navigate = useNavigate();
 
   return {
-    discovery: () => navigate('/discovery'),
-    home: () => navigate('/home'),
-    settings: () => navigate('/settings'),
+    refresh: () => navigate(0),
+    backward: () => navigate(-1),
+    home: () => navigate(StaticRoutes.HOME),
+    discovery: () => navigate(StaticRoutes.DISCOVERY),
+    official: () => navigate(StaticRoutes.OFFICIAL),
+    settings: () => navigate(StaticRoutes.SETTINGS),
+    error: () => navigate(StaticRoutes.ERROR),
+    goToMobile: () => navigate(StaticRoutes.GO_TO_MOBILE),
+
     user: (userCode: string) => navigate(`/@${userCode}`),
     editUser: (userCode: string) => navigate(`/@${userCode}/edit`),
     createList: (userCode: string) => navigate(`/@${userCode}/list/create`),
@@ -23,10 +30,7 @@ const useStrictNavigate = () => {
     createIdea: (options?: NavigateOptions) =>
       navigate(`/idea/create`, options),
     editIdea: (ideaID: string) => navigate(`/idea/${ideaID}/edit`),
-    error: () => navigate(`/error`),
-    goToMobile: () => navigate(`/goToMobile`),
-    backward: () => navigate(-1),
   };
 };
 
-export default useStrictNavigate;
+export default useStrictNavigation;
