@@ -18,17 +18,6 @@ const IdeaListSection: React.FC<IdeaListProps> = ({
     reorderCallback(dragIndex, hoverIndex);
   };
 
-  // const footerRef = useRef<HTMLDivElement>(null);
-
-  // const footerPosition = () => {
-  //   if (footerRef.current && window.visualViewport) {
-  //     footerRef.current.style.top = `${window.visualViewport.height - footerRef.current.offsetHeight}px`;
-  //   }
-  // };
-  // useEffect(() => {
-  //   footerPosition();
-  // }, []);
-
   return (
     <>
       <div className={cn('mb-6 flex flex-col gap-2')}>

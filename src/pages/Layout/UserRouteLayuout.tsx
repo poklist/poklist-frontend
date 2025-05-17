@@ -1,4 +1,4 @@
-import useStrictNavigate from '@/hooks/useStrictNavigate';
+import useStrictNavigation from '@/hooks/useStrictNavigate';
 import { Outlet, useParams } from 'react-router-dom';
 
 export interface UserRouteLayoutContextType {
@@ -7,10 +7,10 @@ export interface UserRouteLayoutContextType {
 
 export default function UserRouteLayout() {
   const { userCode: rawUserCode } = useParams();
-  const navigateTo = useStrictNavigate();
+  const navigateTo = useStrictNavigation();
 
   if (!rawUserCode?.startsWith('@')) {
-    // Prevent capturing userCode that does not start with @, such as conflicting with /home or /settings
+    // Prevent capturing userCode that does not start with @, such as conflicting with /discovery, /official or /settings
     navigateTo.error();
   }
 

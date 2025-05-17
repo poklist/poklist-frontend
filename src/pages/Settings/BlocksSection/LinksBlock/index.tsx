@@ -1,4 +1,5 @@
 import IconRightArrow from '@/components/ui/icons/RightArrowIcon';
+import { openWindow } from '@/lib/openLink';
 import { IActionItem, ILinksBlock } from '@/types/Settings';
 
 type ILinksBlockProps = ILinksBlock;
@@ -11,7 +12,7 @@ const LinksBlock: React.FC<ILinksBlockProps> = ({ title, actionItems }) => {
     if (item.link !== undefined) {
       return () => {
         // TODO: To determine if it's internal or external
-        window.open(item.link, '_blank');
+        openWindow(item.link);
       };
     }
     return () => {

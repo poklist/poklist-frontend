@@ -2,7 +2,7 @@ import { Button, ButtonVariant } from '@/components/ui/button';
 import IconAdd from '@/components/ui/icons/AddIcon';
 import IconLike from '@/components/ui/icons/LikeIcon';
 import IconLink from '@/components/ui/icons/LinkIcon';
-import useStrictNavigate from '@/hooks/useStrictNavigate';
+import useStrictNavigation from '@/hooks/useStrictNavigate';
 import { useToast } from '@/hooks/useToast';
 import { cn, copyHref } from '@/lib/utils';
 import useAuthStore from '@/stores/useAuthStore';
@@ -28,7 +28,7 @@ const FloatingButtonFooter: React.FC<IFooterProps> = ({
   const { isLoggedIn } = useAuthStore();
   const { setIsLoginDrawerOpen } = useCommonStore();
   const { isLiked } = useSocialStore();
-  const navigateTo = useStrictNavigate();
+  const navigateTo = useStrictNavigation();
   const handleCopyHref = () => {
     copyHref();
     toast({

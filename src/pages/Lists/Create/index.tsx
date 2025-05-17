@@ -1,5 +1,5 @@
 import { useCreateList } from '@/hooks/mutations/useCreateList';
-import useStrictNavigate from '@/hooks/useStrictNavigate';
+import useStrictNavigation from '@/hooks/useStrictNavigate';
 import ListForm from '@/pages/Lists/Components/Form';
 import Header from '@/pages/Lists/Components/Header';
 import useCommonStore from '@/stores/useCommonStore';
@@ -13,7 +13,7 @@ interface CreatePageProps {
 }
 
 const CreatePage: React.FC<CreatePageProps> = () => {
-  const navigateTo = useStrictNavigate();
+  const navigateTo = useStrictNavigation();
   const { setIsLoading } = useCommonStore();
   const { me } = useUserStore();
 

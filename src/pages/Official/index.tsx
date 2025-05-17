@@ -11,7 +11,7 @@ import { FeatureSection } from './Components/FeatureSection';
 import { Footer } from './Components/Footer';
 import { TutorialSection } from './Components/TutorialSection';
 
-export default function Home() {
+export default function Official() {
   const content = {
     FEATURE_SECTION,
     LIST_SECTION,

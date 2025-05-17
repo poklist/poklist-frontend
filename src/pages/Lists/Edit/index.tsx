@@ -1,7 +1,7 @@
 import { useDeleteList } from '@/hooks/mutations/useDeleteList';
 import { useEditList } from '@/hooks/mutations/useEditList';
 import { useList } from '@/hooks/queries/useList';
-import useStrictNavigate from '@/hooks/useStrictNavigate';
+import useStrictNavigation from '@/hooks/useStrictNavigate';
 import ListForm from '@/pages/Lists/Components/Form';
 import Header from '@/pages/Lists/Components/Header';
 import useCommonStore from '@/stores/useCommonStore';
@@ -18,7 +18,7 @@ interface EditListPageProps {
 const EditListPage: React.FC<EditListPageProps> = () => {
   // Render the page here
   const { id } = useParams();
-  const navigateTo = useStrictNavigate();
+  const navigateTo = useStrictNavigation();
 
   const { setIsLoading } = useCommonStore();
   const userStore = useUserStore();

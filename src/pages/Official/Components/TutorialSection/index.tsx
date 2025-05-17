@@ -1,6 +1,7 @@
-import { ChevronRight } from 'lucide-react';
+import { openWindow } from '@/lib/openLink';
 import { TutorialLink } from '@/types/Home';
 import { Trans } from '@lingui/react';
+import { ChevronRight } from 'lucide-react';
 
 interface TutorialProps {
   content: TutorialLink[];
@@ -12,7 +13,7 @@ export const TutorialSection = ({ content }: TutorialProps) => (
       <div
         key={item.title.id}
         className="flex cursor-pointer items-center"
-        onClick={() => (window.location.href = item.url || '#')}
+        onClick={() => openWindow(item.url)}
       >
         <h1 className="text-h1 font-bold">
           <Trans id={item.title.id} message={item.title.message} />
