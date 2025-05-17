@@ -791,12 +791,12 @@ msgid "Idea"
 msgstr "Idea"
 
 #: src/pages/Layout/Components/MainContent.tsx
-msgid "Right now, only invited users can log in"
-msgstr "Right now, only invited users can log in"
+#~ msgid "Right now, only invited users can log in"
+#~ msgstr "Right now, only invited users can log in"
 
 #: src/pages/Layout/Components/MainContent.tsx
-msgid "Already got your invite? Jump in and apply now!"
-msgstr "Already got your invite? Jump in and apply now!"
+#~ msgid "Already got your invite? Jump in and apply now!"
+#~ msgstr "Already got your invite? Jump in and apply now!"
 
 #: src/pages/Layout/Components/PromptText.tsx
 msgid "Relist works best on mobile. Use a mobile device for the best experience."
