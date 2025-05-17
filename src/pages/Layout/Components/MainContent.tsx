@@ -5,13 +5,13 @@ import LoadingSpinner from '@/components/Loading';
 import { useScrollPosition } from '@/hooks/useScrollPosition';
 import useStrictNavigation from '@/hooks/useStrictNavigate';
 import { cn } from '@/lib/utils';
-import { LoginErrorDialog } from '@/pages/Official/Components/LoginErrorDialog';
 import useCommonStore from '@/stores/useCommonStore';
 import useLayoutStore from '@/stores/useLayoutStore';
 import { useUIStore } from '@/stores/useUIStore';
 import { User } from '@/types/User';
+import { t } from '@lingui/core/macro';
 import { GoogleOAuthProvider } from '@react-oauth/google';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 
 // 主要內容區域組件
@@ -21,10 +21,13 @@ const MainContent = () => {
   const { isMobile } = useLayoutStore();
 
   const navigateTo = useStrictNavigation();
-  const { isLoading, isLoginDrawerOpen, setIsLoginDrawerOpen } =
-    useCommonStore();
+  const {
+    isLoading,
+    isLoginDrawerOpen,
+    setIsLoginDrawerOpen,
+    setErrorDrawerMessage,
+  } = useCommonStore();
   const { setScrollToTop } = useUIStore();
-  const [isLoginErrorDialogOpen, setIsLoginErrorDialogOpen] = useState(false);
   const isHomePage = useLocation().pathname === '/discovery';
 
   const mainContentRef = useRef<HTMLDivElement>(null);
@@ -51,7 +54,10 @@ const MainContent = () => {
 
   const handleLoginError = () => {
     setIsLoginDrawerOpen(false);
-    setIsLoginErrorDialogOpen(true);
+    setErrorDrawerMessage({
+      title: t`Right now, only invited users can log in`,
+      content: t`Already got your invite? Jump in and apply now!`,
+    });
   };
 
   return (
@@ -81,12 +87,6 @@ const MainContent = () => {
 
       <LoadingSpinner isLoading={isLoading} />
       <ErrorDrawer />
-
-      <LoginErrorDialog
-        open={isLoginErrorDialogOpen}
-        onOpenChange={setIsLoginErrorDialogOpen}
-        onClose={() => setIsLoginErrorDialogOpen(false)}
-      />
 
       <GoogleOAuthProvider clientId={clientId}>
         <LoginDrawer
