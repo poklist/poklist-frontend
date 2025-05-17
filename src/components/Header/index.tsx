@@ -7,7 +7,6 @@ import { cn } from '@/lib/utils';
 import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
 import useAuthStore from '@/stores/useAuthStore';
 import useCommonStore from '@/stores/useCommonStore';
-import { useUIStore } from '@/stores/useUIStore';
 import useUserStore from '@/stores/useUserStore';
 import React from 'react';
 import { useLocation, useOutletContext } from 'react-router-dom';
@@ -25,9 +24,8 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
   const { isLoggedIn } = useAuthStore();
   const { me } = useUserStore();
   const { setIsLoginDrawerOpen } = useCommonStore();
-  const { scrollToTop } = useUIStore();
 
-  const isHomePage = useLocation().pathname === '/home';
+  const isDiscoveryPage = useLocation().pathname === '/discovery';
   const isMyPage = outletContext?.userCode === me.userCode;
 
   const handleClickSignIn = () => {
@@ -35,11 +33,9 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
   };
 
   const handleClickLogo = () => {
-    if (isHomePage) {
-      scrollToTop();
-    } else {
-      navigateTo.home();
-    }
+    // 清除 discovery 頁面的滾動位置紀錄
+    sessionStorage.removeItem('scroll_pos_/discovery');
+    window.location.href = '/discovery';
   };
 
   return (
@@ -66,7 +62,7 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
           id="header-right"
           className="flex items-center justify-center gap-4"
         >
-          {isHomePage && <LanguageToggleButton />}
+          {isDiscoveryPage && <LanguageToggleButton />}
           {!isLoggedIn && (
             <Button
               size={ButtonSize.SM}
@@ -85,7 +81,7 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
               <AvatarFallback>{me.displayName[0]}</AvatarFallback>
             </Avatar>
           )}
-          {!isHomePage && (!isLoggedIn || (isLoggedIn && isMyPage)) && (
+          {!isDiscoveryPage && (!isLoggedIn || (isLoggedIn && isMyPage)) && (
             <Button
               variant={ButtonVariant.WHITE}
               size={ButtonSize.ICON}

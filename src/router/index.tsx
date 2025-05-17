@@ -1,3 +1,4 @@
+import Discovery from '@/pages/Discovery';
 import EditUserPage from '@/pages/EditUser';
 import ErrorPage from '@/pages/Error';
 import GoToMobilePage from '@/pages/GoToMobile';
@@ -20,7 +21,8 @@ const router = createBrowserRouter([
     element: <Layout />,
     errorElement: <ErrorPage />,
     children: [
-      { path: '', element: <Navigate to="/home" replace /> },
+      { path: '', element: <Navigate to="/discovery" replace /> },
+      { path: 'discovery', element: <Discovery /> },
       { path: 'home', element: <Home /> },
       { path: 'settings', element: <SettingsPage /> },
       { path: 'error', element: <ErrorPage /> },

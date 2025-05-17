@@ -56,7 +56,7 @@ const HeroSection: React.FC = () => {
       // TODO: error handling 404 page
       if (isMyPage) {
         logout();
-        navigateTo.home();
+        navigateTo.discovery();
         toast({
           title: t`The login session is expired, please login again`,
           variant: 'success', // FUTURE: redefined variant

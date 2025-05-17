@@ -92,16 +92,16 @@ msgid "Join Relist and share your lists."
 msgstr "加入 Relist，分享靈感！"
 
 #: src/constants/Home/index.en.ts
-msgid "Currently open only to creator account applications."
-msgstr "目前僅開放創作者申請帳號"
+#~ msgid "Currently open only to creator account applications."
+#~ msgstr "目前僅開放創作者申請帳號"
 
 #: src/constants/Home/index.en.ts
-msgid "Sign up"
-msgstr "快速申請"
+#~ msgid "Sign up"
+#~ msgstr "快速申請"
 
 #: src/constants/Home/index.en.ts
-msgid "Creator Account Login"
-msgstr "創作者帳號登入"
+#~ msgid "Creator Account Login"
+#~ msgstr "創作者帳號登入"
 
 #: src/constants/Home/index.en.ts
 msgid "Can non-creators use Relist?"
@@ -463,6 +463,154 @@ msgstr "請重新登入"
 msgid "The app is outdated, please login again"
 msgstr "網頁更新，請重新登入"
 
+#: src/pages/Discovery/Components/FooterSection/index.tsx
+msgid "<0>Your lists say more than posts ever could.</0><1><2>Next wave of content</2><3/></1>"
+msgstr "<0>你的生活精選，比誰都有料</0><1><2>下個內容浪潮</2><3/></1>"
+
+#: src/pages/Discovery/Components/HeaderSection/index.tsx
+msgid "<0>My life in my lists</0><1>Invitation only. Ready to join?</1>"
+msgstr "<0>靈感都在我的名單裡</0><1>歡迎受邀朋友申請帳號！</1>"
+
+#: src/pages/Discovery/Components/HeaderSection/index.tsx
+msgid "Create your account"
+msgstr "申請帳號"
+
+#: src/pages/Discovery/Components/HeaderSection/index.tsx
+msgid "Sign in"
+msgstr "登入"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+#: src/pages/Lists/i18n.ts
+msgid "Lifestyle"
+msgstr "生活風格"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+#: src/pages/Home/Components/FeatureSection/index.tsx
+#: src/pages/Lists/i18n.ts
+msgid "Food & Drink"
+msgstr "美食"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+#: src/pages/Home/Components/FeatureSection/index.tsx
+#: src/pages/Lists/i18n.ts
+msgid "Culture"
+msgstr "文化"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+#: src/pages/Home/Components/FeatureSection/index.tsx
+#: src/pages/Lists/i18n.ts
+msgid "Travel"
+msgstr "旅遊"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+#: src/pages/Home/Components/FeatureSection/index.tsx
+#: src/pages/Lists/i18n.ts
+msgid "Entertainment"
+msgstr "娛樂"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+#: src/pages/Home/Components/FeatureSection/index.tsx
+#: src/pages/Lists/i18n.ts
+msgid "Tech & Digital"
+msgstr "數位科技"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+#: src/pages/Home/Components/FeatureSection/index.tsx
+#: src/pages/Lists/i18n.ts
+msgid "Personal Growth"
+msgstr "個人成長"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+#: src/pages/Home/Components/FeatureSection/index.tsx
+#: src/pages/Lists/i18n.ts
+msgid "Health & Fitness"
+msgstr "健康與健身"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+#: src/pages/Settings/BlocksSection/index.tsx
+msgid "Others"
+msgstr "其他"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+msgid "Lists that vibe right"
+msgstr "這 vibe 我可以"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+msgid "Lists that taste like wow"
+msgstr "好想吃吃喝喝"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+msgid "Lists that show your colors"
+msgstr "有點溫度的東西"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+msgid "Lists that go to places"
+msgstr "出去玩耍的私筆記"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+msgid "Lists that stream good times"
+msgstr "耳機一戴，世界走開"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+msgid "Lists that tap into the future"
+msgstr "正在生成的浪潮"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+msgid "Lists that build better you"
+msgstr "慢慢懂的一些事"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+msgid "Lists that make you sweat"
+msgstr "練出好狀態"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+msgid "Lists that just get it"
+msgstr "喜歡的都在這"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+msgid "<0>Recently updated</0>"
+msgstr "<0>最近更新</0>"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+msgid "See more"
+msgstr "展開更多"
+
+#: src/pages/Discovery/Components/LoginDrawer/index.tsx
+msgid "New to Relist? Get started!"
+msgstr "第一次登入 RELIST ？立即申請"
+
+#: src/pages/Discovery/Components/LoginDrawer/index.tsx
+msgid "By continuing, you agree to our"
+msgstr "登入或註冊即表示您已閱讀並同意我們的"
+
+#: src/pages/Discovery/Components/LoginDrawer/index.tsx
+msgid "Terms of Service"
+msgstr "《使用者條款》"
+
+#: src/pages/Discovery/Components/LoginDrawer/index.tsx
+msgid ","
+msgstr "與"
+
+#: src/pages/Discovery/Components/LoginDrawer/index.tsx
+msgid "Privacy Policy."
+msgstr "《隱私權保護政策》"
+
+#: src/pages/Discovery/Components/LoginDrawer/index.tsx
+msgid "You confirm you're 13+."
+msgstr "，並確認您已年滿 13 歲。"
+
+#: src/pages/Discovery/Components/SectionTitle/index.tsx
+msgid "<0>{title}</0><1>{subtitle}</1>"
+msgstr ""
+
+#: src/pages/Discovery/Components/TileSection/index.tsx
+msgid "Fresh lists from our pocket"
+msgstr "這些靈感名單超有感"
+
+#: src/pages/Discovery/Components/TileSection/index.tsx
+msgid "Updated weekly"
+msgstr "每週精選更新"
+
 #: src/pages/EditUser/index.tsx
 #: src/pages/EditUser/index.tsx
 msgid "Name"
@@ -535,41 +683,6 @@ msgstr "<0>Relist 在手機畫面運作更順暢</0><1>使用行動裝置以取�
 #: src/pages/Home/Components/FeatureSection/index.tsx
 msgid "Life Style"
 msgstr "生活風格"
-
-#: src/pages/Home/Components/FeatureSection/index.tsx
-#: src/pages/Lists/i18n.ts
-msgid "Food & Drink"
-msgstr "美食"
-
-#: src/pages/Home/Components/FeatureSection/index.tsx
-#: src/pages/Lists/i18n.ts
-msgid "Culture"
-msgstr "文化"
-
-#: src/pages/Home/Components/FeatureSection/index.tsx
-#: src/pages/Lists/i18n.ts
-msgid "Travel"
-msgstr "旅遊"
-
-#: src/pages/Home/Components/FeatureSection/index.tsx
-#: src/pages/Lists/i18n.ts
-msgid "Entertainment"
-msgstr "娛樂"
-
-#: src/pages/Home/Components/FeatureSection/index.tsx
-#: src/pages/Lists/i18n.ts
-msgid "Tech & Digital"
-msgstr "數位科技"
-
-#: src/pages/Home/Components/FeatureSection/index.tsx
-#: src/pages/Lists/i18n.ts
-msgid "Personal Growth"
-msgstr "個人成長"
-
-#: src/pages/Home/Components/FeatureSection/index.tsx
-#: src/pages/Lists/i18n.ts
-msgid "Health & Fitness"
-msgstr "健康與健身"
 
 #: src/pages/Home/Components/FeatureSection/index.tsx
 #: src/pages/Lists/i18n.ts
@@ -805,10 +918,6 @@ msgstr "編輯名單"
 msgid "Please login to do this action"
 msgstr "請先登入以進行此操作"
 
-#: src/pages/Lists/i18n.ts
-msgid "Lifestyle"
-msgstr "生活風格"
-
 #: src/pages/Settings/BlocksSection/index.tsx
 msgid "Select your language!"
 msgstr "選擇您的語言"
@@ -868,10 +977,6 @@ msgstr "加入 Discord 與我們一起優化 Relist"
 #: src/pages/Settings/BlocksSection/index.tsx
 msgid "Submit feedback or report content"
 msgstr "給予意見或內容檢舉"
-
-#: src/pages/Settings/BlocksSection/index.tsx
-msgid "Others"
-msgstr "其他"
 
 #: src/pages/Settings/BlocksSection/index.tsx
 msgid "About Privacy Policy and Terms of Use"

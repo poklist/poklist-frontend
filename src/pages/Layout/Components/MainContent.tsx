@@ -2,6 +2,7 @@ import AlertComponent from '@/components/Alert';
 import { LoginDrawer } from '@/components/Drawer/LoginDrawer';
 import { ErrorDrawer } from '@/components/ErrorDrawer';
 import LoadingSpinner from '@/components/Loading';
+import { useScrollPosition } from '@/hooks/useScrollPosition';
 import useStrictNavigate from '@/hooks/useStrictNavigate';
 import { cn } from '@/lib/utils';
 import { LoginErrorDialog } from '@/pages/Home/Components/LoginErrorDialog';
@@ -27,6 +28,10 @@ const MainContent = () => {
   const isHomePage = useLocation().pathname === '/home';
 
   const mainContentRef = useRef<HTMLDivElement>(null);
+  // 使用自定義 hook 管理滾動位置
+  useScrollPosition(mainContentRef, {
+    restoreDelay: 0, // 可以調整延遲時間
+  });
 
   useEffect(() => {
     setScrollToTop(() => {
@@ -41,7 +46,7 @@ const MainContent = () => {
       return;
     }
     setIsLoginDrawerOpen(false);
-    navigateTo.user(user.userCode);
+    navigateTo.discovery();
   };
 
   const handleLoginError = () => {

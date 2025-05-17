@@ -34,7 +34,9 @@ const BackToUserHeader: React.FC<IBackToUserHeaderProps> = ({
   };
 
   const handleClickLogo = () => {
-    navigateTo.home();
+    // 清除 discovery 頁面的滾動位置紀錄
+    sessionStorage.removeItem('scroll_pos_/discovery');
+    window.location.href = '/discovery';
   };
 
   const handleFollow = () => {

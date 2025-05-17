@@ -2,7 +2,6 @@ import Header from '@/components/Header';
 import {
   FEATURE_SECTION,
   FOOTER_SECTION,
-  HERO_SECTION,
   LIST_SECTION,
   SOCIAL_MEDIA,
   TUTORIAL_SECTION,
@@ -14,7 +13,6 @@ import { TutorialSection } from './Components/TutorialSection';
 
 export default function Home() {
   const content = {
-    HERO_SECTION,
     FEATURE_SECTION,
     LIST_SECTION,
     TUTORIAL_SECTION,

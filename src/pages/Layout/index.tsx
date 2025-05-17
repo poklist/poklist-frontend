@@ -16,7 +16,7 @@ export default function Layout() {
   const navigateTo = useStrictNavigate();
   const { isMobile } = useLayoutStore();
   const location = useLocation();
-  const redirectWhiteList = ['/home', '/error', '/goToMobile'];
+  const redirectWhiteList = ['/error', '/goToMobile'];
 
   useCheckStorage();
 

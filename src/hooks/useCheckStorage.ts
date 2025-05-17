@@ -13,7 +13,7 @@ const useCheckStorage = () => {
   useEffect(() => {
     if (isLoggedIn && checkAndMigrateStorage()) {
       logout();
-      navigateTo.home();
+      navigateTo.discovery();
       toast({
         title: t`The app is outdated, please login again`,
         variant: 'success',

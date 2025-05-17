@@ -4,6 +4,7 @@ const useStrictNavigate = () => {
   const navigate = useNavigate();
 
   return {
+    discovery: () => navigate('/discovery'),
     home: () => navigate('/home'),
     settings: () => navigate('/settings'),
     user: (userCode: string) => navigate(`/@${userCode}`),
