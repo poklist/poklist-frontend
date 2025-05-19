@@ -92,16 +92,16 @@ msgid "Join Relist and share your lists."
 msgstr "Join Relist and share your lists."
 
 #: src/constants/Home/index.en.ts
-#~ msgid "Currently open only to creator account applications."
-#~ msgstr "Currently open only to creator account applications."
+msgid "Currently open only to creator account applications."
+msgstr "Currently open only to creator account applications."
 
 #: src/constants/Home/index.en.ts
-#~ msgid "Sign up"
-#~ msgstr "Sign up"
+msgid "Sign up"
+msgstr "Sign up"
 
 #: src/constants/Home/index.en.ts
-#~ msgid "Creator Account Login"
-#~ msgstr "Creator Account Login"
+msgid "Creator Account Login"
+msgstr "Creator Account Login"
 
 #: src/constants/Home/index.en.ts
 msgid "Can non-creators use Relist?"
@@ -485,44 +485,44 @@ msgid "Lifestyle"
 msgstr "Lifestyle"
 
 #: src/pages/Discovery/Components/ListSection/index.tsx
-#: src/pages/Home/Components/FeatureSection/index.tsx
 #: src/pages/Lists/i18n.ts
+#: src/pages/Official/Components/FeatureSection/index.tsx
 msgid "Food & Drink"
 msgstr "Food & Drink"
 
 #: src/pages/Discovery/Components/ListSection/index.tsx
-#: src/pages/Home/Components/FeatureSection/index.tsx
 #: src/pages/Lists/i18n.ts
+#: src/pages/Official/Components/FeatureSection/index.tsx
 msgid "Culture"
 msgstr "Culture"
 
 #: src/pages/Discovery/Components/ListSection/index.tsx
-#: src/pages/Home/Components/FeatureSection/index.tsx
 #: src/pages/Lists/i18n.ts
+#: src/pages/Official/Components/FeatureSection/index.tsx
 msgid "Travel"
 msgstr "Travel"
 
 #: src/pages/Discovery/Components/ListSection/index.tsx
-#: src/pages/Home/Components/FeatureSection/index.tsx
 #: src/pages/Lists/i18n.ts
+#: src/pages/Official/Components/FeatureSection/index.tsx
 msgid "Entertainment"
 msgstr "Entertainment"
 
 #: src/pages/Discovery/Components/ListSection/index.tsx
-#: src/pages/Home/Components/FeatureSection/index.tsx
 #: src/pages/Lists/i18n.ts
+#: src/pages/Official/Components/FeatureSection/index.tsx
 msgid "Tech & Digital"
 msgstr "Tech & Digital"
 
 #: src/pages/Discovery/Components/ListSection/index.tsx
-#: src/pages/Home/Components/FeatureSection/index.tsx
 #: src/pages/Lists/i18n.ts
+#: src/pages/Official/Components/FeatureSection/index.tsx
 msgid "Personal Growth"
 msgstr "Personal Growth"
 
 #: src/pages/Discovery/Components/ListSection/index.tsx
-#: src/pages/Home/Components/FeatureSection/index.tsx
 #: src/pages/Lists/i18n.ts
+#: src/pages/Official/Components/FeatureSection/index.tsx
 msgid "Health & Fitness"
 msgstr "Health & Fitness"
 
@@ -576,32 +576,28 @@ msgid "See more"
 msgstr "See more"
 
 #: src/pages/Discovery/Components/LoginDrawer/index.tsx
-msgid "New to Relist? Get started!"
-msgstr "New to Relist? Get started!"
+#~ msgid "By continuing, you agree to our"
+#~ msgstr "By continuing, you agree to our"
 
 #: src/pages/Discovery/Components/LoginDrawer/index.tsx
-msgid "By continuing, you agree to our"
-msgstr "By continuing, you agree to our"
+#~ msgid "Terms of Service"
+#~ msgstr "Terms of Service"
 
 #: src/pages/Discovery/Components/LoginDrawer/index.tsx
-msgid "Terms of Service"
-msgstr "Terms of Service"
+#~ msgid ","
+#~ msgstr ","
 
 #: src/pages/Discovery/Components/LoginDrawer/index.tsx
-msgid ","
-msgstr ","
+#~ msgid "Privacy Policy."
+#~ msgstr "Privacy Policy."
 
 #: src/pages/Discovery/Components/LoginDrawer/index.tsx
-msgid "Privacy Policy."
-msgstr "Privacy Policy."
-
-#: src/pages/Discovery/Components/LoginDrawer/index.tsx
-msgid "You confirm you're 13+."
-msgstr "You confirm you're 13+."
+#~ msgid "You confirm you're 13+."
+#~ msgstr "You confirm you're 13+."
 
 #: src/pages/Discovery/Components/SectionTitle/index.tsx
-msgid "<0>{title}</0><1>{subtitle}</1>"
-msgstr "<0>{title}</0><1>{subtitle}</1>"
+#~ msgid "<0>{title}</0><1>{subtitle}</1>"
+#~ msgstr "<0>{title}</0><1>{subtitle}</1>"
 
 #: src/pages/Discovery/Components/TileSection/index.tsx
 msgid "Fresh lists from our pocket"
@@ -679,20 +675,6 @@ msgstr "Oops something is wrong!"
 #: src/pages/GoToMobile/index.tsx
 msgid "<0>Relist works best on mobile.</0><1>Use a mobile device for the best experience.</1>"
 msgstr "<0>Relist works best on mobile.</0><1>Use a mobile device for the best experience.</1>"
-
-#: src/pages/Home/Components/FeatureSection/index.tsx
-msgid "Life Style"
-msgstr "Life Style"
-
-#: src/pages/Home/Components/FeatureSection/index.tsx
-#: src/pages/Lists/i18n.ts
-msgid "Other"
-msgstr "Other"
-
-#: src/pages/Home/Components/FeatureSection/index.tsx
-#: src/pages/User/HeroSection/index.tsx
-msgid "Lists"
-msgstr "Lists"
 
 #: src/pages/Idea/Components/DeleteButton/index.tsx
 msgid "Are you sure you want to delete this idea?"
@@ -791,12 +773,12 @@ msgid "Idea"
 msgstr "Idea"
 
 #: src/pages/Layout/Components/MainContent.tsx
-msgid "Right now, only invited users can log in"
-msgstr "Right now, only invited users can log in"
+#~ msgid "Right now, only invited users can log in"
+#~ msgstr "Right now, only invited users can log in"
 
 #: src/pages/Layout/Components/MainContent.tsx
-msgid "Already got your invite? Jump in and apply now!"
-msgstr "Already got your invite? Jump in and apply now!"
+#~ msgid "Already got your invite? Jump in and apply now!"
+#~ msgstr "Already got your invite? Jump in and apply now!"
 
 #: src/pages/Layout/Components/PromptText.tsx
 msgid "Relist works best on mobile. Use a mobile device for the best experience."
@@ -918,6 +900,20 @@ msgstr "Edit list"
 msgid "Please login to do this action"
 msgstr "Please login to do this action"
 
+#: src/pages/Lists/i18n.ts
+#: src/pages/Official/Components/FeatureSection/index.tsx
+msgid "Other"
+msgstr "Other"
+
+#: src/pages/Official/Components/FeatureSection/index.tsx
+msgid "Life Style"
+msgstr "Life Style"
+
+#: src/pages/Official/Components/FeatureSection/index.tsx
+#: src/pages/User/HeroSection/index.tsx
+msgid "Lists"
+msgstr "Lists"
+
 #: src/pages/Settings/BlocksSection/index.tsx
 msgid "Select your language!"
 msgstr "Select your language!"
@@ -1023,3 +1019,11 @@ msgstr "Followers"
 msgctxt "count"
 msgid "Links"
 msgstr "Links"
+
+#: src/pages/User/ListSection/index.tsx
+msgid "Looks like this page is a bit empty."
+msgstr "Looks like this page is a bit empty."
+
+#: src/pages/User/ListSection/index.tsx
+msgid "Follow and check back soon for surprise lists!"
+msgstr "Follow and check back soon for surprise lists!"

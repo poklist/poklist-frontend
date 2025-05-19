@@ -1,10 +1,10 @@
-import { ChevronRight } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import useStrictNavigation from '@/hooks/useStrictNavigate';
 import { LatestList } from '@/types/Discovery';
-import useStrictNavigate from '@/hooks/useStrictNavigate';
+import { ChevronRight } from 'lucide-react';
 
 const ListItem = ({ listItem }: { listItem: LatestList }) => {
-  const navigateTo = useStrictNavigate();
+  const navigateTo = useStrictNavigation();
 
   return (
     <div

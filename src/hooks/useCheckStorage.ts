@@ -1,4 +1,4 @@
-import useStrictNavigate from '@/hooks/useStrictNavigate';
+import useStrictNavigation from '@/hooks/useStrictNavigate';
 import { checkAndMigrateStorage } from '@/lib/storage';
 import useAuthStore from '@/stores/useAuthStore';
 import { t } from '@lingui/core/macro';
@@ -7,7 +7,7 @@ import { useToast } from './useToast';
 
 const useCheckStorage = () => {
   const { isLoggedIn, logout } = useAuthStore();
-  const navigateTo = useStrictNavigate();
+  const navigateTo = useStrictNavigation();
   const { toast } = useToast();
 
   useEffect(() => {

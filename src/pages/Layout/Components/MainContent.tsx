@@ -3,9 +3,9 @@ import { LoginDrawer } from '@/components/Drawer/LoginDrawer';
 import { ErrorDrawer } from '@/components/ErrorDrawer';
 import LoadingSpinner from '@/components/Loading';
 import { useScrollPosition } from '@/hooks/useScrollPosition';
-import useStrictNavigate from '@/hooks/useStrictNavigate';
+import useStrictNavigation from '@/hooks/useStrictNavigate';
 import { cn } from '@/lib/utils';
-import { LoginErrorDialog } from '@/pages/Home/Components/LoginErrorDialog';
+import { LoginErrorDialog } from '@/pages/Official/Components/LoginErrorDialog';
 import useCommonStore from '@/stores/useCommonStore';
 import useLayoutStore from '@/stores/useLayoutStore';
 import { useUIStore } from '@/stores/useUIStore';
@@ -20,12 +20,12 @@ const MainContent = () => {
 
   const { isMobile } = useLayoutStore();
 
-  const navigateTo = useStrictNavigate();
+  const navigateTo = useStrictNavigation();
   const { isLoading, isLoginDrawerOpen, setIsLoginDrawerOpen } =
     useCommonStore();
   const { setScrollToTop } = useUIStore();
   const [isLoginErrorDialogOpen, setIsLoginErrorDialogOpen] = useState(false);
-  const isHomePage = useLocation().pathname === '/home';
+  const isHomePage = useLocation().pathname === '/discovery';
 
   const mainContentRef = useRef<HTMLDivElement>(null);
   // 使用自定義 hook 管理滾動位置

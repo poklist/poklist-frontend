@@ -1,11 +1,10 @@
-import { AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Avatar } from '@/components/ui/avatar';
-import useStrictNavigate from '@/hooks/useStrictNavigate';
-import { OfficialCollection } from '@/types/Discovery';
 import randomImage1 from '@/assets/images/officialCover/random-image-1.png';
 import randomImage2 from '@/assets/images/officialCover/random-image-2.png';
 import randomImage3 from '@/assets/images/officialCover/random-image-3.png';
 import randomImage4 from '@/assets/images/officialCover/random-image-4.png';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import useStrictNavigation from '@/hooks/useStrictNavigate';
+import { OfficialCollection } from '@/types/Discovery';
 
 const fallbackImages = [randomImage1, randomImage2, randomImage3, randomImage4];
 
@@ -14,7 +13,7 @@ const TileList = ({
 }: {
   officialCollection: OfficialCollection;
 }) => {
-  const navigateTo = useStrictNavigate();
+  const navigateTo = useStrictNavigation();
 
   // 隨機選擇一張圖片作為封面圖的備用方案
   const getRandomImage = () => {

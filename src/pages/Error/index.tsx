@@ -10,7 +10,7 @@ export default function ErrorPage() {
       <TileBackground />
       <div className="relative z-10 flex min-h-screen flex-col">
         {/* Header */}
-        <Header className="bg-transparent" />
+        <Header bgColor="transparent" />
 
         {/* 內容 */}
         <div className="flex flex-1 flex-col items-center justify-start pt-28">

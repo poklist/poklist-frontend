@@ -2,7 +2,7 @@ import useDeleteIdea from '@/hooks/mutations/useDeleteIdea';
 import useEditIdea from '@/hooks/mutations/useEditIdea';
 import { useIdea } from '@/hooks/queries/useIdea';
 import { useList } from '@/hooks/queries/useList';
-import useStrictNavigate from '@/hooks/useStrictNavigate';
+import useStrictNavigation from '@/hooks/useStrictNavigate';
 import Header from '@/pages/Idea/Components/Header';
 import useCommonStore from '@/stores/useCommonStore';
 import useUserStore from '@/stores/useUserStore';
@@ -16,7 +16,7 @@ import IdeaFormComponent from '../Components/Form';
 interface EditIdeaPageProps {}
 const EditIdeaPage: React.FC<EditIdeaPageProps> = () => {
   const { id } = useParams();
-  const navigateTo = useStrictNavigate();
+  const navigateTo = useStrictNavigation();
   const [isDeleting, setIsDeleting] = useState(false);
 
   const { setIsLoading } = useCommonStore();
