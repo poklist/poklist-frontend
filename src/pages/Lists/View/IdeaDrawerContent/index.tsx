@@ -8,18 +8,17 @@ import IconLink from '@/components/ui/icons/LinkIcon';
 import LinkIconWrapper from '@/components/ui/wrappers/LinkIconWrapper';
 import { SocialLinkType } from '@/enums/index.enum';
 import { useToast } from '@/hooks/useToast';
+import { openWindow } from '@/lib/openLink';
 import { getFormattedTime } from '@/lib/time';
 import { copyHref, urlPreview } from '@/lib/utils';
-import { IdeaDetail } from '@/types/Idea';
+import { IdeaResponse } from '@/types/Idea';
 import { t } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
 import { Trans } from '@lingui/react/macro';
 
 interface IIdeaDrawerContentProps {
-  data: IdeaDetail;
+  data: IdeaResponse;
 }
-
-const LINK_PREVIEW_LENGTH = 40;
 
 const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({ data }) => {
   const { i18n } = useLingui();
@@ -56,7 +55,7 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({ data }) => {
         <div
           className="mt-4 flex h-8 cursor-pointer items-center gap-2 self-start text-[13px]"
           onClick={() => {
-            window.open(data.externalLink, '_blank');
+            openWindow(data.externalLink);
           }}
         >
           <LinkIconWrapper variant={SocialLinkType.CUSTOMIZED} />

@@ -1,6 +1,6 @@
 import mascotError from '@/assets/images/mascot/mascot-error.svg';
 import Header from '@/components/Header';
-import { LanguageProvider } from '@/lib/languageProvider';
+import { LanguageProvider } from '@/components/Language';
 import { Trans } from '@lingui/react/macro';
 import { TileBackground } from '../User/TileBackground';
 
@@ -10,7 +10,7 @@ export default function ErrorPage() {
       <TileBackground />
       <div className="relative z-10 flex min-h-screen flex-col">
         {/* Header */}
-        <Header className="bg-transparent" />
+        <Header bgColor="transparent" />
 
         {/* 內容 */}
         <div className="flex flex-1 flex-col items-center justify-start pt-28">

@@ -1,11 +1,12 @@
 import { useListPreviews } from '@/hooks/queries/useLists';
-import useStrictNavigate from '@/hooks/useStrictNavigate';
+import useStrictNavigation from '@/hooks/useStrictNavigate';
 import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
+import { Trans } from '@lingui/react/macro';
 import { useOutletContext } from 'react-router-dom';
 import { ListSectionSkeleton } from './ListSectionSkeleton';
 
 const ListSection: React.FC = () => {
-  const navigateTo = useStrictNavigate();
+  const navigateTo = useStrictNavigation();
   const { userCode } = useOutletContext<UserRouteLayoutContextType>();
 
   const { data: listPreviews, isLoading } = useListPreviews({
@@ -52,8 +53,12 @@ const ListSection: React.FC = () => {
             id="list-data-placeholder"
             className="mt-4 flex flex-col items-center text-[15px] font-semibold text-black-text-01"
           >
-            <p>Looks like this pok is a bit empty.</p>
-            <p>Follow and check back soon for surprise lists!</p>
+            <p>
+              <Trans>Looks like this page is a bit empty.</Trans>
+            </p>
+            <p>
+              <Trans>Follow and check back soon for surprise lists!</Trans>
+            </p>
           </div>
         )}
       </div>

@@ -1,4 +1,4 @@
-import useStrictNavigate from '@/hooks/useStrictNavigate';
+import useStrictNavigation from '@/hooks/useStrictNavigate';
 import axios from '@/lib/axios';
 import useAuthStore from '@/stores/useAuthStore';
 import useUserStore from '@/stores/useUserStore';
@@ -20,7 +20,7 @@ export const useEditProfile = ({
 }: UseEditProfileOptions = {}) => {
   const { setAccessToken, logout } = useAuthStore();
   const { setMe, me } = useUserStore();
-  const navigateTo = useStrictNavigate();
+  const navigateTo = useStrictNavigation();
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
@@ -55,7 +55,7 @@ export const useEditProfile = ({
     onError: (error: AxiosError<IResponse<any>>) => {
       if (error.response?.status === 401) {
         logout();
-        navigateTo.home();
+        navigateTo.discovery();
         toast({
           title: t`Please login again`,
           variant: 'success',

@@ -20,10 +20,13 @@ msgstr ""
 msgid "<0>{0}</0>"
 msgstr ""
 
-#. js-lingui-explicit-id
-#: src/components/FakePage/EditFieldFakePage.tsx
-#~ msgid "Enter your text here"
-#~ msgstr "Enter your text here"
+#: src/components/Drawer/LoginDrawer.tsx
+msgid "New to Relist? Get started!"
+msgstr "New to Relist? Get started!"
+
+#: src/components/Drawer/LoginDrawer.tsx
+msgid "By continuing, you agree to our <0>Terms of Service</0>, <1>Privacy Policy</1>. You confirm you're 13+."
+msgstr "By continuing, you agree to our <0>Terms of Service</0>, <1>Privacy Policy</1>. You confirm you're 13+."
 
 #: src/components/FakePage/EditFieldFakePage.tsx
 msgid "Enter your text here"
@@ -85,8 +88,8 @@ msgid "Upload a cover"
 msgstr "Upload a cover"
 
 #: src/constants/Home/index.en.ts
-msgid "Join Poklist and share your lists."
-msgstr "Join Poklist and share your lists."
+msgid "Join Relist and share your lists."
+msgstr "Join Relist and share your lists."
 
 #: src/constants/Home/index.en.ts
 msgid "Currently open only to creator account applications."
@@ -101,16 +104,16 @@ msgid "Creator Account Login"
 msgstr "Creator Account Login"
 
 #: src/constants/Home/index.en.ts
-msgid "Can non-creators use Poklist?"
-msgstr "Can non-creators use Poklist?"
+msgid "Can non-creators use Relist?"
+msgstr "Can non-creators use Relist?"
 
 #: src/constants/Home/index.en.ts
-msgid "List Your Ideas"
-msgstr "List Your Ideas"
+msgid "Real impact is simple"
+msgstr "Real impact is simple"
 
 #: src/constants/Home/index.en.ts
-msgid "Turn thoughts into lists, discover fresh finds, and follow inspiration"
-msgstr "Turn thoughts into lists, discover fresh finds, and follow inspiration"
+msgid "Turn your picks into a following"
+msgstr "Turn your picks into a following"
 
 #: src/constants/Home/index.en.ts
 msgid "Inspogirlie"
@@ -401,9 +404,9 @@ msgid "If you can't clean your room, what's your life looking like?"
 msgstr "If you can't clean your room, what's your life looking like?"
 
 #: src/constants/Home/index.en.ts
-#: src/pages/Settings/BlocksSection/index.tsx
-msgid "About Poklist"
-msgstr "About Poklist"
+#: src/pages/Layout/Components/BottomNav.tsx
+msgid "About"
+msgstr "About"
 
 #: src/constants/Home/index.en.ts
 msgid "Tutorials"
@@ -459,6 +462,126 @@ msgstr "Please login again"
 #: src/hooks/useCheckStorage.ts
 msgid "The app is outdated, please login again"
 msgstr "The app is outdated, please login again"
+
+#: src/pages/Discovery/Components/FooterSection/index.tsx
+msgid "<0>Your lists say more than posts ever could.</0><1><2>Next wave of content</2><3/></1>"
+msgstr "<0>Your lists say more than posts ever could.</0><1><2>Next wave of content</2><3/></1>"
+
+#: src/pages/Discovery/Components/HeaderSection/index.tsx
+msgid "<0>My life in my lists</0><1>Invitation only. Ready to join?</1>"
+msgstr "<0>My life in my lists</0><1>Invitation only. Ready to join?</1>"
+
+#: src/pages/Discovery/Components/HeaderSection/index.tsx
+msgid "Create your account"
+msgstr "Create your account"
+
+#: src/pages/Discovery/Components/HeaderSection/index.tsx
+msgid "Sign in"
+msgstr "Sign in"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+#: src/pages/Lists/i18n.ts
+msgid "Lifestyle"
+msgstr "Lifestyle"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+#: src/pages/Lists/i18n.ts
+#: src/pages/Official/Components/FeatureSection/index.tsx
+msgid "Food & Drink"
+msgstr "Food & Drink"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+#: src/pages/Lists/i18n.ts
+#: src/pages/Official/Components/FeatureSection/index.tsx
+msgid "Culture"
+msgstr "Culture"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+#: src/pages/Lists/i18n.ts
+#: src/pages/Official/Components/FeatureSection/index.tsx
+msgid "Travel"
+msgstr "Travel"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+#: src/pages/Lists/i18n.ts
+#: src/pages/Official/Components/FeatureSection/index.tsx
+msgid "Entertainment"
+msgstr "Entertainment"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+#: src/pages/Lists/i18n.ts
+#: src/pages/Official/Components/FeatureSection/index.tsx
+msgid "Tech & Digital"
+msgstr "Tech & Digital"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+#: src/pages/Lists/i18n.ts
+#: src/pages/Official/Components/FeatureSection/index.tsx
+msgid "Personal Growth"
+msgstr "Personal Growth"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+#: src/pages/Lists/i18n.ts
+#: src/pages/Official/Components/FeatureSection/index.tsx
+msgid "Health & Fitness"
+msgstr "Health & Fitness"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+#: src/pages/Settings/BlocksSection/index.tsx
+msgid "Others"
+msgstr "Others"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+msgid "Lists that vibe right"
+msgstr "Lists that vibe right"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+msgid "Lists that taste like wow"
+msgstr "Lists that taste like wow"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+msgid "Lists that show your colors"
+msgstr "Lists that show your colors"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+msgid "Lists that go to places"
+msgstr "Lists that go to places"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+msgid "Lists that stream good times"
+msgstr "Lists that stream good times"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+msgid "Lists that tap into the future"
+msgstr "Lists that tap into the future"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+msgid "Lists that build better you"
+msgstr "Lists that build better you"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+msgid "Lists that make you sweat"
+msgstr "Lists that make you sweat"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+msgid "Lists that just get it"
+msgstr "Lists that just get it"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+msgid "<0>Recently updated</0>"
+msgstr "<0>Recently updated</0>"
+
+#: src/pages/Discovery/Components/ListSection/index.tsx
+msgid "See more"
+msgstr "See more"
+
+#: src/pages/Discovery/Components/TileSection/index.tsx
+msgid "Fresh lists from our pocket"
+msgstr "Fresh lists from our pocket"
+
+#: src/pages/Discovery/Components/TileSection/index.tsx
+msgid "Updated weekly"
+msgstr "Updated weekly"
 
 #: src/pages/EditUser/index.tsx
 #: src/pages/EditUser/index.tsx
@@ -526,67 +649,8 @@ msgid "Oops something is wrong!"
 msgstr "Oops something is wrong!"
 
 #: src/pages/GoToMobile/index.tsx
-msgid "<0>Poklist works best on mobile.</0><1>Use a mobile device for the best experience.</1>"
-msgstr "<0>Poklist works best on mobile.</0><1>Use a mobile device for the best experience.</1>"
-
-#: src/pages/Home/Components/FeatureSection/index.tsx
-msgid "Life Style"
-msgstr "Life Style"
-
-#: src/pages/Home/Components/FeatureSection/index.tsx
-#: src/pages/Lists/i18n.ts
-msgid "Food & Drink"
-msgstr "Food & Drink"
-
-#: src/pages/Home/Components/FeatureSection/index.tsx
-#: src/pages/Lists/i18n.ts
-msgid "Culture"
-msgstr "Culture"
-
-#: src/pages/Home/Components/FeatureSection/index.tsx
-#: src/pages/Lists/i18n.ts
-msgid "Travel"
-msgstr "Travel"
-
-#: src/pages/Home/Components/FeatureSection/index.tsx
-#: src/pages/Lists/i18n.ts
-msgid "Entertainment"
-msgstr "Entertainment"
-
-#: src/pages/Home/Components/FeatureSection/index.tsx
-#: src/pages/Lists/i18n.ts
-msgid "Tech & Digital"
-msgstr "Tech & Digital"
-
-#: src/pages/Home/Components/FeatureSection/index.tsx
-#: src/pages/Lists/i18n.ts
-msgid "Personal Growth"
-msgstr "Personal Growth"
-
-#: src/pages/Home/Components/FeatureSection/index.tsx
-#: src/pages/Lists/i18n.ts
-msgid "Health & Fitness"
-msgstr "Health & Fitness"
-
-#: src/pages/Home/Components/FeatureSection/index.tsx
-#: src/pages/Lists/i18n.ts
-msgid "Other"
-msgstr "Other"
-
-#: src/pages/Home/Components/FeatureSection/index.tsx
-#: src/pages/User/HeroSection/index.tsx
-msgid "Lists"
-msgstr "Lists"
-
-#: src/pages/Home/Components/Header/index.tsx
-#: src/pages/Settings/BlocksSection/index.tsx
-#: src/pages/Settings/BlocksSection/index.tsx
-msgid "Sign In"
-msgstr "Sign In"
-
-#: src/pages/Home/Components/LoginDrawer/index.tsx
-msgid "Sign in to Poklist with Google"
-msgstr "Sign in to Poklist with Google"
+msgid "<0>Relist works best on mobile.</0><1>Use a mobile device for the best experience.</1>"
+msgstr "<0>Relist works best on mobile.</0><1>Use a mobile device for the best experience.</1>"
 
 #: src/pages/Idea/Components/DeleteButton/index.tsx
 msgid "Are you sure you want to delete this idea?"
@@ -684,13 +748,17 @@ msgstr "New Idea"
 msgid "Idea"
 msgstr "Idea"
 
-#: src/pages/Layout/Components/BottomNav.tsx
-msgid "About"
-msgstr "About"
+#: src/pages/Layout/Components/MainContent.tsx
+msgid "Right now, only invited users can log in"
+msgstr "Right now, only invited users can log in"
+
+#: src/pages/Layout/Components/MainContent.tsx
+msgid "Already got your invite? Jump in and apply now!"
+msgstr "Already got your invite? Jump in and apply now!"
 
 #: src/pages/Layout/Components/PromptText.tsx
-msgid "Poklist works best on mobile. Use a mobile device for the best experience."
-msgstr "Poklist works best on mobile. Use a mobile device for the best experience."
+msgid "Relist works best on mobile. Use a mobile device for the best experience."
+msgstr "Relist works best on mobile. Use a mobile device for the best experience."
 
 #: src/pages/Lists/Components/DeleteButton/index.tsx
 msgid "Deleting the list title will also erase all ideas!"
@@ -809,8 +877,18 @@ msgid "Please login to do this action"
 msgstr "Please login to do this action"
 
 #: src/pages/Lists/i18n.ts
-msgid "Lifestyle"
-msgstr "Lifestyle"
+#: src/pages/Official/Components/FeatureSection/index.tsx
+msgid "Other"
+msgstr "Other"
+
+#: src/pages/Official/Components/FeatureSection/index.tsx
+msgid "Life Style"
+msgstr "Life Style"
+
+#: src/pages/Official/Components/FeatureSection/index.tsx
+#: src/pages/User/HeroSection/index.tsx
+msgid "Lists"
+msgstr "Lists"
 
 #: src/pages/Settings/BlocksSection/index.tsx
 msgid "Select your language!"
@@ -849,32 +927,37 @@ msgid "Select your location"
 msgstr "Select your location"
 
 #: src/pages/Settings/BlocksSection/index.tsx
+msgid "About Relist"
+msgstr "About Relist"
+
+#: src/pages/Settings/BlocksSection/index.tsx
 msgid "Quick start guide"
 msgstr "Quick start guide"
 
 #: src/pages/Settings/BlocksSection/index.tsx
-msgid "Check out Poklist"
-msgstr "Check out Poklist"
+msgid "Check out Relist"
+msgstr "Check out Relist"
 
 #: src/pages/Settings/BlocksSection/index.tsx
-msgid "Follow Poklist Threads"
-msgstr "Follow Poklist Threads"
+msgid "Follow Relist Threads"
+msgstr "Follow Relist Threads"
 
 #: src/pages/Settings/BlocksSection/index.tsx
-msgid "Join Poklist Discord"
-msgstr "Join Poklist Discord"
+msgid "Join Relist Discord"
+msgstr "Join Relist Discord"
 
 #: src/pages/Settings/BlocksSection/index.tsx
 msgid "Submit feedback or report content"
 msgstr "Submit feedback or report content"
 
 #: src/pages/Settings/BlocksSection/index.tsx
-msgid "Others"
-msgstr "Others"
-
-#: src/pages/Settings/BlocksSection/index.tsx
 msgid "About Privacy Policy and Terms of Use"
 msgstr "About Privacy Policy and Terms of Use"
+
+#: src/pages/Settings/BlocksSection/index.tsx
+#: src/pages/Settings/BlocksSection/index.tsx
+msgid "Sign In"
+msgstr "Sign In"
 
 #: src/pages/Settings/BlocksSection/index.tsx
 msgid "Delete Account"
@@ -912,3 +995,11 @@ msgstr "Followers"
 msgctxt "count"
 msgid "Links"
 msgstr "Links"
+
+#: src/pages/User/ListSection/index.tsx
+msgid "Looks like this page is a bit empty."
+msgstr "Looks like this page is a bit empty."
+
+#: src/pages/User/ListSection/index.tsx
+msgid "Follow and check back soon for surprise lists!"
+msgstr "Follow and check back soon for surprise lists!"

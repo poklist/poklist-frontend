@@ -1,62 +1,10 @@
 import { MessageDescriptor } from '@lingui/core';
-import { CredentialResponse } from '@react-oauth/google';
-import { User } from '../User';
-
-// LoginDrawer Types
-export interface LoginDrawerProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onLogin: (response: CredentialResponse) => void;
-  onError: () => void;
-}
 
 // ErrorDialog Types
 export interface ErrorDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onClose: () => void;
-}
-
-// HeroSection Types
-export interface HeroSectionProps {
-  content: HeroSectionContent;
-}
-
-export interface LoginInfo {
-  accessToken: string;
-  user: User;
-}
-
-export interface HeroJoinInfo {
-  title: string;
-  descriprion: string;
-  buttonText: string;
-}
-
-export interface HeroAccountInfo {
-  title: string;
-  buttonText: string;
-}
-
-export interface HeroQuestionInfo {
-  title: string;
-  url: string;
-}
-
-export interface HeroSectionContent {
-  joinInformation: {
-    title: MessageDescriptor;
-    descriprion: MessageDescriptor;
-    buttonText: MessageDescriptor;
-  };
-  accountOwner: {
-    title: string;
-    buttonText: MessageDescriptor;
-  };
-  nonCreatorQuestion: {
-    title: MessageDescriptor;
-    url: string;
-  };
+  onClose?: () => void;
 }
 
 // Feature Section Types

@@ -1,4 +1,4 @@
-import logoBig from '@/assets/images/logo-big.svg';
+import logoBig from '@/assets/images/logo-relist.svg';
 
 // 背景組件
 const Background = () => {
@@ -15,8 +15,8 @@ const Background = () => {
         id="desktop-banner-logo"
         className="fixed left-1/2 top-1/2 z-[-1] hidden -translate-x-1/2 -translate-y-1/2 overflow-hidden sm:block"
       >
-        <div className="h-[697px] w-[1439px]">
-          <img src={logoBig} alt="Background Logo" className="h-full w-full" />
+        <div className="flex h-[697px] w-[1439px] items-center justify-center">
+          <img src={logoBig} alt="Background Logo" className="h-full w-[90%]" />
         </div>
       </div>
     </>

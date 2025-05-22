@@ -1,5 +1,5 @@
 import { useCreateIdea } from '@/hooks/mutations/useCreateIdea';
-import useStrictNavigate from '@/hooks/useStrictNavigate';
+import useStrictNavigation from '@/hooks/useStrictNavigate';
 import IdeaForm from '@/pages/Idea/Components/Form';
 import Header from '@/pages/Idea/Components/Header';
 import useCommonStore from '@/stores/useCommonStore';
@@ -10,7 +10,7 @@ import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
 const IdeaCreatePage: React.FC = () => {
-  const navigateTo = useStrictNavigate();
+  const navigateTo = useStrictNavigation();
   const location = useLocation();
   const { listID, listTitle } = location.state as {
     listID: number;

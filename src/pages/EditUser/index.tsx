@@ -9,7 +9,7 @@ import { socialLinkStarterMap } from '@/constants/User';
 import { EditFieldVariant, FieldType } from '@/enums/EditField/index.enum';
 import { SocialLinkType } from '@/enums/index.enum';
 import { useEditProfile } from '@/hooks/mutations/useEditProfile';
-import useStrictNavigate from '@/hooks/useStrictNavigate';
+import useStrictNavigation from '@/hooks/useStrictNavigate';
 import { extractUsernameFromUrl, urlPreview } from '@/lib/utils';
 import { validateUserCode } from '@/lib/validator';
 import useEditProfileStore from '@/stores/useEditProfileStore';
@@ -20,7 +20,7 @@ import { Trans } from '@lingui/react/macro';
 import { useEffect, useState } from 'react';
 
 const EditUserPage: React.FC = () => {
-  const navigateTo = useStrictNavigate();
+  const navigateTo = useStrictNavigation();
   const { me } = useUserStore();
   const {
     newUserInfo,

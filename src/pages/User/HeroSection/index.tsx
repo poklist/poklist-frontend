@@ -14,7 +14,8 @@ import {
   useSocialAction,
 } from '@/hooks/mutations/useSocialAction';
 import { useUser } from '@/hooks/queries/useUser';
-import useStrictNavigate from '@/hooks/useStrictNavigate';
+import { useAuthWrapper } from '@/hooks/useAuth';
+import useStrictNavigation from '@/hooks/useStrictNavigate';
 import { useToast } from '@/hooks/useToast';
 import {
   ensureProtocol,
@@ -26,14 +27,14 @@ import useAuthStore from '@/stores/useAuthStore';
 import useUserStore from '@/stores/useUserStore';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { HeroSectionSkeleton } from './HeroSectionSkeleton';
 
 const HeroSection: React.FC = () => {
   const { userCode } = useOutletContext<UserRouteLayoutContextType>();
 
-  const navigateTo = useStrictNavigate();
+  const navigateTo = useStrictNavigation();
   const { isLoggedIn, logout } = useAuthStore();
   const { me, setMe } = useUserStore();
   const { openDrawer } = useDrawer();
@@ -41,6 +42,12 @@ const HeroSection: React.FC = () => {
   const [isFollowing, setIsFollowing] = useState<boolean>(false);
   const bioRef = useRef<HTMLParagraphElement>(null);
   const { toast } = useToast();
+
+  const { withAuth } = useAuthWrapper({
+    beforeExecution: () => {
+      console.log('beforeExecution');
+    },
+  });
 
   const isMyPage = userCode?.toString() === me.userCode.toString();
   const {
@@ -56,7 +63,7 @@ const HeroSection: React.FC = () => {
       // TODO: error handling 404 page
       if (isMyPage) {
         logout();
-        navigateTo.home();
+        navigateTo.discovery();
         toast({
           title: t`The login session is expired, please login again`,
           variant: 'success', // FUTURE: redefined variant
@@ -112,7 +119,7 @@ const HeroSection: React.FC = () => {
     }
   }, [isMyPage, currentUser, setMe]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     setIsFollowing(isLoggedIn && currentUser?.isFollowing === true);
   }, [isLoggedIn, currentUser?.isFollowing]);
 
@@ -167,9 +174,33 @@ const HeroSection: React.FC = () => {
     openDrawer(DrawerIds.USER_HERO_SECTION_DRAWER_ID);
   };
 
-  if (isLoading || !currentUser) {
+  const handleFollow = withAuth(() => {
+    if (currentUser) {
+      follow({ params: { userID: currentUser.id } });
+    }
+  });
+
+  const handleUnfollow = withAuth(() => {
+    if (currentUser) {
+      unfollow({ params: { userID: currentUser.id } });
+    }
+  });
+
+  // Check if data is loaded
+  const isDataLoaded = !isLoading && currentUser !== undefined;
+
+  // Check if following state is synchronized
+  const isFollowingSynchronized = () => {
+    if (!isDataLoaded || !currentUser) return false;
+    const expectedFollowingState =
+      isLoggedIn && currentUser.isFollowing === true;
+    return !(isFollowing === false && expectedFollowingState === true);
+  };
+
+  if (!isDataLoaded || !isFollowingSynchronized()) {
     return <HeroSectionSkeleton />;
   }
+
   return (
     <>
       <div
@@ -209,7 +240,7 @@ const HeroSection: React.FC = () => {
               id="unfollow-button"
               variant={ButtonVariant.GRAY}
               size={ButtonSize.LG}
-              onClick={() => unfollow({ params: { userID: currentUser.id } })}
+              onClick={handleUnfollow}
             >
               <Trans>Following</Trans>
             </Button>
@@ -218,7 +249,7 @@ const HeroSection: React.FC = () => {
               id="follow-button"
               variant={ButtonVariant.HIGHLIGHTED}
               size={ButtonSize.LG}
-              onClick={() => follow({ params: { userID: currentUser.id } })}
+              onClick={handleFollow}
             >
               <Trans>Follow</Trans>
             </Button>

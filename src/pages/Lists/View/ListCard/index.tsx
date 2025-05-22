@@ -14,7 +14,8 @@ import {
 } from '@/constants/list';
 import { Language, SocialLinkType } from '@/enums/index.enum';
 import { useIdea } from '@/hooks/queries/useIdea';
-import useStrictNavigate from '@/hooks/useStrictNavigate';
+import useStrictNavigation from '@/hooks/useStrictNavigate';
+import { openWindow } from '@/lib/openLink';
 import { getFormattedTime, parsePostgresDate } from '@/lib/time';
 import { urlPreview } from '@/lib/utils';
 import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
@@ -40,7 +41,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
   const { id: listID, ideaID } = useParams();
 
   const { i18n } = useLingui();
-  const navigateTo = useStrictNavigate();
+  const navigateTo = useStrictNavigation();
   const location = useLocation();
 
   const { isLoggedIn } = useAuthStore();
@@ -113,7 +114,10 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
 
   // FUTURE: refactor the drawer content because we may have more than one drawer
   const onClickDescription = () => {
-    if (data.description.length <= DESCRIPTION_PREVIEW_LENGTH) {
+    if (
+      data.description === undefined ||
+      data.description.length <= DESCRIPTION_PREVIEW_LENGTH
+    ) {
       return;
     }
     setDrawerContent(<p>{data.description}</p>);
@@ -127,7 +131,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
       externalLinkRef.current.scrollHeight <=
         externalLinkRef.current.clientHeight
     ) {
-      window.open(data.externalLink, '_blank');
+      openWindow(data.externalLink);
       return;
     }
 

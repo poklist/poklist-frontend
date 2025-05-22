@@ -2,7 +2,8 @@ import { Button, ButtonVariant } from '@/components/ui/button';
 import IconAdd from '@/components/ui/icons/AddIcon';
 import IconLike from '@/components/ui/icons/LikeIcon';
 import IconLink from '@/components/ui/icons/LinkIcon';
-import useStrictNavigate from '@/hooks/useStrictNavigate';
+import { useAuthWrapper } from '@/hooks/useAuth';
+import useStrictNavigation from '@/hooks/useStrictNavigate';
 import { useToast } from '@/hooks/useToast';
 import { cn, copyHref } from '@/lib/utils';
 import useSocialStore from '@/stores/useSocialStore';
@@ -24,7 +25,9 @@ const FloatingButtonFooter: React.FC<IFooterProps> = ({
   const { toast } = useToast();
   const { me } = useUserStore();
   const { isLiked } = useSocialStore();
-  const navigateTo = useStrictNavigate();
+  const navigateTo = useStrictNavigation();
+  const { withAuth } = useAuthWrapper();
+
   const handleCopyHref = () => {
     copyHref();
     toast({
@@ -33,6 +36,18 @@ const FloatingButtonFooter: React.FC<IFooterProps> = ({
     });
   };
 
+  const handleCreateList = withAuth(() => {
+    navigateTo.createList(me.userCode);
+  });
+
+  const handleLike = withAuth(() => {
+    if (isLiked) {
+      onClickUnlike?.();
+    } else {
+      onClickLike?.();
+    }
+  });
+
   return (
     <footer
       id="floating-button-footer"
@@ -40,13 +55,7 @@ const FloatingButtonFooter: React.FC<IFooterProps> = ({
     >
       {hasLikeButton && (
         <Button
-          onClick={() => {
-            if (isLiked) {
-              onClickUnlike?.();
-            } else {
-              onClickLike?.();
-            }
-          }}
+          onClick={handleLike}
           variant={ButtonVariant.WHITE}
           className="flex items-center gap-1.5 text-sm"
         >
@@ -60,7 +69,7 @@ const FloatingButtonFooter: React.FC<IFooterProps> = ({
       <Button
         variant={ButtonVariant.WHITE}
         className="flex items-center gap-2 text-sm"
-        onClick={() => navigateTo.createList(me.userCode)}
+        onClick={handleCreateList}
       >
         <IconAdd />
         <Trans>Create List</Trans>

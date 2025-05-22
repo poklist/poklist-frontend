@@ -1,6 +1,6 @@
 import mascotPhone from '@/assets/images/mascot/mascot-phone.svg';
-import { LanguageProvider } from '@/lib/languageProvider';
-import Header from '@/pages/Home/Components/Header';
+import Header from '@/components/Header';
+import { LanguageProvider } from '@/components/Language';
 import { Trans } from '@lingui/react/macro';
 
 export default function GoToMobilePage() {
@@ -8,7 +8,7 @@ export default function GoToMobilePage() {
     <LanguageProvider>
       <div className="relative z-10 flex min-h-screen flex-col">
         {/* Header */}
-        <Header className="bg-transparent" />
+        <Header bgColor="transparent" />
 
         {/* 內容 */}
         <div className="flex flex-1 flex-col items-center justify-start pt-28">
@@ -16,7 +16,7 @@ export default function GoToMobilePage() {
           <div className="mt-6 flex flex-col items-start">
             <Trans>
               <p className="text-start text-[17px] font-bold text-black-text-01">
-                Poklist works best on mobile.
+                Relist works best on mobile.
               </p>
               <p className="text-start text-[17px] font-bold text-black-text-01">
                 Use a mobile device for the best experience.

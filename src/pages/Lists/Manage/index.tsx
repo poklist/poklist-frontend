@@ -3,7 +3,7 @@ import IconClose from '@/components/ui/icons/CloseIcon';
 import { useDeleteList } from '@/hooks/mutations/useDeleteList';
 import { useReorderIdeas } from '@/hooks/mutations/useReorderIdeas';
 import { useList } from '@/hooks/queries/useList';
-import useStrictNavigate from '@/hooks/useStrictNavigate';
+import useStrictNavigation from '@/hooks/useStrictNavigate';
 import Header from '@/pages/Lists/Components/Header';
 import IdeaList, { DropEvent } from '@/pages/Lists/Manage/IdeasList';
 import ListInfo from '@/pages/Lists/Manage/ListInfo';
@@ -16,7 +16,7 @@ import { useParams } from 'react-router-dom';
 
 const ListManagePage: React.FC = () => {
   const { id } = useParams();
-  const navigateTo = useStrictNavigate();
+  const navigateTo = useStrictNavigation();
 
   const { setIsLoading } = useCommonStore();
   const { me } = useUserStore();
