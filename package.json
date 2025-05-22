@@ -1,7 +1,7 @@
 {
   "name": "relist",
   "private": true,
-  "version": "0.1.7",
+  "version": "0.1.8",
   "type": "module",
   "scripts": {
     "dev": "lingui extract && lingui compile && vite",
