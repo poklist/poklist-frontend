@@ -1,10 +1,16 @@
 import logoR from '@/assets/images/logo-r.svg';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import {
+  SocialActionType,
+  useSocialAction,
+} from '@/hooks/mutations/useSocialAction';
+import { useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigation from '@/hooks/useStrictNavigate';
+import { toast } from '@/hooks/useToast';
 import useAuthStore from '@/stores/useAuthStore';
-import useCommonStore from '@/stores/useCommonStore';
 import useRelationStore from '@/stores/useRelationStore';
 import { User, UserPreview } from '@/types/User';
+import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
 import React from 'react';
 import { Button, ButtonShape, ButtonSize, ButtonVariant } from '../ui/button';
@@ -12,20 +18,47 @@ import { Button, ButtonShape, ButtonSize, ButtonVariant } from '../ui/button';
 interface IBackToUserHeaderProps {
   owner?: UserPreview | User;
   hasFollowButton?: boolean;
-  onClickFollow?: () => void;
-  onClickUnfollow?: () => void;
 }
 
 const BackToUserHeader: React.FC<IBackToUserHeaderProps> = ({
   owner,
   hasFollowButton = false,
-  onClickFollow,
-  onClickUnfollow,
 }) => {
-  const { isFollowing } = useRelationStore();
+  const { isFollowing, setIsFollowing } = useRelationStore();
   const navigateTo = useStrictNavigation();
-  const { setIsLoginDrawerOpen } = useCommonStore();
   const { isLoggedIn } = useAuthStore();
+  const { withAuth } = useAuthWrapper();
+
+  const { debouncedMutate: follow } = useSocialAction({
+    actionKey: 'follow',
+    debounceGroupKey: SocialActionType.FOLLOW,
+    url: '/follow',
+    shouldAllow: () => isLoggedIn,
+    onNotAllowed: () => {
+      toast({
+        title: t`Please login to do this action`,
+        variant: 'destructive',
+      });
+    },
+    onOptimisticUpdate: () => {
+      setIsFollowing(true);
+    },
+  });
+  const { debouncedMutate: unfollow } = useSocialAction({
+    actionKey: 'unfollow',
+    debounceGroupKey: SocialActionType.FOLLOW,
+    url: '/unfollow',
+    shouldAllow: () => isLoggedIn,
+    onNotAllowed: () => {
+      toast({
+        title: t`Please login to do this action`,
+        variant: 'destructive',
+      });
+    },
+    onOptimisticUpdate: () => {
+      setIsFollowing(false);
+    },
+  });
 
   const handleClickBackToUser = () => {
     if (owner) {
@@ -39,17 +72,16 @@ const BackToUserHeader: React.FC<IBackToUserHeaderProps> = ({
     navigateTo.discovery();
   };
 
-  const handleFollow = () => {
-    if (!isLoggedIn) {
-      setIsLoginDrawerOpen(true);
+  const handleFollowOrUnfollow = withAuth(() => {
+    if (!owner) {
       return;
     }
     if (isFollowing) {
-      onClickUnfollow?.();
+      unfollow({ params: { userID: owner.id } });
     } else {
-      onClickFollow?.();
+      follow({ params: { userID: owner.id } });
     }
-  };
+  });
 
   return (
     <>
@@ -93,7 +125,7 @@ const BackToUserHeader: React.FC<IBackToUserHeaderProps> = ({
               }
               shape={ButtonShape.ROUNDED_FULL}
               size={ButtonSize.SM}
-              onClick={handleFollow}
+              onClick={handleFollowOrUnfollow}
             >
               {isFollowing ? <Trans>Following</Trans> : <Trans>Follow</Trans>}
             </Button>
