@@ -2,11 +2,10 @@ import { Button, ButtonVariant } from '@/components/ui/button';
 import IconAdd from '@/components/ui/icons/AddIcon';
 import IconLike from '@/components/ui/icons/LikeIcon';
 import IconLink from '@/components/ui/icons/LinkIcon';
+import { useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigation from '@/hooks/useStrictNavigate';
 import { useToast } from '@/hooks/useToast';
 import { cn, copyHref } from '@/lib/utils';
-import useAuthStore from '@/stores/useAuthStore';
-import useCommonStore from '@/stores/useCommonStore';
 import useSocialStore from '@/stores/useSocialStore';
 import useUserStore from '@/stores/useUserStore';
 import { t } from '@lingui/core/macro';
@@ -25,10 +24,10 @@ const FloatingButtonFooter: React.FC<IFooterProps> = ({
 }) => {
   const { toast } = useToast();
   const { me } = useUserStore();
-  const { isLoggedIn } = useAuthStore();
-  const { setIsLoginDrawerOpen } = useCommonStore();
   const { isLiked } = useSocialStore();
   const navigateTo = useStrictNavigation();
+  const { withAuth } = useAuthWrapper();
+
   const handleCopyHref = () => {
     copyHref();
     toast({
@@ -37,13 +36,17 @@ const FloatingButtonFooter: React.FC<IFooterProps> = ({
     });
   };
 
-  const handleCreateList = () => {
-    if (!isLoggedIn) {
-      setIsLoginDrawerOpen(true);
+  const handleCreateList = withAuth(() => {
+    navigateTo.createList(me.userCode);
+  });
+
+  const handleLike = withAuth(() => {
+    if (isLiked) {
+      onClickUnlike?.();
     } else {
-      navigateTo.createList(me.userCode);
+      onClickLike?.();
     }
-  };
+  });
 
   return (
     <footer
@@ -52,13 +55,7 @@ const FloatingButtonFooter: React.FC<IFooterProps> = ({
     >
       {hasLikeButton && (
         <Button
-          onClick={() => {
-            if (isLiked) {
-              onClickUnlike?.();
-            } else {
-              onClickLike?.();
-            }
-          }}
+          onClick={handleLike}
           variant={ButtonVariant.WHITE}
           className="flex items-center gap-1.5 text-sm"
         >

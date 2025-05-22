@@ -1,3 +1,4 @@
+// DEPRECATED: use ErrorDrawer instead
 import { ERROR_DIALOG } from '@/constants/Home/index.en';
 import { ErrorDialogProps } from '@/types/Home';
 import { Trans } from '@lingui/react';

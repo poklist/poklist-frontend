@@ -749,12 +749,12 @@ msgid "Idea"
 msgstr "靈感"
 
 #: src/pages/Layout/Components/MainContent.tsx
-#~ msgid "Right now, only invited users can log in"
-#~ msgstr "現在僅開放受邀請的用戶登入體驗"
+msgid "Right now, only invited users can log in"
+msgstr "現在僅開放受邀請的用戶登入體驗"
 
 #: src/pages/Layout/Components/MainContent.tsx
-#~ msgid "Already got your invite? Jump in and apply now!"
-#~ msgstr "收到邀請了嗎？現在就去申請加入！"
+msgid "Already got your invite? Jump in and apply now!"
+msgstr "收到邀請了嗎？現在就去申請加入！"
 
 #: src/pages/Layout/Components/PromptText.tsx
 msgid "Relist works best on mobile. Use a mobile device for the best experience."
