@@ -3,6 +3,7 @@ import IconClose from '@/components/ui/icons/CloseIcon';
 import { useDeleteList } from '@/hooks/mutations/useDeleteList';
 import { useReorderIdeas } from '@/hooks/mutations/useReorderIdeas';
 import { useList } from '@/hooks/queries/useList';
+import { useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigation from '@/hooks/useStrictNavigate';
 import Header from '@/pages/Lists/Components/Header';
 import IdeaList, { DropEvent } from '@/pages/Lists/Manage/IdeasList';
@@ -17,7 +18,7 @@ import { useParams } from 'react-router-dom';
 const ListManagePage: React.FC = () => {
   const { id } = useParams();
   const navigateTo = useStrictNavigation();
-
+  const { withAuth } = useAuthWrapper();
   const { setIsLoading } = useCommonStore();
   const { me } = useUserStore();
 
@@ -38,7 +39,7 @@ const ListManagePage: React.FC = () => {
     userCode: me.userCode,
   });
 
-  const onDeleteList = () => {
+  const onDeleteList = withAuth(() => {
     if (!list) return;
     // TODO: error handling
     setIsDeleting(true);
@@ -48,7 +49,7 @@ const ListManagePage: React.FC = () => {
         setIsLoading(false);
       },
     });
-  };
+  });
 
   const onReorderIdea = useCallback((event: DropEvent<IdeaPreview>) => {
     if (!event.changed) return;
@@ -57,7 +58,7 @@ const ListManagePage: React.FC = () => {
     setIsOrderModified(event.changed);
   }, []);
 
-  const onConfirmReorderIdea = () => {
+  const onConfirmReorderIdea = withAuth(() => {
     if (!id || !ideasDraft) return;
     reorderIdeas(
       { ideaOrder: ideasDraft.map((idea) => idea.id) },
@@ -67,7 +68,7 @@ const ListManagePage: React.FC = () => {
         },
       }
     );
-  };
+  });
 
   useEffect(() => {
     if (!list) return;
@@ -82,12 +83,12 @@ const ListManagePage: React.FC = () => {
     }
   }, [isListLoading, isReorderIdeasLoading, isDeleteListLoading]);
 
-  const atEditList = () => {
+  const atEditList = withAuth(() => {
     if (!id) return navigateTo.error();
     navigateTo.editList(me.userCode, id);
-  };
+  });
 
-  const atAddIdea = () => {
+  const atAddIdea = withAuth(() => {
     if (!id) return navigateTo.error();
     navigateTo.createIdea({
       state: {
@@ -95,7 +96,7 @@ const ListManagePage: React.FC = () => {
         listTitle: list?.title,
       },
     });
-  };
+  });
 
   const atClose = () => {
     if (!id) return navigateTo.error();

@@ -45,7 +45,7 @@ const HeroSection: React.FC = () => {
 
   const { withAuth } = useAuthWrapper({
     beforeExecution: () => {
-      console.log('beforeExecution');
+      // console.log('beforeExecution');
     },
   });
 
