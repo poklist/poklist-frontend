@@ -74,8 +74,8 @@ export const useSocialAction = ({
         onError?.(error, variables);
       }
     },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: [actionKey] });
+    onSettled: async () => {
+      await queryClient.invalidateQueries({ queryKey: [actionKey] });
     },
   });
 

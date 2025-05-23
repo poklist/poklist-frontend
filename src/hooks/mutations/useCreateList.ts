@@ -3,6 +3,7 @@ import { List } from '@/constants/list';
 import axios from '@/lib/axios';
 import useCommonStore from '@/stores/useCommonStore';
 import { CreateListResponse, ListBody } from '@/types/List';
+import { QUERY_KEYS } from '@/types/query';
 import { IResponse } from '@/types/response';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
@@ -40,13 +41,13 @@ export const useCreateList = ({
       );
       return response.data.content;
     },
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       if (!data) {
         throw new Error('Failed to create list');
       }
       // 使列表緩存失效，觸發重新獲取
-      queryClient.invalidateQueries({
-        queryKey: ['lists', userCode, offset, limit],
+      await queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.LISTS, userCode, offset, limit],
       });
       onSuccess?.(data);
     },

@@ -2,6 +2,7 @@ import ApiPath from '@/config/apiPath';
 import { List } from '@/constants/list';
 import axios from '@/lib/axios';
 import useCommonStore from '@/stores/useCommonStore';
+import { QUERY_KEYS } from '@/types/query';
 import { IResponse } from '@/types/response';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
@@ -35,16 +36,18 @@ export const useDeleteList = ({
     },
     onSuccess: async (_, listID) => {
       // 移除已刪除列表的快取
-      queryClient.removeQueries({ queryKey: ['list', listID.toString()] });
+      queryClient.removeQueries({
+        queryKey: [QUERY_KEYS.LIST, listID.toString()],
+      });
 
       // 重新獲取列表預覽資料
       await queryClient.refetchQueries({
-        queryKey: ['lists', userCode, offset, limit],
+        queryKey: [QUERY_KEYS.LISTS, userCode, offset, limit],
       });
 
       onSuccess?.();
     },
-    onError: error => {
+    onError: (error) => {
       setShowingAlert(true, { message: String(error) });
       onError?.(error);
     },

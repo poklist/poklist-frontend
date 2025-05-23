@@ -1,6 +1,7 @@
 import ApiPath from '@/config/apiPath';
 import axios from '@/lib/axios';
 import { IdeaResponse } from '@/types/Idea';
+import { QUERY_KEYS } from '@/types/query';
 import { IResponse } from '@/types/response';
 import { useQuery } from '@tanstack/react-query';
 
@@ -18,7 +19,7 @@ export const useIdea = ({
   enabled = true,
 }: UseIdeaOptions) => {
   const query = useQuery({
-    queryKey: ['idea', ideaID],
+    queryKey: [QUERY_KEYS.IDEA, ideaID],
     queryFn: async () => {
       if (!ideaID) {
         throw new Error('ideaID is required');

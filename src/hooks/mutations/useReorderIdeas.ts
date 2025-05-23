@@ -2,6 +2,7 @@ import ApiPath from '@/config/apiPath';
 import { Idea } from '@/constants/list';
 import axios from '@/lib/axios';
 import useCommonStore from '@/stores/useCommonStore';
+import { QUERY_KEYS } from '@/types/query';
 import { IResponse } from '@/types/response';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
@@ -35,9 +36,11 @@ export const useReorderIdeas = ({
       );
       return response.data.content;
     },
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       // 使列表緩存失效，觸發重新獲取
-      queryClient.refetchQueries({ queryKey: ['list', listID, offset, limit] });
+      await queryClient.refetchQueries({
+        queryKey: [QUERY_KEYS.LIST, listID, offset, limit],
+      });
       onSuccess?.(data);
     },
     onError: (error) => {
