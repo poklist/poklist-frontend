@@ -32,8 +32,11 @@ export const useCreateIdea = ({
       }
 
       await queryClient.invalidateQueries({ queryKey: ['ideas'] });
-      await queryClient.refetchQueries({
+      await queryClient.invalidateQueries({
         queryKey: ['list', data.listID.toString()],
+      });
+      await queryClient.refetchQueries({
+        queryKey: ['infiniteList', data.listID.toString()],
       });
       onSuccess?.(data);
     },

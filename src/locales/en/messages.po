@@ -60,6 +60,15 @@ msgid "Copy"
 msgstr "Copy"
 
 #: src/components/Header/BackToUserHeader.tsx
+#: src/components/Header/BackToUserHeader.tsx
+#: src/pages/Lists/View/index.tsx
+#: src/pages/Lists/View/index.tsx
+#: src/pages/User/HeroSection/index.tsx
+#: src/pages/User/HeroSection/index.tsx
+msgid "Please login to do this action"
+msgstr "Please login to do this action"
+
+#: src/components/Header/BackToUserHeader.tsx
 #: src/pages/User/HeroSection/index.tsx
 #: src/pages/User/HeroSection/index.tsx
 msgid "Following"
@@ -831,6 +840,10 @@ msgid "List Cover"
 msgstr "List Cover"
 
 #: src/pages/Lists/Manage/index.tsx
+#~ msgid "Tap to edit. Hold & drag to reorder Ideas"
+#~ msgstr "Tap to edit. Hold & drag to reorder Ideas"
+
+#: src/pages/Lists/Manage/index.tsx
 msgid "Edit list cover"
 msgstr "Edit list cover"
 
@@ -844,8 +857,8 @@ msgid "Your ideas live here. Create one!"
 msgstr "Your ideas live here. Create one!"
 
 #: src/pages/Lists/Manage/index.tsx
-msgid "Tap to edit. Hold & drag to reorder Ideas"
-msgstr "Tap to edit. Hold & drag to reorder Ideas"
+msgid "Tap an idea to edit. Drag the lines on the left to reorder."
+msgstr "Tap an idea to edit. Drag the lines on the left to reorder."
 
 #: src/pages/Lists/Manage/index.tsx
 msgid "Save New Order"
@@ -866,15 +879,6 @@ msgstr "Likes"
 #: src/pages/Lists/View/ListCard/index.tsx
 msgid "Edit list"
 msgstr "Edit list"
-
-#: src/pages/Lists/View/index.tsx
-#: src/pages/Lists/View/index.tsx
-#: src/pages/Lists/View/index.tsx
-#: src/pages/Lists/View/index.tsx
-#: src/pages/User/HeroSection/index.tsx
-#: src/pages/User/HeroSection/index.tsx
-msgid "Please login to do this action"
-msgstr "Please login to do this action"
 
 #: src/pages/Lists/i18n.ts
 #: src/pages/Official/Components/FeatureSection/index.tsx

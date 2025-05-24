@@ -2,6 +2,7 @@ import useDeleteIdea from '@/hooks/mutations/useDeleteIdea';
 import useEditIdea from '@/hooks/mutations/useEditIdea';
 import { useIdea } from '@/hooks/queries/useIdea';
 import { useList } from '@/hooks/queries/useList';
+import { useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigation from '@/hooks/useStrictNavigate';
 import Header from '@/pages/Idea/Components/Header';
 import useCommonStore from '@/stores/useCommonStore';
@@ -13,14 +14,14 @@ import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import IdeaFormComponent from '../Components/Form';
 
-interface EditIdeaPageProps {}
-const EditIdeaPage: React.FC<EditIdeaPageProps> = () => {
+const EditIdeaPage: React.FC = () => {
   const { id } = useParams();
   const navigateTo = useStrictNavigation();
   const [isDeleting, setIsDeleting] = useState(false);
 
   const { setIsLoading } = useCommonStore();
   const { me } = useUserStore();
+  const { withAuth } = useAuthWrapper();
 
   const { idea, isLoading: isIdeaLoading } = useIdea({
     ideaID: id,
@@ -36,7 +37,7 @@ const EditIdeaPage: React.FC<EditIdeaPageProps> = () => {
     listID,
   });
 
-  const onDeleteIdea = async () => {
+  const onDeleteIdea = withAuth(() => {
     if (idea) {
       setIsDeleting(true);
       deleteIdea(idea.id, {
@@ -45,7 +46,7 @@ const EditIdeaPage: React.FC<EditIdeaPageProps> = () => {
         },
       });
     }
-  };
+  });
 
   const onDismissEdit = (isFormNotEdited: boolean) => {
     if (idea && isFormNotEdited) {
@@ -53,7 +54,7 @@ const EditIdeaPage: React.FC<EditIdeaPageProps> = () => {
     }
   };
 
-  const onEditIdea = async (editedIdea: IdeaBody) => {
+  const onEditIdea = withAuth((editedIdea: IdeaBody) => {
     if (!id || !idea) {
       return;
     }
@@ -66,16 +67,15 @@ const EditIdeaPage: React.FC<EditIdeaPageProps> = () => {
         navigateTo.manageList(me.userCode, data.listID.toString());
       },
     });
-  };
+  });
 
   useEffect(() => {
-    if (isIdeaLoading) {
-      setIsLoading(true);
-    } else if (isDeleteIdeaLoading) {
-      setIsLoading(true);
-    } else if (isListLoading) {
-      setIsLoading(true);
-    } else if (isEditIdeaLoading) {
+    if (
+      isIdeaLoading ||
+      isDeleteIdeaLoading ||
+      isListLoading ||
+      isEditIdeaLoading
+    ) {
       setIsLoading(true);
     } else {
       setIsLoading(false);

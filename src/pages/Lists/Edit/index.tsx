@@ -1,6 +1,7 @@
 import { useDeleteList } from '@/hooks/mutations/useDeleteList';
 import { useEditList } from '@/hooks/mutations/useEditList';
 import { useList } from '@/hooks/queries/useList';
+import { useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigation from '@/hooks/useStrictNavigate';
 import ListForm from '@/pages/Lists/Components/Form';
 import Header from '@/pages/Lists/Components/Header';
@@ -11,17 +12,14 @@ import { Trans } from '@lingui/react/macro';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-interface EditListPageProps {
-  // Add any props you need for the page
-}
-
-const EditListPage: React.FC<EditListPageProps> = () => {
+const EditListPage: React.FC = () => {
   // Render the page here
   const { id } = useParams();
   const navigateTo = useStrictNavigation();
 
   const { setIsLoading } = useCommonStore();
   const userStore = useUserStore();
+  const { withAuth } = useAuthWrapper();
 
   const { data: list, isLoading: isListInfoLoading } = useList({
     listID: id,
@@ -35,9 +33,8 @@ const EditListPage: React.FC<EditListPageProps> = () => {
 
   const [listCoverDraft, setListCoverDraft] = useState<ListCover>();
 
-  const onDeleteList = async () => {
+  const onDeleteList = withAuth(() => {
     if (list) {
-      // TODO: error handling
       deleteList(list.id, {
         onSuccess: () => {
           navigateTo.user(userStore.me.userCode);
@@ -45,7 +42,7 @@ const EditListPage: React.FC<EditListPageProps> = () => {
         },
       });
     }
-  };
+  });
 
   const onDismissEdit = (isFormEmpty: boolean) => {
     if (list && isFormEmpty) {
@@ -53,11 +50,7 @@ const EditListPage: React.FC<EditListPageProps> = () => {
     }
   };
 
-  const onBackward = () => {
-    navigateTo.backward();
-  };
-
-  const onEditList = async (listFormData: ListBody) => {
+  const onEditList = withAuth((listFormData: ListBody) => {
     if (!list) {
       return;
     }
@@ -84,14 +77,10 @@ const EditListPage: React.FC<EditListPageProps> = () => {
         },
       }
     );
-  };
+  });
 
   useEffect(() => {
-    if (isEditListLoading) {
-      setIsLoading(true);
-    } else if (isDeleteListLoading) {
-      setIsLoading(true);
-    } else if (isListInfoLoading) {
+    if (isEditListLoading || isDeleteListLoading || isListInfoLoading) {
       setIsLoading(true);
     } else {
       setIsLoading(false);

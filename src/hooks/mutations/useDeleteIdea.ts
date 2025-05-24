@@ -23,18 +23,21 @@ const useDeleteIdea = ({ listID }: UseDeleteIdeaOptions) => {
       }
       return;
     },
-    onSuccess: (_, ideaID) => {
+    onSuccess: async (_, ideaID) => {
       // Remove the deleted idea's cache
       queryClient.removeQueries({ queryKey: ['idea', ideaID.toString()] });
 
       // Invalidate and refetch the list
-      queryClient.refetchQueries({
+      await queryClient.invalidateQueries({
         queryKey: [
           'list',
           listID,
           Idea.DEFAULT_FIRST_BATCH_OFFSET,
           Idea.DEFAULT_BATCH_SIZE,
         ],
+      });
+      await queryClient.refetchQueries({
+        queryKey: ['infiniteList', listID],
       });
     },
     onError: (error) => {

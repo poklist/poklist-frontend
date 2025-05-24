@@ -60,6 +60,15 @@ msgid "Copy"
 msgstr "複製"
 
 #: src/components/Header/BackToUserHeader.tsx
+#: src/components/Header/BackToUserHeader.tsx
+#: src/pages/Lists/View/index.tsx
+#: src/pages/Lists/View/index.tsx
+#: src/pages/User/HeroSection/index.tsx
+#: src/pages/User/HeroSection/index.tsx
+msgid "Please login to do this action"
+msgstr "請先登入以進行此操作"
+
+#: src/components/Header/BackToUserHeader.tsx
 #: src/pages/User/HeroSection/index.tsx
 #: src/pages/User/HeroSection/index.tsx
 msgid "Following"
@@ -831,6 +840,10 @@ msgid "List Cover"
 msgstr "名單封面"
 
 #: src/pages/Lists/Manage/index.tsx
+#~ msgid "Tap to edit. Hold & drag to reorder Ideas"
+#~ msgstr "點擊靈感進行編輯，長按可拖曳排序。"
+
+#: src/pages/Lists/Manage/index.tsx
 msgid "Edit list cover"
 msgstr "編輯名單封面"
 
@@ -844,8 +857,8 @@ msgid "Your ideas live here. Create one!"
 msgstr "新增的靈感會在這裡，丟個靈感進來吧！"
 
 #: src/pages/Lists/Manage/index.tsx
-msgid "Tap to edit. Hold & drag to reorder Ideas"
-msgstr "點擊靈感進行編輯，長按可拖曳排序。"
+msgid "Tap an idea to edit. Drag the lines on the left to reorder."
+msgstr "點擊靈感可編輯，拖曳左側三條線可排序。"
 
 #: src/pages/Lists/Manage/index.tsx
 msgid "Save New Order"
@@ -866,15 +879,6 @@ msgstr "喜歡"
 #: src/pages/Lists/View/ListCard/index.tsx
 msgid "Edit list"
 msgstr "編輯名單"
-
-#: src/pages/Lists/View/index.tsx
-#: src/pages/Lists/View/index.tsx
-#: src/pages/Lists/View/index.tsx
-#: src/pages/Lists/View/index.tsx
-#: src/pages/User/HeroSection/index.tsx
-#: src/pages/User/HeroSection/index.tsx
-msgid "Please login to do this action"
-msgstr "請先登入以進行此操作"
 
 #: src/pages/Lists/i18n.ts
 #: src/pages/Official/Components/FeatureSection/index.tsx

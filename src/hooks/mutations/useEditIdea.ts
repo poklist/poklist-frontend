@@ -21,7 +21,7 @@ const useEditIdea = () => {
       }
       return response.data.content;
     },
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       const ideaQueryKey = ['idea', data.id.toString()];
 
       const listQueryKey = [
@@ -31,8 +31,11 @@ const useEditIdea = () => {
         Idea.DEFAULT_BATCH_SIZE,
       ];
       // Invalidate for triggering refetch
-      queryClient.invalidateQueries({ queryKey: ideaQueryKey });
-      queryClient.invalidateQueries({ queryKey: listQueryKey });
+      await queryClient.invalidateQueries({ queryKey: ideaQueryKey });
+      await queryClient.invalidateQueries({ queryKey: listQueryKey });
+      await queryClient.refetchQueries({
+        queryKey: ['infiniteList', data.id.toString()],
+      });
     },
     onError: (error) => {
       setShowingAlert(true, { message: String(error) });

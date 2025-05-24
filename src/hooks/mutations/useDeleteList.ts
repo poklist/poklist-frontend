@@ -35,7 +35,9 @@ export const useDeleteList = ({
     },
     onSuccess: async (_, listID) => {
       // 移除已刪除列表的快取
-      queryClient.removeQueries({ queryKey: ['list', listID.toString()] });
+      queryClient.removeQueries({
+        queryKey: ['list', listID.toString()],
+      });
 
       // 重新獲取列表預覽資料
       await queryClient.refetchQueries({
@@ -44,7 +46,7 @@ export const useDeleteList = ({
 
       onSuccess?.();
     },
-    onError: error => {
+    onError: (error) => {
       setShowingAlert(true, { message: String(error) });
       onError?.(error);
     },
