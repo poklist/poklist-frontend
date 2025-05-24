@@ -1,5 +1,6 @@
 import { useCreateList } from '@/hooks/mutations/useCreateList';
-import useStrictNavigation from '@/hooks/useStrictNavigate';
+import { useAuthWrapper } from '@/hooks/useAuth';
+import useStrictNavigate from '@/hooks/useStrictNavigate';
 import ListForm from '@/pages/Lists/Components/Form';
 import Header from '@/pages/Lists/Components/Header';
 import useCommonStore from '@/stores/useCommonStore';
@@ -12,6 +13,7 @@ const CreatePage: React.FC = () => {
   const navigateTo = useStrictNavigate();
   const { setIsLoading } = useCommonStore();
   const { me } = useUserStore();
+  const { withAuth } = useAuthWrapper();
 
   const { createList, isCreateListLoading } = useCreateList({
     userCode: me.userCode,
@@ -31,7 +33,7 @@ const CreatePage: React.FC = () => {
     }
   }, [isCreateListLoading, setIsLoading]);
 
-  const onCreateList = (listData: ListBody) => {
+  const onCreateList = withAuth((listData: ListBody) => {
     createList(listData, {
       onSuccess: (data) => {
         if (!data) {
@@ -40,7 +42,7 @@ const CreatePage: React.FC = () => {
         navigateTo.manageList(me.userCode, data.id.toString());
       },
     });
-  };
+  });
 
   return (
     // Your component code here
