@@ -840,6 +840,10 @@ msgid "List Cover"
 msgstr "List Cover"
 
 #: src/pages/Lists/Manage/index.tsx
+#~ msgid "Tap to edit. Hold & drag to reorder Ideas"
+#~ msgstr "Tap to edit. Hold & drag to reorder Ideas"
+
+#: src/pages/Lists/Manage/index.tsx
 msgid "Edit list cover"
 msgstr "Edit list cover"
 
@@ -853,8 +857,8 @@ msgid "Your ideas live here. Create one!"
 msgstr "Your ideas live here. Create one!"
 
 #: src/pages/Lists/Manage/index.tsx
-msgid "Tap to edit. Hold & drag to reorder Ideas"
-msgstr "Tap to edit. Hold & drag to reorder Ideas"
+msgid "Tap an idea to edit. Drag the lines on the left to reorder."
+msgstr "Tap an idea to edit. Drag the lines on the left to reorder."
 
 #: src/pages/Lists/Manage/index.tsx
 msgid "Save New Order"

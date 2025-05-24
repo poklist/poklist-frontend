@@ -840,6 +840,10 @@ msgid "List Cover"
 msgstr "名單封面"
 
 #: src/pages/Lists/Manage/index.tsx
+#~ msgid "Tap to edit. Hold & drag to reorder Ideas"
+#~ msgstr "點擊靈感進行編輯，長按可拖曳排序。"
+
+#: src/pages/Lists/Manage/index.tsx
 msgid "Edit list cover"
 msgstr "編輯名單封面"
 
@@ -853,8 +857,8 @@ msgid "Your ideas live here. Create one!"
 msgstr "新增的靈感會在這裡，丟個靈感進來吧！"
 
 #: src/pages/Lists/Manage/index.tsx
-msgid "Tap to edit. Hold & drag to reorder Ideas"
-msgstr "點擊靈感進行編輯，長按可拖曳排序。"
+msgid "Tap an idea to edit. Drag the lines on the left to reorder."
+msgstr "點擊靈感可編輯，拖曳左側三條線可排序。"
 
 #: src/pages/Lists/Manage/index.tsx
 msgid "Save New Order"

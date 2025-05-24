@@ -173,7 +173,9 @@ const ListManagePage: React.FC = () => {
           {!ideasDraft || ideasDraft.length === 0 ? (
             <Trans>Your ideas live here. Create one!</Trans>
           ) : (
-            <Trans>Tap to edit. Hold & drag to reorder Ideas</Trans>
+            <Trans>
+              Tap an idea to edit. Drag the lines on the left to reorder.
+            </Trans>
           )}
         </div>
 
