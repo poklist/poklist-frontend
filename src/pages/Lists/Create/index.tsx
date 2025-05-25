@@ -1,4 +1,5 @@
 import { useCreateList } from '@/hooks/mutations/useCreateList';
+import { useAuthCheck } from '@/hooks/useAuth';
 import useStrictNavigation from '@/hooks/useStrictNavigate';
 import ListForm from '@/pages/Lists/Components/Form';
 import Header from '@/pages/Lists/Components/Header';
@@ -16,7 +17,7 @@ const CreatePage: React.FC<CreatePageProps> = () => {
   const navigateTo = useStrictNavigation();
   const { setIsLoading } = useCommonStore();
   const { me } = useUserStore();
-
+  const { checkAuthAndRedirect } = useAuthCheck();
   const { createList, isCreateListLoading } = useCreateList({
     userCode: me.userCode,
   });
@@ -45,6 +46,10 @@ const CreatePage: React.FC<CreatePageProps> = () => {
       },
     });
   };
+
+  useEffect(() => {
+    checkAuthAndRedirect();
+  }, []);
 
   return (
     // Your component code here

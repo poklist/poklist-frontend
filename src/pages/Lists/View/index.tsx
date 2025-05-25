@@ -7,6 +7,7 @@ import {
 } from '@/hooks/mutations/useSocialAction';
 import { useList } from '@/hooks/queries/useList';
 import { useUser } from '@/hooks/queries/useUser';
+import useStrictNavigation from '@/hooks/useStrictNavigate';
 import { useToast } from '@/hooks/useToast';
 import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
 import { Tile20Background } from '@/pages/User/TileBackground';
@@ -27,7 +28,7 @@ const ViewListPage: React.FC = () => {
   const { isLoggedIn } = useAuthStore();
   const { me } = useUserStore();
   const isMyPage = listOwnerUserCode === me.userCode;
-
+  const navigateTo = useStrictNavigation();
   const { setIsLoading } = useCommonStore();
 
   const { setIsLiked } = useSocialStore();
@@ -42,11 +43,24 @@ const ViewListPage: React.FC = () => {
     userCode: listOwnerUserCode,
   });
 
-  const { data: list, isLoading: isListLoading } = useList({
+  // FUTURE: check before firing the query if we have the listID validation rules
+  const {
+    data: list,
+    isLoading: isListLoading,
+    isError: isListError,
+  } = useList({
     listID: listID,
     offset: Idea.DEFAULT_FIRST_BATCH_OFFSET,
     limit: Idea.DEFAULT_BATCH_SIZE,
   });
+
+  useEffect(() => {
+    if (isListOwnerError) {
+      navigateTo.home();
+    } else if (isListError) {
+      navigateTo.user(listOwnerUserCode);
+    }
+  }, [isListOwnerError, isListError]);
 
   const { debouncedMutate: like } = useSocialAction({
     actionKey: 'like',
@@ -94,6 +108,20 @@ const ViewListPage: React.FC = () => {
   useEffect(() => {
     setIsFollowing(listOwner?.isFollowing ?? false);
   }, [listOwner?.isFollowing]);
+
+  useEffect(() => {
+    if (!isListOwnerLoading && !isListLoading && list?.owner && listID) {
+      if (listOwnerUserCode !== list?.owner.userCode) {
+        navigateTo.viewList(list?.owner.userCode, listID);
+      }
+    }
+  }, [
+    isListOwnerError,
+    isListOwnerLoading,
+    isListLoading,
+    list?.owner,
+    listID,
+  ]);
 
   return (
     <>

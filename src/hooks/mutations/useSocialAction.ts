@@ -1,4 +1,5 @@
 import axios, { AxiosPayload } from '@/lib/axios';
+import { enhancedDebounce } from '@/lib/functional';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Method } from 'axios';
 import { useRef } from 'react';
@@ -24,8 +25,6 @@ export enum SocialActionType {
   LIKE = 'like',
   FOLLOW = 'follow',
 }
-
-const debounceMap = new Map<SocialActionType, ReturnType<typeof setTimeout>>();
 
 export const useSocialAction = ({
   actionKey,
@@ -79,26 +78,21 @@ export const useSocialAction = ({
     },
   });
 
-  const debouncedMutate = (variables: AxiosPayload) => {
-    if (shouldAllow && !shouldAllow()) {
-      onNotAllowed?.();
-      return;
+  const debounceMap = new Map<
+    SocialActionType,
+    ReturnType<typeof setTimeout>
+  >();
+
+  const debouncedMutate = enhancedDebounce(
+    (variables: AxiosPayload) => mutation.mutate(variables),
+    debounceMs,
+    {
+      shouldExecute: shouldAllow,
+      onNotAllowed,
+      onBeforeExecute: onOptimisticUpdate,
+      onAfterExecute: () => debounceMap.delete(debounceGroupKey),
     }
-
-    const existingTimer = debounceMap.get(debounceGroupKey);
-    if (existingTimer) {
-      clearTimeout(existingTimer);
-    }
-
-    onOptimisticUpdate?.();
-
-    const timer = setTimeout(() => {
-      mutation.mutate(variables);
-      debounceMap.delete(debounceGroupKey);
-    }, debounceMs);
-
-    debounceMap.set(debounceGroupKey, timer);
-  };
+  );
 
   const cancelPending = () => {
     const existingTimer = debounceMap.get(debounceGroupKey);
@@ -109,8 +103,8 @@ export const useSocialAction = ({
   };
 
   return {
-    ...mutation,
-    debouncedMutate, // 支援參數的 debounce mutate
+    mutation,
+    debouncedMutate,
     cancelPending,
     isLoading: mutation.isPending,
   };

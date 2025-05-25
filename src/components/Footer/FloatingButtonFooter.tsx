@@ -7,7 +7,6 @@ import useStrictNavigation from '@/hooks/useStrictNavigate';
 import { useToast } from '@/hooks/useToast';
 import { cn, copyHref } from '@/lib/utils';
 import useSocialStore from '@/stores/useSocialStore';
-import useUserStore from '@/stores/useUserStore';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
 
@@ -23,7 +22,6 @@ const FloatingButtonFooter: React.FC<IFooterProps> = ({
   onClickUnlike,
 }) => {
   const { toast } = useToast();
-  const { me } = useUserStore();
   const { isLiked } = useSocialStore();
   const navigateTo = useStrictNavigation();
   const { withAuth } = useAuthWrapper();
@@ -37,7 +35,7 @@ const FloatingButtonFooter: React.FC<IFooterProps> = ({
   };
 
   const handleCreateList = withAuth(() => {
-    navigateTo.createList(me.userCode);
+    navigateTo.createList();
   });
 
   const handleLike = withAuth(() => {

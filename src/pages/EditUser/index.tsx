@@ -9,6 +9,7 @@ import { socialLinkStarterMap } from '@/constants/User';
 import { EditFieldVariant, FieldType } from '@/enums/EditField/index.enum';
 import { SocialLinkType } from '@/enums/index.enum';
 import { useEditProfile } from '@/hooks/mutations/useEditProfile';
+import { useAuthCheck } from '@/hooks/useAuth';
 import useStrictNavigation from '@/hooks/useStrictNavigate';
 import { extractUsernameFromUrl, urlPreview } from '@/lib/utils';
 import { validateUserCode } from '@/lib/validator';
@@ -33,7 +34,7 @@ const EditUserPage: React.FC = () => {
     setSocialLink,
     isModified,
   } = useEditProfileStore();
-
+  const { checkAuthAndRedirect } = useAuthCheck();
   const { editProfile } = useEditProfile();
   const { openFakePage, closeFakePage } = useFakePage();
   const socialLinkTypeList = Object.values(SocialLinkType);
@@ -243,6 +244,7 @@ const EditUserPage: React.FC = () => {
 
   useEffect(() => {
     setNewUserInfo(me);
+    checkAuthAndRedirect();
     // onUnmounted
     return () => {
       closeFakePage();

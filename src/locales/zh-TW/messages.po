@@ -60,6 +60,15 @@ msgid "Copy"
 msgstr "複製"
 
 #: src/components/Header/BackToUserHeader.tsx
+#: src/components/Header/BackToUserHeader.tsx
+#: src/pages/Lists/View/index.tsx
+#: src/pages/Lists/View/index.tsx
+#: src/pages/User/HeroSection/index.tsx
+#: src/pages/User/HeroSection/index.tsx
+msgid "Please login to do this action"
+msgstr "請先登入以進行此操作"
+
+#: src/components/Header/BackToUserHeader.tsx
 #: src/pages/User/HeroSection/index.tsx
 #: src/pages/User/HeroSection/index.tsx
 msgid "Following"
@@ -866,15 +875,6 @@ msgstr "喜歡"
 #: src/pages/Lists/View/ListCard/index.tsx
 msgid "Edit list"
 msgstr "編輯名單"
-
-#: src/pages/Lists/View/index.tsx
-#: src/pages/Lists/View/index.tsx
-#: src/pages/Lists/View/index.tsx
-#: src/pages/Lists/View/index.tsx
-#: src/pages/User/HeroSection/index.tsx
-#: src/pages/User/HeroSection/index.tsx
-msgid "Please login to do this action"
-msgstr "請先登入以進行此操作"
 
 #: src/pages/Lists/i18n.ts
 #: src/pages/Official/Components/FeatureSection/index.tsx

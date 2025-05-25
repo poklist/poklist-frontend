@@ -3,7 +3,9 @@ import IconClose from '@/components/ui/icons/CloseIcon';
 import { useDeleteList } from '@/hooks/mutations/useDeleteList';
 import { useReorderIdeas } from '@/hooks/mutations/useReorderIdeas';
 import { useList } from '@/hooks/queries/useList';
+import { useAuthCheck } from '@/hooks/useAuth';
 import useStrictNavigation from '@/hooks/useStrictNavigate';
+import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
 import Header from '@/pages/Lists/Components/Header';
 import IdeaList from '@/pages/Lists/Manage/IdeasList';
 import ListInfo from '@/pages/Lists/Manage/ListInfo';
@@ -16,14 +18,17 @@ import { useCallback, useEffect, useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { TouchBackend } from 'react-dnd-touch-backend';
-import { useParams } from 'react-router-dom';
+import { useOutletContext, useParams } from 'react-router-dom';
 
 const ListManagePage: React.FC = () => {
+  const { userCode } = useOutletContext<UserRouteLayoutContextType>();
+
   const { id } = useParams();
   const navigateTo = useStrictNavigation();
+  const { checkAuthAndRedirect } = useAuthCheck();
 
+  const { me } = useUserStore();
   const { setIsLoading } = useCommonStore();
-  const userStore = useUserStore();
   const isMobile = useLayoutStore((state) => state.isMobile);
   const [isDeleting, setIsDeleting] = useState(false);
   const { data: list, isLoading: isListLoading } = useList({
@@ -36,7 +41,7 @@ const ListManagePage: React.FC = () => {
     listID: id ?? '',
   });
   const { deleteList, isDeleteListLoading } = useDeleteList({
-    userCode: userStore.me.userCode,
+    userCode: me.userCode,
   });
 
   const [isOrderModified, setIsOrderModified] = useState(false);
@@ -47,7 +52,7 @@ const ListManagePage: React.FC = () => {
       setIsDeleting(true);
       deleteList(list.id, {
         onSuccess: () => {
-          navigateTo.user(userStore.me.userCode);
+          navigateTo.user(me.userCode);
           setIsLoading(false);
         },
       });
@@ -105,6 +110,24 @@ const ListManagePage: React.FC = () => {
     }
   }, [isListLoading, isReorderIdeasLoading, isDeleteListLoading]);
 
+  useEffect(() => {
+    checkAuthAndRedirect();
+    if (userCode !== me.userCode) {
+      if (userCode) {
+        if (id) {
+          navigateTo.viewList(userCode, id);
+        } else {
+          navigateTo.user(userCode);
+        }
+      } else {
+        navigateTo.home();
+      }
+    }
+  }, []);
+
+  if (isListLoading || isReorderIdeasLoading || isDeleteListLoading) {
+    return <div>Loading...</div>;
+  }
   return (
     <>
       <Header title={<Trans>Idea List</Trans>} deleteCallback={onDeleteList} />
@@ -118,7 +141,7 @@ const ListManagePage: React.FC = () => {
             onClick={() =>
               id === undefined
                 ? navigateTo.error()
-                : navigateTo.editList(userStore.me.userCode, id)
+                : navigateTo.editList(me.userCode, id)
             }
           >
             <Trans>Edit list cover</Trans>
@@ -169,7 +192,7 @@ const ListManagePage: React.FC = () => {
             onClick={() =>
               id === undefined
                 ? navigateTo.error()
-                : navigateTo.viewList(userStore.me.userCode, id)
+                : navigateTo.viewList(me.userCode, id)
             }
           />
           <Trans>Edit List</Trans>

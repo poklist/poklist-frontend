@@ -36,6 +36,8 @@ const router = createBrowserRouter([
       { path: StaticRoutes.SETTINGS, element: <SettingsPage /> },
       { path: StaticRoutes.ERROR, element: <ErrorPage /> },
       { path: StaticRoutes.GO_TO_MOBILE, element: <GoToMobilePage /> },
+      { path: 'user/edit', element: <EditUserPage /> },
+      { path: 'list/create', element: <CreateListPage /> },
       { path: 'idea/create', element: <CreateIdeaPage /> },
       { path: 'idea/:id/edit', element: <EditIdeaPage /> },
       {
@@ -43,13 +45,11 @@ const router = createBrowserRouter([
         element: <UserRouteLayout />,
         children: [
           { path: '', element: <UserPage /> },
-          { path: 'edit', element: <EditUserPage /> },
           { path: 'list/:id', element: <ViewListPage /> },
           {
             path: 'list/:id/idea/:ideaID',
             element: <ViewListPage />,
           },
-          { path: 'list/create', element: <CreateListPage /> },
           {
             path: 'list/:id/manage',
             element: <ListManagementPage />,
