@@ -30,7 +30,7 @@ const IdeaCreatePage: React.FC = () => {
     }
   };
 
-  const onCreatedIdea = withAuth((ideaFormData: IdeaBody) => {
+  const onCreateIdea = withAuth((ideaFormData: IdeaBody) => {
     createIdea(
       { ...ideaFormData, listID },
       {
@@ -64,7 +64,7 @@ const IdeaCreatePage: React.FC = () => {
       </div>
       <div className="flex min-h-screen flex-col gap-6 sm:min-h-[calc(100vh-196px)]">
         <IdeaForm
-          completedCallback={onCreatedIdea}
+          completedCallback={onCreateIdea}
           dismissCallback={onDismissCreate}
         />
       </div>

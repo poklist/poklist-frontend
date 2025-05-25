@@ -43,11 +43,7 @@ const HeroSection: React.FC = () => {
   const bioRef = useRef<HTMLParagraphElement>(null);
   const { toast } = useToast();
 
-  const { withAuth } = useAuthWrapper({
-    beforeExecution: () => {
-      // console.log('beforeExecution');
-    },
-  });
+  const { withAuth } = useAuthWrapper();
 
   const isMyPage = userCode?.toString() === me.userCode.toString();
   const {
