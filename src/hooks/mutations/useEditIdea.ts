@@ -3,7 +3,6 @@ import { Idea } from '@/constants/list';
 import axios from '@/lib/axios';
 import useCommonStore from '@/stores/useCommonStore';
 import { EditIdeaResponse, IdeaPreview } from '@/types/Idea';
-import { QUERY_KEYS } from '@/types/query';
 import { IResponse } from '@/types/response';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
@@ -23,10 +22,10 @@ const useEditIdea = () => {
       return response.data.content;
     },
     onSuccess: async (data) => {
-      const ideaQueryKey = [QUERY_KEYS.IDEA, data.id.toString()];
+      const ideaQueryKey = ['idea', data.id.toString()];
 
       const listQueryKey = [
-        QUERY_KEYS.LIST,
+        'list',
         data.listID.toString(),
         Idea.DEFAULT_FIRST_BATCH_OFFSET,
         Idea.DEFAULT_BATCH_SIZE,
@@ -34,6 +33,9 @@ const useEditIdea = () => {
       // Invalidate for triggering refetch
       await queryClient.invalidateQueries({ queryKey: ideaQueryKey });
       await queryClient.invalidateQueries({ queryKey: listQueryKey });
+      await queryClient.refetchQueries({
+        queryKey: ['infiniteList', data.id.toString()],
+      });
     },
     onError: (error) => {
       setShowingAlert(true, { message: String(error) });

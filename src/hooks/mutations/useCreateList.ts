@@ -3,7 +3,6 @@ import { List } from '@/constants/list';
 import axios from '@/lib/axios';
 import useCommonStore from '@/stores/useCommonStore';
 import { CreateListResponse, ListBody } from '@/types/List';
-import { QUERY_KEYS } from '@/types/query';
 import { IResponse } from '@/types/response';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
@@ -12,7 +11,7 @@ interface UseCreateListOptions {
   offset?: number;
   limit?: number;
   onSuccess?: (data: CreateListResponse) => void;
-  onError?: (error: any) => void;
+  onError?: (error: Error) => void;
 }
 
 export const useCreateList = ({
@@ -47,7 +46,8 @@ export const useCreateList = ({
       }
       // 使列表緩存失效，觸發重新獲取
       await queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.LISTS, userCode, offset, limit],
+        queryKey: ['lists', userCode, offset, limit],
+        refetchType: 'inactive',
       });
       onSuccess?.(data);
     },

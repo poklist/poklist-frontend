@@ -2,7 +2,6 @@ import ApiPath from '@/config/apiPath';
 import { Idea } from '@/constants/list';
 import axios from '@/lib/axios';
 import useCommonStore from '@/stores/useCommonStore';
-import { QUERY_KEYS } from '@/types/query';
 import { IResponse } from '@/types/response';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
@@ -26,18 +25,19 @@ const useDeleteIdea = ({ listID }: UseDeleteIdeaOptions) => {
     },
     onSuccess: async (_, ideaID) => {
       // Remove the deleted idea's cache
-      queryClient.removeQueries({
-        queryKey: [QUERY_KEYS.IDEA, ideaID.toString()],
-      });
+      queryClient.removeQueries({ queryKey: ['idea', ideaID.toString()] });
 
       // Invalidate and refetch the list
-      await queryClient.refetchQueries({
+      await queryClient.invalidateQueries({
         queryKey: [
-          QUERY_KEYS.LIST,
+          'list',
           listID,
           Idea.DEFAULT_FIRST_BATCH_OFFSET,
           Idea.DEFAULT_BATCH_SIZE,
         ],
+      });
+      await queryClient.refetchQueries({
+        queryKey: ['infiniteList', listID],
       });
     },
     onError: (error) => {
