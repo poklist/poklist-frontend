@@ -1,4 +1,5 @@
 import { useCreateIdea } from '@/hooks/mutations/useCreateIdea';
+import { useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigation from '@/hooks/useStrictNavigate';
 import IdeaForm from '@/pages/Idea/Components/Form';
 import Header from '@/pages/Idea/Components/Header';
@@ -19,6 +20,8 @@ const IdeaCreatePage: React.FC = () => {
   const { setIsLoading, setShowingAlert } = useCommonStore();
   const { me } = useUserStore();
 
+  const { withAuth } = useAuthWrapper();
+
   const { mutate: createIdea, isPending: createIdeaLoading } = useCreateIdea();
 
   const onDismissCreate = (isFormEmpty: boolean) => {
@@ -27,7 +30,7 @@ const IdeaCreatePage: React.FC = () => {
     }
   };
 
-  const onCreatedIdea = (ideaFormData: IdeaBody) => {
+  const onCreateIdea = withAuth((ideaFormData: IdeaBody) => {
     createIdea(
       { ...ideaFormData, listID },
       {
@@ -40,7 +43,8 @@ const IdeaCreatePage: React.FC = () => {
         },
       }
     );
-  };
+  });
+
   useEffect(() => {
     if (createIdeaLoading) {
       setIsLoading(true);
@@ -60,7 +64,7 @@ const IdeaCreatePage: React.FC = () => {
       </div>
       <div className="flex min-h-screen flex-col gap-6 sm:min-h-[calc(100vh-196px)]">
         <IdeaForm
-          completedCallback={onCreatedIdea}
+          completedCallback={onCreateIdea}
           dismissCallback={onDismissCreate}
         />
       </div>

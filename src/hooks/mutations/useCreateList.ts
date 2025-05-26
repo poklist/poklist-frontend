@@ -11,7 +11,7 @@ interface UseCreateListOptions {
   offset?: number;
   limit?: number;
   onSuccess?: (data: CreateListResponse) => void;
-  onError?: (error: any) => void;
+  onError?: (error: Error) => void;
 }
 
 export const useCreateList = ({
@@ -40,13 +40,14 @@ export const useCreateList = ({
       );
       return response.data.content;
     },
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       if (!data) {
         throw new Error('Failed to create list');
       }
       // 使列表緩存失效，觸發重新獲取
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({
         queryKey: ['lists', userCode, offset, limit],
+        refetchType: 'inactive',
       });
       onSuccess?.(data);
     },
