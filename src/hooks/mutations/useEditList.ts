@@ -3,9 +3,9 @@ import { Idea, List } from '@/constants/list';
 import axios from '@/lib/axios';
 import useCommonStore from '@/stores/useCommonStore';
 import { CreateListResponse, ListBody } from '@/types/List';
-import { QUERY_KEYS } from '@/types/query';
 import { IResponse } from '@/types/response';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import QueryKeys from '@/config/queryKeys';
 
 interface UseEditListOptions {
   userCode: string; // to invalidate the useLists cache
@@ -52,11 +52,11 @@ export const useEditList = ({
     onSuccess: async (data) => {
       // Invalidate the list cache, trigger refetching
       await queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.LISTS, userCode, listOffset, listLimit],
+        queryKey: [QueryKeys.LISTS, userCode, listOffset, listLimit],
       });
       // NOTE: I changed to listID to data.id.toString() to make the refetch work but idk why
       await queryClient.refetchQueries({
-        queryKey: [QUERY_KEYS.LIST, data.id.toString(), ideaOffset, ideaLimit],
+        queryKey: [QueryKeys.LIST, data.id.toString(), ideaOffset, ideaLimit],
       });
     },
     onError: (error) => {

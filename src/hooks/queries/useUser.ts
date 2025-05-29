@@ -1,6 +1,6 @@
 import axios from '@/lib/axios';
 import { User } from '@/types/User';
-import { QUERY_KEYS } from '@/types/query';
+import QueryKeys from '@/config/queryKeys';
 import { IResponse } from '@/types/response';
 import { useQuery } from '@tanstack/react-query';
 
@@ -16,7 +16,7 @@ export const useUser = ({
   gcTime = 1000 * 60 * 5, // 5 minutes
 }: UseUserOptions) => {
   const query = useQuery({
-    queryKey: [QUERY_KEYS.USER, userCode],
+    queryKey: [QueryKeys.USER, userCode],
     queryFn: async () => {
       if (!userCode) {
         throw new Error('userCode is required');

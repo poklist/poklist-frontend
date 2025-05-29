@@ -1,13 +1,13 @@
 import ApiPath from '@/config/apiPath';
 import axios from '@/lib/axios';
 import { Category } from '@/types/List';
-import { QUERY_KEYS } from '@/types/query';
+import QueryKeys from '@/config/queryKeys';
 import { IResponse } from '@/types/response';
 import { useQuery } from '@tanstack/react-query';
 
 export const useCategories = () => {
   const query = useQuery({
-    queryKey: [QUERY_KEYS.CATEGORIES],
+    queryKey: [QueryKeys.CATEGORIES],
     queryFn: async () => {
       const response = await axios.get<IResponse<Category[]>>(
         ApiPath.categories

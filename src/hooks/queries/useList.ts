@@ -4,7 +4,7 @@ import axios from '@/lib/axios';
 import { List } from '@/types/List';
 import { IResponse } from '@/types/response';
 import { useQuery } from '@tanstack/react-query';
-import { QUERY_KEYS, GetQueryKey } from '@/types/query';
+import QueryKeys from '@/config/queryKeys';
 
 interface UseListOptions {
   listID?: string;
@@ -24,9 +24,7 @@ export const useList = ({
   enabled = true,
 }: UseListOptions) => {
   const query = useQuery({
-    queryKey: [QUERY_KEYS.LIST, listID, offset, limit] as GetQueryKey<
-      typeof QUERY_KEYS.LIST
-    >,
+    queryKey: [QueryKeys.LIST, listID, offset, limit],
     queryFn: async () => {
       if (!listID) {
         throw new Error('listID is required');

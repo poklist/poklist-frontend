@@ -1,7 +1,7 @@
 import { List } from '@/constants/list';
 import axios from '@/lib/axios';
 import { ListPreview } from '@/types/List';
-import { QUERY_KEYS } from '@/types/query';
+import QueryKeys from '@/config/queryKeys';
 import { IResponse } from '@/types/response';
 import { useQuery } from '@tanstack/react-query';
 
@@ -21,7 +21,7 @@ export const useListPreviews = ({
   gcTime = 1000 * 60 * 5, // 5 minutes
 }: UseListPreviewsOptions) => {
   const query = useQuery({
-    queryKey: [QUERY_KEYS.LISTS, userCode, offset, limit],
+    queryKey: [QueryKeys.LISTS, userCode, offset, limit],
     queryFn: async () => {
       if (!userCode) {
         throw new Error('userCode is required');

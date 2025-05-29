@@ -1,5 +1,5 @@
-// 定義所有已使用的 Query Key，方便統一管理和重用
-export const QUERY_KEYS = {
+const QueryKeys: Record<string, string> = {
+  // Lists & Ideas
   LIST: 'list',
   LISTS: 'lists',
   USER: 'user',
@@ -7,4 +7,6 @@ export const QUERY_KEYS = {
   CATEGORIES: 'categories',
   OFFICIAL_COLLECTIONS: 'officialCollections',
   LATEST_LIST_GROUPS: 'latestListGroups',
-} as const;
+};
+
+export default QueryKeys;

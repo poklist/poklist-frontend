@@ -1,6 +1,6 @@
 import axios from '@/lib/axios';
 import { OfficialCollection } from '@/types/Discovery';
-import { QUERY_KEYS } from '@/types/query';
+import QueryKeys from '@/config/queryKeys';
 import { IResponse } from '@/types/response';
 import { useQuery } from '@tanstack/react-query';
 
@@ -14,7 +14,7 @@ export const useOfficialCollections = ({
   gcTime = 1000 * 60 * 5, // 5 minutes
 }: UseOfficialCollectionsOptions) => {
   const query = useQuery({
-    queryKey: [QUERY_KEYS.OFFICIAL_COLLECTIONS],
+    queryKey: [QueryKeys.OFFICIAL_COLLECTIONS],
     queryFn: async () => {
       const response = await axios.get<IResponse<OfficialCollection[]>>(
         `/discovery/official-collections`
