@@ -7,9 +7,17 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from '@/components/ui/drawer';
-import React, { createContext, useContext, useState } from 'react';
+import { cn } from '@/lib/utils';
+import React, { createContext, useContext, useCallback, useState } from 'react';
 
 interface IDrawerContext {
+  openDrawers: Set<string>;
+  openDrawer: (drawerId: string) => void;
+  closeDrawer: (drawerId: string) => void;
+  isDrawerOpen: (drawerId: string) => boolean;
+}
+
+interface IDrawerControls {
   isOpen: boolean;
   openDrawer: () => void;
   closeDrawer: () => void;
@@ -17,72 +25,149 @@ interface IDrawerContext {
 
 const DrawerContext = createContext<IDrawerContext | undefined>(undefined);
 
-export const DrawerProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [isOpen, setIsOpen] = useState(false);
+export const DrawerProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const [openDrawers, setOpenDrawers] = useState<Set<string>>(new Set());
 
-  const openDrawer = () => {
-    setIsOpen(true);
-  };
+  const openDrawer = useCallback((drawerId: string) => {
+    setOpenDrawers((prev) => {
+      const newSet = new Set(prev);
+      newSet.add(drawerId);
+      return newSet;
+    });
+  }, []);
 
-  const closeDrawer = () => {
-    setIsOpen(false);
+  const closeDrawer = useCallback((drawerId: string) => {
+    setOpenDrawers((prev) => {
+      const newSet = new Set(prev);
+      newSet.delete(drawerId);
+      return newSet;
+    });
+  }, []);
+
+  const isDrawerOpen = useCallback(
+    (drawerId: string) => {
+      return openDrawers.has(drawerId);
+    },
+    [openDrawers]
+  );
+
+  const value = {
+    openDrawers,
+    openDrawer,
+    closeDrawer,
+    isDrawerOpen,
   };
 
   return (
-    <DrawerContext.Provider
-      value={{
-        isOpen,
-        openDrawer,
-        closeDrawer,
-      }}
-    >
-      {children}
-    </DrawerContext.Provider>
+    <DrawerContext.Provider value={value}>{children}</DrawerContext.Provider>
   );
 };
 
-export const useDrawer = () => {
+export function useDrawer(): IDrawerContext;
+export function useDrawer(drawerId: string): IDrawerControls;
+export function useDrawer(drawerId?: string) {
   const context = useContext(DrawerContext);
   if (!context) {
     throw new Error('useDrawer must be used within a DrawerProvider');
   }
-  return context;
-};
+
+  if (!drawerId) {
+    return context;
+  }
+
+  return {
+    isOpen: context.isDrawerOpen(drawerId),
+    openDrawer: () => context.openDrawer(drawerId),
+    closeDrawer: () => context.closeDrawer(drawerId),
+  };
+}
 
 interface IDrawerProps {
-  header: React.ReactNode;
+  drawerId: string;
+  header?: React.ReactNode;
   subHeader?: React.ReactNode;
   content?: React.ReactNode;
-  footer: React.ReactNode;
+  footer?: React.ReactNode;
+  startFooter?: React.ReactNode;
+  endFooter?: React.ReactNode;
   isShowClose: boolean;
+  className?: string;
+  onClose?: () => void;
 }
 export const DrawerComponent: React.FC<IDrawerProps> = ({
+  drawerId,
   header,
   subHeader,
   content,
-  footer,
+  startFooter,
+  endFooter,
   isShowClose,
+  className,
+  onClose,
 }) => {
-  const { isOpen, closeDrawer } = useDrawer();
+  const { isOpen, closeDrawer } = useDrawer(drawerId);
+
+  // 處理關閉事件
+  const handleClose = () => {
+    closeDrawer();
+    if (onClose) {
+      onClose();
+    }
+  };
+
   return (
-    <Drawer open={isOpen} onOpenChange={closeDrawer}>
-      <DrawerContent className="w-full bottom-0 bg-white shadow">
+    <Drawer
+      open={isOpen}
+      onOpenChange={(open) => {
+        if (!open) handleClose();
+      }}
+    >
+      <DrawerContent
+        className={cn('bottom-0 w-full bg-white shadow', className)}
+      >
         {isShowClose && (
           <div className="flex justify-end">
             <DrawerClose
               aria-label="Close"
-              className="h-6 w-6 rounded-full bg-black-text-01 text-center leading-6 text-white mb-3 focus-visible:outline-none"
+              className="mb-3 h-6 w-6 rounded-full bg-black-text-01 text-center leading-6 text-white focus-visible:outline-none"
+              onClick={() => handleClose()}
             >
               <span aria-hidden>×</span>
             </DrawerClose>
           </div>
         )}
-        <DrawerHeader className="relative w-full items-center">
-          <DrawerTitle>{header}</DrawerTitle>
-          {subHeader && <DrawerDescription>{subHeader}</DrawerDescription>}
-        </DrawerHeader>
+
+        {header && (
+          <DrawerHeader className="relative w-full items-center">
+            <DrawerTitle className="mb-1 w-fit font-bold text-black-text-01">
+              {header}
+            </DrawerTitle>
+            {subHeader && <DrawerDescription>{subHeader}</DrawerDescription>}
+          </DrawerHeader>
+        )}
         {content && <>{content}</>}
-        <DrawerFooter className="w-full">{footer}</DrawerFooter>
+
+        {/* 同時有 startFooter 和 endFooter */}
+        {startFooter && endFooter && (
+          <DrawerFooter className="flex w-full flex-row items-center justify-between">
+            <div>{startFooter}</div>
+            <div>{endFooter}</div>
+          </DrawerFooter>
+        )}
+
+        {/* 只有 startFooter */}
+        {startFooter && !endFooter && (
+          <DrawerFooter className="w-full">{startFooter}</DrawerFooter>
+        )}
+
+        {/* 只有 endFooter 或 footer */}
+        {!startFooter && endFooter && (
+          <DrawerFooter className="flex w-full flex-row justify-end">
+            {endFooter}
+          </DrawerFooter>
+        )}
       </DrawerContent>
     </Drawer>
   );

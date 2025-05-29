@@ -2,6 +2,7 @@ import { socialLinkStarterMap } from '@/constants/User';
 import { LocalStorageKey, SocialLinkType } from '@/enums/index.enum';
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { z } from 'zod';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -38,6 +39,14 @@ export const fileToBase64 = (file: File): Promise<string> => {
   });
 };
 
+export const base64ToFile = async (base64: string) => {
+  const response = await fetch(base64);
+  return await response.blob().then((_blob) => {
+    return new File([_blob], 'file', { type: _blob.type });
+  });
+};
+
+// DEPRECATED: use line-clamp instead
 export const getPreviewText = (text: string, length: number = 20) => {
   return text.slice(0, length) + (text.length > length ? '...' : '');
 };
@@ -52,23 +61,38 @@ export const isValidInstagramUsername = (username: string) => {
   return regex.test(username);
 };
 
-export const copyHref = () => {
+export const copyHref = (appendedPath: string = '') => {
   const url = window.location.href;
-  navigator.clipboard.writeText(url);
+  navigator.clipboard.writeText(url + appendedPath);
 };
 
 export const extractUsernameFromUrl = (
   linkType: SocialLinkType,
-  url: string
-) => {
+  url: string | undefined
+): string | undefined => {
+  if (url === undefined) {
+    return undefined;
+  }
   const prefix = socialLinkStarterMap[linkType];
   const index = url.indexOf(prefix);
 
   if (index !== -1) {
     // If found, then cut out the part starting from the found position
-    return url.substring(index + prefix.length);
+    const username = url.substring(index + prefix.length);
+    // Remove trailing slash if exists
+    return username.replace(/\/$/, '');
   } else {
-    // If not found, then return the original URL
-    return url;
+    // If not found, then return the original URL without trailing slash
+    return url.replace(/\/$/, '');
   }
+};
+
+export const ensureProtocol = (url: string): string => {
+  if (!url) return url;
+  const parsedUrl = z.string().url().safeParse(url);
+  return parsedUrl.success ? url : `https://${url}`;
+};
+
+export const formatInput = (targetValue: string): string => {
+  return targetValue.replace(/ {2,}/g, ' ').replace(/\n/g, '');
 };

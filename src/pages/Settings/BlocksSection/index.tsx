@@ -1,65 +1,171 @@
-import Footer from '@/components/Footer';
-import useUserStore from '@/stores/useUserStore';
+import { DrawerComponent, useDrawer } from '@/components/Drawer';
+import { activateI18n } from '@/components/Language';
+import { DrawerIds } from '@/constants/Drawer';
+import { Language, LocalStorageKey, Location } from '@/enums/index.enum';
+import useStrictNavigation from '@/hooks/useStrictNavigate';
+import { getLocalStorage, setLocalStorage } from '@/lib/utils';
+import useAuthStore from '@/stores/useAuthStore';
 import { ILinksBlock } from '@/types/Settings';
-import { useNavigate } from 'react-router-dom';
+import { t } from '@lingui/core/macro';
+import { Trans } from '@lingui/react/macro';
+import { useEffect, useState } from 'react';
+import { ButtonRadioGroup } from '../ButtonRadioGroup';
 import LinksBlock from './LinksBlock';
 
 const BlocksSection: React.FC = () => {
-  const navigate = useNavigate();
+  const navigateTo = useStrictNavigation();
+  const { openDrawer } = useDrawer();
+  const { isLoggedIn, logout } = useAuthStore();
+  const [drawerContent, setDrawerContent] = useState<React.ReactNode>(null);
 
-  const { isLoggedIn, logout } = useUserStore();
+  const [language, setLanguage] = useState(Language.EN);
+  const [location, setLocation] = useState(Location.TW);
 
-  const openLanguageDrawer = () => {}; // TODO:
-  const openLocactionDrawer = () => {}; // TODO:
+  useEffect(() => {
+    const userSelectedLanguage = getLocalStorage(
+      LocalStorageKey.SELECTED_LANGUAGE
+    );
+    const userSelectedLocation = getLocalStorage(
+      LocalStorageKey.SELECTED_LOCATION
+    );
+    if (
+      userSelectedLanguage &&
+      Object.values(Language).includes(userSelectedLanguage)
+    ) {
+      setLanguage(userSelectedLanguage);
+    }
+    if (
+      userSelectedLocation &&
+      Object.values(Location).includes(userSelectedLocation)
+    ) {
+      setLocation(userSelectedLocation);
+    }
+  }, []);
+
+  const openLanguageDrawer = () => {
+    // FUTURE: extract to a 'constants' file
+    const languageOptions = [
+      {
+        label: 'English',
+        value: Language.EN,
+      },
+      {
+        label: '中文',
+        value: Language.ZH_TW,
+      },
+    ];
+    const onLanguageChange = (value: string[]) => {
+      const newLanguage = value[0] as Language;
+      // TODO: error handling
+      void activateI18n(newLanguage);
+      setLanguage(newLanguage);
+      setLocalStorage(LocalStorageKey.SELECTED_LANGUAGE, newLanguage);
+    };
+    setDrawerContent(
+      <>
+        <h3 className="text-[17px] font-bold">
+          <Trans>Select your language!</Trans>
+        </h3>
+        <p className="mt-1 text-[15px]">
+          <Trans>Your preferred language for a better experience.</Trans>
+        </p>
+        <div className="mb-10 mt-6">
+          <ButtonRadioGroup
+            initialValue={[language]}
+            options={languageOptions}
+            onChange={onLanguageChange}
+          />
+        </div>
+      </>
+    );
+    openDrawer(DrawerIds.SETTINGS_DRAWER_ID);
+  };
+
+  const openLocactionDrawer = () => {
+    const locationOptions = [
+      {
+        label: t`Taiwan`,
+        value: Location.TW,
+      },
+      {
+        label: t`United States`,
+        value: Location.US,
+      },
+    ];
+    const onLocationChange = (value: string[]) => {
+      const newLocation = value[0] as Location;
+      // TODO: error handling
+      setLocation(newLocation);
+      setLocalStorage(LocalStorageKey.SELECTED_LOCATION, newLocation);
+    };
+    setDrawerContent(
+      <>
+        <h3 className="text-[17px] font-bold">
+          <Trans>Select your location!</Trans>
+        </h3>
+        <p className="mt-1 text-[15px]">
+          <Trans>Your location for a personalized experience.</Trans>
+        </p>
+        <div className="mb-10 mt-6">
+          <ButtonRadioGroup
+            initialValue={[location]}
+            options={locationOptions}
+            onChange={onLocationChange}
+          />
+        </div>
+      </>
+    );
+    openDrawer(DrawerIds.SETTINGS_DRAWER_ID);
+  };
 
   const blocks: ILinksBlock[] = [
     {
-      title: 'Preference',
+      title: t`Preference`,
       actionItems: [
         {
-          decription: 'Select your preferred language',
+          decription: t`Select your preferred language`,
           action: openLanguageDrawer,
         },
         {
-          decription: 'Select your location',
+          decription: t`Select your location`,
           action: openLocactionDrawer,
         },
       ],
     },
     {
-      title: 'About Poklist',
+      title: t`About Relist`,
       actionItems: [
         {
-          decription: 'Quick start guide',
+          decription: t`Quick start guide`,
           // TODO:
         },
         {
-          decription: 'Check out Poklist',
+          decription: t`Check out Relist`,
           // TODO:
         },
         {
-          decription: 'Follow Poklist Threads',
+          decription: t`Follow Relist Threads`,
           // TODO:
         },
         {
-          decription: 'Join Poklist Discord',
+          decription: t`Join Relist Discord`,
           link: 'https://discord.gg/Jq2hSYUFJC',
         },
         {
-          decription: 'Submit feedback or report content',
+          decription: t`Submit feedback or report content`,
           // TODO:
         },
       ],
     },
     {
-      title: 'Others',
+      title: t`Others`,
       actionItems: [
         {
-          decription: 'About Privacy Policy and Terms of Use',
+          decription: t`About Privacy Policy and Terms of Use`,
           // TODO:
         },
         {
-          decription: 'Contact us',
+          decription: t`Contact us`,
           // TODO:
         },
       ],
@@ -67,31 +173,32 @@ const BlocksSection: React.FC = () => {
   ];
 
   const signInBlock: ILinksBlock = {
-    title: 'Sign In',
+    title: t`Sign In`,
     actionItems: [],
   };
+
   if (isLoggedIn) {
     signInBlock.actionItems = [
       {
-        decription: 'Delete Account',
+        decription: t`Delete Account`,
         action: () => {
-          navigate('/delete-account');
+          // TODO: open external link
         },
       },
       {
-        decription: 'Sign Out',
+        decription: t`Sign Out`,
         action: () => {
           logout();
-          navigate('/login');
+          navigateTo.discovery();
         },
       },
     ];
   } else {
     signInBlock.actionItems = [
       {
-        decription: 'Sign In',
+        decription: t`Sign In`,
         action: () => {
-          navigate('/login');
+          navigateTo.discovery();
         },
       },
     ];
@@ -100,7 +207,10 @@ const BlocksSection: React.FC = () => {
 
   return (
     <>
-      <div id="blocks" className="flex flex-col gap-10 px-4 py-10 text-[15px]">
+      <div
+        id="blocks"
+        className="mb-16 flex flex-col gap-10 px-4 py-4 text-[15px] sm:mb-0"
+      >
         {blocks.map((block) => {
           return (
             <LinksBlock
@@ -111,7 +221,11 @@ const BlocksSection: React.FC = () => {
           );
         })}
       </div>
-      <Footer onClose={() => navigate(-1)} title="Setting Center" />
+      <DrawerComponent
+        drawerId={DrawerIds.SETTINGS_DRAWER_ID}
+        isShowClose={false}
+        content={drawerContent}
+      />
     </>
   );
 };

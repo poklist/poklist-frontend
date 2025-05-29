@@ -1,66 +1,112 @@
-import { Button } from '@/components/ui/button';
-import IconClose from '@/components/ui/icons/CloseIcon';
-import { IIdeaPreviewInfo } from '@/hooks/Lists/useGetList';
-import { Trans } from '@lingui/macro';
-import React, { useEffect, useRef } from 'react';
+import IconDrag from '@/components/ui/icons/DragIcon';
+import useStrictNavigate from '@/hooks/useStrictNavigate';
+import { IdeaPreview } from '@/types/Idea';
+import React from 'react';
+import VirtualList from 'react-virtual-sortable';
+import { SortableEvent } from 'sortable-dnd';
 
 interface IdeaListProps {
-  // Add any props you need for the page
-  ideaList: IIdeaPreviewInfo[] | undefined;
+  ideaList?: IdeaPreview[];
+  reorderCallback: (event: DropEvent<IdeaPreview>) => void;
+  onBottomCallback: () => void;
+  hasMore: boolean;
 }
 
-const IdeaListSection: React.FC<IdeaListProps> = ({ ideaList }) => {
-  const footerRef = useRef<HTMLDivElement>(null);
+export interface DropEvent<T> {
+  key: string | number;
+  item: T;
+  list: T[];
+  event: SortableEvent;
+  changed: boolean;
+  oldList: T[];
+  oldIndex: number;
+  newIndex: number;
+}
 
-  const footerPosition = () => {
-    if (footerRef.current && window.visualViewport) {
-      footerRef.current.style.top = `${window.visualViewport.height - footerRef.current.offsetHeight}px`;
-    }
+const IdeaListSection: React.FC<IdeaListProps> = ({
+  ideaList,
+  reorderCallback,
+  onBottomCallback: atBottomCallback,
+  hasMore,
+}) => {
+  const onReorderIdea = (event: DropEvent<IdeaPreview>) => {
+    if (!ideaList) return;
+    reorderCallback(event);
   };
-  useEffect(() => {
-    footerPosition();
-  }, []);
+
+  const navigateTo = useStrictNavigate();
 
   return (
-    <>
-      <div className="flex flex-col gap-2">
-        {ideaList?.map(idea => (
-          <div className="border border-l-gray-main-03 bg-gray-note-05 py-2 px-4">
-            <div className="flex justify-between items-center gap-2">
-              <div className="flex flex-col">
-                <div className="text-black-text-01 font-semibold text-t1">{idea.title}</div>
-                <div className="line-clamp-1 text-t3 text-black-tint-04">{idea.description}</div>
+    <div className="flex flex-col gap-2">
+      {ideaList && (
+        <VirtualList
+          dataKey="id"
+          dataSource={ideaList}
+          onDrop={(event) => onReorderIdea(event)}
+          onBottom={() => atBottomCallback()}
+          footer={hasMore ? <Footer key="footer" /> : null}
+          handle=".drag-handle"
+          chosenClass="chosen"
+          ghostClass="ghost"
+          placeholderClass="placeholder"
+          className="mb-14 max-h-[calc(100dvh-57px)]"
+        >
+          {(idea, _index, dataKey) => (
+            <div
+              key={dataKey}
+              onClick={() => navigateTo.editIdea(idea.id.toString())}
+              className="mb-2 border border-l-gray-main-03 bg-gray-note-05 px-4 py-2 last:mb-0"
+            >
+              <div className="flex items-center justify-between gap-4">
+                <div className="flex items-center gap-4">
+                  <div className="drag-handle min-h-6 min-w-6 cursor-move">
+                    <IconDrag className="pointer-events-none" />
+                  </div>
+                  <div className="flex flex-col">
+                    <div className="text-t1 font-semibold text-black-text-01">
+                      {idea.title}
+                    </div>
+                    <div className="line-clamp-1 text-t3 text-black-tint-04">
+                      {idea.description}
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  {idea.coverImage && (
+                    <img
+                      src={idea.coverImage}
+                      className="h-10 max-h-10 min-h-10 w-10 min-w-10 max-w-10 flex-1 rounded border border-black-tint-04 bg-black object-contain"
+                      alt={`Cover for ${idea.title}`}
+                    />
+                  )}
+                </div>
               </div>
-              {idea.coverImage && (
-                <img
-                  src={idea.coverImage}
-                  className="w-10 h-10 rounded border-black-tint-04 border"
-                />
-              )}
             </div>
-          </div>
-        ))}
-      </div>
-      <div
-        ref={footerRef}
-        className="border-t-gray-main-03 border-t fixed flex px-4 py-2 w-dvw justify-between left-0 z-10"
+          )}
+        </VirtualList>
+      )}
+    </div>
+  );
+};
+
+const Footer: React.FC = () => {
+  return (
+    <div className="my-2 flex items-center justify-center">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="animate-spin"
       >
-        <div className="flex items-center gap-2">
-          <Button aria-label="Previous" className="p-0 h-auto rounded-full bg-inherit">
-            <IconClose />
-          </Button>
-          <Trans>Edit List</Trans>
-        </div>
-        <div className="flex items-center gap-4">
-          <Button disabled variant="black" shape="rounded8px">
-            <Trans>Save New Order</Trans>
-          </Button>
-          <Button variant="black" shape="rounded8px">
-            <Trans>Done</Trans>
-          </Button>
-        </div>
-      </div>
-    </>
+        <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+      </svg>
+    </div>
   );
 };
 

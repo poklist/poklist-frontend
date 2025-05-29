@@ -3,24 +3,26 @@ import { User } from '@/types/User';
 import { create } from 'zustand';
 import useUserStore from './useUserStore';
 
-export type EditProfileStoreState = {
+export interface EditProfileStoreState {
   newUserInfo: User;
   setNewUserInfo: (user: User) => void;
   resetNewUserInfo: () => void;
   setDisplayName: (value: string) => void;
   /* file is base64 string */
-  setProfileImage: (file: string) => void;
+  setProfileImage: (file: string) => void; // NOTE: empty string represents no image
   setUserCode: (value: string) => void;
   setBio: (value: string) => void;
   setSocialLink: (type: SocialLinkType, value: string) => void;
   isModified: () => boolean;
-};
+}
 
 const useEditProfileStore = create<EditProfileStoreState>((set, get) => ({
-  newUserInfo: { ...useUserStore.getState().user },
+  newUserInfo: {
+    ...useUserStore.getState().me,
+  },
   setNewUserInfo: (user: User) => set({ newUserInfo: user }),
   resetNewUserInfo: () =>
-    set({ newUserInfo: { ...useUserStore.getState().user } }),
+    set({ newUserInfo: { ...useUserStore.getState().me } }),
   setDisplayName: (value: string) =>
     set({ newUserInfo: { ...get().newUserInfo, displayName: value } }),
   setProfileImage: (file: string) =>
@@ -38,8 +40,11 @@ const useEditProfileStore = create<EditProfileStoreState>((set, get) => ({
     }),
 
   isModified: () => {
-    const originalUserInfo = useUserStore.getState().user;
-    if (get().newUserInfo.displayName !== originalUserInfo.displayName) {
+    const originalUserInfo = useUserStore.getState().me;
+    if (
+      get().newUserInfo.displayName !== '' &&
+      get().newUserInfo.displayName !== originalUserInfo.displayName
+    ) {
       return true;
     }
     if (get().newUserInfo.userCode !== originalUserInfo.userCode) {
@@ -51,7 +56,13 @@ const useEditProfileStore = create<EditProfileStoreState>((set, get) => ({
     if (get().newUserInfo.socialLinks !== originalUserInfo.socialLinks) {
       return true;
     }
-    if (get().newUserInfo.profileImage !== originalUserInfo.profileImage) {
+    // NOTE: optional field in request body
+    // empty string represents that there is no image
+    // undefined represents that there is no change
+    if (
+      get().newUserInfo.profileImage !== undefined &&
+      get().newUserInfo.profileImage !== originalUserInfo.profileImage
+    ) {
       return true;
     }
 

@@ -1,8 +1,11 @@
 import { lingui } from '@lingui/vite-plugin';
 import react from '@vitejs/plugin-react';
-import { copyFileSync, existsSync, writeFileSync } from 'node:fs';
+import { copyFileSync, existsSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { defineConfig } from 'vite';
+
+// 讀取 package.json
+const packageJson = JSON.parse(readFileSync('package.json', 'utf-8'));
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -12,6 +15,15 @@ export default defineConfig({
   plugins: [
     react({ babel: { plugins: ['macros'] } }),
     lingui(),
+    {
+      name: 'html-transform',
+      transformIndexHtml(html) {
+        return html.replace(
+          /<title>(.*?)<\/title>/,
+          `<title>$1</title>\n    <meta name="version" content="${packageJson.version}" />`
+        );
+      },
+    },
     {
       name: 'copy-redirect-file',
       closeBundle() {
@@ -38,4 +50,5 @@ export default defineConfig({
     outDir: 'dist',
     assetsDir: 'assets',
   },
+  assetsInclude: ['**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.gif', '**/*.svg'],
 });

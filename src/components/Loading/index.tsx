@@ -10,7 +10,7 @@ const MaskComponent: React.FC<IMaskProps> = ({ isLoading }) => {
   return (
     <div
       className={cn(
-        `fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-20 z-10 duration-300`,
+        `fixed left-0 top-0 z-10 h-screen w-screen bg-black bg-opacity-20 duration-300`,
         isLoading ? 'animate-show-mask' : 'animate-hide-mask'
       )}
     />
@@ -23,7 +23,12 @@ interface ISVGProps extends React.SVGProps<SVGSVGElement> {
   className?: string;
 }
 
-const LoadingSpinner = ({ isLoading, size = 24, className, ...props }: ISVGProps) => {
+const LoadingSpinner = ({
+  isLoading,
+  size = 24,
+  className,
+  ...props
+}: ISVGProps) => {
   const [removeDOM, setRemoveDOM] = useState(!isLoading);
 
   useEffect(() => {
@@ -58,7 +63,7 @@ const LoadingSpinner = ({ isLoading, size = 24, className, ...props }: ISVGProps
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
-          className={cn('animate-spin fixed z-20 top-1/2 left-1/2', className)}
+          className={cn('fixed left-1/2 top-1/2 z-20 animate-spin', className)}
         >
           <path d="M21 12a9 9 0 1 1-6.219-8.56" />
         </svg>

@@ -1,39 +1,49 @@
-import useCreateIdea, { ICreateIdeaRequest } from '@/hooks/Ideas/useCreateIdea';
-import IdeaForm from '@/pages/Idea/Create/Form';
-import { Header } from '@/pages/Idea/Create/Header';
+import { useCreateIdea } from '@/hooks/mutations/useCreateIdea';
+import { useAuthWrapper } from '@/hooks/useAuth';
+import useStrictNavigation from '@/hooks/useStrictNavigate';
+import IdeaForm from '@/pages/Idea/Components/Form';
+import Header from '@/pages/Idea/Components/Header';
 import useCommonStore from '@/stores/useCommonStore';
-import { Trans } from '@lingui/macro';
+import useUserStore from '@/stores/useUserStore';
+import { IdeaBody } from '@/types/Idea';
+import { Trans } from '@lingui/react/macro';
 import React, { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
-interface IdeaCreatePageProps {
-  // Add any props you need for the page
-}
-
-const IdeaCreatePage: React.FC<IdeaCreatePageProps> = () => {
-  const navigate = useNavigate();
+const IdeaCreatePage: React.FC = () => {
+  const navigateTo = useStrictNavigation();
   const location = useLocation();
-  const { listID, listTitle } = location.state as { listID: number; listTitle: string };
-  const { setIsLoading } = useCommonStore();
+  const { listID, listTitle } = location.state as {
+    listID: number;
+    listTitle: string;
+  };
+  const { setIsLoading, setShowingAlert } = useCommonStore();
+  const { me } = useUserStore();
 
-  const { createIdeaLoading, ideaData, setIdeaData, fetchCreateIdea } = useCreateIdea();
+  const { withAuth } = useAuthWrapper();
+
+  const { mutate: createIdea, isPending: createIdeaLoading } = useCreateIdea();
 
   const onDismissCreate = (isFormEmpty: boolean) => {
     if (isFormEmpty) {
-      navigate(`/list/manage/${listID}`);
+      navigateTo.backward();
     }
   };
 
-  const onCreatedIdea = async (ideaFormData: Omit<ICreateIdeaRequest, 'listID'>) => {
-    const response = await fetchCreateIdea(ideaFormData);
-    if (response) {
-      navigate(`/list/manage/${listID}`);
-    }
-  };
-
-  useEffect(() => {
-    setIdeaData({ ...ideaData, listID });
-  }, []);
+  const onCreateIdea = withAuth((ideaFormData: IdeaBody) => {
+    createIdea(
+      { ...ideaFormData, listID },
+      {
+        onSuccess: () => {
+          navigateTo.manageList(me?.userCode, listID.toString());
+        },
+        onError: (error: Error) => {
+          setShowingAlert(true, { message: String(error) });
+          setIsLoading(false);
+        },
+      }
+    );
+  });
 
   useEffect(() => {
     if (createIdeaLoading) {
@@ -46,12 +56,17 @@ const IdeaCreatePage: React.FC<IdeaCreatePageProps> = () => {
   return (
     // Your component code here
     <>
-      <Header title={listTitle} />
-      <div className="text-t1 font-semibold bg-yellow-bright-01 py-3 px-4 border-b border-black-text-01">
-        <Trans>New Idea</Trans>
+      <div className="sticky top-0 z-10 flex flex-col">
+        <Header title={listTitle} />
+        <div className="border-b border-black-text-01 bg-yellow-bright-01 px-4 py-3 text-t1 font-semibold">
+          <Trans>New Idea</Trans>
+        </div>
       </div>
-      <div className="mt-6 flex flex-col gap-6 mx-4">
-        <IdeaForm completedCallback={onCreatedIdea} dismissCallback={onDismissCreate} />
+      <div className="flex min-h-screen flex-col gap-6 sm:min-h-[calc(100vh-196px)]">
+        <IdeaForm
+          completedCallback={onCreateIdea}
+          dismissCallback={onDismissCreate}
+        />
       </div>
     </>
   );

@@ -11,14 +11,16 @@ export type CommonStoreState = {
   alertMessage: IAlertMessage; // Add 'alertMessage' property
   setShowingAlert: (isShowing: boolean, alertMessage?: IAlertMessage) => void;
 
-  isShowErrorDrawer: boolean;
   errorDrawerMessage: IErrorDrawerMessage;
-  setShowErrorDrawer: (isShow: boolean, errorMessage?: IErrorDrawerMessage) => void;
+  setErrorDrawerMessage: (errorMessage: IErrorDrawerMessage) => void;
+
+  isLoginDrawerOpen: boolean;
+  setIsLoginDrawerOpen: (isOpen: boolean) => void;
 };
 
-const useCommonStore = create<CommonStoreState>(set => ({
+const useCommonStore = create<CommonStoreState>((set) => ({
   isLoading: false,
-  setIsLoading: isLoading => set({ isLoading }),
+  setIsLoading: (isLoading) => set({ isLoading }),
 
   isShowingAlert: false,
   alertMessage: {
@@ -37,14 +39,13 @@ const useCommonStore = create<CommonStoreState>(set => ({
     }
   },
 
-  isShowErrorDrawer: false,
   errorDrawerMessage: { title: '', content: '' },
-  setShowErrorDrawer: (isShow, errorMessage) => {
-    set({ isShowErrorDrawer: isShow });
-    if (errorMessage) {
-      set({ errorDrawerMessage: errorMessage });
-    }
+  setErrorDrawerMessage: (errorMessage) => {
+    set({ errorDrawerMessage: errorMessage });
   },
+
+  isLoginDrawerOpen: false,
+  setIsLoginDrawerOpen: (isOpen) => set({ isLoginDrawerOpen: isOpen }),
 }));
 
 export default useCommonStore;

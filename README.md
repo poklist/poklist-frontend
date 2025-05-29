@@ -9,6 +9,8 @@
 ### UI library
 
 - radix
+- shadcn/ui
+- React DnD
 
 ## Getting Started
 
@@ -41,7 +43,7 @@ To maintain a clear and consistent structure for components in the project, foll
 
 3. **Page-Specific Components**  
    Components that are not yet confirmed for reuse can be placed under the corresponding folder for your page in `@/pages/`.  
-   Example: `@/pages/home/CustomHeader.tsx`
+   Example: `@/pages/List/CustomHeader.tsx`
 
 4. **Legacy Components**  
    Any components not adhering to the above structure are considered legacy components (handled by Sail but not yet reorganized).

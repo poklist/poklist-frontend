@@ -110,9 +110,10 @@ module.exports = {
         inter: 'Inter, sans-serif',
       },
       backgroundImage: {
-        'user-page-grid': "url('tile.jpeg')",
+        'user-page-grid': "url('/tile.jpeg')",
       },
       backgroundSize: {
+        '0.3%': '0.3%',
         '1%': '1%',
       },
       width: {
@@ -121,10 +122,36 @@ module.exports = {
       maxWidth: {
         'mobile-max': '430px',
       },
+      height: {
+        'desktop-container': 'calc(100vh - 102px)',
+      },
+      minHeight: {
+        'desktop-container': 'calc(100vh - 102px)',
+      },
+      maxHeight: {
+        'desktop-container': 'calc(100vh - 102px)',
+      },
       letterSpacing: {
         '-1.1%': '-1.1%',
       },
+      textStrokeWidth: {
+        white: '-1px',
+      },
+      textStrokeColor: {
+        white: '#FFFFFF',
+      },
     },
   },
-  plugins: [require('tailwindcss-animate')],
+  plugins: [
+    require('tailwindcss-animate'),
+    function ({ addUtilities }) {
+      const newUtilities = {
+        '.text-stroke-white': {
+          '-webkit-text-stroke-width': '1px',
+          '-webkit-text-stroke-color': '#FFFFFF',
+        },
+      };
+      addUtilities(newUtilities);
+    },
+  ],
 };

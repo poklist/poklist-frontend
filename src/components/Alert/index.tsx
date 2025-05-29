@@ -2,7 +2,7 @@ import React from 'react';
 
 import { cn } from '@/lib/utils';
 import useCommonStore from '@/stores/useCommonStore';
-import { Trans } from '@lingui/macro';
+import { Trans } from '@lingui/react/macro';
 import * as Toast from '@radix-ui/react-toast';
 
 export interface IAlertMessage {
@@ -23,12 +23,14 @@ const AlertComponent: React.FC = ({ className }: { className?: string }) => {
         duration={DELAY_TIME}
         defaultOpen={false}
         className={cn(
-          `fixed w-full mr-72 flex justify-between rounded-lg bg-green-bright-01 px-4 py-3 transition-all data-[state=closed]:animate-swipe-up data-[state=open]:animate-swipe-down`,
+          `fixed mr-72 flex w-full justify-between rounded-lg bg-green-bright-01 px-4 py-3 transition-all data-[state=closed]:animate-swipe-up data-[state=open]:animate-swipe-down`,
           className
         )}
       >
         <Trans>
-          <Toast.Title className="font-bold text-black-text-01">{alertMessage.message}</Toast.Title>
+          <Toast.Title className="font-bold text-black-text-01">
+            {alertMessage.message}
+          </Toast.Title>
         </Trans>
         <Toast.Close
           aria-label="Close"

@@ -1,5 +1,6 @@
-import { Trans } from '@lingui/macro';
-import { useState } from 'react';
+import { t } from '@lingui/core/macro';
+import { Trans } from '@lingui/react/macro';
+import { useRef, useState } from 'react';
 import Cropper, { Area, Point } from 'react-easy-crop';
 import { Input } from '../ui/input';
 import { Slider } from '../ui/slider';
@@ -11,13 +12,20 @@ const MIN_DIMENSION = 150;
 interface IImageCropperProps {
   value: string;
   onChange: (value: string) => void;
+  cropShape?: 'round' | 'rect';
 }
 
-const ImageCropper: React.FC<IImageCropperProps> = ({ value, onChange }) => {
+const ImageCropper: React.FC<IImageCropperProps> = ({
+  value,
+  onChange,
+  cropShape = 'rect',
+}) => {
   const [crop, setCrop] = useState<Point>({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [imgSrc, setImgSrc] = useState(value);
   const [error, setError] = useState('');
+  // Throttle ref to limit zoom updates frequency
+  const lastZoomUpdateRef = useRef<number>(0);
 
   const onSelectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -34,7 +42,8 @@ const ImageCropper: React.FC<IImageCropperProps> = ({ value, onChange }) => {
         const { naturalWidth, naturalHeight } =
           e.currentTarget as HTMLImageElement;
         if (naturalWidth < MIN_DIMENSION || naturalHeight < MIN_DIMENSION) {
-          setError('Image must be at least 150 x 150 pixels.');
+          // FUTURE: hint/warning design discussion
+          setError(t`Image must be at least 150x150px.`);
           return setImgSrc('');
         }
       });
@@ -56,8 +65,19 @@ const ImageCropper: React.FC<IImageCropperProps> = ({ value, onChange }) => {
     }
   };
 
-  const onZoomChange = (zoom: number) => {
-    setZoom(zoom);
+  // Handle Cropper pinch/drag zoom with throttle
+  const handleCropperZoomChange = (zoomValue: number) => {
+    const now = Date.now();
+    // throttle to at most ~30ms per update (~33fps)
+    if (now - lastZoomUpdateRef.current > 30) {
+      setZoom(zoomValue);
+      lastZoomUpdateRef.current = now;
+    }
+  };
+
+  // Immediate slider-driven zoom updates
+  const handleSliderChange = (value: number[]) => {
+    setZoom(value[0]);
   };
 
   return (
@@ -65,7 +85,7 @@ const ImageCropper: React.FC<IImageCropperProps> = ({ value, onChange }) => {
       <div className="mb-4 flex flex-col items-center gap-5">
         <label className="flex w-fit flex-col">
           <div className="flex h-12 items-center justify-center gap-2 rounded-[8px] bg-black px-8 text-[15px] text-white">
-            Choose your profile image
+            <Trans>Choose your image</Trans>
           </div>
           <Input
             type="file"
@@ -75,7 +95,7 @@ const ImageCropper: React.FC<IImageCropperProps> = ({ value, onChange }) => {
           />
         </label>
         <div className="text-xs text-gray-storm-01">
-          ( <Trans>500x500 像素，限 JPG，最大 2MB</Trans> )
+          <Trans>500x500px, JPG or PNG, max 4MB</Trans>
         </div>
       </div>
       {!!error && <p className="text-xs text-red-400">{error}</p>}
@@ -91,11 +111,11 @@ const ImageCropper: React.FC<IImageCropperProps> = ({ value, onChange }) => {
               crop={crop}
               zoom={zoom}
               aspect={1}
-              cropShape="round"
+              cropShape={cropShape}
               showGrid={false}
               onCropChange={onCropChange}
               onCropComplete={onCropComplete}
-              onZoomChange={onZoomChange}
+              onZoomChange={handleCropperZoomChange}
             />
           </div>
           <div id="cropper-ratio-controls">
@@ -107,7 +127,7 @@ const ImageCropper: React.FC<IImageCropperProps> = ({ value, onChange }) => {
               defaultValue={[1]}
               value={[zoom]}
               aria-labelledby="Zoom"
-              onValueChange={(value: number[]) => onZoomChange(value[0])}
+              onValueChange={handleSliderChange}
             />
           </div>
         </>

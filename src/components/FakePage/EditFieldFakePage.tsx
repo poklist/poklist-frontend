@@ -1,61 +1,81 @@
 import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { EditFieldVariant } from '@/enums/EditField/index.enum';
 import useAutosizeTextArea from '@/hooks/useAutosizedTextArea';
 import { IEditFieldConfig } from '@/types/EditField';
-import { useRef, useState } from 'react';
+import { t } from '@lingui/core/macro';
+import { useEffect, useRef, useState } from 'react';
 import { useFakePage } from '.';
 import EditModeFooter from '../Footer/EditModeFooter';
 import ImageCropper from '../ImageCropper';
 import { Textarea } from '../ui/textarea';
 
-interface IEditFieldFakePageProps extends IEditFieldConfig {
-  originalFieldValue?: string;
-  errorMessage?: string;
-  validator?: (value?: string) => boolean;
-}
-
-export const EditFieldFakePageComponent: React.FC<IEditFieldFakePageProps> = ({
+export const EditFieldFakePageComponent: React.FC<IEditFieldConfig> = ({
   fieldName,
   variant,
   onFieldValueSet,
-  originalFieldValue,
-  placeholder = 'Enter your text here',
+  edittingFieldValue,
+  placeholder = t`Enter your text here`,
   characterLimit,
+  allowEmpty = true,
+  cropShape = 'rect',
+  validator,
+  trimmer,
 }) => {
   const { isOpen, closeFakePage } = useFakePage();
-  const [fieldValue, setFieldValue] = useState<string | undefined>(undefined);
-  const isModified =
-    fieldValue !== undefined && fieldValue !== originalFieldValue;
+  const [fieldValue, setFieldValue] = useState<string>(
+    edittingFieldValue ?? ''
+  );
+  const isSaveDisabled =
+    variant === EditFieldVariant.TEXT &&
+    ((!allowEmpty && !fieldValue) || fieldValue === edittingFieldValue);
+
+  useEffect(() => {
+    if (variant === EditFieldVariant.TEXT) {
+      setFieldValue(edittingFieldValue ?? '');
+    }
+  }, [edittingFieldValue]);
 
   return (
     <Dialog open={isOpen} onOpenChange={closeFakePage}>
-      <DialogContent className="flex h-screen w-full items-center border-0 bg-transparent p-0">
+      <DialogContent
+        className="flex h-[100dvh] w-full items-center border-0 bg-transparent p-0"
+        aria-describedby="edit-field-fake-page"
+      >
         <div
           id="edit-field-fake-page"
-          className="z-10 flex h-full w-full max-w-mobile-max flex-col items-center bg-white px-6 py-6"
+          className="z-10 flex h-full w-full flex-col items-center bg-white px-6 pb-6 pt-10 sm:pt-6 md:max-w-mobile-max"
         >
           {variant === 'text' ? (
             <TextInput
-              value={fieldValue ?? ''}
+              value={fieldValue}
               onChange={setFieldValue}
               placeholderText={placeholder}
               characterLimit={characterLimit}
+              validator={validator}
+              trimmer={trimmer}
             />
           ) : (
-            <ImageCropper value={fieldValue ?? ''} onChange={setFieldValue} />
+            <ImageCropper
+              value={fieldValue ?? ''}
+              onChange={setFieldValue}
+              cropShape={cropShape}
+            />
           )}
-          <EditModeFooter
-            isModified={isModified}
-            onClose={closeFakePage}
-            title={fieldName}
-            onSaveText="Done"
-            onSave={() => {
-              onFieldValueSet(fieldValue);
-              setFieldValue(undefined);
-              closeFakePage();
-            }}
-            value={fieldValue}
-          />
         </div>
+        <EditModeFooter
+          disabled={isSaveDisabled}
+          onClose={() => closeFakePage()}
+          title={fieldName}
+          onSaveText={t`Done`}
+          onSave={() => {
+            if (validator === undefined || validator(fieldValue)) {
+              onFieldValueSet(fieldValue);
+              closeFakePage();
+            }
+            return;
+          }}
+          value={fieldValue}
+        />
       </DialogContent>
     </Dialog>
   );
@@ -66,6 +86,8 @@ interface ITextInputProps {
   onChange: (value: string) => void;
   placeholderText: string;
   characterLimit?: number;
+  validator?: (value: string) => boolean;
+  trimmer?: (value: string) => string;
 }
 
 const TextInput: React.FC<ITextInputProps> = ({
@@ -73,11 +95,39 @@ const TextInput: React.FC<ITextInputProps> = ({
   onChange,
   placeholderText,
   characterLimit,
+  validator,
+  trimmer,
 }) => {
   const [fieldValue, setFieldValue] = useState<string | undefined>(value);
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
-  useAutosizeTextArea(textAreaRef.current, value);
+  useAutosizeTextArea(textAreaRef, value);
+
+  useEffect(() => {
+    setFieldValue(value);
+  }, [value]);
+
+  const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newValue = e.target.value;
+    setFieldValue(newValue);
+    onChange(newValue);
+  };
+
+  const handleBeforeInput = (
+    e: React.FormEvent<HTMLTextAreaElement> & { data: string }
+  ) => {
+    const textarea = e.currentTarget;
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const newValue =
+      fieldValue?.slice(0, start) + e.data + fieldValue?.slice(end);
+    const passed = validator === undefined || validator(newValue);
+
+    if (!passed) {
+      e.preventDefault();
+      return;
+    }
+  };
 
   return (
     <>
@@ -85,20 +135,16 @@ const TextInput: React.FC<ITextInputProps> = ({
         ref={textAreaRef}
         value={fieldValue}
         maxLength={characterLimit}
-        onChange={(e) => {
-          setFieldValue(e.target.value);
-          onChange(e.target.value);
-        }}
+        onChange={handleInput}
+        onBeforeInput={handleBeforeInput}
         className="w-full border-0"
         placeholder={placeholderText}
       />
-      <>
-        {characterLimit && (
-          <p className="self-end text-black-gray-03">
-            {fieldValue?.length ?? 0} / {characterLimit}
-          </p>
-        )}
-      </>
+      {characterLimit && (
+        <p className="self-end text-black-gray-03">
+          {fieldValue?.length ?? 0} / {characterLimit}
+        </p>
+      )}
     </>
   );
 };

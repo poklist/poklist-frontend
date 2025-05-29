@@ -1,5 +1,9 @@
-import { Header } from '@/components/Header';
-import MobileContainer from '@/components/ui/containers/MobileContainer';
+import Footer from '@/components/Footer';
+import BackToUserHeader from '@/components/Header/BackToUserHeader';
+import useStrictNavigation from '@/hooks/useStrictNavigate';
+import useAuthStore from '@/stores/useAuthStore';
+import useUserStore from '@/stores/useUserStore';
+import { t } from '@lingui/core/macro';
 import BlocksSection from './BlocksSection';
 import IntroSection from './IntroSection';
 
@@ -8,13 +12,27 @@ interface SettingsPageProps {
 }
 
 const SettingsPage: React.FC<SettingsPageProps> = () => {
+  const { isLoggedIn } = useAuthStore();
+  const { me } = useUserStore();
+  const navigateTo = useStrictNavigation();
+
+  const handleOnClose = () => {
+    // FUTURE: if history is not empty, navigate to the previous page; otherwise, navigate to the user page
+    if (isLoggedIn) {
+      navigateTo.user(me.userCode);
+    } else {
+      navigateTo.discovery();
+    }
+  };
+
   return (
     // Your component code here
-    <MobileContainer>
-      <Header type="back-to-user" />
+    <>
+      <BackToUserHeader owner={me.id !== 0 ? me : undefined} />
       <IntroSection />
       <BlocksSection />
-    </MobileContainer>
+      <Footer onClose={handleOnClose} title={t`Setting Center`} />
+    </>
   );
 };
 

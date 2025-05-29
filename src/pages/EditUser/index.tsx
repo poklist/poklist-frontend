@@ -1,27 +1,30 @@
 import { useFakePage } from '@/components/FakePage';
 import { EditFieldFakePageComponent } from '@/components/FakePage/EditFieldFakePage';
 import EditModeFooter from '@/components/Footer/EditModeFooter';
-import { Header } from '@/components/Header';
+import BackToUserHeader from '@/components/Header/BackToUserHeader';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import MobileContainer from '@/components/ui/containers/MobileContainer';
 import { IconCamera } from '@/components/ui/icons/CameraIcon';
 import LinkIconWrapper from '@/components/ui/wrappers/LinkIconWrapper';
 import { socialLinkStarterMap } from '@/constants/User';
 import { EditFieldVariant, FieldType } from '@/enums/EditField/index.enum';
 import { SocialLinkType } from '@/enums/index.enum';
-import axios from '@/lib/axios';
-import { getPreviewText, urlPreview } from '@/lib/utils';
+import { useEditProfile } from '@/hooks/mutations/useEditProfile';
+import useStrictNavigation from '@/hooks/useStrictNavigate';
+import { extractUsernameFromUrl, urlPreview } from '@/lib/utils';
+import { validateUserCode } from '@/lib/validator';
 import useEditProfileStore from '@/stores/useEditProfileStore';
 import useUserStore from '@/stores/useUserStore';
 import { IEditFieldConfig } from '@/types/EditField';
+import { t } from '@lingui/core/macro';
+import { Trans } from '@lingui/react/macro';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 const EditUserPage: React.FC = () => {
-  const navigate = useNavigate();
-  const { user } = useUserStore();
+  const navigateTo = useStrictNavigation();
+  const { me } = useUserStore();
   const {
     newUserInfo,
+    setNewUserInfo,
     resetNewUserInfo,
     setDisplayName,
     setProfileImage,
@@ -31,15 +34,18 @@ const EditUserPage: React.FC = () => {
     isModified,
   } = useEditProfileStore();
 
+  const { editProfile } = useEditProfile();
   const { openFakePage, closeFakePage } = useFakePage();
   const socialLinkTypeList = Object.values(SocialLinkType);
 
   const fieldConfigMap: Record<FieldType | SocialLinkType, IEditFieldConfig> = {
     [FieldType.DISPLAY_NAME]: {
-      fieldName: 'Name',
+      fieldName: t`Name`,
       variant: EditFieldVariant.TEXT,
-      placeholder: 'Enter your name here',
+      placeholder: t`Enter your name here`, // FUTURE: interpolation
       characterLimit: 20,
+      edittingFieldValue: newUserInfo.displayName,
+      allowEmpty: false,
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
           setDisplayName(value);
@@ -49,10 +55,13 @@ const EditUserPage: React.FC = () => {
       },
     },
     [FieldType.USER_CODE]: {
-      fieldName: 'Username',
+      fieldName: t`Username`,
       variant: EditFieldVariant.TEXT,
-      placeholder: 'Enter your username here',
+      placeholder: t`Enter your username here`, // FUTURE: interpolation
       characterLimit: 30,
+      edittingFieldValue: newUserInfo.userCode,
+      allowEmpty: false,
+      validator: validateUserCode,
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
           setUserCode(value);
@@ -62,10 +71,11 @@ const EditUserPage: React.FC = () => {
       },
     },
     [FieldType.BIO]: {
-      fieldName: 'Bio',
+      fieldName: t`Bio`,
       variant: EditFieldVariant.TEXT,
-      placeholder: 'Enter your bio here',
+      placeholder: t`Enter your bio here`, // FUTURE: interpolation
       characterLimit: 250,
+      edittingFieldValue: newUserInfo.bio,
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
           setBio(value);
@@ -75,10 +85,10 @@ const EditUserPage: React.FC = () => {
       },
     },
     [FieldType.PROFILE_IMAGE]: {
-      fieldName: 'Profile Image',
+      fieldName: t`Profile Image`,
       variant: EditFieldVariant.IMAGE,
       onFieldValueSet: (value: string | undefined) => {
-        if (value) {
+        if (value !== undefined) {
           setProfileImage(value);
         } else {
           console.log('value is undefined');
@@ -86,11 +96,12 @@ const EditUserPage: React.FC = () => {
       },
     },
     [SocialLinkType.CUSTOMIZED]: {
-      fieldName: 'Customized Link',
+      fieldName: t`Customized Link`,
       variant: EditFieldVariant.TEXT,
-      placeholder: 'Enter your link here',
+      placeholder: t`Add URL`,
+      edittingFieldValue: newUserInfo.socialLinks?.[SocialLinkType.CUSTOMIZED],
       onFieldValueSet: (value: string | undefined) => {
-        if (value) {
+        if (value !== undefined) {
           setSocialLink(SocialLinkType.CUSTOMIZED, value);
         } else {
           console.log('value is undefined');
@@ -100,10 +111,22 @@ const EditUserPage: React.FC = () => {
     [SocialLinkType.INSTAGRAM]: {
       fieldName: 'Instagram',
       variant: EditFieldVariant.TEXT,
-      placeholder: 'Enter your Instagram link here',
+      placeholder: t`Add account`,
+      edittingFieldValue: extractUsernameFromUrl(
+        SocialLinkType.INSTAGRAM,
+        newUserInfo.socialLinks?.[SocialLinkType.INSTAGRAM]
+      ),
+      trimmer: (value: string) => {
+        return extractUsernameFromUrl(SocialLinkType.INSTAGRAM, value) ?? '';
+      },
       onFieldValueSet: (value: string | undefined) => {
-        if (value) {
-          setSocialLink(SocialLinkType.INSTAGRAM, value);
+        if (value !== undefined) {
+          setSocialLink(
+            SocialLinkType.INSTAGRAM,
+            value.length > 0
+              ? `${socialLinkStarterMap[SocialLinkType.INSTAGRAM]}${value}`
+              : ''
+          );
         } else {
           console.log('value is undefined');
         }
@@ -112,10 +135,22 @@ const EditUserPage: React.FC = () => {
     [SocialLinkType.YOUTUBE]: {
       fieldName: 'YouTube',
       variant: EditFieldVariant.TEXT,
-      placeholder: 'Enter your YouTube link here',
+      placeholder: t`Add account`,
+      edittingFieldValue: extractUsernameFromUrl(
+        SocialLinkType.YOUTUBE,
+        newUserInfo.socialLinks?.[SocialLinkType.YOUTUBE]
+      ),
+      trimmer: (value: string) => {
+        return extractUsernameFromUrl(SocialLinkType.YOUTUBE, value) ?? '';
+      },
       onFieldValueSet: (value: string | undefined) => {
-        if (value) {
-          setSocialLink(SocialLinkType.YOUTUBE, value);
+        if (value !== undefined) {
+          setSocialLink(
+            SocialLinkType.YOUTUBE,
+            value.length > 0
+              ? `${socialLinkStarterMap[SocialLinkType.YOUTUBE]}${value}`
+              : ''
+          );
         } else {
           console.log('value is undefined');
         }
@@ -124,10 +159,22 @@ const EditUserPage: React.FC = () => {
     [SocialLinkType.TIKTOK]: {
       fieldName: 'TikTok',
       variant: EditFieldVariant.TEXT,
-      placeholder: 'Enter your TikTok link here',
+      placeholder: t`Add account`,
+      edittingFieldValue: extractUsernameFromUrl(
+        SocialLinkType.TIKTOK,
+        newUserInfo.socialLinks?.[SocialLinkType.TIKTOK]
+      ),
+      trimmer: (value: string) => {
+        return extractUsernameFromUrl(SocialLinkType.TIKTOK, value) ?? '';
+      },
       onFieldValueSet: (value: string | undefined) => {
-        if (value) {
-          setSocialLink(SocialLinkType.TIKTOK, value);
+        if (value !== undefined) {
+          setSocialLink(
+            SocialLinkType.TIKTOK,
+            value.length > 0
+              ? `${socialLinkStarterMap[SocialLinkType.TIKTOK]}${value}`
+              : ''
+          );
         } else {
           console.log('value is undefined');
         }
@@ -136,10 +183,22 @@ const EditUserPage: React.FC = () => {
     [SocialLinkType.THREADS]: {
       fieldName: 'Threads',
       variant: EditFieldVariant.TEXT,
-      placeholder: 'Enter your Threads link here',
+      placeholder: t`Add account`,
+      edittingFieldValue: extractUsernameFromUrl(
+        SocialLinkType.THREADS,
+        newUserInfo.socialLinks?.[SocialLinkType.THREADS]
+      ),
+      trimmer: (value: string) => {
+        return extractUsernameFromUrl(SocialLinkType.THREADS, value) ?? '';
+      },
       onFieldValueSet: (value: string | undefined) => {
-        if (value) {
-          setSocialLink(SocialLinkType.THREADS, value);
+        if (value !== undefined) {
+          setSocialLink(
+            SocialLinkType.THREADS,
+            value.length > 0
+              ? `${socialLinkStarterMap[SocialLinkType.THREADS]}${value}`
+              : ''
+          );
         } else {
           console.log('value is undefined');
         }
@@ -148,10 +207,22 @@ const EditUserPage: React.FC = () => {
     [SocialLinkType.LINKEDIN]: {
       fieldName: 'LinkedIn',
       variant: EditFieldVariant.TEXT,
-      placeholder: 'Enter your LinkedIn link here',
+      placeholder: t`Add account`,
+      edittingFieldValue: extractUsernameFromUrl(
+        SocialLinkType.LINKEDIN,
+        newUserInfo.socialLinks?.[SocialLinkType.LINKEDIN]
+      ),
+      trimmer: (value: string) => {
+        return extractUsernameFromUrl(SocialLinkType.LINKEDIN, value) ?? '';
+      },
       onFieldValueSet: (value: string | undefined) => {
-        if (value) {
-          setSocialLink(SocialLinkType.LINKEDIN, value);
+        if (value !== undefined) {
+          setSocialLink(
+            SocialLinkType.LINKEDIN,
+            value.length > 0
+              ? `${socialLinkStarterMap[SocialLinkType.LINKEDIN]}${value}`
+              : ''
+          );
         } else {
           console.log('value is undefined');
         }
@@ -166,12 +237,12 @@ const EditUserPage: React.FC = () => {
     openFakePage();
   };
 
-  const onSubmit = () => {
-    axios.put(`/users/me`, newUserInfo);
-    navigate(`/${user.id}`);
+  const onSubmit = async () => {
+    editProfile({ newUserInfo });
   };
 
   useEffect(() => {
+    setNewUserInfo(me);
     // onUnmounted
     return () => {
       closeFakePage();
@@ -180,8 +251,8 @@ const EditUserPage: React.FC = () => {
   }, []);
 
   return (
-    <MobileContainer>
-      <Header type="back-to-user" />
+    <>
+      <BackToUserHeader owner={me} />
       {/* Upload ProfileImageSection */}
       <div id="profile-image" className="flex items-end justify-center pt-6">
         <Avatar className="h-24 w-24">
@@ -198,13 +269,17 @@ const EditUserPage: React.FC = () => {
       {/* Basic Info Section */}
       <div id="info-section" className="px-4 pt-10">
         <div className="py-2">
-          <h2 className="text-[15px] font-semibold">Profile</h2>
+          <h2 className="text-[15px] font-semibold">
+            <Trans>Profile</Trans>
+          </h2>
         </div>
         <div
-          className="flex h-16 cursor-pointer items-center justify-between border-t border-[#F6F6F6] px-2 text-[13px]"
+          className="flex h-16 cursor-pointer items-center justify-between border-t border-gray-note-05 px-2 text-[13px]"
           onClick={() => onOpenFakePage(FieldType.DISPLAY_NAME)}
         >
-          <p>Name</p>
+          <p>
+            <Trans>Name</Trans>
+          </p>
           <>
             {newUserInfo.displayName ? (
               <p className="text-right text-black-text-01">
@@ -218,10 +293,12 @@ const EditUserPage: React.FC = () => {
           </>
         </div>
         <div
-          className="flex h-16 cursor-pointer items-center justify-between border-t border-[#F6F6F6] px-2 text-[13px]"
+          className="flex h-16 cursor-pointer items-center justify-between border-t border-gray-note-05 px-2 text-[13px]"
           onClick={() => onOpenFakePage(FieldType.USER_CODE)}
         >
-          <p>Username</p>
+          <p>
+            <Trans>Username</Trans>
+          </p>
           <>
             {newUserInfo.userCode ? (
               <p className="text-right text-black-text-01">
@@ -235,14 +312,16 @@ const EditUserPage: React.FC = () => {
           </>
         </div>
         <div
-          className="flex h-16 cursor-pointer items-center justify-between border-t border-[#F6F6F6] px-2 text-[13px]"
+          className="flex h-16 cursor-pointer items-center justify-between border-t border-gray-note-05 px-2 text-[13px]"
           onClick={() => onOpenFakePage(FieldType.BIO)}
         >
-          <p>Bio</p>
+          <p>
+            <Trans>Bio</Trans>
+          </p>
           <>
             {newUserInfo.bio ? (
-              <p className="text-right text-black-text-01">
-                {getPreviewText(newUserInfo.bio, 20)}
+              <p className="line-clamp-1 max-w-[240px] text-right text-black-text-01">
+                {newUserInfo.bio}
               </p>
             ) : (
               <p className="text-right text-gray-storm-01">
@@ -255,13 +334,15 @@ const EditUserPage: React.FC = () => {
       {/* Social Links Section */}
       <div id="links-section" className="px-4 pb-20 pt-10">
         <div className="py-2">
-          <h2 className="text-[15px] font-semibold">Links</h2>
+          <h2 className="text-[15px] font-semibold">
+            <Trans context="title">Links</Trans>
+          </h2>
         </div>
         {socialLinkTypeList.map((linkType: SocialLinkType) => {
           return (
             <div
               key={linkType}
-              className="flex h-16 cursor-pointer items-center gap-2 border-t border-[#F6F6F6] px-2 text-[13px]"
+              className="flex h-16 cursor-pointer items-center gap-2 border-t border-gray-note-05 px-2 text-[13px]"
               onClick={() => onOpenFakePage(linkType)}
             >
               <LinkIconWrapper variant={linkType} />
@@ -284,13 +365,15 @@ const EditUserPage: React.FC = () => {
         })}
       </div>
       <EditModeFooter
-        isModified={isModified()}
-        onClose={() => navigate(`/${user.id}`)}
-        title={'Edit profile and account'}
+        disabled={!isModified()}
+        onClose={() => navigateTo.user(me.userCode)}
+        title={t`Edit profile and account`}
         onSave={onSubmit}
       />
-      {fieldConfig && <EditFieldFakePageComponent {...fieldConfig} />}
-    </MobileContainer>
+      {fieldConfig && (
+        <EditFieldFakePageComponent {...fieldConfig} cropShape="round" />
+      )}
+    </>
   );
 };
 
