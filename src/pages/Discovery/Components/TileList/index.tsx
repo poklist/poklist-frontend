@@ -26,7 +26,7 @@ const TileList = ({
 
   return (
     <div
-      className="flex flex-col gap-2"
+      className="flex w-full max-w-[202px] flex-col gap-2"
       onClick={() => {
         navigateTo.viewList(
           officialCollection.owner.userCode,
@@ -39,12 +39,12 @@ const TileList = ({
           {officialCollection.title}
         </h1>
       </header>
-      <div>
+      <div className="flex justify-center">
         <img
           src={coverImage}
           alt="Official Collection Cover Image"
           loading="lazy"
-          className="size-[202px] rounded-lg border border-black object-cover"
+          className="aspect-square w-full max-w-[202px] rounded-lg border border-black object-cover"
         />
       </div>
       <footer className="flex flex-row items-center justify-start gap-1">

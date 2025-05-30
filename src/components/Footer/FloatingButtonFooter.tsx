@@ -13,20 +13,25 @@ import { Trans } from '@lingui/react/macro';
 
 interface IFooterProps {
   hasLikeButton?: boolean;
+  isLiked?: boolean;
   onClickLike?: () => void;
   onClickUnlike?: () => void;
 }
 
 const FloatingButtonFooter: React.FC<IFooterProps> = ({
   hasLikeButton = false,
+  isLiked: externalIsLiked,
   onClickLike,
   onClickUnlike,
 }) => {
   const { toast } = useToast();
   const { me } = useUserStore();
-  const { isLiked } = useSocialStore();
+  const { isLiked: storeIsLiked } = useSocialStore();
   const navigateTo = useStrictNavigation();
   const { withAuth } = useAuthWrapper();
+
+  const isLiked =
+    externalIsLiked !== undefined ? externalIsLiked : storeIsLiked;
 
   const handleCopyHref = () => {
     copyHref();

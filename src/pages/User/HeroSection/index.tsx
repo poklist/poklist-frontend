@@ -9,10 +9,7 @@ import {
 import LinkIconWrapper from '@/components/ui/wrappers/LinkIconWrapper';
 import { DrawerIds } from '@/constants/Drawer';
 import { SocialLinkType } from '@/enums/index.enum';
-import {
-  SocialActionType,
-  useSocialAction,
-} from '@/hooks/mutations/useSocialAction';
+import { useFollowAction } from '@/hooks/mutations/useFollowAction';
 import { useUser } from '@/hooks/queries/useUser';
 import { useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigation from '@/hooks/useStrictNavigate';
@@ -24,7 +21,9 @@ import {
 } from '@/lib/utils';
 import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
 import useAuthStore from '@/stores/useAuthStore';
+import useRelationStore from '@/stores/useRelationStore';
 import useUserStore from '@/stores/useUserStore';
+import { User } from '@/types/User';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
@@ -37,11 +36,19 @@ const HeroSection: React.FC = () => {
   const navigateTo = useStrictNavigation();
   const { isLoggedIn, logout } = useAuthStore();
   const { me, setMe } = useUserStore();
+  const { getIsFollowing, setIsFollowing, hasFollowingState } =
+    useRelationStore();
   const { openDrawer } = useDrawer();
   const [drawerContent, setDrawerContent] = useState<React.ReactNode>(null);
-  const [isFollowing, setIsFollowing] = useState<boolean>(false);
   const bioRef = useRef<HTMLParagraphElement>(null);
   const { toast } = useToast();
+
+  // 獲取當前用戶的關注狀態
+  const isFollowing = userCode ? getIsFollowing(userCode) : false;
+  console.log(
+    `🏠 [HeroSection] userCode: ${userCode}, isFollowing:`,
+    isFollowing
+  );
 
   const { withAuth } = useAuthWrapper();
 
@@ -52,7 +59,11 @@ const HeroSection: React.FC = () => {
     isError,
   } = useUser({
     userCode,
-  });
+  }) as {
+    data: User | undefined;
+    isLoading: boolean;
+    isError: boolean;
+  };
 
   useEffect(() => {
     if (isError) {
@@ -70,34 +81,14 @@ const HeroSection: React.FC = () => {
     }
   }, [isError]);
 
-  const { debouncedMutate: follow } = useSocialAction({
-    actionKey: 'follow',
-    debounceGroupKey: SocialActionType.FOLLOW,
-    url: '/follow',
+  const { follow, unfollow } = useFollowAction({
+    userCode: userCode || '',
     shouldAllow: () => isLoggedIn,
     onNotAllowed: () => {
       toast({
         title: t`Please login to do this action`,
         variant: 'destructive',
       });
-    },
-    onOptimisticUpdate: () => {
-      setIsFollowing(true);
-    },
-  });
-  const { debouncedMutate: unfollow } = useSocialAction({
-    actionKey: 'unfollow',
-    debounceGroupKey: SocialActionType.FOLLOW,
-    url: '/unfollow',
-    shouldAllow: () => isLoggedIn,
-    onNotAllowed: () => {
-      toast({
-        title: t`Please login to do this action`,
-        variant: 'destructive',
-      });
-    },
-    onOptimisticUpdate: () => {
-      setIsFollowing(false);
     },
   });
 
@@ -116,8 +107,16 @@ const HeroSection: React.FC = () => {
   }, [isMyPage, currentUser, setMe]);
 
   useLayoutEffect(() => {
-    setIsFollowing(isLoggedIn && currentUser?.isFollowing === true);
-  }, [isLoggedIn, currentUser?.isFollowing]);
+    if (userCode && currentUser) {
+      const apiFollowingState = isLoggedIn && currentUser.isFollowing === true;
+      const hasExistingState = hasFollowingState(userCode);
+
+      if (!hasExistingState) {
+        // 只有當 store 中沒有該用戶的狀態時，才使用 API 資料初始化
+        setIsFollowing(userCode, apiFollowingState);
+      }
+    }
+  }, [isLoggedIn, currentUser, userCode, setIsFollowing, hasFollowingState]);
 
   // FUTURE: refactor the drawer content because we may have more than one drawer
   const onOpenBioDrawer = () => {
