@@ -66,12 +66,6 @@ export const useFollowAction = ({
         onError?.(error, variables);
       }
     },
-    onSettled: async () => {
-      clearFollowingStatus(userCode);
-      await queryClient.invalidateQueries({
-        queryKey: [QueryKeys.USER, userCode],
-      });
-    },
   });
 
   const unfollowMutation = useMutation({
@@ -97,12 +91,6 @@ export const useFollowAction = ({
       } else {
         onError?.(error, variables);
       }
-    },
-    onSettled: async () => {
-      clearFollowingStatus(userCode);
-      await queryClient.invalidateQueries({
-        queryKey: [QueryKeys.USER, userCode],
-      });
     },
   });
 

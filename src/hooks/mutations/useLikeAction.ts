@@ -66,18 +66,6 @@ export const useLikeAction = ({
         onError?.(error, variables);
       }
     },
-    onSettled: async () => {
-      // invalidate 所有與該 listID 相關的 queries (不管 offset/limit)
-      await queryClient.invalidateQueries({
-        queryKey: [QueryKeys.LIST, listID],
-        exact: false, // 這會讓所有以 [QueryKeys.LIST, listID] 開頭的 queries 都被 invalidate
-      });
-      // invalidate 所有 lists queries (用於列表頁面)
-      await queryClient.invalidateQueries({
-        queryKey: [QueryKeys.LISTS],
-        exact: false,
-      });
-    },
   });
 
   const unlikeMutation = useMutation({
@@ -103,18 +91,6 @@ export const useLikeAction = ({
       } else {
         onError?.(error, variables);
       }
-    },
-    onSettled: async () => {
-      // invalidate 所有與該 listID 相關的 queries (不管 offset/limit)
-      await queryClient.invalidateQueries({
-        queryKey: [QueryKeys.LIST, listID],
-        exact: false,
-      });
-      // invalidate 所有 lists queries (用於列表頁面)
-      await queryClient.invalidateQueries({
-        queryKey: [QueryKeys.LISTS],
-        exact: false,
-      });
     },
   });
 

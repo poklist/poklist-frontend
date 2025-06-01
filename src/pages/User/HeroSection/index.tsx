@@ -184,15 +184,7 @@ const HeroSection: React.FC = () => {
   // Check if data is loaded
   const isDataLoaded = !isLoading && currentUser !== undefined;
 
-  // Check if following state is synchronized
-  const isFollowingSynchronized = () => {
-    if (!isDataLoaded || !currentUser) return false;
-    const expectedFollowingState =
-      isLoggedIn && currentUser.isFollowing === true;
-    return !(isFollowing === false && expectedFollowingState === true);
-  };
-
-  if (!isDataLoaded || !isFollowingSynchronized()) {
+  if (!isDataLoaded) {
     return <HeroSectionSkeleton />;
   }
 

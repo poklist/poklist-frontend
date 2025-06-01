@@ -39,7 +39,6 @@ const ViewListPage: React.FC = () => {
     userCode: listOwnerUserCode,
   }) as { data: User | undefined };
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const { data: list, isLoading: isListLoading } = useList({
     listID: listID,
     offset: Idea.DEFAULT_FIRST_BATCH_OFFSET,
@@ -67,13 +66,11 @@ const ViewListPage: React.FC = () => {
 
   useEffect(() => {
     if (listID && list) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
       const likeState = list.isLiked ?? false;
       const hasExistingLikeState = hasLikeState(listID);
 
       if (!hasExistingLikeState) {
         // 只有當 store 中沒有該列表的狀態時，才使用 API 資料初始化
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         setIsLiked(listID, likeState);
       }
     }
@@ -81,13 +78,11 @@ const ViewListPage: React.FC = () => {
 
   useEffect(() => {
     if (listOwnerUserCode && listOwner) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
       const followingState = listOwner.isFollowing ?? false;
       const hasExistingState = hasFollowingState(listOwnerUserCode);
 
       if (!hasExistingState) {
         // 只有當 store 中沒有該用戶的狀態時，才使用 API 資料初始化
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         setIsFollowing(listOwnerUserCode, followingState);
       }
     }
@@ -97,10 +92,8 @@ const ViewListPage: React.FC = () => {
     <>
       <Tile20Background />
       <div className="relative flex min-h-screen flex-col sm:min-h-desktop-container">
-        {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access */}
         <BackToUserHeader owner={list?.owner} hasFollowButton={!isMyPage} />
         <div className="mb-[55px] flex-1 px-3 pt-4">
-          {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
           {list && <ListCard data={list} />}
         </div>
         <FloatingButtonFooter
