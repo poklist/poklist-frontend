@@ -22,7 +22,7 @@ import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
 import { CategoriesI18n } from '@/pages/Lists/i18n';
 import useAuthStore from '@/stores/useAuthStore';
 import useCommonStore from '@/stores/useCommonStore';
-import useSocialStore from '@/stores/useSocialStore';
+import useLikeStore from '@/stores/useLikeStore';
 import useUserStore from '@/stores/useUserStore';
 import { List } from '@/types/List';
 import { useLingui } from '@lingui/react';
@@ -46,7 +46,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
 
   const { isLoggedIn } = useAuthStore();
   const { me } = useUserStore();
-  const { isLiked } = useSocialStore();
+  const { getIsLiked } = useLikeStore();
   const { openDrawer } = useDrawer(DrawerIds.LIST_CARD_DRAWER_ID);
   const { setShowingAlert } = useCommonStore();
   const [drawerContent, setDrawerContent] = useState<React.ReactNode>(null);
@@ -56,18 +56,26 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
   // Use useState to manage like count, initial value from data.likeCount
   const [likeCount, setLikeCount] = useState(data.likeCount);
   const externalLinkRef = useRef<HTMLDivElement>(null);
+
+  // Get current like status for this list
+  const isLiked = listID ? getIsLiked(listID) : false;
   // Use useRef to track isLiked changes, preventing likeCount updates on first render
   const prevIsLikedRef = useRef(isLiked);
+
+  // Update likeCount when data.likeCount changes (from API refetch)
+  useEffect(() => {
+    setLikeCount(data.likeCount);
+  }, [data.likeCount]);
 
   // Listen to isLiked changes, only update likeCount when actual changes occur
   useEffect(() => {
     // Decrease likeCount when isLiked changes from true to false
     if (prevIsLikedRef.current === true && isLiked === false) {
-      setLikeCount(likeCount - 1);
+      setLikeCount((prev) => prev - 1);
     }
     // Increase likeCount when isLiked changes from false to true
     else if (prevIsLikedRef.current === false && isLiked === true) {
-      setLikeCount(likeCount + 1);
+      setLikeCount((prev) => prev + 1);
     }
     // Update prevIsLikedRef for next comparison
     prevIsLikedRef.current = isLiked;

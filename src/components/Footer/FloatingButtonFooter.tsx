@@ -6,7 +6,6 @@ import { useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigation from '@/hooks/useStrictNavigate';
 import { useToast } from '@/hooks/useToast';
 import { cn, copyHref } from '@/lib/utils';
-import useSocialStore from '@/stores/useSocialStore';
 import useUserStore from '@/stores/useUserStore';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
@@ -20,18 +19,14 @@ interface IFooterProps {
 
 const FloatingButtonFooter: React.FC<IFooterProps> = ({
   hasLikeButton = false,
-  isLiked: externalIsLiked,
+  isLiked = false,
   onClickLike,
   onClickUnlike,
 }) => {
   const { toast } = useToast();
   const { me } = useUserStore();
-  const { isLiked: storeIsLiked } = useSocialStore();
   const navigateTo = useStrictNavigation();
   const { withAuth } = useAuthWrapper();
-
-  const isLiked =
-    externalIsLiked !== undefined ? externalIsLiked : storeIsLiked;
 
   const handleCopyHref = () => {
     copyHref();
