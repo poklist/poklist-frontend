@@ -1,5 +1,5 @@
 import axios, { AxiosPayload } from '@/lib/axios';
-import useRelationStore from '@/stores/useRelationStore';
+import useFollowingStore from '@/stores/useFollowingStore';
 import QueryKeys from '@/config/queryKeys';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Method } from 'axios';
@@ -40,7 +40,7 @@ export const useFollowAction = ({
 }: FollowActionOptions): FollowActionReturn => {
   const queryClient = useQueryClient();
   const latestParamsRef = useRef<AxiosPayload | null>(null);
-  const { setIsFollowing, clearFollowingStatus } = useRelationStore();
+  const { setIsFollowing, clearFollowingStatus } = useFollowingStore();
 
   const followMutation = useMutation({
     mutationKey: [QueryKeys.USER, userCode, 'follow'],

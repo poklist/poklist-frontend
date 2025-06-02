@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-export type RelationStoreState = {
+export type FollowingStoreState = {
   // 使用 Map 來追蹤每個 userCode 的關注狀態
   followingMap: Map<string, boolean>;
   // 獲取特定用戶的關注狀態
@@ -16,7 +16,7 @@ export type RelationStoreState = {
 };
 
 // NOTE: 重構為支援多用戶關注狀態追蹤，可以針對不同 userCode 分別管理關注狀態
-const useRelationStore = create<RelationStoreState>((set, get) => ({
+const useFollowingStore = create<FollowingStoreState>((set, get) => ({
   followingMap: new Map<string, boolean>(),
 
   getIsFollowing: (userCode: string) => {
@@ -48,4 +48,4 @@ const useRelationStore = create<RelationStoreState>((set, get) => ({
     set({ followingMap: new Map<string, boolean>() }),
 }));
 
-export default useRelationStore;
+export default useFollowingStore;

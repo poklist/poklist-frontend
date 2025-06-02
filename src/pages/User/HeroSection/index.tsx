@@ -21,7 +21,7 @@ import {
 } from '@/lib/utils';
 import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
 import useAuthStore from '@/stores/useAuthStore';
-import useRelationStore from '@/stores/useRelationStore';
+import useFollowingStore from '@/stores/useFollowingStore';
 import useUserStore from '@/stores/useUserStore';
 import { User } from '@/types/User';
 import { t } from '@lingui/core/macro';
@@ -37,7 +37,7 @@ const HeroSection: React.FC = () => {
   const { isLoggedIn, logout } = useAuthStore();
   const { me, setMe } = useUserStore();
   const { getIsFollowing, setIsFollowing, hasFollowingState } =
-    useRelationStore();
+    useFollowingStore();
   const { openDrawer } = useDrawer();
   const [drawerContent, setDrawerContent] = useState<React.ReactNode>(null);
   const bioRef = useRef<HTMLParagraphElement>(null);
@@ -64,6 +64,10 @@ const HeroSection: React.FC = () => {
     isLoading: boolean;
     isError: boolean;
   };
+
+  // Add local followerCount state management (like ListCard likeCount)
+  const [followerCount, setFollowerCount] = useState(0);
+  const prevIsFollowingRef = useRef(isFollowing);
 
   useEffect(() => {
     if (isError) {
@@ -117,6 +121,27 @@ const HeroSection: React.FC = () => {
       }
     }
   }, [isLoggedIn, currentUser, userCode, setIsFollowing, hasFollowingState]);
+
+  // Update followerCount when currentUser.followerCount changes (from API refetch)
+  useEffect(() => {
+    if (currentUser?.followerCount !== undefined) {
+      setFollowerCount(currentUser.followerCount);
+    }
+  }, [currentUser?.followerCount]);
+
+  // Listen to isFollowing changes, only update followerCount when actual changes occur
+  useEffect(() => {
+    // Decrease followerCount when isFollowing changes from true to false
+    if (prevIsFollowingRef.current === true && isFollowing === false) {
+      setFollowerCount((prev) => prev - 1);
+    }
+    // Increase followerCount when isFollowing changes from false to true
+    else if (prevIsFollowingRef.current === false && isFollowing === true) {
+      setFollowerCount((prev) => prev + 1);
+    }
+    // Update prevIsFollowingRef for next comparison
+    prevIsFollowingRef.current = isFollowing;
+  }, [isFollowing]);
 
   // FUTURE: refactor the drawer content because we may have more than one drawer
   const onOpenBioDrawer = () => {
@@ -247,7 +272,7 @@ const HeroSection: React.FC = () => {
             {currentUser.listCount} <Trans>Lists</Trans>
           </p>
           <p>
-            {currentUser.followerCount} <Trans>Followers</Trans>
+            {followerCount} <Trans>Followers</Trans>
           </p>
           <p>
             {currentUser.followingCount} <Trans>Following</Trans>

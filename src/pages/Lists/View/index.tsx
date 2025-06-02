@@ -10,7 +10,7 @@ import { Tile20Background } from '@/pages/User/TileBackground';
 import useAuthStore from '@/stores/useAuthStore';
 import useCommonStore from '@/stores/useCommonStore';
 import useLikeStore from '@/stores/useLikeStore';
-import useRelationStore from '@/stores/useRelationStore';
+import useFollowingStore from '@/stores/useFollowingStore';
 import useUserStore from '@/stores/useUserStore';
 import { User } from '@/types/User';
 import { t } from '@lingui/core/macro';
@@ -29,7 +29,7 @@ const ViewListPage: React.FC = () => {
   const { setIsLoading } = useCommonStore();
 
   const { getIsLiked, setIsLiked, hasLikeState } = useLikeStore();
-  const { setIsFollowing, hasFollowingState } = useRelationStore();
+  const { setIsFollowing, hasFollowingState } = useFollowingStore();
   const { toast } = useToast();
 
   // 獲取當前列表的點讚狀態

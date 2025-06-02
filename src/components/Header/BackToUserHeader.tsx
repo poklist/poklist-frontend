@@ -5,7 +5,7 @@ import { useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigation from '@/hooks/useStrictNavigate';
 import { toast } from '@/hooks/useToast';
 import useAuthStore from '@/stores/useAuthStore';
-import useRelationStore from '@/stores/useRelationStore';
+import useFollowingStore from '@/stores/useFollowingStore';
 import { User, UserPreview } from '@/types/User';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
@@ -22,7 +22,7 @@ const BackToUserHeader: React.FC<IBackToUserHeaderProps> = ({
   hasFollowButton = false,
 }) => {
   const { getIsFollowing, setIsFollowing, hasFollowingState } =
-    useRelationStore();
+    useFollowingStore();
   const navigateTo = useStrictNavigation();
   const { isLoggedIn } = useAuthStore();
   const { withAuth } = useAuthWrapper();
