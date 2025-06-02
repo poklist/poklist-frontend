@@ -10,6 +10,7 @@ import { Divider } from './Components/Divider';
 import { FeatureSection } from './Components/FeatureSection';
 import { Footer } from './Components/Footer';
 import { TutorialSection } from './Components/TutorialSection';
+import FloatingButtonFooter from '@/components/Footer/FloatingButtonFooter';
 
 export default function Official() {
   const content = {
@@ -35,6 +36,7 @@ export default function Official() {
           content={content.FOOTER_SECTION}
           socialMedia={content.SOCIAL_MEDIA}
         />
+        <FloatingButtonFooter hasCreateListButton={false} />
       </main>
     </>
   );

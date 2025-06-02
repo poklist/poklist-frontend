@@ -5,6 +5,7 @@ import FooterSection from './Components/FooterSection';
 import { HeaderSection } from './Components/HeaderSection';
 import ListSection from './Components/ListSection';
 import TileSection from './Components/TileSection';
+import FloatingButtonFooter from '@/components/Footer/FloatingButtonFooter';
 
 const DiscoveryContent = () => {
   const { isLoggedIn } = useAuthStore();
@@ -18,6 +19,7 @@ const DiscoveryContent = () => {
       <TileSection />
       <ListSection />
       <FooterSection />
+      <FloatingButtonFooter />
     </>
   );
 };
