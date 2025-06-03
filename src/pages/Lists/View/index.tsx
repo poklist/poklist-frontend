@@ -1,10 +1,7 @@
 import FloatingButtonFooter from '@/components/Footer/FloatingButtonFooter';
 import BackToUserHeader from '@/components/Header/BackToUserHeader';
 import { Idea } from '@/constants/list';
-import {
-  SocialActionType,
-  useSocialAction,
-} from '@/hooks/mutations/useSocialAction';
+import { useLikeAction } from '@/hooks/mutations/useLikeAction';
 import { useList } from '@/hooks/queries/useList';
 import { useUser } from '@/hooks/queries/useUser';
 import { useToast } from '@/hooks/useToast';
@@ -12,9 +9,10 @@ import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
 import { Tile20Background } from '@/pages/User/TileBackground';
 import useAuthStore from '@/stores/useAuthStore';
 import useCommonStore from '@/stores/useCommonStore';
-import useRelationStore from '@/stores/useRelationStore';
-import useSocialStore from '@/stores/useSocialStore';
+import useLikeStore from '@/stores/useLikeStore';
+import useFollowingStore from '@/stores/useFollowingStore';
 import useUserStore from '@/stores/useUserStore';
+import { User } from '@/types/User';
 import { t } from '@lingui/core/macro';
 import { useEffect } from 'react';
 import { useOutletContext, useParams } from 'react-router-dom';
@@ -30,17 +28,16 @@ const ViewListPage: React.FC = () => {
 
   const { setIsLoading } = useCommonStore();
 
-  const { setIsLiked } = useSocialStore();
-  const { setIsFollowing } = useRelationStore();
+  const { getIsLiked, setIsLiked, hasLikeState } = useLikeStore();
+  const { setIsFollowing, hasFollowingState } = useFollowingStore();
   const { toast } = useToast();
 
-  const {
-    data: listOwner,
-    isLoading: isListOwnerLoading,
-    isError: isListOwnerError,
-  } = useUser({
+  // 獲取當前列表的點讚狀態
+  const isLiked = listID ? getIsLiked(listID) : false;
+
+  const { data: listOwner } = useUser({
     userCode: listOwnerUserCode,
-  });
+  }) as { data: User | undefined };
 
   const { data: list, isLoading: isListLoading } = useList({
     listID: listID,
@@ -48,34 +45,14 @@ const ViewListPage: React.FC = () => {
     limit: Idea.DEFAULT_BATCH_SIZE,
   });
 
-  const { debouncedMutate: like } = useSocialAction({
-    actionKey: 'like',
-    debounceGroupKey: SocialActionType.LIKE,
-    url: '/like',
+  const { like, unlike } = useLikeAction({
+    listID: listID || '',
     shouldAllow: () => isLoggedIn,
     onNotAllowed: () => {
       toast({
         title: t`Please login to do this action`,
         variant: 'destructive',
       });
-    },
-    onOptimisticUpdate: () => {
-      setIsLiked(true);
-    },
-  });
-  const { debouncedMutate: unlike } = useSocialAction({
-    actionKey: 'unlike',
-    debounceGroupKey: SocialActionType.LIKE,
-    url: '/unlike',
-    shouldAllow: () => isLoggedIn,
-    onNotAllowed: () => {
-      toast({
-        title: t`Please login to do this action`,
-        variant: 'destructive',
-      });
-    },
-    onOptimisticUpdate: () => {
-      setIsLiked(false);
     },
   });
 
@@ -88,12 +65,28 @@ const ViewListPage: React.FC = () => {
   }, [isListLoading, setIsLoading]);
 
   useEffect(() => {
-    setIsLiked(list?.isLiked ?? false);
-  }, [list?.isLiked]);
+    if (listID && list) {
+      const likeState = list.isLiked ?? false;
+      const hasExistingLikeState = hasLikeState(listID);
+
+      if (!hasExistingLikeState) {
+        // 只有當 store 中沒有該列表的狀態時，才使用 API 資料初始化
+        setIsLiked(listID, likeState);
+      }
+    }
+  }, [list, listID, setIsLiked, hasLikeState]);
 
   useEffect(() => {
-    setIsFollowing(listOwner?.isFollowing ?? false);
-  }, [listOwner?.isFollowing]);
+    if (listOwnerUserCode && listOwner) {
+      const followingState = listOwner.isFollowing ?? false;
+      const hasExistingState = hasFollowingState(listOwnerUserCode);
+
+      if (!hasExistingState) {
+        // 只有當 store 中沒有該用戶的狀態時，才使用 API 資料初始化
+        setIsFollowing(listOwnerUserCode, followingState);
+      }
+    }
+  }, [listOwner, listOwnerUserCode, setIsFollowing, hasFollowingState]);
 
   return (
     <>
@@ -105,6 +98,7 @@ const ViewListPage: React.FC = () => {
         </div>
         <FloatingButtonFooter
           hasLikeButton={true}
+          isLiked={isLiked}
           onClickLike={() => like({ params: { listID: listID } })}
           onClickUnlike={() => unlike({ params: { listID: listID } })}
         />

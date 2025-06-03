@@ -8,6 +8,7 @@ import { t } from '@lingui/core/macro';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { toast } from '../useToast';
+import QueryKeys from '@/config/queryKeys';
 
 interface UseEditProfileOptions {
   onSuccess?: (data: UpdateUserResponse) => void;
@@ -44,9 +45,11 @@ export const useEditProfile = ({
         setAccessToken(data.accessToken);
       }
       // NOTE: if we don't await, the profile image might not be updated before navigation
-      await queryClient.refetchQueries({ queryKey: ['user', newUserCode] });
+      await queryClient.refetchQueries({
+        queryKey: [QueryKeys.USER, newUserCode],
+      });
       if (newUserCode !== oldUserCode) {
-        queryClient.removeQueries({ queryKey: ['user', oldUserCode] });
+        queryClient.removeQueries({ queryKey: [QueryKeys.USER, oldUserCode] });
       }
       setMe({ ...data });
       onSuccess?.(data);

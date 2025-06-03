@@ -1,18 +1,15 @@
 import logoR from '@/assets/images/logo-r.svg';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import {
-  SocialActionType,
-  useSocialAction,
-} from '@/hooks/mutations/useSocialAction';
+import { useFollowAction } from '@/hooks/mutations/useFollowAction';
 import { useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigation from '@/hooks/useStrictNavigate';
 import { toast } from '@/hooks/useToast';
 import useAuthStore from '@/stores/useAuthStore';
-import useRelationStore from '@/stores/useRelationStore';
+import useFollowingStore from '@/stores/useFollowingStore';
 import { User, UserPreview } from '@/types/User';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, ButtonShape, ButtonSize, ButtonVariant } from '../ui/button';
 
 interface IBackToUserHeaderProps {
@@ -24,39 +21,31 @@ const BackToUserHeader: React.FC<IBackToUserHeaderProps> = ({
   owner,
   hasFollowButton = false,
 }) => {
-  const { isFollowing, setIsFollowing } = useRelationStore();
+  const { getIsFollowing, setIsFollowing, hasFollowingState } =
+    useFollowingStore();
   const navigateTo = useStrictNavigation();
   const { isLoggedIn } = useAuthStore();
   const { withAuth } = useAuthWrapper();
 
-  const { debouncedMutate: follow } = useSocialAction({
-    actionKey: 'follow',
-    debounceGroupKey: SocialActionType.FOLLOW,
-    url: '/follow',
+  // 獲取當前用戶的關注狀態
+  const isFollowing = owner ? getIsFollowing(owner.userCode) : false;
+
+  // 如果 store 中沒有該用戶的狀態，且 owner 有 isFollowing 屬性，則初始化
+  useEffect(() => {
+    if (owner && 'isFollowing' in owner && !hasFollowingState(owner.userCode)) {
+      const apiFollowingState = owner.isFollowing ?? false;
+      setIsFollowing(owner.userCode, apiFollowingState);
+    }
+  }, [owner, hasFollowingState, setIsFollowing]);
+
+  const { follow, unfollow } = useFollowAction({
+    userCode: owner?.userCode || '',
     shouldAllow: () => isLoggedIn,
     onNotAllowed: () => {
       toast({
         title: t`Please login to do this action`,
         variant: 'destructive',
       });
-    },
-    onOptimisticUpdate: () => {
-      setIsFollowing(true);
-    },
-  });
-  const { debouncedMutate: unfollow } = useSocialAction({
-    actionKey: 'unfollow',
-    debounceGroupKey: SocialActionType.FOLLOW,
-    url: '/unfollow',
-    shouldAllow: () => isLoggedIn,
-    onNotAllowed: () => {
-      toast({
-        title: t`Please login to do this action`,
-        variant: 'destructive',
-      });
-    },
-    onOptimisticUpdate: () => {
-      setIsFollowing(false);
     },
   });
 
