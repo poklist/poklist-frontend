@@ -1,19 +1,17 @@
 import FloatingButtonFooter from '@/components/Footer/FloatingButtonFooter';
 import BackToUserHeader from '@/components/Header/BackToUserHeader';
 import { Idea } from '@/constants/list';
-import {
-  SocialActionType,
-  useSocialAction,
-} from '@/hooks/mutations/useSocialAction';
+import { useLikeAction } from '@/hooks/mutations/useLikeAction';
 import { useList } from '@/hooks/queries/useList';
 import { useUser } from '@/hooks/queries/useUser';
+import useStrictNavigation from '@/hooks/useStrictNavigate';
 import { useToast } from '@/hooks/useToast';
 import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
 import { Tile20Background } from '@/pages/User/TileBackground';
 import useAuthStore from '@/stores/useAuthStore';
 import useCommonStore from '@/stores/useCommonStore';
-import useRelationStore from '@/stores/useRelationStore';
-import useSocialStore from '@/stores/useSocialStore';
+import useFollowingStore from '@/stores/useFollowingStore';
+import useLikeStore from '@/stores/useLikeStore';
 import useUserStore from '@/stores/useUserStore';
 import { t } from '@lingui/core/macro';
 import { useEffect } from 'react';
@@ -27,12 +25,15 @@ const ViewListPage: React.FC = () => {
   const { isLoggedIn } = useAuthStore();
   const { me } = useUserStore();
   const isMyPage = listOwnerUserCode === me.userCode;
-
+  const navigateTo = useStrictNavigation();
   const { setIsLoading } = useCommonStore();
 
-  const { setIsLiked } = useSocialStore();
-  const { setIsFollowing } = useRelationStore();
+  const { getIsLiked, setIsLiked, hasLikeState } = useLikeStore();
+  const { setIsFollowing, hasFollowingState } = useFollowingStore();
   const { toast } = useToast();
+
+  // 獲取當前列表的點讚狀態
+  const isLiked = listID ? getIsLiked(listID) : false;
 
   const {
     data: listOwner,
@@ -42,40 +43,33 @@ const ViewListPage: React.FC = () => {
     userCode: listOwnerUserCode,
   });
 
-  const { data: list, isLoading: isListLoading } = useList({
+  // FUTURE: check before firing the query if we have the listID validation rules
+  const {
+    data: list,
+    isLoading: isListLoading,
+    isError: isListError,
+  } = useList({
     listID: listID,
     offset: Idea.DEFAULT_FIRST_BATCH_OFFSET,
     limit: Idea.DEFAULT_BATCH_SIZE,
   });
 
-  const { debouncedMutate: like } = useSocialAction({
-    actionKey: 'like',
-    debounceGroupKey: SocialActionType.LIKE,
-    url: '/like',
+  useEffect(() => {
+    if (isListOwnerError) {
+      navigateTo.home();
+    } else if (isListError) {
+      navigateTo.user(listOwnerUserCode);
+    }
+  }, [isListOwnerError, isListError, listOwnerUserCode, navigateTo]);
+
+  const { like, unlike } = useLikeAction({
+    listID: listID || '',
     shouldAllow: () => isLoggedIn,
     onNotAllowed: () => {
       toast({
         title: t`Please login to do this action`,
         variant: 'destructive',
       });
-    },
-    onOptimisticUpdate: () => {
-      setIsLiked(true);
-    },
-  });
-  const { debouncedMutate: unlike } = useSocialAction({
-    actionKey: 'unlike',
-    debounceGroupKey: SocialActionType.LIKE,
-    url: '/unlike',
-    shouldAllow: () => isLoggedIn,
-    onNotAllowed: () => {
-      toast({
-        title: t`Please login to do this action`,
-        variant: 'destructive',
-      });
-    },
-    onOptimisticUpdate: () => {
-      setIsLiked(false);
     },
   });
 
@@ -88,12 +82,44 @@ const ViewListPage: React.FC = () => {
   }, [isListLoading, setIsLoading]);
 
   useEffect(() => {
-    setIsLiked(list?.isLiked ?? false);
-  }, [list?.isLiked]);
+    if (listID && list) {
+      const likeState = list.isLiked ?? false;
+      const hasExistingLikeState = hasLikeState(listID);
+
+      if (!hasExistingLikeState) {
+        // 只有當 store 中沒有該列表的狀態時，才使用 API 資料初始化
+        setIsLiked(listID, likeState);
+      }
+    }
+  }, [list, listID, setIsLiked, hasLikeState]);
 
   useEffect(() => {
-    setIsFollowing(listOwner?.isFollowing ?? false);
-  }, [listOwner?.isFollowing]);
+    if (listOwnerUserCode && listOwner) {
+      const followingState = listOwner.isFollowing ?? false;
+      const hasExistingState = hasFollowingState(listOwnerUserCode);
+
+      if (!hasExistingState) {
+        // 只有當 store 中沒有該用戶的狀態時，才使用 API 資料初始化
+        setIsFollowing(listOwnerUserCode, followingState);
+      }
+    }
+  }, [listOwner, listOwnerUserCode, setIsFollowing, hasFollowingState]);
+
+  useEffect(() => {
+    if (!isListOwnerLoading && !isListLoading && list?.owner && listID) {
+      if (listOwnerUserCode !== list?.owner.userCode) {
+        navigateTo.viewList(list?.owner.userCode, listID);
+      }
+    }
+  }, [
+    isListOwnerError,
+    isListOwnerLoading,
+    isListLoading,
+    list?.owner,
+    listID,
+    listOwnerUserCode,
+    navigateTo,
+  ]);
 
   return (
     <>
@@ -105,6 +131,7 @@ const ViewListPage: React.FC = () => {
         </div>
         <FloatingButtonFooter
           hasLikeButton={true}
+          isLiked={isLiked}
           onClickLike={() => like({ params: { listID: listID } })}
           onClickUnlike={() => unlike({ params: { listID: listID } })}
         />

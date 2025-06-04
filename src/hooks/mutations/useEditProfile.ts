@@ -1,3 +1,4 @@
+import QueryKeys from '@/config/queryKeys';
 import useStrictNavigation from '@/hooks/useStrictNavigate';
 import axios from '@/lib/axios';
 import useAuthStore from '@/stores/useAuthStore';
@@ -11,7 +12,7 @@ import { toast } from '../useToast';
 
 interface UseEditProfileOptions {
   onSuccess?: (data: UpdateUserResponse) => void;
-  onError?: (error: any) => void;
+  onError?: (error: AxiosError<IResponse<unknown>>) => void;
 }
 
 export const useEditProfile = ({
@@ -44,15 +45,17 @@ export const useEditProfile = ({
         setAccessToken(data.accessToken);
       }
       // NOTE: if we don't await, the profile image might not be updated before navigation
-      await queryClient.refetchQueries({ queryKey: ['user', newUserCode] });
+      await queryClient.refetchQueries({
+        queryKey: [QueryKeys.USER, newUserCode],
+      });
       if (newUserCode !== oldUserCode) {
-        queryClient.removeQueries({ queryKey: ['user', oldUserCode] });
+        queryClient.removeQueries({ queryKey: [QueryKeys.USER, oldUserCode] });
       }
       setMe({ ...data });
       onSuccess?.(data);
       navigateTo.user(newUserCode);
     },
-    onError: (error: AxiosError<IResponse<any>>) => {
+    onError: (error: AxiosError<IResponse<unknown>>) => {
       if (error.response?.status === 401) {
         logout();
         navigateTo.discovery();

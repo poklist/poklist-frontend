@@ -1,5 +1,5 @@
 import { useCreateList } from '@/hooks/mutations/useCreateList';
-import { useAuthWrapper } from '@/hooks/useAuth';
+import { useAuthCheck, useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigate from '@/hooks/useStrictNavigate';
 import ListForm from '@/pages/Lists/Components/Form';
 import Header from '@/pages/Lists/Components/Header';
@@ -13,6 +13,7 @@ const CreatePage: React.FC = () => {
   const navigateTo = useStrictNavigate();
   const { setIsLoading } = useCommonStore();
   const { me } = useUserStore();
+  const { checkAuthAndRedirect } = useAuthCheck();
   const { withAuth } = useAuthWrapper();
 
   const { createList, isCreateListLoading } = useCreateList({
@@ -44,8 +45,11 @@ const CreatePage: React.FC = () => {
     });
   });
 
+  useEffect(() => {
+    checkAuthAndRedirect();
+  }, [checkAuthAndRedirect]);
+
   return (
-    // Your component code here
     <>
       <Header title={<Trans>Idea List</Trans>} />
       <div className="flex min-h-screen flex-col gap-6">

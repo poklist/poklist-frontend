@@ -1,11 +1,12 @@
 import { DrawerComponent, useDrawer } from '@/components/Drawer';
 import { activateI18n } from '@/components/Language';
 import { DrawerIds } from '@/constants/Drawer';
+import { ExternalLinks } from '@/constants/externalLink';
 import { Language, LocalStorageKey, Location } from '@/enums/index.enum';
 import useStrictNavigation from '@/hooks/useStrictNavigate';
 import { getLocalStorage, setLocalStorage } from '@/lib/utils';
 import useAuthStore from '@/stores/useAuthStore';
-import { ILinksBlock } from '@/types/Settings';
+import { ILinksBlock, UrlString } from '@/types/Settings';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
 import { useEffect, useState } from 'react';
@@ -24,10 +25,10 @@ const BlocksSection: React.FC = () => {
   useEffect(() => {
     const userSelectedLanguage = getLocalStorage(
       LocalStorageKey.SELECTED_LANGUAGE
-    );
+    ) as Language;
     const userSelectedLocation = getLocalStorage(
       LocalStorageKey.SELECTED_LOCATION
-    );
+    ) as Location;
     if (
       userSelectedLanguage &&
       Object.values(Language).includes(userSelectedLanguage)
@@ -137,23 +138,23 @@ const BlocksSection: React.FC = () => {
       actionItems: [
         {
           decription: t`Quick start guide`,
-          // TODO:
+          link: ExternalLinks.TUTORIALS as UrlString,
         },
         {
           decription: t`Check out Relist`,
-          // TODO:
+          link: ExternalLinks.INSTAGRAM as UrlString,
         },
         {
           decription: t`Follow Relist Threads`,
-          // TODO:
+          link: ExternalLinks.THREADS as UrlString,
         },
         {
           decription: t`Join Relist Discord`,
-          link: 'https://discord.gg/Jq2hSYUFJC',
+          link: ExternalLinks.DISCORD as UrlString,
         },
         {
           decription: t`Submit feedback or report content`,
-          // TODO:
+          link: ExternalLinks.FEEDBACK as UrlString,
         },
       ],
     },
@@ -162,11 +163,11 @@ const BlocksSection: React.FC = () => {
       actionItems: [
         {
           decription: t`About Privacy Policy and Terms of Use`,
-          // TODO:
+          link: ExternalLinks.PRIVACY as UrlString,
         },
         {
           decription: t`Contact us`,
-          // TODO:
+          link: ExternalLinks.CONTACT_US as UrlString,
         },
       ],
     },
@@ -189,7 +190,7 @@ const BlocksSection: React.FC = () => {
         decription: t`Sign Out`,
         action: () => {
           logout();
-          navigateTo.discovery();
+          navigateTo.home();
         },
       },
     ];
@@ -198,7 +199,7 @@ const BlocksSection: React.FC = () => {
       {
         decription: t`Sign In`,
         action: () => {
-          navigateTo.discovery();
+          navigateTo.home();
         },
       },
     ];

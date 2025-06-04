@@ -16,7 +16,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 
 // 主要內容區域組件
 const MainContent = () => {
-  const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+  const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID as string;
 
   const { isMobile } = useLayoutStore();
 
@@ -42,7 +42,7 @@ const MainContent = () => {
     });
   }, [setScrollToTop]);
 
-  const handleGoogleLogin = async (user: User) => {
+  const handleGoogleLogin = (user: User) => {
     if (!user) {
       setIsLoginDrawerOpen(false);
       handleLoginError();

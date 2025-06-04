@@ -23,7 +23,7 @@ export const HeroSectionSkeleton: React.FC = () => {
         <Text className="text-[13px] font-normal" as="p">
           {/* Just for skeleton, no need to translate */}
           <Skeleton>
-            Baddie's Struggle” dives into life's highs and lows-fro...
+            Baddie&apos;s Struggle” dives into life&apos;s highs and lows-fro...
           </Skeleton>
         </Text>
       </div>

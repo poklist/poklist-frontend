@@ -23,7 +23,7 @@ export default function Official() {
 
   return (
     <>
-      <Header className="bg-transparent" />
+      <Header bgColor="transparent" fakeBlockColor="primary" />
       <main className="flex min-h-screen flex-col">
         <FeatureSection
           content={content.FEATURE_SECTION}

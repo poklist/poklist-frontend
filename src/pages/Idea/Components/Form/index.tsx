@@ -253,7 +253,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
                   onChange={(e) => field.onChange(formatInput(e.target.value))}
                   onBlur={() => {
                     field.onBlur();
-                    textareaRef.current && (textareaRef.current.scrollTop = 0);
+                    textareaRef.current?.scrollTo({ top: 0 });
                     setIsTextareaFocus(false);
                   }}
                   onFocus={() => setIsTextareaFocus(true)}

@@ -300,7 +300,7 @@ const ListForm: React.FC<IListFormProps> = ({
                   onChange={(e) => field.onChange(formatInput(e.target.value))}
                   onBlur={() => {
                     field.onBlur();
-                    textareaRef.current && (textareaRef.current.scrollTop = 0);
+                    textareaRef.current?.scrollTo({ top: 0 });
                     setIsTextareaFocus(false);
                   }}
                   onFocus={() => setIsTextareaFocus(true)}

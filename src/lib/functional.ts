@@ -1,14 +1,14 @@
 /**
- * 函數組合 - 從右到左組合多個函數
- * compose(f, g, h)(x) 等同於 f(g(h(x)))
+ * Function composition - combines multiple functions from right to left
+ * compose(f, g, h)(x) is equivalent to f(g(h(x)))
  */
 export const compose = <R>(fn1: (a: R) => R, ...fns: Array<(a: R) => R>) => {
   return fns.reduce((prevFn, nextFn) => (value) => prevFn(nextFn(value)), fn1);
 };
 
 /**
- * 函數組合 - 從左到右組合多個函數
- * pipe(f, g, h)(x) 等同於 h(g(f(x)))
+ * Function composition - combines multiple functions from left to right
+ * pipe(f, g, h)(x) is equivalent to h(g(f(x)))
  */
 export const pipe = <T extends unknown[], R>(
   fn1: (...args: T) => R,
@@ -20,7 +20,7 @@ export const pipe = <T extends unknown[], R>(
 };
 
 /**
- * 創建一個函數，該函數只在滿足斷言時才執行原函數
+ * Creates a function that only executes the original function when the predicate is satisfied
  */
 export const when = <T extends unknown[], R>(
   predicate: (...args: T) => boolean,
@@ -35,7 +35,7 @@ export const when = <T extends unknown[], R>(
 };
 
 /**
- * 柯里化（Currying）- 將接受多個參數的函數轉換為一系列接受單個參數的函數
+ * Currying - transforms a function that takes multiple arguments into a series of functions that each take a single argument
  */
 export const curry = <T extends unknown[], R>(fn: (...args: T) => R) => {
   return function curried(...args: unknown[]): unknown {
@@ -47,7 +47,7 @@ export const curry = <T extends unknown[], R>(fn: (...args: T) => R) => {
 };
 
 /**
- * 偏應用（Partial Application）- 預先填充函數的部分參數
+ * Partial Application - pre-fills some of the arguments of a function
  */
 export const partial = <T extends unknown[], R>(
   fn: (...args: T) => R,
@@ -60,7 +60,7 @@ export const partial = <T extends unknown[], R>(
 };
 
 /**
- * 輔助Function - Sort object
+ * Helper Function - Sort object
  */
 export const sortObjectKeys = (obj: unknown): unknown => {
   if (typeof obj !== 'object' || obj === null) {
@@ -82,7 +82,7 @@ export const sortObjectKeys = (obj: unknown): unknown => {
 };
 
 /**
- * 記憶化（Memoization）- 緩存函數結果以提高性能，Sort & Clear
+ * Memoization - caches function results to improve performance
  */
 export const memoize = <T extends unknown[], R>(
   fn: (...args: T) => R
@@ -116,7 +116,7 @@ export const memoize = <T extends unknown[], R>(
 };
 
 /**
- * 節流（Throttle）- 限制函數在一定時間內只執行一次
+ * Throttle - limits a function to execute at most once in a specified time period
  */
 export const throttle = <T extends unknown[]>(
   fn: (...args: T) => void,
@@ -134,7 +134,7 @@ export const throttle = <T extends unknown[]>(
 };
 
 /**
- * 防抖（Debounce）- 延遲函數執行，若在延遲時間內再次調用則重新計時
+ * Debounce - delays function execution and resets the timer if called again within the delay period
  */
 export const debounce = <T extends unknown[]>(
   fn: (...args: T) => void,
@@ -145,5 +145,44 @@ export const debounce = <T extends unknown[]>(
   return (...args: T): void => {
     if (timer) clearTimeout(timer);
     timer = setTimeout(() => fn(...args), delay);
+  };
+};
+
+/**
+ * Enhanced Debounce - provides additional control options for debounced functions
+ * @param fn Function to execute
+ * @param delay Delay time in milliseconds
+ * @param options Additional options
+ * @param options.shouldExecute Pre-execution condition check function
+ * @param options.onNotAllowed Callback when condition check fails
+ * @param options.onBeforeExecute Pre-execution callback
+ * @param options.onAfterExecute Post-execution callback
+ */
+export const enhancedDebounce = <T extends any[]>(
+  fn: (...args: T) => void,
+  delay: number,
+  options?: {
+    shouldExecute?: () => boolean;
+    onNotAllowed?: () => void;
+    onBeforeExecute?: () => void;
+    onAfterExecute?: () => void;
+  }
+) => {
+  let timer: ReturnType<typeof setTimeout> | null = null;
+
+  return (...args: T): void => {
+    if (options?.shouldExecute && !options.shouldExecute()) {
+      options.onNotAllowed?.();
+      return;
+    }
+
+    if (timer) clearTimeout(timer);
+
+    options?.onBeforeExecute?.();
+
+    timer = setTimeout(() => {
+      fn(...args);
+      options?.onAfterExecute?.();
+    }, delay);
   };
 };

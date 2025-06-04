@@ -1,6 +1,7 @@
+import { throttle } from '@/lib/functional';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
-import { useRef, useState } from 'react';
+import { useCallback, useState } from 'react';
 import Cropper, { Area, Point } from 'react-easy-crop';
 import { Input } from '../ui/input';
 import { Slider } from '../ui/slider';
@@ -24,8 +25,14 @@ const ImageCropper: React.FC<IImageCropperProps> = ({
   const [zoom, setZoom] = useState(1);
   const [imgSrc, setImgSrc] = useState(value);
   const [error, setError] = useState('');
-  // Throttle ref to limit zoom updates frequency
-  const lastZoomUpdateRef = useRef<number>(0);
+
+  // Create throttled zoom handler with 30ms delay (~33fps)
+  const handleCropperZoomChange = useCallback(
+    throttle((zoomValue: number) => {
+      setZoom(zoomValue);
+    }, 30),
+    [] // Empty deps array since setZoom is stable
+  );
 
   const onSelectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -62,16 +69,6 @@ const ImageCropper: React.FC<IImageCropperProps> = ({
       onChange(croppedImage);
     } catch (e) {
       console.error(e);
-    }
-  };
-
-  // Handle Cropper pinch/drag zoom with throttle
-  const handleCropperZoomChange = (zoomValue: number) => {
-    const now = Date.now();
-    // throttle to at most ~30ms per update (~33fps)
-    if (now - lastZoomUpdateRef.current > 30) {
-      setZoom(zoomValue);
-      lastZoomUpdateRef.current = now;
     }
   };
 

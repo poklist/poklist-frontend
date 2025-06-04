@@ -7,11 +7,7 @@ import { t } from '@lingui/core/macro';
 import BlocksSection from './BlocksSection';
 import IntroSection from './IntroSection';
 
-interface SettingsPageProps {
-  // Add any props you need for the page
-}
-
-const SettingsPage: React.FC<SettingsPageProps> = () => {
+const SettingsPage: React.FC = () => {
   const { isLoggedIn } = useAuthStore();
   const { me } = useUserStore();
   const navigateTo = useStrictNavigation();
