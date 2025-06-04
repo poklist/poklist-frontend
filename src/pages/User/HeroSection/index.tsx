@@ -59,6 +59,10 @@ const HeroSection: React.FC = () => {
     isError,
   } = useUser({
     userCode,
+    onError: (error) => {
+      console.error(error);
+      navigateTo.home();
+    },
   }) as {
     data: User | undefined;
     isLoading: boolean;
@@ -243,7 +247,7 @@ const HeroSection: React.FC = () => {
               variant={ButtonVariant.BLACK}
               size={ButtonSize.LG}
               shape={ButtonShape.ROUNDED_5PX}
-              onClick={() => navigateTo.editUser(me.userCode)}
+              onClick={() => navigateTo.editUser()}
             >
               <Trans>Edit profile and account</Trans>
             </Button>

@@ -3,25 +3,31 @@ import IconClose from '@/components/ui/icons/CloseIcon';
 import { useDeleteList } from '@/hooks/mutations/useDeleteList';
 import { useReorderIdeas } from '@/hooks/mutations/useReorderIdeas';
 import { useInfiniteList } from '@/hooks/queries/infinite/useInfiniteList';
+import { useAuthCheck, useAuthWrapper } from '@/hooks/useAuth';
 import { useOrderIdeas } from '@/hooks/queries/useOrderIdeas';
-import { useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigation from '@/hooks/useStrictNavigate';
+import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
 import Header from '@/pages/Lists/Components/Header';
 import IdeaList, { DropEvent } from '@/pages/Lists/Manage/IdeasList';
 import ListInfo from '@/pages/Lists/Manage/ListInfo';
 import useCommonStore from '@/stores/useCommonStore';
+import useLayoutStore from '@/stores/useLayoutStore';
 import useUserStore from '@/stores/useUserStore';
 import { IdeaPreview } from '@/types/Idea';
 import { Trans } from '@lingui/react/macro';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useOutletContext, useParams } from 'react-router-dom';
 const ListManagePage: React.FC = () => {
+  const { userCode } = useOutletContext<UserRouteLayoutContextType>();
+
   const { id } = useParams();
   const navigateTo = useStrictNavigation();
   const { withAuth } = useAuthWrapper();
-  const { setIsLoading } = useCommonStore();
-  const { me } = useUserStore();
+  const { checkAuthAndRedirect } = useAuthCheck();
 
+  const { me } = useUserStore();
+  const { setIsLoading } = useCommonStore();
+  const isMobile = useLayoutStore((state) => state.isMobile);
   const [isDeleting, setIsDeleting] = useState(false);
   const [ideasDraft, setIdeasDraft] = useState<IdeaPreview[]>();
   const [isOrderModified, setIsOrderModified] = useState(false);
@@ -140,6 +146,24 @@ const ListManagePage: React.FC = () => {
     setIsLoading,
   ]);
 
+  useEffect(() => {
+    checkAuthAndRedirect();
+    if (userCode !== me.userCode) {
+      if (userCode) {
+        if (id) {
+          navigateTo.viewList(userCode, id);
+        } else {
+          navigateTo.user(userCode);
+        }
+      } else {
+        navigateTo.home();
+      }
+    }
+  }, []);
+
+  if (isListLoading || isReorderIdeasLoading || isDeleteListLoading) {
+    return <div>Loading...</div>;
+  }
   return (
     <>
       <Header title={<Trans>Idea List</Trans>} deleteCallback={onDeleteList} />
