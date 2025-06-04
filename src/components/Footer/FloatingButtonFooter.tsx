@@ -19,6 +19,7 @@ interface IFooterProps {
 
 const FloatingButtonFooter: React.FC<IFooterProps> = ({
   hasLikeButton = false,
+  hasCreateListButton = true,
   isLiked = false,
   onClickLike,
   onClickUnlike,

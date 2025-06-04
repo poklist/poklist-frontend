@@ -45,10 +45,6 @@ const HeroSection: React.FC = () => {
 
   // 獲取當前用戶的關注狀態
   const isFollowing = userCode ? getIsFollowing(userCode) : false;
-  console.log(
-    `🏠 [HeroSection] userCode: ${userCode}, isFollowing:`,
-    isFollowing
-  );
 
   const { withAuth } = useAuthWrapper();
 
