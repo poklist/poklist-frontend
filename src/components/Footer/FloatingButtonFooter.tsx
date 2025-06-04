@@ -14,10 +14,12 @@ interface IFooterProps {
   isLiked?: boolean;
   onClickLike?: () => void;
   onClickUnlike?: () => void;
+  hasCreateListButton?: boolean;
 }
 
 const FloatingButtonFooter: React.FC<IFooterProps> = ({
   hasLikeButton = false,
+  hasCreateListButton = true,
   isLiked = false,
   onClickLike,
   onClickUnlike,
@@ -64,14 +66,16 @@ const FloatingButtonFooter: React.FC<IFooterProps> = ({
           <Trans>Like</Trans>
         </Button>
       )}
-      <Button
-        variant={ButtonVariant.WHITE}
-        className="flex items-center gap-2 text-sm"
-        onClick={handleCreateList}
-      >
-        <IconAdd />
-        <Trans>Create List</Trans>
-      </Button>
+      {hasCreateListButton && (
+        <Button
+          variant={ButtonVariant.WHITE}
+          className="flex items-center gap-2 text-sm"
+          onClick={handleCreateList}
+        >
+          <IconAdd />
+          <Trans>Create List</Trans>
+        </Button>
+      )}
       <Button
         onClick={handleCopyHref}
         variant={ButtonVariant.WHITE}
