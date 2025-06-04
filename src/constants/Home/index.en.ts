@@ -14,7 +14,7 @@ export const HERO_SECTION = {
   },
   nonCreatorQuestion: {
     title: msg`Can non-creators use Relist?`,
-    url: 'https://opaque-creek-8e5.notion.site/Can-Non-creators-sign-up-1a8a4cd4b98b80f79ddbe17681b6dda3',
+    url: ExternalLinks.CAN_NON_CREATORS_USE_RELIST,
   },
 };
 export const FEATURE_SECTION = {
@@ -320,22 +320,22 @@ export const SOCIAL_MEDIA = [
   {
     name: 'Discord',
     icon: IMAGES.socialMedia.discord,
-    url: 'https://discord.gg/me8MqJdXKt',
+    url: ExternalLinks.DISCORD,
   },
   {
     name: 'Instagram',
     icon: IMAGES.socialMedia.instagram,
-    url: 'https://www.instagram.com/relist.cc',
+    url: ExternalLinks.INSTAGRAM,
   },
   {
     name: 'Threads',
     icon: IMAGES.socialMedia.threads,
-    url: 'https://www.threads.net/@relist.cc',
+    url: ExternalLinks.THREADS,
   },
   {
     name: 'LinkedIn',
     icon: IMAGES.socialMedia.linkedin,
-    url: 'https://www.linkedin.com/company/relistapp',
+    url: ExternalLinks.LINKEDIN,
   },
 ];
 export const ERROR_DIALOG = {

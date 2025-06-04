@@ -4,15 +4,15 @@ import { Idea } from '@/constants/list';
 import { useLikeAction } from '@/hooks/mutations/useLikeAction';
 import { useList } from '@/hooks/queries/useList';
 import { useUser } from '@/hooks/queries/useUser';
+import useStrictNavigation from '@/hooks/useStrictNavigate';
 import { useToast } from '@/hooks/useToast';
 import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
 import { Tile20Background } from '@/pages/User/TileBackground';
 import useAuthStore from '@/stores/useAuthStore';
 import useCommonStore from '@/stores/useCommonStore';
-import useLikeStore from '@/stores/useLikeStore';
 import useFollowingStore from '@/stores/useFollowingStore';
+import useLikeStore from '@/stores/useLikeStore';
 import useUserStore from '@/stores/useUserStore';
-import { User } from '@/types/User';
 import { t } from '@lingui/core/macro';
 import { useEffect } from 'react';
 import { useOutletContext, useParams } from 'react-router-dom';
@@ -25,7 +25,7 @@ const ViewListPage: React.FC = () => {
   const { isLoggedIn } = useAuthStore();
   const { me } = useUserStore();
   const isMyPage = listOwnerUserCode === me.userCode;
-
+  const navigateTo = useStrictNavigation();
   const { setIsLoading } = useCommonStore();
 
   const { getIsLiked, setIsLiked, hasLikeState } = useLikeStore();
@@ -35,15 +35,32 @@ const ViewListPage: React.FC = () => {
   // 獲取當前列表的點讚狀態
   const isLiked = listID ? getIsLiked(listID) : false;
 
-  const { data: listOwner } = useUser({
+  const {
+    data: listOwner,
+    isLoading: isListOwnerLoading,
+    isError: isListOwnerError,
+  } = useUser({
     userCode: listOwnerUserCode,
-  }) as { data: User | undefined };
+  });
 
-  const { data: list, isLoading: isListLoading } = useList({
+  // FUTURE: check before firing the query if we have the listID validation rules
+  const {
+    data: list,
+    isLoading: isListLoading,
+    isError: isListError,
+  } = useList({
     listID: listID,
     offset: Idea.DEFAULT_FIRST_BATCH_OFFSET,
     limit: Idea.DEFAULT_BATCH_SIZE,
   });
+
+  useEffect(() => {
+    if (isListOwnerError) {
+      navigateTo.home();
+    } else if (isListError) {
+      navigateTo.user(listOwnerUserCode);
+    }
+  }, [isListOwnerError, isListError, listOwnerUserCode, navigateTo]);
 
   const { like, unlike } = useLikeAction({
     listID: listID || '',
@@ -87,6 +104,22 @@ const ViewListPage: React.FC = () => {
       }
     }
   }, [listOwner, listOwnerUserCode, setIsFollowing, hasFollowingState]);
+
+  useEffect(() => {
+    if (!isListOwnerLoading && !isListLoading && list?.owner && listID) {
+      if (listOwnerUserCode !== list?.owner.userCode) {
+        navigateTo.viewList(list?.owner.userCode, listID);
+      }
+    }
+  }, [
+    isListOwnerError,
+    isListOwnerLoading,
+    isListLoading,
+    list?.owner,
+    listID,
+    listOwnerUserCode,
+    navigateTo,
+  ]);
 
   return (
     <>

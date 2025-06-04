@@ -1,3 +1,4 @@
+import { ViewListNavigateState } from '@/pages/Lists/View/ListCard';
 import { StaticRoutes } from '@/router';
 import { NavigateOptions, useNavigate } from 'react-router-dom';
 
@@ -15,13 +16,13 @@ const useStrictNavigation = () => {
     goToMobile: () => navigate(StaticRoutes.GO_TO_MOBILE),
 
     user: (userCode: string) => navigate(`/@${userCode}`),
-    editUser: (userCode: string) => navigate(`/@${userCode}/edit`),
-    createList: (userCode: string) => navigate(`/@${userCode}/list/create`),
+    editUser: () => navigate(`/user/edit`),
+    createList: () => navigate(`/list/create`),
     viewList: (userCode: string, listID: string, ideaID?: string) =>
       ideaID === undefined
         ? navigate(`/@${userCode}/list/${listID}`)
         : navigate(`/@${userCode}/list/${listID}`, {
-            state: { ideaID: Number(ideaID) },
+            state: { ideaID: Number(ideaID) } as ViewListNavigateState,
           }),
     manageList: (userCode: string, listID: string) =>
       navigate(`/@${userCode}/list/${listID}/manage`),

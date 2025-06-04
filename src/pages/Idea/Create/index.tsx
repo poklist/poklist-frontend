@@ -10,13 +10,15 @@ import { Trans } from '@lingui/react/macro';
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
+export interface CreateIdeaNavigateState {
+  listID: number;
+  listTitle: string;
+}
+
 const IdeaCreatePage: React.FC = () => {
   const navigateTo = useStrictNavigation();
   const location = useLocation();
-  const { listID, listTitle } = location.state as {
-    listID: number;
-    listTitle: string;
-  };
+  const { listID, listTitle } = location.state as CreateIdeaNavigateState;
   const { setIsLoading, setShowingAlert } = useCommonStore();
   const { me } = useUserStore();
 

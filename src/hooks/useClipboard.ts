@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import useTimeout from './useTimeout';
 
 const DELAY = 1500;
@@ -9,11 +9,7 @@ const useClipboard = (): {
   isCopied: boolean;
   copy: (text: string) => Promise<void>;
 } => {
-  const [isSupport, setIsSupport] = useState(navigator && 'clipboard' in navigator);
-
-  useEffect(() => {
-    setIsSupport(navigator && 'clipboard' in navigator);
-  }, [navigator]);
+  const [isSupport] = useState(false);
 
   const [text, setText] = useState<string | null>(null);
   const [isCopied, setIsCopied] = useState(false);

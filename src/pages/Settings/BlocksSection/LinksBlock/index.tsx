@@ -4,7 +4,10 @@ import { IActionItem, ILinksBlock } from '@/types/Settings';
 
 type ILinksBlockProps = ILinksBlock;
 
-const LinksBlock: React.FC<ILinksBlockProps> = ({ title, actionItems }) => {
+const LinksBlock: React.FC<ILinksBlockProps> = ({
+  title,
+  actionItems,
+}: ILinksBlockProps) => {
   const handleClick = (item: IActionItem) => {
     if (item.action !== undefined) {
       return item.action;

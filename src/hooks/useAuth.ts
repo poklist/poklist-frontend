@@ -2,6 +2,7 @@ import { pipe } from '@/lib/functional';
 import useAuthStore from '@/stores/useAuthStore';
 import useCommonStore from '@/stores/useCommonStore';
 import { useCallback } from 'react';
+import useStrictNavigation from './useStrictNavigate';
 
 /**
  * 檢查使用者是否已登入，如未登入則顯示登入對話框
@@ -9,6 +10,7 @@ import { useCallback } from 'react';
 export const useAuthCheck = () => {
   const { isLoggedIn } = useAuthStore();
   const { setIsLoginDrawerOpen } = useCommonStore();
+  const navigateTo = useStrictNavigation();
 
   // 基本檢查函數
   const checkAuth = useCallback((): boolean => {
@@ -19,7 +21,14 @@ export const useAuthCheck = () => {
     return true;
   }, [isLoggedIn, setIsLoginDrawerOpen]);
 
-  return { checkAuth };
+  const checkAuthAndRedirect = useCallback(() => {
+    if (!isLoggedIn) {
+      navigateTo.home();
+    }
+    return true;
+  }, [isLoggedIn, navigateTo]);
+
+  return { checkAuth, checkAuthAndRedirect };
 };
 
 /**
@@ -36,7 +45,7 @@ export const useAuthProtect = () => {
   const { checkAuth } = useAuthCheck();
 
   // 保護函數的執行
-  const protect = <T extends any[], R>(fn: (...args: T) => R) => {
+  const protect = <T extends unknown[], R>(fn: (...args: T) => R) => {
     return (...args: T): R | undefined => {
       if (checkAuth()) {
         return fn(...args);
@@ -64,7 +73,7 @@ export const useAuthPipe = () => {
   const { protect } = useAuthProtect();
 
   // 組合函數，並在最後加上登入保護
-  const protectPipe = (...fns: Array<(a: any) => any>) => {
+  const protectPipe = (...fns: Array<(a: unknown) => unknown>) => {
     const composedFn = pipe(fns[0], ...fns.slice(1));
     return protect(composedFn);
   };
@@ -85,7 +94,7 @@ export const useAuthPipe = () => {
  * );
  */
 export const useConditionalExecution = () => {
-  const executeWhen = <T extends any[], R>(
+  const executeWhen = <T extends unknown[], R>(
     condition: (...args: T) => boolean,
     fn: (...args: T) => R
   ) => {
@@ -124,7 +133,7 @@ export const useAuthWrapper = <R>(options?: AuthWrapperOptions<R>) => {
   const { isLoggedIn } = useAuthStore();
   const { setIsLoginDrawerOpen } = useCommonStore();
 
-  const withAuth = <T extends any[]>(fn: (...args: T) => R) => {
+  const withAuth = <T extends unknown[]>(fn: (...args: T) => R) => {
     return (...args: T): R | undefined => {
       // 未登入處理
       if (!isLoggedIn) {

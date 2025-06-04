@@ -1,3 +1,4 @@
+import QueryKeys from '@/config/queryKeys';
 import useStrictNavigation from '@/hooks/useStrictNavigate';
 import axios from '@/lib/axios';
 import useAuthStore from '@/stores/useAuthStore';
@@ -8,11 +9,10 @@ import { t } from '@lingui/core/macro';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { toast } from '../useToast';
-import QueryKeys from '@/config/queryKeys';
 
 interface UseEditProfileOptions {
   onSuccess?: (data: UpdateUserResponse) => void;
-  onError?: (error: any) => void;
+  onError?: (error: AxiosError<IResponse<unknown>>) => void;
 }
 
 export const useEditProfile = ({
@@ -55,7 +55,7 @@ export const useEditProfile = ({
       onSuccess?.(data);
       navigateTo.user(newUserCode);
     },
-    onError: (error: AxiosError<IResponse<any>>) => {
+    onError: (error: AxiosError<IResponse<unknown>>) => {
       if (error.response?.status === 401) {
         logout();
         navigateTo.discovery();

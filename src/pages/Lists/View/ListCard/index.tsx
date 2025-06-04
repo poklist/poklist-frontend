@@ -31,11 +31,15 @@ import { useEffect, useRef, useState } from 'react';
 import { useLocation, useOutletContext, useParams } from 'react-router-dom';
 import IdeaDrawerContent from '../IdeaDrawerContent';
 
+export interface ViewListNavigateState {
+  ideaID?: number;
+}
+
 interface IListCardProps {
   data: List;
 }
 
-const ListCard: React.FC<IListCardProps> = ({ data }) => {
+const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
   const { userCode: listOwnerUserCode } =
     useOutletContext<UserRouteLayoutContextType>();
   const { id: listID, ideaID } = useParams();
@@ -165,7 +169,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
 
   useEffect(() => {
     const locale =
-      i18n.locale === Language.ZH_TW ? Language.ZH_TW : Language.EN; // FUTURE: be aware of the future i18n support
+      i18n.locale === (Language.ZH_TW as string) ? Language.ZH_TW : Language.EN; // FUTURE: be aware of the future i18n support
     setCreatedAtString(getFormattedTime(data.createdAt, locale));
   }, [data.createdAt, i18n.locale]);
 
@@ -173,14 +177,15 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
     if (listID && ideaID) {
       navigateTo.viewList(listOwnerUserCode, listID, ideaID);
     }
-  }, [ideaID, listID, navigateTo, me.userCode]);
+  }, [ideaID, listID, listOwnerUserCode, navigateTo]);
 
   useEffect(() => {
-    if (location.state?.ideaID) {
-      onClickIdea(location.state.ideaID);
-      location.state.ideaID = undefined;
+    const locationState = location.state as ViewListNavigateState;
+    if (locationState?.ideaID) {
+      onClickIdea(locationState.ideaID);
+      locationState.ideaID = undefined;
     }
-  }, [location.state?.ideaID]);
+  }, [location.state]);
 
   return (
     <>
@@ -291,7 +296,6 @@ const ListCard: React.FC<IListCardProps> = ({ data }) => {
             })}
           </div>
         )}
-        {/* TODO: See more button */}
       </div>
       <DrawerComponent
         drawerId={DrawerIds.LIST_CARD_DRAWER_ID}

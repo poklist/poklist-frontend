@@ -1,8 +1,8 @@
+import QueryKeys from '@/config/queryKeys';
 import axios, { AxiosPayload } from '@/lib/axios';
 import useFollowingStore from '@/stores/useFollowingStore';
-import QueryKeys from '@/config/queryKeys';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { Method } from 'axios';
+import { useMutation, UseMutationResult } from '@tanstack/react-query';
+import { AxiosError, AxiosRequestConfig, Method } from 'axios';
 import { useRef } from 'react';
 
 interface FollowActionOptions {
@@ -38,20 +38,18 @@ export const useFollowAction = ({
   onSuccess,
   onError,
 }: FollowActionOptions): FollowActionReturn => {
-  const queryClient = useQueryClient();
   const latestParamsRef = useRef<AxiosPayload | null>(null);
-  const { setIsFollowing, clearFollowingStatus } = useFollowingStore();
+  const { setIsFollowing } = useFollowingStore();
 
   const followMutation = useMutation({
     mutationKey: [QueryKeys.USER, userCode, 'follow'],
     mutationFn: async (variables: AxiosPayload) => {
       latestParamsRef.current = variables;
 
-      const config = {
+      const config: AxiosRequestConfig = {
         url: '/follow',
         method: 'POST' as Method,
         ...(variables?.params && { params: variables.params }),
-        ...(variables?.data && { data: variables.data }),
       };
 
       return axios.request(config);
@@ -59,8 +57,8 @@ export const useFollowAction = ({
     onSuccess: (res: unknown, variables: AxiosPayload) => {
       onSuccess?.(res, variables);
     },
-    onError: (error: unknown, variables: AxiosPayload) => {
-      if ((error as any)?.response?.status === 401) {
+    onError: (error: AxiosError, variables: AxiosPayload) => {
+      if (error.response?.status === 401) {
         onUnauthorized?.();
       } else {
         onError?.(error, variables);
@@ -73,11 +71,10 @@ export const useFollowAction = ({
     mutationFn: async (variables: AxiosPayload) => {
       latestParamsRef.current = variables;
 
-      const config = {
+      const config: AxiosRequestConfig = {
         url: '/unfollow',
         method: 'POST' as Method,
         ...(variables?.params && { params: variables.params }),
-        ...(variables?.data && { data: variables.data }),
       };
 
       return axios.request(config);
@@ -85,8 +82,8 @@ export const useFollowAction = ({
     onSuccess: (res: unknown, variables: AxiosPayload) => {
       onSuccess?.(res, variables);
     },
-    onError: (error: unknown, variables: AxiosPayload) => {
-      if ((error as any)?.response?.status === 401) {
+    onError: (error: AxiosError, variables: AxiosPayload) => {
+      if (error.response?.status === 401) {
         onUnauthorized?.();
       } else {
         onError?.(error, variables);
@@ -94,7 +91,10 @@ export const useFollowAction = ({
     },
   });
 
-  const createDebouncedAction = (mutation: any, optimisticValue: boolean) => {
+  const createDebouncedAction = (
+    mutation: UseMutationResult<unknown, AxiosError, AxiosPayload, unknown>,
+    optimisticValue: boolean
+  ) => {
     return (variables: { params: { userID: number } }) => {
       if (shouldAllow && !shouldAllow()) {
         onNotAllowed?.();

@@ -1,8 +1,8 @@
+import QueryKeys from '@/config/queryKeys';
 import axios, { AxiosPayload } from '@/lib/axios';
 import useLikeStore from '@/stores/useLikeStore';
-import QueryKeys from '@/config/queryKeys';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { Method } from 'axios';
+import { useMutation, UseMutationResult } from '@tanstack/react-query';
+import { AxiosError, AxiosRequestConfig, Method } from 'axios';
 import { useRef } from 'react';
 
 interface LikeActionOptions {
@@ -38,7 +38,6 @@ export const useLikeAction = ({
   onSuccess,
   onError,
 }: LikeActionOptions): LikeActionReturn => {
-  const queryClient = useQueryClient();
   const latestParamsRef = useRef<AxiosPayload | null>(null);
   const { setIsLiked } = useLikeStore();
 
@@ -51,16 +50,15 @@ export const useLikeAction = ({
         url: '/like',
         method: 'POST' as Method,
         ...(variables?.params && { params: variables.params }),
-        ...(variables?.data && { data: variables.data }),
-      };
+      } as AxiosRequestConfig;
 
       return axios.request(config);
     },
     onSuccess: (res: unknown, variables: AxiosPayload) => {
       onSuccess?.(res, variables);
     },
-    onError: (error: unknown, variables: AxiosPayload) => {
-      if ((error as any)?.response?.status === 401) {
+    onError: (error: AxiosError, variables: AxiosPayload) => {
+      if (error.response?.status === 401) {
         onUnauthorized?.();
       } else {
         onError?.(error, variables);
@@ -73,11 +71,10 @@ export const useLikeAction = ({
     mutationFn: async (variables: AxiosPayload) => {
       latestParamsRef.current = variables;
 
-      const config = {
+      const config: AxiosRequestConfig = {
         url: '/unlike',
         method: 'POST' as Method,
         ...(variables?.params && { params: variables.params }),
-        ...(variables?.data && { data: variables.data }),
       };
 
       return axios.request(config);
@@ -85,8 +82,8 @@ export const useLikeAction = ({
     onSuccess: (res: unknown, variables: AxiosPayload) => {
       onSuccess?.(res, variables);
     },
-    onError: (error: unknown, variables: AxiosPayload) => {
-      if ((error as any)?.response?.status === 401) {
+    onError: (error: AxiosError, variables: AxiosPayload) => {
+      if (error.response?.status === 401) {
         onUnauthorized?.();
       } else {
         onError?.(error, variables);
@@ -94,7 +91,10 @@ export const useLikeAction = ({
     },
   });
 
-  const createDebouncedAction = (mutation: any, optimisticValue: boolean) => {
+  const createDebouncedAction = (
+    mutation: UseMutationResult<unknown, AxiosError, AxiosPayload, unknown>,
+    optimisticValue: boolean
+  ) => {
     return (variables: AxiosPayload = {}) => {
       if (shouldAllow && !shouldAllow()) {
         onNotAllowed?.();

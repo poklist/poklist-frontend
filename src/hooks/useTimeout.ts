@@ -1,8 +1,8 @@
 import React from 'react';
 
-const useTimeout = (callback: Function, delay: number) => {
-  const callbackRef = React.useRef<Function | null>(callback);
-  const timeoutIdRef = React.useRef<number | null>(null);
+const useTimeout = (callback: () => void, delay: number) => {
+  const callbackRef = React.useRef<() => void>(callback);
+  const timeoutIdRef = React.useRef<NodeJS.Timeout | null>(null);
 
   if (!callbackRef.current) {
     callbackRef.current = callback;
@@ -10,7 +10,7 @@ const useTimeout = (callback: Function, delay: number) => {
 
   const start = React.useCallback(() => {
     if (!timeoutIdRef.current) {
-      timeoutIdRef.current = window.setTimeout(() => {
+      timeoutIdRef.current = setTimeout(() => {
         callbackRef.current?.();
         timeoutIdRef.current = null;
       }, delay);

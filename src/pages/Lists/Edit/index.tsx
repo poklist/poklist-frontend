@@ -1,8 +1,9 @@
 import { useDeleteList } from '@/hooks/mutations/useDeleteList';
 import { useEditList } from '@/hooks/mutations/useEditList';
 import { useList } from '@/hooks/queries/useList';
-import { useAuthWrapper } from '@/hooks/useAuth';
+import { useAuthCheck, useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigation from '@/hooks/useStrictNavigate';
+import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
 import ListForm from '@/pages/Lists/Components/Form';
 import Header from '@/pages/Lists/Components/Header';
 import useCommonStore from '@/stores/useCommonStore';
@@ -10,25 +11,26 @@ import useUserStore from '@/stores/useUserStore';
 import { ListBody, ListCover } from '@/types/List';
 import { Trans } from '@lingui/react/macro';
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useOutletContext, useParams } from 'react-router-dom';
 
 const EditListPage: React.FC = () => {
+  const { userCode } = useOutletContext<UserRouteLayoutContextType>();
   // Render the page here
   const { id } = useParams();
   const navigateTo = useStrictNavigation();
-
+  const { checkAuthAndRedirect } = useAuthCheck();
   const { setIsLoading } = useCommonStore();
-  const userStore = useUserStore();
+  const { me } = useUserStore();
   const { withAuth } = useAuthWrapper();
 
   const { data: list, isLoading: isListInfoLoading } = useList({
     listID: id,
   });
   const { isEditListLoading, editList } = useEditList({
-    userCode: userStore.me.userCode,
+    userCode: me.userCode,
   });
   const { deleteList, isDeleteListLoading } = useDeleteList({
-    userCode: userStore.me.userCode,
+    userCode: me.userCode,
   });
 
   const [listCoverDraft, setListCoverDraft] = useState<ListCover>();
@@ -37,7 +39,7 @@ const EditListPage: React.FC = () => {
     if (list) {
       deleteList(list.id, {
         onSuccess: () => {
-          navigateTo.user(userStore.me.userCode);
+          navigateTo.user(me.userCode);
           setIsLoading(false);
         },
       });
@@ -46,7 +48,7 @@ const EditListPage: React.FC = () => {
 
   const onDismissEdit = (isFormEmpty: boolean) => {
     if (list && isFormEmpty) {
-      navigateTo.manageList(userStore.me.userCode, list.id.toString());
+      navigateTo.manageList(me.userCode, list.id.toString());
     }
   };
 
@@ -73,7 +75,7 @@ const EditListPage: React.FC = () => {
           if (!data) {
             throw new Error('Failed to edit list');
           }
-          navigateTo.manageList(userStore.me.userCode, data.id.toString());
+          navigateTo.manageList(me.userCode, data.id.toString());
         },
       }
     );
@@ -93,8 +95,22 @@ const EditListPage: React.FC = () => {
     }
   }, [list]);
 
+  useEffect(() => {
+    checkAuthAndRedirect();
+    if (userCode !== me.userCode) {
+      if (userCode) {
+        if (id) {
+          navigateTo.viewList(userCode, id);
+        } else {
+          navigateTo.user(userCode);
+        }
+      } else {
+        navigateTo.home();
+      }
+    }
+  }, [checkAuthAndRedirect, id, me.userCode, navigateTo, userCode]);
+
   return (
-    // Your component code here
     <>
       <Header title={<Trans>List Cover</Trans>} deleteCallback={onDeleteList} />
       <div className="flex h-full flex-col gap-6">

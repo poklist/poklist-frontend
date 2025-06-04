@@ -2,7 +2,7 @@ import useDeleteIdea from '@/hooks/mutations/useDeleteIdea';
 import useEditIdea from '@/hooks/mutations/useEditIdea';
 import { useIdea } from '@/hooks/queries/useIdea';
 import { useList } from '@/hooks/queries/useList';
-import { useAuthWrapper } from '@/hooks/useAuth';
+import { useAuthCheck, useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigation from '@/hooks/useStrictNavigate';
 import Header from '@/pages/Idea/Components/Header';
 import useCommonStore from '@/stores/useCommonStore';
@@ -21,9 +21,14 @@ const EditIdeaPage: React.FC = () => {
 
   const { setIsLoading } = useCommonStore();
   const { me } = useUserStore();
+  const { checkAuthAndRedirect } = useAuthCheck();
   const { withAuth } = useAuthWrapper();
 
-  const { idea, isLoading: isIdeaLoading } = useIdea({
+  const {
+    idea,
+    isLoading: isIdeaLoading,
+    isError: isIdeaError,
+  } = useIdea({
     ideaID: id,
     enabled: !isDeleting,
   });
@@ -87,6 +92,19 @@ const EditIdeaPage: React.FC = () => {
     isIdeaLoading,
     setIsLoading,
   ]);
+
+  useEffect(() => {
+    checkAuthAndRedirect();
+    if (isIdeaError) {
+      navigateTo.home();
+    }
+    if (isIdeaLoading || !idea) {
+      return;
+    }
+    if (idea.owner.userCode !== me.userCode) {
+      navigateTo.viewList(idea.owner.userCode, idea.listID.toString());
+    }
+  }, [isIdeaError, isIdeaLoading, idea, me.userCode, navigateTo]);
 
   return (
     <>

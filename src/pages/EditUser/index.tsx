@@ -9,6 +9,7 @@ import { socialLinkStarterMap } from '@/constants/User';
 import { EditFieldVariant, FieldType } from '@/enums/EditField/index.enum';
 import { SocialLinkType } from '@/enums/index.enum';
 import { useEditProfile } from '@/hooks/mutations/useEditProfile';
+import { useAuthCheck } from '@/hooks/useAuth';
 import useStrictNavigation from '@/hooks/useStrictNavigate';
 import { extractUsernameFromUrl, urlPreview } from '@/lib/utils';
 import { validateUserCode } from '@/lib/validator';
@@ -33,7 +34,7 @@ const EditUserPage: React.FC = () => {
     setSocialLink,
     isModified,
   } = useEditProfileStore();
-
+  const { checkAuthAndRedirect } = useAuthCheck();
   const { editProfile } = useEditProfile();
   const { openFakePage, closeFakePage } = useFakePage();
   const socialLinkTypeList = Object.values(SocialLinkType);
@@ -237,12 +238,13 @@ const EditUserPage: React.FC = () => {
     openFakePage();
   };
 
-  const onSubmit = async () => {
+  const onSubmit = () => {
     editProfile({ newUserInfo });
   };
 
   useEffect(() => {
     setNewUserInfo(me);
+    checkAuthAndRedirect();
     // onUnmounted
     return () => {
       closeFakePage();
@@ -350,7 +352,7 @@ const EditUserPage: React.FC = () => {
                 <p className="text-black-text-01">
                   {urlPreview(newUserInfo.socialLinks?.[linkType])}
                 </p>
-              ) : linkType === 'customized' ? (
+              ) : linkType === SocialLinkType.CUSTOMIZED ? (
                 <p className="text-gray-storm-01">your.link</p>
               ) : (
                 <div className="flex">

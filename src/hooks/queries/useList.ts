@@ -1,10 +1,11 @@
 import ApiPath from '@/config/apiPath';
+import QueryKeys from '@/config/queryKeys';
 import { Idea } from '@/constants/list';
 import axios from '@/lib/axios';
 import { List } from '@/types/List';
 import { IResponse } from '@/types/response';
 import { useQuery } from '@tanstack/react-query';
-import QueryKeys from '@/config/queryKeys';
+import { useEffect } from 'react';
 
 interface UseListOptions {
   listID?: string;
@@ -13,6 +14,7 @@ interface UseListOptions {
   staleTime?: number;
   gcTime?: number;
   enabled?: boolean;
+  onError?: (error: Error) => void;
 }
 
 export const useList = ({
@@ -22,12 +24,13 @@ export const useList = ({
   staleTime = 1000 * 60, // 1 minute
   gcTime = 1000 * 60 * 5, // 5 minutes
   enabled = true,
+  onError,
 }: UseListOptions) => {
   const query = useQuery({
     queryKey: [QueryKeys.LIST, listID, offset, limit],
     queryFn: async () => {
       if (!listID) {
-        throw new Error('listID is required');
+        console.error('listID is required');
       }
       const response = await axios.get<IResponse<List>>(
         `${ApiPath.lists}/${listID}`,
@@ -49,6 +52,12 @@ export const useList = ({
     initialData: undefined,
     refetchInterval: false,
   });
+
+  useEffect(() => {
+    if (query.error) {
+      onError?.(query.error);
+    }
+  }, [query.error, onError]);
 
   return {
     ...query,
