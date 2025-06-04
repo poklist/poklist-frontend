@@ -87,7 +87,7 @@ const HeroSection: React.FC = () => {
         navigateTo.error();
       }
     }
-  }, [isError]);
+  }, [isError, isMyPage, logout, navigateTo, toast]);
 
   const { follow, unfollow } = useFollowAction({
     userCode: userCode || '',

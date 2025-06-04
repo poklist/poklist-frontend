@@ -47,10 +47,9 @@ const CreatePage: React.FC = () => {
 
   useEffect(() => {
     checkAuthAndRedirect();
-  }, []);
+  }, [checkAuthAndRedirect]);
 
   return (
-    // Your component code here
     <>
       <Header title={<Trans>Idea List</Trans>} />
       <div className="flex min-h-screen flex-col gap-6">

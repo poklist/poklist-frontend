@@ -20,7 +20,9 @@ interface IIdeaDrawerContentProps {
   data: IdeaResponse;
 }
 
-const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({ data }) => {
+const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({
+  data,
+}: IIdeaDrawerContentProps) => {
   const { i18n } = useLingui();
   const { toast } = useToast();
 

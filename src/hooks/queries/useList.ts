@@ -57,7 +57,7 @@ export const useList = ({
     if (query.error) {
       onError?.(query.error);
     }
-  }, [query.error]);
+  }, [query.error, onError]);
 
   return {
     ...query,

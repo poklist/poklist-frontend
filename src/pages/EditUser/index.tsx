@@ -238,7 +238,7 @@ const EditUserPage: React.FC = () => {
     openFakePage();
   };
 
-  const onSubmit = async () => {
+  const onSubmit = () => {
     editProfile({ newUserInfo });
   };
 
@@ -352,7 +352,7 @@ const EditUserPage: React.FC = () => {
                 <p className="text-black-text-01">
                   {urlPreview(newUserInfo.socialLinks?.[linkType])}
                 </p>
-              ) : linkType === 'customized' ? (
+              ) : linkType === SocialLinkType.CUSTOMIZED ? (
                 <p className="text-gray-storm-01">your.link</p>
               ) : (
                 <div className="flex">

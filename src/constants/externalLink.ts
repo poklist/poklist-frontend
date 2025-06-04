@@ -25,8 +25,22 @@ const JOIN_TEAM =
 const CONTACT_US =
   'https://opaque-creek-8e5.notion.site/1a9a4cd4b98b80109fabf5bc2f1eec71';
 
+const FEEDBACK =
+  'https://opaque-creek-8e5.notion.site/Sugestion-Reports-1aba4cd4b98b80efae14ed33b25df264';
+
 const COLLECTION_NOTICE =
   'https://opaque-creek-8e5.notion.site/1a9a4cd4b98b806b98d3d7478b83fb19';
+
+const CAN_NON_CREATORS_USE_RELIST =
+  'https://opaque-creek-8e5.notion.site/Can-Non-creators-sign-up-1a8a4cd4b98b80f79ddbe17681b6dda3';
+
+const DISCORD = 'https://discord.gg/me8MqJdXKt';
+
+const INSTAGRAM = 'https://www.instagram.com/relist.cc';
+
+const THREADS = 'https://www.threads.net/@relist.cc';
+
+const LINKEDIN = 'https://www.linkedin.com/company/relistapp';
 
 export const ExternalLinks = {
   SIGNUP,
@@ -38,5 +52,11 @@ export const ExternalLinks = {
   FAQ,
   JOIN_TEAM,
   CONTACT_US,
+  FEEDBACK,
   COLLECTION_NOTICE,
+  CAN_NON_CREATORS_USE_RELIST,
+  DISCORD,
+  INSTAGRAM,
+  THREADS,
+  LINKEDIN,
 };

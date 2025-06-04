@@ -60,7 +60,7 @@ const ViewListPage: React.FC = () => {
     } else if (isListError) {
       navigateTo.user(listOwnerUserCode);
     }
-  }, [isListOwnerError, isListError]);
+  }, [isListOwnerError, isListError, listOwnerUserCode, navigateTo]);
 
   const { like, unlike } = useLikeAction({
     listID: listID || '',
@@ -117,6 +117,8 @@ const ViewListPage: React.FC = () => {
     isListLoading,
     list?.owner,
     listID,
+    listOwnerUserCode,
+    navigateTo,
   ]);
 
   return (

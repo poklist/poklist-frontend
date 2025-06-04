@@ -4,8 +4,9 @@ import { LanguageProvider } from '@/components/Language';
 import useCheckStorage from '@/hooks/useCheckStorage';
 import useStrictNavigation from '@/hooks/useStrictNavigate';
 import { cn } from '@/lib/utils';
+import { StaticRoutes } from '@/router';
 import useLayoutStore from '@/stores/useLayoutStore';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import Background from './Components/Background';
 import BottomNav from './Components/BottomNav';
@@ -16,7 +17,10 @@ export default function Layout() {
   const navigateTo = useStrictNavigation();
   const { isMobile } = useLayoutStore();
   const location = useLocation();
-  const redirectWhiteList = ['/error', '/goToMobile'];
+  const redirectWhiteList = useMemo(
+    () => [StaticRoutes.ERROR, StaticRoutes.GO_TO_MOBILE],
+    []
+  );
 
   useCheckStorage();
 
@@ -28,7 +32,7 @@ export default function Layout() {
     if (!isMobile && !redirectWhiteList.includes(location.pathname)) {
       navigateTo.goToMobile();
     }
-  }, [location.pathname]);
+  }, [location.pathname, navigateTo, redirectWhiteList]);
 
   return (
     <LanguageProvider>

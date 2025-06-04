@@ -1,7 +1,7 @@
-import axios from '@/lib/axios';
-import { User } from '@/types/User';
 import QueryKeys from '@/config/queryKeys';
+import axios from '@/lib/axios';
 import { IResponse } from '@/types/response';
+import { User } from '@/types/User';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
@@ -39,7 +39,7 @@ export const useUser = ({
     if (query.error) {
       onError?.(query.error);
     }
-  }, [query.error]);
+  }, [query.error, onError]);
 
   return {
     ...query,

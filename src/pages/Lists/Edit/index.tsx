@@ -3,6 +3,7 @@ import { useEditList } from '@/hooks/mutations/useEditList';
 import { useList } from '@/hooks/queries/useList';
 import { useAuthCheck, useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigation from '@/hooks/useStrictNavigate';
+import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
 import ListForm from '@/pages/Lists/Components/Form';
 import Header from '@/pages/Lists/Components/Header';
 import useCommonStore from '@/stores/useCommonStore';
@@ -12,11 +13,7 @@ import { Trans } from '@lingui/react/macro';
 import React, { useEffect, useState } from 'react';
 import { useOutletContext, useParams } from 'react-router-dom';
 
-interface EditListPageProps {
-  // Add any props you need for the page
-}
-
-const EditListPage: React.FC<EditListPageProps> = () => {
+const EditListPage: React.FC = () => {
   const { userCode } = useOutletContext<UserRouteLayoutContextType>();
   // Render the page here
   const { id } = useParams();
@@ -111,10 +108,9 @@ const EditListPage: React.FC<EditListPageProps> = () => {
         navigateTo.home();
       }
     }
-  }, []);
+  }, [checkAuthAndRedirect, id, me.userCode, navigateTo, userCode]);
 
   return (
-    // Your component code here
     <>
       <Header title={<Trans>List Cover</Trans>} deleteCallback={onDeleteList} />
       <div className="flex h-full flex-col gap-6">

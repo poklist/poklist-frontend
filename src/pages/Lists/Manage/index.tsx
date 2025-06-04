@@ -3,15 +3,14 @@ import IconClose from '@/components/ui/icons/CloseIcon';
 import { useDeleteList } from '@/hooks/mutations/useDeleteList';
 import { useReorderIdeas } from '@/hooks/mutations/useReorderIdeas';
 import { useInfiniteList } from '@/hooks/queries/infinite/useInfiniteList';
-import { useAuthCheck, useAuthWrapper } from '@/hooks/useAuth';
 import { useOrderIdeas } from '@/hooks/queries/useOrderIdeas';
+import { useAuthCheck, useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigation from '@/hooks/useStrictNavigate';
 import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
 import Header from '@/pages/Lists/Components/Header';
 import IdeaList, { DropEvent } from '@/pages/Lists/Manage/IdeasList';
 import ListInfo from '@/pages/Lists/Manage/ListInfo';
 import useCommonStore from '@/stores/useCommonStore';
-import useLayoutStore from '@/stores/useLayoutStore';
 import useUserStore from '@/stores/useUserStore';
 import { IdeaPreview } from '@/types/Idea';
 import { Trans } from '@lingui/react/macro';
@@ -27,7 +26,6 @@ const ListManagePage: React.FC = () => {
 
   const { me } = useUserStore();
   const { setIsLoading } = useCommonStore();
-  const isMobile = useLayoutStore((state) => state.isMobile);
   const [isDeleting, setIsDeleting] = useState(false);
   const [ideasDraft, setIdeasDraft] = useState<IdeaPreview[]>();
   const [isOrderModified, setIsOrderModified] = useState(false);
@@ -159,7 +157,7 @@ const ListManagePage: React.FC = () => {
         navigateTo.home();
       }
     }
-  }, []);
+  }, [checkAuthAndRedirect, id, me.userCode, navigateTo, userCode]);
 
   if (isListLoading || isReorderIdeasLoading || isDeleteListLoading) {
     return <div>Loading...</div>;
