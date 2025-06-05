@@ -1,6 +1,7 @@
 import { cn } from '@/lib/utils';
 import * as SliderPrimitive from '@radix-ui/react-slider';
-import React from 'react';
+import PropTypes from 'prop-types';
+import * as React from 'react';
 
 const Slider = React.forwardRef<
   React.ElementRef<typeof SliderPrimitive.Root>,
@@ -26,5 +27,8 @@ const Slider = React.forwardRef<
   </form>
 ));
 Slider.displayName = SliderPrimitive.Root.displayName;
+Slider.propTypes = {
+  className: PropTypes.string,
+};
 
 export { Slider };

@@ -7,7 +7,7 @@ import { Input } from '../ui/input';
 import { Slider } from '../ui/slider';
 import getCroppedImg from './cropImage';
 
-// TODO: move to constants
+// FUTURE: move to constants?
 const MIN_DIMENSION = 150;
 
 interface IImageCropperProps {
@@ -20,13 +20,14 @@ const ImageCropper: React.FC<IImageCropperProps> = ({
   value,
   onChange,
   cropShape = 'rect',
-}) => {
+}: IImageCropperProps) => {
   const [crop, setCrop] = useState<Point>({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [imgSrc, setImgSrc] = useState(value);
   const [error, setError] = useState('');
 
   // Create throttled zoom handler with 30ms delay (~33fps)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleCropperZoomChange = useCallback(
     throttle((zoomValue: number) => {
       setZoom(zoomValue);
@@ -63,13 +64,14 @@ const ImageCropper: React.FC<IImageCropperProps> = ({
     setCrop(location);
   };
 
-  const onCropComplete = async (_: Area, croppedAreaPixels: Area) => {
-    try {
-      const croppedImage = await getCroppedImg(imgSrc, croppedAreaPixels, 0);
-      onChange(croppedImage);
-    } catch (e) {
-      console.error(e);
-    }
+  const onCropComplete = (_: Area, croppedAreaPixels: Area) => {
+    void getCroppedImg(imgSrc, croppedAreaPixels, 0)
+      .then((croppedImage) => {
+        onChange(croppedImage);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   // Immediate slider-driven zoom updates

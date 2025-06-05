@@ -23,7 +23,7 @@ const FloatingButtonFooter: React.FC<IFooterProps> = ({
   isLiked = false,
   onClickLike,
   onClickUnlike,
-}) => {
+}: IFooterProps) => {
   const { toast } = useToast();
   const navigateTo = useStrictNavigation();
   const { withAuth } = useAuthWrapper();

@@ -1,4 +1,5 @@
-import { DrawerComponent, useDrawer } from '@/components/Drawer';
+import { DrawerComponent } from '@/components/Drawer';
+import { useDrawer } from '@/components/Drawer/useDrawer';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   Button,

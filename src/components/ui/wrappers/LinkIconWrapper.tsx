@@ -20,17 +20,17 @@ export default function LinkIconWrapper({
     <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[8px] bg-gray-main-03">
       {children ? (
         children
-      ) : variant === 'customized' ? (
+      ) : variant === SocialLinkType.CUSTOMIZED ? (
         <CustomizedLinkIcon />
-      ) : variant === 'instagram' ? (
+      ) : variant === SocialLinkType.INSTAGRAM ? (
         <InstagramIcon />
-      ) : variant === 'youtube' ? (
+      ) : variant === SocialLinkType.YOUTUBE ? (
         <YouTubeIcon />
-      ) : variant === 'tiktok' ? (
+      ) : variant === SocialLinkType.TIKTOK ? (
         <TikTokIcon />
-      ) : variant === 'threads' ? (
+      ) : variant === SocialLinkType.THREADS ? (
         <ThreadsIcon />
-      ) : variant === 'linkedin' ? (
+      ) : variant === SocialLinkType.LINKEDIN ? (
         <LinkedInIcon />
       ) : (
         <></>

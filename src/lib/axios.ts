@@ -1,24 +1,24 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
 import authStore from '@/stores/useAuthStore';
 import commonStore from '@/stores/useCommonStore';
 
 const instance = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
+  baseURL: import.meta.env.VITE_API_BASE_URL as string,
 });
 
 instance.interceptors.request.use(
-  async function (config) {
+  (config) => {
     // 從 localStorage 取得 token
     const { accessToken } = authStore.getState();
     config.headers.Authorization = `Bearer ${accessToken}`;
     return config;
   },
-  (error) => {
+  (error: AxiosError) => {
     const { setShowingAlert } = commonStore.getState();
     console.error(error);
     setShowingAlert(true, {
-      message: error,
+      message: error.message,
     });
     window.location.href = '/';
     return Promise.reject(error);
@@ -28,6 +28,6 @@ instance.interceptors.request.use(
 export default instance;
 
 export interface AxiosPayload {
-  params?: Record<string, any>;
-  data?: any;
+  params?: Record<string, unknown>;
+  data?: unknown;
 }

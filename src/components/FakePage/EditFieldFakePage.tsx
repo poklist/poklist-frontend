@@ -4,10 +4,10 @@ import useAutosizeTextArea from '@/hooks/useAutosizedTextArea';
 import { IEditFieldConfig } from '@/types/EditField';
 import { t } from '@lingui/core/macro';
 import { useEffect, useRef, useState } from 'react';
-import { useFakePage } from '.';
 import EditModeFooter from '../Footer/EditModeFooter';
 import ImageCropper from '../ImageCropper';
 import { Textarea } from '../ui/textarea';
+import { useFakePage } from './useFakePage';
 
 export const EditFieldFakePageComponent: React.FC<IEditFieldConfig> = ({
   fieldName,
@@ -20,7 +20,7 @@ export const EditFieldFakePageComponent: React.FC<IEditFieldConfig> = ({
   cropShape = 'rect',
   validator,
   trimmer,
-}) => {
+}: IEditFieldConfig) => {
   const { isOpen, closeFakePage } = useFakePage();
   const [fieldValue, setFieldValue] = useState<string>(
     edittingFieldValue ?? ''
@@ -33,7 +33,7 @@ export const EditFieldFakePageComponent: React.FC<IEditFieldConfig> = ({
     if (variant === EditFieldVariant.TEXT) {
       setFieldValue(edittingFieldValue ?? '');
     }
-  }, [edittingFieldValue]);
+  }, [edittingFieldValue, variant]);
 
   return (
     <Dialog open={isOpen} onOpenChange={closeFakePage}>
@@ -45,7 +45,7 @@ export const EditFieldFakePageComponent: React.FC<IEditFieldConfig> = ({
           id="edit-field-fake-page"
           className="z-10 flex h-full w-full flex-col items-center bg-white px-6 pb-6 pt-10 sm:pt-6 md:max-w-mobile-max"
         >
-          {variant === 'text' ? (
+          {variant === EditFieldVariant.TEXT ? (
             <TextInput
               value={fieldValue}
               onChange={setFieldValue}
@@ -96,8 +96,7 @@ const TextInput: React.FC<ITextInputProps> = ({
   placeholderText,
   characterLimit,
   validator,
-  trimmer,
-}) => {
+}: ITextInputProps) => {
   const [fieldValue, setFieldValue] = useState<string | undefined>(value);
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 

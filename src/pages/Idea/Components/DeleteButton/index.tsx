@@ -1,9 +1,10 @@
-import { DrawerComponent, useDrawer } from '@/components/Drawer';
+import { DrawerComponent } from '@/components/Drawer';
+import { useDrawer } from '@/components/Drawer/useDrawer';
 import { Button, ButtonShape, ButtonVariant } from '@/components/ui/button';
 import IconTrash from '@/components/ui/icons/TrashIcon';
+import { DrawerIds } from '@/constants/Drawer';
 import { Trans } from '@lingui/react/macro';
 import React from 'react';
-import { DrawerIds } from '@/constants/Drawer';
 
 interface IDeleteButtonProps {
   // Add any props you need for the page

@@ -1,16 +1,12 @@
 import { Dialog, DialogContent } from '@/components/ui/dialog';
-import { createContext, useContext, useState } from 'react';
-
-interface IFakePageContext {
-  isOpen: boolean;
-  openFakePage: () => void;
-  closeFakePage: () => void;
-}
-
-const FakePageContext = createContext<IFakePageContext | undefined>(undefined);
+import { useState } from 'react';
+import { FakePageContext } from './context';
+import { useFakePage } from './useFakePage';
 
 export const FakePageProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
+}: {
+  children: React.ReactNode;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -35,19 +31,13 @@ export const FakePageProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 };
 
-export const useFakePage = () => {
-  const context = useContext(FakePageContext);
-  if (!context) {
-    throw new Error('useFakePage must be used within a FakePageProvider');
-  }
-  return context;
-};
-
 interface IFakePageProps {
   content?: React.ReactNode;
 }
 
-export const FakePageComponent: React.FC<IFakePageProps> = ({ content }) => {
+export const FakePageComponent: React.FC<IFakePageProps> = ({
+  content,
+}: IFakePageProps) => {
   const { isOpen, closeFakePage } = useFakePage();
   return (
     <Dialog open={isOpen} onOpenChange={closeFakePage}>

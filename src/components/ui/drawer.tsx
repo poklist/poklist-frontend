@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import * as React from 'react';
 import { Drawer as DrawerPrimitive } from 'vaul';
 
@@ -32,6 +33,9 @@ const DrawerOverlay = React.forwardRef<
   />
 ));
 DrawerOverlay.displayName = DrawerPrimitive.Overlay.displayName;
+DrawerOverlay.propTypes = {
+  className: PropTypes.string,
+};
 
 const DrawerContent = React.forwardRef<
   React.ElementRef<typeof DrawerPrimitive.Content>,
@@ -55,6 +59,10 @@ const DrawerContent = React.forwardRef<
   </DrawerPortal>
 ));
 DrawerContent.displayName = 'DrawerContent';
+DrawerContent.propTypes = {
+  className: PropTypes.string,
+  children: PropTypes.node,
+};
 
 const DrawerHeader = ({
   className,
@@ -89,6 +97,9 @@ const DrawerTitle = React.forwardRef<
   />
 ));
 DrawerTitle.displayName = DrawerPrimitive.Title.displayName;
+DrawerTitle.propTypes = {
+  className: PropTypes.string,
+};
 
 const DrawerDescription = React.forwardRef<
   React.ElementRef<typeof DrawerPrimitive.Description>,
@@ -101,6 +112,9 @@ const DrawerDescription = React.forwardRef<
   />
 ));
 DrawerDescription.displayName = DrawerPrimitive.Description.displayName;
+DrawerDescription.propTypes = {
+  className: PropTypes.string,
+};
 
 export {
   Drawer,

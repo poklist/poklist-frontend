@@ -9,7 +9,7 @@ Language 元件包含以下主要部分：
 1. `LanguageProvider` - 提供語言環境的 Context Provider
 2. `LanguageSelector` - 下拉式語言選擇器
 3. `LanguageToggleButton` - 語言切換按鈕（簡化版）
-4. `activateI18n` - 激活指定語言的工具函數
+4. `activateI18n` - 激活指定語言的工具函數 (放在 useLanguage.ts 中以便 React 做 Fast Refresh)
 
 ## 使用方法
 
@@ -64,7 +64,7 @@ function Header() {
 直接激活指定語言：
 
 ```tsx
-import { activateI18n } from '@/components/Language';
+import { activateI18n } from '@/components/Language/useLanguage';
 import { Language } from '@/enums/index.enum';
 
 // 手動切換到繁體中文

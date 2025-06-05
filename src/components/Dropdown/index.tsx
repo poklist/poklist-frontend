@@ -18,7 +18,7 @@ const DropdownComponent: React.FC<IDropdownProps> = ({
   options,
   onSelect,
   defaultValue,
-}) => {
+}: IDropdownProps) => {
   const [current, setCurrent] = useState(defaultValue);
   // TODO wait for layout
   useEffect(() => {
@@ -31,7 +31,7 @@ const DropdownComponent: React.FC<IDropdownProps> = ({
         <DropdownMenu.Content>
           <DropdownMenu.RadioGroup
             value={current}
-            onValueChange={value => {
+            onValueChange={(value) => {
               setCurrent(value);
               onSelect(value);
             }}

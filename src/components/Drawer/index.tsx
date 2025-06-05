@@ -8,22 +8,9 @@ import {
   DrawerTitle,
 } from '@/components/ui/drawer';
 import { cn } from '@/lib/utils';
-import React, { createContext, useContext, useCallback, useState } from 'react';
-
-interface IDrawerContext {
-  openDrawers: Set<string>;
-  openDrawer: (drawerId: string) => void;
-  closeDrawer: (drawerId: string) => void;
-  isDrawerOpen: (drawerId: string) => boolean;
-}
-
-interface IDrawerControls {
-  isOpen: boolean;
-  openDrawer: () => void;
-  closeDrawer: () => void;
-}
-
-const DrawerContext = createContext<IDrawerContext | undefined>(undefined);
+import React, { useCallback, useState } from 'react';
+import { DrawerContext } from './context';
+import { useDrawer } from './useDrawer';
 
 export const DrawerProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -64,25 +51,6 @@ export const DrawerProvider: React.FC<{ children: React.ReactNode }> = ({
     <DrawerContext.Provider value={value}>{children}</DrawerContext.Provider>
   );
 };
-
-export function useDrawer(): IDrawerContext;
-export function useDrawer(drawerId: string): IDrawerControls;
-export function useDrawer(drawerId?: string) {
-  const context = useContext(DrawerContext);
-  if (!context) {
-    throw new Error('useDrawer must be used within a DrawerProvider');
-  }
-
-  if (!drawerId) {
-    return context;
-  }
-
-  return {
-    isOpen: context.isDrawerOpen(drawerId),
-    openDrawer: () => context.openDrawer(drawerId),
-    closeDrawer: () => context.closeDrawer(drawerId),
-  };
-}
 
 interface IDrawerProps {
   drawerId: string;

@@ -5,7 +5,9 @@ import path from 'node:path';
 import { defineConfig } from 'vite';
 
 // 讀取 package.json
-const packageJson = JSON.parse(readFileSync('package.json', 'utf-8'));
+const packageJson = JSON.parse(readFileSync('package.json', 'utf-8')) as {
+  version: string;
+};
 
 // https://vitejs.dev/config/
 export default defineConfig({

@@ -19,6 +19,6 @@ const useCheckStorage = () => {
         variant: 'success',
       });
     }
-  }, []);
+  }, [isLoggedIn, logout, navigateTo, toast]);
 };
 export default useCheckStorage;
