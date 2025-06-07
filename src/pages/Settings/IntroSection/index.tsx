@@ -8,19 +8,15 @@ const IntroSection: React.FC = () => {
       className="flex flex-col gap-6 px-4 pt-6 text-[15px]"
     >
       <p>
-        <Trans>
-          <strong>List Your World.</strong>
-          <br />
-          <br /> From secret coffee spots and must-have skincare, to
-          binge-worthy shows and game-changing life hacks—create, explore, and
-          share your top picks with the world.
-        </Trans>
+        <strong>
+          <Trans>Welcome to the Relist community!</Trans>
+        </strong>
       </p>
       <p>
         <Trans>
-          🚀 <strong>We’re in Beta</strong> and want you to be part of the
-          journey! Join us, shape the platform, and help us reach the next
-          level.
+          This is your space to drop ideas and build your pocket list. Tell us
+          what you think and how it feels. Your voice helps shape what comes
+          next.
         </Trans>
       </p>
       <Button
@@ -28,7 +24,7 @@ const IntroSection: React.FC = () => {
         size={ButtonSize.SM}
         className="w-fit self-end"
       >
-        <Trans>✨ Sign up now and start listing!</Trans>
+        <Trans>Tell us what you think</Trans>
       </Button>
     </div>
   );
