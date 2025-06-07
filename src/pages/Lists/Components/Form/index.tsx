@@ -256,7 +256,7 @@ const ListForm: React.FC<IListFormProps> = ({
           })}
         >
           <Input
-            placeholder={t`Give your list a title`}
+            placeholder={t`This is the title of your list`}
             className="relative w-min border-none text-h1 placeholder:text-h1"
             {...listForm.register('title', { onChange: onInputChange })}
           />

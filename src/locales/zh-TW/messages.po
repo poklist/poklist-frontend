@@ -60,10 +60,7 @@ msgid "Copy"
 msgstr "複製"
 
 #: src/components/Header/BackToUserHeader.tsx
-#: src/components/Header/BackToUserHeader.tsx
 #: src/pages/Lists/View/index.tsx
-#: src/pages/Lists/View/index.tsx
-#: src/pages/User/HeroSection/index.tsx
 #: src/pages/User/HeroSection/index.tsx
 msgid "Please login to do this action"
 msgstr "請先登入以進行此操作"
@@ -712,8 +709,8 @@ msgid "Please keep it under {DESC_MAX_LENGTH} characters."
 msgstr "字數有點爆表，請減到 {DESC_MAX_LENGTH} 個字元以內。"
 
 #: src/pages/Idea/Components/Form/index.tsx
-msgid "What's your Idea?"
-msgstr "靈感標題"
+msgid "This is the title of your idea"
+msgstr "在這輸入靈感標題"
 
 #: src/pages/Idea/Components/Form/index.tsx
 #: src/pages/Idea/Components/Form/index.tsx
@@ -790,8 +787,8 @@ msgid "List title is too long!"
 msgstr "名單標題字數太長啦！"
 
 #: src/pages/Lists/Components/Form/index.tsx
-msgid "Give your list a title"
-msgstr "輸入名單標題"
+msgid "This is the title of your list"
+msgstr "在這輸入名單標題"
 
 #: src/pages/Lists/Components/Form/index.tsx
 #: src/pages/Lists/Components/Form/index.tsx
@@ -838,10 +835,6 @@ msgstr "靈感名單"
 #: src/pages/Lists/Edit/index.tsx
 msgid "List Cover"
 msgstr "名單封面"
-
-#: src/pages/Lists/Manage/index.tsx
-#~ msgid "Tap to edit. Hold & drag to reorder Ideas"
-#~ msgstr "點擊靈感進行編輯，長按可拖曳排序。"
 
 #: src/pages/Lists/Manage/index.tsx
 msgid "Edit list cover"
@@ -972,16 +965,16 @@ msgid "Sign Out"
 msgstr "登出"
 
 #: src/pages/Settings/IntroSection/index.tsx
-msgid "<0>List Your World.</0><1/><2/> From secret coffee spots and must-have skincare, to binge-worthy shows and game-changing life hacks—create, explore, and share your top picks with the world."
-msgstr "用名單快速分享有趣又有料的靈感，這就是 Relist！<1/><2/>從排隊必吃的拉麵、好用的保養品，到最近追的影集清單和各種學習密技，無論獵奇還是實用，通通等你來開單分享！"
+msgid "Welcome to the Relist community!"
+msgstr "歡迎來到 Relist！"
 
 #: src/pages/Settings/IntroSection/index.tsx
-msgid "🚀 <0>We’re in Beta</0> and want you to be part of the journey! Join us, shape the platform, and help us reach the next level."
-msgstr "🚀 <0>Relist 正在 Beta 階段</0>，我們誠摯邀請內容創作者申請帳號並開始建立清單。透過 Relist，幫助你為粉絲提供最直接的價值。我們期待你的加入，一起打造有料的內容！"
+msgid "This is your space to drop ideas and build your pocket list. Tell us what you think and how it feels. Your voice helps shape what comes next."
+msgstr "這裡是你分享想法、建立口袋名單的地方。歡迎與我們分享你的使用經驗，讓我們一起把 Relist 做得更棒！"
 
 #: src/pages/Settings/IntroSection/index.tsx
-msgid "✨ Sign up now and start listing!"
-msgstr "✨ 我是創作者，我想建立名單…"
+msgid "Tell us what you think"
+msgstr "分享你的意見"
 
 #: src/pages/Settings/index.tsx
 msgid "Setting Center"

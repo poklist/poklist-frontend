@@ -60,10 +60,7 @@ msgid "Copy"
 msgstr "Copy"
 
 #: src/components/Header/BackToUserHeader.tsx
-#: src/components/Header/BackToUserHeader.tsx
 #: src/pages/Lists/View/index.tsx
-#: src/pages/Lists/View/index.tsx
-#: src/pages/User/HeroSection/index.tsx
 #: src/pages/User/HeroSection/index.tsx
 msgid "Please login to do this action"
 msgstr "Please login to do this action"
@@ -712,8 +709,8 @@ msgid "Please keep it under {DESC_MAX_LENGTH} characters."
 msgstr "Please keep it under {DESC_MAX_LENGTH} characters."
 
 #: src/pages/Idea/Components/Form/index.tsx
-msgid "What's your Idea?"
-msgstr "What's your Idea?"
+msgid "This is the title of your idea"
+msgstr "This is the title of your idea"
 
 #: src/pages/Idea/Components/Form/index.tsx
 #: src/pages/Idea/Components/Form/index.tsx
@@ -790,8 +787,8 @@ msgid "List title is too long!"
 msgstr "List title is too long!"
 
 #: src/pages/Lists/Components/Form/index.tsx
-msgid "Give your list a title"
-msgstr "Give your list a title"
+msgid "This is the title of your list"
+msgstr "This is the title of your list"
 
 #: src/pages/Lists/Components/Form/index.tsx
 #: src/pages/Lists/Components/Form/index.tsx
@@ -838,10 +835,6 @@ msgstr "Idea List"
 #: src/pages/Lists/Edit/index.tsx
 msgid "List Cover"
 msgstr "List Cover"
-
-#: src/pages/Lists/Manage/index.tsx
-#~ msgid "Tap to edit. Hold & drag to reorder Ideas"
-#~ msgstr "Tap to edit. Hold & drag to reorder Ideas"
 
 #: src/pages/Lists/Manage/index.tsx
 msgid "Edit list cover"
@@ -972,16 +965,16 @@ msgid "Sign Out"
 msgstr "Sign Out"
 
 #: src/pages/Settings/IntroSection/index.tsx
-msgid "<0>List Your World.</0><1/><2/> From secret coffee spots and must-have skincare, to binge-worthy shows and game-changing life hacks—create, explore, and share your top picks with the world."
-msgstr "<0>List Your World.</0><1/><2/> From secret coffee spots and must-have skincare, to binge-worthy shows and game-changing life hacks—create, explore, and share your top picks with the world."
+msgid "Welcome to the Relist community!"
+msgstr "Welcome to the Relist community!"
 
 #: src/pages/Settings/IntroSection/index.tsx
-msgid "🚀 <0>We’re in Beta</0> and want you to be part of the journey! Join us, shape the platform, and help us reach the next level."
-msgstr "🚀 <0>We’re in Beta</0> and want you to be part of the journey! Join us, shape the platform, and help us reach the next level."
+msgid "This is your space to drop ideas and build your pocket list. Tell us what you think and how it feels. Your voice helps shape what comes next."
+msgstr "This is your space to drop ideas and build your pocket list. Tell us what you think and how it feels. Your voice helps shape what comes next."
 
 #: src/pages/Settings/IntroSection/index.tsx
-msgid "✨ Sign up now and start listing!"
-msgstr "✨ Sign up now and start listing!"
+msgid "Tell us what you think"
+msgstr "Tell us what you think"
 
 #: src/pages/Settings/index.tsx
 msgid "Setting Center"

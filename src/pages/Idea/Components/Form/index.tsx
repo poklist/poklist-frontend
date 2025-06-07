@@ -209,7 +209,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
           })}
         >
           <Input
-            placeholder={t`What's your Idea?`}
+            placeholder={t`This is the title of your idea`}
             className="relative border-none px-0 text-h1 placeholder:text-h1"
             {...ideaForm.register('title', { onChange: onInputChange })}
           />
