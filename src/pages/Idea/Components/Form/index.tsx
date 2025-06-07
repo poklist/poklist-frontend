@@ -63,7 +63,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
         if (value !== undefined && value !== null) {
           onCoverImageChange(value);
         } else {
-          console.log('value is undefined');
+          console.error('value is undefined');
         }
       },
     });
@@ -79,6 +79,10 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
       coverImage: previousIdeaInfo?.coverImage,
     },
   });
+
+  useEffect(() => {
+    ideaForm.setFocus('title');
+  }, [ideaForm.setFocus]);
 
   const onInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -202,12 +206,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
         onSubmit={() => void ideaForm.handleSubmit(onSubmit, onSubmitFailed)()}
         className="mx-4 mt-4 flex flex-1 flex-col gap-6 md:max-w-mobile-max"
       >
-        <div
-          className={cn(`flex items-center font-extrabold`, {
-            'before:h-8 before:w-0.5 before:bg-black-text-01':
-              ideaForm.watch('title') === '',
-          })}
-        >
+        <div className="flex items-center font-extrabold">
           <Input
             placeholder={t`This is the title of your idea`}
             className="relative border-none px-0 text-h1 placeholder:text-h1"

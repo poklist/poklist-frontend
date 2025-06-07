@@ -97,6 +97,10 @@ const ListForm: React.FC<IListFormProps> = ({
     },
   });
 
+  useEffect(() => {
+    listForm.setFocus('title');
+  }, [listForm.setFocus]);
+
   const onInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -249,12 +253,7 @@ const ListForm: React.FC<IListFormProps> = ({
         }}
         className="mx-4 mt-6 flex flex-1 flex-col gap-6 px-4 md:max-w-mobile-max"
       >
-        <div
-          className={cn(`flex items-center justify-center font-extrabold`, {
-            'before:h-8 before:w-0.5 before:bg-black-text-01':
-              listForm.watch('title') === '',
-          })}
-        >
+        <div className="flex items-center justify-center font-extrabold">
           <Input
             placeholder={t`This is the title of your list`}
             className="relative w-min border-none text-h1 placeholder:text-h1"
