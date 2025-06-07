@@ -19,13 +19,16 @@ const IntroSection: React.FC = () => {
           next.
         </Trans>
       </p>
-      <Button
-        variant={ButtonVariant.BLACK}
-        size={ButtonSize.SM}
+      <a
+        href="https://relist.featurebase.app/"
+        target="_blank"
+        rel="noopener noreferrer"
         className="w-fit self-end"
       >
-        <Trans>Tell us what you think</Trans>
-      </Button>
+        <Button variant={ButtonVariant.BLACK} size={ButtonSize.SM}>
+          <Trans>Tell us what you think</Trans>
+        </Button>
+      </a>
     </div>
   );
 };
