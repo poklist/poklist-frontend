@@ -5,20 +5,8 @@ import { getLocalStorage, setLocalStorage } from '@/lib/utils';
 import { i18n } from '@lingui/core';
 import { I18nProvider, useLingui } from '@lingui/react';
 import { Fragment, useEffect, useState } from 'react';
-
-/**
- * Activates a specific language in the application
- *
- * This asynchronously loads the messages for the specified locale
- * and then activates the language in the i18n system.
- *
- * @param locale - The language code to activate
- */
-export async function activateI18n(locale: Language) {
-  const { messages } = await import(`../../locales/${locale}/messages.ts`);
-  i18n.load(locale, messages);
-  i18n.activate(locale);
-}
+import { z } from 'zod';
+import { activateI18n } from './useLanguage';
 
 /**
  * A component that forces re-rendering when the locale changes
@@ -60,15 +48,16 @@ export const LanguageProvider = ({
 }) => {
   useEffect(() => {
     const userSelectedLanguage = getLocalStorage(
-      LocalStorageKey.SELECTED_LANGUAGE
+      LocalStorageKey.SELECTED_LANGUAGE,
+      z.nativeEnum(Language)
     );
     if (
       userSelectedLanguage &&
       Object.values(Language).includes(userSelectedLanguage)
     ) {
-      activateI18n(userSelectedLanguage);
+      void activateI18n(userSelectedLanguage);
     } else {
-      activateI18n(Language.EN);
+      void activateI18n(Language.EN);
     }
     // Activate the default locale on page load
   }, []);
@@ -91,8 +80,12 @@ const i18nOptions = [
  * @param value - The language code to activate
  */
 const atSelectedLanguage = (value: Language) => {
-  activateI18n(value);
-  setLocalStorage(LocalStorageKey.SELECTED_LANGUAGE, value);
+  void activateI18n(value);
+  setLocalStorage(
+    LocalStorageKey.SELECTED_LANGUAGE,
+    value,
+    z.nativeEnum(Language)
+  );
 };
 
 /**
@@ -108,7 +101,8 @@ export const LanguageSelector: React.FC = () => {
 
   useEffect(() => {
     const userSelectedLanguage = getLocalStorage(
-      LocalStorageKey.SELECTED_LANGUAGE
+      LocalStorageKey.SELECTED_LANGUAGE,
+      z.nativeEnum(Language)
     );
     if (
       userSelectedLanguage &&
@@ -144,7 +138,8 @@ export const LanguageToggleButton: React.FC = () => {
 
   useEffect(() => {
     const userSelectedLanguage = getLocalStorage(
-      LocalStorageKey.SELECTED_LANGUAGE
+      LocalStorageKey.SELECTED_LANGUAGE,
+      z.nativeEnum(Language)
     );
     if (
       userSelectedLanguage &&
@@ -156,9 +151,13 @@ export const LanguageToggleButton: React.FC = () => {
 
   const toggleLanguage = () => {
     const newLanguage = language === Language.EN ? Language.ZH_TW : Language.EN;
-    activateI18n(newLanguage);
+    void activateI18n(newLanguage);
     setLanguage(newLanguage);
-    setLocalStorage(LocalStorageKey.SELECTED_LANGUAGE, newLanguage);
+    setLocalStorage(
+      LocalStorageKey.SELECTED_LANGUAGE,
+      newLanguage,
+      z.nativeEnum(Language)
+    );
   };
 
   return (

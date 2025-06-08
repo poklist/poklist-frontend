@@ -1,5 +1,5 @@
-import { useFakePage } from '@/components/FakePage';
 import { EditFieldFakePageComponent } from '@/components/FakePage/EditFieldFakePage';
+import { useFakePage } from '@/components/FakePage/useFakePage';
 import EditModeFooter from '@/components/Footer/EditModeFooter';
 import BackToUserHeader from '@/components/Header/BackToUserHeader';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -250,7 +250,13 @@ const EditUserPage: React.FC = () => {
       closeFakePage();
       resetNewUserInfo();
     };
-  }, []);
+  }, [
+    closeFakePage,
+    resetNewUserInfo,
+    checkAuthAndRedirect,
+    me,
+    setNewUserInfo,
+  ]);
 
   return (
     <>

@@ -1,6 +1,7 @@
-import { DrawerComponent, useDrawer } from '@/components/Drawer';
-import { useFakePage } from '@/components/FakePage';
+import { DrawerComponent } from '@/components/Drawer';
+import { useDrawer } from '@/components/Drawer/useDrawer';
 import { EditFieldFakePageComponent } from '@/components/FakePage/EditFieldFakePage';
+import { useFakePage } from '@/components/FakePage/useFakePage';
 import ImageUploader from '@/components/ImageUploader';
 import { Button, ButtonShape, ButtonVariant } from '@/components/ui/button';
 import IconClose from '@/components/ui/icons/CloseIcon';
@@ -103,7 +104,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
       setIsFormModified(isModified);
     });
     return () => subscription.unsubscribe();
-  }, [ideaForm.watch(), previousIdeaInfo]);
+  }, [ideaForm, previousIdeaInfo]);
 
   const isFieldNotEmpty = (
     value: string | number | File | null | undefined
@@ -190,7 +191,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
     ideaForm.setValue('description', previousIdeaInfo.description);
     ideaForm.setValue('externalLink', previousIdeaInfo.externalLink);
     ideaForm.setValue('coverImage', previousIdeaInfo.coverImage);
-  }, [previousIdeaInfo]);
+  }, [previousIdeaInfo, ideaForm]);
 
   useEffect(() => {
     if (previousIdeaInfo) {

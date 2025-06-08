@@ -8,7 +8,7 @@ Drawer 元件包含以下部分：
 
 1. `DrawerProvider` - 提供抽屜狀態管理的 Context Provider
 2. `DrawerComponent` - 具體的抽屜 UI 元件
-3. `useDrawer` - 用於控制抽屜的自定義 Hook
+3. `useDrawer` - 用於控制抽屜的自定義 Hook （抽出來以確保 React 可以 Fast Refresh）
 
 ## 使用方法
 

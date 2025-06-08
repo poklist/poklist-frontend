@@ -13,7 +13,7 @@ import React from 'react';
 import { useLocation, useOutletContext } from 'react-router-dom';
 import { LanguageToggleButton } from '../Language';
 
-export const ColorMap = {
+const ColorMap = {
   white: 'bg-white',
   primary: 'bg-yellow-bright-01',
   transparent: 'bg-transparent',
