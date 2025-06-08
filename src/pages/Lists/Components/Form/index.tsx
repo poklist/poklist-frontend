@@ -69,7 +69,7 @@ const ListForm: React.FC<IListFormProps> = ({
         if (value !== undefined && value !== null) {
           onCoverImageChange(value);
         } else {
-          console.log('value is undefined');
+          console.error('value is undefined');
         }
       },
     });

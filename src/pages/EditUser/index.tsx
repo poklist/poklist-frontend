@@ -51,7 +51,7 @@ const EditUserPage: React.FC = () => {
         if (value) {
           setDisplayName(value);
         } else {
-          console.log('value is undefined');
+          console.error('value is undefined');
         }
       },
     },
@@ -67,7 +67,7 @@ const EditUserPage: React.FC = () => {
         if (value) {
           setUserCode(value);
         } else {
-          console.log('value is undefined');
+          console.error('value is undefined');
         }
       },
     },
@@ -81,7 +81,7 @@ const EditUserPage: React.FC = () => {
         if (value) {
           setBio(value);
         } else {
-          console.log('value is undefined');
+          console.error('value is undefined');
         }
       },
     },
@@ -92,7 +92,7 @@ const EditUserPage: React.FC = () => {
         if (value !== undefined) {
           setProfileImage(value);
         } else {
-          console.log('value is undefined');
+          console.error('value is undefined');
         }
       },
     },
@@ -105,7 +105,7 @@ const EditUserPage: React.FC = () => {
         if (value !== undefined) {
           setSocialLink(SocialLinkType.CUSTOMIZED, value);
         } else {
-          console.log('value is undefined');
+          console.error('value is undefined');
         }
       },
     },
@@ -129,7 +129,7 @@ const EditUserPage: React.FC = () => {
               : ''
           );
         } else {
-          console.log('value is undefined');
+          console.error('value is undefined');
         }
       },
     },
@@ -153,7 +153,7 @@ const EditUserPage: React.FC = () => {
               : ''
           );
         } else {
-          console.log('value is undefined');
+          console.error('value is undefined');
         }
       },
     },
@@ -177,7 +177,7 @@ const EditUserPage: React.FC = () => {
               : ''
           );
         } else {
-          console.log('value is undefined');
+          console.error('value is undefined');
         }
       },
     },
@@ -201,7 +201,7 @@ const EditUserPage: React.FC = () => {
               : ''
           );
         } else {
-          console.log('value is undefined');
+          console.error('value is undefined');
         }
       },
     },
@@ -225,7 +225,7 @@ const EditUserPage: React.FC = () => {
               : ''
           );
         } else {
-          console.log('value is undefined');
+          console.error('value is undefined');
         }
       },
     },
