@@ -22,6 +22,7 @@ export const checkAndMigrateStorage = (): boolean => {
     !versionSchema.safeParse(currentVersion).success ||
     currentVersion !== STORAGE_VERSION
   ) {
+    // eslint-disable-next-line no-console
     console.log(
       `[STORAGE] currentVersion=${currentVersion} is outdated (expectedVersion=${STORAGE_VERSION}), need to clear all storage`
     );

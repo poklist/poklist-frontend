@@ -29,6 +29,7 @@ export default tseslint.config(
       prettier: eslintPluginPrettierRecommended,
     },
     rules: {
+      'no-console': ['error', { allow: ['warn', 'error'] }],
       ...reactHooks.configs.recommended.rules,
       ...react.configs.recommended.rules,
       ...react.configs['jsx-runtime'].rules,
@@ -36,6 +37,7 @@ export default tseslint.config(
         'warn',
         { allowConstantExport: true },
       ],
+      'no-console': ['error', { allow: ['warn', 'error'] }],
     },
     settings: {
       react: { version: '18.3' },
