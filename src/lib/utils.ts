@@ -9,13 +9,25 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 // get the value of a specific key from localStorage
-export const getLocalStorage = (key: LocalStorageKey): any | undefined => {
-  return JSON.parse(localStorage.getItem(key) || 'null');
+export const getLocalStorage = <T>(
+  key: LocalStorageKey,
+  schema: z.ZodType<T>
+): T | undefined => {
+  const value = JSON.parse(localStorage.getItem(key) || 'null') as unknown;
+  const result = schema.safeParse(value);
+  return result.success ? result.data : undefined;
 };
 
 // set the value of a specific key to localStorage
-export const setLocalStorage = (key: LocalStorageKey, value: any) => {
-  localStorage.setItem(key, JSON.stringify(value));
+export const setLocalStorage = <T>(
+  key: LocalStorageKey,
+  value: T,
+  schema: z.ZodType<T>
+) => {
+  const result = schema.safeParse(value);
+  if (result.success) {
+    localStorage.setItem(key, JSON.stringify(value));
+  }
 };
 
 // remove the value of a specific key from localStorage
@@ -35,7 +47,7 @@ export const fileToBase64 = (file: File): Promise<string> => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => resolve(reader.result as string);
-    reader.onerror = (error) => reject(error);
+    reader.onerror = () => reject(new Error('Failed to read file'));
   });
 };
 
@@ -63,7 +75,7 @@ export const isValidInstagramUsername = (username: string) => {
 
 export const copyHref = (appendedPath: string = '') => {
   const url = window.location.href;
-  navigator.clipboard.writeText(url + appendedPath);
+  void navigator.clipboard.writeText(url + appendedPath);
 };
 
 export const extractUsernameFromUrl = (

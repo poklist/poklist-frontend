@@ -1,6 +1,7 @@
-import { DrawerComponent, useDrawer } from '@/components/Drawer';
-import { useFakePage } from '@/components/FakePage';
+import { DrawerComponent } from '@/components/Drawer';
+import { useDrawer } from '@/components/Drawer/useDrawer';
 import { EditFieldFakePageComponent } from '@/components/FakePage/EditFieldFakePage';
+import { useFakePage } from '@/components/FakePage/useFakePage';
 import ImageUploader from '@/components/ImageUploader';
 import { IChoice, RadioComponent } from '@/components/Radio';
 import { Button, ButtonShape, ButtonVariant } from '@/components/ui/button';
@@ -68,7 +69,7 @@ const ListForm: React.FC<IListFormProps> = ({
         if (value !== undefined && value !== null) {
           onCoverImageChange(value);
         } else {
-          console.log('value is undefined');
+          console.error('value is undefined');
         }
       },
     });
@@ -121,7 +122,7 @@ const ListForm: React.FC<IListFormProps> = ({
       setIsFormModified(isModified);
     });
     return () => subscription.unsubscribe();
-  }, [listForm.watch(), defaultListInfo]);
+  }, [listForm, defaultListInfo]);
 
   const isFieldNotEmpty = (
     value: string | number | File | null | undefined
@@ -210,7 +211,7 @@ const ListForm: React.FC<IListFormProps> = ({
       closeCategoryDrawer();
       closeCancelDrawer();
     };
-  }, []);
+  }, [closeCategoryDrawer, closeCancelDrawer]);
 
   useEffect(() => {
     if (!defaultListInfo) {
@@ -221,7 +222,7 @@ const ListForm: React.FC<IListFormProps> = ({
     listForm.setValue('externalLink', defaultListInfo.externalLink);
     listForm.setValue('coverImage', defaultListInfo.coverImage);
     listForm.setValue('categoryID', defaultListInfo.categoryID);
-  }, [defaultListInfo]);
+  }, [defaultListInfo, listForm]);
 
   useEffect(() => {
     if (categoriesLoading) {

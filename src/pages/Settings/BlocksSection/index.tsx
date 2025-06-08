@@ -1,5 +1,6 @@
-import { DrawerComponent, useDrawer } from '@/components/Drawer';
-import { activateI18n } from '@/components/Language';
+import { DrawerComponent } from '@/components/Drawer';
+import { useDrawer } from '@/components/Drawer/useDrawer';
+import { activateI18n } from '@/components/Language/useLanguage';
 import { DrawerIds } from '@/constants/Drawer';
 import { ExternalLinks } from '@/constants/externalLink';
 import { Language, LocalStorageKey, Location } from '@/enums/index.enum';
@@ -10,6 +11,7 @@ import { ILinksBlock, UrlString } from '@/types/Settings';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
 import { useEffect, useState } from 'react';
+import { z } from 'zod';
 import { ButtonRadioGroup } from '../ButtonRadioGroup';
 import LinksBlock from './LinksBlock';
 
@@ -24,10 +26,12 @@ const BlocksSection: React.FC = () => {
 
   useEffect(() => {
     const userSelectedLanguage = getLocalStorage(
-      LocalStorageKey.SELECTED_LANGUAGE
-    ) as Language;
+      LocalStorageKey.SELECTED_LANGUAGE,
+      z.nativeEnum(Language)
+    );
     const userSelectedLocation = getLocalStorage(
-      LocalStorageKey.SELECTED_LOCATION
+      LocalStorageKey.SELECTED_LOCATION,
+      z.nativeEnum(Location)
     ) as Location;
     if (
       userSelectedLanguage &&
@@ -60,7 +64,11 @@ const BlocksSection: React.FC = () => {
       // TODO: error handling
       void activateI18n(newLanguage);
       setLanguage(newLanguage);
-      setLocalStorage(LocalStorageKey.SELECTED_LANGUAGE, newLanguage);
+      setLocalStorage(
+        LocalStorageKey.SELECTED_LANGUAGE,
+        newLanguage,
+        z.nativeEnum(Language)
+      );
     };
     setDrawerContent(
       <>
@@ -97,7 +105,11 @@ const BlocksSection: React.FC = () => {
       const newLocation = value[0] as Location;
       // TODO: error handling
       setLocation(newLocation);
-      setLocalStorage(LocalStorageKey.SELECTED_LOCATION, newLocation);
+      setLocalStorage(
+        LocalStorageKey.SELECTED_LOCATION,
+        newLocation,
+        z.nativeEnum(Location)
+      );
     };
     setDrawerContent(
       <>

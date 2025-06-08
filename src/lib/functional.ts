@@ -158,7 +158,7 @@ export const debounce = <T extends unknown[]>(
  * @param options.onBeforeExecute Pre-execution callback
  * @param options.onAfterExecute Post-execution callback
  */
-export const enhancedDebounce = <T extends any[]>(
+export const enhancedDebounce = <T extends unknown[]>(
   fn: (...args: T) => void,
   delay: number,
   options?: {

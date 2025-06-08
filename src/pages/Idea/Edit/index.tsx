@@ -104,7 +104,14 @@ const EditIdeaPage: React.FC = () => {
     if (idea.owner.userCode !== me.userCode) {
       navigateTo.viewList(idea.owner.userCode, idea.listID.toString());
     }
-  }, [isIdeaError, isIdeaLoading, idea, me.userCode, navigateTo]);
+  }, [
+    isIdeaError,
+    isIdeaLoading,
+    idea,
+    me.userCode,
+    navigateTo,
+    checkAuthAndRedirect,
+  ]);
 
   return (
     <>

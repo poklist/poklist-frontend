@@ -1,7 +1,8 @@
+import { DrawerIds } from '@/constants/Drawer';
 import useCommonStore from '@/stores/useCommonStore';
 import React, { useEffect } from 'react';
-import { DrawerComponent, useDrawer } from '../Drawer';
-import { DrawerIds } from '@/constants/Drawer';
+import { DrawerComponent } from '../Drawer';
+import { useDrawer } from '../Drawer/useDrawer';
 
 export interface IErrorDrawerMessage {
   title: string;

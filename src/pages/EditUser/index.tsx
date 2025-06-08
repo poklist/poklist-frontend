@@ -1,5 +1,5 @@
-import { useFakePage } from '@/components/FakePage';
 import { EditFieldFakePageComponent } from '@/components/FakePage/EditFieldFakePage';
+import { useFakePage } from '@/components/FakePage/useFakePage';
 import EditModeFooter from '@/components/Footer/EditModeFooter';
 import BackToUserHeader from '@/components/Header/BackToUserHeader';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -51,7 +51,7 @@ const EditUserPage: React.FC = () => {
         if (value) {
           setDisplayName(value);
         } else {
-          console.log('value is undefined');
+          console.error('value is undefined');
         }
       },
     },
@@ -67,7 +67,7 @@ const EditUserPage: React.FC = () => {
         if (value) {
           setUserCode(value);
         } else {
-          console.log('value is undefined');
+          console.error('value is undefined');
         }
       },
     },
@@ -81,7 +81,7 @@ const EditUserPage: React.FC = () => {
         if (value) {
           setBio(value);
         } else {
-          console.log('value is undefined');
+          console.error('value is undefined');
         }
       },
     },
@@ -92,7 +92,7 @@ const EditUserPage: React.FC = () => {
         if (value !== undefined) {
           setProfileImage(value);
         } else {
-          console.log('value is undefined');
+          console.error('value is undefined');
         }
       },
     },
@@ -105,7 +105,7 @@ const EditUserPage: React.FC = () => {
         if (value !== undefined) {
           setSocialLink(SocialLinkType.CUSTOMIZED, value);
         } else {
-          console.log('value is undefined');
+          console.error('value is undefined');
         }
       },
     },
@@ -129,7 +129,7 @@ const EditUserPage: React.FC = () => {
               : ''
           );
         } else {
-          console.log('value is undefined');
+          console.error('value is undefined');
         }
       },
     },
@@ -153,7 +153,7 @@ const EditUserPage: React.FC = () => {
               : ''
           );
         } else {
-          console.log('value is undefined');
+          console.error('value is undefined');
         }
       },
     },
@@ -177,7 +177,7 @@ const EditUserPage: React.FC = () => {
               : ''
           );
         } else {
-          console.log('value is undefined');
+          console.error('value is undefined');
         }
       },
     },
@@ -201,7 +201,7 @@ const EditUserPage: React.FC = () => {
               : ''
           );
         } else {
-          console.log('value is undefined');
+          console.error('value is undefined');
         }
       },
     },
@@ -225,7 +225,7 @@ const EditUserPage: React.FC = () => {
               : ''
           );
         } else {
-          console.log('value is undefined');
+          console.error('value is undefined');
         }
       },
     },
@@ -250,7 +250,13 @@ const EditUserPage: React.FC = () => {
       closeFakePage();
       resetNewUserInfo();
     };
-  }, []);
+  }, [
+    closeFakePage,
+    resetNewUserInfo,
+    checkAuthAndRedirect,
+    me,
+    setNewUserInfo,
+  ]);
 
   return (
     <>

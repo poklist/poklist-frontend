@@ -19,7 +19,7 @@ const EditModeFooter: React.FC<IEditModeFooterProps> = ({
   onSaveText = t`Save`,
   value,
   disabled = true,
-}) => {
+}: IEditModeFooterProps) => {
   return (
     <footer
       id="edit-mode-footer"

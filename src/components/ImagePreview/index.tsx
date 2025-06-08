@@ -12,7 +12,7 @@ const ImagePreviewComponent: React.FC<ImagePreviewProps> = ({
   file,
   onClickClose,
   className,
-}) => {
+}: ImagePreviewProps) => {
   if (!file) {
     return null;
   }
