@@ -159,9 +159,6 @@ const ListManagePage: React.FC = () => {
     }
   }, [checkAuthAndRedirect, id, me.userCode, navigateTo, userCode]);
 
-  if (isListLoading || isReorderIdeasLoading || isDeleteListLoading) {
-    return <div>Loading...</div>;
-  }
   return (
     <>
       <Header title={<Trans>Idea List</Trans>} deleteCallback={onDeleteList} />

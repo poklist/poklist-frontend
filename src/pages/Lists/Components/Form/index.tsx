@@ -100,7 +100,7 @@ const ListForm: React.FC<IListFormProps> = ({
 
   useEffect(() => {
     listForm.setFocus('title');
-  }, [listForm.setFocus]);
+  }, [listForm]);
 
   const onInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -211,7 +211,8 @@ const ListForm: React.FC<IListFormProps> = ({
       closeCategoryDrawer();
       closeCancelDrawer();
     };
-  }, [closeCategoryDrawer, closeCancelDrawer]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (!defaultListInfo) {
