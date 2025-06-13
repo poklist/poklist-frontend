@@ -1,4 +1,5 @@
 import js from '@eslint/js';
+import { FlatCompat } from '@eslint/eslintrc';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
@@ -6,7 +7,14 @@ import reactRefresh from 'eslint-plugin-react-refresh';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
+const compat = new FlatCompat({
+  baseDirectory: import.meta.dirname,
+});
+
 export default tseslint.config(
+  ...compat.config({
+    extends: ['next/core-web-vitals', 'next/typescript'],
+  }),
   { ignores: ['dist', 'node_modules', 'eslint.config.js'] },
   {
     extends: [
@@ -18,7 +26,7 @@ export default tseslint.config(
       ecmaVersion: 2020,
       globals: globals.browser,
       parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        project: ['./tsconfig.app.json'],
         tsconfigRootDir: import.meta.dirname,
       },
     },
@@ -33,10 +41,6 @@ export default tseslint.config(
       ...reactHooks.configs.recommended.rules,
       ...react.configs.recommended.rules,
       ...react.configs['jsx-runtime'].rules,
-      'react-refresh/only-export-components': [
-        'warn',
-        { allowConstantExport: true },
-      ],
       'no-console': ['error', { allow: ['warn', 'error'] }],
     },
     settings: {

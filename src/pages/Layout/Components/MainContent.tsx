@@ -16,7 +16,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 
 // 主要內容區域組件
 const MainContent = () => {
-  const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID as string;
+  const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID as string;
 
   const { isMobile } = useLayoutStore();
 
