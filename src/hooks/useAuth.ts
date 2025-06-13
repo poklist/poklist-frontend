@@ -1,7 +1,7 @@
 import { pipe } from '@/lib/functional';
 import useAuthStore from '@/stores/useAuthStore';
 import useCommonStore from '@/stores/useCommonStore';
-import { useCallback } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import useStrictNavigation from './useStrictNavigate';
 
 /**
@@ -12,23 +12,33 @@ export const useAuthCheck = () => {
   const { setIsLoginDrawerOpen } = useCommonStore();
   const navigateTo = useStrictNavigation();
 
-  // 基本檢查函數
-  const checkAuth = useCallback((): boolean => {
-    if (!isLoggedIn) {
-      setIsLoginDrawerOpen(true);
-      return false;
-    }
-    return true;
-  }, [isLoggedIn, setIsLoginDrawerOpen]);
+  const checkAuthRef = useRef<() => boolean>();
+  const checkAuthAndRedirectRef = useRef<() => boolean>();
 
-  const checkAuthAndRedirect = useCallback(() => {
-    if (!isLoggedIn) {
-      navigateTo.home();
-    }
-    return true;
-  }, [isLoggedIn, navigateTo]);
+  useEffect(() => {
+    checkAuthRef.current = () => {
+      if (!isLoggedIn) {
+        setIsLoginDrawerOpen(true);
+        return false;
+      }
+      return true;
+    };
 
-  return { checkAuth, checkAuthAndRedirect };
+    checkAuthAndRedirectRef.current = () => {
+      if (!isLoggedIn) {
+        navigateTo.home();
+      }
+      return true;
+    };
+  }, [isLoggedIn, setIsLoginDrawerOpen, navigateTo]);
+
+  return useMemo(
+    () => ({
+      checkAuth: () => checkAuthRef.current?.(),
+      checkAuthAndRedirect: () => checkAuthAndRedirectRef.current?.(),
+    }),
+    [] // 空依賴陣列，因為我們使用 ref 來存儲函數
+  );
 };
 
 /**
