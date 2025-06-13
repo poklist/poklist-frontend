@@ -82,7 +82,12 @@ const BackToUserHeader: React.FC<IBackToUserHeaderProps> = ({
           id="header-left"
           className="flex w-[90px] min-w-[90px] items-center justify-start"
         >
-          <img src={logoR} alt="P" onClick={handleClickLogo} className="h-8" />
+          <img
+            src={logoR.src}
+            alt="P"
+            onClick={handleClickLogo}
+            className="h-8"
+          />
         </div>
         <div
           id="header-middle"

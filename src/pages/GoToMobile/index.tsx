@@ -12,7 +12,7 @@ export default function GoToMobilePage() {
 
         {/* 內容 */}
         <div className="flex flex-1 flex-col items-center justify-start pt-28">
-          <img src={mascotPhone} alt="Mascot Phone" className="h-[125px]" />
+          <img src={mascotPhone.src} alt="Mascot Phone" className="h-[125px]" />
           <div className="mt-6 flex flex-col items-start">
             <Trans>
               <p className="text-start text-[17px] font-bold text-black-text-01">

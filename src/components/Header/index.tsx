@@ -75,7 +75,7 @@ const Header: React.FC<HeaderProps> = ({
           className="flex items-center justify-center gap-4"
         >
           <img
-            src={logoRelist}
+            src={logoRelist.src}
             alt="Relist"
             onClick={handleClickLogo}
             className="h-8"

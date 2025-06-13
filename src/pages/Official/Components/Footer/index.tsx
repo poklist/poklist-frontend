@@ -14,7 +14,7 @@ export const Footer = ({ content, socialMedia }: FooterProps) => (
         <div className="flex flex-col">
           {/* Logo */}
           <div className="flex justify-start bg-yellow-bright-01 py-10">
-            <img src={logoRelist} alt="Relist Logo" className="h-6" />
+            <img src={logoRelist.src} alt="Relist Logo" className="h-6" />
           </div>
           <div className="mb-8 flex flex-col items-start gap-3">
             {content.map((item) => (
@@ -36,7 +36,7 @@ export const Footer = ({ content, socialMedia }: FooterProps) => (
                 className="flex size-8 justify-center rounded-full bg-black"
                 rel="noreferrer"
               >
-                <img src={item.icon} alt={item.name} className="size-fit" />
+                <img src={item.icon.src} alt={item.name} className="size-fit" />
               </a>
             ))}
           </div>

@@ -18,7 +18,7 @@ const TileList = ({
   // 隨機選擇一張圖片作為封面圖的備用方案
   const getRandomImage = () => {
     const randomIndex = Math.floor(Math.random() * fallbackImages.length);
-    return fallbackImages[randomIndex];
+    return fallbackImages[randomIndex].src;
   };
 
   // 如果封面圖不存在，則使用隨機圖片
