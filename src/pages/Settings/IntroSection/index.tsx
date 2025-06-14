@@ -26,7 +26,7 @@ const IntroSection: React.FC = () => {
             </Trans>
           </p>
           <a
-            href="https://relist.featurebase.app/"
+            href={ExternalLinks.FEATURE_BASE}
             target="_blank"
             rel="noopener noreferrer"
             className="w-fit self-end"
