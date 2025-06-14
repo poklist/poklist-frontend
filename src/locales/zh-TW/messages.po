@@ -976,6 +976,14 @@ msgstr "這裡是你分享想法、建立口袋名單的地方。歡迎與我們
 msgid "Tell us what you think"
 msgstr "分享你的意見"
 
+#: src/pages/Settings/IntroSection/index.tsx
+msgid "This is your space to drop ideas and build your pocket list. Our Beta is now open! If you’re a creator, we’d love for you to try it out. Create your account now!"
+msgstr "這裡是你分享想法、建立口袋名單的地方。目前我們正開放 Beta 測試，誠摯邀請創作者來試用，歡迎申請！"
+
+#: src/pages/Settings/IntroSection/index.tsx
+msgid "Get Started"
+msgstr "立即申請"
+
 #: src/pages/Settings/index.tsx
 msgid "Setting Center"
 msgstr "設定中心"

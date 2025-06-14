@@ -11,7 +11,6 @@ import useCommonStore from '@/stores/useCommonStore';
 import useUserStore from '@/stores/useUserStore';
 import React from 'react';
 import { useLocation, useOutletContext } from 'react-router-dom';
-import { LanguageToggleButton } from '../Language';
 
 const ColorMap = {
   white: 'bg-white',
@@ -43,7 +42,6 @@ const Header: React.FC<HeaderProps> = ({
   const { setIsLoginDrawerOpen } = useCommonStore();
 
   const isHomePage = useLocation().pathname === StaticRoutes.HOME;
-  const isDiscoveryPage = useLocation().pathname === StaticRoutes.DISCOVERY;
   const isMyPage = outletContext?.userCode === me.userCode; // NOTE: to trim leading '@' sign
 
   const handleClickSignIn = () => {
@@ -86,7 +84,6 @@ const Header: React.FC<HeaderProps> = ({
           className="flex items-center justify-center gap-4"
         >
           {/* FUTURE: extract these logic to props for D in the SOLID principle */}
-          {isDiscoveryPage && <LanguageToggleButton />}
           {!isLoggedIn && (
             <Button
               size={ButtonSize.SM}
@@ -105,7 +102,7 @@ const Header: React.FC<HeaderProps> = ({
               <AvatarFallback>{me.displayName[0]}</AvatarFallback>
             </Avatar>
           )}
-          {!isDiscoveryPage && (!isLoggedIn || (isLoggedIn && isMyPage)) && (
+          {(!isLoggedIn || (isLoggedIn && isMyPage)) && (
             <Button
               variant={ButtonVariant.WHITE}
               size={ButtonSize.ICON}

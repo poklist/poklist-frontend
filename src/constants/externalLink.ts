@@ -42,6 +42,8 @@ const THREADS = 'https://www.threads.net/@relist.cc';
 
 const LINKEDIN = 'https://www.linkedin.com/company/relistapp';
 
+const FEATURE_BASE = 'https://relist.featurebase.app/';
+
 export const ExternalLinks = {
   SIGNUP,
   ABOUT,
@@ -59,4 +61,5 @@ export const ExternalLinks = {
   INSTAGRAM,
   THREADS,
   LINKEDIN,
+  FEATURE_BASE,
 };
