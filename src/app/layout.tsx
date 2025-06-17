@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter, Noto_Sans } from 'next/font/google';
+import '@radix-ui/themes/styles.css';
+import { AppProviders } from '@/providers';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -56,7 +58,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable} ${noto_sans.variable} antialiased`}>
-        <div id="root">{children}</div>
+        <AppProviders>
+          <div id="root">{children}</div>
+        </AppProviders>
       </body>
     </html>
   );

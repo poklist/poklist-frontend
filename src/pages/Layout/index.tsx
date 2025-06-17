@@ -1,6 +1,4 @@
-import { DrawerProvider } from '@/components/Drawer';
-import { FakePageProvider } from '@/components/FakePage';
-import { LanguageProvider } from '@/components/Language';
+// Provider imports removed - now handled by App Router layout
 import useCheckStorage from '@/hooks/useCheckStorage';
 import useStrictNavigation from '@/hooks/useStrictNavigate';
 import { cn } from '@/lib/utils';
@@ -35,23 +33,19 @@ export default function Layout() {
   }, [location.pathname, navigateTo, redirectWhiteList]);
 
   return (
-    <LanguageProvider>
-      <DrawerProvider>
-        <FakePageProvider>
-          <Background />
-          <div className="flex flex-col items-center justify-center">
-            <div
-              className={cn('flex max-h-screen w-full flex-col', {
-                'sm:w-mobile-max': !isMobile,
-              })}
-            >
-              <PromptText />
-              <MainContent />
-              <BottomNav />
-            </div>
-          </div>
-        </FakePageProvider>
-      </DrawerProvider>
-    </LanguageProvider>
+    <>
+      <Background />
+      <div className="flex flex-col items-center justify-center">
+        <div
+          className={cn('flex max-h-screen w-full flex-col', {
+            'sm:w-mobile-max': !isMobile,
+          })}
+        >
+          <PromptText />
+          <MainContent />
+          <BottomNav />
+        </div>
+      </div>
+    </>
   );
 }
