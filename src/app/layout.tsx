@@ -3,6 +3,7 @@ import { Inter, Noto_Sans } from 'next/font/google';
 import '@radix-ui/themes/styles.css';
 import '../index.css';
 import { AppProviders } from '@/providers';
+import ConditionalLayout from '@/components/ConditionalLayout';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -60,7 +61,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.variable} ${noto_sans.variable} antialiased`}>
         <AppProviders>
-          <div id="root">{children}</div>
+          <div id="root">
+            <ConditionalLayout>{children}</ConditionalLayout>
+          </div>
         </AppProviders>
       </body>
     </html>
