@@ -30,7 +30,6 @@ import { useLingui } from '@lingui/react';
 import { Trans } from '@lingui/react/macro';
 import { useEffect, useRef, useState } from 'react';
 import { useParams, useSearchParams } from 'next/navigation';
-import { useUserContext } from '@/hooks/useRouterCompat';
 import IdeaDrawerContent from '../IdeaDrawerContent';
 
 export interface ViewListNavigateState {
@@ -42,11 +41,9 @@ interface IListCardProps {
 }
 
 const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
-  const { userCode: listOwnerUserCode } = useUserContext();
   const params = useParams();
   const searchParams = useSearchParams();
   const listID = params.id as string;
-  const ideaID = searchParams.get('ideaID');
 
   const { i18n } = useLingui();
   const navigateTo = useStrictNavigationAdapter();
@@ -176,12 +173,6 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
     setCreatedAtString(getFormattedTime(data.createdAt, locale));
   }, [data.createdAt, i18n.locale]);
 
-  useEffect(() => {
-    if (listID && ideaID) {
-      navigateTo.viewList(listOwnerUserCode, listID, ideaID);
-    }
-  }, [ideaID, listID, listOwnerUserCode, navigateTo]);
-
   // 替換 location.state 的處理方式，使用 searchParams
   useEffect(() => {
     const ideaIDFromUrl = searchParams.get('ideaID');
@@ -265,7 +256,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
           )}
           {data.coverImage && (
             <img
-              src={data.coverImage || null}
+              src={data.coverImage || undefined}
               alt={data.title}
               width={374}
               height={374}
@@ -294,7 +285,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
                   </div>
                   {idea.coverImage && (
                     <img
-                      src={idea.coverImage || null}
+                      src={idea.coverImage || undefined}
                       width={64}
                       height={64}
                       className="rounded-[8px] border border-black-text-01"
