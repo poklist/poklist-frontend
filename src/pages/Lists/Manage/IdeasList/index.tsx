@@ -1,5 +1,5 @@
 import IconDrag from '@/components/ui/icons/DragIcon';
-import useStrictNavigate from '@/hooks/useStrictNavigate';
+import useStrictNavigateAdapter from '@/hooks/useStrictNavigateAdapter';
 import { IdeaPreview } from '@/types/Idea';
 import React from 'react';
 import VirtualList from 'react-virtual-sortable';
@@ -34,7 +34,7 @@ const IdeaListSection: React.FC<IdeaListProps> = ({
     reorderCallback(event);
   };
 
-  const navigateTo = useStrictNavigate();
+  const navigateTo = useStrictNavigateAdapter();
 
   return (
     <div className="flex flex-col gap-2">
@@ -74,7 +74,7 @@ const IdeaListSection: React.FC<IdeaListProps> = ({
                 <div className="flex items-center gap-2">
                   {idea.coverImage && (
                     <img
-                      src={idea.coverImage}
+                      src={idea.coverImage || null}
                       className="h-10 max-h-10 min-h-10 w-10 min-w-10 max-w-10 flex-1 rounded border border-black-tint-04 bg-black object-contain"
                       alt={`Cover for ${idea.title}`}
                     />

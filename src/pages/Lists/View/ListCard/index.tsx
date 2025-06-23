@@ -15,11 +15,11 @@ import {
 } from '@/constants/list';
 import { Language, SocialLinkType } from '@/enums/index.enum';
 import { useIdea } from '@/hooks/queries/useIdea';
-import useStrictNavigation from '@/hooks/useStrictNavigate';
+import useStrictNavigationAdapter from '@/hooks/useStrictNavigateAdapter';
 import { openWindow } from '@/lib/openLink';
 import { getFormattedTime, parsePostgresDate } from '@/lib/time';
 import { urlPreview } from '@/lib/utils';
-import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
+
 import { CategoriesI18n } from '@/pages/Lists/i18n';
 import useAuthStore from '@/stores/useAuthStore';
 import useCommonStore from '@/stores/useCommonStore';
@@ -29,7 +29,8 @@ import { List } from '@/types/List';
 import { useLingui } from '@lingui/react';
 import { Trans } from '@lingui/react/macro';
 import { useEffect, useRef, useState } from 'react';
-import { useLocation, useOutletContext, useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'next/navigation';
+import { useUserContext } from '@/hooks/useRouterCompat';
 import IdeaDrawerContent from '../IdeaDrawerContent';
 
 export interface ViewListNavigateState {
@@ -41,13 +42,14 @@ interface IListCardProps {
 }
 
 const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
-  const { userCode: listOwnerUserCode } =
-    useOutletContext<UserRouteLayoutContextType>();
-  const { id: listID, ideaID } = useParams();
+  const { userCode: listOwnerUserCode } = useUserContext();
+  const params = useParams();
+  const searchParams = useSearchParams();
+  const listID = params.id as string;
+  const ideaID = searchParams.get('ideaID');
 
   const { i18n } = useLingui();
-  const navigateTo = useStrictNavigation();
-  const location = useLocation();
+  const navigateTo = useStrictNavigationAdapter();
 
   const { isLoggedIn } = useAuthStore();
   const { me } = useUserStore();
@@ -180,13 +182,17 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
     }
   }, [ideaID, listID, listOwnerUserCode, navigateTo]);
 
+  // 替換 location.state 的處理方式，使用 searchParams
   useEffect(() => {
-    const locationState = location.state as ViewListNavigateState;
-    if (locationState?.ideaID) {
-      onClickIdea(locationState.ideaID);
-      locationState.ideaID = undefined;
+    const ideaIDFromUrl = searchParams.get('ideaID');
+    if (ideaIDFromUrl) {
+      onClickIdea(Number(ideaIDFromUrl));
+      // 清除 URL 中的 ideaID 參數
+      const newUrl = new URL(window.location.href);
+      newUrl.searchParams.delete('ideaID');
+      window.history.replaceState({}, '', newUrl.toString());
     }
-  }, [location.state]);
+  }, [searchParams]);
 
   return (
     <>
@@ -226,11 +232,13 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
                 variant={ButtonVariant.HIGHLIGHTED}
                 size={ButtonSize.H40}
                 shape={ButtonShape.ROUNDED_5PX}
-                onClick={() =>
-                  navigateTo.createIdea({
-                    state: { listID: Number(data.id), listTitle: data.title },
-                  })
-                }
+                onClick={() => {
+                  // 使用 URL parameters 代替 state 來傳遞數據
+                  const params = new URLSearchParams();
+                  params.set('listID', data.id.toString());
+                  params.set('listTitle', data.title);
+                  navigateTo.createIdea(`/idea/create?${params.toString()}`);
+                }}
               >
                 <Trans>Add an idea</Trans>
               </Button>
@@ -257,7 +265,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
           )}
           {data.coverImage && (
             <img
-              src={data.coverImage}
+              src={data.coverImage || null}
               alt={data.title}
               width={374}
               height={374}
@@ -286,7 +294,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
                   </div>
                   {idea.coverImage && (
                     <img
-                      src={idea.coverImage}
+                      src={idea.coverImage || null}
                       width={64}
                       height={64}
                       className="rounded-[8px] border border-black-text-01"

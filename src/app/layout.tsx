@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter, Noto_Sans } from 'next/font/google';
 import '@radix-ui/themes/styles.css';
+import '../index.css';
 import { AppProviders } from '@/providers';
 
 const inter = Inter({

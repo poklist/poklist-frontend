@@ -1,22 +1,22 @@
 // Provider imports removed - now handled by App Router layout
 import useCheckStorage from '@/hooks/useCheckStorage';
-import useStrictNavigation from '@/hooks/useStrictNavigate';
+import useStrictNavigationAdapter from '@/hooks/useStrictNavigateAdapter';
 import { cn } from '@/lib/utils';
-import { StaticRoutes } from '@/router';
+import { StaticRoutes } from '@/constants/routes';
 import useLayoutStore from '@/stores/useLayoutStore';
 import { useEffect, useMemo } from 'react';
-import { useLocation } from 'react-router-dom';
+import { usePathname } from 'next/navigation';
 import Background from './Components/Background';
 import BottomNav from './Components/BottomNav';
 import MainContent from './Components/MainContent';
 import PromptText from './Components/PromptText';
 
 export default function Layout() {
-  const navigateTo = useStrictNavigation();
+  const navigateTo = useStrictNavigationAdapter();
   const { isMobile } = useLayoutStore();
-  const location = useLocation();
+  const pathname = usePathname();
   const redirectWhiteList = useMemo(
-    () => [StaticRoutes.ERROR, StaticRoutes.GO_TO_MOBILE],
+    () => [StaticRoutes.ERROR, StaticRoutes.GO_TO_MOBILE] as string[],
     []
   );
 
@@ -27,10 +27,10 @@ export default function Layout() {
       /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
         navigator.userAgent
       );
-    if (!isMobile && !redirectWhiteList.includes(location.pathname)) {
+    if (!isMobile && !redirectWhiteList.includes(pathname)) {
       navigateTo.goToMobile();
     }
-  }, [location.pathname, navigateTo, redirectWhiteList]);
+  }, [pathname, navigateTo, redirectWhiteList]);
 
   return (
     <>

@@ -1,10 +1,10 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import useStrictNavigation from '@/hooks/useStrictNavigate';
+import useStrictNavigationAdapter from '@/hooks/useStrictNavigateAdapter';
 import { LatestList } from '@/types/Discovery';
 import { ChevronRight } from 'lucide-react';
 
 const ListItem = ({ listItem }: { listItem: LatestList }) => {
-  const navigateTo = useStrictNavigation();
+  const navigateTo = useStrictNavigationAdapter();
 
   return (
     <div
@@ -15,7 +15,7 @@ const ListItem = ({ listItem }: { listItem: LatestList }) => {
     >
       <div className="flex min-w-0 flex-1 flex-row items-center gap-2 overflow-hidden">
         <Avatar className="size-10 flex-shrink-0">
-          <AvatarImage src={listItem.owner.profileImage} />
+          <AvatarImage src={listItem.owner.profileImage || null} />
           <AvatarFallback>{listItem.owner.userCode[0]}</AvatarFallback>
         </Avatar>
         <div className="min-w-0 flex-1 overflow-hidden">

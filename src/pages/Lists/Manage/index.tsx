@@ -5,8 +5,8 @@ import { useReorderIdeas } from '@/hooks/mutations/useReorderIdeas';
 import { useInfiniteList } from '@/hooks/queries/infinite/useInfiniteList';
 import { useOrderIdeas } from '@/hooks/queries/useOrderIdeas';
 import { useAuthCheck, useAuthWrapper } from '@/hooks/useAuth';
-import useStrictNavigation from '@/hooks/useStrictNavigate';
-import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
+import useStrictNavigationAdapter from '@/hooks/useStrictNavigateAdapter';
+import { useUserContext } from '@/hooks/useRouterCompat';
 import Header from '@/pages/Lists/Components/Header';
 import IdeaList, { DropEvent } from '@/pages/Lists/Manage/IdeasList';
 import ListInfo from '@/pages/Lists/Manage/ListInfo';
@@ -15,12 +15,14 @@ import useUserStore from '@/stores/useUserStore';
 import { IdeaPreview } from '@/types/Idea';
 import { Trans } from '@lingui/react/macro';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useOutletContext, useParams } from 'react-router-dom';
-const ListManagePage: React.FC = () => {
-  const { userCode } = useOutletContext<UserRouteLayoutContextType>();
+import { useParams } from 'next/navigation';
 
-  const { id } = useParams();
-  const navigateTo = useStrictNavigation();
+const ListManagePage: React.FC = () => {
+  const { userCode } = useUserContext();
+  const params = useParams();
+  const listID = params.id as string;
+
+  const navigateTo = useStrictNavigationAdapter();
   const { withAuth } = useAuthWrapper();
   const { checkAuthAndRedirect } = useAuthCheck();
 
@@ -37,16 +39,16 @@ const ListManagePage: React.FC = () => {
     isLoading: isListLoading,
     isFetchingNextPage,
   } = useInfiniteList({
-    listID: id,
+    listID: listID,
     enabled: !isDeleting,
     limit: 20,
   });
 
   const { data: orderedIdeas, isLoading: isOrderIdeaLoading } = useOrderIdeas({
-    listID: id ?? '',
+    listID: listID ?? '',
   });
   const { reorderIdeas, isReorderIdeasLoading } = useReorderIdeas({
-    listID: id ?? '',
+    listID: listID ?? '',
   });
   const { deleteList, isDeleteListLoading } = useDeleteList({
     userCode: me.userCode,
@@ -79,7 +81,7 @@ const ListManagePage: React.FC = () => {
   );
 
   const onConfirmReorder = withAuth(() => {
-    if (!id || !ideasDraft || !orderedIdeas) return;
+    if (!listID || !ideasDraft || !orderedIdeas) return;
 
     const draftSet = new Set(ideasDraft.map((idea) => idea.id));
     const finalOrder = [
@@ -105,20 +107,21 @@ const ListManagePage: React.FC = () => {
   });
 
   const onEditList = withAuth(() => {
-    if (!id) return navigateTo.error();
-    navigateTo.editList(me.userCode, id);
+    if (!listID) return navigateTo.error();
+    navigateTo.editList(me.userCode, listID);
   });
 
   const onAddIdea = withAuth(() => {
-    if (!id) return navigateTo.error();
+    if (!listID) return navigateTo.error();
     navigateTo.createIdea({
-      state: { listID: Number(id), listTitle: list?.title },
+      listID: Number(listID),
+      listTitle: list?.title,
     });
   });
 
   const onClose = () => {
-    if (!id) return navigateTo.error();
-    navigateTo.viewList(me.userCode, id);
+    if (!listID) return navigateTo.error();
+    navigateTo.viewList(me.userCode, listID);
   };
 
   const onBottomReached = () => {
@@ -148,8 +151,8 @@ const ListManagePage: React.FC = () => {
     checkAuthAndRedirect();
     if (userCode !== me.userCode) {
       if (userCode) {
-        if (id) {
-          navigateTo.viewList(userCode, id);
+        if (listID) {
+          navigateTo.viewList(userCode, listID);
         } else {
           navigateTo.user(userCode);
         }
@@ -157,7 +160,7 @@ const ListManagePage: React.FC = () => {
         navigateTo.home();
       }
     }
-  }, [checkAuthAndRedirect, id, me.userCode, navigateTo, userCode]);
+  }, [checkAuthAndRedirect, listID, me.userCode, navigateTo, userCode]);
 
   if (isListLoading || isReorderIdeasLoading || isDeleteListLoading) {
     return <div>Loading...</div>;

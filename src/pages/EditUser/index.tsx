@@ -10,7 +10,7 @@ import { EditFieldVariant, FieldType } from '@/enums/EditField/index.enum';
 import { SocialLinkType } from '@/enums/index.enum';
 import { useEditProfile } from '@/hooks/mutations/useEditProfile';
 import { useAuthCheck } from '@/hooks/useAuth';
-import useStrictNavigation from '@/hooks/useStrictNavigate';
+import useStrictNavigateAdapter from '@/hooks/useStrictNavigateAdapter';
 import { extractUsernameFromUrl, urlPreview } from '@/lib/utils';
 import { validateUserCode } from '@/lib/validator';
 import useEditProfileStore from '@/stores/useEditProfileStore';
@@ -21,7 +21,7 @@ import { Trans } from '@lingui/react/macro';
 import { useEffect, useState } from 'react';
 
 const EditUserPage: React.FC = () => {
-  const navigateTo = useStrictNavigation();
+  const navigateTo = useStrictNavigateAdapter();
   const { me } = useUserStore();
   const {
     newUserInfo,
@@ -250,13 +250,7 @@ const EditUserPage: React.FC = () => {
       closeFakePage();
       resetNewUserInfo();
     };
-  }, [
-    closeFakePage,
-    resetNewUserInfo,
-    checkAuthAndRedirect,
-    me,
-    setNewUserInfo,
-  ]);
+  }, [me]); // ✅ 只依賴真正會變化的數據，移除 store 函數避免無限循環
 
   return (
     <>
@@ -264,7 +258,7 @@ const EditUserPage: React.FC = () => {
       {/* Upload ProfileImageSection */}
       <div id="profile-image" className="flex items-end justify-center pt-6">
         <Avatar className="h-24 w-24">
-          <AvatarImage src={newUserInfo.profileImage} />
+          <AvatarImage src={newUserInfo.profileImage || null} />
           <AvatarFallback>{newUserInfo.displayName[0]}</AvatarFallback>
         </Avatar>
         <label

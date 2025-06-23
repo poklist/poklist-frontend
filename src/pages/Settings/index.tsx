@@ -1,6 +1,6 @@
 import Footer from '@/components/Footer';
 import BackToUserHeader from '@/components/Header/BackToUserHeader';
-import useStrictNavigation from '@/hooks/useStrictNavigate';
+import useStrictNavigationAdapter from '@/hooks/useStrictNavigateAdapter';
 import useAuthStore from '@/stores/useAuthStore';
 import useUserStore from '@/stores/useUserStore';
 import { t } from '@lingui/core/macro';
@@ -10,7 +10,7 @@ import IntroSection from './IntroSection';
 const SettingsPage: React.FC = () => {
   const { isLoggedIn } = useAuthStore();
   const { me } = useUserStore();
-  const navigateTo = useStrictNavigation();
+  const navigateTo = useStrictNavigationAdapter();
 
   const handleOnClose = () => {
     // FUTURE: if history is not empty, navigate to the previous page; otherwise, navigate to the user page

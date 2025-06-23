@@ -60,12 +60,6 @@ msgid "Copy"
 msgstr "Copy"
 
 #: src/components/Header/BackToUserHeader.tsx
-#: src/pages/Lists/View/index.tsx
-#: src/pages/User/HeroSection/index.tsx
-msgid "Please login to do this action"
-msgstr "Please login to do this action"
-
-#: src/components/Header/BackToUserHeader.tsx
 #: src/pages/User/HeroSection/index.tsx
 #: src/pages/User/HeroSection/index.tsx
 msgid "Following"
@@ -92,6 +86,14 @@ msgstr "500x500px, JPG or PNG, max 4MB"
 #: src/components/ImageUploader/index.tsx
 msgid "Upload a cover"
 msgstr "Upload a cover"
+
+#: src/components/LoginDrawerGlobal.tsx
+msgid "Right now, only invited users can log in"
+msgstr "Right now, only invited users can log in"
+
+#: src/components/LoginDrawerGlobal.tsx
+msgid "Already got your invite? Jump in and apply now!"
+msgstr "Already got your invite? Jump in and apply now!"
 
 #: src/constants/Home/index.en.ts
 msgid "Join Relist and share your lists."
@@ -465,6 +467,10 @@ msgstr "Contact us"
 msgid "Please login again"
 msgstr "Please login again"
 
+#: src/hooks/useAuthRequired.ts
+msgid "Please login to do this action"
+msgstr "Please login to do this action"
+
 #: src/hooks/useCheckStorage.ts
 msgid "The app is outdated, please login again"
 msgstr "The app is outdated, please login again"
@@ -753,14 +759,6 @@ msgstr "New Idea"
 #: src/pages/Idea/Edit/index.tsx
 msgid "Idea"
 msgstr "Idea"
-
-#: src/pages/Layout/Components/MainContent.tsx
-msgid "Right now, only invited users can log in"
-msgstr "Right now, only invited users can log in"
-
-#: src/pages/Layout/Components/MainContent.tsx
-msgid "Already got your invite? Jump in and apply now!"
-msgstr "Already got your invite? Jump in and apply now!"
 
 #: src/pages/Layout/Components/PromptText.tsx
 msgid "Relist works best on mobile. Use a mobile device for the best experience."

@@ -1,5 +1,5 @@
 import { FOOTER_SECTION, SOCIAL_MEDIA } from '@/constants/Home/index.en';
-import useStrictNavigation from '@/hooks/useStrictNavigate';
+import useStrictNavigationAdapter from '@/hooks/useStrictNavigateAdapter';
 import { Footer } from '@/pages/Official/Components/Footer';
 import { Trans } from '@lingui/react/macro';
 import { ChevronRight } from 'lucide-react';
@@ -10,7 +10,7 @@ const FooterSection = () => {
     SOCIAL_MEDIA,
   };
 
-  const navigateTo = useStrictNavigation();
+  const navigateTo = useStrictNavigationAdapter();
 
   return (
     <>

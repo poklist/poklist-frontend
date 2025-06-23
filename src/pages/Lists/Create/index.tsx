@@ -1,6 +1,6 @@
 import { useCreateList } from '@/hooks/mutations/useCreateList';
 import { useAuthCheck, useAuthWrapper } from '@/hooks/useAuth';
-import useStrictNavigate from '@/hooks/useStrictNavigate';
+import useStrictNavigateAdapter from '@/hooks/useStrictNavigateAdapter';
 import ListForm from '@/pages/Lists/Components/Form';
 import Header from '@/pages/Lists/Components/Header';
 import useCommonStore from '@/stores/useCommonStore';
@@ -10,7 +10,7 @@ import { Trans } from '@lingui/react/macro';
 import React, { useEffect } from 'react';
 
 const CreatePage: React.FC = () => {
-  const navigateTo = useStrictNavigate();
+  const navigateTo = useStrictNavigateAdapter();
   const { setIsLoading } = useCommonStore();
   const { me } = useUserStore();
   const { checkAuthAndRedirect } = useAuthCheck();

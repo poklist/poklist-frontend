@@ -2,7 +2,7 @@ import { pipe } from '@/lib/functional';
 import useAuthStore from '@/stores/useAuthStore';
 import useCommonStore from '@/stores/useCommonStore';
 import { useCallback } from 'react';
-import useStrictNavigation from './useStrictNavigate';
+import useStrictNavigateAdapter from './useStrictNavigateAdapter';
 
 /**
  * 檢查使用者是否已登入，如未登入則顯示登入對話框
@@ -10,7 +10,7 @@ import useStrictNavigation from './useStrictNavigate';
 export const useAuthCheck = () => {
   const { isLoggedIn } = useAuthStore();
   const { setIsLoginDrawerOpen } = useCommonStore();
-  const navigateTo = useStrictNavigation();
+  const navigateTo = useStrictNavigateAdapter();
 
   // 基本檢查函數
   const checkAuth = useCallback((): boolean => {

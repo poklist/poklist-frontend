@@ -1,5 +1,5 @@
 import { ViewListNavigateState } from '@/pages/Lists/View/ListCard';
-import { StaticRoutes } from '@/router';
+import { StaticRoutes } from '@/constants/routes';
 import { NavigateOptions, useNavigate } from 'react-router-dom';
 
 const useStrictNavigation = () => {

@@ -14,15 +14,7 @@ import Official from '@/pages/Official/index';
 import SettingsPage from '@/pages/Settings';
 import UserPage from '@/pages/User';
 import { createBrowserRouter, Navigate } from 'react-router-dom';
-
-export const StaticRoutes = {
-  HOME: '/',
-  DISCOVERY: '/discovery',
-  OFFICIAL: '/official',
-  SETTINGS: '/settings',
-  GO_TO_MOBILE: '/goToMobile',
-  ERROR: '/error',
-};
+import { StaticRoutes } from '@/constants/routes';
 
 const router = createBrowserRouter([
   {

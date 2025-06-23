@@ -4,7 +4,7 @@ import { activateI18n } from '@/components/Language/useLanguage';
 import { DrawerIds } from '@/constants/Drawer';
 import { ExternalLinks } from '@/constants/externalLink';
 import { Language, LocalStorageKey, Location } from '@/enums/index.enum';
-import useStrictNavigation from '@/hooks/useStrictNavigate';
+import useStrictNavigationAdapter from '@/hooks/useStrictNavigateAdapter';
 import { getLocalStorage, setLocalStorage } from '@/lib/utils';
 import useAuthStore from '@/stores/useAuthStore';
 import { ILinksBlock, UrlString } from '@/types/Settings';
@@ -16,7 +16,7 @@ import { ButtonRadioGroup } from '../ButtonRadioGroup';
 import LinksBlock from './LinksBlock';
 
 const BlocksSection: React.FC = () => {
-  const navigateTo = useStrictNavigation();
+  const navigateTo = useStrictNavigationAdapter();
   const { openDrawer } = useDrawer();
   const { isLoggedIn, logout } = useAuthStore();
   const [drawerContent, setDrawerContent] = useState<React.ReactNode>(null);

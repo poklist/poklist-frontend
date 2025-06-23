@@ -1,13 +1,12 @@
+import useStrictNavigationAdapter from '@/hooks/useStrictNavigateAdapter';
+import { useUserContext } from '@/hooks/useRouterCompat';
 import { useListPreviews } from '@/hooks/queries/useLists';
-import useStrictNavigation from '@/hooks/useStrictNavigate';
-import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
-import { Trans } from '@lingui/react/macro';
-import { useOutletContext } from 'react-router-dom';
 import { ListSectionSkeleton } from './ListSectionSkeleton';
+import { Trans } from '@lingui/react/macro';
 
 const ListSection: React.FC = () => {
-  const navigateTo = useStrictNavigation();
-  const { userCode } = useOutletContext<UserRouteLayoutContextType>();
+  const { userCode } = useUserContext();
+  const navigateTo = useStrictNavigationAdapter();
 
   const { data: listPreviews, isLoading } = useListPreviews({
     userCode,
@@ -37,7 +36,7 @@ const ListSection: React.FC = () => {
               </p>
               {listPreview.coverImage && (
                 <img
-                  src={listPreview.coverImage}
+                  src={listPreview.coverImage || null}
                   width={40}
                   height={40}
                   className="rounded-[3px] border border-black-text-01"

@@ -13,14 +13,15 @@ import { SocialLinkType } from '@/enums/index.enum';
 import { useFollowAction } from '@/hooks/mutations/useFollowAction';
 import { useUser } from '@/hooks/queries/useUser';
 import { useAuthWrapper } from '@/hooks/useAuth';
-import useStrictNavigation from '@/hooks/useStrictNavigate';
+import useStrictNavigationAdapter from '@/hooks/useStrictNavigateAdapter';
+import { useAuthRequired } from '@/hooks/useAuthRequired';
 import { useToast } from '@/hooks/useToast';
 import {
   ensureProtocol,
   extractUsernameFromUrl,
   urlPreview,
 } from '@/lib/utils';
-import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
+
 import useAuthStore from '@/stores/useAuthStore';
 import useFollowingStore from '@/stores/useFollowingStore';
 import useUserStore from '@/stores/useUserStore';
@@ -28,13 +29,13 @@ import { User } from '@/types/User';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { useOutletContext } from 'react-router-dom';
+import { useUserContext } from '@/hooks/useRouterCompat';
 import { HeroSectionSkeleton } from './HeroSectionSkeleton';
 
 const HeroSection: React.FC = () => {
-  const { userCode } = useOutletContext<UserRouteLayoutContextType>();
+  const { userCode } = useUserContext();
 
-  const navigateTo = useStrictNavigation();
+  const navigateTo = useStrictNavigationAdapter();
   const { isLoggedIn, logout } = useAuthStore();
   const { me, setMe } = useUserStore();
   const { getIsFollowing, setIsFollowing, hasFollowingState } =
@@ -42,6 +43,7 @@ const HeroSection: React.FC = () => {
   const { openDrawer } = useDrawer();
   const [drawerContent, setDrawerContent] = useState<React.ReactNode>(null);
   const bioRef = useRef<HTMLParagraphElement>(null);
+  const { handleAuthRequired } = useAuthRequired();
   const { toast } = useToast();
 
   // 獲取當前用戶的關注狀態
@@ -89,12 +91,7 @@ const HeroSection: React.FC = () => {
   const { follow, unfollow } = useFollowAction({
     userCode: userCode || '',
     shouldAllow: () => isLoggedIn,
-    onNotAllowed: () => {
-      toast({
-        title: t`Please login to do this action`,
-        variant: 'destructive',
-      });
-    },
+    onNotAllowed: handleAuthRequired,
   });
 
   const linkCount = useMemo(() => {
@@ -222,7 +219,7 @@ const HeroSection: React.FC = () => {
       >
         <div id="hero-basic-info" className="flex flex-col items-center gap-2">
           <Avatar className="h-16 w-16">
-            <AvatarImage src={currentUser.profileImage} />
+            <AvatarImage src={currentUser.profileImage || null} />
             <AvatarFallback>{currentUser.displayName[0]}</AvatarFallback>
           </Avatar>
           <p className="text-[17px] font-bold">{currentUser.displayName}</p>

@@ -60,12 +60,6 @@ msgid "Copy"
 msgstr "複製"
 
 #: src/components/Header/BackToUserHeader.tsx
-#: src/pages/Lists/View/index.tsx
-#: src/pages/User/HeroSection/index.tsx
-msgid "Please login to do this action"
-msgstr "請先登入以進行此操作"
-
-#: src/components/Header/BackToUserHeader.tsx
 #: src/pages/User/HeroSection/index.tsx
 #: src/pages/User/HeroSection/index.tsx
 msgid "Following"
@@ -92,6 +86,14 @@ msgstr "500x500像素，限 JPG 或 PNG，最大4MB"
 #: src/components/ImageUploader/index.tsx
 msgid "Upload a cover"
 msgstr "封面圖片"
+
+#: src/components/LoginDrawerGlobal.tsx
+msgid "Right now, only invited users can log in"
+msgstr "現在僅開放受邀請的用戶登入體驗"
+
+#: src/components/LoginDrawerGlobal.tsx
+msgid "Already got your invite? Jump in and apply now!"
+msgstr "收到邀請了嗎？現在就去申請加入！"
 
 #: src/constants/Home/index.en.ts
 msgid "Join Relist and share your lists."
@@ -465,6 +467,10 @@ msgstr "聯繫我們"
 msgid "Please login again"
 msgstr "請重新登入"
 
+#: src/hooks/useAuthRequired.ts
+msgid "Please login to do this action"
+msgstr "請先登入以進行此操作"
+
 #: src/hooks/useCheckStorage.ts
 msgid "The app is outdated, please login again"
 msgstr "網頁更新，請重新登入"
@@ -753,14 +759,6 @@ msgstr "新靈感"
 #: src/pages/Idea/Edit/index.tsx
 msgid "Idea"
 msgstr "靈感"
-
-#: src/pages/Layout/Components/MainContent.tsx
-msgid "Right now, only invited users can log in"
-msgstr "現在僅開放受邀請的用戶登入體驗"
-
-#: src/pages/Layout/Components/MainContent.tsx
-msgid "Already got your invite? Jump in and apply now!"
-msgstr "收到邀請了嗎？現在就去申請加入！"
 
 #: src/pages/Layout/Components/PromptText.tsx
 msgid "Relist works best on mobile. Use a mobile device for the best experience."

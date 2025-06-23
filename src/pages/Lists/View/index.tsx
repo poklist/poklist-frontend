@@ -4,35 +4,34 @@ import { Idea } from '@/constants/list';
 import { useLikeAction } from '@/hooks/mutations/useLikeAction';
 import { useList } from '@/hooks/queries/useList';
 import { useUser } from '@/hooks/queries/useUser';
-import useStrictNavigation from '@/hooks/useStrictNavigate';
-import { useToast } from '@/hooks/useToast';
-import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
+import useStrictNavigationAdapter from '@/hooks/useStrictNavigateAdapter';
+import { useAuthRequired } from '@/hooks/useAuthRequired';
+import { useUserContext } from '@/hooks/useRouterCompat';
 import { Tile20Background } from '@/pages/User/TileBackground';
 import useAuthStore from '@/stores/useAuthStore';
 import useCommonStore from '@/stores/useCommonStore';
 import useFollowingStore from '@/stores/useFollowingStore';
 import useLikeStore from '@/stores/useLikeStore';
 import useUserStore from '@/stores/useUserStore';
-import { t } from '@lingui/core/macro';
 import { useEffect } from 'react';
-import { useOutletContext, useParams } from 'react-router-dom';
+import { useParams } from 'next/navigation';
 import ListCard from './ListCard';
 
 const ViewListPage: React.FC = () => {
-  const { userCode: listOwnerUserCode } =
-    useOutletContext<UserRouteLayoutContextType>();
-  const { id: listID } = useParams();
+  const { userCode: listOwnerUserCode } = useUserContext();
+  const params = useParams();
+  const listID = params.id as string;
+
   const { isLoggedIn } = useAuthStore();
   const { me } = useUserStore();
   const isMyPage = listOwnerUserCode === me.userCode;
-  const navigateTo = useStrictNavigation();
+  const navigateTo = useStrictNavigationAdapter();
   const { setIsLoading } = useCommonStore();
 
   const { getIsLiked, setIsLiked, hasLikeState } = useLikeStore();
   const { setIsFollowing, hasFollowingState } = useFollowingStore();
-  const { toast } = useToast();
+  const { handleAuthRequired } = useAuthRequired();
 
-  // 獲取當前列表的點讚狀態
   const isLiked = listID ? getIsLiked(listID) : false;
 
   const {
@@ -43,7 +42,6 @@ const ViewListPage: React.FC = () => {
     userCode: listOwnerUserCode,
   });
 
-  // FUTURE: check before firing the query if we have the listID validation rules
   const {
     data: list,
     isLoading: isListLoading,
@@ -65,12 +63,7 @@ const ViewListPage: React.FC = () => {
   const { like, unlike } = useLikeAction({
     listID: listID || '',
     shouldAllow: () => isLoggedIn,
-    onNotAllowed: () => {
-      toast({
-        title: t`Please login to do this action`,
-        variant: 'destructive',
-      });
-    },
+    onNotAllowed: handleAuthRequired,
   });
 
   useEffect(() => {
@@ -87,7 +80,6 @@ const ViewListPage: React.FC = () => {
       const hasExistingLikeState = hasLikeState(listID);
 
       if (!hasExistingLikeState) {
-        // 只有當 store 中沒有該列表的狀態時，才使用 API 資料初始化
         setIsLiked(listID, likeState);
       }
     }
@@ -99,7 +91,6 @@ const ViewListPage: React.FC = () => {
       const hasExistingState = hasFollowingState(listOwnerUserCode);
 
       if (!hasExistingState) {
-        // 只有當 store 中沒有該用戶的狀態時，才使用 API 資料初始化
         setIsFollowing(listOwnerUserCode, followingState);
       }
     }

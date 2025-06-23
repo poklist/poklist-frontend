@@ -3,7 +3,7 @@ import useEditIdea from '@/hooks/mutations/useEditIdea';
 import { useIdea } from '@/hooks/queries/useIdea';
 import { useList } from '@/hooks/queries/useList';
 import { useAuthCheck, useAuthWrapper } from '@/hooks/useAuth';
-import useStrictNavigation from '@/hooks/useStrictNavigate';
+import useStrictNavigationAdapter from '@/hooks/useStrictNavigateAdapter';
 import Header from '@/pages/Idea/Components/Header';
 import useCommonStore from '@/stores/useCommonStore';
 import useUserStore from '@/stores/useUserStore';
@@ -11,12 +11,13 @@ import { IdeaBody } from '@/types/Idea';
 import { Trans } from '@lingui/react/macro';
 import { Skeleton, Text } from '@radix-ui/themes';
 import { useEffect, useMemo, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'next/navigation';
 import IdeaFormComponent from '../Components/Form';
 
 const EditIdeaPage: React.FC = () => {
-  const { id } = useParams();
-  const navigateTo = useStrictNavigation();
+  const params = useParams();
+  const id = params.ideaID as string;
+  const navigateTo = useStrictNavigationAdapter();
   const [isDeleting, setIsDeleting] = useState(false);
 
   const { setIsLoading } = useCommonStore();

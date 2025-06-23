@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { DrawerIds } from '@/constants/Drawer';
 import { EditFieldVariant } from '@/enums/EditField/index.enum';
-import useStrictNavigation from '@/hooks/useStrictNavigate';
+import useStrictNavigationAdapter from '@/hooks/useStrictNavigateAdapter';
 import { cn, formatInput } from '@/lib/utils';
 import useCommonStore from '@/stores/useCommonStore';
 import { IEditFieldConfig } from '@/types/EditField';
@@ -48,7 +48,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
     useCommonStore();
   const { openDrawer: openCancelDrawer, closeDrawer: closeCancelDrawer } =
     useDrawer(DrawerIds.CANCEL_IDEA_FORM_CONFIRM_DRAWER_ID);
-  const navigateTo = useStrictNavigation();
+  const navigateTo = useStrictNavigationAdapter();
 
   const [isTextareaFocus, setIsTextareaFocus] = useState(false);
   const [isFormModified, setIsFormModified] = useState(false);

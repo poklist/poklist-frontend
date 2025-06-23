@@ -1,27 +1,22 @@
-import useStrictNavigation from '@/hooks/useStrictNavigate';
-import { Outlet, useParams } from 'react-router-dom';
+// 導入已移除，因為功能已經被 App Router layout 替代
 
 export interface UserRouteLayoutContextType {
   userCode: string;
 }
 
-export default function UserRouteLayout() {
-  const { userCode: rawUserCode } = useParams();
-  const navigateTo = useStrictNavigation();
+interface UserRouteLayoutProps {
+  children: React.ReactNode;
+}
 
-  if (!rawUserCode?.startsWith('@')) {
-    // Prevent capturing userCode that does not start with @, such as conflicting with /discovery, /official or /settings
-    navigateTo.error();
-  }
+export default function UserRouteLayout({ children }: UserRouteLayoutProps) {
+  // 在 Next.js App Router 中，這個組件的功能已經被 src/app/[userCode]/layout.tsx 和 UserRouteProvider 替代
+  // 這個組件主要用於向下兼容或者特定的布局需求
 
-  // ✅ Pass to context or props etc.: Remove the prefix @
-  const cleanUserCode = rawUserCode?.slice(1);
-
-  // You can also use context to pass cleanUserCode to the child pages inside Outlet
+  // 直接返回 children，因為 userCode 的處理已經在 App Router layout 中完成
   return (
     <div>
       {/* Can put user profile layout */}
-      <Outlet context={{ userCode: cleanUserCode }} />
+      {children}
     </div>
   );
 }

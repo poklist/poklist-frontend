@@ -2,8 +2,8 @@ import { useDeleteList } from '@/hooks/mutations/useDeleteList';
 import { useEditList } from '@/hooks/mutations/useEditList';
 import { useList } from '@/hooks/queries/useList';
 import { useAuthCheck, useAuthWrapper } from '@/hooks/useAuth';
-import useStrictNavigation from '@/hooks/useStrictNavigate';
-import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
+import useStrictNavigationAdapter from '@/hooks/useStrictNavigateAdapter';
+import { useUserContext } from '@/hooks/useRouterCompat';
 import ListForm from '@/pages/Lists/Components/Form';
 import Header from '@/pages/Lists/Components/Header';
 import useCommonStore from '@/stores/useCommonStore';
@@ -11,20 +11,20 @@ import useUserStore from '@/stores/useUserStore';
 import { ListBody, ListCover } from '@/types/List';
 import { Trans } from '@lingui/react/macro';
 import React, { useEffect, useState } from 'react';
-import { useOutletContext, useParams } from 'react-router-dom';
+import { useParams } from 'next/navigation';
 
 const EditListPage: React.FC = () => {
-  const { userCode } = useOutletContext<UserRouteLayoutContextType>();
-  // Render the page here
-  const { id } = useParams();
-  const navigateTo = useStrictNavigation();
+  const { userCode } = useUserContext();
+  const params = useParams();
+  const listID = params.id as string;
+  const navigateTo = useStrictNavigationAdapter();
   const { checkAuthAndRedirect } = useAuthCheck();
   const { setIsLoading } = useCommonStore();
   const { me } = useUserStore();
   const { withAuth } = useAuthWrapper();
 
   const { data: list, isLoading: isListInfoLoading } = useList({
-    listID: id,
+    listID: listID,
   });
   const { isEditListLoading, editList } = useEditList({
     userCode: me.userCode,
@@ -67,7 +67,7 @@ const EditListPage: React.FC = () => {
     });
     editList(
       {
-        listID: Number(id),
+        listID: Number(listID),
         editListRequest: listFormData,
       },
       {
@@ -99,8 +99,8 @@ const EditListPage: React.FC = () => {
     checkAuthAndRedirect();
     if (userCode !== me.userCode) {
       if (userCode) {
-        if (id) {
-          navigateTo.viewList(userCode, id);
+        if (listID) {
+          navigateTo.viewList(userCode, listID);
         } else {
           navigateTo.user(userCode);
         }
@@ -108,7 +108,7 @@ const EditListPage: React.FC = () => {
         navigateTo.home();
       }
     }
-  }, [checkAuthAndRedirect, id, me.userCode, navigateTo, userCode]);
+  }, [checkAuthAndRedirect, listID, me.userCode, navigateTo, userCode]);
 
   return (
     <>

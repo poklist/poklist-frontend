@@ -7,6 +7,8 @@ import { Theme } from '@radix-ui/themes';
 import { DrawerProvider } from '@/components/Drawer';
 import { FakePageProvider } from '@/components/FakePage';
 import { Toaster } from '@/components/ui/toaster';
+import { LoginDrawerGlobal } from '@/components/LoginDrawerGlobal';
+import { ErrorDrawer } from '@/components/ErrorDrawer';
 
 // 將 QueryClient 實例化移到組件外部
 const queryClient = new QueryClient({
@@ -41,6 +43,8 @@ export const ClientProviders = ({ children }: ClientProvidersProps) => {
         <DrawerProvider>
           <FakePageProvider>
             {children}
+            <LoginDrawerGlobal />
+            <ErrorDrawer />
             <Toaster />
             <ReactQueryDevtools initialIsOpen={false} />
           </FakePageProvider>

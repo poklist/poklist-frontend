@@ -1,34 +1,25 @@
 import AlertComponent from '@/components/Alert';
-import { LoginDrawer } from '@/components/Drawer/LoginDrawer';
 import { ErrorDrawer } from '@/components/ErrorDrawer';
 import LoadingSpinner from '@/components/Loading';
 import { useScrollPosition } from '@/hooks/useScrollPosition';
-import useStrictNavigation from '@/hooks/useStrictNavigate';
 import { cn } from '@/lib/utils';
 import useCommonStore from '@/stores/useCommonStore';
 import useLayoutStore from '@/stores/useLayoutStore';
 import { useUIStore } from '@/stores/useUIStore';
-import { User } from '@/types/User';
-import { t } from '@lingui/core/macro';
-import { GoogleOAuthProvider } from '@react-oauth/google';
 import { useEffect, useRef } from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
+import { usePathname } from 'next/navigation';
+
+interface MainContentProps {
+  children?: React.ReactNode;
+}
 
 // 主要內容區域組件
-const MainContent = () => {
-  const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID as string;
-
+const MainContent = ({ children }: MainContentProps) => {
   const { isMobile } = useLayoutStore();
-
-  const navigateTo = useStrictNavigation();
-  const {
-    isLoading,
-    isLoginDrawerOpen,
-    setIsLoginDrawerOpen,
-    setErrorDrawerMessage,
-  } = useCommonStore();
+  const { isLoading } = useCommonStore();
   const { setScrollToTop } = useUIStore();
-  const isHomePage = useLocation().pathname === '/discovery';
+  const pathname = usePathname();
+  const isHomePage = pathname === '/discovery';
 
   const mainContentRef = useRef<HTMLDivElement>(null);
   // 使用自定義 hook 管理滾動位置
@@ -42,23 +33,7 @@ const MainContent = () => {
     });
   }, [setScrollToTop]);
 
-  const handleGoogleLogin = (user: User) => {
-    if (!user) {
-      setIsLoginDrawerOpen(false);
-      handleLoginError();
-      return;
-    }
-    setIsLoginDrawerOpen(false);
-    navigateTo.discovery();
-  };
-
-  const handleLoginError = () => {
-    setIsLoginDrawerOpen(false);
-    setErrorDrawerMessage({
-      title: t`Right now, only invited users can log in`,
-      content: t`Already got your invite? Jump in and apply now!`,
-    });
-  };
+  // LoginDrawer 相關邏輯已移至 ClientProviders 中的 LoginDrawerGlobal
 
   return (
     <div
@@ -81,21 +56,14 @@ const MainContent = () => {
             }
           )}
         >
-          <Outlet />
+          {children}
         </div>
       </div>
 
       <LoadingSpinner isLoading={isLoading} />
       <ErrorDrawer />
 
-      <GoogleOAuthProvider clientId={clientId}>
-        <LoginDrawer
-          isOpen={isLoginDrawerOpen}
-          onClose={() => setIsLoginDrawerOpen(false)}
-          onLogin={handleGoogleLogin}
-          onError={handleLoginError}
-        />
-      </GoogleOAuthProvider>
+      {/* LoginDrawer 現在在 ClientProviders 中全域處理 */}
     </div>
   );
 };

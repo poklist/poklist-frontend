@@ -1,6 +1,6 @@
 import { useCreateIdea } from '@/hooks/mutations/useCreateIdea';
 import { useAuthWrapper } from '@/hooks/useAuth';
-import useStrictNavigation from '@/hooks/useStrictNavigate';
+import useStrictNavigationAdapter from '@/hooks/useStrictNavigateAdapter';
 import IdeaForm from '@/pages/Idea/Components/Form';
 import Header from '@/pages/Idea/Components/Header';
 import useCommonStore from '@/stores/useCommonStore';
@@ -8,7 +8,7 @@ import useUserStore from '@/stores/useUserStore';
 import { IdeaBody } from '@/types/Idea';
 import { Trans } from '@lingui/react/macro';
 import React, { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useSearchParams } from 'next/navigation';
 
 export interface CreateIdeaNavigateState {
   listID: number;
@@ -16,9 +16,10 @@ export interface CreateIdeaNavigateState {
 }
 
 const IdeaCreatePage: React.FC = () => {
-  const navigateTo = useStrictNavigation();
-  const location = useLocation();
-  const { listID, listTitle } = location.state as CreateIdeaNavigateState;
+  const navigateTo = useStrictNavigationAdapter();
+  const searchParams = useSearchParams();
+  const listID = Number(searchParams.get('listID'));
+  const listTitle = searchParams.get('listTitle') || '';
   const { setIsLoading, setShowingAlert } = useCommonStore();
   const { me } = useUserStore();
 

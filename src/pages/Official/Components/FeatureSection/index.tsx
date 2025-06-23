@@ -116,7 +116,7 @@ export const FeatureSection = ({
       <div className="mx-6 mb-4 mt-4 rounded-3xl border-[1px] border-black bg-white px-4 py-8">
         <div className="mb-4 flex items-center gap-1">
           <img
-            src={selectedList.userAvatar}
+            src={selectedList.userAvatar || null}
             alt={selectedList.user.id}
             className="size-10 rounded-full"
           />

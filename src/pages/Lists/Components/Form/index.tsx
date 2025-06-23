@@ -14,7 +14,7 @@ import { DrawerIds } from '@/constants/Drawer';
 import { EditFieldVariant } from '@/enums/EditField/index.enum';
 import { RadioType } from '@/enums/Style/index.enum';
 import { useCategories } from '@/hooks/queries/useCategories';
-import useStrictNavigation from '@/hooks/useStrictNavigate';
+import useStrictNavigationAdapter from '@/hooks/useStrictNavigateAdapter';
 import { cn, formatInput } from '@/lib/utils';
 import { CategoriesI18n } from '@/pages/Lists/i18n';
 import useCommonStore from '@/stores/useCommonStore';
@@ -122,7 +122,7 @@ const ListForm: React.FC<IListFormProps> = ({
       setIsFormModified(isModified);
     });
     return () => subscription.unsubscribe();
-  }, [listForm, defaultListInfo]);
+  }, [defaultListInfo]); // 只依賴 defaultListInfo，移除 listForm 避免無限循環
 
   const isFieldNotEmpty = (
     value: string | number | File | null | undefined
@@ -211,7 +211,7 @@ const ListForm: React.FC<IListFormProps> = ({
       closeCategoryDrawer();
       closeCancelDrawer();
     };
-  }, [closeCategoryDrawer, closeCancelDrawer]);
+  }, []); // 移除依賴，避免無限循環
 
   useEffect(() => {
     if (!defaultListInfo) {
@@ -222,7 +222,7 @@ const ListForm: React.FC<IListFormProps> = ({
     listForm.setValue('externalLink', defaultListInfo.externalLink);
     listForm.setValue('coverImage', defaultListInfo.coverImage);
     listForm.setValue('categoryID', defaultListInfo.categoryID);
-  }, [defaultListInfo, listForm]);
+  }, [defaultListInfo]); // 只依賴 defaultListInfo，移除 listForm 避免無限循環
 
   useEffect(() => {
     if (categoriesLoading) {
@@ -230,7 +230,7 @@ const ListForm: React.FC<IListFormProps> = ({
     } else {
       setIsLoading(false);
     }
-  }, [categoriesLoading, setIsLoading]);
+  }, [categoriesLoading]); // 移除 setIsLoading 依賴，通常它是穩定的
 
   const [radioChoice, setRadioChoice] = useState<IChoice[]>([]);
 
@@ -244,7 +244,7 @@ const ListForm: React.FC<IListFormProps> = ({
     setRadioChoice(_radioChoice);
   }, [categories]);
 
-  const navigateTo = useStrictNavigation();
+  const navigateTo = useStrictNavigationAdapter();
 
   return (
     <>
@@ -328,7 +328,7 @@ const ListForm: React.FC<IListFormProps> = ({
         </div>
         <div
           className={cn(`flex items-center sm:justify-start`, {
-            'justify-center': isFieldNotEmpty(listForm.watch('coverImage')),
+            'justify-center': isFieldNotEmpty(listForm.getValues('coverImage')),
           })}
         >
           <Controller

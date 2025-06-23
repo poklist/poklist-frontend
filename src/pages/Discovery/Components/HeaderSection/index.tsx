@@ -6,7 +6,7 @@ import {
   ButtonVariant,
 } from '@/components/ui/button';
 import { ExternalLinks } from '@/constants/externalLink';
-import useStrictNavigation from '@/hooks/useStrictNavigate';
+import useStrictNavigationAdapter from '@/hooks/useStrictNavigateAdapter';
 import { openWindow } from '@/lib/openLink';
 import useAuthStore from '@/stores/useAuthStore';
 import useUserStore from '@/stores/useUserStore';
@@ -16,7 +16,7 @@ import { Trans } from '@lingui/react/macro';
 import { useEffect, useState } from 'react';
 
 export const HeaderSection = () => {
-  const navigateTo = useStrictNavigation();
+  const navigateTo = useStrictNavigationAdapter();
   const { isLoggedIn } = useAuthStore();
   const { me } = useUserStore();
   const [showCustomLogin, setShowCustomLogin] = useState(false);

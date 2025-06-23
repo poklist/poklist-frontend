@@ -3,7 +3,7 @@ import randomImage2 from '@/assets/images/officialCover/random-image-2.png';
 import randomImage3 from '@/assets/images/officialCover/random-image-3.png';
 import randomImage4 from '@/assets/images/officialCover/random-image-4.png';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import useStrictNavigation from '@/hooks/useStrictNavigate';
+import useStrictNavigationAdapter from '@/hooks/useStrictNavigateAdapter';
 import { OfficialCollection } from '@/types/Discovery';
 
 const fallbackImages = [randomImage1, randomImage2, randomImage3, randomImage4];
@@ -13,7 +13,7 @@ const TileList = ({
 }: {
   officialCollection: OfficialCollection;
 }) => {
-  const navigateTo = useStrictNavigation();
+  const navigateTo = useStrictNavigationAdapter();
 
   // 隨機選擇一張圖片作為封面圖的備用方案
   const getRandomImage = () => {
@@ -41,7 +41,7 @@ const TileList = ({
       </header>
       <div className="flex justify-center">
         <img
-          src={coverImage}
+          src={coverImage || null}
           alt="Official Collection Cover Image"
           loading="lazy"
           className="aspect-square w-full max-w-[202px] rounded-lg border border-black object-cover"
@@ -49,7 +49,7 @@ const TileList = ({
       </div>
       <footer className="flex flex-row items-center justify-start gap-1">
         <Avatar className="size-6">
-          <AvatarImage src={officialCollection.owner.profileImage} />
+          <AvatarImage src={officialCollection.owner.profileImage || null} />
           <AvatarFallback>
             {officialCollection.owner.userCode[0]}
           </AvatarFallback>
