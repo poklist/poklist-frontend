@@ -51,7 +51,7 @@ const FloatingButtonFooter: React.FC<IFooterProps> = ({
   return (
     <footer
       id="floating-button-footer"
-      className="fixed inset-x-0 bottom-2 mx-auto flex w-fit items-center justify-center gap-2 sm:sticky md:max-w-mobile-max"
+      className="fixed inset-x-0 bottom-2 z-20 mx-auto flex w-fit items-center justify-center gap-2 sm:sticky md:max-w-mobile-max"
     >
       {hasLikeButton && (
         <Button

@@ -38,7 +38,7 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({
     <div className="flex flex-col items-start">
       {data.coverImage && (
         <img
-          src={data.coverImage || null}
+          src={data.coverImage || undefined}
           alt={data.title}
           width={240}
           height={240}
