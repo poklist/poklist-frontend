@@ -2,7 +2,7 @@
 
 import { useCreateIdea } from '@/hooks/mutations/useCreateIdea';
 import { useAuthWrapper } from '@/hooks/useAuth';
-import useStrictNavigationAdapter from '@/hooks/useStrictNavigateAdapter';
+import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import IdeaForm from '../_components/Form';
 import Header from '../_components/Header';
 import useCommonStore from '@/stores/useCommonStore';

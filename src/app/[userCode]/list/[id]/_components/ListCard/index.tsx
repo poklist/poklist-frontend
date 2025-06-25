@@ -15,7 +15,7 @@ import {
 } from '@/constants/list';
 import { Language, SocialLinkType } from '@/enums/index.enum';
 import { useIdea } from '@/hooks/queries/useIdea';
-import useStrictNavigationAdapter from '@/hooks/useStrictNavigateAdapter';
+import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { openWindow } from '@/lib/openLink';
 import { getFormattedTime, parsePostgresDate } from '@/lib/time';
 import { urlPreview } from '@/lib/utils';

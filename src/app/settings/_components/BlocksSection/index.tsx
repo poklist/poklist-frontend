@@ -4,7 +4,7 @@ import { activateI18n } from '@/components/Language/useLanguage';
 import { DrawerIds } from '@/constants/Drawer';
 import { ExternalLinks } from '@/constants/externalLink';
 import { Language, LocalStorageKey, Location } from '@/enums/index.enum';
-import useStrictNavigationAdapter from '@/hooks/useStrictNavigateAdapter';
+import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { getLocalStorage, setLocalStorage } from '@/lib/utils';
 import useAuthStore from '@/stores/useAuthStore';
 import { ILinksBlock, UrlString } from '@/types/Settings';

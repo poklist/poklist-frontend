@@ -1,11 +1,11 @@
-import useStrictNavigationAdapter from '@/hooks/useStrictNavigateAdapter';
-import { useUserContext } from '@/hooks/useRouterCompat';
+import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
+import { useUserRouteContext } from '@/hooks/useUserRouteContext';
 import { useListPreviews } from '@/hooks/queries/useLists';
 import { ListSectionSkeleton } from './ListSectionSkeleton';
 import { Trans } from '@lingui/react/macro';
 
 const ListSection: React.FC = () => {
-  const { userCode } = useUserContext();
+  const { userCode } = useUserRouteContext();
   const navigateTo = useStrictNavigationAdapter();
 
   const { data: listPreviews, isLoading } = useListPreviews({

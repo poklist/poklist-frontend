@@ -7,8 +7,8 @@ import { useReorderIdeas } from '@/hooks/mutations/useReorderIdeas';
 import { useInfiniteList } from '@/hooks/queries/infinite/useInfiniteList';
 import { useOrderIdeas } from '@/hooks/queries/useOrderIdeas';
 import { useAuthCheck, useAuthWrapper } from '@/hooks/useAuth';
-import useStrictNavigationAdapter from '@/hooks/useStrictNavigateAdapter';
-import { useUserContext } from '@/hooks/useRouterCompat';
+import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
+import { useUserRouteContext } from '@/hooks/useUserRouteContext';
 import Header from '../../_components/Header';
 import IdeaList, { DropEvent } from './_components/IdeasList';
 import ListInfo from './_components/ListInfo';
@@ -20,7 +20,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useParams } from 'next/navigation';
 
 const ListManagePage: React.FC = () => {
-  const { userCode } = useUserContext();
+  const { userCode } = useUserRouteContext();
   const params = useParams();
   const listID = params?.id as string;
 

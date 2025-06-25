@@ -4,15 +4,15 @@ import logoRelist from '@/assets/images/logo-relist.svg';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button, ButtonSize, ButtonVariant } from '@/components/ui/button';
 import IconSetting from '@/components/ui/icons/SettingIcon';
-import useStrictNavigationAdapter from '@/hooks/useStrictNavigateAdapter';
+import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
 import { cn } from '@/lib/utils';
-import { UserRouteLayoutContextType } from '@/components/Layout/UserRouteLayuout';
+import { UserRouteLayoutContextType } from '@/hooks/useUserRouteContext';
 import { StaticRoutes } from '@/constants/routes';
 import useAuthStore from '@/stores/useAuthStore';
 import useCommonStore from '@/stores/useCommonStore';
 import useUserStore from '@/stores/useUserStore';
 import React from 'react';
-import { useUserContext } from '@/hooks/useRouterCompat';
+import { useUserRouteContext } from '@/hooks/useUserRouteContext';
 import { usePathname } from 'next/navigation';
 import { LanguageToggleButton } from '../Language';
 
@@ -37,13 +37,13 @@ const Header: React.FC<HeaderProps> = ({
   fakeBlockColor = 'transparent',
   fakeBlock = true,
 }) => {
-  const navigateTo = useStrictNavigationAdapter();
+  const navigateTo = useStrictNavigateNext();
 
   // NOTE: This is a workaround to prevent the userCode from being null
   let outletContext: UserRouteLayoutContextType | null = null;
   try {
     // 在App Router環境中，這個會失敗
-    outletContext = useUserContext();
+    outletContext = useUserRouteContext();
   } catch {
     // 在App Router環境中，我們暫時不使用outlet context
     outletContext = null;

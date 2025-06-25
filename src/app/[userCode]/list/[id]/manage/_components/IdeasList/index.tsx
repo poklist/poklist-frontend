@@ -1,5 +1,5 @@
 import IconDrag from '@/components/ui/icons/DragIcon';
-import useStrictNavigateAdapter from '@/hooks/useStrictNavigateAdapter';
+import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
 import { IdeaPreview } from '@/types/Idea';
 import React from 'react';
 import VirtualList from 'react-virtual-sortable';
@@ -34,7 +34,7 @@ const IdeaListSection: React.FC<IdeaListProps> = ({
     reorderCallback(event);
   };
 
-  const navigateTo = useStrictNavigateAdapter();
+  const navigateTo = useStrictNavigateNext();
 
   return (
     <div className="flex flex-col gap-2">

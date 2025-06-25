@@ -6,9 +6,9 @@ import { Idea } from '@/constants/list';
 import { useLikeAction } from '@/hooks/mutations/useLikeAction';
 import { useList } from '@/hooks/queries/useList';
 import { useUser } from '@/hooks/queries/useUser';
-import useStrictNavigationAdapter from '@/hooks/useStrictNavigateAdapter';
+import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { useAuthRequired } from '@/hooks/useAuthRequired';
-import { useUserContext } from '@/hooks/useRouterCompat';
+import { useUserRouteContext } from '@/hooks/useUserRouteContext';
 import { Tile20Background } from '@/app/user/_components/TileBackground';
 import useAuthStore from '@/stores/useAuthStore';
 import useCommonStore from '@/stores/useCommonStore';
@@ -20,7 +20,7 @@ import { useParams } from 'next/navigation';
 import ListCard from './_components/ListCard';
 
 const ViewListPage: React.FC = () => {
-  const { userCode: listOwnerUserCode } = useUserContext();
+  const { userCode: listOwnerUserCode } = useUserRouteContext();
   const params = useParams();
   const listID = params?.id as string;
 

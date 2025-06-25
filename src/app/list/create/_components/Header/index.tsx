@@ -1,5 +1,5 @@
 import IconLeftArrow from '@/components/ui/icons/LeftArrowIcon';
-import useStrictNavigationAdapter from '@/hooks/useStrictNavigateAdapter';
+import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { DeleteButton } from '../../../_components/DeleteButton';
 import React from 'react';
 

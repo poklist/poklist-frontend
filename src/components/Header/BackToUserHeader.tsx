@@ -2,7 +2,7 @@ import logoR from '@/assets/images/logo-r.svg';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useFollowAction } from '@/hooks/mutations/useFollowAction';
 import { useAuthWrapper } from '@/hooks/useAuth';
-import useStrictNavigationAdapter from '@/hooks/useStrictNavigateAdapter';
+import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
 import { useAuthRequired } from '@/hooks/useAuthRequired';
 import useAuthStore from '@/stores/useAuthStore';
 import useFollowingStore from '@/stores/useFollowingStore';
@@ -22,7 +22,7 @@ const BackToUserHeader: React.FC<IBackToUserHeaderProps> = ({
 }) => {
   const { getIsFollowing, setIsFollowing, hasFollowingState } =
     useFollowingStore();
-  const navigateTo = useStrictNavigationAdapter();
+  const navigateTo = useStrictNavigateNext();
   const { isLoggedIn } = useAuthStore();
   const { withAuth } = useAuthWrapper();
   const { handleAuthRequired } = useAuthRequired();

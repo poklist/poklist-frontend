@@ -1,6 +1,6 @@
 import Footer from '@/components/Footer';
 import BackToUserHeader from '@/components/Header/BackToUserHeader';
-import useStrictNavigationAdapter from '@/hooks/useStrictNavigateAdapter';
+import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import useAuthStore from '@/stores/useAuthStore';
 import useUserStore from '@/stores/useUserStore';
 import { t } from '@lingui/core/macro';

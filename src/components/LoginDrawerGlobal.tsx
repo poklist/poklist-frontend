@@ -1,7 +1,7 @@
 'use client';
 
 import { LoginDrawer } from '@/components/Drawer/LoginDrawer';
-import useStrictNavigationAdapter from '@/hooks/useStrictNavigateAdapter';
+import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
 import useCommonStore from '@/stores/useCommonStore';
 import useUserStore from '@/stores/useUserStore';
 import { User } from '@/types/User';
@@ -19,7 +19,7 @@ export const LoginDrawerGlobal = () => {
   const { isLoginDrawerOpen, setIsLoginDrawerOpen, setErrorDrawerMessage } =
     useCommonStore();
   const { setMe } = useUserStore();
-  const navigateTo = useStrictNavigationAdapter();
+  const navigateTo = useStrictNavigateNext();
 
   const handleGoogleLogin = (user: User) => {
     if (!user) {

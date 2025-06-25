@@ -13,7 +13,7 @@ import { SocialLinkType } from '@/enums/index.enum';
 import { useFollowAction } from '@/hooks/mutations/useFollowAction';
 import { useUser } from '@/hooks/queries/useUser';
 import { useAuthWrapper } from '@/hooks/useAuth';
-import useStrictNavigationAdapter from '@/hooks/useStrictNavigateAdapter';
+import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { useAuthRequired } from '@/hooks/useAuthRequired';
 import { useToast } from '@/hooks/useToast';
 import {
@@ -29,11 +29,11 @@ import { User } from '@/types/User';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { useUserContext } from '@/hooks/useRouterCompat';
+import { useUserRouteContext } from '@/hooks/useUserRouteContext';
 import { HeroSectionSkeleton } from './HeroSectionSkeleton';
 
 const HeroSection: React.FC = () => {
-  const { userCode } = useUserContext();
+  const { userCode } = useUserRouteContext();
 
   const navigateTo = useStrictNavigationAdapter();
   const { isLoggedIn, logout } = useAuthStore();

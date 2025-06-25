@@ -3,7 +3,7 @@ import randomImage2 from '@/assets/images/officialCover/random-image-2.png';
 import randomImage3 from '@/assets/images/officialCover/random-image-3.png';
 import randomImage4 from '@/assets/images/officialCover/random-image-4.png';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import useStrictNavigationAdapter from '@/hooks/useStrictNavigateAdapter';
+import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { OfficialCollection } from '@/types/Discovery';
 
 const fallbackImages = [randomImage1, randomImage2, randomImage3, randomImage4];

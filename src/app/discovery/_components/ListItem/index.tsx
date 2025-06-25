@@ -1,5 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import useStrictNavigationAdapter from '@/hooks/useStrictNavigateAdapter';
+import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { LatestList } from '@/types/Discovery';
 import { ChevronRight } from 'lucide-react';
 

@@ -1,5 +1,5 @@
 import IconLeftArrow from '@/components/ui/icons/LeftArrowIcon';
-import useStrictNavigationAdapter from '@/hooks/useStrictNavigateAdapter';
+import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
 import { DeleteButton } from '../DeleteButton';
 import React from 'react';
 
@@ -13,7 +13,7 @@ const Header: React.FC<IHeaderProps> = ({
   deleteCallback,
   backwardCallback,
 }) => {
-  const navigateTo = useStrictNavigationAdapter();
+  const navigateTo = useStrictNavigateNext();
   return (
     <>
       <header

@@ -14,7 +14,7 @@ import { DrawerIds } from '@/constants/Drawer';
 import { EditFieldVariant } from '@/enums/EditField/index.enum';
 import { RadioType } from '@/enums/Style/index.enum';
 import { useCategories } from '@/hooks/queries/useCategories';
-import useStrictNavigationAdapter from '@/hooks/useStrictNavigateAdapter';
+import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { cn, formatInput } from '@/lib/utils';
 import { CategoriesI18n } from '../i18n';
 import useCommonStore from '@/stores/useCommonStore';

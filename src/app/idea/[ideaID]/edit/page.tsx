@@ -5,7 +5,7 @@ import useEditIdea from '@/hooks/mutations/useEditIdea';
 import { useIdea } from '@/hooks/queries/useIdea';
 import { useList } from '@/hooks/queries/useList';
 import { useAuthCheck, useAuthWrapper } from '@/hooks/useAuth';
-import useStrictNavigationAdapter from '@/hooks/useStrictNavigateAdapter';
+import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import Header from '../../_components/Header';
 import useCommonStore from '@/stores/useCommonStore';
 import useUserStore from '@/stores/useUserStore';

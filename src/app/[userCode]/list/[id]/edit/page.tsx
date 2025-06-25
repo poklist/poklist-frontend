@@ -4,8 +4,8 @@ import { useDeleteList } from '@/hooks/mutations/useDeleteList';
 import { useEditList } from '@/hooks/mutations/useEditList';
 import { useList } from '@/hooks/queries/useList';
 import { useAuthCheck, useAuthWrapper } from '@/hooks/useAuth';
-import useStrictNavigationAdapter from '@/hooks/useStrictNavigateAdapter';
-import { useUserContext } from '@/hooks/useRouterCompat';
+import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
+import { useUserRouteContext } from '@/hooks/useUserRouteContext';
 import ListForm from '../../_components/Form';
 import Header from '../../_components/Header';
 import useCommonStore from '@/stores/useCommonStore';
@@ -16,7 +16,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 
 const EditListPage: React.FC = () => {
-  const { userCode } = useUserContext();
+  const { userCode } = useUserRouteContext();
   const params = useParams();
   const listID = params?.id as string;
   const navigateTo = useStrictNavigationAdapter();

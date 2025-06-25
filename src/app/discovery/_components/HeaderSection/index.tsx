@@ -6,7 +6,7 @@ import {
   ButtonVariant,
 } from '@/components/ui/button';
 import { ExternalLinks } from '@/constants/externalLink';
-import useStrictNavigationAdapter from '@/hooks/useStrictNavigateAdapter';
+import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { openWindow } from '@/lib/openLink';
 import useAuthStore from '@/stores/useAuthStore';
 import useUserStore from '@/stores/useUserStore';
