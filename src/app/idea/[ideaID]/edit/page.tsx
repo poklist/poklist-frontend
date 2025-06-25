@@ -18,7 +18,7 @@ import IdeaFormComponent from '../../_components/Form';
 
 const EditIdeaPage: React.FC = () => {
   const params = useParams();
-  const id = params.ideaID as string;
+  const id = params?.ideaID as string;
   const navigateTo = useStrictNavigationAdapter();
   const [isDeleting, setIsDeleting] = useState(false);
 

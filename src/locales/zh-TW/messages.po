@@ -613,7 +613,6 @@ msgstr "這些靈感名單超有感"
 msgid "Updated weekly"
 msgstr "每週精選更新"
 
-#: src/app/error/_components/index.tsx
 #: src/app/error/page.tsx
 #: src/pages/Error/index.tsx
 msgid "Oops something is wrong!"

@@ -20,8 +20,8 @@ export interface CreateIdeaNavigateState {
 const IdeaCreatePage: React.FC = () => {
   const navigateTo = useStrictNavigationAdapter();
   const searchParams = useSearchParams();
-  const listID = Number(searchParams.get('listID'));
-  const listTitle = searchParams.get('listTitle') || '';
+  const listID = Number(searchParams?.get('listID'));
+  const listTitle = searchParams?.get('listTitle') || '';
   const { setIsLoading, setShowingAlert } = useCommonStore();
   const { me } = useUserStore();
 

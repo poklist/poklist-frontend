@@ -43,7 +43,7 @@ interface IListCardProps {
 const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
   const params = useParams();
   const searchParams = useSearchParams();
-  const listID = params.id as string;
+  const listID = params?.id as string;
 
   const { i18n } = useLingui();
   const navigateTo = useStrictNavigationAdapter();
@@ -175,7 +175,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
 
   // 替換 location.state 的處理方式，使用 searchParams
   useEffect(() => {
-    const ideaIDFromUrl = searchParams.get('ideaID');
+    const ideaIDFromUrl = searchParams?.get('ideaID');
     if (ideaIDFromUrl) {
       onClickIdea(Number(ideaIDFromUrl));
       // 清除 URL 中的 ideaID 參數

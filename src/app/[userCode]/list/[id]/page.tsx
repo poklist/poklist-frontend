@@ -22,7 +22,7 @@ import ListCard from './_components/ListCard';
 const ViewListPage: React.FC = () => {
   const { userCode: listOwnerUserCode } = useUserContext();
   const params = useParams();
-  const listID = params.id as string;
+  const listID = params?.id as string;
 
   const { isLoggedIn } = useAuthStore();
   const { me } = useUserStore();

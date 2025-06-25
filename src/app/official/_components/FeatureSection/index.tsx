@@ -4,6 +4,7 @@ import { FeatureListSection, FeatureSectionContent } from '@/types/Home';
 import { MessageDescriptor } from '@lingui/core';
 import { msg, t } from '@lingui/core/macro';
 import { Trans, useLingui } from '@lingui/react';
+import { StaticImageData } from 'next/image';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 interface FeatureSectionProps {
@@ -34,6 +35,10 @@ const truncateText = (text: string, containerWidth: number, locale: string) => {
     : text;
 };
 
+const getImageSrc = (imageData: StaticImageData | string): string => {
+  return typeof imageData === 'string' ? imageData : imageData.src;
+};
+
 export const FeatureSection = ({
   content,
   listContent,
@@ -58,25 +63,25 @@ export const FeatureSection = ({
   useEffect(() => {
     const preloadImages = () => {
       // preload avatar images
-      Object.values(IMAGES.avatar).forEach((src) => {
+      Object.values(IMAGES.avatar).forEach((imageData) => {
         const img = new Image();
-        img.src = src;
+        img.src = getImageSrc(imageData);
       });
 
       // preload list images
       Object.keys(IMAGES.list).forEach((category) => {
         Object.values(
           IMAGES.list[category as keyof typeof IMAGES.list]
-        ).forEach((src) => {
+        ).forEach((imageData) => {
           const img = new Image();
-          img.src = src;
+          img.src = getImageSrc(imageData);
         });
       });
 
       // preload feature images
-      Object.values(IMAGES.feature).forEach((src) => {
+      Object.values(IMAGES.feature).forEach((imageData) => {
         const img = new Image();
-        img.src = src;
+        img.src = getImageSrc(imageData);
       });
     };
 
@@ -116,7 +121,7 @@ export const FeatureSection = ({
       <div className="mx-6 mb-4 mt-4 rounded-3xl border-[1px] border-black bg-white px-4 py-8">
         <div className="mb-4 flex items-center gap-1">
           <img
-            src={selectedList.userAvatar || null}
+            src={getImageSrc(selectedList.userAvatar)}
             alt={selectedList.user.id}
             className="size-10 rounded-full"
           />
@@ -152,7 +157,7 @@ export const FeatureSection = ({
                   </p>
                 </div>
                 <img
-                  src={item.image}
+                  src={getImageSrc(item.image)}
                   alt={item.title.id}
                   className="size-10 self-end rounded-lg border border-black"
                 />

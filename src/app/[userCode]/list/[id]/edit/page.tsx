@@ -18,7 +18,7 @@ import { useParams } from 'next/navigation';
 const EditListPage: React.FC = () => {
   const { userCode } = useUserContext();
   const params = useParams();
-  const listID = params.id as string;
+  const listID = params?.id as string;
   const navigateTo = useStrictNavigationAdapter();
   const { checkAuthAndRedirect } = useAuthCheck();
   const { setIsLoading } = useCommonStore();

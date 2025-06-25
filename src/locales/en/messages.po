@@ -613,7 +613,6 @@ msgstr "Fresh lists from our pocket"
 msgid "Updated weekly"
 msgstr "Updated weekly"
 
-#: src/app/error/_components/index.tsx
 #: src/app/error/page.tsx
 #: src/pages/Error/index.tsx
 msgid "Oops something is wrong!"

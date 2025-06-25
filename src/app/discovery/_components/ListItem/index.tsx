@@ -15,7 +15,7 @@ const ListItem = ({ listItem }: { listItem: LatestList }) => {
     >
       <div className="flex min-w-0 flex-1 flex-row items-center gap-2 overflow-hidden">
         <Avatar className="size-10 flex-shrink-0">
-          <AvatarImage src={listItem.owner.profileImage || null} />
+          <AvatarImage src={listItem.owner.profileImage || undefined} />
           <AvatarFallback>{listItem.owner.userCode[0]}</AvatarFallback>
         </Avatar>
         <div className="min-w-0 flex-1 overflow-hidden">

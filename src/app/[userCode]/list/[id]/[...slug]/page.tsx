@@ -7,9 +7,9 @@ export default function CatchAllIdeaPage() {
   const params = useParams();
   const router = useRouter();
 
-  const userCode = params.userCode as string;
-  const listId = params.id as string;
-  const slug = params.slug as string[];
+  const userCode = params?.userCode as string;
+  const listId = params?.id as string;
+  const slug = params?.slug as string[];
 
   useEffect(() => {
     // 只處理 idea 路徑格式：[idea, ideaId]

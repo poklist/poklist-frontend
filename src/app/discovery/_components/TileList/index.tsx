@@ -41,7 +41,7 @@ const TileList = ({
       </header>
       <div className="flex justify-center">
         <img
-          src={coverImage || null}
+          src={coverImage || undefined}
           alt="Official Collection Cover Image"
           loading="lazy"
           className="aspect-square w-full max-w-[202px] rounded-lg border border-black object-cover"
@@ -49,7 +49,9 @@ const TileList = ({
       </div>
       <footer className="flex flex-row items-center justify-start gap-1">
         <Avatar className="size-6">
-          <AvatarImage src={officialCollection.owner.profileImage || null} />
+          <AvatarImage
+            src={officialCollection.owner.profileImage || undefined}
+          />
           <AvatarFallback>
             {officialCollection.owner.userCode[0]}
           </AvatarFallback>
