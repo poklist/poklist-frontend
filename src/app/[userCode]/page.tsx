@@ -2,9 +2,9 @@
 
 import FloatingButtonFooter from '@/components/Footer/FloatingButtonFooter';
 import Header from '@/components/Header';
-import HeroSection from '@/pages/User/HeroSection';
-import ListSection from '@/pages/User/ListSection';
-import { TileBackground } from '@/pages/User/TileBackground';
+import HeroSection from '@/app/user/_components/HeroSection';
+import ListSection from '@/app/user/_components/ListSection';
+import { TileBackground } from '@/app/user/_components/TileBackground';
 
 export default function UserPage() {
   return (

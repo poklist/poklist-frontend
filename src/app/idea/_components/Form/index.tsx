@@ -14,7 +14,7 @@ import { EditFieldVariant } from '@/enums/EditField/index.enum';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateAdapter';
 import { cn, formatInput } from '@/lib/utils';
 import useCommonStore from '@/stores/useCommonStore';
-import { IEditFieldConfig } from '@/types/EditField';
+import { IEditFieldConfig } from '@/types/EditField/index.d';
 import { IdeaBody, IdeaResponse } from '@/types/Idea';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { t } from '@lingui/core/macro';

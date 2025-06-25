@@ -17,7 +17,7 @@ import { extractUsernameFromUrl, urlPreview } from '@/lib/utils';
 import { validateUserCode } from '@/lib/validator';
 import useEditProfileStore from '@/stores/useEditProfileStore';
 import useUserStore from '@/stores/useUserStore';
-import { IEditFieldConfig } from '@/types/EditField';
+import { IEditFieldConfig } from '@/types/EditField/index.d';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
 import { useEffect, useState } from 'react';
@@ -258,7 +258,7 @@ const EditUserPage: React.FC = () => {
       <BackToUserHeader owner={me} />
       <div id="profile-image" className="flex items-end justify-center pt-6">
         <Avatar className="h-24 w-24">
-          <AvatarImage src={newUserInfo.profileImage || null} />
+          <AvatarImage src={newUserInfo.profileImage || undefined} />
           <AvatarFallback>{newUserInfo.displayName[0]}</AvatarFallback>
         </Avatar>
         <label

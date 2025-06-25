@@ -36,7 +36,7 @@ const ListSection: React.FC = () => {
               </p>
               {listPreview.coverImage && (
                 <img
-                  src={listPreview.coverImage || null}
+                  src={listPreview.coverImage || undefined}
                   width={40}
                   height={40}
                   className="rounded-[3px] border border-black-text-01"

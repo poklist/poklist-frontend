@@ -1,6 +1,6 @@
 'use client';
 
-import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
+import { UserRouteLayoutContextType } from '@/components/Layout/UserRouteLayuout';
 import { useUserRouteContext } from './useUserRouteContext';
 
 /**

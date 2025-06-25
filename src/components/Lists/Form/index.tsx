@@ -18,7 +18,7 @@ import useStrictNavigationAdapter from '@/hooks/useStrictNavigateAdapter';
 import { cn, formatInput } from '@/lib/utils';
 import { CategoriesI18n } from '../i18n';
 import useCommonStore from '@/stores/useCommonStore';
-import { IEditFieldConfig } from '@/types/EditField';
+import { IEditFieldConfig } from '@/types/EditField/index.d';
 import { ListBody } from '@/types/List';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { i18n } from '@lingui/core';

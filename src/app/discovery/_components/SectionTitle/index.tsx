@@ -1,4 +1,4 @@
-import { TileBackground } from '@/pages/User/TileBackground';
+import { TileBackground } from '@/app/user/_components/TileBackground';
 
 interface SectionTitleProps {
   title: string;

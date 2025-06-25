@@ -9,9 +9,9 @@ import useIsMobile from '@/hooks/useIsMobile';
 import { StaticRoutes } from '@/constants/routes';
 
 // 桌面版樣式包裹組件
-import Background from '@/pages/Layout/Components/Background';
-import BottomNav from '@/pages/Layout/Components/BottomNav';
-import PromptText from '@/pages/Layout/Components/PromptText';
+import Background from '@/components/Layout/Background';
+import BottomNav from '@/components/Layout/BottomNav';
+import PromptText from '@/components/Layout/PromptText';
 import { cn } from '@/lib/utils';
 
 interface ConditionalLayoutProps {

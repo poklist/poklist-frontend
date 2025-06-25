@@ -1,4 +1,4 @@
-import { DeleteButton } from '@/pages/Idea/Components/DeleteButton';
+import { DeleteButton } from '@/app/idea/_components/DeleteButton';
 import React from 'react';
 
 interface IHeaderProps {

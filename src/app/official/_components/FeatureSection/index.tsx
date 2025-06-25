@@ -63,7 +63,7 @@ export const FeatureSection = ({
   useEffect(() => {
     const preloadImages = () => {
       // preload avatar images
-      Object.values(IMAGES.avatar).forEach((imageData) => {
+      Object.values(IMAGES.avatar).forEach((imageData: any) => {
         const img = new Image();
         img.src = getImageSrc(imageData);
       });
@@ -72,14 +72,14 @@ export const FeatureSection = ({
       Object.keys(IMAGES.list).forEach((category) => {
         Object.values(
           IMAGES.list[category as keyof typeof IMAGES.list]
-        ).forEach((imageData) => {
+        ).forEach((imageData: any) => {
           const img = new Image();
           img.src = getImageSrc(imageData);
         });
       });
 
       // preload feature images
-      Object.values(IMAGES.feature).forEach((imageData) => {
+      Object.values(IMAGES.feature).forEach((imageData: any) => {
         const img = new Image();
         img.src = getImageSrc(imageData);
       });
@@ -151,7 +151,9 @@ export const FeatureSection = ({
                   </p>
                   <p
                     className="text-t2 text-gray-600"
-                    ref={(el) => (descriptionRefs.current[index] = el)}
+                    ref={(el) => {
+                      descriptionRefs.current[index] = el;
+                    }}
                   >
                     {truncatedDescriptions[index]}
                   </p>

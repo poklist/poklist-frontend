@@ -219,7 +219,7 @@ const HeroSection: React.FC = () => {
       >
         <div id="hero-basic-info" className="flex flex-col items-center gap-2">
           <Avatar className="h-16 w-16">
-            <AvatarImage src={currentUser.profileImage || null} />
+            <AvatarImage src={currentUser.profileImage || undefined} />
             <AvatarFallback>{currentUser.displayName[0]}</AvatarFallback>
           </Avatar>
           <p className="text-[17px] font-bold">{currentUser.displayName}</p>

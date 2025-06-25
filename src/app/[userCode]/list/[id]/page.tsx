@@ -9,7 +9,7 @@ import { useUser } from '@/hooks/queries/useUser';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateAdapter';
 import { useAuthRequired } from '@/hooks/useAuthRequired';
 import { useUserContext } from '@/hooks/useRouterCompat';
-import { Tile20Background } from '@/pages/User/TileBackground';
+import { Tile20Background } from '@/app/user/_components/TileBackground';
 import useAuthStore from '@/stores/useAuthStore';
 import useCommonStore from '@/stores/useCommonStore';
 import useFollowingStore from '@/stores/useFollowingStore';

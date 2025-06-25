@@ -17,14 +17,11 @@ msgstr ""
 #: src/app/[userCode]/edit/page.tsx
 #: src/app/user/edit/page.tsx
 #: src/app/user/edit/page.tsx
-#: src/pages/EditUser/index.tsx
-#: src/pages/EditUser/index.tsx
 msgid "Name"
 msgstr "姓名"
 
 #: src/app/[userCode]/edit/page.tsx
 #: src/app/user/edit/page.tsx
-#: src/pages/EditUser/index.tsx
 msgid "Enter your name here"
 msgstr "輸入你的姓名"
 
@@ -32,14 +29,11 @@ msgstr "輸入你的姓名"
 #: src/app/[userCode]/edit/page.tsx
 #: src/app/user/edit/page.tsx
 #: src/app/user/edit/page.tsx
-#: src/pages/EditUser/index.tsx
-#: src/pages/EditUser/index.tsx
 msgid "Username"
 msgstr "用戶帳號"
 
 #: src/app/[userCode]/edit/page.tsx
 #: src/app/user/edit/page.tsx
-#: src/pages/EditUser/index.tsx
 msgid "Enter your username here"
 msgstr "輸入你的用戶帳號"
 
@@ -47,32 +41,26 @@ msgstr "輸入你的用戶帳號"
 #: src/app/[userCode]/edit/page.tsx
 #: src/app/user/edit/page.tsx
 #: src/app/user/edit/page.tsx
-#: src/pages/EditUser/index.tsx
-#: src/pages/EditUser/index.tsx
 msgid "Bio"
 msgstr "個人自介"
 
 #: src/app/[userCode]/edit/page.tsx
 #: src/app/user/edit/page.tsx
-#: src/pages/EditUser/index.tsx
 msgid "Enter your bio here"
 msgstr "輸入你的個人自介"
 
 #: src/app/[userCode]/edit/page.tsx
 #: src/app/user/edit/page.tsx
-#: src/pages/EditUser/index.tsx
 msgid "Profile Image"
 msgstr "個人檔案頭貼"
 
 #: src/app/[userCode]/edit/page.tsx
 #: src/app/user/edit/page.tsx
-#: src/pages/EditUser/index.tsx
 msgid "Customized Link"
 msgstr "自訂連結"
 
 #: src/app/[userCode]/edit/page.tsx
 #: src/app/user/edit/page.tsx
-#: src/pages/EditUser/index.tsx
 msgid "Add URL"
 msgstr "輸入網址"
 
@@ -86,23 +74,16 @@ msgstr "輸入網址"
 #: src/app/user/edit/page.tsx
 #: src/app/user/edit/page.tsx
 #: src/app/user/edit/page.tsx
-#: src/pages/EditUser/index.tsx
-#: src/pages/EditUser/index.tsx
-#: src/pages/EditUser/index.tsx
-#: src/pages/EditUser/index.tsx
-#: src/pages/EditUser/index.tsx
 msgid "Add account"
 msgstr "輸入帳號"
 
 #: src/app/[userCode]/edit/page.tsx
 #: src/app/user/edit/page.tsx
-#: src/pages/EditUser/index.tsx
 msgid "Profile"
 msgstr "個人檔案"
 
 #: src/app/[userCode]/edit/page.tsx
 #: src/app/user/edit/page.tsx
-#: src/pages/EditUser/index.tsx
 msgctxt "title"
 msgid "Links"
 msgstr "連結"
@@ -110,75 +91,59 @@ msgstr "連結"
 #: src/app/[userCode]/edit/page.tsx
 #: src/app/user/_components/HeroSection/index.tsx
 #: src/app/user/edit/page.tsx
-#: src/pages/EditUser/index.tsx
-#: src/pages/User/HeroSection/index.tsx
 msgid "Edit profile and account"
 msgstr "編輯個人檔案與帳號"
 
 #: src/app/[userCode]/list/[id]/_components/IdeaDrawerContent/index.tsx
 #: src/components/Footer/FloatingButtonFooter.tsx
-#: src/pages/Lists/View/IdeaDrawerContent/index.tsx
 msgid "Copied to clipboard"
 msgstr "已複製到剪貼簿"
 
 #: src/app/[userCode]/list/[id]/_components/IdeaDrawerContent/index.tsx
 #: src/components/Footer/FloatingButtonFooter.tsx
-#: src/pages/Lists/View/IdeaDrawerContent/index.tsx
 msgid "Copy"
 msgstr "複製"
 
 #: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
-#: src/pages/Lists/View/ListCard/index.tsx
 msgid "Recently Updated"
 msgstr "最近更新"
 
 #: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
-#: src/pages/Lists/View/ListCard/index.tsx
 msgid "Listing since"
 msgstr "創單自"
 
 #: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
-#: src/pages/Lists/View/ListCard/index.tsx
 msgid "Likes"
 msgstr "喜歡"
 
 #: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
-#: src/pages/Lists/View/ListCard/index.tsx
 msgid "Edit list"
 msgstr "編輯名單"
 
 #: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
 #: src/app/[userCode]/list/[id]/manage/page.tsx
-#: src/pages/Lists/Manage/index.tsx
-#: src/pages/Lists/View/ListCard/index.tsx
 msgid "Add an idea"
 msgstr "新增靈感"
 
 #: src/app/[userCode]/list/[id]/edit/page.tsx
-#: src/pages/Lists/Edit/index.tsx
 msgid "List Cover"
 msgstr "名單封面"
 
 #: src/app/[userCode]/list/[id]/manage/page.tsx
 #: src/app/[userCode]/list/create/page.tsx
 #: src/app/list/create/page.tsx
-#: src/pages/Lists/Create/index.tsx
-#: src/pages/Lists/Manage/index.tsx
 msgid "Idea List"
 msgstr "靈感名單"
 
 #: src/app/[userCode]/list/[id]/manage/page.tsx
-#: src/pages/Lists/Manage/index.tsx
 msgid "Edit list cover"
 msgstr "編輯名單封面"
 
 #: src/app/[userCode]/list/[id]/manage/page.tsx
-#: src/pages/Lists/Manage/index.tsx
 msgid "Your ideas live here. Create one!"
 msgstr "新增的靈感會在這裡，丟個靈感進來吧！"
 
 #: src/app/[userCode]/list/[id]/manage/page.tsx
-#: src/pages/Lists/Manage/index.tsx
 msgid "Tap an idea to edit. Drag the lines on the left to reorder."
 msgstr "點擊靈感可編輯，拖曳左側三條線可排序。"
 
@@ -187,34 +152,28 @@ msgstr "點擊靈感可編輯，拖曳左側三條線可排序。"
 #: src/app/list/_components/Form/index.tsx
 #: src/app/list/create/_components/Form/index.tsx
 #: src/components/Lists/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
-#: src/pages/Lists/Manage/index.tsx
 msgid "Edit List"
 msgstr "編輯名單"
 
 #: src/app/[userCode]/list/[id]/manage/page.tsx
-#: src/pages/Lists/Manage/index.tsx
 msgid "Save New Order"
 msgstr "儲存新排序"
 
 #: src/app/[userCode]/list/_components/DeleteButton/index.tsx
 #: src/app/list/_components/DeleteButton/index.tsx
 #: src/components/Lists/DeleteButton/index.tsx
-#: src/pages/Lists/Components/DeleteButton/index.tsx
 msgid "Deleting the list title will also erase all ideas!"
 msgstr "刪掉名單標題後，連所有靈感都會消失！"
 
 #: src/app/[userCode]/list/_components/DeleteButton/index.tsx
 #: src/app/list/_components/DeleteButton/index.tsx
 #: src/components/Lists/DeleteButton/index.tsx
-#: src/pages/Lists/Components/DeleteButton/index.tsx
 msgid "Permanently delete the entire list and all its ideas. This action cannot be undone!"
 msgstr "永久刪除整個名單及所有靈感，這將無法復原！"
 
 #: src/app/[userCode]/list/_components/DeleteButton/index.tsx
 #: src/app/list/_components/DeleteButton/index.tsx
 #: src/components/Lists/DeleteButton/index.tsx
-#: src/pages/Lists/Components/DeleteButton/index.tsx
 msgid "Delete List and All Ideas"
 msgstr "刪除名單與所有靈感"
 
@@ -222,8 +181,6 @@ msgstr "刪除名單與所有靈感"
 #: src/app/idea/_components/DeleteButton/index.tsx
 #: src/app/list/_components/DeleteButton/index.tsx
 #: src/components/Lists/DeleteButton/index.tsx
-#: src/pages/Idea/Components/DeleteButton/index.tsx
-#: src/pages/Lists/Components/DeleteButton/index.tsx
 msgid "Cancel"
 msgstr "取消"
 
@@ -232,8 +189,6 @@ msgstr "取消"
 #: src/app/list/_components/Form/index.tsx
 #: src/app/list/create/_components/Form/index.tsx
 #: src/components/Lists/Form/index.tsx
-#: src/pages/Idea/Components/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
 msgid "Cover Image"
 msgstr "封面圖片"
 
@@ -242,8 +197,6 @@ msgstr "封面圖片"
 #: src/app/list/_components/Form/index.tsx
 #: src/app/list/create/_components/Form/index.tsx
 #: src/components/Lists/Form/index.tsx
-#: src/pages/Idea/Components/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
 msgid "Hey, the title can't be left empty!"
 msgstr "欸，標題不能留空喔！"
 
@@ -251,7 +204,6 @@ msgstr "欸，標題不能留空喔！"
 #: src/app/list/_components/Form/index.tsx
 #: src/app/list/create/_components/Form/index.tsx
 #: src/components/Lists/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
 msgid "Every list needs a title, so fill it in!"
 msgstr "名單都得有個標題，趕快填一下吧！"
 
@@ -259,7 +211,6 @@ msgstr "名單都得有個標題，趕快填一下吧！"
 #: src/app/list/_components/Form/index.tsx
 #: src/app/list/create/_components/Form/index.tsx
 #: src/components/Lists/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
 msgid "List title is too long!"
 msgstr "名單標題字數太長啦！"
 
@@ -268,8 +219,6 @@ msgstr "名單標題字數太長啦！"
 #: src/app/list/_components/Form/index.tsx
 #: src/app/list/create/_components/Form/index.tsx
 #: src/components/Lists/Form/index.tsx
-#: src/pages/Idea/Components/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
 msgid "Please keep it under {TITLE_MAX_LENGTH} characters."
 msgstr "標題過長，請將字數縮短至 {TITLE_MAX_LENGTH} 個字元以內。"
 
@@ -278,8 +227,6 @@ msgstr "標題過長，請將字數縮短至 {TITLE_MAX_LENGTH} 個字元以內�
 #: src/app/list/_components/Form/index.tsx
 #: src/app/list/create/_components/Form/index.tsx
 #: src/components/Lists/Form/index.tsx
-#: src/pages/Idea/Components/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
 msgid "Description is too long!"
 msgstr "標題描述內容超出限制了！"
 
@@ -288,8 +235,6 @@ msgstr "標題描述內容超出限制了！"
 #: src/app/list/_components/Form/index.tsx
 #: src/app/list/create/_components/Form/index.tsx
 #: src/components/Lists/Form/index.tsx
-#: src/pages/Idea/Components/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
 msgid "Please keep it under {DESC_MAX_LENGTH} characters."
 msgstr "字數有點爆表，請減到 {DESC_MAX_LENGTH} 個字元以內。"
 
@@ -297,7 +242,6 @@ msgstr "字數有點爆表，請減到 {DESC_MAX_LENGTH} 個字元以內。"
 #: src/app/list/_components/Form/index.tsx
 #: src/app/list/create/_components/Form/index.tsx
 #: src/components/Lists/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
 msgid "This is the title of your list"
 msgstr "在這輸入名單標題"
 
@@ -309,8 +253,6 @@ msgstr "在這輸入名單標題"
 #: src/app/list/create/_components/Form/index.tsx
 #: src/components/Lists/Form/index.tsx
 #: src/components/Lists/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
 msgid "Describe what this title is about"
 msgstr "描述標題"
 
@@ -319,8 +261,6 @@ msgstr "描述標題"
 #: src/app/list/_components/Form/index.tsx
 #: src/app/list/create/_components/Form/index.tsx
 #: src/components/Lists/Form/index.tsx
-#: src/pages/Idea/Components/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
 msgid "Link a page"
 msgstr "連結網頁"
 
@@ -328,7 +268,6 @@ msgstr "連結網頁"
 #: src/app/list/_components/Form/index.tsx
 #: src/app/list/create/_components/Form/index.tsx
 #: src/components/Lists/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
 msgid "Edit List Topic"
 msgstr "編輯名單分類"
 
@@ -336,7 +275,6 @@ msgstr "編輯名單分類"
 #: src/app/list/_components/Form/index.tsx
 #: src/app/list/create/_components/Form/index.tsx
 #: src/components/Lists/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
 msgid "List Topic"
 msgstr "名單主題"
 
@@ -344,7 +282,6 @@ msgstr "名單主題"
 #: src/app/list/_components/Form/index.tsx
 #: src/app/list/create/_components/Form/index.tsx
 #: src/components/Lists/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
 msgid "Choose a topic that vibes with your List."
 msgstr "選擇一項接近此份名單的分類"
 
@@ -364,10 +301,6 @@ msgstr "選擇一項接近此份名單的分類"
 #: src/components/Lists/Form/index.tsx
 #: src/components/Lists/Form/index.tsx
 #: src/components/Lists/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
 msgid "Next"
 msgstr "下一步"
 
@@ -376,8 +309,6 @@ msgstr "下一步"
 #: src/app/list/_components/Form/index.tsx
 #: src/app/list/create/_components/Form/index.tsx
 #: src/components/Lists/Form/index.tsx
-#: src/pages/Idea/Components/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
 msgid "Your edits will be lost if you cancel!"
 msgstr "取消後，資料就飛走囉！"
 
@@ -385,7 +316,6 @@ msgstr "取消後，資料就飛走囉！"
 #: src/app/list/_components/Form/index.tsx
 #: src/app/list/create/_components/Form/index.tsx
 #: src/components/Lists/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
 msgid "If you cancel, everything you've entered will be lost."
 msgstr "如果取消，所填的內容都會消失"
 
@@ -394,8 +324,6 @@ msgstr "如果取消，所填的內容都會消失"
 #: src/app/list/_components/Form/index.tsx
 #: src/app/list/create/_components/Form/index.tsx
 #: src/components/Lists/Form/index.tsx
-#: src/pages/Idea/Components/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
 msgid "Cancel Editing"
 msgstr "取消編輯"
 
@@ -404,8 +332,6 @@ msgstr "取消編輯"
 #: src/app/list/_components/Form/index.tsx
 #: src/app/list/create/_components/Form/index.tsx
 #: src/components/Lists/Form/index.tsx
-#: src/pages/Idea/Components/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
 msgid "Continue Editing"
 msgstr "繼續編輯"
 
@@ -413,7 +339,6 @@ msgstr "繼續編輯"
 #: src/app/list/_components/Form/index.tsx
 #: src/app/list/create/_components/Form/index.tsx
 #: src/components/Lists/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
 msgid "Create Idea List"
 msgstr "建立靈感名單"
 
@@ -422,8 +347,7 @@ msgstr "建立靈感名單"
 #: src/app/list/create/_components/i18n.ts
 #: src/app/official/_components/FeatureSection/index.tsx
 #: src/components/Lists/i18n.ts
-#: src/pages/Lists/i18n.ts
-#: src/pages/Official/Components/FeatureSection/index.tsx
+#: src/constants/Lists/i18n.ts
 msgid "Other"
 msgstr "其他"
 
@@ -432,8 +356,7 @@ msgstr "其他"
 #: src/app/list/_components/i18n.ts
 #: src/app/list/create/_components/i18n.ts
 #: src/components/Lists/i18n.ts
-#: src/pages/Discovery/Components/ListSection/index.tsx
-#: src/pages/Lists/i18n.ts
+#: src/constants/Lists/i18n.ts
 msgid "Lifestyle"
 msgstr "生活風格"
 
@@ -443,9 +366,7 @@ msgstr "生活風格"
 #: src/app/list/create/_components/i18n.ts
 #: src/app/official/_components/FeatureSection/index.tsx
 #: src/components/Lists/i18n.ts
-#: src/pages/Discovery/Components/ListSection/index.tsx
-#: src/pages/Lists/i18n.ts
-#: src/pages/Official/Components/FeatureSection/index.tsx
+#: src/constants/Lists/i18n.ts
 msgid "Food & Drink"
 msgstr "美食"
 
@@ -455,9 +376,7 @@ msgstr "美食"
 #: src/app/list/create/_components/i18n.ts
 #: src/app/official/_components/FeatureSection/index.tsx
 #: src/components/Lists/i18n.ts
-#: src/pages/Discovery/Components/ListSection/index.tsx
-#: src/pages/Lists/i18n.ts
-#: src/pages/Official/Components/FeatureSection/index.tsx
+#: src/constants/Lists/i18n.ts
 msgid "Culture"
 msgstr "文化"
 
@@ -467,9 +386,7 @@ msgstr "文化"
 #: src/app/list/create/_components/i18n.ts
 #: src/app/official/_components/FeatureSection/index.tsx
 #: src/components/Lists/i18n.ts
-#: src/pages/Discovery/Components/ListSection/index.tsx
-#: src/pages/Lists/i18n.ts
-#: src/pages/Official/Components/FeatureSection/index.tsx
+#: src/constants/Lists/i18n.ts
 msgid "Travel"
 msgstr "旅遊"
 
@@ -479,9 +396,7 @@ msgstr "旅遊"
 #: src/app/list/create/_components/i18n.ts
 #: src/app/official/_components/FeatureSection/index.tsx
 #: src/components/Lists/i18n.ts
-#: src/pages/Discovery/Components/ListSection/index.tsx
-#: src/pages/Lists/i18n.ts
-#: src/pages/Official/Components/FeatureSection/index.tsx
+#: src/constants/Lists/i18n.ts
 msgid "Entertainment"
 msgstr "娛樂"
 
@@ -491,9 +406,7 @@ msgstr "娛樂"
 #: src/app/list/create/_components/i18n.ts
 #: src/app/official/_components/FeatureSection/index.tsx
 #: src/components/Lists/i18n.ts
-#: src/pages/Discovery/Components/ListSection/index.tsx
-#: src/pages/Lists/i18n.ts
-#: src/pages/Official/Components/FeatureSection/index.tsx
+#: src/constants/Lists/i18n.ts
 msgid "Tech & Digital"
 msgstr "數位科技"
 
@@ -503,9 +416,7 @@ msgstr "數位科技"
 #: src/app/list/create/_components/i18n.ts
 #: src/app/official/_components/FeatureSection/index.tsx
 #: src/components/Lists/i18n.ts
-#: src/pages/Discovery/Components/ListSection/index.tsx
-#: src/pages/Lists/i18n.ts
-#: src/pages/Official/Components/FeatureSection/index.tsx
+#: src/constants/Lists/i18n.ts
 msgid "Personal Growth"
 msgstr "個人成長"
 
@@ -515,353 +426,280 @@ msgstr "個人成長"
 #: src/app/list/create/_components/i18n.ts
 #: src/app/official/_components/FeatureSection/index.tsx
 #: src/components/Lists/i18n.ts
-#: src/pages/Discovery/Components/ListSection/index.tsx
-#: src/pages/Lists/i18n.ts
-#: src/pages/Official/Components/FeatureSection/index.tsx
+#: src/constants/Lists/i18n.ts
 msgid "Health & Fitness"
 msgstr "健康與健身"
 
 #: src/app/discovery/_components/FooterSection/index.tsx
-#: src/pages/Discovery/Components/FooterSection/index.tsx
 msgid "<0>Your lists say more than posts ever could.</0><1><2>Next wave of content</2><3/></1>"
 msgstr "<0>你的生活精選，比誰都有料</0><1><2>下個內容浪潮</2><3/></1>"
 
 #: src/app/discovery/_components/HeaderSection/index.tsx
-#: src/pages/Discovery/Components/HeaderSection/index.tsx
 msgid "<0>My life in my lists</0><1>Invitation only. Ready to join?</1>"
 msgstr "<0>靈感都在我的名單裡</0><1>歡迎受邀朋友申請帳號！</1>"
 
 #: src/app/discovery/_components/HeaderSection/index.tsx
-#: src/pages/Discovery/Components/HeaderSection/index.tsx
 msgid "Create your account"
 msgstr "申請帳號"
 
 #: src/app/discovery/_components/HeaderSection/index.tsx
-#: src/pages/Discovery/Components/HeaderSection/index.tsx
 msgid "Sign in"
 msgstr "登入"
 
 #: src/app/discovery/_components/ListSection/index.tsx
 #: src/app/settings/_components/BlocksSection/index.tsx
-#: src/pages/Discovery/Components/ListSection/index.tsx
-#: src/pages/Settings/BlocksSection/index.tsx
 msgid "Others"
 msgstr "其他"
 
 #: src/app/discovery/_components/ListSection/index.tsx
-#: src/pages/Discovery/Components/ListSection/index.tsx
 msgid "Lists that vibe right"
 msgstr "這 vibe 我可以"
 
 #: src/app/discovery/_components/ListSection/index.tsx
-#: src/pages/Discovery/Components/ListSection/index.tsx
 msgid "Lists that taste like wow"
 msgstr "好想吃吃喝喝"
 
 #: src/app/discovery/_components/ListSection/index.tsx
-#: src/pages/Discovery/Components/ListSection/index.tsx
 msgid "Lists that show your colors"
 msgstr "有點溫度的東西"
 
 #: src/app/discovery/_components/ListSection/index.tsx
-#: src/pages/Discovery/Components/ListSection/index.tsx
 msgid "Lists that go to places"
 msgstr "出去玩耍的私筆記"
 
 #: src/app/discovery/_components/ListSection/index.tsx
-#: src/pages/Discovery/Components/ListSection/index.tsx
 msgid "Lists that stream good times"
 msgstr "耳機一戴，世界走開"
 
 #: src/app/discovery/_components/ListSection/index.tsx
-#: src/pages/Discovery/Components/ListSection/index.tsx
 msgid "Lists that tap into the future"
 msgstr "正在生成的浪潮"
 
 #: src/app/discovery/_components/ListSection/index.tsx
-#: src/pages/Discovery/Components/ListSection/index.tsx
 msgid "Lists that build better you"
 msgstr "慢慢懂的一些事"
 
 #: src/app/discovery/_components/ListSection/index.tsx
-#: src/pages/Discovery/Components/ListSection/index.tsx
 msgid "Lists that make you sweat"
 msgstr "練出好狀態"
 
 #: src/app/discovery/_components/ListSection/index.tsx
-#: src/pages/Discovery/Components/ListSection/index.tsx
 msgid "Lists that just get it"
 msgstr "喜歡的都在這"
 
 #: src/app/discovery/_components/ListSection/index.tsx
-#: src/pages/Discovery/Components/ListSection/index.tsx
 msgid "<0>Recently updated</0>"
 msgstr "<0>最近更新</0>"
 
 #: src/app/discovery/_components/ListSection/index.tsx
-#: src/pages/Discovery/Components/ListSection/index.tsx
 msgid "See more"
 msgstr "展開更多"
 
 #: src/app/discovery/_components/TileSection/index.tsx
-#: src/pages/Discovery/Components/TileSection/index.tsx
 msgid "Fresh lists from our pocket"
 msgstr "這些靈感名單超有感"
 
 #: src/app/discovery/_components/TileSection/index.tsx
-#: src/pages/Discovery/Components/TileSection/index.tsx
 msgid "Updated weekly"
 msgstr "每週精選更新"
 
 #: src/app/error/page.tsx
-#: src/pages/Error/index.tsx
 msgid "Oops something is wrong!"
 msgstr "哎呀！網頁又在耍脾氣啦！"
 
 #: src/app/goToMobile/_components/index.tsx
 #: src/app/goToMobile/page.tsx
-#: src/pages/GoToMobile/index.tsx
 msgid "<0>Relist works best on mobile.</0><1>Use a mobile device for the best experience.</1>"
 msgstr "<0>Relist 在手機畫面運作更順暢</0><1>使用行動裝置以取得更好的使用體驗</1>"
 
 #: src/app/idea/[ideaID]/edit/page.tsx
-#: src/pages/Idea/Edit/index.tsx
 msgid "Idea"
 msgstr "靈感"
 
 #: src/app/idea/_components/DeleteButton/index.tsx
-#: src/pages/Idea/Components/DeleteButton/index.tsx
 msgid "Are you sure you want to delete this idea?"
 msgstr "確定要刪除此靈感嗎？"
 
 #: src/app/idea/_components/DeleteButton/index.tsx
-#: src/pages/Idea/Components/DeleteButton/index.tsx
 msgid "Once deleted, this idea cannot be recovered!"
 msgstr "刪除靈感後將無法復原！"
 
 #: src/app/idea/_components/DeleteButton/index.tsx
-#: src/pages/Idea/Components/DeleteButton/index.tsx
 msgid "Confirm Delete"
 msgstr "確定刪除"
 
 #: src/app/idea/_components/Form/index.tsx
-#: src/pages/Idea/Components/Form/index.tsx
 msgid "Every idea needs a title, so fill it in!"
 msgstr "靈感都得有個標題，趕快填一下吧！"
 
 #: src/app/idea/_components/Form/index.tsx
-#: src/pages/Idea/Components/Form/index.tsx
 msgid "Idea title is too long!"
 msgstr "靈感標題字數太長啦！"
 
 #: src/app/idea/_components/Form/index.tsx
-#: src/pages/Idea/Components/Form/index.tsx
 msgid "This is the title of your idea"
 msgstr "在這輸入靈感標題"
 
 #: src/app/idea/_components/Form/index.tsx
 #: src/app/idea/_components/Form/index.tsx
-#: src/pages/Idea/Components/Form/index.tsx
-#: src/pages/Idea/Components/Form/index.tsx
 msgid "Describe what this idea is about"
 msgstr "描述靈感"
 
 #: src/app/idea/_components/Form/index.tsx
-#: src/pages/Idea/Components/Form/index.tsx
 msgid "Title is saved, but your idea edits will be lost! Are you sure you want to cancel?"
 msgstr "名單已經存到你的個人專頁了，但剛寫的靈感內容會消失，確定要取消嗎？"
 
 #: src/app/idea/_components/Form/index.tsx
-#: src/pages/Idea/Components/Form/index.tsx
 msgid "Edit Idea"
 msgstr "編輯靈感"
 
 #: src/app/idea/_components/Form/index.tsx
 #: src/app/idea/create/page.tsx
-#: src/pages/Idea/Components/Form/index.tsx
-#: src/pages/Idea/Create/index.tsx
 msgid "New Idea"
 msgstr "新靈感"
 
 #: src/app/idea/_components/Form/index.tsx
 #: src/components/FakePage/EditFieldFakePage.tsx
-#: src/pages/Idea/Components/Form/index.tsx
 msgid "Done"
 msgstr "完成"
 
 #: src/app/official/_components/FeatureSection/index.tsx
-#: src/pages/Official/Components/FeatureSection/index.tsx
 msgid "Life Style"
 msgstr "生活風格"
 
 #: src/app/official/_components/FeatureSection/index.tsx
 #: src/app/user/_components/HeroSection/index.tsx
-#: src/pages/Official/Components/FeatureSection/index.tsx
-#: src/pages/User/HeroSection/index.tsx
 msgid "Lists"
 msgstr "名單"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
-#: src/pages/Settings/BlocksSection/index.tsx
 msgid "Select your language!"
 msgstr "選擇您的語言"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
-#: src/pages/Settings/BlocksSection/index.tsx
 msgid "Your preferred language for a better experience."
 msgstr "選擇您喜愛的語言，讓使用體驗更順暢。"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
-#: src/pages/Settings/BlocksSection/index.tsx
 msgid "Taiwan"
 msgstr "台灣"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
-#: src/pages/Settings/BlocksSection/index.tsx
 msgid "United States"
 msgstr "美國"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
-#: src/pages/Settings/BlocksSection/index.tsx
 msgid "Select your location!"
 msgstr "選擇您的所在地"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
-#: src/pages/Settings/BlocksSection/index.tsx
 msgid "Your location for a personalized experience."
 msgstr "選擇您的所在地，讓使用體驗更個人化。"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
-#: src/pages/Settings/BlocksSection/index.tsx
 msgid "Preference"
 msgstr "偏好設定"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
-#: src/pages/Settings/BlocksSection/index.tsx
 msgid "Select your preferred language"
 msgstr "選擇您的語言"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
-#: src/pages/Settings/BlocksSection/index.tsx
 msgid "Select your location"
 msgstr "選擇您的所在地"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
-#: src/pages/Settings/BlocksSection/index.tsx
 msgid "About Relist"
 msgstr "關於 Relist"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
-#: src/pages/Settings/BlocksSection/index.tsx
 msgid "Quick start guide"
 msgstr "三分鐘上手教學"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
-#: src/pages/Settings/BlocksSection/index.tsx
 msgid "Check out Relist"
 msgstr "Relist 官網"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
-#: src/pages/Settings/BlocksSection/index.tsx
 msgid "Follow Relist Threads"
 msgstr "追蹤 Relist Threads"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
-#: src/pages/Settings/BlocksSection/index.tsx
 msgid "Join Relist Discord"
 msgstr "加入 Discord 與我們一起優化 Relist"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
-#: src/pages/Settings/BlocksSection/index.tsx
 msgid "Submit feedback or report content"
 msgstr "給予意見或內容檢舉"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
-#: src/pages/Settings/BlocksSection/index.tsx
 msgid "About Privacy Policy and Terms of Use"
 msgstr "關於隱私政策與使用條款"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
 #: src/constants/Home/index.en.ts
-#: src/pages/Settings/BlocksSection/index.tsx
 msgid "Contact us"
 msgstr "聯繫我們"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
 #: src/app/settings/_components/BlocksSection/index.tsx
-#: src/pages/Settings/BlocksSection/index.tsx
-#: src/pages/Settings/BlocksSection/index.tsx
 msgid "Sign In"
 msgstr "登入"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
-#: src/pages/Settings/BlocksSection/index.tsx
 msgid "Delete Account"
 msgstr "刪除帳號"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
-#: src/pages/Settings/BlocksSection/index.tsx
 msgid "Sign Out"
 msgstr "登出"
 
 #: src/app/settings/_components/IntroSection/index.tsx
-#: src/pages/Settings/IntroSection/index.tsx
 msgid "Welcome to the Relist community!"
 msgstr "歡迎來到 Relist！"
 
 #: src/app/settings/_components/IntroSection/index.tsx
-#: src/pages/Settings/IntroSection/index.tsx
 msgid "This is your space to drop ideas and build your pocket list. Tell us what you think and how it feels. Your voice helps shape what comes next."
 msgstr "這裡是你分享想法、建立口袋名單的地方。歡迎與我們分享你的使用經驗，讓我們一起把 Relist 做得更棒！"
 
 #: src/app/settings/_components/IntroSection/index.tsx
-#: src/pages/Settings/IntroSection/index.tsx
 msgid "Tell us what you think"
 msgstr "分享你的意見"
 
 #: src/app/settings/_components/index.tsx
 #: src/app/settings/page.tsx
-#: src/pages/Settings/index.tsx
 msgid "Setting Center"
 msgstr "設定中心"
 
 #: src/app/user/_components/HeroSection/index.tsx
-#: src/pages/User/HeroSection/index.tsx
 msgid "The login session is expired, please login again"
 msgstr "登入已過期，請重新登入"
 
 #: src/app/user/_components/HeroSection/index.tsx
 #: src/app/user/_components/HeroSection/index.tsx
 #: src/components/Header/BackToUserHeader.tsx
-#: src/pages/User/HeroSection/index.tsx
-#: src/pages/User/HeroSection/index.tsx
 msgid "Following"
 msgstr "正追蹤"
 
 #: src/app/user/_components/HeroSection/index.tsx
 #: src/components/Header/BackToUserHeader.tsx
-#: src/pages/User/HeroSection/index.tsx
 msgid "Follow"
 msgstr "追蹤"
 
 #: src/app/user/_components/HeroSection/index.tsx
-#: src/pages/User/HeroSection/index.tsx
 msgid "Followers"
 msgstr "粉絲"
 
 #: src/app/user/_components/HeroSection/index.tsx
-#: src/pages/User/HeroSection/index.tsx
 msgctxt "count"
 msgid "Links"
 msgstr "個連結"
 
 #: src/app/user/_components/ListSection/index.tsx
-#: src/pages/User/ListSection/index.tsx
 msgid "Looks like this page is a bit empty."
 msgstr "看起來這個頁面有點空。"
 
 #: src/app/user/_components/ListSection/index.tsx
-#: src/pages/User/ListSection/index.tsx
 msgid "Follow and check back soon for surprise lists!"
 msgstr "先追蹤起來，隨時回來看看吧！"
 
@@ -912,6 +750,25 @@ msgstr "500x500像素，限 JPG 或 PNG，最大4MB"
 #: src/components/ImageUploader/index.tsx
 msgid "Upload a cover"
 msgstr "封面圖片"
+
+#: src/components/Layout/BottomNav.tsx
+#: src/constants/Home/index.en.ts
+msgid "About"
+msgstr "關於我們"
+
+#: src/components/Layout/BottomNav.tsx
+#: src/constants/Home/index.en.ts
+msgid "Terms"
+msgstr "使用者條款"
+
+#: src/components/Layout/BottomNav.tsx
+#: src/constants/Home/index.en.ts
+msgid "Privacy"
+msgstr "隱私權保護政策"
+
+#: src/components/Layout/PromptText.tsx
+msgid "Relist works best on mobile. Use a mobile device for the best experience."
+msgstr "Relist 在手機畫面運作更順暢，使用行動裝置以取得更好的使用體驗。"
 
 #: src/components/LoginDrawerGlobal.tsx
 msgid "Right now, only invited users can log in"
@@ -1238,11 +1095,6 @@ msgid "If you can't clean your room, what's your life looking like?"
 msgstr "這是我的問題，但我眼睛真的很利！哈！"
 
 #: src/constants/Home/index.en.ts
-#: src/pages/Layout/Components/BottomNav.tsx
-msgid "About"
-msgstr "關於我們"
-
-#: src/constants/Home/index.en.ts
 msgid "Tutorials"
 msgstr "快速教學"
 
@@ -1261,16 +1113,6 @@ msgstr "媒體報導"
 #: src/constants/Home/index.en.ts
 msgid "Contact Us"
 msgstr "聯繫我們"
-
-#: src/constants/Home/index.en.ts
-#: src/pages/Layout/Components/BottomNav.tsx
-msgid "Terms"
-msgstr "使用者條款"
-
-#: src/constants/Home/index.en.ts
-#: src/pages/Layout/Components/BottomNav.tsx
-msgid "Privacy"
-msgstr "隱私權保護政策"
 
 #: src/constants/Home/index.en.ts
 msgid "Collection Notice"
@@ -1295,7 +1137,3 @@ msgstr "請先登入以進行此操作"
 #: src/hooks/useCheckStorage.ts
 msgid "The app is outdated, please login again"
 msgstr "網頁更新，請重新登入"
-
-#: src/pages/Layout/Components/PromptText.tsx
-msgid "Relist works best on mobile. Use a mobile device for the best experience."
-msgstr "Relist 在手機畫面運作更順暢，使用行動裝置以取得更好的使用體驗。"

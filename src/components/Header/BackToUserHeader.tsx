@@ -94,7 +94,7 @@ const BackToUserHeader: React.FC<IBackToUserHeaderProps> = ({
               onClick={handleClickBackToUser}
             >
               <Avatar className="ml-1 h-6 w-6">
-                <AvatarImage src={owner?.profileImage || null} />
+                <AvatarImage src={owner?.profileImage || undefined} />
                 <AvatarFallback>{owner?.displayName?.[0]}</AvatarFallback>
               </Avatar>
               <p className="font-regular ml-2 line-clamp-1 text-[15px]">

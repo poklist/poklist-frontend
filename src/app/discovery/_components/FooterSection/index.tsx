@@ -1,6 +1,6 @@
 import { FOOTER_SECTION, SOCIAL_MEDIA } from '@/constants/Home/index.en';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateAdapter';
-import { Footer } from '@/pages/Official/Components/Footer';
+import { Footer } from '@/app/official/_components/Footer';
 import { Trans } from '@lingui/react/macro';
 import { ChevronRight } from 'lucide-react';
 

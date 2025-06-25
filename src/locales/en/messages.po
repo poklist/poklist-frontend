@@ -17,14 +17,11 @@ msgstr ""
 #: src/app/[userCode]/edit/page.tsx
 #: src/app/user/edit/page.tsx
 #: src/app/user/edit/page.tsx
-#: src/pages/EditUser/index.tsx
-#: src/pages/EditUser/index.tsx
 msgid "Name"
 msgstr "Name"
 
 #: src/app/[userCode]/edit/page.tsx
 #: src/app/user/edit/page.tsx
-#: src/pages/EditUser/index.tsx
 msgid "Enter your name here"
 msgstr "Enter your name here"
 
@@ -32,14 +29,11 @@ msgstr "Enter your name here"
 #: src/app/[userCode]/edit/page.tsx
 #: src/app/user/edit/page.tsx
 #: src/app/user/edit/page.tsx
-#: src/pages/EditUser/index.tsx
-#: src/pages/EditUser/index.tsx
 msgid "Username"
 msgstr "Username"
 
 #: src/app/[userCode]/edit/page.tsx
 #: src/app/user/edit/page.tsx
-#: src/pages/EditUser/index.tsx
 msgid "Enter your username here"
 msgstr "Enter your username here"
 
@@ -47,32 +41,26 @@ msgstr "Enter your username here"
 #: src/app/[userCode]/edit/page.tsx
 #: src/app/user/edit/page.tsx
 #: src/app/user/edit/page.tsx
-#: src/pages/EditUser/index.tsx
-#: src/pages/EditUser/index.tsx
 msgid "Bio"
 msgstr "Bio"
 
 #: src/app/[userCode]/edit/page.tsx
 #: src/app/user/edit/page.tsx
-#: src/pages/EditUser/index.tsx
 msgid "Enter your bio here"
 msgstr "Enter your bio here"
 
 #: src/app/[userCode]/edit/page.tsx
 #: src/app/user/edit/page.tsx
-#: src/pages/EditUser/index.tsx
 msgid "Profile Image"
 msgstr "Profile Image"
 
 #: src/app/[userCode]/edit/page.tsx
 #: src/app/user/edit/page.tsx
-#: src/pages/EditUser/index.tsx
 msgid "Customized Link"
 msgstr "Customized Link"
 
 #: src/app/[userCode]/edit/page.tsx
 #: src/app/user/edit/page.tsx
-#: src/pages/EditUser/index.tsx
 msgid "Add URL"
 msgstr "Add URL"
 
@@ -86,23 +74,16 @@ msgstr "Add URL"
 #: src/app/user/edit/page.tsx
 #: src/app/user/edit/page.tsx
 #: src/app/user/edit/page.tsx
-#: src/pages/EditUser/index.tsx
-#: src/pages/EditUser/index.tsx
-#: src/pages/EditUser/index.tsx
-#: src/pages/EditUser/index.tsx
-#: src/pages/EditUser/index.tsx
 msgid "Add account"
 msgstr "Add account"
 
 #: src/app/[userCode]/edit/page.tsx
 #: src/app/user/edit/page.tsx
-#: src/pages/EditUser/index.tsx
 msgid "Profile"
 msgstr "Profile"
 
 #: src/app/[userCode]/edit/page.tsx
 #: src/app/user/edit/page.tsx
-#: src/pages/EditUser/index.tsx
 msgctxt "title"
 msgid "Links"
 msgstr "Links"
@@ -110,75 +91,59 @@ msgstr "Links"
 #: src/app/[userCode]/edit/page.tsx
 #: src/app/user/_components/HeroSection/index.tsx
 #: src/app/user/edit/page.tsx
-#: src/pages/EditUser/index.tsx
-#: src/pages/User/HeroSection/index.tsx
 msgid "Edit profile and account"
 msgstr "Edit profile and account"
 
 #: src/app/[userCode]/list/[id]/_components/IdeaDrawerContent/index.tsx
 #: src/components/Footer/FloatingButtonFooter.tsx
-#: src/pages/Lists/View/IdeaDrawerContent/index.tsx
 msgid "Copied to clipboard"
 msgstr "Copied to clipboard"
 
 #: src/app/[userCode]/list/[id]/_components/IdeaDrawerContent/index.tsx
 #: src/components/Footer/FloatingButtonFooter.tsx
-#: src/pages/Lists/View/IdeaDrawerContent/index.tsx
 msgid "Copy"
 msgstr "Copy"
 
 #: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
-#: src/pages/Lists/View/ListCard/index.tsx
 msgid "Recently Updated"
 msgstr "Recently Updated"
 
 #: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
-#: src/pages/Lists/View/ListCard/index.tsx
 msgid "Listing since"
 msgstr "Listing since"
 
 #: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
-#: src/pages/Lists/View/ListCard/index.tsx
 msgid "Likes"
 msgstr "Likes"
 
 #: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
-#: src/pages/Lists/View/ListCard/index.tsx
 msgid "Edit list"
 msgstr "Edit list"
 
 #: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
 #: src/app/[userCode]/list/[id]/manage/page.tsx
-#: src/pages/Lists/Manage/index.tsx
-#: src/pages/Lists/View/ListCard/index.tsx
 msgid "Add an idea"
 msgstr "Add an idea"
 
 #: src/app/[userCode]/list/[id]/edit/page.tsx
-#: src/pages/Lists/Edit/index.tsx
 msgid "List Cover"
 msgstr "List Cover"
 
 #: src/app/[userCode]/list/[id]/manage/page.tsx
 #: src/app/[userCode]/list/create/page.tsx
 #: src/app/list/create/page.tsx
-#: src/pages/Lists/Create/index.tsx
-#: src/pages/Lists/Manage/index.tsx
 msgid "Idea List"
 msgstr "Idea List"
 
 #: src/app/[userCode]/list/[id]/manage/page.tsx
-#: src/pages/Lists/Manage/index.tsx
 msgid "Edit list cover"
 msgstr "Edit list cover"
 
 #: src/app/[userCode]/list/[id]/manage/page.tsx
-#: src/pages/Lists/Manage/index.tsx
 msgid "Your ideas live here. Create one!"
 msgstr "Your ideas live here. Create one!"
 
 #: src/app/[userCode]/list/[id]/manage/page.tsx
-#: src/pages/Lists/Manage/index.tsx
 msgid "Tap an idea to edit. Drag the lines on the left to reorder."
 msgstr "Tap an idea to edit. Drag the lines on the left to reorder."
 
@@ -187,34 +152,28 @@ msgstr "Tap an idea to edit. Drag the lines on the left to reorder."
 #: src/app/list/_components/Form/index.tsx
 #: src/app/list/create/_components/Form/index.tsx
 #: src/components/Lists/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
-#: src/pages/Lists/Manage/index.tsx
 msgid "Edit List"
 msgstr "Edit List"
 
 #: src/app/[userCode]/list/[id]/manage/page.tsx
-#: src/pages/Lists/Manage/index.tsx
 msgid "Save New Order"
 msgstr "Save New Order"
 
 #: src/app/[userCode]/list/_components/DeleteButton/index.tsx
 #: src/app/list/_components/DeleteButton/index.tsx
 #: src/components/Lists/DeleteButton/index.tsx
-#: src/pages/Lists/Components/DeleteButton/index.tsx
 msgid "Deleting the list title will also erase all ideas!"
 msgstr "Deleting the list title will also erase all ideas!"
 
 #: src/app/[userCode]/list/_components/DeleteButton/index.tsx
 #: src/app/list/_components/DeleteButton/index.tsx
 #: src/components/Lists/DeleteButton/index.tsx
-#: src/pages/Lists/Components/DeleteButton/index.tsx
 msgid "Permanently delete the entire list and all its ideas. This action cannot be undone!"
 msgstr "Permanently delete the entire list and all its ideas. This action cannot be undone!"
 
 #: src/app/[userCode]/list/_components/DeleteButton/index.tsx
 #: src/app/list/_components/DeleteButton/index.tsx
 #: src/components/Lists/DeleteButton/index.tsx
-#: src/pages/Lists/Components/DeleteButton/index.tsx
 msgid "Delete List and All Ideas"
 msgstr "Delete List and All Ideas"
 
@@ -222,8 +181,6 @@ msgstr "Delete List and All Ideas"
 #: src/app/idea/_components/DeleteButton/index.tsx
 #: src/app/list/_components/DeleteButton/index.tsx
 #: src/components/Lists/DeleteButton/index.tsx
-#: src/pages/Idea/Components/DeleteButton/index.tsx
-#: src/pages/Lists/Components/DeleteButton/index.tsx
 msgid "Cancel"
 msgstr "Cancel"
 
@@ -232,8 +189,6 @@ msgstr "Cancel"
 #: src/app/list/_components/Form/index.tsx
 #: src/app/list/create/_components/Form/index.tsx
 #: src/components/Lists/Form/index.tsx
-#: src/pages/Idea/Components/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
 msgid "Cover Image"
 msgstr "Cover Image"
 
@@ -242,8 +197,6 @@ msgstr "Cover Image"
 #: src/app/list/_components/Form/index.tsx
 #: src/app/list/create/_components/Form/index.tsx
 #: src/components/Lists/Form/index.tsx
-#: src/pages/Idea/Components/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
 msgid "Hey, the title can't be left empty!"
 msgstr "Hey, the title can't be left empty!"
 
@@ -251,7 +204,6 @@ msgstr "Hey, the title can't be left empty!"
 #: src/app/list/_components/Form/index.tsx
 #: src/app/list/create/_components/Form/index.tsx
 #: src/components/Lists/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
 msgid "Every list needs a title, so fill it in!"
 msgstr "Every list needs a title, so fill it in!"
 
@@ -259,7 +211,6 @@ msgstr "Every list needs a title, so fill it in!"
 #: src/app/list/_components/Form/index.tsx
 #: src/app/list/create/_components/Form/index.tsx
 #: src/components/Lists/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
 msgid "List title is too long!"
 msgstr "List title is too long!"
 
@@ -268,8 +219,6 @@ msgstr "List title is too long!"
 #: src/app/list/_components/Form/index.tsx
 #: src/app/list/create/_components/Form/index.tsx
 #: src/components/Lists/Form/index.tsx
-#: src/pages/Idea/Components/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
 msgid "Please keep it under {TITLE_MAX_LENGTH} characters."
 msgstr "Please keep it under {TITLE_MAX_LENGTH} characters."
 
@@ -278,8 +227,6 @@ msgstr "Please keep it under {TITLE_MAX_LENGTH} characters."
 #: src/app/list/_components/Form/index.tsx
 #: src/app/list/create/_components/Form/index.tsx
 #: src/components/Lists/Form/index.tsx
-#: src/pages/Idea/Components/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
 msgid "Description is too long!"
 msgstr "Description is too long!"
 
@@ -288,8 +235,6 @@ msgstr "Description is too long!"
 #: src/app/list/_components/Form/index.tsx
 #: src/app/list/create/_components/Form/index.tsx
 #: src/components/Lists/Form/index.tsx
-#: src/pages/Idea/Components/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
 msgid "Please keep it under {DESC_MAX_LENGTH} characters."
 msgstr "Please keep it under {DESC_MAX_LENGTH} characters."
 
@@ -297,7 +242,6 @@ msgstr "Please keep it under {DESC_MAX_LENGTH} characters."
 #: src/app/list/_components/Form/index.tsx
 #: src/app/list/create/_components/Form/index.tsx
 #: src/components/Lists/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
 msgid "This is the title of your list"
 msgstr "This is the title of your list"
 
@@ -309,8 +253,6 @@ msgstr "This is the title of your list"
 #: src/app/list/create/_components/Form/index.tsx
 #: src/components/Lists/Form/index.tsx
 #: src/components/Lists/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
 msgid "Describe what this title is about"
 msgstr "Describe what this title is about"
 
@@ -319,8 +261,6 @@ msgstr "Describe what this title is about"
 #: src/app/list/_components/Form/index.tsx
 #: src/app/list/create/_components/Form/index.tsx
 #: src/components/Lists/Form/index.tsx
-#: src/pages/Idea/Components/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
 msgid "Link a page"
 msgstr "Link a page"
 
@@ -328,7 +268,6 @@ msgstr "Link a page"
 #: src/app/list/_components/Form/index.tsx
 #: src/app/list/create/_components/Form/index.tsx
 #: src/components/Lists/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
 msgid "Edit List Topic"
 msgstr "Edit List Topic"
 
@@ -336,7 +275,6 @@ msgstr "Edit List Topic"
 #: src/app/list/_components/Form/index.tsx
 #: src/app/list/create/_components/Form/index.tsx
 #: src/components/Lists/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
 msgid "List Topic"
 msgstr "List Topic"
 
@@ -344,7 +282,6 @@ msgstr "List Topic"
 #: src/app/list/_components/Form/index.tsx
 #: src/app/list/create/_components/Form/index.tsx
 #: src/components/Lists/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
 msgid "Choose a topic that vibes with your List."
 msgstr "Choose a topic that vibes with your List."
 
@@ -364,10 +301,6 @@ msgstr "Choose a topic that vibes with your List."
 #: src/components/Lists/Form/index.tsx
 #: src/components/Lists/Form/index.tsx
 #: src/components/Lists/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
 msgid "Next"
 msgstr "Next"
 
@@ -376,8 +309,6 @@ msgstr "Next"
 #: src/app/list/_components/Form/index.tsx
 #: src/app/list/create/_components/Form/index.tsx
 #: src/components/Lists/Form/index.tsx
-#: src/pages/Idea/Components/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
 msgid "Your edits will be lost if you cancel!"
 msgstr "Your edits will be lost if you cancel!"
 
@@ -385,7 +316,6 @@ msgstr "Your edits will be lost if you cancel!"
 #: src/app/list/_components/Form/index.tsx
 #: src/app/list/create/_components/Form/index.tsx
 #: src/components/Lists/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
 msgid "If you cancel, everything you've entered will be lost."
 msgstr "If you cancel, everything you've entered will be lost."
 
@@ -394,8 +324,6 @@ msgstr "If you cancel, everything you've entered will be lost."
 #: src/app/list/_components/Form/index.tsx
 #: src/app/list/create/_components/Form/index.tsx
 #: src/components/Lists/Form/index.tsx
-#: src/pages/Idea/Components/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
 msgid "Cancel Editing"
 msgstr "Cancel Editing"
 
@@ -404,8 +332,6 @@ msgstr "Cancel Editing"
 #: src/app/list/_components/Form/index.tsx
 #: src/app/list/create/_components/Form/index.tsx
 #: src/components/Lists/Form/index.tsx
-#: src/pages/Idea/Components/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
 msgid "Continue Editing"
 msgstr "Continue Editing"
 
@@ -413,7 +339,6 @@ msgstr "Continue Editing"
 #: src/app/list/_components/Form/index.tsx
 #: src/app/list/create/_components/Form/index.tsx
 #: src/components/Lists/Form/index.tsx
-#: src/pages/Lists/Components/Form/index.tsx
 msgid "Create Idea List"
 msgstr "Create Idea List"
 
@@ -422,8 +347,7 @@ msgstr "Create Idea List"
 #: src/app/list/create/_components/i18n.ts
 #: src/app/official/_components/FeatureSection/index.tsx
 #: src/components/Lists/i18n.ts
-#: src/pages/Lists/i18n.ts
-#: src/pages/Official/Components/FeatureSection/index.tsx
+#: src/constants/Lists/i18n.ts
 msgid "Other"
 msgstr "Other"
 
@@ -432,8 +356,7 @@ msgstr "Other"
 #: src/app/list/_components/i18n.ts
 #: src/app/list/create/_components/i18n.ts
 #: src/components/Lists/i18n.ts
-#: src/pages/Discovery/Components/ListSection/index.tsx
-#: src/pages/Lists/i18n.ts
+#: src/constants/Lists/i18n.ts
 msgid "Lifestyle"
 msgstr "Lifestyle"
 
@@ -443,9 +366,7 @@ msgstr "Lifestyle"
 #: src/app/list/create/_components/i18n.ts
 #: src/app/official/_components/FeatureSection/index.tsx
 #: src/components/Lists/i18n.ts
-#: src/pages/Discovery/Components/ListSection/index.tsx
-#: src/pages/Lists/i18n.ts
-#: src/pages/Official/Components/FeatureSection/index.tsx
+#: src/constants/Lists/i18n.ts
 msgid "Food & Drink"
 msgstr "Food & Drink"
 
@@ -455,9 +376,7 @@ msgstr "Food & Drink"
 #: src/app/list/create/_components/i18n.ts
 #: src/app/official/_components/FeatureSection/index.tsx
 #: src/components/Lists/i18n.ts
-#: src/pages/Discovery/Components/ListSection/index.tsx
-#: src/pages/Lists/i18n.ts
-#: src/pages/Official/Components/FeatureSection/index.tsx
+#: src/constants/Lists/i18n.ts
 msgid "Culture"
 msgstr "Culture"
 
@@ -467,9 +386,7 @@ msgstr "Culture"
 #: src/app/list/create/_components/i18n.ts
 #: src/app/official/_components/FeatureSection/index.tsx
 #: src/components/Lists/i18n.ts
-#: src/pages/Discovery/Components/ListSection/index.tsx
-#: src/pages/Lists/i18n.ts
-#: src/pages/Official/Components/FeatureSection/index.tsx
+#: src/constants/Lists/i18n.ts
 msgid "Travel"
 msgstr "Travel"
 
@@ -479,9 +396,7 @@ msgstr "Travel"
 #: src/app/list/create/_components/i18n.ts
 #: src/app/official/_components/FeatureSection/index.tsx
 #: src/components/Lists/i18n.ts
-#: src/pages/Discovery/Components/ListSection/index.tsx
-#: src/pages/Lists/i18n.ts
-#: src/pages/Official/Components/FeatureSection/index.tsx
+#: src/constants/Lists/i18n.ts
 msgid "Entertainment"
 msgstr "Entertainment"
 
@@ -491,9 +406,7 @@ msgstr "Entertainment"
 #: src/app/list/create/_components/i18n.ts
 #: src/app/official/_components/FeatureSection/index.tsx
 #: src/components/Lists/i18n.ts
-#: src/pages/Discovery/Components/ListSection/index.tsx
-#: src/pages/Lists/i18n.ts
-#: src/pages/Official/Components/FeatureSection/index.tsx
+#: src/constants/Lists/i18n.ts
 msgid "Tech & Digital"
 msgstr "Tech & Digital"
 
@@ -503,9 +416,7 @@ msgstr "Tech & Digital"
 #: src/app/list/create/_components/i18n.ts
 #: src/app/official/_components/FeatureSection/index.tsx
 #: src/components/Lists/i18n.ts
-#: src/pages/Discovery/Components/ListSection/index.tsx
-#: src/pages/Lists/i18n.ts
-#: src/pages/Official/Components/FeatureSection/index.tsx
+#: src/constants/Lists/i18n.ts
 msgid "Personal Growth"
 msgstr "Personal Growth"
 
@@ -515,353 +426,280 @@ msgstr "Personal Growth"
 #: src/app/list/create/_components/i18n.ts
 #: src/app/official/_components/FeatureSection/index.tsx
 #: src/components/Lists/i18n.ts
-#: src/pages/Discovery/Components/ListSection/index.tsx
-#: src/pages/Lists/i18n.ts
-#: src/pages/Official/Components/FeatureSection/index.tsx
+#: src/constants/Lists/i18n.ts
 msgid "Health & Fitness"
 msgstr "Health & Fitness"
 
 #: src/app/discovery/_components/FooterSection/index.tsx
-#: src/pages/Discovery/Components/FooterSection/index.tsx
 msgid "<0>Your lists say more than posts ever could.</0><1><2>Next wave of content</2><3/></1>"
 msgstr "<0>Your lists say more than posts ever could.</0><1><2>Next wave of content</2><3/></1>"
 
 #: src/app/discovery/_components/HeaderSection/index.tsx
-#: src/pages/Discovery/Components/HeaderSection/index.tsx
 msgid "<0>My life in my lists</0><1>Invitation only. Ready to join?</1>"
 msgstr "<0>My life in my lists</0><1>Invitation only. Ready to join?</1>"
 
 #: src/app/discovery/_components/HeaderSection/index.tsx
-#: src/pages/Discovery/Components/HeaderSection/index.tsx
 msgid "Create your account"
 msgstr "Create your account"
 
 #: src/app/discovery/_components/HeaderSection/index.tsx
-#: src/pages/Discovery/Components/HeaderSection/index.tsx
 msgid "Sign in"
 msgstr "Sign in"
 
 #: src/app/discovery/_components/ListSection/index.tsx
 #: src/app/settings/_components/BlocksSection/index.tsx
-#: src/pages/Discovery/Components/ListSection/index.tsx
-#: src/pages/Settings/BlocksSection/index.tsx
 msgid "Others"
 msgstr "Others"
 
 #: src/app/discovery/_components/ListSection/index.tsx
-#: src/pages/Discovery/Components/ListSection/index.tsx
 msgid "Lists that vibe right"
 msgstr "Lists that vibe right"
 
 #: src/app/discovery/_components/ListSection/index.tsx
-#: src/pages/Discovery/Components/ListSection/index.tsx
 msgid "Lists that taste like wow"
 msgstr "Lists that taste like wow"
 
 #: src/app/discovery/_components/ListSection/index.tsx
-#: src/pages/Discovery/Components/ListSection/index.tsx
 msgid "Lists that show your colors"
 msgstr "Lists that show your colors"
 
 #: src/app/discovery/_components/ListSection/index.tsx
-#: src/pages/Discovery/Components/ListSection/index.tsx
 msgid "Lists that go to places"
 msgstr "Lists that go to places"
 
 #: src/app/discovery/_components/ListSection/index.tsx
-#: src/pages/Discovery/Components/ListSection/index.tsx
 msgid "Lists that stream good times"
 msgstr "Lists that stream good times"
 
 #: src/app/discovery/_components/ListSection/index.tsx
-#: src/pages/Discovery/Components/ListSection/index.tsx
 msgid "Lists that tap into the future"
 msgstr "Lists that tap into the future"
 
 #: src/app/discovery/_components/ListSection/index.tsx
-#: src/pages/Discovery/Components/ListSection/index.tsx
 msgid "Lists that build better you"
 msgstr "Lists that build better you"
 
 #: src/app/discovery/_components/ListSection/index.tsx
-#: src/pages/Discovery/Components/ListSection/index.tsx
 msgid "Lists that make you sweat"
 msgstr "Lists that make you sweat"
 
 #: src/app/discovery/_components/ListSection/index.tsx
-#: src/pages/Discovery/Components/ListSection/index.tsx
 msgid "Lists that just get it"
 msgstr "Lists that just get it"
 
 #: src/app/discovery/_components/ListSection/index.tsx
-#: src/pages/Discovery/Components/ListSection/index.tsx
 msgid "<0>Recently updated</0>"
 msgstr "<0>Recently updated</0>"
 
 #: src/app/discovery/_components/ListSection/index.tsx
-#: src/pages/Discovery/Components/ListSection/index.tsx
 msgid "See more"
 msgstr "See more"
 
 #: src/app/discovery/_components/TileSection/index.tsx
-#: src/pages/Discovery/Components/TileSection/index.tsx
 msgid "Fresh lists from our pocket"
 msgstr "Fresh lists from our pocket"
 
 #: src/app/discovery/_components/TileSection/index.tsx
-#: src/pages/Discovery/Components/TileSection/index.tsx
 msgid "Updated weekly"
 msgstr "Updated weekly"
 
 #: src/app/error/page.tsx
-#: src/pages/Error/index.tsx
 msgid "Oops something is wrong!"
 msgstr "Oops something is wrong!"
 
 #: src/app/goToMobile/_components/index.tsx
 #: src/app/goToMobile/page.tsx
-#: src/pages/GoToMobile/index.tsx
 msgid "<0>Relist works best on mobile.</0><1>Use a mobile device for the best experience.</1>"
 msgstr "<0>Relist works best on mobile.</0><1>Use a mobile device for the best experience.</1>"
 
 #: src/app/idea/[ideaID]/edit/page.tsx
-#: src/pages/Idea/Edit/index.tsx
 msgid "Idea"
 msgstr "Idea"
 
 #: src/app/idea/_components/DeleteButton/index.tsx
-#: src/pages/Idea/Components/DeleteButton/index.tsx
 msgid "Are you sure you want to delete this idea?"
 msgstr "Are you sure you want to delete this idea?"
 
 #: src/app/idea/_components/DeleteButton/index.tsx
-#: src/pages/Idea/Components/DeleteButton/index.tsx
 msgid "Once deleted, this idea cannot be recovered!"
 msgstr "Once deleted, this idea cannot be recovered!"
 
 #: src/app/idea/_components/DeleteButton/index.tsx
-#: src/pages/Idea/Components/DeleteButton/index.tsx
 msgid "Confirm Delete"
 msgstr "Confirm Delete"
 
 #: src/app/idea/_components/Form/index.tsx
-#: src/pages/Idea/Components/Form/index.tsx
 msgid "Every idea needs a title, so fill it in!"
 msgstr "Every idea needs a title, so fill it in!"
 
 #: src/app/idea/_components/Form/index.tsx
-#: src/pages/Idea/Components/Form/index.tsx
 msgid "Idea title is too long!"
 msgstr "Idea title is too long!"
 
 #: src/app/idea/_components/Form/index.tsx
-#: src/pages/Idea/Components/Form/index.tsx
 msgid "This is the title of your idea"
 msgstr "This is the title of your idea"
 
 #: src/app/idea/_components/Form/index.tsx
 #: src/app/idea/_components/Form/index.tsx
-#: src/pages/Idea/Components/Form/index.tsx
-#: src/pages/Idea/Components/Form/index.tsx
 msgid "Describe what this idea is about"
 msgstr "Describe what this idea is about"
 
 #: src/app/idea/_components/Form/index.tsx
-#: src/pages/Idea/Components/Form/index.tsx
 msgid "Title is saved, but your idea edits will be lost! Are you sure you want to cancel?"
 msgstr "Title is saved, but your idea edits will be lost! Are you sure you want to cancel?"
 
 #: src/app/idea/_components/Form/index.tsx
-#: src/pages/Idea/Components/Form/index.tsx
 msgid "Edit Idea"
 msgstr "Edit Idea"
 
 #: src/app/idea/_components/Form/index.tsx
 #: src/app/idea/create/page.tsx
-#: src/pages/Idea/Components/Form/index.tsx
-#: src/pages/Idea/Create/index.tsx
 msgid "New Idea"
 msgstr "New Idea"
 
 #: src/app/idea/_components/Form/index.tsx
 #: src/components/FakePage/EditFieldFakePage.tsx
-#: src/pages/Idea/Components/Form/index.tsx
 msgid "Done"
 msgstr "Done"
 
 #: src/app/official/_components/FeatureSection/index.tsx
-#: src/pages/Official/Components/FeatureSection/index.tsx
 msgid "Life Style"
 msgstr "Life Style"
 
 #: src/app/official/_components/FeatureSection/index.tsx
 #: src/app/user/_components/HeroSection/index.tsx
-#: src/pages/Official/Components/FeatureSection/index.tsx
-#: src/pages/User/HeroSection/index.tsx
 msgid "Lists"
 msgstr "Lists"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
-#: src/pages/Settings/BlocksSection/index.tsx
 msgid "Select your language!"
 msgstr "Select your language!"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
-#: src/pages/Settings/BlocksSection/index.tsx
 msgid "Your preferred language for a better experience."
 msgstr "Your preferred language for a better experience."
 
 #: src/app/settings/_components/BlocksSection/index.tsx
-#: src/pages/Settings/BlocksSection/index.tsx
 msgid "Taiwan"
 msgstr "Taiwan"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
-#: src/pages/Settings/BlocksSection/index.tsx
 msgid "United States"
 msgstr "United States"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
-#: src/pages/Settings/BlocksSection/index.tsx
 msgid "Select your location!"
 msgstr "Select your location!"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
-#: src/pages/Settings/BlocksSection/index.tsx
 msgid "Your location for a personalized experience."
 msgstr "Your location for a personalized experience."
 
 #: src/app/settings/_components/BlocksSection/index.tsx
-#: src/pages/Settings/BlocksSection/index.tsx
 msgid "Preference"
 msgstr "Preference"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
-#: src/pages/Settings/BlocksSection/index.tsx
 msgid "Select your preferred language"
 msgstr "Select your preferred language"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
-#: src/pages/Settings/BlocksSection/index.tsx
 msgid "Select your location"
 msgstr "Select your location"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
-#: src/pages/Settings/BlocksSection/index.tsx
 msgid "About Relist"
 msgstr "About Relist"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
-#: src/pages/Settings/BlocksSection/index.tsx
 msgid "Quick start guide"
 msgstr "Quick start guide"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
-#: src/pages/Settings/BlocksSection/index.tsx
 msgid "Check out Relist"
 msgstr "Check out Relist"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
-#: src/pages/Settings/BlocksSection/index.tsx
 msgid "Follow Relist Threads"
 msgstr "Follow Relist Threads"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
-#: src/pages/Settings/BlocksSection/index.tsx
 msgid "Join Relist Discord"
 msgstr "Join Relist Discord"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
-#: src/pages/Settings/BlocksSection/index.tsx
 msgid "Submit feedback or report content"
 msgstr "Submit feedback or report content"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
-#: src/pages/Settings/BlocksSection/index.tsx
 msgid "About Privacy Policy and Terms of Use"
 msgstr "About Privacy Policy and Terms of Use"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
 #: src/constants/Home/index.en.ts
-#: src/pages/Settings/BlocksSection/index.tsx
 msgid "Contact us"
 msgstr "Contact us"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
 #: src/app/settings/_components/BlocksSection/index.tsx
-#: src/pages/Settings/BlocksSection/index.tsx
-#: src/pages/Settings/BlocksSection/index.tsx
 msgid "Sign In"
 msgstr "Sign In"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
-#: src/pages/Settings/BlocksSection/index.tsx
 msgid "Delete Account"
 msgstr "Delete Account"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
-#: src/pages/Settings/BlocksSection/index.tsx
 msgid "Sign Out"
 msgstr "Sign Out"
 
 #: src/app/settings/_components/IntroSection/index.tsx
-#: src/pages/Settings/IntroSection/index.tsx
 msgid "Welcome to the Relist community!"
 msgstr "Welcome to the Relist community!"
 
 #: src/app/settings/_components/IntroSection/index.tsx
-#: src/pages/Settings/IntroSection/index.tsx
 msgid "This is your space to drop ideas and build your pocket list. Tell us what you think and how it feels. Your voice helps shape what comes next."
 msgstr "This is your space to drop ideas and build your pocket list. Tell us what you think and how it feels. Your voice helps shape what comes next."
 
 #: src/app/settings/_components/IntroSection/index.tsx
-#: src/pages/Settings/IntroSection/index.tsx
 msgid "Tell us what you think"
 msgstr "Tell us what you think"
 
 #: src/app/settings/_components/index.tsx
 #: src/app/settings/page.tsx
-#: src/pages/Settings/index.tsx
 msgid "Setting Center"
 msgstr "Setting Center"
 
 #: src/app/user/_components/HeroSection/index.tsx
-#: src/pages/User/HeroSection/index.tsx
 msgid "The login session is expired, please login again"
 msgstr "The login session is expired, please login again"
 
 #: src/app/user/_components/HeroSection/index.tsx
 #: src/app/user/_components/HeroSection/index.tsx
 #: src/components/Header/BackToUserHeader.tsx
-#: src/pages/User/HeroSection/index.tsx
-#: src/pages/User/HeroSection/index.tsx
 msgid "Following"
 msgstr "Following"
 
 #: src/app/user/_components/HeroSection/index.tsx
 #: src/components/Header/BackToUserHeader.tsx
-#: src/pages/User/HeroSection/index.tsx
 msgid "Follow"
 msgstr "Follow"
 
 #: src/app/user/_components/HeroSection/index.tsx
-#: src/pages/User/HeroSection/index.tsx
 msgid "Followers"
 msgstr "Followers"
 
 #: src/app/user/_components/HeroSection/index.tsx
-#: src/pages/User/HeroSection/index.tsx
 msgctxt "count"
 msgid "Links"
 msgstr "Links"
 
 #: src/app/user/_components/ListSection/index.tsx
-#: src/pages/User/ListSection/index.tsx
 msgid "Looks like this page is a bit empty."
 msgstr "Looks like this page is a bit empty."
 
 #: src/app/user/_components/ListSection/index.tsx
-#: src/pages/User/ListSection/index.tsx
 msgid "Follow and check back soon for surprise lists!"
 msgstr "Follow and check back soon for surprise lists!"
 
@@ -912,6 +750,25 @@ msgstr "500x500px, JPG or PNG, max 4MB"
 #: src/components/ImageUploader/index.tsx
 msgid "Upload a cover"
 msgstr "Upload a cover"
+
+#: src/components/Layout/BottomNav.tsx
+#: src/constants/Home/index.en.ts
+msgid "About"
+msgstr "About"
+
+#: src/components/Layout/BottomNav.tsx
+#: src/constants/Home/index.en.ts
+msgid "Terms"
+msgstr "Terms"
+
+#: src/components/Layout/BottomNav.tsx
+#: src/constants/Home/index.en.ts
+msgid "Privacy"
+msgstr "Privacy"
+
+#: src/components/Layout/PromptText.tsx
+msgid "Relist works best on mobile. Use a mobile device for the best experience."
+msgstr "Relist works best on mobile. Use a mobile device for the best experience."
 
 #: src/components/LoginDrawerGlobal.tsx
 msgid "Right now, only invited users can log in"
@@ -1238,11 +1095,6 @@ msgid "If you can't clean your room, what's your life looking like?"
 msgstr "If you can't clean your room, what's your life looking like?"
 
 #: src/constants/Home/index.en.ts
-#: src/pages/Layout/Components/BottomNav.tsx
-msgid "About"
-msgstr "About"
-
-#: src/constants/Home/index.en.ts
 msgid "Tutorials"
 msgstr "Tutorials"
 
@@ -1261,16 +1113,6 @@ msgstr "Press kit"
 #: src/constants/Home/index.en.ts
 msgid "Contact Us"
 msgstr "Contact Us"
-
-#: src/constants/Home/index.en.ts
-#: src/pages/Layout/Components/BottomNav.tsx
-msgid "Terms"
-msgstr "Terms"
-
-#: src/constants/Home/index.en.ts
-#: src/pages/Layout/Components/BottomNav.tsx
-msgid "Privacy"
-msgstr "Privacy"
 
 #: src/constants/Home/index.en.ts
 msgid "Collection Notice"
@@ -1295,7 +1137,3 @@ msgstr "Please login to do this action"
 #: src/hooks/useCheckStorage.ts
 msgid "The app is outdated, please login again"
 msgstr "The app is outdated, please login again"
-
-#: src/pages/Layout/Components/PromptText.tsx
-msgid "Relist works best on mobile. Use a mobile device for the best experience."
-msgstr "Relist works best on mobile. Use a mobile device for the best experience."

@@ -6,7 +6,7 @@ import { Button, ButtonSize, ButtonVariant } from '@/components/ui/button';
 import IconSetting from '@/components/ui/icons/SettingIcon';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateAdapter';
 import { cn } from '@/lib/utils';
-import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
+import { UserRouteLayoutContextType } from '@/components/Layout/UserRouteLayuout';
 import { StaticRoutes } from '@/constants/routes';
 import useAuthStore from '@/stores/useAuthStore';
 import useCommonStore from '@/stores/useCommonStore';
@@ -121,7 +121,7 @@ const Header: React.FC<HeaderProps> = ({
               className="h-8 w-8 cursor-pointer"
               onClick={() => navigateTo.user(me.userCode)}
             >
-              <AvatarImage src={me.profileImage || null} />
+              <AvatarImage src={me.profileImage || undefined} />
               <AvatarFallback>{me.displayName[0]}</AvatarFallback>
             </Avatar>
           )}
