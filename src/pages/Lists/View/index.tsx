@@ -6,7 +6,7 @@ import { useList } from '@/hooks/queries/useList';
 import { useUser } from '@/hooks/queries/useUser';
 import useStrictNavigation from '@/hooks/useStrictNavigate';
 import { useToast } from '@/hooks/useToast';
-import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
+import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayout';
 import { Tile20Background } from '@/pages/User/TileBackground';
 import useAuthStore from '@/stores/useAuthStore';
 import useCommonStore from '@/stores/useCommonStore';

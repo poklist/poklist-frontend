@@ -6,7 +6,7 @@ import { useInfiniteList } from '@/hooks/queries/infinite/useInfiniteList';
 import { useOrderIdeas } from '@/hooks/queries/useOrderIdeas';
 import { useAuthCheck, useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigation from '@/hooks/useStrictNavigate';
-import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
+import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayout';
 import Header from '@/pages/Lists/Components/Header';
 import IdeaList, { DropEvent } from '@/pages/Lists/Manage/IdeasList';
 import ListInfo from '@/pages/Lists/Manage/ListInfo';

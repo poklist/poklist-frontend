@@ -1,6 +1,6 @@
 import { useListPreviews } from '@/hooks/queries/useLists';
 import useStrictNavigation from '@/hooks/useStrictNavigate';
-import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
+import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayout';
 import { Trans } from '@lingui/react/macro';
 import { useOutletContext } from 'react-router-dom';
 import { ListSectionSkeleton } from './ListSectionSkeleton';

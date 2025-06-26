@@ -7,6 +7,9 @@ const QueryKeys: Record<string, string> = {
   CATEGORIES: 'categories',
   OFFICIAL_COLLECTIONS: 'officialCollections',
   LATEST_LIST_GROUPS: 'latestListGroups',
+  // Relation
+  FOLLOWERS: 'followers',
+  FOLLOWING: 'following',
 };
 
 export default QueryKeys;

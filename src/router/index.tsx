@@ -5,7 +5,7 @@ import GoToMobilePage from '@/pages/GoToMobile';
 import CreateIdeaPage from '@/pages/Idea/Create';
 import EditIdeaPage from '@/pages/Idea/Edit';
 import Layout from '@/pages/Layout/index';
-import UserRouteLayout from '@/pages/Layout/UserRouteLayuout';
+import UserRouteLayout from '@/pages/Layout/UserRouteLayout';
 import CreateListPage from '@/pages/Lists/Create';
 import EditListPage from '@/pages/Lists/Edit';
 import ListManagementPage from '@/pages/Lists/Manage';

@@ -19,7 +19,7 @@ import useStrictNavigation from '@/hooks/useStrictNavigate';
 import { openWindow } from '@/lib/openLink';
 import { getFormattedTime, parsePostgresDate } from '@/lib/time';
 import { urlPreview } from '@/lib/utils';
-import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
+import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayout';
 import { CategoriesI18n } from '@/pages/Lists/i18n';
 import useAuthStore from '@/stores/useAuthStore';
 import useCommonStore from '@/stores/useCommonStore';
