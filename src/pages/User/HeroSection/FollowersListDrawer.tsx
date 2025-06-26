@@ -5,29 +5,25 @@ import { Trans } from '@lingui/react/macro';
 import UserConnectionRow from '../Components/UserConnectionRow';
 
 export interface FollowersListDrawerProps {
-  userID: number;
   followersList: SocialLink[] | undefined;
 }
 
-const FollowersListDrawer = ({
-  userID,
-  followersList,
-}: FollowersListDrawerProps) => {
+const FollowersListDrawer = ({ followersList }: FollowersListDrawerProps) => {
   return (
     <FollowRelationsDrawer
-      userID={userID}
       drawerTrigger={
         <>
           {followersList?.length || ' '} <Trans>Followers</Trans>
         </>
       }
       headerTitle={`${followersList?.length || ' '} ${t`Followers`}`}
-      content={
+      content={(onClose) => (
         <>
           {followersList && followersList.length > 0 ? (
             followersList.map((follower) => (
               <UserConnectionRow
                 follower={follower}
+                callback={onClose}
                 key={`follower-${follower.userCode}`}
               />
             ))
@@ -37,7 +33,7 @@ const FollowersListDrawer = ({
             </div>
           )}
         </>
-      }
+      )}
     />
   );
 };

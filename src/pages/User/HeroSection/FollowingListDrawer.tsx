@@ -5,29 +5,25 @@ import FollowRelationsDrawer from '../Components/FollowRelationsDrawer';
 import UserConnectionRow from '../Components/UserConnectionRow';
 
 export interface FollowingListDrawerProps {
-  userID: number;
   followingList: SocialLink[] | undefined;
 }
 
-const FollowingListDrawer = ({
-  userID,
-  followingList,
-}: FollowingListDrawerProps) => {
+const FollowingListDrawer = ({ followingList }: FollowingListDrawerProps) => {
   return (
     <FollowRelationsDrawer
-      userID={userID}
       drawerTrigger={
         <>
           {followingList?.length || '0'} <Trans>Following</Trans>
         </>
       }
       headerTitle={`${followingList?.length || '0'} ${t`Following`}`}
-      content={
+      content={(onClose) => (
         <>
           {followingList && followingList.length > 0 ? (
             followingList.map((following) => (
               <UserConnectionRow
                 follower={following}
+                callback={onClose}
                 key={`following-${following.userCode}`}
               />
             ))
@@ -39,7 +35,7 @@ const FollowingListDrawer = ({
             </div>
           )}
         </>
-      }
+      )}
     />
   );
 };

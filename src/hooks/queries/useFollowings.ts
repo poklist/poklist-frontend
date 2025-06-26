@@ -13,7 +13,7 @@ interface UseFollowingOptions {
   onError?: (error: Error) => void;
 }
 
-const useFollowing = ({
+const useFollowings = ({
   userID,
   staleTime = 60000, // 1 min
   gcTime = 300000, // 5 mins
@@ -46,4 +46,4 @@ const useFollowing = ({
   return { ...query };
 };
 
-export default useFollowing;
+export default useFollowings;

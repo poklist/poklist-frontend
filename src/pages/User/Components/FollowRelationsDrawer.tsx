@@ -3,10 +3,9 @@ import { useAuthWrapper } from '@/hooks/useAuth';
 import { useState } from 'react';
 
 export interface FollowRelationsDrawerProps {
-  userID: number;
   drawerTrigger: React.ReactNode;
   headerTitle: string;
-  content: React.ReactNode;
+  content: (onClose: () => void) => React.ReactNode;
 }
 
 const FollowRelationsDrawer: React.FC<FollowRelationsDrawerProps> = ({
@@ -36,7 +35,7 @@ const FollowRelationsDrawer: React.FC<FollowRelationsDrawerProps> = ({
         headerClassName="p-4 text-h2 font-bold text-black-text-01 border-b border-b-black"
         content={
           <div className="my-6 flex h-[75dvh] max-h-[75dvh] flex-col gap-6 overflow-auto">
-            {content}
+            {content(closeDrawer)}
           </div>
         }
       />

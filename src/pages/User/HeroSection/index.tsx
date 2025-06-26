@@ -12,7 +12,7 @@ import { DrawerIds } from '@/constants/Drawer';
 import { SocialLinkType } from '@/enums/index.enum';
 import { useFollowAction } from '@/hooks/mutations/useFollowAction';
 import useFollowers from '@/hooks/queries/useFollowers';
-import useFollowing from '@/hooks/queries/useFollowing';
+import useFollowings from '@/hooks/queries/useFollowings';
 import { useUser } from '@/hooks/queries/useUser';
 import { useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigation from '@/hooks/useStrictNavigate';
@@ -75,7 +75,7 @@ const HeroSection: React.FC = () => {
     onError: (error) => console.error(error),
   });
 
-  const { data: followingList, isLoading: isFollowingLoading } = useFollowing({
+  const { data: followingList, isLoading: isFollowingLoading } = useFollowings({
     userID: currentUser?.id,
     onError: (error) => console.error(error),
   });
@@ -264,14 +264,8 @@ const HeroSection: React.FC = () => {
           <p>
             {currentUser.listCount} <Trans>Lists</Trans>
           </p>
-          <FollowersListDrawer
-            userID={currentUser.id}
-            followersList={followersList}
-          />
-          <FollowingListDrawer
-            userID={currentUser.id}
-            followingList={followingList}
-          />
+          <FollowersListDrawer followersList={followersList} />
+          <FollowingListDrawer followingList={followingList} />
           <p
             className="cursor-pointer font-semibold"
             onClick={onOpenLinkDrawer}

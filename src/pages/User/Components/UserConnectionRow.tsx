@@ -8,9 +8,10 @@ import { useState } from 'react';
 
 export interface UserConnectionRowProps {
   follower: SocialLink;
+  callback: () => void;
 }
 
-const UserConnectionRow = ({ follower }: UserConnectionRowProps) => {
+const UserConnectionRow = ({ follower, callback }: UserConnectionRowProps) => {
   const navigateTo = useStrictNavigation();
   const { me } = useUserStore();
   const { follow, unfollow, isPending } = useFollowAction({
@@ -34,7 +35,10 @@ const UserConnectionRow = ({ follower }: UserConnectionRowProps) => {
   return (
     <div className="mx-4 flex justify-between" key={follower.userCode}>
       <div
-        onClick={() => navigateTo.user(follower.userCode)}
+        onClick={() => {
+          navigateTo.user(follower.userCode);
+          callback();
+        }}
         className="flex items-center gap-2"
       >
         <img

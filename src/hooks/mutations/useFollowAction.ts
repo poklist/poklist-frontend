@@ -55,7 +55,7 @@ export const useFollowAction = ({
 
   const latestSocialLinkRef = useRef<SocialLink | null>(null);
 
-  const updateUserFollowingCache = (
+  const updateFollowCache = (
     targetUserID: number,
     isFollowing: boolean,
     countDelta: number
@@ -81,7 +81,7 @@ export const useFollowAction = ({
         currentPageUserID,
       ]);
 
-      const following = queryClient.getQueryData<SocialLink[]>([
+      const followings = queryClient.getQueryData<SocialLink[]>([
         QueryKeys.FOLLOWING,
         currentPageUserID,
       ]);
@@ -89,8 +89,8 @@ export const useFollowAction = ({
       const foundInFollowers = followers?.find(
         (follower) => follower.id === targetUserID
       );
-      const foundInFollowing = following?.find(
-        (_following) => _following.id === targetUserID
+      const foundInFollowing = followings?.find(
+        (followings) => followings.id === targetUserID
       );
 
       latestSocialLinkRef.current =
@@ -137,29 +137,29 @@ export const useFollowAction = ({
 
     queryClient.setQueryData(
       [QueryKeys.FOLLOWING, currentPageUserID],
-      (following: SocialLink[]) => {
-        if (!following || !latestSocialLinkRef.current) return following;
+      (followings: SocialLink[]) => {
+        if (!followings || !latestSocialLinkRef.current) return followings;
 
-        const exists = following.some(
-          (_following) => _following.id === latestSocialLinkRef.current?.id
+        const exists = followings.some(
+          (following) => following.id === latestSocialLinkRef.current?.id
         );
 
         // 在看別人的Profile & follow
         if (targetUserID !== currentPageUserID && !exists) {
           return [
             { ...latestSocialLinkRef.current, isFollowing },
-            ...following,
+            ...followings,
           ];
         }
 
         // 在看別人的Profile & unfollow
         if (!isFollowing && targetUserID !== currentPageUserID) {
-          return following.filter(
-            (_following) => _following.id !== latestSocialLinkRef.current?.id
+          return followings.filter(
+            (following) => following.id !== latestSocialLinkRef.current?.id
           );
         }
 
-        return following;
+        return followings;
       }
     );
 
@@ -238,7 +238,7 @@ export const useFollowAction = ({
       const optimisticHandler = createOptimisticUpdateHandler(
         delta,
         params.userID,
-        updateUserFollowingCache
+        updateFollowCache
       );
 
       // 樂觀更新
