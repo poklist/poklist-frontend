@@ -5,18 +5,18 @@ export type FollowingStoreState = {
   followingMap: Map<string, boolean>;
   followerCountMap: Map<string, number>;
 
+  setFollowerCount: (userCode: string, count: number) => void;
   getFollowerCount: (userCode: string) => number;
+
+  // 設定特定用戶的關注狀態
+  setIsFollowing: (userCode: string, isFollowing: boolean) => void;
   // 獲取特定用戶的關注狀態
   getIsFollowing: (userCode: string) => boolean;
+
   // 檢查是否已經有該用戶的狀態
   hasFollowingState: (userCode: string) => boolean;
 
-  setFollowerCount: (userCode: string, count: number) => void;
-  // 設定特定用戶的關注狀態
-  setIsFollowing: (userCode: string, isFollowing: boolean) => void;
-
   // 清除特定用戶的關注狀態
-
   clearFollowingStatus: (userCode: string) => void;
   // 清除所有關注狀態
   resetFollowingStore: () => void;
@@ -28,22 +28,6 @@ const useFollowingStore = create<FollowingStoreState>((set, get) => ({
   followingMap: new Map<string, boolean>(),
   followerCountMap: new Map<string, number>(),
 
-  // Getter
-  getFollowerCount: (userCode: string): number => {
-    const { followerCountMap } = get();
-    return followerCountMap.get(userCode) ?? 0;
-  },
-  getIsFollowing: (userCode: string) => {
-    const { followingMap } = get();
-    const isFollowing = followingMap.get(userCode) ?? false;
-    return isFollowing;
-  },
-  hasFollowingState: (userCode: string) => {
-    const { followingMap } = get();
-    return followingMap.has(userCode);
-  },
-
-  // Setter
   setFollowerCount: (userCode: string, count: number): void => {
     set((state) => {
       const newFollowerCountMap = new Map(state.followerCountMap);
@@ -51,12 +35,26 @@ const useFollowingStore = create<FollowingStoreState>((set, get) => ({
       return { followerCountMap: newFollowerCountMap };
     });
   },
+  getFollowerCount: (userCode: string): number => {
+    const { followerCountMap } = get();
+    return followerCountMap.get(userCode) ?? 0;
+  },
+
   setIsFollowing: (userCode: string, isFollowing: boolean) =>
     set((state) => {
       const newFollowingMap = new Map(state.followingMap);
       newFollowingMap.set(userCode, isFollowing);
       return { followingMap: newFollowingMap };
     }),
+  getIsFollowing: (userCode: string) => {
+    const { followingMap } = get();
+    return followingMap.get(userCode) ?? false;
+  },
+
+  hasFollowingState: (userCode: string) => {
+    const { followingMap } = get();
+    return followingMap.has(userCode);
+  },
 
   // Clear
   clearFollowingStatus: (userCode: string) =>

@@ -39,7 +39,8 @@ const BackToUserHeader: React.FC<IBackToUserHeaderProps> = ({
   }, [owner, hasFollowingState, setIsFollowing]);
 
   const { follow, unfollow } = useFollowAction({
-    userCode: owner?.userCode || '',
+    currentPageUserCode: owner?.userCode || '',
+    currentPageUserID: owner?.id || -1,
     shouldAllow: () => isLoggedIn,
     onNotAllowed: () => {
       toast({

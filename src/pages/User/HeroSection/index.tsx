@@ -11,6 +11,8 @@ import LinkIconWrapper from '@/components/ui/wrappers/LinkIconWrapper';
 import { DrawerIds } from '@/constants/Drawer';
 import { SocialLinkType } from '@/enums/index.enum';
 import { useFollowAction } from '@/hooks/mutations/useFollowAction';
+import useFollowers from '@/hooks/queries/useFollowers';
+import useFollowing from '@/hooks/queries/useFollowing';
 import { useUser } from '@/hooks/queries/useUser';
 import { useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigation from '@/hooks/useStrictNavigate';
@@ -20,7 +22,9 @@ import {
   extractUsernameFromUrl,
   urlPreview,
 } from '@/lib/utils';
-import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
+import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayout';
+import FollowersListDrawer from '@/pages/User/HeroSection/FollowersListDrawer';
+import { HeroSectionSkeleton } from '@/pages/User/HeroSection/HeroSectionSkeleton';
 import useAuthStore from '@/stores/useAuthStore';
 import useFollowingStore from '@/stores/useFollowingStore';
 import useUserStore from '@/stores/useUserStore';
@@ -29,7 +33,7 @@ import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
-import { HeroSectionSkeleton } from './HeroSectionSkeleton';
+import FollowingListDrawer from './FollowingListDrawer';
 
 const HeroSection: React.FC = () => {
   const { userCode } = useOutletContext<UserRouteLayoutContextType>();
@@ -66,9 +70,15 @@ const HeroSection: React.FC = () => {
     isError: boolean;
   };
 
-  // Add local followerCount state management (like ListCard likeCount)
-  const [followerCount, setFollowerCount] = useState(0);
-  const prevIsFollowingRef = useRef(isFollowing);
+  const { data: followersList, isLoading: isFollowerLoading } = useFollowers({
+    userID: currentUser?.id,
+    onError: (error) => console.error(error),
+  });
+
+  const { data: followingList, isLoading: isFollowingLoading } = useFollowing({
+    userID: currentUser?.id,
+    onError: (error) => console.error(error),
+  });
 
   useEffect(() => {
     if (isError) {
@@ -86,8 +96,13 @@ const HeroSection: React.FC = () => {
     }
   }, [isError, isMyPage, logout, navigateTo, toast]);
 
-  const { follow, unfollow } = useFollowAction({
-    userCode: userCode || '',
+  const {
+    follow,
+    unfollow,
+    isPending: isFollowPending,
+  } = useFollowAction({
+    currentPageUserCode: currentUser?.userCode || '',
+    currentPageUserID: currentUser?.id || -1,
     shouldAllow: () => isLoggedIn,
     onNotAllowed: () => {
       toast({
@@ -122,27 +137,6 @@ const HeroSection: React.FC = () => {
       }
     }
   }, [isLoggedIn, currentUser, userCode, setIsFollowing, hasFollowingState]);
-
-  // Update followerCount when currentUser.followerCount changes (from API refetch)
-  useEffect(() => {
-    if (currentUser?.followerCount !== undefined) {
-      setFollowerCount(currentUser.followerCount);
-    }
-  }, [currentUser?.followerCount]);
-
-  // Listen to isFollowing changes, only update followerCount when actual changes occur
-  useEffect(() => {
-    // Decrease followerCount when isFollowing changes from true to false
-    if (prevIsFollowingRef.current === true && isFollowing === false) {
-      setFollowerCount((prev) => prev - 1);
-    }
-    // Increase followerCount when isFollowing changes from false to true
-    else if (prevIsFollowingRef.current === false && isFollowing === true) {
-      setFollowerCount((prev) => prev + 1);
-    }
-    // Update prevIsFollowingRef for next comparison
-    prevIsFollowingRef.current = isFollowing;
-  }, [isFollowing]);
 
   // FUTURE: refactor the drawer content because we may have more than one drawer
   const onOpenBioDrawer = () => {
@@ -208,7 +202,11 @@ const HeroSection: React.FC = () => {
   });
 
   // Check if data is loaded
-  const isDataLoaded = !isLoading && currentUser !== undefined;
+  const isDataLoaded =
+    !isLoading &&
+    currentUser !== undefined &&
+    !isFollowerLoading &&
+    !isFollowingLoading;
 
   if (!isDataLoaded) {
     return <HeroSectionSkeleton />;
@@ -248,23 +246,17 @@ const HeroSection: React.FC = () => {
             >
               <Trans>Edit profile and account</Trans>
             </Button>
-          ) : isFollowing ? (
-            <Button
-              id="unfollow-button"
-              variant={ButtonVariant.GRAY}
-              size={ButtonSize.LG}
-              onClick={handleUnfollow}
-            >
-              <Trans>Following</Trans>
-            </Button>
           ) : (
             <Button
-              id="follow-button"
-              variant={ButtonVariant.HIGHLIGHTED}
+              id={isFollowing ? 'unfollow-button' : 'follow-button'}
+              variant={
+                isFollowing ? ButtonVariant.GRAY : ButtonVariant.HIGHLIGHTED
+              }
               size={ButtonSize.LG}
-              onClick={handleFollow}
+              disabled={isFollowPending}
+              onClick={isFollowing ? handleUnfollow : handleFollow}
             >
-              <Trans>Follow</Trans>
+              {isFollowing ? <Trans>Following</Trans> : <Trans>Follow</Trans>}
             </Button>
           )}
         </div>
@@ -272,12 +264,14 @@ const HeroSection: React.FC = () => {
           <p>
             {currentUser.listCount} <Trans>Lists</Trans>
           </p>
-          <p>
-            {followerCount} <Trans>Followers</Trans>
-          </p>
-          <p>
-            {currentUser.followingCount} <Trans>Following</Trans>
-          </p>
+          <FollowersListDrawer
+            userID={currentUser.id}
+            followersList={followersList}
+          />
+          <FollowingListDrawer
+            userID={currentUser.id}
+            followingList={followingList}
+          />
           <p
             className="cursor-pointer font-semibold"
             onClick={onOpenLinkDrawer}

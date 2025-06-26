@@ -50,6 +50,7 @@ const UserConnectionRow = ({ follower }: UserConnectionRowProps) => {
           disabled={isPending}
           onClick={() => onClick()}
           variant={isFollowing ? ButtonVariant.GRAY : ButtonVariant.BLACK}
+          className="font-normal"
         >
           {isFollowing ? <Trans>Followings</Trans> : <Trans>Follow</Trans>}
         </Button>
