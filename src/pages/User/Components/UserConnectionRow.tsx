@@ -1,5 +1,6 @@
 import { Button, ButtonVariant } from '@/components/ui/button';
 import { useFollowAction } from '@/hooks/mutations/useFollowAction';
+import useStrictNavigation from '@/hooks/useStrictNavigate';
 import useUserStore from '@/stores/useUserStore';
 import { SocialLink } from '@/types/Relation';
 import { Trans } from '@lingui/react/macro';
@@ -10,6 +11,7 @@ export interface UserConnectionRowProps {
 }
 
 const UserConnectionRow = ({ follower }: UserConnectionRowProps) => {
+  const navigateTo = useStrictNavigation();
   const { me } = useUserStore();
   const { follow, unfollow, isPending } = useFollowAction({
     currentPageUserCode: me.userCode,
@@ -32,7 +34,7 @@ const UserConnectionRow = ({ follower }: UserConnectionRowProps) => {
   return (
     <div className="mx-4 flex justify-between" key={follower.userCode}>
       <div
-        // onClick={() => navigateTo.user(follower.userCode)}
+        onClick={() => navigateTo.user(follower.userCode)}
         className="flex items-center gap-2"
       >
         <img
