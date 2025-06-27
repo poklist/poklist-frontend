@@ -421,22 +421,22 @@ msgstr "個人成長"
 msgid "Health & Fitness"
 msgstr "健康與健身"
 
-#: src/app/_layout/_components/Layout/BottomNav.tsx
+#: src/app/_layout/_components/BottomNav.tsx
 #: src/constants/Home/index.en.ts
 msgid "About"
 msgstr "關於我們"
 
-#: src/app/_layout/_components/Layout/BottomNav.tsx
+#: src/app/_layout/_components/BottomNav.tsx
 #: src/constants/Home/index.en.ts
 msgid "Terms"
 msgstr "使用者條款"
 
-#: src/app/_layout/_components/Layout/BottomNav.tsx
+#: src/app/_layout/_components/BottomNav.tsx
 #: src/constants/Home/index.en.ts
 msgid "Privacy"
 msgstr "隱私權保護政策"
 
-#: src/app/_layout/_components/Layout/PromptText.tsx
+#: src/app/_layout/_components/PromptText.tsx
 msgid "Relist works best on mobile. Use a mobile device for the best experience."
 msgstr "Relist 在手機畫面運作更順暢，使用行動裝置以取得更好的使用體驗。"
 
@@ -721,6 +721,14 @@ msgid "<0>{0}</0>"
 msgstr "<0>{0}</0>"
 
 #: src/components/Drawer/LoginDrawer.tsx
+msgid "Right now, only invited users can log in"
+msgstr "現在僅開放受邀請的用戶登入體驗"
+
+#: src/components/Drawer/LoginDrawer.tsx
+msgid "Already got your invite? Jump in and apply now!"
+msgstr "收到邀請了嗎？現在就去申請加入！"
+
+#: src/components/Drawer/LoginDrawer.tsx
 msgid "New to Relist? Get started!"
 msgstr "第一次登入 RELIST ？立即申請"
 
@@ -760,14 +768,6 @@ msgstr "500x500像素，限 JPG 或 PNG，最大4MB"
 #: src/components/ImageUploader/index.tsx
 msgid "Upload a cover"
 msgstr "封面圖片"
-
-#: src/components/LoginDrawerGlobal.tsx
-msgid "Right now, only invited users can log in"
-msgstr "現在僅開放受邀請的用戶登入體驗"
-
-#: src/components/LoginDrawerGlobal.tsx
-msgid "Already got your invite? Jump in and apply now!"
-msgstr "收到邀請了嗎？現在就去申請加入！"
 
 #: src/constants/Home/index.en.ts
 msgid "Join Relist and share your lists."

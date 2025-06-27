@@ -421,22 +421,22 @@ msgstr "Personal Growth"
 msgid "Health & Fitness"
 msgstr "Health & Fitness"
 
-#: src/app/_layout/_components/Layout/BottomNav.tsx
+#: src/app/_layout/_components/BottomNav.tsx
 #: src/constants/Home/index.en.ts
 msgid "About"
 msgstr "About"
 
-#: src/app/_layout/_components/Layout/BottomNav.tsx
+#: src/app/_layout/_components/BottomNav.tsx
 #: src/constants/Home/index.en.ts
 msgid "Terms"
 msgstr "Terms"
 
-#: src/app/_layout/_components/Layout/BottomNav.tsx
+#: src/app/_layout/_components/BottomNav.tsx
 #: src/constants/Home/index.en.ts
 msgid "Privacy"
 msgstr "Privacy"
 
-#: src/app/_layout/_components/Layout/PromptText.tsx
+#: src/app/_layout/_components/PromptText.tsx
 msgid "Relist works best on mobile. Use a mobile device for the best experience."
 msgstr "Relist works best on mobile. Use a mobile device for the best experience."
 
@@ -721,6 +721,14 @@ msgid "<0>{0}</0>"
 msgstr ""
 
 #: src/components/Drawer/LoginDrawer.tsx
+msgid "Right now, only invited users can log in"
+msgstr "Right now, only invited users can log in"
+
+#: src/components/Drawer/LoginDrawer.tsx
+msgid "Already got your invite? Jump in and apply now!"
+msgstr "Already got your invite? Jump in and apply now!"
+
+#: src/components/Drawer/LoginDrawer.tsx
 msgid "New to Relist? Get started!"
 msgstr "New to Relist? Get started!"
 
@@ -760,14 +768,6 @@ msgstr "500x500px, JPG or PNG, max 4MB"
 #: src/components/ImageUploader/index.tsx
 msgid "Upload a cover"
 msgstr "Upload a cover"
-
-#: src/components/LoginDrawerGlobal.tsx
-msgid "Right now, only invited users can log in"
-msgstr "Right now, only invited users can log in"
-
-#: src/components/LoginDrawerGlobal.tsx
-msgid "Already got your invite? Jump in and apply now!"
-msgstr "Already got your invite? Jump in and apply now!"
 
 #: src/constants/Home/index.en.ts
 msgid "Join Relist and share your lists."

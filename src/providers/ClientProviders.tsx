@@ -7,7 +7,7 @@ import { Theme } from '@radix-ui/themes';
 import { DrawerProvider } from '@/components/Drawer';
 import { FakePageProvider } from '@/components/FakePage';
 import { Toaster } from '@/components/ui/toaster';
-import { LoginDrawerGlobal } from '@/components/LoginDrawerGlobal';
+import { LoginDrawer } from '@/components/Drawer/LoginDrawer';
 import { ErrorDrawer } from '@/components/ErrorDrawer';
 import AlertComponent from '@/components/Alert';
 import LoadingSpinner from '@/components/Loading';
@@ -54,7 +54,7 @@ export const ClientProviders = ({ children }: ClientProvidersProps) => {
               <AlertComponent />
             </div>
             <LoadingSpinner isLoading={isLoading} />
-            <LoginDrawerGlobal />
+            <LoginDrawer />
             <ErrorDrawer />
             <Toaster />
 
