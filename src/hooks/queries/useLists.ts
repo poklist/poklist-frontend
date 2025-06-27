@@ -1,7 +1,7 @@
 import { List } from '@/constants/list';
+import QueryKeys from '@/constants/queryKeys';
 import axios from '@/lib/axios';
 import { ListPreview } from '@/types/List';
-import QueryKeys from '@/config/queryKeys';
 import { IResponse } from '@/types/response';
 import { useQuery } from '@tanstack/react-query';
 

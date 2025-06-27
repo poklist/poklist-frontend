@@ -1,6 +1,6 @@
-import ApiPath from '@/config/apiPath';
-import QueryKeys from '@/config/queryKeys';
+import ApiPath from '@/constants/apiPath';
 import { Idea } from '@/constants/list';
+import QueryKeys from '@/constants/queryKeys';
 import axios from '@/lib/axios';
 import { List } from '@/types/List';
 import { IResponse } from '@/types/response';

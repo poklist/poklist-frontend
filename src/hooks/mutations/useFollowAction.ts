@@ -1,4 +1,4 @@
-import QueryKeys from '@/config/queryKeys';
+import QueryKeys from '@/constants/queryKeys';
 import axios, { AxiosPayload } from '@/lib/axios';
 import useFollowingStore from '@/stores/useFollowingStore';
 import useUserStore from '@/stores/useUserStore';

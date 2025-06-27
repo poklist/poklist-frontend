@@ -1,5 +1,5 @@
-import ApiPath from '@/config/apiPath';
-import QueryKeys from '@/config/queryKeys';
+import ApiPath from '@/constants/apiPath';
+import QueryKeys from '@/constants/queryKeys';
 import axios from '@/lib/axios';
 import { SocialLink } from '@/types/Relation';
 import { IResponse } from '@/types/response';

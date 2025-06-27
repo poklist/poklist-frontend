@@ -1,5 +1,6 @@
-import ApiPath from '@/config/apiPath';
+import ApiPath from '@/constants/apiPath';
 import { Idea } from '@/constants/list';
+import QueryKeys from '@/constants/queryKeys';
 import axios from '@/lib/axios';
 import useCommonStore from '@/stores/useCommonStore';
 import { IdeaPreview } from '@/types/Idea';
@@ -52,7 +53,7 @@ export const useReorderIdeas = ({
           nextOffset: number;
           total: number;
         }>
-      >(['infiniteList', listID]);
+      >([QueryKeys.INFINITE_IDEA, listID]);
 
       if (previousData) {
         const existingIdeas = previousData.pages.flatMap((p) => p.ideas);
@@ -72,17 +73,19 @@ export const useReorderIdeas = ({
             total: previousData.pages[0].total,
           });
         }
-        queryClient.setQueryData(['infiniteList', listID], {
+        queryClient.setQueryData([QueryKeys.INFINITE_IDEA, listID], {
           pageParams: previousData.pageParams,
           pages: updatedPages,
         });
       }
 
       await queryClient.invalidateQueries({
-        queryKey: ['list', listID, offset, limit],
+        queryKey: [QueryKeys.LIST, listID, offset, limit],
       });
 
-      await queryClient.invalidateQueries({ queryKey: ['orderIdeas', listID] });
+      await queryClient.invalidateQueries({
+        queryKey: [QueryKeys.ORDER_IDEAS, listID],
+      });
 
       onSuccess?.(serverData);
     },
