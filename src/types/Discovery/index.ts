@@ -1,5 +1,3 @@
-import { User } from '../User';
-
 // API Response
 interface ListOwner {
   id: number;
