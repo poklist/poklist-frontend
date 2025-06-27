@@ -422,25 +422,21 @@ msgid "Health & Fitness"
 msgstr "Health & Fitness"
 
 #: src/app/_layout/_components/Layout/BottomNav.tsx
-#: src/components/Layout/BottomNav.tsx
 #: src/constants/Home/index.en.ts
 msgid "About"
 msgstr "About"
 
 #: src/app/_layout/_components/Layout/BottomNav.tsx
-#: src/components/Layout/BottomNav.tsx
 #: src/constants/Home/index.en.ts
 msgid "Terms"
 msgstr "Terms"
 
 #: src/app/_layout/_components/Layout/BottomNav.tsx
-#: src/components/Layout/BottomNav.tsx
 #: src/constants/Home/index.en.ts
 msgid "Privacy"
 msgstr "Privacy"
 
 #: src/app/_layout/_components/Layout/PromptText.tsx
-#: src/components/Layout/PromptText.tsx
 msgid "Relist works best on mobile. Use a mobile device for the best experience."
 msgstr "Relist works best on mobile. Use a mobile device for the best experience."
 

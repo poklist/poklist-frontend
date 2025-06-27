@@ -9,6 +9,9 @@ import { FakePageProvider } from '@/components/FakePage';
 import { Toaster } from '@/components/ui/toaster';
 import { LoginDrawerGlobal } from '@/components/LoginDrawerGlobal';
 import { ErrorDrawer } from '@/components/ErrorDrawer';
+import AlertComponent from '@/components/Alert';
+import LoadingSpinner from '@/components/Loading';
+import useCommonStore from '@/stores/useCommonStore';
 
 // 將 QueryClient 實例化移到組件外部
 const queryClient = new QueryClient({
@@ -33,19 +36,28 @@ interface ClientProvidersProps {
  * - Theme: Radix UI
  * - DrawerProvider: 抽屜狀態管理
  * - FakePageProvider: 假頁面狀態管理
- * - Toaster: 通知組件
+ * - 全域 UI 組件: Loading, Alert, Error, Login, Toast
  * - ReactQueryDevtools: 開發工具
  */
 export const ClientProviders = ({ children }: ClientProvidersProps) => {
+  const { isLoading } = useCommonStore();
+
   return (
     <QueryClientProvider client={queryClient}>
       <Theme>
         <DrawerProvider>
           <FakePageProvider>
             {children}
+
+            {/* 全域 UI 組件 */}
+            <div className="fixed top-0 z-50 bg-white">
+              <AlertComponent />
+            </div>
+            <LoadingSpinner isLoading={isLoading} />
             <LoginDrawerGlobal />
             <ErrorDrawer />
             <Toaster />
+
             <ReactQueryDevtools initialIsOpen={false} />
           </FakePageProvider>
         </DrawerProvider>

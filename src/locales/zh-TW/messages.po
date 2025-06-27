@@ -422,25 +422,21 @@ msgid "Health & Fitness"
 msgstr "健康與健身"
 
 #: src/app/_layout/_components/Layout/BottomNav.tsx
-#: src/components/Layout/BottomNav.tsx
 #: src/constants/Home/index.en.ts
 msgid "About"
 msgstr "關於我們"
 
 #: src/app/_layout/_components/Layout/BottomNav.tsx
-#: src/components/Layout/BottomNav.tsx
 #: src/constants/Home/index.en.ts
 msgid "Terms"
 msgstr "使用者條款"
 
 #: src/app/_layout/_components/Layout/BottomNav.tsx
-#: src/components/Layout/BottomNav.tsx
 #: src/constants/Home/index.en.ts
 msgid "Privacy"
 msgstr "隱私權保護政策"
 
 #: src/app/_layout/_components/Layout/PromptText.tsx
-#: src/components/Layout/PromptText.tsx
 msgid "Relist works best on mobile. Use a mobile device for the best experience."
 msgstr "Relist 在手機畫面運作更順暢，使用行動裝置以取得更好的使用體驗。"
 
