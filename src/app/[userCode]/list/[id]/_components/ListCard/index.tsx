@@ -20,7 +20,7 @@ import { openWindow } from '@/lib/openLink';
 import { getFormattedTime, parsePostgresDate } from '@/lib/time';
 import { urlPreview } from '@/lib/utils';
 
-import { CategoriesI18n } from '../../../_components/i18n';
+import { CategoriesI18n } from '@/constants/Lists/i18n';
 import useAuthStore from '@/stores/useAuthStore';
 import useCommonStore from '@/stores/useCommonStore';
 import useLikeStore from '@/stores/useLikeStore';
