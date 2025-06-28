@@ -4,7 +4,7 @@ import { Button, ButtonSize, ButtonVariant } from '@/components/ui/button';
 import IconSetting from '@/components/ui/icons/SettingIcon';
 import useStrictNavigation from '@/hooks/useStrictNavigate';
 import { cn } from '@/lib/utils';
-import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
+import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayout';
 import { StaticRoutes } from '@/router';
 import useAuthStore from '@/stores/useAuthStore';
 import useCommonStore from '@/stores/useCommonStore';

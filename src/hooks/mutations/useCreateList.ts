@@ -1,5 +1,6 @@
-import ApiPath from '@/config/apiPath';
+import ApiPath from '@/constants/apiPath';
 import { List } from '@/constants/list';
+import QueryKeys from '@/constants/queryKeys';
 import axios from '@/lib/axios';
 import useCommonStore from '@/stores/useCommonStore';
 import { CreateListResponse, ListBody } from '@/types/List';
@@ -46,7 +47,7 @@ export const useCreateList = ({
       }
       // 使列表緩存失效，觸發重新獲取
       await queryClient.invalidateQueries({
-        queryKey: ['lists', userCode, offset, limit],
+        queryKey: [QueryKeys.LISTS, userCode, offset, limit],
         refetchType: 'inactive',
       });
       onSuccess?.(data);

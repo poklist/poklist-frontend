@@ -1,11 +1,11 @@
-import ApiPath from '@/config/apiPath';
+import ApiPath from '@/constants/apiPath';
 import { Idea, List } from '@/constants/list';
+import QueryKeys from '@/constants/queryKeys';
 import axios from '@/lib/axios';
 import useCommonStore from '@/stores/useCommonStore';
 import { CreateListResponse, ListBody } from '@/types/List';
 import { IResponse } from '@/types/response';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import QueryKeys from '@/config/queryKeys';
 
 interface UseEditListOptions {
   userCode: string; // to invalidate the useLists cache

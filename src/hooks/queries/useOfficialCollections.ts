@@ -1,6 +1,6 @@
+import QueryKeys from '@/constants/queryKeys';
 import axios from '@/lib/axios';
 import { OfficialCollection } from '@/types/Discovery';
-import QueryKeys from '@/config/queryKeys';
 import { IResponse } from '@/types/response';
 import { useQuery } from '@tanstack/react-query';
 

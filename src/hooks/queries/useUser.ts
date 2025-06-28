@@ -1,4 +1,4 @@
-import QueryKeys from '@/config/queryKeys';
+import QueryKeys from '@/constants/queryKeys';
 import axios from '@/lib/axios';
 import { IResponse } from '@/types/response';
 import { User } from '@/types/User';

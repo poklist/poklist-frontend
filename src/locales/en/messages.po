@@ -66,12 +66,14 @@ msgid "Please login to do this action"
 msgstr "Please login to do this action"
 
 #: src/components/Header/BackToUserHeader.tsx
-#: src/pages/User/HeroSection/index.tsx
+#: src/pages/User/HeroSection/FollowingListDrawer.tsx
+#: src/pages/User/HeroSection/FollowingListDrawer.tsx
 #: src/pages/User/HeroSection/index.tsx
 msgid "Following"
 msgstr "Following"
 
 #: src/components/Header/BackToUserHeader.tsx
+#: src/pages/User/Components/UserConnectionRow.tsx
 #: src/pages/User/HeroSection/index.tsx
 msgid "Follow"
 msgstr "Follow"
@@ -988,13 +990,26 @@ msgstr "Get Started"
 msgid "Setting Center"
 msgstr "Setting Center"
 
+#: src/pages/User/Components/UserConnectionRow.tsx
+msgid "Followings"
+msgstr "Followings"
+
+#: src/pages/User/HeroSection/FollowersListDrawer.tsx
+#: src/pages/User/HeroSection/FollowersListDrawer.tsx
+msgid "Followers"
+msgstr "Followers"
+
+#: src/pages/User/HeroSection/FollowersListDrawer.tsx
+msgid "Empty for now, but followers will appear here soon."
+msgstr "Empty for now, but followers will appear here soon."
+
+#: src/pages/User/HeroSection/FollowingListDrawer.tsx
+msgid "Empty for now, but followings will appear here soon."
+msgstr "Empty for now, but followings will appear here soon."
+
 #: src/pages/User/HeroSection/index.tsx
 msgid "The login session is expired, please login again"
 msgstr "The login session is expired, please login again"
-
-#: src/pages/User/HeroSection/index.tsx
-msgid "Followers"
-msgstr "Followers"
 
 #: src/pages/User/HeroSection/index.tsx
 msgctxt "count"

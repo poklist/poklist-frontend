@@ -1,5 +1,6 @@
-import ApiPath from '@/config/apiPath';
+import ApiPath from '@/constants/apiPath';
 import { Idea } from '@/constants/list';
+import QueryKeys from '@/constants/queryKeys';
 import axios from '@/lib/axios';
 import useCommonStore from '@/stores/useCommonStore';
 import { IResponse } from '@/types/response';
@@ -25,19 +26,21 @@ const useDeleteIdea = ({ listID }: UseDeleteIdeaOptions) => {
     },
     onSuccess: async (_, ideaID) => {
       // Remove the deleted idea's cache
-      queryClient.removeQueries({ queryKey: ['idea', ideaID.toString()] });
+      queryClient.removeQueries({
+        queryKey: [QueryKeys.IDEA, ideaID.toString()],
+      });
 
       // Invalidate and refetch the list
       await queryClient.invalidateQueries({
         queryKey: [
-          'list',
+          QueryKeys.LIST,
           listID,
           Idea.DEFAULT_FIRST_BATCH_OFFSET,
           Idea.DEFAULT_BATCH_SIZE,
         ],
       });
       await queryClient.refetchQueries({
-        queryKey: ['infiniteList', listID],
+        queryKey: [QueryKeys.INFINITE_IDEA, listID],
       });
     },
     onError: (error) => {

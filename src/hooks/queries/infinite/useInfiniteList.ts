@@ -1,5 +1,6 @@
-import ApiPath from '@/config/apiPath';
+import ApiPath from '@/constants/apiPath';
 import { Idea } from '@/constants/list';
+import QueryKeys from '@/constants/queryKeys';
 import axios from '@/lib/axios';
 import { List } from '@/types/List';
 import { IResponse } from '@/types/response';
@@ -17,7 +18,7 @@ export const useInfiniteList = ({
   enabled = true,
 }: UseInfiniteListOptions) => {
   return useInfiniteQuery({
-    queryKey: ['infiniteList', listID],
+    queryKey: [QueryKeys.INFINITE_IDEA, listID],
     enabled: enabled && !!listID,
     queryFn: async ({ pageParam = 0 }) => {
       if (!listID) throw new Error('listID is required');

@@ -1,4 +1,5 @@
-import ApiPath from '@/config/apiPath';
+import ApiPath from '@/constants/apiPath';
+import QueryKeys from '@/constants/queryKeys';
 import axios from '@/lib/axios';
 import { IResponse } from '@/types/response';
 import { useQuery } from '@tanstack/react-query';
@@ -16,7 +17,7 @@ export const useOrderIdeas = ({
   enabled = true,
 }: UseOrderIdeasOptions) => {
   return useQuery({
-    queryKey: ['orderIdeas', listID],
+    queryKey: [QueryKeys.ORDER_IDEAS, listID],
     queryFn: async () => {
       if (!listID) throw new Error('listID is required');
       const response = await axios.get<IResponse<number[]>>(

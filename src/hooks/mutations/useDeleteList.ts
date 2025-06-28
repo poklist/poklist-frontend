@@ -1,5 +1,6 @@
-import ApiPath from '@/config/apiPath';
+import ApiPath from '@/constants/apiPath';
 import { List } from '@/constants/list';
+import QueryKeys from '@/constants/queryKeys';
 import axios from '@/lib/axios';
 import useCommonStore from '@/stores/useCommonStore';
 import { IResponse } from '@/types/response';
@@ -36,12 +37,12 @@ export const useDeleteList = ({
     onSuccess: async (_, listID) => {
       // 移除已刪除列表的快取
       queryClient.removeQueries({
-        queryKey: ['list', listID.toString()],
+        queryKey: [QueryKeys.LIST, listID.toString()],
       });
 
       // 重新獲取列表預覽資料
       await queryClient.refetchQueries({
-        queryKey: ['lists', userCode, offset, limit],
+        queryKey: [QueryKeys.LISTS, userCode, offset, limit],
       });
 
       onSuccess?.();

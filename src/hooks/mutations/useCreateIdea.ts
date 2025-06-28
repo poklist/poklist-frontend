@@ -1,4 +1,5 @@
-import ApiPath from '@/config/apiPath';
+import ApiPath from '@/constants/apiPath';
+import QueryKeys from '@/constants/queryKeys';
 import axios from '@/lib/axios';
 import useCommonStore from '@/stores/useCommonStore';
 import { CreateIdeaRequest, CreateIdeaResponse } from '@/types/Idea';
@@ -31,12 +32,12 @@ export const useCreateIdea = ({
         throw new Error('Failed to create idea');
       }
 
-      await queryClient.invalidateQueries({ queryKey: ['ideas'] });
+      await queryClient.invalidateQueries({ queryKey: [QueryKeys.IDEAS] });
       await queryClient.invalidateQueries({
-        queryKey: ['list', data.listID.toString()],
+        queryKey: [QueryKeys.LIST, data.listID.toString()],
       });
       await queryClient.refetchQueries({
-        queryKey: ['infiniteList', data.listID.toString()],
+        queryKey: [QueryKeys.INFINITE_IDEA, data.listID.toString()],
       });
       onSuccess?.(data);
     },

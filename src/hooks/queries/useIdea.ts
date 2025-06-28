@@ -1,9 +1,9 @@
-import ApiPath from '@/config/apiPath';
+import ApiPath from '@/constants/apiPath';
+import QueryKeys from '@/constants/queryKeys';
 import axios from '@/lib/axios';
 import { IdeaResponse } from '@/types/Idea';
 import { IResponse } from '@/types/response';
 import { useQuery } from '@tanstack/react-query';
-import QueryKeys from '@/config/queryKeys';
 
 interface UseIdeaOptions {
   ideaID?: string;

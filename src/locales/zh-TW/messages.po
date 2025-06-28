@@ -66,12 +66,14 @@ msgid "Please login to do this action"
 msgstr "請先登入以進行此操作"
 
 #: src/components/Header/BackToUserHeader.tsx
-#: src/pages/User/HeroSection/index.tsx
+#: src/pages/User/HeroSection/FollowingListDrawer.tsx
+#: src/pages/User/HeroSection/FollowingListDrawer.tsx
 #: src/pages/User/HeroSection/index.tsx
 msgid "Following"
 msgstr "正追蹤"
 
 #: src/components/Header/BackToUserHeader.tsx
+#: src/pages/User/Components/UserConnectionRow.tsx
 #: src/pages/User/HeroSection/index.tsx
 msgid "Follow"
 msgstr "追蹤"
@@ -988,13 +990,26 @@ msgstr "立即申請"
 msgid "Setting Center"
 msgstr "設定中心"
 
+#: src/pages/User/Components/UserConnectionRow.tsx
+msgid "Followings"
+msgstr "正追蹤"
+
+#: src/pages/User/HeroSection/FollowersListDrawer.tsx
+#: src/pages/User/HeroSection/FollowersListDrawer.tsx
+msgid "Followers"
+msgstr "粉絲"
+
+#: src/pages/User/HeroSection/FollowersListDrawer.tsx
+msgid "Empty for now, but followers will appear here soon."
+msgstr "這裡現在還是空的，粉絲以後就會顯示在這。"
+
+#: src/pages/User/HeroSection/FollowingListDrawer.tsx
+msgid "Empty for now, but followings will appear here soon."
+msgstr "這裡現在還是空的，追蹤朋友以後就會顯示在這。"
+
 #: src/pages/User/HeroSection/index.tsx
 msgid "The login session is expired, please login again"
 msgstr "登入已過期，請重新登入"
-
-#: src/pages/User/HeroSection/index.tsx
-msgid "Followers"
-msgstr "粉絲"
 
 #: src/pages/User/HeroSection/index.tsx
 msgctxt "count"
