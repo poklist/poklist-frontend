@@ -34,8 +34,9 @@ const useEditIdea = () => {
       // Invalidate for triggering refetch
       await queryClient.invalidateQueries({ queryKey: ideaQueryKey });
       await queryClient.invalidateQueries({ queryKey: listQueryKey });
-      await queryClient.refetchQueries({
-        queryKey: [QueryKeys.INFINITE_IDEA, data.id.toString()],
+      await queryClient.invalidateQueries({
+        queryKey: [QueryKeys.INFINITE_IDEA, data.listID.toString()],
+        refetchType: 'inactive',
       });
     },
     onError: (error) => {
