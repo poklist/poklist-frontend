@@ -1,5 +1,7 @@
+'use client';
+
 import { useEffect, RefObject } from 'react';
-import { useLocation } from 'react-router-dom';
+import { usePathname } from 'next/navigation';
 
 interface UseScrollPositionOptions {
   keyPrefix?: string;
@@ -10,9 +12,9 @@ export function useScrollPosition(
   elementRef: RefObject<HTMLElement>,
   options: UseScrollPositionOptions = {}
 ) {
-  const location = useLocation();
+  const pathname = usePathname();
   const { keyPrefix = 'scroll_pos', restoreDelay = 0 } = options;
-  const storageKey = `${keyPrefix}_${location.pathname}`;
+  const storageKey = `${keyPrefix}_${pathname}`;
 
   // 儲存滾動位置
   useEffect(() => {
@@ -45,7 +47,7 @@ export function useScrollPosition(
         element.removeEventListener('scroll', handleScroll);
       }
     };
-  }, [location.pathname, storageKey, restoreDelay, elementRef]);
+  }, [pathname, storageKey, restoreDelay, elementRef]);
 
   // 提供手動保存和恢復的方法
   const saveScrollPosition = () => {

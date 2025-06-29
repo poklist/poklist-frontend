@@ -1,3 +1,5 @@
+'use client';
+
 import DropdownComponent from '@/components/Dropdown';
 import { Button, ButtonSize, ButtonVariant } from '@/components/ui/button';
 import { Language, LocalStorageKey } from '@/enums/index.enum';

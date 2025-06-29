@@ -3,7 +3,7 @@ import IconAdd from '@/components/ui/icons/AddIcon';
 import IconLike from '@/components/ui/icons/LikeIcon';
 import IconLink from '@/components/ui/icons/LinkIcon';
 import { useAuthWrapper } from '@/hooks/useAuth';
-import useStrictNavigation from '@/hooks/useStrictNavigate';
+import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
 import { useToast } from '@/hooks/useToast';
 import { cn, copyHref } from '@/lib/utils';
 import { t } from '@lingui/core/macro';
@@ -25,7 +25,7 @@ const FloatingButtonFooter: React.FC<IFooterProps> = ({
   onClickUnlike,
 }: IFooterProps) => {
   const { toast } = useToast();
-  const navigateTo = useStrictNavigation();
+  const navigateTo = useStrictNavigateNext();
   const { withAuth } = useAuthWrapper();
 
   const handleCopyHref = () => {
@@ -51,7 +51,7 @@ const FloatingButtonFooter: React.FC<IFooterProps> = ({
   return (
     <footer
       id="floating-button-footer"
-      className="fixed inset-x-0 bottom-2 mx-auto flex w-fit items-center justify-center gap-2 sm:sticky md:max-w-mobile-max"
+      className="fixed inset-x-0 bottom-2 z-20 mx-auto flex w-fit items-center justify-center gap-2 sm:sticky md:max-w-mobile-max"
     >
       {hasLikeButton && (
         <Button

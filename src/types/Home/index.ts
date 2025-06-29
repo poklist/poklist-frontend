@@ -1,4 +1,5 @@
 import { MessageDescriptor } from '@lingui/core';
+import { StaticImageData } from 'next/image';
 
 // ErrorDialog Types
 export interface ErrorDialogProps {
@@ -24,14 +25,14 @@ export interface FeatureListContent {
   title: string;
   user: MessageDescriptor;
   account: string;
-  userAvatar: string;
+  userAvatar: StaticImageData;
   listCount: string;
   listTitle: MessageDescriptor;
   lists: {
     id: number;
     title: MessageDescriptor;
     description: MessageDescriptor;
-    image: string;
+    image: StaticImageData;
   }[];
 }
 
@@ -53,6 +54,6 @@ export interface FooterLink {
 
 export interface SocialMediaLink {
   name: string;
-  icon: string;
+  icon: StaticImageData;
   url: string;
 }

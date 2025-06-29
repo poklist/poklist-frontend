@@ -1,5 +1,6 @@
 import { socialLinkStarterMap } from '@/constants/User';
 import { LocalStorageKey, SocialLinkType } from '@/enums/index.enum';
+import { LINK_PREVIEW_LENGTH } from '@/constants/list';
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { z } from 'zod';
@@ -39,7 +40,11 @@ export const urlPreview = (url: string | undefined) => {
   if (url === undefined) {
     return '';
   }
-  return url.replace(/^https?:\/\//, '');
+  const cleanUrl = url.replace(/^https?:\/\//, '');
+  // 使用既有常數，確保長度一致性
+  return cleanUrl.length > LINK_PREVIEW_LENGTH
+    ? `${cleanUrl.slice(0, LINK_PREVIEW_LENGTH)}...`
+    : cleanUrl;
 };
 
 export const fileToBase64 = (file: File): Promise<string> => {
