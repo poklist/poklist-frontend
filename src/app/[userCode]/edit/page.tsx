@@ -246,7 +246,7 @@ const EditUserPage: React.FC = () => {
 
   useEffect(() => {
     setNewUserInfo(me);
-    checkAuthAndRedirect();
+    checkAuthAndRedirect(); // NOTE: will cause infinite loop if put in dependency array
     // onUnmounted
     return () => {
       closeFakePage();

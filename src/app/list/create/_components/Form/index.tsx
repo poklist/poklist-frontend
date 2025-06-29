@@ -100,7 +100,7 @@ const ListForm: React.FC<IListFormProps> = ({
 
   useEffect(() => {
     listForm.setFocus('title');
-  }, [listForm.setFocus]);
+  }, [listForm]);
 
   const onInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>

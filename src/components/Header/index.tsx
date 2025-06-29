@@ -106,7 +106,6 @@ const Header: React.FC<HeaderProps> = ({
           className="flex items-center justify-center gap-4"
         >
           {/* FUTURE: extract these logic to props for D in the SOLID principle */}
-          {isDiscoveryPage && <LanguageToggleButton />}
           {!isLoggedIn && (
             <Button
               size={ButtonSize.SM}
@@ -125,7 +124,7 @@ const Header: React.FC<HeaderProps> = ({
               <AvatarFallback>{me.displayName[0]}</AvatarFallback>
             </Avatar>
           )}
-          {!isDiscoveryPage && (!isLoggedIn || (isLoggedIn && isMyPage)) && (
+          {(!isLoggedIn || (isLoggedIn && isMyPage)) && (
             <Button
               variant={ButtonVariant.WHITE}
               size={ButtonSize.ICON}
