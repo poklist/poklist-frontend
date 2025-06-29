@@ -1,7 +1,7 @@
 import { pipe } from '@/lib/functional';
 import useAuthStore from '@/stores/useAuthStore';
 import useCommonStore from '@/stores/useCommonStore';
-import { useCallback } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import useStrictNavigateNext from './useStrictNavigateNext';
 
 /**
