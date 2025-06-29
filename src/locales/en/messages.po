@@ -676,6 +676,14 @@ msgstr "This is your space to drop ideas and build your pocket list. Tell us wha
 msgid "Tell us what you think"
 msgstr "Tell us what you think"
 
+#: src/app/settings/_components/IntroSection/index.tsx
+msgid "This is your space to drop ideas and build your pocket list. Our Beta is now open! If you’re a creator, we’d love for you to try it out. Create your account now!"
+msgstr "This is your space to drop ideas and build your pocket list. Our Beta is now open! If you’re a creator, we’d love for you to try it out. Create your account now!"
+
+#: src/app/settings/_components/IntroSection/index.tsx
+msgid "Get Started"
+msgstr "Get Started"
+
 #: src/app/settings/_components/index.tsx
 #: src/app/settings/page.tsx
 msgid "Setting Center"

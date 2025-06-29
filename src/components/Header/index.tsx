@@ -14,7 +14,6 @@ import useUserStore from '@/stores/useUserStore';
 import React from 'react';
 import { useUserRouteContext } from '@/hooks/useUserRouteContext';
 import { usePathname } from 'next/navigation';
-import { LanguageToggleButton } from '../Language';
 
 const ColorMap = {
   white: 'bg-white',
@@ -63,7 +62,6 @@ const Header: React.FC<HeaderProps> = ({
   }
 
   const isHomePage = pathname === StaticRoutes.HOME;
-  const isDiscoveryPage = pathname === StaticRoutes.DISCOVERY;
   const isMyPage = outletContext?.userCode === me.userCode; // NOTE: to trim leading '@' sign
 
   const handleClickSignIn = () => {
