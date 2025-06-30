@@ -59,6 +59,10 @@ export const useEditList = ({
       await queryClient.refetchQueries({
         queryKey: [QueryKeys.LIST, data.id.toString(), ideaOffset, ideaLimit],
       });
+      await queryClient.invalidateQueries({
+        queryKey: [QueryKeys.INFINITE_IDEA, data.id.toString()],
+        refetchType: 'inactive',
+      });
     },
     onError: (error) => {
       setShowingAlert(true, { message: String(error) });
