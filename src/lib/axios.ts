@@ -4,7 +4,7 @@ import authStore from '@/stores/useAuthStore';
 import commonStore from '@/stores/useCommonStore';
 
 const instance = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL as string,
+  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL as string,
 });
 
 instance.interceptors.request.use(

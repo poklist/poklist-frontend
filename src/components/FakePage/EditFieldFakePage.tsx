@@ -1,7 +1,7 @@
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { EditFieldVariant } from '@/enums/EditField/index.enum';
 import useAutosizeTextArea from '@/hooks/useAutosizedTextArea';
-import { IEditFieldConfig } from '@/types/EditField';
+import { IEditFieldConfig } from '@/types/EditField/index.d';
 import { t } from '@lingui/core/macro';
 import { useEffect, useRef, useState } from 'react';
 import EditModeFooter from '../Footer/EditModeFooter';

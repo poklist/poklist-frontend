@@ -1,16 +1,19 @@
+'use client';
+
 import logoRelist from '@/assets/images/logo-relist.svg';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button, ButtonSize, ButtonVariant } from '@/components/ui/button';
 import IconSetting from '@/components/ui/icons/SettingIcon';
-import useStrictNavigation from '@/hooks/useStrictNavigate';
+import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
 import { cn } from '@/lib/utils';
-import { UserRouteLayoutContextType } from '@/pages/Layout/UserRouteLayuout';
-import { StaticRoutes } from '@/router';
+import { UserRouteLayoutContextType } from '@/hooks/useUserRouteContext';
+import { StaticRoutes } from '@/constants/routes';
 import useAuthStore from '@/stores/useAuthStore';
 import useCommonStore from '@/stores/useCommonStore';
 import useUserStore from '@/stores/useUserStore';
 import React from 'react';
-import { useLocation, useOutletContext } from 'react-router-dom';
+import { useUserRouteContext } from '@/hooks/useUserRouteContext';
+import { usePathname } from 'next/navigation';
 
 const ColorMap = {
   white: 'bg-white',
@@ -33,15 +36,32 @@ const Header: React.FC<HeaderProps> = ({
   fakeBlockColor = 'transparent',
   fakeBlock = true,
 }) => {
-  const navigateTo = useStrictNavigation();
+  const navigateTo = useStrictNavigateNext();
 
   // NOTE: This is a workaround to prevent the userCode from being null
-  const outletContext = useOutletContext<UserRouteLayoutContextType | null>();
+  let outletContext: UserRouteLayoutContextType | null = null;
+  try {
+    // 在App Router環境中，這個會失敗
+    outletContext = useUserRouteContext();
+  } catch {
+    // 在App Router環境中，我們暫時不使用outlet context
+    outletContext = null;
+  }
+
   const { isLoggedIn } = useAuthStore();
   const { me } = useUserStore();
   const { setIsLoginDrawerOpen } = useCommonStore();
 
-  const isHomePage = useLocation().pathname === StaticRoutes.HOME;
+  // 使用Next.js的usePathname替代React Router的useLocation
+  let pathname = '/';
+  try {
+    pathname = usePathname() || '/';
+  } catch {
+    // 如果在React Router環境中，fallback到空字符串
+    pathname = '/';
+  }
+
+  const isHomePage = pathname === StaticRoutes.HOME;
   const isMyPage = outletContext?.userCode === me.userCode; // NOTE: to trim leading '@' sign
 
   const handleClickSignIn = () => {
@@ -73,7 +93,7 @@ const Header: React.FC<HeaderProps> = ({
           className="flex items-center justify-center gap-4"
         >
           <img
-            src={logoRelist}
+            src={logoRelist.src}
             alt="Relist"
             onClick={handleClickLogo}
             className="h-8"
@@ -98,7 +118,7 @@ const Header: React.FC<HeaderProps> = ({
               className="h-8 w-8 cursor-pointer"
               onClick={() => navigateTo.user(me.userCode)}
             >
-              <AvatarImage src={me.profileImage} />
+              <AvatarImage src={me.profileImage || undefined} />
               <AvatarFallback>{me.displayName[0]}</AvatarFallback>
             </Avatar>
           )}
