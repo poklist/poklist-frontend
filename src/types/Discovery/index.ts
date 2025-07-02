@@ -1,5 +1,3 @@
-import { User } from '../User';
-
 // API Response
 interface ListOwner {
   id: number;
@@ -23,15 +21,4 @@ export interface LatestList {
 
 export interface LatestListGroup {
   [key: string]: LatestList[];
-}
-
-export interface LoginDrawerProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onLogin: (success: boolean) => void;
-  onError: () => void;
-}
-export interface LoginInfo {
-  accessToken: string;
-  user: User;
 }

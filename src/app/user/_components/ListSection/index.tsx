@@ -1,0 +1,68 @@
+import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
+import { useUserRouteContext } from '@/hooks/useUserRouteContext';
+import { useListPreviews } from '@/hooks/queries/useLists';
+import { ListSectionSkeleton } from './ListSectionSkeleton';
+import { Trans } from '@lingui/react/macro';
+
+const ListSection: React.FC = () => {
+  const { userCode } = useUserRouteContext();
+  const navigateTo = useStrictNavigationAdapter();
+
+  const { data: listPreviews, isLoading } = useListPreviews({
+    userCode,
+  });
+
+  if (isLoading || !listPreviews) {
+    return <ListSectionSkeleton />;
+  }
+
+  return (
+    <div role="list-preview" className="mb-10 flex-1 bg-transparent sm:mb-0">
+      <div className="flex flex-col bg-white">
+        {listPreviews.map((listPreview, index) => {
+          const isLastItem = index === listPreviews.length - 1;
+          return (
+            <div
+              key={listPreview.title}
+              className={`flex min-h-[72px] items-center justify-between ${
+                isLastItem ? 'border-b-[3px]' : 'border-b'
+              } border-black-text-01 p-4 -tracking-1.1%`}
+              onClick={() => {
+                navigateTo.viewList(userCode, listPreview.id.toString());
+              }}
+            >
+              <p className="text-[15px] font-semibold text-black-text-01">
+                {listPreview.title}
+              </p>
+              {listPreview.coverImage && (
+                <img
+                  src={listPreview.coverImage || undefined}
+                  width={40}
+                  height={40}
+                  className="rounded-[3px] border border-black-text-01"
+                />
+              )}
+            </div>
+          );
+        })}
+      </div>
+      <div className="flex flex-col items-center">
+        {listPreviews.length === 0 && (
+          <div
+            id="list-data-placeholder"
+            className="mt-4 flex flex-col items-center text-[15px] font-semibold text-black-text-01"
+          >
+            <p>
+              <Trans>Looks like this page is a bit empty.</Trans>
+            </p>
+            <p>
+              <Trans>Follow and check back soon for surprise lists!</Trans>
+            </p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default ListSection;

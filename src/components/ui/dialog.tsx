@@ -1,7 +1,6 @@
 import { cn } from '@/lib/utils';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { VisuallyHidden } from '@radix-ui/themes';
-import PropTypes from 'prop-types';
 import React from 'react';
 
 const Dialog = ({
@@ -34,10 +33,6 @@ const DialogContent = React.forwardRef<
 ));
 
 DialogContent.displayName = 'DialogContent';
-DialogContent.propTypes = {
-  className: PropTypes.string,
-  children: PropTypes.node,
-};
 
 const DialogTrigger = DialogPrimitive.Trigger;
 const DialogClose = DialogPrimitive.Close;
