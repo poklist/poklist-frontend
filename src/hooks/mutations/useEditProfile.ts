@@ -1,4 +1,4 @@
-import QueryKeys from '@/config/queryKeys';
+import QueryKeys from '@/constants/queryKeys';
 import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
 import axios from '@/lib/axios';
 import useAuthStore from '@/stores/useAuthStore';

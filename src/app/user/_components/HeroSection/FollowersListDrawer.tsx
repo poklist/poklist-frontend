@@ -1,8 +1,8 @@
-import FollowRelationsDrawer from '@/pages/User/Components/FollowRelationsDrawer';
+import FollowRelationsDrawer from '@/app/user/_components/FollowRelationsDrawer';
+import UserConnectionRow from '@/app/user/_components/UserConnectionRow';
 import { SocialLink } from '@/types/Relation';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
-import UserConnectionRow from '../Components/UserConnectionRow';
 
 export interface FollowersListDrawerProps {
   followersList: SocialLink[] | undefined;

@@ -1,9 +1,9 @@
+import ConditionalLayout from '@/components/ConditionalLayout';
+import '@/index.css';
+import { AppProviders } from '@/providers';
+import '@radix-ui/themes/styles.css';
 import type { Metadata } from 'next';
 import { Inter, Noto_Sans } from 'next/font/google';
-import '@radix-ui/themes/styles.css';
-import '../index.css';
-import { AppProviders } from '@/providers';
-import ConditionalLayout from '@/components/ConditionalLayout';
 
 const inter = Inter({
   subsets: ['latin'],

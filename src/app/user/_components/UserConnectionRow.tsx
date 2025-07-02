@@ -1,9 +1,10 @@
 import { Button, ButtonVariant } from '@/components/ui/button';
 import { useFollowAction } from '@/hooks/mutations/useFollowAction';
-import useStrictNavigation from '@/hooks/useStrictNavigate';
+import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
 import useUserStore from '@/stores/useUserStore';
 import { SocialLink } from '@/types/Relation';
 import { Trans } from '@lingui/react/macro';
+import Image from 'next/image';
 import { useState } from 'react';
 
 export interface UserConnectionRowProps {
@@ -12,11 +13,11 @@ export interface UserConnectionRowProps {
 }
 
 const UserConnectionRow = ({ follower, callback }: UserConnectionRowProps) => {
-  const navigateTo = useStrictNavigation();
+  const navigateTo = useStrictNavigateNext();
   const { me } = useUserStore();
-  const { follow, unfollow, isPending } = useFollowAction({
-    currentPageUserCode: me.userCode,
-    currentPageUserID: me.id,
+  const { follow, unfollow, isLoading } = useFollowAction({
+    currentUserCode: me.userCode,
+    currentUserID: me.id,
     shouldAllow: () => true,
   });
 
@@ -41,10 +42,13 @@ const UserConnectionRow = ({ follower, callback }: UserConnectionRowProps) => {
         }}
         className="flex items-center gap-2"
       >
-        <img
-          src={follower.profileImage}
+        <Image
+          priority={true}
+          src={follower.profileImage || ''}
+          width={48}
+          height={48}
           alt={`icon-${follower.displayName}`}
-          className="h-12 w-12 rounded-full border border-black-text-01"
+          className="rounded-full border border-black-text-01"
         />
         <div className="text-t1 font-semibold">
           {follower.displayName}
@@ -53,7 +57,7 @@ const UserConnectionRow = ({ follower, callback }: UserConnectionRowProps) => {
       </div>
       {me.id !== follower.id && (
         <Button
-          disabled={isPending}
+          disabled={isLoading}
           onClick={() => onClick()}
           variant={isFollowing ? ButtonVariant.GRAY : ButtonVariant.BLACK}
           className="font-normal"

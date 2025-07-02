@@ -2,8 +2,8 @@ import logoR from '@/assets/images/logo-r.svg';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useFollowAction } from '@/hooks/mutations/useFollowAction';
 import { useAuthWrapper } from '@/hooks/useAuth';
-import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
 import { useAuthRequired } from '@/hooks/useAuthRequired';
+import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
 import useAuthStore from '@/stores/useAuthStore';
 import useFollowingStore from '@/stores/useFollowingStore';
 import { User, UserPreview } from '@/types/User';
@@ -39,8 +39,8 @@ const BackToUserHeader: React.FC<IBackToUserHeaderProps> = ({
   }, [owner, hasFollowingState, setIsFollowing]);
 
   const { follow, unfollow } = useFollowAction({
-    currentPageUserCode: owner?.userCode || '',
-    currentPageUserID: owner?.id || -1,
+    currentUserCode: owner?.userCode || '',
+    currentUserID: owner?.id || -1,
     shouldAllow: () => isLoggedIn,
     onNotAllowed: handleAuthRequired,
   });

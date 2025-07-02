@@ -15,8 +15,8 @@ import useFollowers from '@/hooks/queries/useFollowers';
 import useFollowings from '@/hooks/queries/useFollowings';
 import { useUser } from '@/hooks/queries/useUser';
 import { useAuthWrapper } from '@/hooks/useAuth';
-import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { useAuthRequired } from '@/hooks/useAuthRequired';
+import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { useToast } from '@/hooks/useToast';
 import {
   ensureProtocol,
@@ -24,7 +24,7 @@ import {
   urlPreview,
 } from '@/lib/utils';
 
-import FollowersListDrawer from '@/pages/User/HeroSection/FollowersListDrawer';
+import FollowersListDrawer from '@/app/user/_components/HeroSection/FollowersListDrawer';
 
 import useAuthStore from '@/stores/useAuthStore';
 import useFollowingStore from '@/stores/useFollowingStore';
@@ -34,7 +34,9 @@ import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
-import FollowingListDrawer from './FollowingListDrawer';
+import FollowingListDrawer from '@/app/user/_components/HeroSection/FollowingListDrawer';
+import { HeroSectionSkeleton } from '@/app/user/_components/HeroSection/HeroSectionSkeleton';
+import { useUserRouteContext } from '@/hooks/useUserRouteContext';
 
 const HeroSection: React.FC = () => {
   const { userCode } = useUserRouteContext();
@@ -57,7 +59,7 @@ const HeroSection: React.FC = () => {
 
   const isMyPage = userCode?.toString() === me.userCode.toString();
   const {
-    data: currentUser,
+    data: currentPageUser,
     isLoading,
     isError,
   } = useUser({
@@ -73,12 +75,12 @@ const HeroSection: React.FC = () => {
   };
 
   const { data: followersList, isLoading: isFollowerLoading } = useFollowers({
-    userID: currentUser?.id,
+    userID: currentPageUser?.id,
     onError: (error) => console.error(error),
   });
 
   const { data: followingList, isLoading: isFollowingLoading } = useFollowings({
-    userID: currentUser?.id,
+    userID: currentPageUser?.id,
     onError: (error) => console.error(error),
   });
 
@@ -103,29 +105,29 @@ const HeroSection: React.FC = () => {
     unfollow,
     isPending: isFollowPending,
   } = useFollowAction({
-    currentPageUserCode: currentUser?.userCode || '',
-    currentPageUserID: currentUser?.id || -1,
+    currentUserCode: currentPageUser?.userCode || '',
+    currentUserID: currentPageUser?.id || -1,
     shouldAllow: () => isLoggedIn,
     onNotAllowed: handleAuthRequired,
   });
 
   const linkCount = useMemo(() => {
-    if (currentUser?.socialLinks !== undefined) {
-      return Object.keys(currentUser.socialLinks).length;
+    if (currentPageUser?.socialLinks !== undefined) {
+      return Object.keys(currentPageUser.socialLinks).length;
     } else {
       return 0;
     }
-  }, [currentUser]);
+  }, [currentPageUser]);
 
   useEffect(() => {
-    if (isMyPage && currentUser) {
-      setMe({ ...currentUser });
+    if (isMyPage && currentPageUser) {
+      setMe({ ...currentPageUser });
     }
-  }, [isMyPage, currentUser, setMe]);
+  }, [isMyPage, currentPageUser, setMe]);
 
   useLayoutEffect(() => {
-    if (userCode && currentUser) {
-      const apiFollowingState = isLoggedIn && currentUser.isFollowing === true;
+    if (userCode && currentPageUser) {
+      const apiFollowingState = isLoggedIn && currentPageUser.isFollowing === true;
       const hasExistingState = hasFollowingState(userCode);
 
       if (!hasExistingState) {
@@ -133,7 +135,7 @@ const HeroSection: React.FC = () => {
         setIsFollowing(userCode, apiFollowingState);
       }
     }
-  }, [isLoggedIn, currentUser, userCode, setIsFollowing, hasFollowingState]);
+  }, [isLoggedIn, currentPageUser, userCode, setIsFollowing, hasFollowingState]);
 
   // FUTURE: refactor the drawer content because we may have more than one drawer
   const onOpenBioDrawer = () => {
@@ -145,15 +147,15 @@ const HeroSection: React.FC = () => {
     ) {
       return;
     }
-    setDrawerContent(<p>{currentUser?.bio}</p>);
+    setDrawerContent(<p>{currentPageUser?.bio}</p>);
     openDrawer(DrawerIds.USER_HERO_SECTION_DRAWER_ID);
   };
 
   const onOpenLinkDrawer = () => {
-    if (currentUser?.socialLinks === undefined) {
+    if (currentPageUser?.socialLinks === undefined) {
       return;
     }
-    const socialLinkTypeList = Object.entries(currentUser.socialLinks) as [
+    const socialLinkTypeList = Object.entries(currentPageUser.socialLinks) as [
       SocialLinkType,
       string,
     ][];
@@ -187,21 +189,21 @@ const HeroSection: React.FC = () => {
   };
 
   const handleFollow = withAuth(() => {
-    if (currentUser) {
-      follow({ params: { userID: currentUser.id } });
+    if (currentPageUser) {
+      follow({ params: { userID: currentPageUser.id } });
     }
   });
 
   const handleUnfollow = withAuth(() => {
-    if (currentUser) {
-      unfollow({ params: { userID: currentUser.id } });
+    if (currentPageUser) {
+      unfollow({ params: { userID: currentPageUser.id } });
     }
   });
 
   // Check if data is loaded
   const isDataLoaded =
     !isLoading &&
-    currentUser !== undefined &&
+    currentPageUser !== undefined &&
     !isFollowerLoading &&
     !isFollowingLoading;
 
@@ -217,18 +219,18 @@ const HeroSection: React.FC = () => {
       >
         <div id="hero-basic-info" className="flex flex-col items-center gap-2">
           <Avatar className="h-16 w-16">
-            <AvatarImage src={currentUser.profileImage || undefined} />
-            <AvatarFallback>{currentUser.displayName[0]}</AvatarFallback>
+            <AvatarImage src={currentPageUser.profileImage || undefined} />
+            <AvatarFallback>{currentPageUser.displayName[0]}</AvatarFallback>
           </Avatar>
-          <p className="text-[17px] font-bold">{currentUser.displayName}</p>
-          <p className="text-[13px] font-semibold">@{currentUser.userCode}</p>
-          {currentUser.bio && (
+          <p className="text-[17px] font-bold">{currentPageUser.displayName}</p>
+          <p className="text-[13px] font-semibold">@{currentPageUser.userCode}</p>
+          {currentPageUser.bio && (
             <p
               ref={bioRef}
               className="line-clamp-1 max-w-[350px] text-[13px] font-normal"
               onClick={onOpenBioDrawer}
             >
-              {currentUser.bio}
+              {currentPageUser.bio}
             </p>
           )}
         </div>
@@ -259,7 +261,7 @@ const HeroSection: React.FC = () => {
         </div>
         <div id="hero-stats" className="flex gap-2">
           <p>
-            {currentUser.listCount} <Trans>Lists</Trans>
+            {currentPageUser.listCount} <Trans>Lists</Trans>
           </p>
           <FollowersListDrawer followersList={followersList} />
           <FollowingListDrawer followingList={followingList} />
