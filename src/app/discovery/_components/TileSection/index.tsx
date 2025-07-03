@@ -1,9 +1,9 @@
+import SectionTitle from '@/app/discovery/_components/SectionTitle';
+import TileList from '@/app/discovery/_components/TileList';
+import TileSectionSkeleton from '@/app/discovery/_components/TileSection/TileSectionSkeleton';
 import { useOfficialCollections } from '@/hooks/queries/useOfficialCollections';
-import SectionTitle from '../SectionTitle';
-import TileList from '../TileList';
 import { OfficialCollection } from '@/types/Discovery';
 import { t } from '@lingui/core/macro';
-import TileSectionSkeleton from './TileSectionSkeleton';
 import { useEffect, useRef, useState } from 'react';
 
 const TileSection = () => {
@@ -57,7 +57,7 @@ const TileSection = () => {
         title={t`Fresh lists from our pocket`}
         subtitle={t`Updated weekly`}
       />
-      <div ref={containerRef} className="flex gap-[10px] px-2 py-6">
+      <div ref={containerRef} className="flex gap-2.5 px-2 py-6">
         {columnArrays.map((columnItems, columnIndex) => (
           <div key={columnIndex} className="flex flex-1 flex-col gap-4">
             {columnItems.map((officialCollection) => (
