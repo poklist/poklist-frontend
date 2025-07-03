@@ -2,12 +2,11 @@ import logoR from '@/assets/images/logo-r.svg';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useFollowAction } from '@/hooks/mutations/useFollowAction';
 import { useAuthWrapper } from '@/hooks/useAuth';
-import useStrictNavigation from '@/hooks/useStrictNavigate';
-import { toast } from '@/hooks/useToast';
+import { useAuthRequired } from '@/hooks/useAuthRequired';
+import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
 import useAuthStore from '@/stores/useAuthStore';
 import useFollowingStore from '@/stores/useFollowingStore';
 import { User, UserPreview } from '@/types/User';
-import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
 import React, { useEffect } from 'react';
 import { Button, ButtonShape, ButtonSize, ButtonVariant } from '../ui/button';
@@ -23,9 +22,10 @@ const BackToUserHeader: React.FC<IBackToUserHeaderProps> = ({
 }) => {
   const { getIsFollowing, setIsFollowing, hasFollowingState } =
     useFollowingStore();
-  const navigateTo = useStrictNavigation();
+  const navigateTo = useStrictNavigateNext();
   const { isLoggedIn } = useAuthStore();
   const { withAuth } = useAuthWrapper();
+  const { handleAuthRequired } = useAuthRequired();
 
   // 獲取當前用戶的關注狀態
   const isFollowing = owner ? getIsFollowing(owner.userCode) : false;
@@ -39,15 +39,10 @@ const BackToUserHeader: React.FC<IBackToUserHeaderProps> = ({
   }, [owner, hasFollowingState, setIsFollowing]);
 
   const { follow, unfollow } = useFollowAction({
-    currentPageUserCode: owner?.userCode || '',
-    currentPageUserID: owner?.id || -1,
+    currentUserCode: owner?.userCode || '',
+    currentUserID: owner?.id || -1,
     shouldAllow: () => isLoggedIn,
-    onNotAllowed: () => {
-      toast({
-        title: t`Please login to do this action`,
-        variant: 'destructive',
-      });
-    },
+    onNotAllowed: handleAuthRequired,
   });
 
   const handleClickBackToUser = () => {
@@ -83,7 +78,12 @@ const BackToUserHeader: React.FC<IBackToUserHeaderProps> = ({
           id="header-left"
           className="flex w-[90px] min-w-[90px] items-center justify-start"
         >
-          <img src={logoR} alt="P" onClick={handleClickLogo} className="h-8" />
+          <img
+            src={logoR.src}
+            alt="P"
+            onClick={handleClickLogo}
+            className="h-8"
+          />
         </div>
         <div
           id="header-middle"
@@ -95,7 +95,7 @@ const BackToUserHeader: React.FC<IBackToUserHeaderProps> = ({
               onClick={handleClickBackToUser}
             >
               <Avatar className="ml-1 h-6 w-6">
-                <AvatarImage src={owner?.profileImage} />
+                <AvatarImage src={owner?.profileImage || undefined} />
                 <AvatarFallback>{owner?.displayName?.[0]}</AvatarFallback>
               </Avatar>
               <p className="font-regular ml-2 line-clamp-1 text-[15px]">

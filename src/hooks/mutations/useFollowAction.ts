@@ -14,8 +14,8 @@ import { useRef } from 'react';
 import { createOptimisticUpdateHandler } from './optimisticUpdateHandler';
 
 interface FollowActionOptions {
-  currentPageUserCode: string;
-  currentPageUserID: number;
+  currentUserCode: string;
+  currentUserID: number;
   debounceMs?: number;
   shouldAllow?: () => boolean;
   onNotAllowed?: () => void;
@@ -39,8 +39,8 @@ interface FollowActionReturn {
 const debounceMap = new Map<string, ReturnType<typeof setTimeout>>();
 
 export const useFollowAction = ({
-  currentPageUserCode,
-  currentPageUserID,
+  currentUserCode,
+  currentUserID,
   debounceMs = 5000,
   shouldAllow,
   onNotAllowed,
@@ -60,12 +60,12 @@ export const useFollowAction = ({
     isFollowing: boolean,
     countDelta: number
   ) => {
-    setIsFollowing(currentPageUserCode, isFollowing);
-    setFollowerCount(currentPageUserCode, countDelta);
+    setIsFollowing(currentUserCode, isFollowing);
+    setFollowerCount(currentUserCode, countDelta);
 
     const ensureLatestSocialLink = () => {
       if (latestSocialLinkRef.current?.id === targetUserID) return;
-      if (targetUserID === currentPageUserID) {
+      if (targetUserID === currentUserID) {
         latestSocialLinkRef.current = {
           id: me.id,
           displayName: me.displayName,
@@ -78,20 +78,20 @@ export const useFollowAction = ({
 
       const followers = queryClient.getQueryData<SocialLink[]>([
         QueryKeys.FOLLOWERS,
-        currentPageUserID,
+        currentUserID,
       ]);
 
       const followings = queryClient.getQueryData<SocialLink[]>([
         QueryKeys.FOLLOWING,
-        currentPageUserID,
+        currentUserID,
       ]);
 
-      const foundInFollowers = followers?.find(
-        (follower) => follower.id === targetUserID
-      );
-      const foundInFollowing = followings?.find(
-        (followings) => followings.id === targetUserID
-      );
+      const foundInFollowers = Array.isArray(followers)
+        ? followers.find((follower) => follower.id === targetUserID)
+        : undefined;
+      const foundInFollowing = Array.isArray(followings)
+        ? followings.find((followings) => followings.id === targetUserID)
+        : undefined;
 
       latestSocialLinkRef.current =
         foundInFollowers || foundInFollowing || null;
@@ -100,16 +100,18 @@ export const useFollowAction = ({
     ensureLatestSocialLink();
 
     queryClient.setQueryData(
-      [QueryKeys.FOLLOWERS, currentPageUserID],
+      [QueryKeys.FOLLOWERS, currentUserID],
       (followers: SocialLink[]) => {
         if (!followers) return followers;
 
-        const exists = followers.some(
-          (follower) => follower.id === latestSocialLinkRef.current?.id
-        );
+        const exists = Array.isArray(followers)
+          ? followers.some(
+              (follower) => follower.id === latestSocialLinkRef.current?.id
+            )
+          : false;
 
         // 在看別人的Profile & unfollow
-        if (exists && targetUserID === currentPageUserID) {
+        if (exists && targetUserID === currentUserID) {
           return followers.filter(
             (follower) => follower.id !== latestSocialLinkRef.current?.id
           );
@@ -124,7 +126,7 @@ export const useFollowAction = ({
         }
 
         // 在看別人的Profile & follow
-        if (latestSocialLinkRef.current && targetUserID === currentPageUserID) {
+        if (latestSocialLinkRef.current && targetUserID === currentUserID) {
           return [
             { ...latestSocialLinkRef.current, isFollowing },
             ...followers,
@@ -136,7 +138,7 @@ export const useFollowAction = ({
     );
 
     queryClient.setQueryData(
-      [QueryKeys.FOLLOWING, currentPageUserID],
+      [QueryKeys.FOLLOWING, currentUserID],
       (followings: SocialLink[]) => {
         if (!followings || !latestSocialLinkRef.current) return followings;
 
@@ -145,7 +147,7 @@ export const useFollowAction = ({
         );
 
         // 在看別人的Profile & follow
-        if (targetUserID !== currentPageUserID && !exists) {
+        if (targetUserID !== currentUserID && !exists) {
           return [
             { ...latestSocialLinkRef.current, isFollowing },
             ...followings,
@@ -153,7 +155,7 @@ export const useFollowAction = ({
         }
 
         // 在看別人的Profile & unfollow
-        if (!isFollowing && targetUserID !== currentPageUserID) {
+        if (!isFollowing && targetUserID !== currentUserID) {
           return followings.filter(
             (following) => following.id !== latestSocialLinkRef.current?.id
           );
@@ -164,7 +166,7 @@ export const useFollowAction = ({
     );
 
     queryClient.setQueryData(
-      [QueryKeys.USER, currentPageUserCode],
+      [QueryKeys.USER, currentUserCode],
       (oldData: User) => {
         if (!oldData) return oldData;
         return {
@@ -176,7 +178,7 @@ export const useFollowAction = ({
   };
 
   const followMutation = useMutation({
-    mutationKey: [QueryKeys.USER, currentPageUserCode, 'follow'],
+    mutationKey: [QueryKeys.USER, currentUserCode, 'follow'],
     mutationFn: async (variables: AxiosPayload) => {
       const config: AxiosRequestConfig = {
         url: '/follow',
@@ -199,7 +201,7 @@ export const useFollowAction = ({
   });
 
   const unfollowMutation = useMutation({
-    mutationKey: [QueryKeys.USER, currentPageUserCode, 'unfollow'],
+    mutationKey: [QueryKeys.USER, currentUserCode, 'unfollow'],
     mutationFn: async (variables: AxiosPayload) => {
       const config: AxiosRequestConfig = {
         url: '/unfollow',
@@ -231,7 +233,7 @@ export const useFollowAction = ({
         return;
       }
 
-      const debounceKey = `follow-${currentPageUserCode}`;
+      const debounceKey = `follow-${currentUserCode}`;
       clearTimeout(debounceMap.get(debounceKey));
       const delta = optimisticValue ? 1 : -1;
 
@@ -262,7 +264,7 @@ export const useFollowAction = ({
   const unfollow = createDebouncedAction(unfollowMutation, false);
 
   const cancelPending = () => {
-    const debounceKey = `follow-${currentPageUserCode}`;
+    const debounceKey = `follow-${currentUserCode}`;
     const existingTimer = debounceMap.get(debounceKey);
     if (existingTimer) {
       clearTimeout(existingTimer);
