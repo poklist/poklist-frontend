@@ -1,5 +1,6 @@
-import ApiPath from '@/config/apiPath';
+import ApiPath from '@/constants/apiPath';
 import { Idea } from '@/constants/list';
+import QueryKeys from '@/constants/queryKeys';
 import axios from '@/lib/axios';
 import useCommonStore from '@/stores/useCommonStore';
 import { EditIdeaResponse, IdeaPreview } from '@/types/Idea';
@@ -22,10 +23,10 @@ const useEditIdea = () => {
       return response.data.content;
     },
     onSuccess: async (data) => {
-      const ideaQueryKey = ['idea', data.id.toString()];
+      const ideaQueryKey = [QueryKeys.IDEA, data.id.toString()];
 
       const listQueryKey = [
-        'list',
+        QueryKeys.LIST,
         data.listID.toString(),
         Idea.DEFAULT_FIRST_BATCH_OFFSET,
         Idea.DEFAULT_BATCH_SIZE,
@@ -34,7 +35,7 @@ const useEditIdea = () => {
       await queryClient.invalidateQueries({ queryKey: ideaQueryKey });
       await queryClient.invalidateQueries({ queryKey: listQueryKey });
       await queryClient.refetchQueries({
-        queryKey: ['infiniteList', data.id.toString()],
+        queryKey: [QueryKeys.INFINITE_IDEA, data.id.toString()],
       });
     },
     onError: (error) => {

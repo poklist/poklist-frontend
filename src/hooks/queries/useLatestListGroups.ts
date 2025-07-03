@@ -1,8 +1,8 @@
+import QueryKeys from '@/constants/queryKeys';
 import axios from '@/lib/axios';
+import { LatestListGroup } from '@/types/Discovery';
 import { IResponse } from '@/types/response';
 import { useQuery } from '@tanstack/react-query';
-import { LatestListGroup } from '@/types/Discovery';
-import QueryKeys from '@/config/queryKeys';
 
 interface UseLatestListGroupsOptions {
   staleTime?: number;

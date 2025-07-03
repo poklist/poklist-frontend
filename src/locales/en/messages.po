@@ -689,24 +689,35 @@ msgstr "Get Started"
 msgid "Setting Center"
 msgstr "Setting Center"
 
-#: src/app/user/_components/HeroSection/index.tsx
-msgid "The login session is expired, please login again"
-msgstr "The login session is expired, please login again"
+#: src/app/user/_components/HeroSection/FollowersListDrawer.tsx
+#: src/app/user/_components/HeroSection/FollowersListDrawer.tsx
+msgid "Followers"
+msgstr "Followers"
 
-#: src/app/user/_components/HeroSection/index.tsx
+#: src/app/user/_components/HeroSection/FollowersListDrawer.tsx
+msgid "Empty for now, but followers will appear here soon."
+msgstr "Empty for now, but followers will appear here soon."
+
+#: src/app/user/_components/HeroSection/FollowingListDrawer.tsx
+#: src/app/user/_components/HeroSection/FollowingListDrawer.tsx
 #: src/app/user/_components/HeroSection/index.tsx
 #: src/components/Header/BackToUserHeader.tsx
 msgid "Following"
 msgstr "Following"
 
+#: src/app/user/_components/HeroSection/FollowingListDrawer.tsx
+msgid "Empty for now, but followings will appear here soon."
+msgstr "Empty for now, but followings will appear here soon."
+
 #: src/app/user/_components/HeroSection/index.tsx
+msgid "The login session is expired, please login again"
+msgstr "The login session is expired, please login again"
+
+#: src/app/user/_components/HeroSection/index.tsx
+#: src/app/user/_components/UserConnectionRow.tsx
 #: src/components/Header/BackToUserHeader.tsx
 msgid "Follow"
 msgstr "Follow"
-
-#: src/app/user/_components/HeroSection/index.tsx
-msgid "Followers"
-msgstr "Followers"
 
 #: src/app/user/_components/HeroSection/index.tsx
 msgctxt "count"
@@ -720,6 +731,10 @@ msgstr "Looks like this page is a bit empty."
 #: src/app/user/_components/ListSection/index.tsx
 msgid "Follow and check back soon for surprise lists!"
 msgstr "Follow and check back soon for surprise lists!"
+
+#: src/app/user/_components/UserConnectionRow.tsx
+msgid "Followings"
+msgstr "Followings"
 
 #. placeholder {0}: choice.label || choice.value
 #. placeholder {0}: alertMessage.message

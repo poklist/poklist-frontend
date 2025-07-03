@@ -4,16 +4,18 @@ import logoRelist from '@/assets/images/logo-relist.svg';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button, ButtonSize, ButtonVariant } from '@/components/ui/button';
 import IconSetting from '@/components/ui/icons/SettingIcon';
-import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
-import { cn } from '@/lib/utils';
-import { UserRouteLayoutContextType } from '@/hooks/useUserRouteContext';
 import { StaticRoutes } from '@/constants/routes';
+import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
+import {
+  UserRouteLayoutContextType,
+  useUserRouteContext,
+} from '@/hooks/useUserRouteContext';
+import { cn } from '@/lib/utils';
 import useAuthStore from '@/stores/useAuthStore';
 import useCommonStore from '@/stores/useCommonStore';
 import useUserStore from '@/stores/useUserStore';
-import React from 'react';
-import { useUserRouteContext } from '@/hooks/useUserRouteContext';
 import { usePathname } from 'next/navigation';
+import React from 'react';
 
 const ColorMap = {
   white: 'bg-white',

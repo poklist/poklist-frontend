@@ -1,12 +1,12 @@
 'use client';
 
-import { useEffect } from 'react';
-import { usePathname } from 'next/navigation';
-import useLayoutStore from '@/stores/useLayoutStore';
-import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
+import { StaticRoutes } from '@/constants/routes';
 import useCheckStorage from '@/hooks/useCheckStorage';
 import useIsMobile from '@/hooks/useIsMobile';
-import { StaticRoutes } from '@/constants/routes';
+import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
+import useLayoutStore from '@/stores/useLayoutStore';
+import { usePathname } from 'next/navigation';
+import { useEffect } from 'react';
 
 // 桌面版樣式包裹組件
 import Background from '@/app/_layout/_components/Background';
@@ -31,10 +31,9 @@ export default function ConditionalLayout({
 
   // 檢查是否需要重定向到 GoToMobile
   useEffect(() => {
-    const userAgent = typeof window !== 'undefined' ? navigator.userAgent : '';
     const isMobileDevice =
       /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-        userAgent
+        navigator.userAgent || ''
       );
 
     // 白名單：不需要重定向的頁面
