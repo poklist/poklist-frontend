@@ -15,6 +15,7 @@ import { IdeaResponse } from '@/types/Idea';
 import { t } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
 import { Trans } from '@lingui/react/macro';
+import Image from 'next/image';
 
 interface IIdeaDrawerContentProps {
   data: IdeaResponse;
@@ -37,12 +38,12 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({
   return (
     <div className="flex flex-col items-start">
       {data.coverImage && (
-        <img
-          src={data.coverImage || undefined}
+        <Image
+          src={data.coverImage || ''}
           alt={data.title}
           width={240}
           height={240}
-          className="mt-6 self-center rounded-[12px] border border-black"
+          className="mt-6 self-center rounded-xl border border-black"
         />
       )}
       <div className="-tracking-2% mt-6 text-[17px] font-bold leading-[1.45]">
@@ -61,7 +62,7 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({
           }}
         >
           <LinkIconWrapper variant={SocialLinkType.CUSTOMIZED} />
-          <p className="line-clamp-1 max-w-[160px]">
+          <p className="line-clamp-1 max-w-40">
             {urlPreview(data.externalLink)}
           </p>
         </div>

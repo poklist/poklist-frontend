@@ -1,19 +1,19 @@
+import { useFakePage } from '@/components/FakePage/useFakePage';
+import EditModeFooter from '@/components/Footer/EditModeFooter';
+import ImageCropper from '@/components/ImageCropper';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Textarea } from '@/components/ui/textarea';
 import { EditFieldVariant } from '@/enums/EditField/index.enum';
-import useAutosizeTextArea from '@/hooks/useAutosizedTextArea';
+import useAutosizeTextArea from '@/hooks/useAutosizeTextArea';
 import { IEditFieldConfig } from '@/types/EditField/index.d';
 import { t } from '@lingui/core/macro';
 import { useEffect, useRef, useState } from 'react';
-import EditModeFooter from '../Footer/EditModeFooter';
-import ImageCropper from '../ImageCropper';
-import { Textarea } from '../ui/textarea';
-import { useFakePage } from './useFakePage';
 
 export const EditFieldFakePageComponent: React.FC<IEditFieldConfig> = ({
   fieldName,
   variant,
   onFieldValueSet,
-  edittingFieldValue,
+  editingFieldValue,
   placeholder = t`Enter your text here`,
   characterLimit,
   allowEmpty = true,
@@ -22,23 +22,21 @@ export const EditFieldFakePageComponent: React.FC<IEditFieldConfig> = ({
   trimmer,
 }: IEditFieldConfig) => {
   const { isOpen, closeFakePage } = useFakePage();
-  const [fieldValue, setFieldValue] = useState<string>(
-    edittingFieldValue ?? ''
-  );
+  const [fieldValue, setFieldValue] = useState<string>(editingFieldValue ?? '');
   const isSaveDisabled =
     variant === EditFieldVariant.TEXT &&
-    ((!allowEmpty && !fieldValue) || fieldValue === edittingFieldValue);
+    ((!allowEmpty && !fieldValue) || fieldValue === editingFieldValue);
 
   useEffect(() => {
     if (variant === EditFieldVariant.TEXT) {
-      setFieldValue(edittingFieldValue ?? '');
+      setFieldValue(editingFieldValue ?? '');
     }
-  }, [edittingFieldValue, variant]);
+  }, [editingFieldValue, variant]);
 
   return (
     <Dialog open={isOpen} onOpenChange={closeFakePage}>
       <DialogContent
-        className="flex h-[100dvh] w-full items-center border-0 bg-transparent p-0"
+        className="flex h-dvh w-full items-center border-0 bg-transparent p-0"
         aria-describedby="edit-field-fake-page"
       >
         <div

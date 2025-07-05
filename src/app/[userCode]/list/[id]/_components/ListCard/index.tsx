@@ -20,6 +20,7 @@ import { openWindow } from '@/lib/openLink';
 import { getFormattedTime, parsePostgresDate } from '@/lib/time';
 import { urlPreview } from '@/lib/utils';
 
+import IdeaDrawerContent from '@/app/[userCode]/list/[id]/_components/IdeaDrawerContent';
 import { CategoriesI18n } from '@/constants/Lists/i18n';
 import useAuthStore from '@/stores/useAuthStore';
 import useCommonStore from '@/stores/useCommonStore';
@@ -28,9 +29,9 @@ import useUserStore from '@/stores/useUserStore';
 import { List } from '@/types/List';
 import { useLingui } from '@lingui/react';
 import { Trans } from '@lingui/react/macro';
-import { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
 import { useParams, useSearchParams } from 'next/navigation';
-import IdeaDrawerContent from '../IdeaDrawerContent';
+import { useEffect, useRef, useState } from 'react';
 
 export interface ViewListNavigateState {
   ideaID?: number;
@@ -255,22 +256,22 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
             </div>
           )}
           {data.coverImage && (
-            <img
-              src={data.coverImage || undefined}
+            <Image
+              src={data.coverImage || ''}
               alt={data.title}
               width={374}
               height={374}
-              className="mt-4 rounded-[12px] border border-black"
+              className="mt-4 rounded-xl border border-black"
             />
           )}
         </div>
-        {data.ideas.length > 0 && (
+        {data.ideas.length > 0 ? (
           <div className="mt-4 flex w-full flex-col">
             {data.ideas.map((idea) => {
               return (
                 <div
                   key={idea.title}
-                  className="flex min-h-[65px] items-center justify-between gap-2 border-t-[1px] border-gray-main-03 p-4 -tracking-1.1%"
+                  className="flex min-h-[65px] items-center justify-between gap-2 border-t border-gray-main-03 p-4 -tracking-1.1%"
                   onClick={() => onClickIdea(idea.id)}
                 >
                   <div className="flex w-full flex-col gap-2">
@@ -284,17 +285,21 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
                     )}
                   </div>
                   {idea.coverImage && (
-                    <img
-                      src={idea.coverImage || undefined}
+                    <Image
+                      src={idea.coverImage || ''}
+                      alt={idea.title}
                       width={64}
                       height={64}
-                      className="rounded-[8px] border border-black-text-01"
+                      className="rounded-lg border border-black-text-01"
                     />
                   )}
                 </div>
               );
             })}
           </div>
+        ) : (
+          // 無靈感文字/NoDataComponent？
+          <></>
         )}
       </div>
       <DrawerComponent

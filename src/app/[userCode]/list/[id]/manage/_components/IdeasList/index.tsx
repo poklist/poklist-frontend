@@ -1,6 +1,7 @@
 import IconDrag from '@/components/ui/icons/DragIcon';
 import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
 import { IdeaPreview } from '@/types/Idea';
+import Image from 'next/image';
 import React from 'react';
 import VirtualList from 'react-virtual-sortable';
 import { SortableEvent } from 'sortable-dnd';
@@ -73,8 +74,8 @@ const IdeaListSection: React.FC<IdeaListProps> = ({
                 </div>
                 <div className="flex items-center gap-2">
                   {idea.coverImage && (
-                    <img
-                      src={idea.coverImage || undefined}
+                    <Image
+                      src={idea.coverImage || ''}
                       className="h-10 max-h-10 min-h-10 w-10 min-w-10 max-w-10 flex-1 rounded border border-black-tint-04 bg-black object-contain"
                       alt={`Cover for ${idea.title}`}
                     />

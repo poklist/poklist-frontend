@@ -65,7 +65,7 @@ const buttonVariants = cva(
       },
       shape: {
         [ButtonShape.ROUNDED_FULL]: 'rounded-full',
-        [ButtonShape.ROUNDED_8PX]: 'rounded-[8px]',
+        [ButtonShape.ROUNDED_8PX]: 'rounded-lg',
         [ButtonShape.ROUNDED_5PX]: 'rounded-[5px]',
       },
     },

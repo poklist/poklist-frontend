@@ -1,8 +1,9 @@
+import { useListPreviews } from '@/hooks/queries/useLists';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { useUserRouteContext } from '@/hooks/useUserRouteContext';
-import { useListPreviews } from '@/hooks/queries/useLists';
-import { ListSectionSkeleton } from './ListSectionSkeleton';
 import { Trans } from '@lingui/react/macro';
+import Image from 'next/image';
+import { ListSectionSkeleton } from './ListSectionSkeleton';
 
 const ListSection: React.FC = () => {
   const { userCode } = useUserRouteContext();
@@ -35,8 +36,9 @@ const ListSection: React.FC = () => {
                 {listPreview.title}
               </p>
               {listPreview.coverImage && (
-                <img
-                  src={listPreview.coverImage || undefined}
+                <Image
+                  src={listPreview.coverImage || ''}
+                  alt={listPreview.title}
                   width={40}
                   height={40}
                   className="rounded-[3px] border border-black-text-01"

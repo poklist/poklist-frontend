@@ -47,7 +47,7 @@ const EditUserPage: React.FC = () => {
       variant: EditFieldVariant.TEXT,
       placeholder: t`Enter your name here`,
       characterLimit: 20,
-      edittingFieldValue: newUserInfo.displayName,
+      editingFieldValue: newUserInfo.displayName,
       allowEmpty: false,
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
@@ -62,7 +62,7 @@ const EditUserPage: React.FC = () => {
       variant: EditFieldVariant.TEXT,
       placeholder: t`Enter your username here`,
       characterLimit: 30,
-      edittingFieldValue: newUserInfo.userCode,
+      editingFieldValue: newUserInfo.userCode,
       allowEmpty: false,
       validator: validateUserCode,
       onFieldValueSet: (value: string | undefined) => {
@@ -78,7 +78,7 @@ const EditUserPage: React.FC = () => {
       variant: EditFieldVariant.TEXT,
       placeholder: t`Enter your bio here`,
       characterLimit: 250,
-      edittingFieldValue: newUserInfo.bio,
+      editingFieldValue: newUserInfo.bio,
       onFieldValueSet: (value: string | undefined) => {
         if (value) {
           setBio(value);
@@ -102,7 +102,7 @@ const EditUserPage: React.FC = () => {
       fieldName: t`Customized Link`,
       variant: EditFieldVariant.TEXT,
       placeholder: t`Add URL`,
-      edittingFieldValue: newUserInfo.socialLinks?.[SocialLinkType.CUSTOMIZED],
+      editingFieldValue: newUserInfo.socialLinks?.[SocialLinkType.CUSTOMIZED],
       onFieldValueSet: (value: string | undefined) => {
         if (value !== undefined) {
           setSocialLink(SocialLinkType.CUSTOMIZED, value);
@@ -115,7 +115,7 @@ const EditUserPage: React.FC = () => {
       fieldName: 'Instagram',
       variant: EditFieldVariant.TEXT,
       placeholder: t`Add account`,
-      edittingFieldValue: extractUsernameFromUrl(
+      editingFieldValue: extractUsernameFromUrl(
         SocialLinkType.INSTAGRAM,
         newUserInfo.socialLinks?.[SocialLinkType.INSTAGRAM]
       ),
@@ -139,7 +139,7 @@ const EditUserPage: React.FC = () => {
       fieldName: 'YouTube',
       variant: EditFieldVariant.TEXT,
       placeholder: t`Add account`,
-      edittingFieldValue: extractUsernameFromUrl(
+      editingFieldValue: extractUsernameFromUrl(
         SocialLinkType.YOUTUBE,
         newUserInfo.socialLinks?.[SocialLinkType.YOUTUBE]
       ),
@@ -163,7 +163,7 @@ const EditUserPage: React.FC = () => {
       fieldName: 'TikTok',
       variant: EditFieldVariant.TEXT,
       placeholder: t`Add account`,
-      edittingFieldValue: extractUsernameFromUrl(
+      editingFieldValue: extractUsernameFromUrl(
         SocialLinkType.TIKTOK,
         newUserInfo.socialLinks?.[SocialLinkType.TIKTOK]
       ),
@@ -187,7 +187,7 @@ const EditUserPage: React.FC = () => {
       fieldName: 'Threads',
       variant: EditFieldVariant.TEXT,
       placeholder: t`Add account`,
-      edittingFieldValue: extractUsernameFromUrl(
+      editingFieldValue: extractUsernameFromUrl(
         SocialLinkType.THREADS,
         newUserInfo.socialLinks?.[SocialLinkType.THREADS]
       ),
@@ -211,7 +211,7 @@ const EditUserPage: React.FC = () => {
       fieldName: 'LinkedIn',
       variant: EditFieldVariant.TEXT,
       placeholder: t`Add account`,
-      edittingFieldValue: extractUsernameFromUrl(
+      editingFieldValue: extractUsernameFromUrl(
         SocialLinkType.LINKEDIN,
         newUserInfo.socialLinks?.[SocialLinkType.LINKEDIN]
       ),

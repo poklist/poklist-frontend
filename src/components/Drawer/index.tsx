@@ -93,10 +93,7 @@ export const DrawerComponent: React.FC<IDrawerProps> = ({
       }}
     >
       <DrawerContent
-        className={cn(
-          'bottom-0 w-full max-w-mobile-max bg-white shadow',
-          className
-        )}
+        className={cn('bottom-0 w-full max-w-full bg-white shadow', className)}
       >
         {isShowClose && (
           <div className="flex justify-end">

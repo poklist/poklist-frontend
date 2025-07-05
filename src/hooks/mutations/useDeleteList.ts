@@ -41,8 +41,9 @@ export const useDeleteList = ({
       });
 
       // 重新獲取列表預覽資料
-      await queryClient.refetchQueries({
+      await queryClient.invalidateQueries({
         queryKey: [QueryKeys.LISTS, userCode, offset, limit],
+        refetchType: 'inactive',
       });
 
       onSuccess?.();
