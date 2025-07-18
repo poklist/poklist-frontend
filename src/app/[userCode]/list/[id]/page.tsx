@@ -93,7 +93,7 @@ export async function generateMetadata({
     return {
       title: 'List not found | Relist',
       description: 'This list could not be found.',
-      metadataBase: new URL('https://www.relist.cc'),
+      metadataBase: new URL('https://relist.cc'),
     };
   }
 
@@ -110,8 +110,8 @@ export async function generateMetadata({
   return {
     title: fullTitle,
     description,
-    // 4. 來源網址顯示：www.relist.cc
-    metadataBase: new URL('https://www.relist.cc'),
+    // 4. 來源網址顯示：relist.cc
+    metadataBase: new URL('https://relist.cc'),
     openGraph: {
       title: truncatedTitle, // OG 標題不包含 " | Relist"
       description,
