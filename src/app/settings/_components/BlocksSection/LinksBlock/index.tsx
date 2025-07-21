@@ -32,7 +32,7 @@ const LinksBlock: React.FC<ILinksBlockProps> = ({
         return (
           <div
             key={item.decription}
-            className="flex h-14 cursor-pointer items-center justify-between border-t border-[#F6F6F6] px-1"
+            className="flex h-14 cursor-pointer items-center justify-between border-t border-gray-note-05 px-1"
             onClick={handleClick(item)}
           >
             <p>{item.decription}</p>

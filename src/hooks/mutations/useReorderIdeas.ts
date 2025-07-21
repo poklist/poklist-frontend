@@ -14,7 +14,6 @@ import {
 
 interface UseReorderIdeasOptions {
   listID: string;
-  offset?: number;
   limit?: number;
   onSuccess?: (data: unknown) => void;
   onError?: (error: Error) => void;
@@ -22,7 +21,6 @@ interface UseReorderIdeasOptions {
 
 export const useReorderIdeas = ({
   listID,
-  offset = Idea.DEFAULT_FIRST_BATCH_OFFSET,
   limit = Idea.DEFAULT_BATCH_SIZE,
   onSuccess,
   onError,
@@ -80,7 +78,13 @@ export const useReorderIdeas = ({
       }
 
       await queryClient.invalidateQueries({
-        queryKey: [QueryKeys.LIST, listID, offset, limit],
+        queryKey: [
+          QueryKeys.LIST,
+          listID,
+          Idea.DEFAULT_FIRST_BATCH_OFFSET,
+          Idea.DEFAULT_BATCH_SIZE,
+        ],
+        refetchType: 'inactive',
       });
 
       await queryClient.invalidateQueries({
