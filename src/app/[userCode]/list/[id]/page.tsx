@@ -111,14 +111,14 @@ export async function generateMetadata({
 
   return {
     title: fullTitle,
-    description,
+    description: description,
     // 4. 來源網址顯示：relist.cc
     metadataBase: process.env.NEXT_PUBLIC_SITE_URL
       ? new URL(process.env.NEXT_PUBLIC_SITE_URL)
       : new URL('https://relist.cc'),
     openGraph: {
       title: truncatedTitle, // OG 標題不包含 " | Relist"
-      description,
+      description: description,
       images: images.map((image) => ({
         url: image,
         width: 1200,
@@ -132,7 +132,7 @@ export async function generateMetadata({
     twitter: {
       card: 'summary_large_image',
       title: truncatedTitle,
-      description,
+      description: description,
       images: images.map((image) => ({
         url: image,
         width: 1200,
