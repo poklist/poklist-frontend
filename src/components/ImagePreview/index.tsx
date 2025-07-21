@@ -1,7 +1,6 @@
 import { Button } from '@/components/ui/button';
 import IconClose from '@/components/ui/icons/CloseIcon';
 import { cn } from '@/lib/utils';
-import Image from 'next/image';
 
 type ImagePreviewProps = {
   className?: string;
@@ -19,7 +18,7 @@ const ImagePreviewComponent: React.FC<ImagePreviewProps> = ({
   }
   return (
     <div className={cn('relative', className)}>
-      <Image
+      <img
         src={typeof file === 'string' ? file : URL.createObjectURL(file)}
         alt="Cover Image Preview"
         className="h-60 w-60 rounded-2xl border border-black-text-01 object-cover"
