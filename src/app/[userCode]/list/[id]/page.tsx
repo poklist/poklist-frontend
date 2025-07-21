@@ -64,11 +64,11 @@ function getUserDisplayText(user: User): string {
 }
 
 // 工具函數：獲取預覽圖片
-function getPreviewImage(): string[] {
+function getPreviewImage(list: List): string[] {
   // 優先使用名單的封面圖片
-  // if (list.coverImage) {
-  //   return [list.coverImage];
-  // }
+  if (list.coverImage) {
+    return [list.coverImage];
+  }
 
   // 若無封面圖，使用指定的 Google Drive 預設圖片
   const defaultImages = [
@@ -107,7 +107,7 @@ export async function generateMetadata({
   const description = getUserDisplayText(user);
 
   // 3. 預覽圖片顯示：使用名單封面圖或指定的預設圖片（1200x630px格式）
-  const images = getPreviewImage();
+  const images = getPreviewImage(list);
 
   return {
     title: fullTitle,
