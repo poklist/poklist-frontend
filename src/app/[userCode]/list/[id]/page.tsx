@@ -64,7 +64,7 @@ function getUserDisplayText(user: User): string {
 }
 
 // 工具函數：獲取預覽圖片
-function getPreviewImage(list: List): string[] {
+function getPreviewImage(): string[] {
   // 優先使用名單的封面圖片
   // if (list.coverImage) {
   //   return [list.coverImage];
@@ -105,7 +105,7 @@ export async function generateMetadata({
   const description = getUserDisplayText(user);
 
   // 3. 預覽圖片顯示：使用名單封面圖或指定的預設圖片（1200x630px格式）
-  const images = getPreviewImage(list);
+  const images = getPreviewImage();
 
   return {
     title: fullTitle,
