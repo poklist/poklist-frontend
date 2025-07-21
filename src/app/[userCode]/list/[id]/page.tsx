@@ -66,9 +66,9 @@ function getUserDisplayText(user: User): string {
 // 工具函數：獲取預覽圖片
 function getPreviewImage(list: List): string[] {
   // 優先使用名單的封面圖片
-  if (list.coverImage) {
-    return [list.coverImage];
-  }
+  // if (list.coverImage) {
+  //   return [list.coverImage];
+  // }
 
   // 若無封面圖，使用指定的 Google Drive 預設圖片
   const defaultImages = [
