@@ -127,6 +127,7 @@ const ViewListPageClient: React.FC<ViewListPageClientProps> = ({ listID }) => {
         <FloatingButtonFooter
           hasLikeButton={true}
           isLiked={isLiked}
+          hasCreateListButton={!isMyPage}
           onClickLike={() => like({ params: { listID: listID } })}
           onClickUnlike={() => unlike({ params: { listID: listID } })}
         />

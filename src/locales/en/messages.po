@@ -768,12 +768,12 @@ msgid "Save"
 msgstr "Save"
 
 #: src/components/Footer/FloatingButtonFooter.tsx
-msgid "Like"
-msgstr "Like"
+#~ msgid "Create List"
+#~ msgstr "Create List"
 
 #: src/components/Footer/FloatingButtonFooter.tsx
-msgid "Create List"
-msgstr "Create List"
+msgid "Like"
+msgstr "Like"
 
 #: src/components/ImageCropper/index.tsx
 msgid "Image must be at least 150x150px."

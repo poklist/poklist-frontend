@@ -1,4 +1,9 @@
-import { Button, ButtonVariant } from '@/components/ui/button';
+import {
+  Button,
+  ButtonShape,
+  ButtonSize,
+  ButtonVariant,
+} from '@/components/ui/button';
 import IconAdd from '@/components/ui/icons/AddIcon';
 import IconLike from '@/components/ui/icons/LikeIcon';
 import IconLink from '@/components/ui/icons/LinkIcon';
@@ -51,39 +56,42 @@ const FloatingButtonFooter: React.FC<IFooterProps> = ({
   return (
     <footer
       id="floating-button-footer"
-      className="fixed inset-x-0 bottom-2 z-20 mx-auto flex w-fit items-center justify-center gap-2 sm:sticky md:max-w-mobile-max"
+      className="w-w-mobile-max fixed inset-x-0 bottom-2 z-20 mx-auto flex items-end justify-between px-[26px] sm:sticky md:max-w-mobile-max"
     >
-      {hasLikeButton && (
+      <div className="flex flex-row gap-2">
+        {hasLikeButton && (
+          <Button
+            onClick={handleLike}
+            variant={ButtonVariant.WHITE}
+            className="flex items-center gap-1.5 text-sm"
+          >
+            <IconLike
+              className={cn(isLiked ? 'stroke-red-warning-01' : 'stroke-black')}
+              fill={isLiked ? '#EB6052' : 'none'}
+            />
+            <Trans>Like</Trans>
+          </Button>
+        )}
         <Button
-          onClick={handleLike}
+          onClick={handleCopyHref}
           variant={ButtonVariant.WHITE}
           className="flex items-center gap-1.5 text-sm"
         >
-          <IconLike
-            className={cn(isLiked ? 'stroke-red-warning-01' : 'stroke-black')}
-            fill={isLiked ? '#EB6052' : 'none'}
-          />
-          <Trans>Like</Trans>
+          <IconLink />
+          <Trans>Copy</Trans>
         </Button>
-      )}
+      </div>
       {hasCreateListButton && (
         <Button
-          variant={ButtonVariant.WHITE}
-          className="flex items-center gap-2 text-sm"
+          variant={ButtonVariant.HIGHLIGHTED}
+          shape={ButtonShape.ROUNDED_FULL}
+          size={ButtonSize.ICON_LG}
+          className="shadow-[0px_0px_20px_0px_#0000004D]"
           onClick={handleCreateList}
         >
-          <IconAdd />
-          <Trans>Create List</Trans>
+          <IconAdd width={19} height={19} />
         </Button>
       )}
-      <Button
-        onClick={handleCopyHref}
-        variant={ButtonVariant.WHITE}
-        className="flex items-center gap-1.5 text-sm"
-      >
-        <IconLink />
-        <Trans>Copy</Trans>
-      </Button>
     </footer>
   );
 };
