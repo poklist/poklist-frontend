@@ -9,6 +9,7 @@ import { FakePageProvider } from '@/components/FakePage';
 import { Toaster } from '@/components/ui/toaster';
 import { LoginDrawer } from '@/components/Drawer/LoginDrawer';
 import { ErrorDrawer } from '@/components/ErrorDrawer';
+import CreateListOrIdeaDrawer from '@/components/Drawer/CreateListOrIdeaDrawer';
 import AlertComponent from '@/components/Alert';
 import LoadingSpinner from '@/components/Loading';
 import useCommonStore from '@/stores/useCommonStore';
@@ -36,7 +37,7 @@ interface ClientProvidersProps {
  * - Theme: Radix UI
  * - DrawerProvider: 抽屜狀態管理
  * - FakePageProvider: 假頁面狀態管理
- * - 全域 UI 組件: Loading, Alert, Error, Login, Toast
+ * - 全域 UI 組件: Loading, Alert, Error, Login, CreateListOrIdea, Toast
  * - ReactQueryDevtools: 開發工具
  */
 export const ClientProviders = ({ children }: ClientProvidersProps) => {
@@ -56,6 +57,7 @@ export const ClientProviders = ({ children }: ClientProvidersProps) => {
             <LoadingSpinner isLoading={isLoading} />
             <LoginDrawer />
             <ErrorDrawer />
+            <CreateListOrIdeaDrawer />
             <Toaster />
 
             <ReactQueryDevtools initialIsOpen={false} />

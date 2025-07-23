@@ -743,6 +743,22 @@ msgstr "正追蹤"
 msgid "<0>{0}</0>"
 msgstr "<0>{0}</0>"
 
+#: src/components/Drawer/CreateListOrIdeaDrawer.tsx
+msgid "說說你的好點子"
+msgstr ""
+
+#: src/components/Drawer/CreateListOrIdeaDrawer.tsx
+msgid "先來創個新名單，還是記下靈感，隨心所欲！"
+msgstr ""
+
+#: src/components/Drawer/CreateListOrIdeaDrawer.tsx
+msgid "建立新名單"
+msgstr ""
+
+#: src/components/Drawer/CreateListOrIdeaDrawer.tsx
+msgid "新增靈感"
+msgstr ""
+
 #: src/components/Drawer/LoginDrawer.tsx
 msgid "Right now, only invited users can log in"
 msgstr "現在僅開放受邀請的用戶登入體驗"
@@ -766,10 +782,6 @@ msgstr "請輸入內容"
 #: src/components/Footer/EditModeFooter.tsx
 msgid "Save"
 msgstr "儲存"
-
-#: src/components/Footer/FloatingButtonFooter.tsx
-#~ msgid "Create List"
-#~ msgstr "建立名單"
 
 #: src/components/Footer/FloatingButtonFooter.tsx
 msgid "Like"

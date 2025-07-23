@@ -8,11 +8,12 @@ import IconAdd from '@/components/ui/icons/AddIcon';
 import IconLike from '@/components/ui/icons/LikeIcon';
 import IconLink from '@/components/ui/icons/LinkIcon';
 import { useAuthWrapper } from '@/hooks/useAuth';
-import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
 import { useToast } from '@/hooks/useToast';
 import { cn, copyHref } from '@/lib/utils';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
+import { useDrawer } from '@/components/Drawer/useDrawer';
+import { DrawerIds } from '@/constants/Drawer';
 
 interface IFooterProps {
   hasLikeButton?: boolean;
@@ -30,8 +31,8 @@ const FloatingButtonFooter: React.FC<IFooterProps> = ({
   onClickUnlike,
 }: IFooterProps) => {
   const { toast } = useToast();
-  const navigateTo = useStrictNavigateNext();
   const { withAuth } = useAuthWrapper();
+  const { openDrawer } = useDrawer(DrawerIds.CREATE_LIST_OR_IDEA_DRAWER_ID);
 
   const handleCopyHref = () => {
     copyHref();
@@ -41,8 +42,8 @@ const FloatingButtonFooter: React.FC<IFooterProps> = ({
     });
   };
 
-  const handleCreateList = withAuth(() => {
-    navigateTo.createList();
+  const handleCreateClick = withAuth(() => {
+    openDrawer();
   });
 
   const handleLike = withAuth(() => {
@@ -87,7 +88,7 @@ const FloatingButtonFooter: React.FC<IFooterProps> = ({
           shape={ButtonShape.ROUNDED_FULL}
           size={ButtonSize.ICON_LG}
           className="shadow-[0px_0px_20px_0px_#0000004D]"
-          onClick={handleCreateList}
+          onClick={handleCreateClick}
         >
           <IconAdd width={19} height={19} />
         </Button>
