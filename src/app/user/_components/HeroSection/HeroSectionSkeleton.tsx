@@ -31,7 +31,7 @@ export const HeroSectionSkeleton: React.FC = () => {
         <Skeleton>
           <Button
             id="follow-button"
-            variant={ButtonVariant.HIGHLIGHTED}
+            variant={ButtonVariant.BLACK}
             size={ButtonSize.LG}
           >
             Follow

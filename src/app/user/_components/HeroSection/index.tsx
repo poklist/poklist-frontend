@@ -127,7 +127,8 @@ const HeroSection: React.FC = () => {
 
   useLayoutEffect(() => {
     if (userCode && currentPageUser) {
-      const apiFollowingState = isLoggedIn && currentPageUser.isFollowing === true;
+      const apiFollowingState =
+        isLoggedIn && currentPageUser.isFollowing === true;
       const hasExistingState = hasFollowingState(userCode);
 
       if (!hasExistingState) {
@@ -135,7 +136,13 @@ const HeroSection: React.FC = () => {
         setIsFollowing(userCode, apiFollowingState);
       }
     }
-  }, [isLoggedIn, currentPageUser, userCode, setIsFollowing, hasFollowingState]);
+  }, [
+    isLoggedIn,
+    currentPageUser,
+    userCode,
+    setIsFollowing,
+    hasFollowingState,
+  ]);
 
   // FUTURE: refactor the drawer content because we may have more than one drawer
   const onOpenBioDrawer = () => {
@@ -223,7 +230,9 @@ const HeroSection: React.FC = () => {
             <AvatarFallback>{currentPageUser.displayName[0]}</AvatarFallback>
           </Avatar>
           <p className="text-[17px] font-bold">{currentPageUser.displayName}</p>
-          <p className="text-[13px] font-semibold">@{currentPageUser.userCode}</p>
+          <p className="text-[13px] font-semibold">
+            @{currentPageUser.userCode}
+          </p>
           {currentPageUser.bio && (
             <p
               ref={bioRef}
@@ -248,9 +257,7 @@ const HeroSection: React.FC = () => {
           ) : (
             <Button
               id={isFollowing ? 'unfollow-button' : 'follow-button'}
-              variant={
-                isFollowing ? ButtonVariant.GRAY : ButtonVariant.HIGHLIGHTED
-              }
+              variant={isFollowing ? ButtonVariant.GRAY : ButtonVariant.BLACK}
               size={ButtonSize.LG}
               disabled={isFollowPending}
               onClick={isFollowing ? handleUnfollow : handleFollow}

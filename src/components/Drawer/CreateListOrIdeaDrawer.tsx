@@ -52,11 +52,11 @@ const CreateListOrIdeaDrawer: React.FC = () => {
       <div className="flex flex-col gap-4">
         <Button
           onClick={handleCreateList}
-          variant={ButtonVariant.BLACK}
+          variant={ButtonVariant.WHITE}
           size={ButtonSize.H40}
           shape={ButtonShape.ROUNDED_8PX}
         >
-          <Trans>建立新名單</Trans>
+          <Trans>Create List</Trans>
         </Button>
 
         <Button
@@ -65,7 +65,7 @@ const CreateListOrIdeaDrawer: React.FC = () => {
           size={ButtonSize.H40}
           shape={ButtonShape.ROUNDED_8PX}
         >
-          <Trans>新增靈感</Trans>
+          <Trans>Add Idea</Trans>
         </Button>
       </div>
     </div>

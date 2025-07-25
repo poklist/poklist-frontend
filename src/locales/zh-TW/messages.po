@@ -752,12 +752,12 @@ msgid "先來創個新名單，還是記下靈感，隨心所欲！"
 msgstr ""
 
 #: src/components/Drawer/CreateListOrIdeaDrawer.tsx
-msgid "建立新名單"
-msgstr ""
+msgid "Create List"
+msgstr "建立新名單"
 
 #: src/components/Drawer/CreateListOrIdeaDrawer.tsx
-msgid "新增靈感"
-msgstr ""
+msgid "Add Idea"
+msgstr "新增靈感"
 
 #: src/components/Drawer/LoginDrawer.tsx
 msgid "Right now, only invited users can log in"
