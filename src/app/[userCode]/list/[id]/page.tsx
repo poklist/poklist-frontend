@@ -4,6 +4,14 @@ import ViewListPageClient from './client';
 import { List } from '@/types/List';
 import { User } from '@/types/User';
 import { IResponse } from '@/types/response';
+import {
+  truncateTitle,
+  getUserDisplayText,
+  createBaseMetadata,
+  createOpenGraphMetadata,
+  createTwitterMetadata,
+  getPreviewImage,
+} from './utils/metadata';
 
 interface PageProps {
   params: Promise<{
@@ -51,34 +59,7 @@ async function fetchUserForSEO(userCode: string): Promise<User | null> {
   }
 }
 
-// 工具函數：標題長度限制處理
-function truncateTitle(title: string, maxLength: number = 60): string {
-  if (title.length <= maxLength) return title;
-  return title.substring(0, maxLength - 3) + '...';
-}
-
-// 工具函數：獲取用戶顯示名稱
-function getUserDisplayText(user: User): string {
-  const displayName = user.displayName?.trim();
-  return displayName ? `${displayName} on Relist` : 'Newbie on Relist';
-}
-
-// 工具函數：獲取預覽圖片
-function getPreviewImage(list: List): string[] {
-  // 優先使用名單的封面圖片
-  if (list.coverImage) {
-    return [list.coverImage];
-  }
-
-  // 若無封面圖，使用指定的 Google Drive 預設圖片
-  const defaultImages = [
-    'https://lh3.googleusercontent.com/d/1V2iUbUbUo7CYrUYS3eYuIDzvrda-NPNa',
-  ];
-
-  return defaultImages;
-}
-
-// generateMetadata 使用 server-side 資料
+// generateMetadata 使用共用邏輯
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
@@ -93,59 +74,40 @@ export async function generateMetadata({
     return {
       title: 'List not found | Relist',
       description: 'This list could not be found.',
-      metadataBase: process.env.NEXT_PUBLIC_SITE_URL
-        ? new URL(process.env.NEXT_PUBLIC_SITE_URL)
-        : new URL('https://relist.cc'),
+      ...createBaseMetadata(),
     };
   }
 
-  // 1. 預覽標題格式：[名單標題]，超出長度用...處理
+  // 1. 預覽標題格式：[名單標題]
   const truncatedTitle = truncateTitle(list.title);
   const fullTitle = `${truncatedTitle} | Relist`;
 
-  // 2. Relist 用戶姓名顯示：[用戶名稱] on Relist 或 Newbie on Relist
+  // 2. Relist 用戶姓名顯示
   const description = getUserDisplayText(user);
 
-  // 3. 預覽圖片顯示：使用名單封面圖或指定的預設圖片（1200x630px格式）
-  const images = getPreviewImage(list);
+  // 3. 預覽圖片顯示（使用原有的複雜邏輯）
+  const images = getPreviewImage(list.coverImage);
+
+  // 4. 建立 metadata 使用共用函數
+  const baseMetadata = createBaseMetadata();
+  const openGraphMetadata = createOpenGraphMetadata(
+    truncatedTitle,
+    description,
+    images,
+    `/${userCode}/list/${id}`
+  );
+  const twitterMetadata = createTwitterMetadata(
+    truncatedTitle,
+    description,
+    images
+  );
 
   return {
     title: fullTitle,
     description: description,
-    // 4. 來源網址顯示：relist.cc
-    metadataBase: process.env.NEXT_PUBLIC_SITE_URL
-      ? new URL(process.env.NEXT_PUBLIC_SITE_URL)
-      : new URL('https://relist.cc'),
-    openGraph: {
-      title: truncatedTitle, // OG 標題不包含 " | Relist"
-      description: description,
-      images: images.map((image) => ({
-        url: image,
-        width: 1200,
-        height: 630,
-        alt: truncatedTitle,
-      })),
-      siteName: 'Relist',
-      url: `/${userCode}/list/${id}`, // 相對路徑，配合 metadataBase
-      type: 'website',
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: truncatedTitle,
-      description: description,
-      images: images.map((image) => ({
-        url: image,
-        width: 1200,
-        height: 630,
-        alt: truncatedTitle,
-      })),
-      site: '@relist', // Twitter 帳號
-    },
-    // 其他有用的 SEO 標籤
-    robots: {
-      index: true,
-      follow: true,
-    },
+    ...baseMetadata,
+    openGraph: openGraphMetadata,
+    twitter: twitterMetadata,
     alternates: {
       canonical: `/${userCode}/list/${id}`,
     },
