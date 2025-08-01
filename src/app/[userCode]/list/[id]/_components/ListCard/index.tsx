@@ -22,8 +22,9 @@ import { urlPreview } from '@/lib/utils';
 
 import IdeaDrawerContent from '@/app/[userCode]/list/[id]/_components/IdeaDrawerContent';
 import { CategoriesI18n } from '@/constants/Lists/i18n';
+import { MessageType } from '@/enums/Style/index.enum';
+import { toast } from '@/hooks/useToast';
 import useAuthStore from '@/stores/useAuthStore';
-import useCommonStore from '@/stores/useCommonStore';
 import useLikeStore from '@/stores/useLikeStore';
 import useUserStore from '@/stores/useUserStore';
 import { List } from '@/types/List';
@@ -53,7 +54,6 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
   const { me } = useUserStore();
   const { getIsLiked } = useLikeStore();
   const { openDrawer } = useDrawer(DrawerIds.LIST_CARD_DRAWER_ID);
-  const { setShowingAlert } = useCommonStore();
   const [drawerContent, setDrawerContent] = useState<React.ReactNode>(null);
   const [selectedIdeaID, setSelectedIdeaID] = useState<number | null>(null);
   // FUTURE: move to custom hook?
@@ -93,10 +93,13 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
 
   useEffect(() => {
     if (isError) {
-      setShowingAlert(true, { message: 'Failed to fetch idea detail' });
+      toast({
+        title: 'Failed to fetch idea detail',
+        variant: MessageType.ERROR,
+      });
       setSelectedIdeaID(null);
     }
-  }, [isError, setShowingAlert]);
+  }, [isError]);
 
   useEffect(() => {
     if (idea && selectedIdeaID) {

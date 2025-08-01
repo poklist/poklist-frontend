@@ -11,7 +11,9 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { DrawerIds } from '@/constants/Drawer';
 import { EditFieldVariant } from '@/enums/EditField/index.enum';
+import { MessageType } from '@/enums/Style/index.enum';
 import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
+import { toast } from '@/hooks/useToast';
 import { cn, formatInput } from '@/lib/utils';
 import useCommonStore from '@/stores/useCommonStore';
 import { IEditFieldConfig } from '@/types/EditField/index.d';
@@ -44,8 +46,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
   dismissCallback,
   completedCallback,
 }) => {
-  const { setErrorDrawerMessage, setShowingAlert, setIsLoading } =
-    useCommonStore();
+  const { setErrorDrawerMessage, setIsLoading } = useCommonStore();
   const { openDrawer: openCancelDrawer, closeDrawer: closeCancelDrawer } =
     useDrawer(DrawerIds.CANCEL_IDEA_FORM_CONFIRM_DRAWER_ID);
   const navigateTo = useStrictNavigateNext();
@@ -71,6 +72,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
     openFakePage();
   };
 
+  // TODO load from localStorage in v0.3.5
   const ideaForm = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -118,6 +120,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
   const onDismiss = () => {
     let isFormEmpty = true;
     if (isFormModified) {
+      // TODO load from localStorage in v0.3.5
       openCancelDrawer();
       isFormEmpty = false;
     } else {
@@ -163,8 +166,9 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
         break;
       }
       case 'externalLink': {
-        setShowingAlert(true, {
-          message: value.externalLink?.message || 'Invalid url',
+        toast({
+          title: t`Error - Link must start with https:// `,
+          variant: MessageType.ERROR,
         });
         break;
       }
@@ -183,6 +187,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
     completedCallback(data);
   };
 
+  // TODO load from localStorage in v0.3.5
   useEffect(() => {
     if (!previousIdeaInfo) {
       return;

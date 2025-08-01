@@ -17,7 +17,7 @@ import { useUser } from '@/hooks/queries/useUser';
 import { useAuthWrapper } from '@/hooks/useAuth';
 import { useAuthRequired } from '@/hooks/useAuthRequired';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
-import { useToast } from '@/hooks/useToast';
+import { toast } from '@/hooks/useToast';
 import {
   ensureProtocol,
   extractUsernameFromUrl,
@@ -36,6 +36,7 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
 import FollowingListDrawer from '@/app/user/_components/HeroSection/FollowingListDrawer';
 import { HeroSectionSkeleton } from '@/app/user/_components/HeroSection/HeroSectionSkeleton';
+import { MessageType } from '@/enums/Style/index.enum';
 import { useUserRouteContext } from '@/hooks/useUserRouteContext';
 
 const HeroSection: React.FC = () => {
@@ -50,7 +51,6 @@ const HeroSection: React.FC = () => {
   const [drawerContent, setDrawerContent] = useState<React.ReactNode>(null);
   const bioRef = useRef<HTMLParagraphElement>(null);
   const { handleAuthRequired } = useAuthRequired();
-  const { toast } = useToast();
 
   // 獲取當前用戶的關注狀態
   const isFollowing = userCode ? getIsFollowing(userCode) : false;
@@ -92,7 +92,7 @@ const HeroSection: React.FC = () => {
         navigateTo.discovery();
         toast({
           title: t`The login session is expired, please login again`,
-          variant: 'success', // FUTURE: redefined variant
+          variant: MessageType.ERROR,
         });
       } else {
         navigateTo.error();
@@ -127,7 +127,8 @@ const HeroSection: React.FC = () => {
 
   useLayoutEffect(() => {
     if (userCode && currentPageUser) {
-      const apiFollowingState = isLoggedIn && currentPageUser.isFollowing === true;
+      const apiFollowingState =
+        isLoggedIn && currentPageUser.isFollowing === true;
       const hasExistingState = hasFollowingState(userCode);
 
       if (!hasExistingState) {
@@ -135,7 +136,13 @@ const HeroSection: React.FC = () => {
         setIsFollowing(userCode, apiFollowingState);
       }
     }
-  }, [isLoggedIn, currentPageUser, userCode, setIsFollowing, hasFollowingState]);
+  }, [
+    isLoggedIn,
+    currentPageUser,
+    userCode,
+    setIsFollowing,
+    hasFollowingState,
+  ]);
 
   // FUTURE: refactor the drawer content because we may have more than one drawer
   const onOpenBioDrawer = () => {
@@ -223,7 +230,9 @@ const HeroSection: React.FC = () => {
             <AvatarFallback>{currentPageUser.displayName[0]}</AvatarFallback>
           </Avatar>
           <p className="text-[17px] font-bold">{currentPageUser.displayName}</p>
-          <p className="text-[13px] font-semibold">@{currentPageUser.userCode}</p>
+          <p className="text-[13px] font-semibold">
+            @{currentPageUser.userCode}
+          </p>
           {currentPageUser.bio && (
             <p
               ref={bioRef}

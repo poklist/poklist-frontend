@@ -1,14 +1,14 @@
+import { MessageType } from '@/enums/Style/index.enum';
 import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
+import { toast } from '@/hooks/useToast';
 import { checkAndMigrateStorage } from '@/lib/storage';
 import useAuthStore from '@/stores/useAuthStore';
 import { t } from '@lingui/core/macro';
 import { useEffect } from 'react';
-import { useToast } from './useToast';
 
 const useCheckStorage = () => {
   const { isLoggedIn, logout } = useAuthStore();
   const navigateTo = useStrictNavigateNext();
-  const { toast } = useToast();
 
   useEffect(() => {
     if (isLoggedIn && checkAndMigrateStorage()) {
@@ -16,7 +16,7 @@ const useCheckStorage = () => {
       navigateTo.discovery();
       toast({
         title: t`The app is outdated, please login again`,
-        variant: 'success',
+        variant: MessageType.ERROR,
       });
     }
   }, [isLoggedIn, logout, navigateTo, toast]);

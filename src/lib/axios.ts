@@ -1,7 +1,8 @@
 import axios, { AxiosError } from 'axios';
 
+import { MessageType } from '@/enums/Style/index.enum';
+import { toast } from '@/hooks/useToast';
 import authStore from '@/stores/useAuthStore';
-import commonStore from '@/stores/useCommonStore';
 
 const instance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL as string,
@@ -15,10 +16,10 @@ instance.interceptors.request.use(
     return config;
   },
   (error: AxiosError) => {
-    const { setShowingAlert } = commonStore.getState();
     console.error(error);
-    setShowingAlert(true, {
-      message: error.message,
+    toast({
+      title: error.message,
+      variant: MessageType.ERROR,
     });
     window.location.href = '/';
     return Promise.reject(error);

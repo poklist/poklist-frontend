@@ -2,9 +2,10 @@ import { Button, ButtonVariant } from '@/components/ui/button';
 import IconAdd from '@/components/ui/icons/AddIcon';
 import IconLike from '@/components/ui/icons/LikeIcon';
 import IconLink from '@/components/ui/icons/LinkIcon';
+import { MessageType } from '@/enums/Style/index.enum';
 import { useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
-import { useToast } from '@/hooks/useToast';
+import { toast } from '@/hooks/useToast';
 import { cn, copyHref } from '@/lib/utils';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
@@ -24,7 +25,6 @@ const FloatingButtonFooter: React.FC<IFooterProps> = ({
   onClickLike,
   onClickUnlike,
 }: IFooterProps) => {
-  const { toast } = useToast();
   const navigateTo = useStrictNavigateNext();
   const { withAuth } = useAuthWrapper();
 
@@ -32,7 +32,7 @@ const FloatingButtonFooter: React.FC<IFooterProps> = ({
     copyHref();
     toast({
       title: t`Copied to clipboard`,
-      variant: 'success',
+      variant: MessageType.SUCCESS,
     });
   };
 
