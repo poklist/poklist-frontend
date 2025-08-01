@@ -11,6 +11,9 @@ export const truncateTitle = (
 };
 
 export function getPreviewImage(image: string | null | undefined): string[] {
+  const defaultImage =
+    'https://lh3.googleusercontent.com/d/1vqY55zHJQ1Yj0sWrRhtWB6ogFpJz7hoo';
+
   // 優先使用名單的封面圖片
   if (image) {
     // 建立 URL schema 驗證
@@ -21,10 +24,7 @@ export function getPreviewImage(image: string | null | undefined): string[] {
 
     // 如果是 base64，直接返回預設圖片
     if (isBase64) {
-      const defaultImages = [
-        'https://lh3.googleusercontent.com/d/1V2iUbUbUo7CYrUYS3eYuIDzvrda-NPNa',
-      ];
-      return defaultImages;
+      return [defaultImage];
     }
 
     // 檢查是否為有效的 URL
@@ -37,11 +37,7 @@ export function getPreviewImage(image: string | null | undefined): string[] {
   }
 
   // 若無封面圖或不是有效 URL，使用指定的 Google Drive 預設圖片
-  const defaultImages = [
-    'https://lh3.googleusercontent.com/d/1V2iUbUbUo7CYrUYS3eYuIDzvrda-NPNa',
-  ];
-
-  return defaultImages;
+  return [defaultImage];
 }
 
 // 取得用戶顯示文字的共用函數

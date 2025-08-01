@@ -744,6 +744,22 @@ msgstr "Follow and check back soon for surprise lists!"
 msgid "Followings"
 msgstr "Followings"
 
+#: src/components/Drawer/CreateListOrIdeaDrawer.tsx
+msgid "說說你的好點子"
+msgstr "說說你的好點子"
+
+#: src/components/Drawer/CreateListOrIdeaDrawer.tsx
+msgid "先來創個新名單，還是記下靈感，隨心所欲！"
+msgstr "先來創個新名單，還是記下靈感，隨心所欲！"
+
+#: src/components/Drawer/CreateListOrIdeaDrawer.tsx
+msgid "Create List"
+msgstr "Create List"
+
+#: src/components/Drawer/CreateListOrIdeaDrawer.tsx
+msgid "Add Idea"
+msgstr "Add Idea"
+
 #: src/components/Drawer/LoginDrawer.tsx
 msgid "Right now, only invited users can log in"
 msgstr "Right now, only invited users can log in"
@@ -771,10 +787,6 @@ msgstr "Save"
 #: src/components/Footer/FloatingButtonFooter.tsx
 msgid "Like"
 msgstr "Like"
-
-#: src/components/Footer/FloatingButtonFooter.tsx
-msgid "Create List"
-msgstr "Create List"
 
 #: src/components/ImageCropper/index.tsx
 msgid "Image must be at least 150x150px."
