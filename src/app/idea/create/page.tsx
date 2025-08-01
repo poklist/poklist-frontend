@@ -1,16 +1,18 @@
 'use client';
 
+import IdeaForm from '@/app/idea/_components/Form';
+import Header from '@/app/idea/_components/Header';
+import { MessageType } from '@/enums/Style/index.enum';
 import { useCreateIdea } from '@/hooks/mutations/useCreateIdea';
 import { useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
-import IdeaForm from '../_components/Form';
-import Header from '../_components/Header';
+import { toast } from '@/hooks/useToast';
 import useCommonStore from '@/stores/useCommonStore';
 import useUserStore from '@/stores/useUserStore';
 import { IdeaBody } from '@/types/Idea';
 import { Trans } from '@lingui/react/macro';
-import React, { useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
+import React, { useEffect } from 'react';
 
 export interface CreateIdeaNavigateState {
   listID: number;
@@ -22,7 +24,7 @@ const IdeaCreatePage: React.FC = () => {
   const searchParams = useSearchParams();
   const listID = Number(searchParams?.get('listID'));
   const listTitle = searchParams?.get('listTitle') || '';
-  const { setIsLoading, setShowingAlert } = useCommonStore();
+  const { setIsLoading } = useCommonStore();
   const { me } = useUserStore();
 
   const { withAuth } = useAuthWrapper();
@@ -43,7 +45,10 @@ const IdeaCreatePage: React.FC = () => {
           navigateTo.manageList(me?.userCode, listID.toString());
         },
         onError: (error: Error) => {
-          setShowingAlert(true, { message: String(error) });
+          toast({
+            title: String(error),
+            variant: MessageType.ERROR,
+          });
           setIsLoading(false);
         },
       }

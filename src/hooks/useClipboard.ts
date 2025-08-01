@@ -1,5 +1,5 @@
+import useTimeout from '@/hooks/useTimeout';
 import { useState } from 'react';
-import useTimeout from './useTimeout';
 
 const DELAY = 1500;
 

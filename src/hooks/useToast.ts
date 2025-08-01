@@ -4,9 +4,15 @@
 import * as React from 'react';
 
 import type { ToastActionElement, ToastProps } from '@/components/ui/toast';
+import { MessageType } from '@/enums/Style/index.enum';
 
 const TOAST_LIMIT = 1;
-const TOAST_REMOVE_DELAY = 1000000;
+const TOAST_REMOVE_DELAY = 2000;
+
+export interface IAlertMessage {
+  message: string;
+  type: MessageType;
+}
 
 type ToasterToast = ToastProps & {
   id: string;

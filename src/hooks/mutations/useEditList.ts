@@ -1,8 +1,9 @@
 import ApiPath from '@/constants/apiPath';
 import { Idea, List } from '@/constants/list';
 import QueryKeys from '@/constants/queryKeys';
+import { MessageType } from '@/enums/Style/index.enum';
+import { toast } from '@/hooks/useToast';
 import axios from '@/lib/axios';
-import useCommonStore from '@/stores/useCommonStore';
 import { CreateListResponse, ListBody } from '@/types/List';
 import { IResponse } from '@/types/response';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -22,7 +23,6 @@ export const useEditList = ({
   ideaOffset = Idea.DEFAULT_FIRST_BATCH_OFFSET,
   ideaLimit = Idea.DEFAULT_BATCH_SIZE,
 }: UseEditListOptions) => {
-  const { setShowingAlert } = useCommonStore();
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
@@ -65,7 +65,10 @@ export const useEditList = ({
       });
     },
     onError: (error) => {
-      setShowingAlert(true, { message: String(error) });
+      toast({
+        title: String(error),
+        variant: MessageType.ERROR,
+      });
     },
   });
 

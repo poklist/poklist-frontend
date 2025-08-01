@@ -1,8 +1,9 @@
 import ApiPath from '@/constants/apiPath';
 import { Idea } from '@/constants/list';
 import QueryKeys from '@/constants/queryKeys';
+import { MessageType } from '@/enums/Style/index.enum';
+import { toast } from '@/hooks/useToast';
 import axios from '@/lib/axios';
-import useCommonStore from '@/stores/useCommonStore';
 import { IdeaPreview } from '@/types/Idea';
 import { List } from '@/types/List';
 import { IResponse } from '@/types/response';
@@ -25,7 +26,6 @@ export const useReorderIdeas = ({
   onSuccess,
   onError,
 }: UseReorderIdeasOptions) => {
-  const { setShowingAlert } = useCommonStore();
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
@@ -94,7 +94,10 @@ export const useReorderIdeas = ({
       onSuccess?.(serverData);
     },
     onError: (error) => {
-      setShowingAlert(true, { message: String(error) });
+      toast({
+        title: String(error),
+        variant: MessageType.ERROR,
+      });
       onError?.(error);
     },
   });

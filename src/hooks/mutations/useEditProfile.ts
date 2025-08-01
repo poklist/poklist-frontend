@@ -1,4 +1,5 @@
 import QueryKeys from '@/constants/queryKeys';
+import { MessageType } from '@/enums/Style/index.enum';
 import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
 import axios from '@/lib/axios';
 import useAuthStore from '@/stores/useAuthStore';
@@ -59,9 +60,10 @@ export const useEditProfile = ({
       if (error.response?.status === 401) {
         logout();
         navigateTo.discovery();
+
         toast({
           title: t`Please login again`,
-          variant: 'success',
+          variant: MessageType.SUCCESS,
         });
       }
       console.error(error);

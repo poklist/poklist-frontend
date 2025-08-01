@@ -1,10 +1,10 @@
 'use client';
 
+import ListForm from '@/app/list/_components/Form';
+import Header from '@/app/list/_components/Header';
 import { useCreateList } from '@/hooks/mutations/useCreateList';
 import { useAuthCheck, useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
-import ListForm from '../_components/Form';
-import Header from '../_components/Header';
 import useCommonStore from '@/stores/useCommonStore';
 import useUserStore from '@/stores/useUserStore';
 import { ListBody } from '@/types/List';

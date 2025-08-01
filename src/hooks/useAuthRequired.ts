@@ -1,7 +1,8 @@
-import { useCallback } from 'react';
-import { useToast } from '@/hooks/useToast';
+import { MessageType } from '@/enums/Style/index.enum';
+import { toast } from '@/hooks/useToast';
 import useCommonStore from '@/stores/useCommonStore';
 import { t } from '@lingui/core/macro';
+import { useCallback } from 'react';
 
 /**
  * 統一的認證處理 hook
@@ -11,15 +12,14 @@ import { t } from '@lingui/core/macro';
  */
 export const useAuthRequired = () => {
   const { setIsLoginDrawerOpen } = useCommonStore();
-  const { toast } = useToast();
 
   const handleAuthRequired = useCallback(() => {
     setIsLoginDrawerOpen(true);
     toast({
       title: t`Please login to do this action`,
-      variant: 'destructive',
+      variant: MessageType.ERROR,
     });
-  }, [setIsLoginDrawerOpen, toast]);
+  }, [setIsLoginDrawerOpen]);
 
   return { handleAuthRequired };
 };
