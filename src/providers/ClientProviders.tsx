@@ -1,6 +1,7 @@
 'use client';
 
 import { DrawerProvider } from '@/components/Drawer';
+import CreateListOrIdeaDrawer from '@/components/Drawer/CreateListOrIdeaDrawer';
 import { LoginDrawer } from '@/components/Drawer/LoginDrawer';
 import { ErrorDrawer } from '@/components/ErrorDrawer';
 import { FakePageProvider } from '@/components/FakePage';

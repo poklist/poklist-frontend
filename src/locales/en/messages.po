@@ -744,13 +744,6 @@ msgstr "Follow and check back soon for surprise lists!"
 msgid "Followings"
 msgstr "Followings"
 
-#. placeholder {0}: choice.label || choice.value
-#. placeholder {0}: alertMessage.message
-#: src/components/Alert/index.tsx
-#: src/components/Radio/index.tsx
-msgid "<0>{0}</0>"
-msgstr ""
-
 #: src/components/Drawer/CreateListOrIdeaDrawer.tsx
 msgid "說說你的好點子"
 msgstr "說說你的好點子"
