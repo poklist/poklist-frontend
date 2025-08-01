@@ -11,12 +11,13 @@ import IconTextarea from '@/components/ui/icons/TextareaIcon';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { DrawerIds } from '@/constants/Drawer';
+import { CategoriesI18n } from '@/constants/Lists/i18n';
 import { EditFieldVariant } from '@/enums/EditField/index.enum';
-import { RadioType } from '@/enums/Style/index.enum';
+import { MessageType, RadioType } from '@/enums/Style/index.enum';
 import { useCategories } from '@/hooks/queries/useCategories';
 import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
+import { toast } from '@/hooks/useToast';
 import { cn, formatInput } from '@/lib/utils';
-import { CategoriesI18n } from '@/constants/Lists/i18n';
 import useCommonStore from '@/stores/useCommonStore';
 import { IEditFieldConfig } from '@/types/EditField/index.d';
 import { ListBody } from '@/types/List';
@@ -50,8 +51,7 @@ const ListForm: React.FC<IListFormProps> = ({
   dismissCallback,
   completedCallback,
 }) => {
-  const { setErrorDrawerMessage, setShowingAlert, setIsLoading } =
-    useCommonStore();
+  const { setErrorDrawerMessage, setIsLoading } = useCommonStore();
   const { openDrawer: openCategoryDrawer, closeDrawer: closeCategoryDrawer } =
     useDrawer(DrawerIds.CATEGORY_DRAWER_ID);
   const { openDrawer: openCancelDrawer, closeDrawer: closeCancelDrawer } =
@@ -87,6 +87,7 @@ const ListForm: React.FC<IListFormProps> = ({
   const [isTextareaFocus, setIsTextareaFocus] = useState(false);
   const [isFormModified, setIsFormModified] = useState(false);
 
+  // TODO load from localStorage in v0.3.5
   const listForm = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -136,6 +137,7 @@ const ListForm: React.FC<IListFormProps> = ({
   const onDismiss = () => {
     let isFormEmpty = true;
     if (isFormModified) {
+      // TODO load from localStorage in v0.3.5
       openCancelDrawer();
       isFormEmpty = false;
     } else {
@@ -181,8 +183,9 @@ const ListForm: React.FC<IListFormProps> = ({
         break;
       }
       case 'externalLink': {
-        setShowingAlert(true, {
-          message: value.externalLink?.message || 'Invalid url',
+        toast({
+          title: t`Error - Link must start with https:// `,
+          variant: MessageType.ERROR,
         });
         break;
       }
@@ -213,6 +216,7 @@ const ListForm: React.FC<IListFormProps> = ({
     };
   }, []); // 移除依賴，避免無限循環
 
+  // TODO load from localStorage in v0.3.5
   useEffect(() => {
     if (!defaultListInfo) {
       return;
@@ -439,7 +443,7 @@ const ListForm: React.FC<IListFormProps> = ({
       {fieldConfig && <EditFieldFakePageComponent {...fieldConfig} />}
 
       {/* FUTURE: merge into reusable component */}
-      <footer className="fixed bottom-0 left-0 z-10 flex w-full justify-between border-t border-t-gray-main-03 bg-white px-4 py-2 sm:sticky md:max-w-mobile-max">
+      <footer className="fixed bottom-0 left-0 z-10 flex w-full justify-between border-t border-t-gray-main-03 bg-white px-4 py-2 sm:sticky md:max-w-full">
         <div className="flex items-center gap-2">
           <div
             onClick={() => onDismiss()}

@@ -1,18 +1,16 @@
 'use client';
 
-import { ReactNode } from 'react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { Theme } from '@radix-ui/themes';
 import { DrawerProvider } from '@/components/Drawer';
-import { FakePageProvider } from '@/components/FakePage';
-import { Toaster } from '@/components/ui/toaster';
 import { LoginDrawer } from '@/components/Drawer/LoginDrawer';
 import { ErrorDrawer } from '@/components/ErrorDrawer';
-import CreateListOrIdeaDrawer from '@/components/Drawer/CreateListOrIdeaDrawer';
-import AlertComponent from '@/components/Alert';
+import { FakePageProvider } from '@/components/FakePage';
 import LoadingSpinner from '@/components/Loading';
+import { Toaster } from '@/components/ui/toaster';
 import useCommonStore from '@/stores/useCommonStore';
+import { Theme } from '@radix-ui/themes';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { ReactNode } from 'react';
 
 // 將 QueryClient 實例化移到組件外部
 const queryClient = new QueryClient({
@@ -51,9 +49,6 @@ export const ClientProviders = ({ children }: ClientProvidersProps) => {
             {children}
 
             {/* 全域 UI 組件 */}
-            <div className="fixed top-0 z-50 bg-white">
-              <AlertComponent />
-            </div>
             <LoadingSpinner isLoading={isLoading} />
             <LoginDrawer />
             <ErrorDrawer />

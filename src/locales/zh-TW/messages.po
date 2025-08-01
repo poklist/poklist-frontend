@@ -240,6 +240,14 @@ msgstr "字數有點爆表，請減到 {DESC_MAX_LENGTH} 個字元以內。"
 
 #: src/app/[userCode]/list/_components/Form/index.tsx
 #: src/app/_shared/_components/List/Form/index.tsx
+#: src/app/idea/_components/Form/index.tsx
+#: src/app/list/_components/Form/index.tsx
+#: src/app/list/create/_components/Form/index.tsx
+msgid "Error - Link must start with https:// "
+msgstr "網址有誤 - 需以 https:// 開頭"
+
+#: src/app/[userCode]/list/_components/Form/index.tsx
+#: src/app/_shared/_components/List/Form/index.tsx
 #: src/app/list/_components/Form/index.tsx
 #: src/app/list/create/_components/Form/index.tsx
 msgid "This is the title of your list"
@@ -803,6 +811,11 @@ msgstr "500x500像素，限 JPG 或 PNG，最大4MB"
 #: src/components/ImageUploader/index.tsx
 msgid "Upload a cover"
 msgstr "封面圖片"
+
+#. placeholder {0}: choice.label || choice.value
+#: src/components/Radio/index.tsx
+msgid "<0>{0}</0>"
+msgstr "<0>{0}</0>"
 
 #: src/constants/Home/index.en.ts
 msgid "Join Relist and share your lists."

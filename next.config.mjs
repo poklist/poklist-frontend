@@ -8,6 +8,6 @@ const nextConfig = {
   experimental: {
     swcPlugins: [['@lingui/swc-plugin', {}]],
   },
+  output: 'standalone',
 };
-
 export default nextConfig;

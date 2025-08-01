@@ -11,12 +11,13 @@ import IconTextarea from '@/components/ui/icons/TextareaIcon';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { DrawerIds } from '@/constants/Drawer';
+import { CategoriesI18n } from '@/constants/Lists/i18n';
 import { EditFieldVariant } from '@/enums/EditField/index.enum';
-import { RadioType } from '@/enums/Style/index.enum';
+import { MessageType, RadioType } from '@/enums/Style/index.enum';
 import { useCategories } from '@/hooks/queries/useCategories';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
+import { toast } from '@/hooks/useToast';
 import { cn, formatInput } from '@/lib/utils';
-import { CategoriesI18n } from '@/constants/Lists/i18n';
 import useCommonStore from '@/stores/useCommonStore';
 import { IEditFieldConfig } from '@/types/EditField/index.d';
 import { ListBody } from '@/types/List';
@@ -50,8 +51,7 @@ const ListForm: React.FC<IListFormProps> = ({
   dismissCallback,
   completedCallback,
 }) => {
-  const { setErrorDrawerMessage, setShowingAlert, setIsLoading } =
-    useCommonStore();
+  const { setErrorDrawerMessage, setIsLoading } = useCommonStore();
   const { openDrawer: openCategoryDrawer, closeDrawer: closeCategoryDrawer } =
     useDrawer(DrawerIds.CATEGORY_DRAWER_ID);
   const { openDrawer: openCancelDrawer, closeDrawer: closeCancelDrawer } =
@@ -181,8 +181,9 @@ const ListForm: React.FC<IListFormProps> = ({
         break;
       }
       case 'externalLink': {
-        setShowingAlert(true, {
-          message: value.externalLink?.message || 'Invalid url',
+        toast({
+          title: t`Error - Link must start with https:// `,
+          variant: MessageType.ERROR,
         });
         break;
       }

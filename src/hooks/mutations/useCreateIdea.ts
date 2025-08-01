@@ -1,8 +1,9 @@
 import ApiPath from '@/constants/apiPath';
 import { Idea } from '@/constants/list';
 import QueryKeys from '@/constants/queryKeys';
+import { MessageType } from '@/enums/Style/index.enum';
+import { toast } from '@/hooks/useToast';
 import axios from '@/lib/axios';
-import useCommonStore from '@/stores/useCommonStore';
 import { CreateIdeaRequest, CreateIdeaResponse } from '@/types/Idea';
 import { IResponse } from '@/types/response';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -17,7 +18,6 @@ export const useCreateIdea = ({
   onError,
 }: UseCreateIdeaOptions = {}) => {
   const queryClient = useQueryClient();
-  const { setShowingAlert } = useCommonStore();
 
   const mutation = useMutation({
     mutationFn: async (ideaData: CreateIdeaRequest) => {
@@ -48,7 +48,10 @@ export const useCreateIdea = ({
       onSuccess?.(data);
     },
     onError: (error) => {
-      setShowingAlert(true, { message: String(error) });
+      toast({
+        title: String(error),
+        variant: MessageType.ERROR,
+      });
       onError?.(error);
     },
   });

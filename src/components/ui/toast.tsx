@@ -1,3 +1,4 @@
+import { MessageType } from '@/enums/Style/index.enum';
 import { cn } from '@/lib/utils';
 import * as ToastPrimitives from '@radix-ui/react-toast';
 import { cva, type VariantProps } from 'class-variance-authority';
@@ -26,23 +27,27 @@ ToastViewport.propTypes = {
 };
 
 const toastVariants = cva(
-  'group pointer-events-auto relative flex w-full items-center justify-between space-x-4 overflow-hidden rounded-lg border py-3 px-4 shadow-lg transition-all data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-right-full data-[state=open]:slide-in-from-top-full data-[state=open]:sm:slide-in-from-bottom-full text-[17px] top-14 border-0',
+  'group pointer-events-auto relative flex w-full items-center justify-between space-x-4 overflow-hidden rounded-lg border py-3 px-4 shadow-lg transition-all data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-y)] data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-right-full data-[state=open]:slide-in-from-top-full data-[state=open]:sm:slide-in-from-bottom-full text-[17px] font-bold border-0',
   {
     variants: {
       variant: {
-        default: 'border bg-background text-foreground',
-        destructive:
-          'destructive group border-destructive bg-destructive text-destructive-foreground',
-        success: 'success group bg-green-bright-01',
+        // default: 'border bg-background text-foreground',
+        // destructive:
+        //   'destructive group border-destructive bg-destructive text-destructive-foreground',
+        [MessageType.SUCCESS]: 'success group bg-green-bright-01',
+        [MessageType.ERROR]: 'error group bg-red-warning-01',
       },
     },
     defaultVariants: {
-      variant: 'default',
+      variant: MessageType.SUCCESS,
     },
   }
 );
 
-type ToastVariant = 'default' | 'destructive' | 'success';
+type ToastVariant =
+  // | 'default'
+  // | 'destructive'
+  MessageType.SUCCESS | MessageType.ERROR;
 
 const Toast = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Root>,
@@ -60,7 +65,10 @@ const Toast = React.forwardRef<
 Toast.displayName = ToastPrimitives.Root.displayName;
 Toast.propTypes = {
   className: PropTypes.string,
-  variant: PropTypes.oneOf<ToastVariant>(['default', 'destructive', 'success']),
+  variant: PropTypes.oneOf<ToastVariant>([
+    MessageType.SUCCESS,
+    MessageType.ERROR,
+  ]),
 };
 
 const ToastAction = React.forwardRef<

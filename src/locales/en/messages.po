@@ -240,6 +240,14 @@ msgstr "Please keep it under {DESC_MAX_LENGTH} characters."
 
 #: src/app/[userCode]/list/_components/Form/index.tsx
 #: src/app/_shared/_components/List/Form/index.tsx
+#: src/app/idea/_components/Form/index.tsx
+#: src/app/list/_components/Form/index.tsx
+#: src/app/list/create/_components/Form/index.tsx
+msgid "Error - Link must start with https:// "
+msgstr "Error - Link must start with https:// "
+
+#: src/app/[userCode]/list/_components/Form/index.tsx
+#: src/app/_shared/_components/List/Form/index.tsx
 #: src/app/list/_components/Form/index.tsx
 #: src/app/list/create/_components/Form/index.tsx
 msgid "This is the title of your list"
@@ -803,6 +811,11 @@ msgstr "500x500px, JPG or PNG, max 4MB"
 #: src/components/ImageUploader/index.tsx
 msgid "Upload a cover"
 msgstr "Upload a cover"
+
+#. placeholder {0}: choice.label || choice.value
+#: src/components/Radio/index.tsx
+msgid "<0>{0}</0>"
+msgstr ""
 
 #: src/constants/Home/index.en.ts
 msgid "Join Relist and share your lists."

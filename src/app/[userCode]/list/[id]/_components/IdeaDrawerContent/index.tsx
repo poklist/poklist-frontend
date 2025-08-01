@@ -7,7 +7,8 @@ import {
 import IconLink from '@/components/ui/icons/LinkIcon';
 import LinkIconWrapper from '@/components/ui/wrappers/LinkIconWrapper';
 import { SocialLinkType } from '@/enums/index.enum';
-import { useToast } from '@/hooks/useToast';
+import { MessageType } from '@/enums/Style/index.enum';
+import { toast } from '@/hooks/useToast';
 import { openWindow } from '@/lib/openLink';
 import { getFormattedTime } from '@/lib/time';
 import { copyHref, urlPreview } from '@/lib/utils';
@@ -25,13 +26,12 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({
   data,
 }: IIdeaDrawerContentProps) => {
   const { i18n } = useLingui();
-  const { toast } = useToast();
 
   const handleCopyHref = () => {
     copyHref(`/idea/${data.id}`);
     toast({
       title: t`Copied to clipboard`,
-      variant: 'success',
+      variant: MessageType.SUCCESS,
     });
   };
 

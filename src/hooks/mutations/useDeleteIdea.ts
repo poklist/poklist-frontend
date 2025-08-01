@@ -1,8 +1,9 @@
 import ApiPath from '@/constants/apiPath';
 import { Idea } from '@/constants/list';
 import QueryKeys from '@/constants/queryKeys';
+import { MessageType } from '@/enums/Style/index.enum';
+import { toast } from '@/hooks/useToast';
 import axios from '@/lib/axios';
-import useCommonStore from '@/stores/useCommonStore';
 import { IResponse } from '@/types/response';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
@@ -11,7 +12,6 @@ interface UseDeleteIdeaOptions {
 }
 
 const useDeleteIdea = ({ listID }: UseDeleteIdeaOptions) => {
-  const { setShowingAlert } = useCommonStore();
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
@@ -44,7 +44,10 @@ const useDeleteIdea = ({ listID }: UseDeleteIdeaOptions) => {
       });
     },
     onError: (error) => {
-      setShowingAlert(true, { message: String(error) });
+      toast({
+        title: String(error),
+        variant: MessageType.ERROR,
+      });
     },
   });
 
