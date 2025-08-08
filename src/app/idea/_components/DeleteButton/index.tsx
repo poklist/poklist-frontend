@@ -1,7 +1,7 @@
 import { DrawerComponent } from '@/components/Drawer';
 import { useDrawer } from '@/components/Drawer/useDrawer';
 import { Button, ButtonShape, ButtonVariant } from '@/components/ui/button';
-import IconTrash from '@/components/ui/icons/TrashIcon';
+import IconTrashCircle from '@/components/ui/icons/TrashCircleIcon';
 import { DrawerIds } from '@/constants/Drawer';
 import { Trans } from '@lingui/react/macro';
 import React from 'react';
@@ -19,7 +19,7 @@ export const DeleteButton: React.FC<IDeleteButtonProps> = ({
 
   return (
     <>
-      <IconTrash
+      <IconTrashCircle
         onClick={() => openDrawer()}
         className="cursor-pointer"
         aria-label="Delete"

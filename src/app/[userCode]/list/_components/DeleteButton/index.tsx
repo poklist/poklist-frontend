@@ -7,7 +7,7 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from '@/components/ui/drawer';
-import IconTrash from '@/components/ui/icons/TrashIcon';
+import IconTrashCircle from '@/components/ui/icons/TrashCircleIcon';
 import { Trans } from '@lingui/react/macro';
 import React, { useState } from 'react';
 
@@ -28,7 +28,10 @@ export const DeleteButton: React.FC<IDeleteButtonProps> = ({
 
   return (
     <>
-      <IconTrash onClick={() => openDrawer()} className="cursor-pointer" />
+      <IconTrashCircle
+        onClick={() => openDrawer()}
+        className="cursor-pointer"
+      />
       <Drawer open={isDeleteDrawerOpen} onOpenChange={closeDrawer}>
         <DrawerContent className="bottom-0 w-full bg-white shadow">
           <div className="flex justify-end">

@@ -20,14 +20,23 @@ import { openWindow } from '@/lib/openLink';
 import { getFormattedTime, parsePostgresDate } from '@/lib/time';
 import { urlPreview } from '@/lib/utils';
 
+import DropdownMenuComponent, {
+  DropdownItem,
+} from '@/app/[userCode]/list/[id]/_components/DropdownMenu';
 import IdeaDrawerContent from '@/app/[userCode]/list/[id]/_components/IdeaDrawerContent';
+import IconAddCircle from '@/components/ui/icons/AddCircleIcon';
+import IconEdit from '@/components/ui/icons/EditIcon';
+import IconSort from '@/components/ui/icons/SortIcon';
+import IconThreeDots from '@/components/ui/icons/ThreeDots';
+import TrashIcon from '@/components/ui/icons/TrashIcon';
 import { CategoriesI18n } from '@/constants/Lists/i18n';
-import { MessageType } from '@/enums/Style/index.enum';
+import { DropdownItemType, MessageType } from '@/enums/Style/index.enum';
 import { toast } from '@/hooks/useToast';
 import useAuthStore from '@/stores/useAuthStore';
 import useLikeStore from '@/stores/useLikeStore';
 import useUserStore from '@/stores/useUserStore';
 import { List } from '@/types/List';
+import { t } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
 import { Trans } from '@lingui/react/macro';
 import Image from 'next/image';
@@ -189,9 +198,52 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
     }
   }, [searchParams]);
 
+  const items: DropdownItem[] = [
+    {
+      type: DropdownItemType.ITEM,
+      label: t`Edit List Info`,
+      onClick: () => navigateTo.manageList(me.userCode, data.id.toString()),
+      icon: <IconEdit />,
+    },
+    {
+      type: DropdownItemType.ITEM,
+      label: t`Add Idea`,
+      onClick: () => {
+        const params = new URLSearchParams();
+        params.set('listID', data.id.toString());
+        params.set('listTitle', data.title);
+        navigateTo.createIdea(`/idea/create?${params.toString()}`);
+      },
+      icon: <IconAddCircle />,
+    },
+    {
+      type: DropdownItemType.ITEM,
+      label: t`Reorder Idea`,
+      onClick: () => console.warn('Sort'),
+      icon: <IconSort />,
+    },
+    { type: DropdownItemType.SEPARATOR },
+    {
+      type: DropdownItemType.ITEM,
+      label: t`Delete List`,
+      onClick: () => console.warn('Delete List'),
+      icon: <TrashIcon />,
+      danger: true,
+    },
+  ];
   return (
     <>
-      <div className="flex flex-col items-center rounded-[32px] border border-black bg-white py-6">
+      <div className="relative flex flex-col items-center rounded-[32px] border border-black bg-white py-6">
+        {isLoggedIn && me?.id === data.owner.id && (
+          <DropdownMenuComponent
+            trigger={
+              <div className="absolute right-4 top-4 flex h-5 w-5 items-center justify-center">
+                <IconThreeDots />
+              </div>
+            }
+            items={items}
+          />
+        )}
         <div className="flex w-full flex-col items-center px-4">
           {isUpdatedRecently() && (
             <div className="-tracking-0.8% mb-2 flex h-[27px] items-center justify-center rounded-full bg-yellow-bright-01 px-4 text-[13px] font-semibold">
