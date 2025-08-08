@@ -27,6 +27,7 @@ export enum ButtonSize {
   H40 = 'h40',
   LG = 'lg',
   ICON = 'icon',
+  ICON_LG = 'iconLg',
 }
 
 export enum ButtonShape {
@@ -62,6 +63,7 @@ const buttonVariants = cva(
         [ButtonSize.H40]: 'h-10 text-[15px] w-full',
         [ButtonSize.LG]: 'h-12 text-[15px] px-8',
         [ButtonSize.ICON]: 'h-8 w-8',
+        [ButtonSize.ICON_LG]: 'h-14 w-14',
       },
       shape: {
         [ButtonShape.ROUNDED_FULL]: 'rounded-full',
