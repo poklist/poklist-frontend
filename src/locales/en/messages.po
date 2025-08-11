@@ -105,6 +105,23 @@ msgid "Copy"
 msgstr "Copy"
 
 #: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
+msgid "Edit List Info"
+msgstr "Edit List Info"
+
+#: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
+#: src/components/Drawer/CreateListOrIdeaDrawer.tsx
+msgid "Add Idea"
+msgstr "Add Idea"
+
+#: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
+msgid "Reorder Idea"
+msgstr "Reorder Idea"
+
+#: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
+msgid "Delete List"
+msgstr "Delete List"
+
+#: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
 msgid "Recently Updated"
 msgstr "Recently Updated"
 
@@ -755,10 +772,6 @@ msgstr "先來創個新名單，還是記下靈感，隨心所欲！"
 #: src/components/Drawer/CreateListOrIdeaDrawer.tsx
 msgid "Create List"
 msgstr "Create List"
-
-#: src/components/Drawer/CreateListOrIdeaDrawer.tsx
-msgid "Add Idea"
-msgstr "Add Idea"
 
 #: src/components/Drawer/LoginDrawer.tsx
 msgid "Right now, only invited users can log in"
