@@ -1,4 +1,4 @@
-# React + TypeScript + Vite
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ### Core module
 
@@ -16,7 +16,7 @@
 
 First, run the development server:
 
-- with node v18.17.1 (npm v9.6.7)
+- with node v22.15.1 (npm v10.9.2)
 
 ```bash
 npm i
@@ -39,11 +39,11 @@ To maintain a clear and consistent structure for components in the project, foll
 
 2. **Custom Shared Components**  
    Custom reusable components must be placed under `@/components/` inside **uppercase-named folders**, and the main component file must be named `index.tsx`.  
-   Example: `@/components/Button/index.tsx`
+   Example: `@/components/Alert/index.tsx`
 
 3. **Page-Specific Components**  
-   Components that are not yet confirmed for reuse can be placed under the corresponding folder for your page in `@/pages/`.  
-   Example: `@/pages/List/CustomHeader.tsx`
+   Components that are not yet confirmed for reuse can be placed under the corresponding folder for your page in `@/app/`.  
+   Example: `@/app/list/_components/Form/index.tsx`
 
 4. **Legacy Components**  
    Any components not adhering to the above structure are considered legacy components (handled by Sail but not yet reorganized).

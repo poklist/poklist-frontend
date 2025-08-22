@@ -83,7 +83,7 @@ const ImageCropper: React.FC<IImageCropperProps> = ({
     <>
       <div className="mb-4 flex flex-col items-center gap-5">
         <label className="flex w-fit flex-col">
-          <div className="flex h-12 items-center justify-center gap-2 rounded-[8px] bg-black px-8 text-[15px] text-white">
+          <div className="flex h-12 items-center justify-center gap-2 rounded-lg bg-black px-8 text-[15px] text-white">
             <Trans>Choose your image</Trans>
           </div>
           <Input

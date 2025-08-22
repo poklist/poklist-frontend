@@ -53,10 +53,15 @@ export const useEditList = ({
       // Invalidate the list cache, trigger refetching
       await queryClient.invalidateQueries({
         queryKey: [QueryKeys.LISTS, userCode, listOffset, listLimit],
+        refetchType: 'inactive',
       });
       // NOTE: I changed to listID to data.id.toString() to make the refetch work but idk why
       await queryClient.refetchQueries({
         queryKey: [QueryKeys.LIST, data.id.toString(), ideaOffset, ideaLimit],
+      });
+      await queryClient.invalidateQueries({
+        queryKey: [QueryKeys.INFINITE_IDEA, data.id.toString()],
+        refetchType: 'inactive',
       });
     },
     onError: (error) => {
