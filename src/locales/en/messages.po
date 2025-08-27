@@ -321,7 +321,6 @@ msgstr "Choose a topic that vibes with your List."
 #: src/app/list/_components/Form/index.tsx
 #: src/app/list/_components/Form/index.tsx
 #: src/app/list/_components/Form/index.tsx
-#: src/app/list/_components/Form/index.tsx
 #: src/app/list/create/_components/Form/index.tsx
 #: src/app/list/create/_components/Form/index.tsx
 #: src/app/list/create/_components/Form/index.tsx

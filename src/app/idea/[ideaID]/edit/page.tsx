@@ -1,20 +1,20 @@
 'use client';
 
+import IdeaFormComponent from '@/app/idea/_components/Form';
+import Header from '@/app/idea/_components/Header';
 import useDeleteIdea from '@/hooks/mutations/useDeleteIdea';
 import useEditIdea from '@/hooks/mutations/useEditIdea';
 import { useIdea } from '@/hooks/queries/useIdea';
 import { useList } from '@/hooks/queries/useList';
 import { useAuthCheck, useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
-import Header from '../../_components/Header';
 import useCommonStore from '@/stores/useCommonStore';
 import useUserStore from '@/stores/useUserStore';
 import { IdeaBody } from '@/types/Idea';
 import { Trans } from '@lingui/react/macro';
 import { Skeleton, Text } from '@radix-ui/themes';
-import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'next/navigation';
-import IdeaFormComponent from '../../_components/Form';
+import { useEffect, useMemo, useState } from 'react';
 
 const EditIdeaPage: React.FC = () => {
   const params = useParams();
@@ -88,13 +88,7 @@ const EditIdeaPage: React.FC = () => {
     } else {
       setIsLoading(false);
     }
-  }, [
-    isDeleteIdeaLoading,
-    isListLoading,
-    isEditIdeaLoading,
-    isIdeaLoading,
-    setIsLoading,
-  ]);
+  }, [isDeleteIdeaLoading, isListLoading, isEditIdeaLoading, isIdeaLoading]);
 
   useEffect(() => {
     checkAuthAndRedirect();

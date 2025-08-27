@@ -1,5 +1,10 @@
 'use client';
 
+import IdeaList, {
+  DropEvent,
+} from '@/app/[userCode]/list/[id]/manage/_components/IdeasList';
+import ListInfo from '@/app/[userCode]/list/[id]/manage/_components/ListInfo';
+import Header from '@/app/[userCode]/list/_components/Header';
 import { Button, ButtonShape, ButtonVariant } from '@/components/ui/button';
 import IconClose from '@/components/ui/icons/CloseIcon';
 import { useDeleteList } from '@/hooks/mutations/useDeleteList';
@@ -9,15 +14,12 @@ import { useOrderIdeas } from '@/hooks/queries/useOrderIdeas';
 import { useAuthCheck, useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { useUserRouteContext } from '@/hooks/useUserRouteContext';
-import Header from '../../_components/Header';
-import IdeaList, { DropEvent } from './_components/IdeasList';
-import ListInfo from './_components/ListInfo';
 import useCommonStore from '@/stores/useCommonStore';
 import useUserStore from '@/stores/useUserStore';
 import { IdeaPreview } from '@/types/Idea';
 import { Trans } from '@lingui/react/macro';
-import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useParams } from 'next/navigation';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 const ListManagePage: React.FC = () => {
   const { userCode } = useUserRouteContext();
@@ -146,7 +148,6 @@ const ListManagePage: React.FC = () => {
     isOrderIdeaLoading,
     isReorderIdeasLoading,
     isDeleteListLoading,
-    setIsLoading,
   ]);
 
   useEffect(() => {

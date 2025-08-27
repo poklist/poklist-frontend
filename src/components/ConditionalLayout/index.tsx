@@ -6,14 +6,13 @@ import useIsMobile from '@/hooks/useIsMobile';
 import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
 import useLayoutStore from '@/stores/useLayoutStore';
 import { usePathname } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 // 桌面版樣式包裹組件
 import Background from '@/app/_layout/_components/Background';
 import BottomNav from '@/app/_layout/_components/BottomNav';
 import PromptText from '@/app/_layout/_components/PromptText';
 import { cn } from '@/lib/utils';
-
 interface ConditionalLayoutProps {
   children: React.ReactNode;
 }
@@ -21,22 +20,26 @@ interface ConditionalLayoutProps {
 export default function ConditionalLayout({
   children,
 }: ConditionalLayoutProps) {
+  const [isMounted, setIsMounted] = useState(false);
   const navigateTo = useStrictNavigateNext();
   const { isMobile } = useLayoutStore();
   const pathname = usePathname();
 
-  // 初始化移動設備檢測
   useIsMobile();
   useCheckStorage();
 
-  // 檢查是否需要重定向到 GoToMobile
   useEffect(() => {
+    setIsMounted(true); // 確保 hydration 後才開始依賴 client 狀態
+  }, []);
+
+  useEffect(() => {
+    if (!isMounted) return;
+
     const isMobileDevice =
       /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
         navigator.userAgent || ''
       );
 
-    // 白名單：不需要重定向的頁面
     const redirectWhiteList = [
       StaticRoutes.ERROR,
       StaticRoutes.GO_TO_MOBILE,
@@ -45,12 +48,15 @@ export default function ConditionalLayout({
     if (!isMobileDevice && !redirectWhiteList.includes(pathname)) {
       navigateTo.goToMobile();
     }
-  }, [pathname, navigateTo]);
+  }, [pathname, navigateTo, isMounted]);
 
-  // 判斷是否為 GoToMobile 頁面
+  if (!isMounted) {
+    // 避免伺服端和 client 初始輸出不一致
+    return null; // 或者 return <div className="h-screen bg-white" />
+  }
+
   const isGoToMobilePage = pathname === StaticRoutes.GO_TO_MOBILE;
 
-  // 如果是 GoToMobile 頁面，使用桌面版樣式包裹
   if (isGoToMobilePage) {
     return (
       <>
@@ -81,6 +87,5 @@ export default function ConditionalLayout({
     );
   }
 
-  // 其他頁面直接渲染，不包裹桌面版樣式
   return <>{children}</>;
 }

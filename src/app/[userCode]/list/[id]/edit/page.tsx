@@ -1,19 +1,19 @@
 'use client';
 
+import Header from '@/app/[userCode]/list/_components/Header';
+import ListForm from '@/app/list/_components/Form';
 import { useDeleteList } from '@/hooks/mutations/useDeleteList';
 import { useEditList } from '@/hooks/mutations/useEditList';
 import { useList } from '@/hooks/queries/useList';
 import { useAuthCheck, useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { useUserRouteContext } from '@/hooks/useUserRouteContext';
-import ListForm from '../../_components/Form';
-import Header from '../../_components/Header';
 import useCommonStore from '@/stores/useCommonStore';
 import useUserStore from '@/stores/useUserStore';
 import { ListBody, ListCover } from '@/types/List';
 import { Trans } from '@lingui/react/macro';
-import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
 
 const EditListPage: React.FC = () => {
   const { userCode } = useUserRouteContext();
@@ -88,7 +88,7 @@ const EditListPage: React.FC = () => {
     } else {
       setIsLoading(false);
     }
-  }, [isEditListLoading, isDeleteListLoading, isListInfoLoading, setIsLoading]);
+  }, [isEditListLoading, isDeleteListLoading, isListInfoLoading]);
 
   useEffect(() => {
     if (list) {
