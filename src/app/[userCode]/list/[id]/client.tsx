@@ -1,14 +1,15 @@
 'use client';
 
+import { Tile20Background } from '@/app/user/_components/TileBackground';
 import FloatingButtonFooter from '@/components/Footer/FloatingButtonFooter';
 import BackToUserHeader from '@/components/Header/BackToUserHeader';
 import { Idea } from '@/constants/list';
 import { useLikeAction } from '@/hooks/mutations/useLikeAction';
 import { useList } from '@/hooks/queries/useList';
 import { useUser } from '@/hooks/queries/useUser';
-import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { useAuthRequired } from '@/hooks/useAuthRequired';
-import { Tile20Background } from '@/app/user/_components/TileBackground';
+import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
+import { useUserRouteContext } from '@/hooks/useUserRouteContext';
 import useAuthStore from '@/stores/useAuthStore';
 import useCommonStore from '@/stores/useCommonStore';
 import useFollowingStore from '@/stores/useFollowingStore';
@@ -16,7 +17,6 @@ import useLikeStore from '@/stores/useLikeStore';
 import useUserStore from '@/stores/useUserStore';
 import { useEffect } from 'react';
 import ListCard from './_components/ListCard';
-import { useUserRouteContext } from '@/hooks/useUserRouteContext';
 
 interface ViewListPageClientProps {
   listID: string;
@@ -76,7 +76,7 @@ const ViewListPageClient: React.FC<ViewListPageClientProps> = ({ listID }) => {
     } else {
       setIsLoading(false);
     }
-  }, [isListLoading, setIsLoading]);
+  }, [isListLoading]);
 
   useEffect(() => {
     if (listID && list) {

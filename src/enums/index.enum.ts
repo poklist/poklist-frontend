@@ -1,6 +1,8 @@
 export enum LocalStorageKey {
   SELECTED_LANGUAGE = 'selected_language',
   SELECTED_LOCATION = 'selected_location',
+  IDEA_DRAFT = 'idea_draft',
+  LIST_DRAFT = 'list_draft',
 }
 
 export enum Language {

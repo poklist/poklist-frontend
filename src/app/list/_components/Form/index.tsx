@@ -13,11 +13,13 @@ import { Textarea } from '@/components/ui/textarea';
 import { DrawerIds } from '@/constants/Drawer';
 import { CategoriesI18n } from '@/constants/Lists/i18n';
 import { EditFieldVariant } from '@/enums/EditField/index.enum';
+import { LocalStorageKey } from '@/enums/index.enum';
 import { MessageType, RadioType } from '@/enums/Style/index.enum';
 import { useCategories } from '@/hooks/queries/useCategories';
+import useIdle from '@/hooks/useIdle';
 import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
 import { toast } from '@/hooks/useToast';
-import { cn, formatInput } from '@/lib/utils';
+import { cn, formatInput, getLocalStorage, setLocalStorage } from '@/lib/utils';
 import useCommonStore from '@/stores/useCommonStore';
 import { IEditFieldConfig } from '@/types/EditField/index.d';
 import { ListBody } from '@/types/List';
@@ -47,7 +49,13 @@ interface IListFormProps {
 }
 
 const ListForm: React.FC<IListFormProps> = ({
-  defaultListInfo,
+  defaultListInfo = {
+    title: '',
+    description: '',
+    externalLink: '',
+    coverImage: '',
+    categoryID: 0,
+  },
   dismissCallback,
   completedCallback,
 }) => {
@@ -85,23 +93,25 @@ const ListForm: React.FC<IListFormProps> = ({
   };
 
   const [isTextareaFocus, setIsTextareaFocus] = useState(false);
-  const [isFormModified, setIsFormModified] = useState(false);
 
   // TODO load from localStorage in v0.3.5
   const listForm = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      title: defaultListInfo?.title,
-      description: defaultListInfo?.description,
-      externalLink: defaultListInfo?.externalLink,
-      coverImage: defaultListInfo?.coverImage,
-      categoryID: defaultListInfo?.categoryID,
+      title: defaultListInfo.title,
+      description: defaultListInfo.description,
+      externalLink: defaultListInfo.externalLink,
+      coverImage: defaultListInfo.coverImage,
+      categoryID: defaultListInfo.categoryID,
     },
   });
-
-  useEffect(() => {
-    listForm.setFocus('title');
-  }, [listForm.setFocus]);
+  const isFormModified =
+    listForm.getValues('title') !== '' ||
+    listForm.getValues('title') !== defaultListInfo.title ||
+    listForm.getValues('description') !== defaultListInfo.description ||
+    listForm.getValues('externalLink') !== defaultListInfo.externalLink ||
+    listForm.getValues('coverImage') !== defaultListInfo.coverImage ||
+    listForm.getValues('categoryID') !== defaultListInfo.categoryID;
 
   const onInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -111,19 +121,25 @@ const ListForm: React.FC<IListFormProps> = ({
 
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
+  const { isIdle, reset } = useIdle({ timeout: 2000, watch: listForm.watch });
+
   useEffect(() => {
-    if (!defaultListInfo) return;
-    const subscription = listForm.watch((fields) => {
-      const isModified =
-        fields.title !== defaultListInfo.title ||
-        fields.description !== defaultListInfo.description ||
-        fields.externalLink !== defaultListInfo.externalLink ||
-        fields.coverImage !== defaultListInfo.coverImage ||
-        fields.categoryID !== defaultListInfo.categoryID;
-      setIsFormModified(isModified);
+    if (
+      !(isIdle && listForm.formState.isDirty) ||
+      defaultListInfo.title !== ''
+    ) {
+      return;
+    }
+    setLocalStorage(
+      LocalStorageKey.LIST_DRAFT,
+      listForm.getValues(),
+      FormSchema
+    );
+    listForm.reset(getLocalStorage(LocalStorageKey.LIST_DRAFT, FormSchema), {
+      keepValues: true,
     });
-    return () => subscription.unsubscribe();
-  }, [defaultListInfo]); // 只依賴 defaultListInfo，移除 listForm 避免無限循環
+    reset();
+  }, [isIdle, listForm.formState.isDirty, defaultListInfo.title]);
 
   const isFieldNotEmpty = (
     value: string | number | File | null | undefined
@@ -214,19 +230,16 @@ const ListForm: React.FC<IListFormProps> = ({
       closeCategoryDrawer();
       closeCancelDrawer();
     };
-  }, []); // 移除依賴，避免無限循環
+  }, []);
 
   // TODO load from localStorage in v0.3.5
   useEffect(() => {
-    if (!defaultListInfo) {
+    listForm.setFocus('title');
+    if (defaultListInfo.title === '') {
       return;
     }
-    listForm.setValue('title', defaultListInfo.title);
-    listForm.setValue('description', defaultListInfo.description);
-    listForm.setValue('externalLink', defaultListInfo.externalLink);
-    listForm.setValue('coverImage', defaultListInfo.coverImage);
-    listForm.setValue('categoryID', defaultListInfo.categoryID);
-  }, [defaultListInfo]); // 只依賴 defaultListInfo，移除 listForm 避免無限循環
+    listForm.reset({ ...defaultListInfo });
+  }, [defaultListInfo]);
 
   useEffect(() => {
     if (categoriesLoading) {
@@ -234,7 +247,7 @@ const ListForm: React.FC<IListFormProps> = ({
     } else {
       setIsLoading(false);
     }
-  }, [categoriesLoading]); // 移除 setIsLoading 依賴，通常它是穩定的
+  }, [categoriesLoading]);
 
   const [radioChoice, setRadioChoice] = useState<IChoice[]>([]);
 
@@ -319,7 +332,7 @@ const ListForm: React.FC<IListFormProps> = ({
         </div>
         {isTextareaFocus && (
           <div className="mt-2 flex justify-end text-black-tint-04">
-            {listForm.getValues('description')?.length ?? 0}/{DESC_MAX_LENGTH}
+            {listForm.watch('description')?.length ?? 0}/{DESC_MAX_LENGTH}
           </div>
         )}
         <div className="flex items-center gap-2">
@@ -332,7 +345,7 @@ const ListForm: React.FC<IListFormProps> = ({
         </div>
         <div
           className={cn(`flex items-center sm:justify-start`, {
-            'justify-center': isFieldNotEmpty(listForm.getValues('coverImage')),
+            'justify-center': isFieldNotEmpty(listForm.watch('coverImage')),
           })}
         >
           <Controller
@@ -349,7 +362,7 @@ const ListForm: React.FC<IListFormProps> = ({
             )}
           />
         </div>
-        {defaultListInfo && (
+        {defaultListInfo.title !== '' && (
           <div
             onClick={() => onOpenCategoryDrawer()}
             className="inline-flex h-10 cursor-pointer items-center justify-center whitespace-nowrap rounded-lg bg-black text-h2 font-bold text-white ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:bg-gray-main-03 disabled:text-black-tint-04"
@@ -384,9 +397,12 @@ const ListForm: React.FC<IListFormProps> = ({
           )
         }
         endFooter={
-          defaultListInfo ? (
+          defaultListInfo.title === '' ? (
             <Button
-              onClick={() => onCloseCategoryDrawer()}
+              onClick={() =>
+                void listForm.handleSubmit(onSubmit, onSubmitFailed)()
+              }
+              type="submit"
               variant={ButtonVariant.BLACK}
               shape={ButtonShape.ROUNDED_5PX}
             >
@@ -394,10 +410,7 @@ const ListForm: React.FC<IListFormProps> = ({
             </Button>
           ) : (
             <Button
-              onClick={() =>
-                void listForm.handleSubmit(onSubmit, onSubmitFailed)()
-              }
-              type="submit"
+              onClick={() => onCloseCategoryDrawer()}
               variant={ButtonVariant.BLACK}
               shape={ButtonShape.ROUNDED_5PX}
             >
@@ -453,38 +466,32 @@ const ListForm: React.FC<IListFormProps> = ({
             <IconClose />
           </div>
           <p className="text-[17px] font-bold">
-            {defaultListInfo ? (
-              <Trans>Edit List</Trans>
-            ) : (
+            {defaultListInfo.title === '' ? (
               <Trans>Create Idea List</Trans>
+            ) : (
+              <Trans>Edit List</Trans>
             )}
           </p>
         </div>
-        {defaultListInfo ? (
-          <Button
-            disabled={!isFormModified}
-            type="submit"
-            variant={ButtonVariant.BLACK}
-            shape={ButtonShape.ROUNDED_5PX}
-            onClick={() => {
+        <Button
+          disabled={!isFormModified || listForm.watch('title') === ''}
+          type="submit"
+          variant={
+            !isFormModified || listForm.watch('title') === ''
+              ? ButtonVariant.GRAY
+              : ButtonVariant.BLACK
+          }
+          shape={ButtonShape.ROUNDED_5PX}
+          onClick={() => {
+            if (defaultListInfo.title === '') {
+              onOpenCategoryDrawer();
+            } else {
               void listForm.handleSubmit(onSubmit, onSubmitFailed)();
-            }}
-          >
-            <Trans>Next</Trans>
-          </Button>
-        ) : (
-          <Button
-            variant={
-              listForm.getValues('title') === ''
-                ? ButtonVariant.GRAY
-                : ButtonVariant.BLACK
             }
-            shape={ButtonShape.ROUNDED_5PX}
-            onClick={() => onOpenCategoryDrawer()}
-          >
-            <Trans>Next</Trans>
-          </Button>
-        )}
+          }}
+        >
+          <Trans>Next</Trans>
+        </Button>
       </footer>
     </>
   );

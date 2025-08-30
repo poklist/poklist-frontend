@@ -11,10 +11,12 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { DrawerIds } from '@/constants/Drawer';
 import { EditFieldVariant } from '@/enums/EditField/index.enum';
+import { LocalStorageKey } from '@/enums/index.enum';
 import { MessageType } from '@/enums/Style/index.enum';
+import useIdle from '@/hooks/useIdle';
 import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
 import { toast } from '@/hooks/useToast';
-import { cn, formatInput } from '@/lib/utils';
+import { cn, formatInput, getLocalStorage, setLocalStorage } from '@/lib/utils';
 import useCommonStore from '@/stores/useCommonStore';
 import { IEditFieldConfig } from '@/types/EditField/index.d';
 import { IdeaBody, IdeaResponse } from '@/types/Idea';
@@ -42,20 +44,64 @@ interface IIdeaFormProps {
 }
 
 const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
-  previousIdeaInfo,
+  previousIdeaInfo = {
+    title: '',
+    description: '',
+    externalLink: '',
+    coverImage: '',
+  },
   dismissCallback,
   completedCallback,
 }) => {
-  const { setErrorDrawerMessage, setIsLoading } = useCommonStore();
+  const { setErrorDrawerMessage } = useCommonStore();
   const { openDrawer: openCancelDrawer, closeDrawer: closeCancelDrawer } =
     useDrawer(DrawerIds.CANCEL_IDEA_FORM_CONFIRM_DRAWER_ID);
   const navigateTo = useStrictNavigateNext();
 
   const [isTextareaFocus, setIsTextareaFocus] = useState(false);
-  const [isFormModified, setIsFormModified] = useState(false);
 
   const { openFakePage } = useFakePage();
   const [fieldConfig, setFieldConfig] = useState<IEditFieldConfig>();
+
+  // TODO load from localStorage in v0.3.5
+  const ideaForm = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      title: previousIdeaInfo.title,
+      description: previousIdeaInfo.description,
+      externalLink: previousIdeaInfo.externalLink,
+      coverImage: previousIdeaInfo.coverImage,
+    },
+  });
+  const isFormModified =
+    ideaForm.getValues('title') !== '' ||
+    ideaForm.getValues('title') !== previousIdeaInfo.title ||
+    ideaForm.getValues('description') !== previousIdeaInfo.description ||
+    ideaForm.getValues('externalLink') !== previousIdeaInfo.externalLink ||
+    ideaForm.getValues('coverImage') !== previousIdeaInfo.coverImage;
+
+  const { isIdle, reset } = useIdle({
+    timeout: 2000,
+    watch: ideaForm.watch,
+  });
+
+  useEffect(() => {
+    if (
+      !(isIdle && ideaForm.formState.isDirty) ||
+      previousIdeaInfo.title !== ''
+    ) {
+      return;
+    }
+    setLocalStorage(
+      LocalStorageKey.IDEA_DRAFT,
+      ideaForm.getValues(),
+      FormSchema
+    );
+    ideaForm.reset(getLocalStorage(LocalStorageKey.IDEA_DRAFT, FormSchema), {
+      keepValues: true,
+    });
+    reset();
+  }, [isIdle, ideaForm.formState.isDirty, previousIdeaInfo.title]);
 
   const onOpenFakePage = () => {
     setFieldConfig({
@@ -72,21 +118,6 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
     openFakePage();
   };
 
-  // TODO load from localStorage in v0.3.5
-  const ideaForm = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
-    defaultValues: {
-      title: previousIdeaInfo?.title,
-      description: previousIdeaInfo?.description,
-      externalLink: previousIdeaInfo?.externalLink,
-      coverImage: previousIdeaInfo?.coverImage,
-    },
-  });
-
-  useEffect(() => {
-    ideaForm.setFocus('title');
-  }, [ideaForm.setFocus]);
-
   const onInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -94,19 +125,6 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
   };
 
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
-
-  useEffect(() => {
-    if (!previousIdeaInfo) return;
-    const subscription = ideaForm.watch((fields) => {
-      const isModified =
-        fields.title !== previousIdeaInfo?.title ||
-        fields.description !== previousIdeaInfo?.description ||
-        fields.externalLink !== previousIdeaInfo?.externalLink ||
-        fields.coverImage !== previousIdeaInfo?.coverImage;
-      setIsFormModified(isModified);
-    });
-    return () => subscription.unsubscribe();
-  }, [ideaForm, previousIdeaInfo]);
 
   const isFieldNotEmpty = (
     value: string | number | File | null | undefined
@@ -187,24 +205,17 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
     completedCallback(data);
   };
 
-  // TODO load from localStorage in v0.3.5
+  // // TODO load from localStorage in v0.3.5
   useEffect(() => {
-    if (!previousIdeaInfo) {
-      return;
-    }
-    ideaForm.setValue('title', previousIdeaInfo.title);
-    ideaForm.setValue('description', previousIdeaInfo.description);
-    ideaForm.setValue('externalLink', previousIdeaInfo.externalLink);
-    ideaForm.setValue('coverImage', previousIdeaInfo.coverImage);
-  }, [previousIdeaInfo, ideaForm]);
+    if (previousIdeaInfo.title === '') return;
+    ideaForm.reset({
+      ...previousIdeaInfo,
+    });
+  }, [previousIdeaInfo]);
 
   useEffect(() => {
-    if (previousIdeaInfo) {
-      setIsLoading(false);
-    } else {
-      setIsLoading(true);
-    }
-  }, [previousIdeaInfo, setIsLoading]);
+    ideaForm.setFocus('title');
+  }, []);
 
   return (
     <>
@@ -273,7 +284,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
         </div>
         {isTextareaFocus && (
           <div className="mt-2 flex justify-end text-black-tint-04">
-            {ideaForm.getValues('description')?.length ?? 0}/{DESC_MAX_LENGTH}
+            {ideaForm.watch('description')?.length ?? 0}/{DESC_MAX_LENGTH}
           </div>
         )}
         <div className="flex items-center gap-2">
@@ -304,7 +315,6 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
           />
         </div>
       </form>
-
       {fieldConfig && <EditFieldFakePageComponent {...fieldConfig} />}
 
       <DrawerComponent
@@ -350,7 +360,10 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
           >
             <IconClose />
           </div>
-          {previousIdeaInfo ? (
+          {previousIdeaInfo.title !== '' &&
+          previousIdeaInfo.description !== '' &&
+          previousIdeaInfo.externalLink !== '' &&
+          previousIdeaInfo.coverImage !== '' ? (
             <Trans>Edit Idea</Trans>
           ) : (
             <Trans>New Idea</Trans>
@@ -358,10 +371,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
         </div>
 
         <Button
-          disabled={
-            (previousIdeaInfo !== undefined && !isFormModified) ||
-            ideaForm.getValues('title') === ''
-          }
+          disabled={!isFormModified || ideaForm.watch('title') === ''}
           variant={ButtonVariant.BLACK}
           shape={ButtonShape.ROUNDED_5PX}
           onClick={() => void ideaForm.handleSubmit(onSubmit, onSubmitFailed)()}

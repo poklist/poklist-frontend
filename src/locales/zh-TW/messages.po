@@ -321,7 +321,6 @@ msgstr "選擇一項接近此份名單的分類"
 #: src/app/list/_components/Form/index.tsx
 #: src/app/list/_components/Form/index.tsx
 #: src/app/list/_components/Form/index.tsx
-#: src/app/list/_components/Form/index.tsx
 #: src/app/list/create/_components/Form/index.tsx
 #: src/app/list/create/_components/Form/index.tsx
 #: src/app/list/create/_components/Form/index.tsx
