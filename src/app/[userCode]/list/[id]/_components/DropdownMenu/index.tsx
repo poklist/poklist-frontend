@@ -38,12 +38,9 @@ const DropdownMenuComponent = ({ trigger, items }: DropdownMenuProps) => {
             );
           }
           return (
-            <>
+            <div key={`separator-${index}`}>
               {index !== 0 && (
-                <DropdownMenuSeparator
-                  key={`separator-${index}`}
-                  className="my-0 h-0.5 border-gray-note-05"
-                />
+                <DropdownMenuSeparator className="my-0 h-0.5 border-gray-note-05" />
               )}
               <DropdownMenuItem
                 key={`item-${index}`}
@@ -60,7 +57,7 @@ const DropdownMenuComponent = ({ trigger, items }: DropdownMenuProps) => {
                   </div>
                 )}
               </DropdownMenuItem>
-            </>
+            </div>
           );
         })}
       </DropdownMenuContent>

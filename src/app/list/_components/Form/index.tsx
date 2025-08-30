@@ -234,7 +234,6 @@ const ListForm: React.FC<IListFormProps> = ({
 
   // TODO load from localStorage in v0.3.5
   useEffect(() => {
-    listForm.setFocus('title');
     if (defaultListInfo.title === '') {
       return;
     }
@@ -248,6 +247,10 @@ const ListForm: React.FC<IListFormProps> = ({
       setIsLoading(false);
     }
   }, [categoriesLoading]);
+
+  useEffect(() => {
+    listForm.setFocus('title');
+  }, []);
 
   const [radioChoice, setRadioChoice] = useState<IChoice[]>([]);
 
