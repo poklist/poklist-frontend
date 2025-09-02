@@ -141,15 +141,6 @@ const ListForm: React.FC<IListFormProps> = ({
     reset();
   }, [isIdle, listForm.formState.isDirty, defaultListInfo.title]);
 
-  const isFieldNotEmpty = (
-    value: string | number | File | null | undefined
-  ) => {
-    if (value === '' || value === 0 || value === null || value === undefined)
-      return false;
-    if (value instanceof File && value.size === 0) return false;
-    return true;
-  };
-
   const onDismiss = () => {
     let isFormEmpty = true;
     if (isFormModified) {
@@ -346,11 +337,7 @@ const ListForm: React.FC<IListFormProps> = ({
             className="line-clamp-1 h-6 w-full border-none p-0"
           />
         </div>
-        <div
-          className={cn(`flex items-center sm:justify-start`, {
-            'justify-center': isFieldNotEmpty(listForm.watch('coverImage')),
-          })}
-        >
+        <div className="flex items-center justify-center">
           <Controller
             name="coverImage"
             control={listForm.control}
