@@ -793,6 +793,7 @@ msgid "Enter your text here"
 msgstr "Enter your text here"
 
 #: src/components/Footer/EditModeFooter.tsx
+#: src/components/Header/EditModeHeader.tsx
 msgid "Save"
 msgstr "Save"
 
@@ -809,13 +810,12 @@ msgid "Choose your image"
 msgstr "Choose your image"
 
 #: src/components/ImageCropper/index.tsx
-#: src/components/ImageUploader/index.tsx
 msgid "500x500px, JPG or PNG, max 4MB"
 msgstr "500x500px, JPG or PNG, max 4MB"
 
 #: src/components/ImageUploader/index.tsx
-msgid "Upload a cover"
-msgstr "Upload a cover"
+#~ msgid "Upload a cover"
+#~ msgstr "Upload a cover"
 
 #. placeholder {0}: choice.label || choice.value
 #: src/components/Radio/index.tsx

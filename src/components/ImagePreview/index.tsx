@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
-import IconClose from '@/components/ui/icons/CloseIcon';
+import IconCloseThin from '@/components/ui/icons/CloseThinIcon';
 import { cn } from '@/lib/utils';
+import Image from 'next/image';
 
 type ImagePreviewProps = {
   className?: string;
@@ -18,10 +19,12 @@ const ImagePreviewComponent: React.FC<ImagePreviewProps> = ({
   }
   return (
     <div className={cn('relative', className)}>
-      <img
+      <Image
         src={typeof file === 'string' ? file : URL.createObjectURL(file)}
+        width={192}
+        height={192}
         alt="Cover Image Preview"
-        className="h-60 w-60 rounded-2xl border border-black-text-01 object-cover"
+        className="rounded-2xl border border-black-tint-04 object-cover"
       />
       {onClickClose && (
         <Button
@@ -30,9 +33,9 @@ const ImagePreviewComponent: React.FC<ImagePreviewProps> = ({
             onClickClose();
           }}
           aria-label="Reset Cover Image"
-          className="absolute right-4 top-4 h-auto rounded-full border-0 bg-inherit bg-white p-0"
+          className="absolute right-3 top-3 h-auto rounded-full border-0 bg-inherit bg-white p-0 opacity-70"
         >
-          <IconClose width={32} height={32} />
+          <IconCloseThin width={26} height={26} />
         </Button>
       )}
     </div>

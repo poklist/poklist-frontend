@@ -1,5 +1,6 @@
 import { useFakePage } from '@/components/FakePage/useFakePage';
 import EditModeFooter from '@/components/Footer/EditModeFooter';
+import EditModeHeader from '@/components/Header/EditModeHeader';
 import ImageCropper from '@/components/ImageCropper';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
@@ -27,6 +28,14 @@ export const EditFieldFakePageComponent: React.FC<IEditFieldConfig> = ({
     variant === EditFieldVariant.TEXT &&
     ((!allowEmpty && !fieldValue) || fieldValue === editingFieldValue);
 
+  const onEditSave = () => {
+    if (validator === undefined || validator(fieldValue)) {
+      onFieldValueSet(fieldValue);
+      closeFakePage();
+    }
+    return;
+  };
+
   useEffect(() => {
     if (variant === EditFieldVariant.TEXT) {
       setFieldValue(editingFieldValue ?? '');
@@ -41,8 +50,16 @@ export const EditFieldFakePageComponent: React.FC<IEditFieldConfig> = ({
       >
         <div
           id="edit-field-fake-page"
-          className="z-10 flex h-full w-full flex-col items-center bg-white px-6 pb-6 pt-10 sm:pt-6 md:max-w-mobile-max"
+          className="z-10 flex h-full w-full flex-col items-center bg-white px-6 pb-6 pt-24 sm:pt-20 md:max-w-mobile-max"
         >
+          {variant === EditFieldVariant.IMAGE && (
+            <EditModeHeader
+              onClose={() => closeFakePage()}
+              title={fieldName}
+              onSave={() => onEditSave()}
+              value={fieldValue}
+            />
+          )}
           {variant === EditFieldVariant.TEXT ? (
             <TextInput
               value={fieldValue}
@@ -60,20 +77,17 @@ export const EditFieldFakePageComponent: React.FC<IEditFieldConfig> = ({
             />
           )}
         </div>
-        <EditModeFooter
-          disabled={isSaveDisabled}
-          onClose={() => closeFakePage()}
-          title={fieldName}
-          onSaveText={t`Done`}
-          onSave={() => {
-            if (validator === undefined || validator(fieldValue)) {
-              onFieldValueSet(fieldValue);
-              closeFakePage();
-            }
-            return;
-          }}
-          value={fieldValue}
-        />
+
+        {variant === EditFieldVariant.TEXT && (
+          <EditModeFooter
+            disabled={isSaveDisabled}
+            onClose={() => closeFakePage()}
+            title={fieldName}
+            onSaveText={t`Done`}
+            onSave={() => onEditSave()}
+            value={fieldValue}
+          />
+        )}
       </DialogContent>
     </Dialog>
   );
