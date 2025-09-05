@@ -203,6 +203,10 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
     ideaForm.reset({
       ...previousIdeaInfo,
     });
+    setTimeout(() => {
+      titleTextarea.bind.onChange();
+      ideaForm.setFocus('title');
+    }, 0);
   }, [previousIdeaInfo]);
 
   useEffect(() => {
@@ -241,7 +245,10 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
                   className="relative min-h-14 w-full resize-none overflow-hidden rounded-lg border border-black-tint-04 px-3 py-4 text-base placeholder:text-base focus:border-black focus:pb-10 focus:ring-1 focus:ring-black"
                   rows={1}
                   {...field}
-                  ref={titleTextarea.ref}
+                  ref={(el) => {
+                    field.ref(el);
+                    titleTextarea.ref.current = el;
+                  }}
                   onBlur={() => {
                     field.onBlur();
                     titleTextarea.bind.onBlur();

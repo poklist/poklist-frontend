@@ -230,6 +230,10 @@ const ListForm: React.FC<IListFormProps> = ({
       return;
     }
     listForm.reset({ ...defaultListInfo });
+    setTimeout(() => {
+      titleTextarea.bind.onChange();
+      listForm.setFocus('title');
+    }, 0);
   }, [defaultListInfo]);
 
   useEffect(() => {
@@ -278,7 +282,10 @@ const ListForm: React.FC<IListFormProps> = ({
                     className="relative min-h-20 w-full resize-none overflow-hidden rounded-lg border border-black-tint-04 px-3 py-4 text-center text-h1 placeholder:text-h1 focus:border-black focus:pb-10 focus:ring-1 focus:ring-black"
                     rows={1}
                     {...field}
-                    ref={titleTextarea.ref}
+                    ref={(el) => {
+                      field.ref(el);
+                      titleTextarea.ref.current = el;
+                    }}
                     onBlur={() => {
                       field.onBlur();
                       titleTextarea.bind.onBlur();
