@@ -13,6 +13,7 @@ import { DrawerIds } from '@/constants/Drawer';
 import { EditFieldVariant } from '@/enums/EditField/index.enum';
 import { LocalStorageKey } from '@/enums/index.enum';
 import { MessageType } from '@/enums/Style/index.enum';
+import useAutoResizeTextarea from '@/hooks/ui/useAutoResizeTextarea';
 import useIdle from '@/hooks/useIdle';
 import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
 import { toast } from '@/hooks/useToast';
@@ -23,7 +24,7 @@ import { IdeaBody, IdeaResponse } from '@/types/Idea';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller, FieldErrors, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -57,9 +58,6 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
   const { openDrawer: openCancelDrawer, closeDrawer: closeCancelDrawer } =
     useDrawer(DrawerIds.CANCEL_IDEA_FORM_CONFIRM_DRAWER_ID);
   const navigateTo = useStrictNavigateNext();
-
-  const [isTitleFocus, setIsTitleFocus] = useState(false);
-  const [isDescriptionFocus, setIsDescriptionFocus] = useState(false);
 
   const { openFakePage } = useFakePage();
   const [fieldConfig, setFieldConfig] = useState<IEditFieldConfig>();
@@ -119,8 +117,15 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
     openFakePage();
   };
 
-  const titleTextareaRef = useRef<HTMLTextAreaElement | null>(null);
-  const descTextareaRef = useRef<HTMLTextAreaElement | null>(null);
+  const titleTextarea = useAutoResizeTextarea({
+    minHeight: 56,
+    focusMinHeight: 83,
+  });
+
+  const descriptionTextarea = useAutoResizeTextarea({
+    minHeight: 56,
+    focusMinHeight: 83,
+  });
 
   const onDismiss = () => {
     let isFormEmpty = true;
@@ -236,36 +241,20 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
                   className="relative min-h-14 w-full resize-none overflow-hidden rounded-lg border border-black-tint-04 px-3 py-4 text-base placeholder:text-base focus:border-black focus:pb-10 focus:ring-1 focus:ring-black"
                   rows={1}
                   {...field}
-                  ref={titleTextareaRef}
+                  ref={titleTextarea.ref}
                   onBlur={() => {
                     field.onBlur();
-                    setIsTitleFocus(false);
-                    const el = titleTextareaRef.current;
-                    if (el) {
-                      el.style.height = 'auto';
-                      el.style.height = `${el.scrollHeight}px`;
-                    }
+                    titleTextarea.bind.onBlur();
                   }}
-                  onFocus={() => {
-                    const el = titleTextareaRef.current;
-                    if (el) {
-                      el.style.height = 'auto';
-                      el.style.height = `${Math.max(el.scrollHeight, 83)}px`;
-                    }
-                    setIsTitleFocus(true);
-                  }}
+                  onFocus={() => titleTextarea.bind.onFocus()}
                   onChange={(event) => {
-                    const el = titleTextareaRef.current;
-                    if (el) {
-                      el.style.height = 'auto';
-                      el.style.height = `${el.scrollHeight}px`;
-                    }
+                    titleTextarea.bind.onChange();
                     field.onChange(formatInput(event.target.value));
                   }}
                 />
-                {isTitleFocus && (
+                {titleTextarea.isFocus && (
                   <div className="absolute bottom-4 right-3 text-sm font-normal text-black-tint-04">
-                    {ideaForm.watch('title').length ?? 0}/{TITLE_MAX_LENGTH}
+                    {ideaForm.watch('title')?.length ?? 0}/{TITLE_MAX_LENGTH}
                   </div>
                 )}
               </div>
@@ -280,41 +269,25 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
             return (
               <div className="relative flex items-center justify-center">
                 <IconTextarea className="absolute left-3 top-4 z-10" />
-                {isDescriptionFocus ? (
+                {descriptionTextarea.isFocus ? (
                   <>
                     <Textarea
                       placeholder={t`Describe what this idea is about`}
                       className="relative min-h-14 w-full resize-none overflow-hidden rounded-lg border border-black-tint-04 py-4 pl-10 pr-3 focus:border-black focus:pb-10 focus:ring-1 focus:ring-black"
                       rows={1}
                       {...field}
-                      ref={descTextareaRef}
+                      ref={descriptionTextarea.ref}
                       onBlur={() => {
                         field.onBlur();
-                        setIsDescriptionFocus(false);
-                        const el = descTextareaRef.current;
-                        if (el) {
-                          el.style.height = 'auto';
-                          el.style.height = `56px`;
-                        }
+                        descriptionTextarea.bind.onBlur();
                       }}
-                      onFocus={() => {
-                        const el = descTextareaRef.current;
-                        if (el) {
-                          el.style.height = 'auto';
-                          el.style.height = `${Math.max(el.scrollHeight, 83)}px`;
-                        }
-                        setIsDescriptionFocus(true);
-                      }}
+                      onFocus={() => descriptionTextarea.bind.onFocus()}
                       onChange={(event) => {
-                        const el = descTextareaRef.current;
-                        if (el) {
-                          el.style.height = 'auto';
-                          el.style.height = `${el.scrollHeight}px`;
-                        }
+                        descriptionTextarea.bind.onChange();
                         field.onChange(formatInput(event.target.value));
                       }}
                     />
-                    {isDescriptionFocus && (
+                    {descriptionTextarea.isFocus && (
                       <div className="absolute bottom-4 right-3 text-sm font-normal text-black-tint-04">
                         {ideaForm.watch('description')?.length ?? 0}/
                         {DESC_MAX_LENGTH}
@@ -328,9 +301,9 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
                       isEmpty && 'text-black-gray-03'
                     )}
                     onClick={() => {
-                      setIsDescriptionFocus(true);
+                      descriptionTextarea.bind.onFocus();
                       setTimeout(() => {
-                        const el = descTextareaRef.current;
+                        const el = descriptionTextarea.ref.current;
                         if (el) {
                           el.focus();
                           const len = el.value.length;

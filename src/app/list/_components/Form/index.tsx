@@ -16,6 +16,7 @@ import { EditFieldVariant } from '@/enums/EditField/index.enum';
 import { LocalStorageKey } from '@/enums/index.enum';
 import { MessageType, RadioType } from '@/enums/Style/index.enum';
 import { useCategories } from '@/hooks/queries/useCategories';
+import useAutoResizeTextarea from '@/hooks/ui/useAutoResizeTextarea';
 import useIdle from '@/hooks/useIdle';
 import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
 import { toast } from '@/hooks/useToast';
@@ -27,7 +28,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { i18n } from '@lingui/core';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller, FieldErrors, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -92,9 +93,6 @@ const ListForm: React.FC<IListFormProps> = ({
     closeCategoryDrawer();
   };
 
-  const [isTitleFocus, setIsTitleFocus] = useState(false);
-  const [isDescFocus, setIsDescFocus] = useState(false);
-
   // TODO load from localStorage in v0.3.5
   const listForm = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -114,8 +112,15 @@ const ListForm: React.FC<IListFormProps> = ({
     listForm.getValues('coverImage') !== defaultListInfo.coverImage ||
     listForm.getValues('categoryID') !== defaultListInfo.categoryID;
 
-  const titleTextareaRef = useRef<HTMLTextAreaElement | null>(null);
-  const descTextareaRef = useRef<HTMLTextAreaElement | null>(null);
+  const titleTextarea = useAutoResizeTextarea({
+    minHeight: 56,
+    focusMinHeight: 83,
+  });
+
+  const descriptionTextarea = useAutoResizeTextarea({
+    minHeight: 56,
+    focusMinHeight: 83,
+  });
 
   const { isIdle, reset } = useIdle({ timeout: 2000, watch: listForm.watch });
 
@@ -273,34 +278,18 @@ const ListForm: React.FC<IListFormProps> = ({
                     className="relative min-h-20 w-full resize-none overflow-hidden rounded-lg border border-black-tint-04 px-3 py-4 text-center text-h1 placeholder:text-h1 focus:border-black focus:pb-10 focus:ring-1 focus:ring-black"
                     rows={1}
                     {...field}
-                    ref={titleTextareaRef}
+                    ref={titleTextarea.ref}
                     onBlur={() => {
                       field.onBlur();
-                      setIsTitleFocus(false);
-                      const el = titleTextareaRef.current;
-                      if (el) {
-                        el.style.height = 'auto';
-                        el.style.height = `${el.scrollHeight}px`;
-                      }
+                      titleTextarea.bind.onBlur();
                     }}
-                    onFocus={() => {
-                      const el = titleTextareaRef.current;
-                      if (el) {
-                        el.style.height = 'auto';
-                        el.style.height = `${Math.max(el.scrollHeight, 83)}px`;
-                      }
-                      setIsTitleFocus(true);
-                    }}
+                    onFocus={() => titleTextarea.bind.onFocus()}
                     onChange={(event) => {
-                      const el = titleTextareaRef.current;
-                      if (el) {
-                        el.style.height = 'auto';
-                        el.style.height = `${el.scrollHeight}px`;
-                      }
+                      titleTextarea.bind.onChange();
                       field.onChange(formatInput(event.target.value));
                     }}
                   />
-                  {isTitleFocus && (
+                  {titleTextarea.isFocus && (
                     <div className="absolute bottom-4 right-3 text-sm font-normal text-black-tint-04">
                       {listForm.watch('title').length ?? 0}/{TITLE_MAX_LENGTH}
                     </div>
@@ -318,46 +307,28 @@ const ListForm: React.FC<IListFormProps> = ({
             return (
               <div className="relative flex items-center justify-center">
                 <IconTextarea className="absolute left-3 top-4 z-10" />
-                {isDescFocus ? (
+                {descriptionTextarea.isFocus ? (
                   <>
                     <Textarea
                       placeholder={t`Describe what this title is about`}
                       className="relative min-h-14 w-full resize-none overflow-hidden rounded-lg border border-black-tint-04 py-4 pl-10 pr-3 focus:border-black focus:pb-10 focus:ring-1 focus:ring-black"
                       rows={1}
                       {...field}
-                      ref={descTextareaRef}
+                      ref={descriptionTextarea.ref}
                       onBlur={() => {
                         field.onBlur();
-                        setIsDescFocus(false);
-                        const el = descTextareaRef.current;
-                        if (el) {
-                          el.style.height = 'auto';
-                          el.style.height = `56px`;
-                        }
+                        descriptionTextarea.bind.onBlur();
                       }}
-                      onFocus={() => {
-                        const el = descTextareaRef.current;
-                        if (el) {
-                          el.style.height = 'auto';
-                          el.style.height = `${Math.max(el.scrollHeight, 83)}px`;
-                        }
-                        setIsDescFocus(true);
-                      }}
+                      onFocus={() => descriptionTextarea.bind.onFocus()}
                       onChange={(event) => {
-                        const el = descTextareaRef.current;
-                        if (el) {
-                          el.style.height = 'auto';
-                          el.style.height = `${el.scrollHeight}px`;
-                        }
+                        descriptionTextarea.bind.onChange();
                         field.onChange(formatInput(event.target.value));
                       }}
                     />
-                    {isDescFocus && (
-                      <div className="absolute bottom-4 right-3 text-sm font-normal text-black-tint-04">
-                        {listForm.watch('description')?.length ?? 0}/
-                        {DESC_MAX_LENGTH}
-                      </div>
-                    )}
+                    <div className="absolute bottom-4 right-3 text-sm font-normal text-black-tint-04">
+                      {listForm.watch('description')?.length ?? 0}/
+                      {DESC_MAX_LENGTH}
+                    </div>
                   </>
                 ) : (
                   <div
@@ -366,9 +337,9 @@ const ListForm: React.FC<IListFormProps> = ({
                       isEmpty && 'text-black-gray-03'
                     )}
                     onClick={() => {
-                      setIsDescFocus(true);
+                      descriptionTextarea.bind.onFocus();
                       setTimeout(() => {
-                        const el = descTextareaRef.current;
+                        const el = descriptionTextarea.ref.current;
                         if (el) {
                           el.focus();
                           const len = el.value.length;
