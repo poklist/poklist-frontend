@@ -119,12 +119,6 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
     openFakePage();
   };
 
-  // const onInputChange = (
-  //   event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  // ) => {
-  //   event.target.value = formatInput(event.target.value);
-  // };
-
   const titleTextareaRef = useRef<HTMLTextAreaElement | null>(null);
   const descTextareaRef = useRef<HTMLTextAreaElement | null>(null);
 
@@ -231,13 +225,6 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
             )}
           />
         </div>
-        {/* <div className="flex items-center font-extrabold">
-          <Input
-            placeholder={t`This is the title of your idea`}
-            className="relative border-none px-0 text-h1 placeholder:text-h1"
-            {...ideaForm.register('title', { onChange: onInputChange })}
-          />
-        </div> */}
         <Controller
           name="title"
           control={ideaForm.control}
@@ -285,63 +272,6 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
             );
           }}
         />
-        {/* <div className="flex items-start gap-2">
-          <IconTextarea />
-          <Controller
-            name="description"
-            control={ideaForm.control}
-            render={({ field }) => {
-              const isEmpty = !field.value;
-              if (!isDescriptionFocus) {
-                return (
-                  <div
-                    className={cn(
-                      'line-clamp-1 h-6 w-full cursor-text border-none p-0',
-                      isEmpty && 'text-black-gray-03'
-                    )}
-                    onClick={() => {
-                      setIsDescriptionFocus(true);
-                      setTimeout(() => {
-                        const el = descTextareaRef.current;
-                        if (el) {
-                          el.focus();
-                          const len = el.value.length;
-                          el.setSelectionRange(len, len);
-                          el.scrollTop = el.scrollHeight;
-                        }
-                      }, 0);
-                    }}
-                  >
-                    {field.value || t`Describe what this idea is about`}
-                  </div>
-                );
-              }
-              return (
-                <Textarea
-                  placeholder={t`Describe what this idea is about`}
-                  className="resize-none border-none p-0 leading-[1.45]"
-                  {...field}
-                  onChange={(e) => field.onChange(formatInput(e.target.value))}
-                  onBlur={() => {
-                    field.onBlur();
-                    descTextareaRef.current?.scrollTo({ top: 0 });
-                    setIsDescriptionFocus(false);
-                  }}
-                  onFocus={() => setIsDescriptionFocus(true)}
-                  ref={(el) => {
-                    field.ref(el);
-                    descTextareaRef.current = el;
-                  }}
-                />
-              );
-            }}
-          />
-        </div>
-        {isDescriptionFocus && (
-          <div className="mt-2 flex justify-end text-black-tint-04">
-            {ideaForm.watch('description')?.length ?? 0}/{DESC_MAX_LENGTH}
-          </div>
-        )} */}
         <Controller
           name="description"
           control={ideaForm.control}

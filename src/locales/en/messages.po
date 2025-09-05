@@ -265,7 +265,6 @@ msgstr "Error - Link must start with https:// "
 
 #: src/app/[userCode]/list/_components/Form/index.tsx
 #: src/app/_shared/_components/List/Form/index.tsx
-#: src/app/idea/_components/Form/index.tsx
 #: src/app/list/_components/Form/index.tsx
 #: src/app/list/create/_components/Form/index.tsx
 msgid "This is the title of your list"
@@ -275,8 +274,6 @@ msgstr "This is the title of your list"
 #: src/app/[userCode]/list/_components/Form/index.tsx
 #: src/app/_shared/_components/List/Form/index.tsx
 #: src/app/_shared/_components/List/Form/index.tsx
-#: src/app/idea/_components/Form/index.tsx
-#: src/app/idea/_components/Form/index.tsx
 #: src/app/list/_components/Form/index.tsx
 #: src/app/list/_components/Form/index.tsx
 #: src/app/list/create/_components/Form/index.tsx
@@ -566,21 +563,21 @@ msgid "Confirm Delete"
 msgstr "Confirm Delete"
 
 #: src/app/idea/_components/Form/index.tsx
-#~ msgid "This is the title of your idea"
-#~ msgstr "This is the title of your idea"
-
-#: src/app/idea/_components/Form/index.tsx
-#: src/app/idea/_components/Form/index.tsx
-#~ msgid "Describe what this idea is about"
-#~ msgstr "Describe what this idea is about"
-
-#: src/app/idea/_components/Form/index.tsx
 msgid "Every idea needs a title, so fill it in!"
 msgstr "Every idea needs a title, so fill it in!"
 
 #: src/app/idea/_components/Form/index.tsx
 msgid "Idea title is too long!"
 msgstr "Idea title is too long!"
+
+#: src/app/idea/_components/Form/index.tsx
+msgid "This is the title of your idea"
+msgstr "This is the title of your idea"
+
+#: src/app/idea/_components/Form/index.tsx
+#: src/app/idea/_components/Form/index.tsx
+msgid "Describe what this idea is about"
+msgstr "Describe what this idea is about"
 
 #: src/app/idea/_components/Form/index.tsx
 msgid "Title is saved, but your idea edits will be lost! Are you sure you want to cancel?"
