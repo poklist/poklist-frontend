@@ -58,7 +58,8 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
     useDrawer(DrawerIds.CANCEL_IDEA_FORM_CONFIRM_DRAWER_ID);
   const navigateTo = useStrictNavigateNext();
 
-  const [isTextareaFocus, setIsTextareaFocus] = useState(false);
+  const [isTitleFocus, setIsTitleFocus] = useState(false);
+  const [isDescriptionFocus, setIsDescriptionFocus] = useState(false);
 
   const { openFakePage } = useFakePage();
   const [fieldConfig, setFieldConfig] = useState<IEditFieldConfig>();
@@ -118,17 +119,18 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
     openFakePage();
   };
 
-  const onInputChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    event.target.value = formatInput(event.target.value);
-  };
+  // const onInputChange = (
+  //   event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  // ) => {
+  //   event.target.value = formatInput(event.target.value);
+  // };
 
-  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+  const titleTextareaRef = useRef<HTMLTextAreaElement | null>(null);
+  const descTextareaRef = useRef<HTMLTextAreaElement | null>(null);
 
   const onDismiss = () => {
     let isFormEmpty = true;
-    if (isFormModified) {
+    if (ideaForm.formState.isDirty) {
       // TODO load from localStorage in v0.3.5
       openCancelDrawer();
       isFormEmpty = false;
@@ -212,23 +214,85 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
     <>
       <form
         onSubmit={() => void ideaForm.handleSubmit(onSubmit, onSubmitFailed)()}
-        className="mx-4 mt-4 flex flex-1 flex-col gap-6 md:max-w-mobile-max"
+        className="mx-4 mb-24 mt-4 flex flex-1 flex-col gap-6 md:max-w-mobile-max"
       >
-        <div className="flex items-center font-extrabold">
+        <div className="flex items-center justify-center">
+          <Controller
+            name="coverImage"
+            control={ideaForm.control}
+            render={({ field }) => (
+              <ImageUploader
+                file={field.value}
+                callback={onOpenFakePage}
+                onRemove={() => {
+                  ideaForm.setValue('coverImage', '');
+                }}
+              />
+            )}
+          />
+        </div>
+        {/* <div className="flex items-center font-extrabold">
           <Input
             placeholder={t`This is the title of your idea`}
             className="relative border-none px-0 text-h1 placeholder:text-h1"
             {...ideaForm.register('title', { onChange: onInputChange })}
           />
-        </div>
-        <div className="flex items-start gap-2">
+        </div> */}
+        <Controller
+          name="title"
+          control={ideaForm.control}
+          render={({ field }) => {
+            return (
+              <div className="relative flex items-center justify-center font-bold">
+                <Textarea
+                  placeholder={t`This is the title of your idea`}
+                  className="relative min-h-14 w-full resize-none overflow-hidden rounded-lg border border-black-tint-04 px-3 py-4 text-base placeholder:text-base focus:border-black focus:pb-10 focus:ring-1 focus:ring-black"
+                  rows={1}
+                  {...field}
+                  ref={titleTextareaRef}
+                  onBlur={() => {
+                    field.onBlur();
+                    setIsTitleFocus(false);
+                    const el = titleTextareaRef.current;
+                    if (el) {
+                      el.style.height = 'auto';
+                      el.style.height = `${el.scrollHeight}px`;
+                    }
+                  }}
+                  onFocus={() => {
+                    const el = titleTextareaRef.current;
+                    if (el) {
+                      el.style.height = 'auto';
+                      el.style.height = `${Math.max(el.scrollHeight, 83)}px`;
+                    }
+                    setIsTitleFocus(true);
+                  }}
+                  onChange={(event) => {
+                    const el = titleTextareaRef.current;
+                    if (el) {
+                      el.style.height = 'auto';
+                      el.style.height = `${el.scrollHeight}px`;
+                    }
+                    field.onChange(formatInput(event.target.value));
+                  }}
+                />
+                {isTitleFocus && (
+                  <div className="absolute bottom-4 right-3 text-sm font-normal text-black-tint-04">
+                    {ideaForm.watch('title').length ?? 0}/{TITLE_MAX_LENGTH}
+                  </div>
+                )}
+              </div>
+            );
+          }}
+        />
+        {/* <div className="flex items-start gap-2">
           <IconTextarea />
           <Controller
             name="description"
             control={ideaForm.control}
             render={({ field }) => {
               const isEmpty = !field.value;
-              if (!isTextareaFocus) {
+              if (!isDescriptionFocus) {
                 return (
                   <div
                     className={cn(
@@ -236,9 +300,9 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
                       isEmpty && 'text-black-gray-03'
                     )}
                     onClick={() => {
-                      setIsTextareaFocus(true);
+                      setIsDescriptionFocus(true);
                       setTimeout(() => {
-                        const el = textareaRef.current;
+                        const el = descTextareaRef.current;
                         if (el) {
                           el.focus();
                           const len = el.value.length;
@@ -260,45 +324,105 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
                   onChange={(e) => field.onChange(formatInput(e.target.value))}
                   onBlur={() => {
                     field.onBlur();
-                    textareaRef.current?.scrollTo({ top: 0 });
-                    setIsTextareaFocus(false);
+                    descTextareaRef.current?.scrollTo({ top: 0 });
+                    setIsDescriptionFocus(false);
                   }}
-                  onFocus={() => setIsTextareaFocus(true)}
+                  onFocus={() => setIsDescriptionFocus(true)}
                   ref={(el) => {
                     field.ref(el);
-                    textareaRef.current = el;
+                    descTextareaRef.current = el;
                   }}
                 />
               );
             }}
           />
         </div>
-        {isTextareaFocus && (
+        {isDescriptionFocus && (
           <div className="mt-2 flex justify-end text-black-tint-04">
             {ideaForm.watch('description')?.length ?? 0}/{DESC_MAX_LENGTH}
           </div>
-        )}
-        <div className="flex items-center gap-2">
-          <IconExteriorLink />
+        )} */}
+        <Controller
+          name="description"
+          control={ideaForm.control}
+          render={({ field }) => {
+            const isEmpty = !field.value;
+            return (
+              <div className="relative flex items-center justify-center">
+                <IconTextarea className="absolute left-3 top-4 z-10" />
+                {isDescriptionFocus ? (
+                  <>
+                    <Textarea
+                      placeholder={t`Describe what this idea is about`}
+                      className="relative min-h-14 w-full resize-none overflow-hidden rounded-lg border border-black-tint-04 py-4 pl-10 pr-3 focus:border-black focus:pb-10 focus:ring-1 focus:ring-black"
+                      rows={1}
+                      {...field}
+                      ref={descTextareaRef}
+                      onBlur={() => {
+                        field.onBlur();
+                        setIsDescriptionFocus(false);
+                        const el = descTextareaRef.current;
+                        if (el) {
+                          el.style.height = 'auto';
+                          el.style.height = `56px`;
+                        }
+                      }}
+                      onFocus={() => {
+                        const el = descTextareaRef.current;
+                        if (el) {
+                          el.style.height = 'auto';
+                          el.style.height = `${Math.max(el.scrollHeight, 83)}px`;
+                        }
+                        setIsDescriptionFocus(true);
+                      }}
+                      onChange={(event) => {
+                        const el = descTextareaRef.current;
+                        if (el) {
+                          el.style.height = 'auto';
+                          el.style.height = `${el.scrollHeight}px`;
+                        }
+                        field.onChange(formatInput(event.target.value));
+                      }}
+                    />
+                    {isDescriptionFocus && (
+                      <div className="absolute bottom-4 right-3 text-sm font-normal text-black-tint-04">
+                        {ideaForm.watch('description')?.length ?? 0}/
+                        {DESC_MAX_LENGTH}
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <div
+                    className={cn(
+                      'line-clamp-1 h-14 w-full cursor-text truncate rounded-lg border border-black-tint-04 py-4 pl-10 pr-3',
+                      isEmpty && 'text-black-gray-03'
+                    )}
+                    onClick={() => {
+                      setIsDescriptionFocus(true);
+                      setTimeout(() => {
+                        const el = descTextareaRef.current;
+                        if (el) {
+                          el.focus();
+                          const len = el.value.length;
+                          el.setSelectionRange(len, len);
+                          el.scrollTop = el.scrollHeight;
+                        }
+                      }, 0);
+                    }}
+                  >
+                    {field.value || t`Describe what this idea is about`}
+                  </div>
+                )}
+              </div>
+            );
+          }}
+        />
+        <div className="relative flex items-center gap-2">
+          <IconExteriorLink className="absolute left-3 top-4 z-10" />
           <Input
             {...ideaForm.register('externalLink')}
             placeholder={t`Link a page`}
-            className="h-6 w-full border-none p-0"
-          />
-        </div>
-        <div className="flex items-center justify-center">
-          <Controller
-            name="coverImage"
-            control={ideaForm.control}
-            render={({ field }) => (
-              <ImageUploader
-                file={field.value}
-                callback={onOpenFakePage}
-                onRemove={() => {
-                  ideaForm.setValue('coverImage', '');
-                }}
-              />
-            )}
+            className="line-clamp-1 min-h-14 w-full truncate border-black-tint-04 py-4 pl-10 pr-3 focus:border-black focus:ring-1 focus:ring-black"
           />
         </div>
       </form>
