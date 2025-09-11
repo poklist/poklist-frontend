@@ -45,8 +45,9 @@ export const EditFieldFakePageComponent: React.FC<IEditFieldConfig> = ({
   return (
     <Dialog open={isOpen} onOpenChange={closeFakePage}>
       <DialogContent
+        // For console warning
+        aria-describedby={undefined}
         className="flex h-dvh w-full items-center border-0 bg-transparent p-0"
-        aria-describedby="edit-field-fake-page"
       >
         <div
           id="edit-field-fake-page"
@@ -54,7 +55,11 @@ export const EditFieldFakePageComponent: React.FC<IEditFieldConfig> = ({
         >
           {variant === EditFieldVariant.IMAGE && (
             <EditModeHeader
-              onClose={() => closeFakePage()}
+              disabled={isSaveDisabled}
+              onClose={() => {
+                setFieldValue(editingFieldValue ?? '');
+                closeFakePage();
+              }}
               title={fieldName}
               onSave={() => onEditSave()}
               value={fieldValue}
@@ -77,7 +82,6 @@ export const EditFieldFakePageComponent: React.FC<IEditFieldConfig> = ({
             />
           )}
         </div>
-
         {variant === EditFieldVariant.TEXT && (
           <EditModeFooter
             disabled={isSaveDisabled}

@@ -2,6 +2,7 @@ import getCroppedImg from '@/components/ImageCropper/cropImage';
 import { Input } from '@/components/ui/input';
 import { Slider } from '@/components/ui/slider';
 import { throttle } from '@/lib/functional';
+import { cn } from '@/lib/utils';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
 import { useCallback, useState } from 'react';
@@ -85,24 +86,26 @@ const ImageCropper: React.FC<IImageCropperProps> = ({
 
   return (
     <>
-      {!imgSrc && (
-        <div className="mb-4 flex flex-col items-center gap-5">
-          <label className="flex w-fit flex-col">
-            <div className="flex h-12 items-center justify-center gap-2 rounded-lg bg-black px-8 text-[15px] text-white">
-              <Trans>Choose your image</Trans>
-            </div>
-            <Input
-              type="file"
-              accept="image/*"
-              onChange={onSelectFile}
-              className="hidden"
-            />
-          </label>
-          <div className="text-xs text-gray-storm-01">
-            <Trans>500x500px, JPG or PNG, max 4MB</Trans>
+      <div
+        className={cn(`mb-4 flex flex-col items-center gap-5`, {
+          hidden: imgSrc,
+        })}
+      >
+        <label className="flex w-fit flex-col">
+          <div className="flex h-12 items-center justify-center gap-2 rounded-lg bg-black px-8 text-[15px] text-white">
+            <Trans>Choose your image</Trans>
           </div>
+          <Input
+            type="file"
+            accept="image/*"
+            onChange={onSelectFile}
+            className="hidden"
+          />
+        </label>
+        <div className="text-xs text-gray-storm-01">
+          <Trans>500x500px, JPG or PNG, max 4MB</Trans>
         </div>
-      )}
+      </div>
       {!!error && <p className="text-xs text-red-400">{error}</p>}
       {!!imgSrc && (
         <>

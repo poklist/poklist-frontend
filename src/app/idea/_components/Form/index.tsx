@@ -17,7 +17,7 @@ import useAutoResizeTextarea from '@/hooks/ui/useAutoResizeTextarea';
 import useIdle from '@/hooks/useIdle';
 import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
 import { toast } from '@/hooks/useToast';
-import { cn, formatInput, getLocalStorage, setLocalStorage } from '@/lib/utils';
+import { formatInput, getLocalStorage, setLocalStorage } from '@/lib/utils';
 import useCommonStore from '@/stores/useCommonStore';
 import { IEditFieldConfig } from '@/types/EditField/index.d';
 import { IdeaBody, IdeaResponse } from '@/types/Idea';
@@ -242,7 +242,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
               <div className="relative flex items-center justify-center font-bold">
                 <Textarea
                   placeholder={t`This is the title of your idea`}
-                  className="relative min-h-14 w-full resize-none overflow-hidden rounded-lg border border-black-tint-04 px-3 py-4 text-base placeholder:text-base focus:border-black focus:pb-10 focus:ring-1 focus:ring-black"
+                  className="relative min-h-16 w-full resize-none overflow-hidden rounded-lg border border-black-tint-04 px-3 py-4 text-lg placeholder:text-base focus:border-black focus:pb-10 focus:ring-1 focus:ring-black"
                   rows={1}
                   {...field}
                   ref={(el) => {
@@ -272,57 +272,33 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
           name="description"
           control={ideaForm.control}
           render={({ field }) => {
-            const isEmpty = !field.value;
             return (
               <div className="relative flex items-center justify-center">
                 <IconTextarea className="absolute left-3 top-4 z-10" />
-                {descriptionTextarea.isFocus ? (
-                  <>
-                    <Textarea
-                      placeholder={t`Describe what this idea is about`}
-                      className="relative min-h-14 w-full resize-none overflow-hidden rounded-lg border border-black-tint-04 py-4 pl-10 pr-3 focus:border-black focus:pb-10 focus:ring-1 focus:ring-black"
-                      rows={1}
-                      {...field}
-                      ref={descriptionTextarea.ref}
-                      onBlur={() => {
-                        field.onBlur();
-                        descriptionTextarea.bind.onBlur();
-                      }}
-                      onFocus={() => descriptionTextarea.bind.onFocus()}
-                      onChange={(event) => {
-                        descriptionTextarea.bind.onChange();
-                        field.onChange(formatInput(event.target.value));
-                      }}
-                    />
-                    {descriptionTextarea.isFocus && (
-                      <div className="absolute bottom-4 right-3 text-sm font-normal text-black-tint-04">
-                        {ideaForm.watch('description')?.length ?? 0}/
-                        {DESC_MAX_LENGTH}
-                      </div>
-                    )}
-                  </>
-                ) : (
-                  <div
-                    className={cn(
-                      'line-clamp-1 h-14 w-full cursor-text truncate rounded-lg border border-black-tint-04 py-4 pl-10 pr-3',
-                      isEmpty && 'text-black-gray-03'
-                    )}
-                    onClick={() => {
-                      descriptionTextarea.bind.onFocus();
-                      setTimeout(() => {
-                        const el = descriptionTextarea.ref.current;
-                        if (el) {
-                          el.focus();
-                          const len = el.value.length;
-                          el.setSelectionRange(len, len);
-                          el.scrollTop = el.scrollHeight;
-                        }
-                      }, 0);
+                <>
+                  <Textarea
+                    placeholder={t`Describe what this idea is about`}
+                    className="relative min-h-14 w-full resize-none overflow-hidden rounded-lg border border-black-tint-04 py-4 pl-10 pr-3 focus:border-black focus:pb-10 focus:ring-1 focus:ring-black"
+                    rows={1}
+                    {...field}
+                    ref={descriptionTextarea.ref}
+                    onBlur={() => {
+                      field.onBlur();
+                      descriptionTextarea.bind.onBlur();
                     }}
-                  >
-                    {field.value || t`Describe what this idea is about`}
-                  </div>
-                )}
+                    onFocus={() => descriptionTextarea.bind.onFocus()}
+                    onChange={(event) => {
+                      descriptionTextarea.bind.onChange();
+                      field.onChange(formatInput(event.target.value));
+                    }}
+                  />
+                  {descriptionTextarea.isFocus && (
+                    <div className="absolute bottom-4 right-3 text-sm font-normal text-black-tint-04">
+                      {ideaForm.watch('description')?.length ?? 0}/
+                      {DESC_MAX_LENGTH}
+                    </div>
+                  )}
+                </>
               </div>
             );
           }}
