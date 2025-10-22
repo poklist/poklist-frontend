@@ -124,15 +124,6 @@ const ListForm: React.FC<IListFormProps> = ({
     return () => subscription.unsubscribe();
   }, [defaultListInfo]); // 只依賴 defaultListInfo，移除 listForm 避免無限循環
 
-  const isFieldNotEmpty = (
-    value: string | number | File | null | undefined
-  ) => {
-    if (value === '' || value === 0 || value === null || value === undefined)
-      return false;
-    if (value instanceof File && value.size === 0) return false;
-    return true;
-  };
-
   const onDismiss = () => {
     let isFormEmpty = true;
     if (isFormModified) {
@@ -327,11 +318,7 @@ const ListForm: React.FC<IListFormProps> = ({
             className="line-clamp-1 h-6 w-full border-none p-0"
           />
         </div>
-        <div
-          className={cn(`flex items-center sm:justify-start`, {
-            'justify-center': isFieldNotEmpty(listForm.getValues('coverImage')),
-          })}
-        >
+        <div className="flex items-center justify-center">
           <Controller
             name="coverImage"
             control={listForm.control}

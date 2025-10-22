@@ -33,7 +33,7 @@ const EditModeFooter: React.FC<IEditModeFooterProps> = ({
         >
           <IconClose />
         </div>
-        <p className="text-[17px] font-bold">{title}</p>
+        <p className="text-base font-bold">{title}</p>
       </div>
       <Button
         variant={ButtonVariant.BLACK}
@@ -41,7 +41,7 @@ const EditModeFooter: React.FC<IEditModeFooterProps> = ({
         disabled={disabled}
         onClick={() => onSave(value)}
       >
-        <p className="text-[17px] font-bold">{onSaveText} </p>
+        <p className="text-base font-bold">{onSaveText} </p>
       </Button>
     </footer>
   );

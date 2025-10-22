@@ -1,11 +1,12 @@
+import getCroppedImg from '@/components/ImageCropper/cropImage';
+import { Input } from '@/components/ui/input';
+import { Slider } from '@/components/ui/slider';
 import { throttle } from '@/lib/functional';
+import { cn } from '@/lib/utils';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
 import { useCallback, useState } from 'react';
 import Cropper, { Area, Point } from 'react-easy-crop';
-import { Input } from '../ui/input';
-import { Slider } from '../ui/slider';
-import getCroppedImg from './cropImage';
 
 // FUTURE: move to constants?
 const MIN_DIMENSION = 150;
@@ -41,8 +42,12 @@ const ImageCropper: React.FC<IImageCropperProps> = ({
 
     const reader = new FileReader();
     reader.addEventListener('load', () => {
+      if (typeof reader.result !== 'string') {
+        console.error('Failed to read the file, please try again.');
+        return;
+      }
       const imageElement = new Image();
-      const imageUrl = reader.result?.toString() || '';
+      const imageUrl = reader.result.toString() || '';
       imageElement.src = imageUrl;
 
       imageElement.addEventListener('load', (e: Event) => {
@@ -81,7 +86,11 @@ const ImageCropper: React.FC<IImageCropperProps> = ({
 
   return (
     <>
-      <div className="mb-4 flex flex-col items-center gap-5">
+      <div
+        className={cn(`mb-4 flex flex-col items-center gap-5`, {
+          hidden: imgSrc,
+        })}
+      >
         <label className="flex w-fit flex-col">
           <div className="flex h-12 items-center justify-center gap-2 rounded-lg bg-black px-8 text-[15px] text-white">
             <Trans>Choose your image</Trans>

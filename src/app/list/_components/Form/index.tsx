@@ -16,10 +16,11 @@ import { EditFieldVariant } from '@/enums/EditField/index.enum';
 import { LocalStorageKey } from '@/enums/index.enum';
 import { MessageType, RadioType } from '@/enums/Style/index.enum';
 import { useCategories } from '@/hooks/queries/useCategories';
+import useAutoResizeTextarea from '@/hooks/ui/useAutoResizeTextarea';
 import useIdle from '@/hooks/useIdle';
 import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
 import { toast } from '@/hooks/useToast';
-import { cn, formatInput, getLocalStorage, setLocalStorage } from '@/lib/utils';
+import { formatInput, getLocalStorage, setLocalStorage } from '@/lib/utils';
 import useCommonStore from '@/stores/useCommonStore';
 import { IEditFieldConfig } from '@/types/EditField/index.d';
 import { ListBody } from '@/types/List';
@@ -27,7 +28,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { i18n } from '@lingui/core';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller, FieldErrors, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -92,8 +93,6 @@ const ListForm: React.FC<IListFormProps> = ({
     closeCategoryDrawer();
   };
 
-  const [isTextareaFocus, setIsTextareaFocus] = useState(false);
-
   // TODO load from localStorage in v0.3.5
   const listForm = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -113,13 +112,15 @@ const ListForm: React.FC<IListFormProps> = ({
     listForm.getValues('coverImage') !== defaultListInfo.coverImage ||
     listForm.getValues('categoryID') !== defaultListInfo.categoryID;
 
-  const onInputChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    event.target.value = formatInput(event.target.value);
-  };
+  const titleTextarea = useAutoResizeTextarea({
+    minHeight: 56,
+    focusMinHeight: 83,
+  });
 
-  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+  const descriptionTextarea = useAutoResizeTextarea({
+    minHeight: 56,
+    focusMinHeight: 83,
+  });
 
   const { isIdle, reset } = useIdle({ timeout: 2000, watch: listForm.watch });
 
@@ -141,18 +142,9 @@ const ListForm: React.FC<IListFormProps> = ({
     reset();
   }, [isIdle, listForm.formState.isDirty, defaultListInfo.title]);
 
-  const isFieldNotEmpty = (
-    value: string | number | File | null | undefined
-  ) => {
-    if (value === '' || value === 0 || value === null || value === undefined)
-      return false;
-    if (value instanceof File && value.size === 0) return false;
-    return true;
-  };
-
   const onDismiss = () => {
     let isFormEmpty = true;
-    if (isFormModified) {
+    if (listForm.formState.isDirty) {
       // TODO load from localStorage in v0.3.5
       openCancelDrawer();
       isFormEmpty = false;
@@ -238,6 +230,10 @@ const ListForm: React.FC<IListFormProps> = ({
       return;
     }
     listForm.reset({ ...defaultListInfo });
+    setTimeout(() => {
+      titleTextarea.bind.onChange();
+      listForm.setFocus('title');
+    }, 0);
   }, [defaultListInfo]);
 
   useEffect(() => {
@@ -272,85 +268,88 @@ const ListForm: React.FC<IListFormProps> = ({
         onSubmit={() => {
           void listForm.handleSubmit(onSubmit, onSubmitFailed)();
         }}
-        className="mx-4 mt-6 flex flex-1 flex-col gap-6 px-4 md:max-w-mobile-max"
+        className="mx-4 mb-24 mt-6 flex flex-1 flex-col gap-6 px-4 md:max-w-mobile-max"
       >
-        <div className="flex items-center justify-center font-extrabold">
-          <Input
-            placeholder={t`This is the title of your list`}
-            className="relative w-min border-none text-h1 placeholder:text-h1"
-            {...listForm.register('title', { onChange: onInputChange })}
-          />
-        </div>
-        <div className="flex items-start gap-2">
-          <IconTextarea />
-          <Controller
-            name="description"
-            control={listForm.control}
-            render={({ field }) => {
-              if (!isTextareaFocus) {
-                const isEmpty = !field.value;
-                return (
-                  <div
-                    className={cn(
-                      'line-clamp-1 h-6 w-full cursor-text border-none p-0',
-                      isEmpty && 'text-black-gray-03'
-                    )}
-                    onClick={() => {
-                      setIsTextareaFocus(true);
-                      setTimeout(() => {
-                        const el = textareaRef.current;
-                        if (el) {
-                          el.focus();
-                          const len = el.value.length;
-                          el.setSelectionRange(len, len);
-                          el.scrollTop = el.scrollHeight;
-                        }
-                      }, 0);
+        <Controller
+          name="title"
+          control={listForm.control}
+          render={({ field }) => {
+            return (
+              <div className="flex items-center justify-center">
+                <div className="relative flex w-11/12 items-center justify-center font-extrabold">
+                  <Textarea
+                    placeholder={t`This is the title of your list`}
+                    className="relative min-h-20 w-full resize-none overflow-hidden rounded-lg border border-black-tint-04 px-3 py-4 text-center text-h1 placeholder:text-h1 focus:border-black focus:pb-10 focus:ring-1 focus:ring-black"
+                    rows={1}
+                    {...field}
+                    ref={(el) => {
+                      field.ref(el);
+                      titleTextarea.ref.current = el;
                     }}
-                  >
-                    {field.value || t`Describe what this title is about`}
-                  </div>
-                );
-              }
-              return (
-                <Textarea
-                  placeholder={t`Describe what this title is about`}
-                  className="resize-none border-none p-0 leading-[1.45]"
-                  {...field}
-                  onChange={(e) => field.onChange(formatInput(e.target.value))}
-                  onBlur={() => {
-                    field.onBlur();
-                    textareaRef.current?.scrollTo({ top: 0 });
-                    setIsTextareaFocus(false);
-                  }}
-                  onFocus={() => setIsTextareaFocus(true)}
-                  ref={(el) => {
-                    field.ref(el);
-                    textareaRef.current = el;
-                  }}
-                />
-              );
-            }}
-          />
-        </div>
-        {isTextareaFocus && (
-          <div className="mt-2 flex justify-end text-black-tint-04">
-            {listForm.watch('description')?.length ?? 0}/{DESC_MAX_LENGTH}
-          </div>
-        )}
-        <div className="flex items-center gap-2">
-          <IconExteriorLink />
+                    onBlur={() => {
+                      field.onBlur();
+                      titleTextarea.bind.onBlur();
+                    }}
+                    onFocus={() => titleTextarea.bind.onFocus()}
+                    onChange={(event) => {
+                      titleTextarea.bind.onChange();
+                      field.onChange(formatInput(event.target.value));
+                    }}
+                  />
+                  {titleTextarea.isFocus && (
+                    <div className="absolute bottom-4 right-3 text-sm font-normal text-black-tint-04">
+                      {listForm.watch('title').length ?? 0}/{TITLE_MAX_LENGTH}
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          }}
+        />
+        <Controller
+          name="description"
+          control={listForm.control}
+          render={({ field }) => {
+            return (
+              <div className="relative flex items-center justify-center">
+                <IconTextarea className="absolute left-3 top-4 z-10" />
+                <>
+                  <Textarea
+                    placeholder={t`Describe what this title is about`}
+                    className="relative min-h-14 w-full resize-none overflow-hidden rounded-lg border border-black-tint-04 py-4 pl-10 pr-3 focus:border-black focus:pb-10 focus:ring-1 focus:ring-black"
+                    rows={1}
+                    {...field}
+                    ref={descriptionTextarea.ref}
+                    onBlur={() => {
+                      field.onBlur();
+                      descriptionTextarea.bind.onBlur();
+                    }}
+                    onFocus={() => descriptionTextarea.bind.onFocus()}
+                    onChange={(event) => {
+                      descriptionTextarea.bind.onChange();
+                      field.onChange(formatInput(event.target.value));
+                    }}
+                  />
+                  {descriptionTextarea.isFocus && (
+                    <div className="absolute bottom-4 right-3 text-sm font-normal text-black-tint-04">
+                      {listForm.watch('description')?.length ?? 0}/
+                      {DESC_MAX_LENGTH}
+                    </div>
+                  )}
+                </>
+              </div>
+            );
+          }}
+        />
+        <div className="relative flex items-center gap-2">
+          <IconExteriorLink className="absolute left-3 top-4 z-10" />
           <Input
             {...listForm.register('externalLink')}
             placeholder={t`Link a page`}
-            className="line-clamp-1 h-6 w-full border-none p-0"
+            className="line-clamp-1 min-h-14 w-full truncate border-black-tint-04 py-4 pl-10 pr-3 focus:border-black focus:ring-1 focus:ring-black"
           />
         </div>
-        <div
-          className={cn(`flex items-center sm:justify-start`, {
-            'justify-center': isFieldNotEmpty(listForm.watch('coverImage')),
-          })}
-        >
+        <div className="flex items-center justify-center">
           <Controller
             name="coverImage"
             control={listForm.control}

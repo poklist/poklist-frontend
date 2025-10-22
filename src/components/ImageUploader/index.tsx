@@ -1,7 +1,6 @@
 import ImagePreviewComponent from '@/components/ImagePreview';
 import IconPhoto from '@/components/ui/icons/PhotoIcon';
 import { cn } from '@/lib/utils';
-import { Trans } from '@lingui/react/macro';
 import React from 'react';
 
 interface IImageUploaderProps {
@@ -26,14 +25,15 @@ const ImageUploader: React.FC<IImageUploaderProps> = ({
           onClickClose={() => onRemove?.()}
         />
       ) : (
-        <div className={cn(`flex items-start gap-2`, className)}>
-          <IconPhoto />
-          <label className="text-black-gray-03">
-            <div className="h-6 w-full">
-              <Trans>Upload a cover</Trans>
-            </div>
-            <Trans>500x500px, JPG or PNG, max 4MB</Trans>
-          </label>
+        <div
+          className={cn(
+            `flex h-48 w-48 items-center justify-center rounded-2xl border border-black-tint-04`,
+            className
+          )}
+        >
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-note-05">
+            <IconPhoto className="w-6" />
+          </div>
         </div>
       )}
     </div>

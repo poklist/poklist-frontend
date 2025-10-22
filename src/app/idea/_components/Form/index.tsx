@@ -13,17 +13,18 @@ import { DrawerIds } from '@/constants/Drawer';
 import { EditFieldVariant } from '@/enums/EditField/index.enum';
 import { LocalStorageKey } from '@/enums/index.enum';
 import { MessageType } from '@/enums/Style/index.enum';
+import useAutoResizeTextarea from '@/hooks/ui/useAutoResizeTextarea';
 import useIdle from '@/hooks/useIdle';
 import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
 import { toast } from '@/hooks/useToast';
-import { cn, formatInput, getLocalStorage, setLocalStorage } from '@/lib/utils';
+import { formatInput, getLocalStorage, setLocalStorage } from '@/lib/utils';
 import useCommonStore from '@/stores/useCommonStore';
 import { IEditFieldConfig } from '@/types/EditField/index.d';
 import { IdeaBody, IdeaResponse } from '@/types/Idea';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller, FieldErrors, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -57,8 +58,6 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
   const { openDrawer: openCancelDrawer, closeDrawer: closeCancelDrawer } =
     useDrawer(DrawerIds.CANCEL_IDEA_FORM_CONFIRM_DRAWER_ID);
   const navigateTo = useStrictNavigateNext();
-
-  const [isTextareaFocus, setIsTextareaFocus] = useState(false);
 
   const { openFakePage } = useFakePage();
   const [fieldConfig, setFieldConfig] = useState<IEditFieldConfig>();
@@ -118,26 +117,19 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
     openFakePage();
   };
 
-  const onInputChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    event.target.value = formatInput(event.target.value);
-  };
+  const titleTextarea = useAutoResizeTextarea({
+    minHeight: 56,
+    focusMinHeight: 83,
+  });
 
-  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
-
-  const isFieldNotEmpty = (
-    value: string | number | File | null | undefined
-  ) => {
-    if (value === '' || value === 0 || value === null || value === undefined)
-      return false;
-    if (value instanceof File && value.size === 0) return false;
-    return true;
-  };
+  const descriptionTextarea = useAutoResizeTextarea({
+    minHeight: 56,
+    focusMinHeight: 83,
+  });
 
   const onDismiss = () => {
     let isFormEmpty = true;
-    if (isFormModified) {
+    if (ideaForm.formState.isDirty) {
       // TODO load from localStorage in v0.3.5
       openCancelDrawer();
       isFormEmpty = false;
@@ -211,6 +203,10 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
     ideaForm.reset({
       ...previousIdeaInfo,
     });
+    setTimeout(() => {
+      titleTextarea.bind.onChange();
+      ideaForm.setFocus('title');
+    }, 0);
   }, [previousIdeaInfo]);
 
   useEffect(() => {
@@ -221,85 +217,9 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
     <>
       <form
         onSubmit={() => void ideaForm.handleSubmit(onSubmit, onSubmitFailed)()}
-        className="mx-4 mt-4 flex flex-1 flex-col gap-6 md:max-w-mobile-max"
+        className="mx-4 mb-24 mt-4 flex flex-1 flex-col gap-6 md:max-w-mobile-max"
       >
-        <div className="flex items-center font-extrabold">
-          <Input
-            placeholder={t`This is the title of your idea`}
-            className="relative border-none px-0 text-h1 placeholder:text-h1"
-            {...ideaForm.register('title', { onChange: onInputChange })}
-          />
-        </div>
-        <div className="flex items-start gap-2">
-          <IconTextarea />
-          <Controller
-            name="description"
-            control={ideaForm.control}
-            render={({ field }) => {
-              const isEmpty = !field.value;
-              if (!isTextareaFocus) {
-                return (
-                  <div
-                    className={cn(
-                      'line-clamp-1 h-6 w-full cursor-text border-none p-0',
-                      isEmpty && 'text-black-gray-03'
-                    )}
-                    onClick={() => {
-                      setIsTextareaFocus(true);
-                      setTimeout(() => {
-                        const el = textareaRef.current;
-                        if (el) {
-                          el.focus();
-                          const len = el.value.length;
-                          el.setSelectionRange(len, len);
-                          el.scrollTop = el.scrollHeight;
-                        }
-                      }, 0);
-                    }}
-                  >
-                    {field.value || t`Describe what this idea is about`}
-                  </div>
-                );
-              }
-              return (
-                <Textarea
-                  placeholder={t`Describe what this idea is about`}
-                  className="resize-none border-none p-0 leading-[1.45]"
-                  {...field}
-                  onChange={(e) => field.onChange(formatInput(e.target.value))}
-                  onBlur={() => {
-                    field.onBlur();
-                    textareaRef.current?.scrollTo({ top: 0 });
-                    setIsTextareaFocus(false);
-                  }}
-                  onFocus={() => setIsTextareaFocus(true)}
-                  ref={(el) => {
-                    field.ref(el);
-                    textareaRef.current = el;
-                  }}
-                />
-              );
-            }}
-          />
-        </div>
-        {isTextareaFocus && (
-          <div className="mt-2 flex justify-end text-black-tint-04">
-            {ideaForm.watch('description')?.length ?? 0}/{DESC_MAX_LENGTH}
-          </div>
-        )}
-        <div className="flex items-center gap-2">
-          <IconExteriorLink />
-          <Input
-            {...ideaForm.register('externalLink')}
-            placeholder={t`Link a page`}
-            className="h-6 w-full border-none p-0"
-          />
-        </div>
-        <div
-          className={cn(`flex items-center sm:justify-start`, {
-            'justify-center': isFieldNotEmpty(ideaForm.watch('coverImage')),
-          })}
-        >
+        <div className="flex items-center justify-center">
           <Controller
             name="coverImage"
             control={ideaForm.control}
@@ -312,6 +232,83 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
                 }}
               />
             )}
+          />
+        </div>
+        <Controller
+          name="title"
+          control={ideaForm.control}
+          render={({ field }) => {
+            return (
+              <div className="relative flex items-center justify-center font-bold">
+                <Textarea
+                  placeholder={t`This is the title of your idea`}
+                  className="relative min-h-16 w-full resize-none overflow-hidden rounded-lg border border-black-tint-04 px-3 py-4 text-lg placeholder:text-base focus:border-black focus:pb-10 focus:ring-1 focus:ring-black"
+                  rows={1}
+                  {...field}
+                  ref={(el) => {
+                    field.ref(el);
+                    titleTextarea.ref.current = el;
+                  }}
+                  onBlur={() => {
+                    field.onBlur();
+                    titleTextarea.bind.onBlur();
+                  }}
+                  onFocus={() => titleTextarea.bind.onFocus()}
+                  onChange={(event) => {
+                    titleTextarea.bind.onChange();
+                    field.onChange(formatInput(event.target.value));
+                  }}
+                />
+                {titleTextarea.isFocus && (
+                  <div className="absolute bottom-4 right-3 text-sm font-normal text-black-tint-04">
+                    {ideaForm.watch('title')?.length ?? 0}/{TITLE_MAX_LENGTH}
+                  </div>
+                )}
+              </div>
+            );
+          }}
+        />
+        <Controller
+          name="description"
+          control={ideaForm.control}
+          render={({ field }) => {
+            return (
+              <div className="relative flex items-center justify-center">
+                <IconTextarea className="absolute left-3 top-4 z-10" />
+                <>
+                  <Textarea
+                    placeholder={t`Describe what this idea is about`}
+                    className="relative min-h-14 w-full resize-none overflow-hidden rounded-lg border border-black-tint-04 py-4 pl-10 pr-3 focus:border-black focus:pb-10 focus:ring-1 focus:ring-black"
+                    rows={1}
+                    {...field}
+                    ref={descriptionTextarea.ref}
+                    onBlur={() => {
+                      field.onBlur();
+                      descriptionTextarea.bind.onBlur();
+                    }}
+                    onFocus={() => descriptionTextarea.bind.onFocus()}
+                    onChange={(event) => {
+                      descriptionTextarea.bind.onChange();
+                      field.onChange(formatInput(event.target.value));
+                    }}
+                  />
+                  {descriptionTextarea.isFocus && (
+                    <div className="absolute bottom-4 right-3 text-sm font-normal text-black-tint-04">
+                      {ideaForm.watch('description')?.length ?? 0}/
+                      {DESC_MAX_LENGTH}
+                    </div>
+                  )}
+                </>
+              </div>
+            );
+          }}
+        />
+        <div className="relative flex items-center gap-2">
+          <IconExteriorLink className="absolute left-3 top-4 z-10" />
+          <Input
+            {...ideaForm.register('externalLink')}
+            placeholder={t`Link a page`}
+            className="line-clamp-1 min-h-14 w-full truncate border-black-tint-04 py-4 pl-10 pr-3 focus:border-black focus:ring-1 focus:ring-black"
           />
         </div>
       </form>
