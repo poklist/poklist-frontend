@@ -1,14 +1,14 @@
 'use client';
 
 import ListForm from '@/app/list/_components/Form';
-import Header from '@/app/list/_components/Header';
+import { LocalStorageKey } from '@/enums/index.enum';
 import { useCreateList } from '@/hooks/mutations/useCreateList';
 import { useAuthCheck, useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
+import { removeLocalStorage } from '@/lib/utils';
 import useCommonStore from '@/stores/useCommonStore';
 import useUserStore from '@/stores/useUserStore';
 import { ListBody } from '@/types/List';
-import { Trans } from '@lingui/react/macro';
 import React, { useEffect } from 'react';
 
 const CreatePage: React.FC = () => {
@@ -34,7 +34,7 @@ const CreatePage: React.FC = () => {
     } else {
       setIsLoading(false);
     }
-  }, [isCreateListLoading, setIsLoading]);
+  }, [isCreateListLoading]);
 
   const onCreateList = withAuth((listData: ListBody) => {
     createList(listData, {
@@ -42,7 +42,8 @@ const CreatePage: React.FC = () => {
         if (!data) {
           throw new Error('Failed to create list');
         }
-        navigateTo.manageList(me.userCode, data.id.toString());
+        removeLocalStorage(LocalStorageKey.LIST_DRAFT);
+        navigateTo.viewList(me.userCode, data.id.toString());
       },
     });
   });
@@ -52,15 +53,12 @@ const CreatePage: React.FC = () => {
   }, [checkAuthAndRedirect]);
 
   return (
-    <>
-      <Header title={<Trans>Idea List</Trans>} />
-      <div className="flex min-h-screen flex-col gap-6">
-        <ListForm
-          completedCallback={onCreateList}
-          dismissCallback={onDismissCreate}
-        />
-      </div>
-    </>
+    <div className="flex min-h-screen flex-col gap-4">
+      <ListForm
+        completedCallback={onCreateList}
+        dismissCallback={onDismissCreate}
+      />
+    </div>
   );
 };
 

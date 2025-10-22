@@ -1,8 +1,9 @@
 import axios, { AxiosError } from 'axios';
 
 import { MessageType } from '@/enums/Style/index.enum';
+import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { toast } from '@/hooks/useToast';
-import authStore from '@/stores/useAuthStore';
+import useAuthStore from '@/stores/useAuthStore';
 
 const instance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL as string,
@@ -11,17 +12,51 @@ const instance = axios.create({
 instance.interceptors.request.use(
   (config) => {
     // 從 localStorage 取得 token
-    const { accessToken } = authStore.getState();
-    config.headers.Authorization = `Bearer ${accessToken}`;
+    const { accessToken } = useAuthStore.getState();
+    if (config.headers) config.headers.Authorization = `Bearer ${accessToken}`;
     return config;
   },
-  (error: AxiosError) => {
+  (error: unknown) => {
     console.error(error);
     toast({
-      title: error.message,
+      title: error instanceof Error ? error.message : '發生未知錯誤',
       variant: MessageType.ERROR,
     });
-    window.location.href = '/';
+    const navigateTo = useStrictNavigationAdapter();
+    navigateTo.home();
+    return Promise.reject(
+      error instanceof Error ? error : new Error(String(error))
+    );
+  }
+);
+
+instance.interceptors.response.use(
+  (response) => {
+    // Any status code that lie within the range of 2xx cause this function to trigger
+    // Do something with response data
+    if (response.status !== 200) {
+      toast({
+        title: `錯誤${response.status}，請聯繫客服。`,
+        variant: MessageType.ERROR,
+      });
+    }
+
+    return response;
+  },
+  async (error: AxiosError) => {
+    // Do something with response error
+    console.error(error);
+    toast({
+      title: error.message || `錯誤${error.status}，請聯繫客服。`,
+      variant: MessageType.ERROR,
+    });
+
+    if (error.response?.status === 401) {
+      const { logout } = useAuthStore();
+      logout();
+      const navigateTo = useStrictNavigationAdapter();
+      navigateTo.home();
+    }
     return Promise.reject(error);
   }
 );

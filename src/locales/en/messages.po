@@ -100,15 +100,45 @@ msgid "Copied to clipboard"
 msgstr "Copied to clipboard"
 
 #: src/app/[userCode]/list/[id]/_components/IdeaDrawerContent/index.tsx
+#: src/app/idea/_components/Form/index.tsx
+msgid "Edit Idea"
+msgstr "Edit Idea"
+
+#: src/app/[userCode]/list/[id]/_components/IdeaDrawerContent/index.tsx
+msgid "Delete Idea"
+msgstr "Delete Idea"
+
+#: src/app/[userCode]/list/[id]/_components/IdeaDrawerContent/index.tsx
 #: src/components/Footer/FloatingButtonFooter.tsx
 msgid "Copy"
 msgstr "Copy"
+
+#: src/app/[userCode]/list/[id]/_components/IdeaDrawerContent/index.tsx
+msgid "Are you sure you want to delete this idea?"
+msgstr "Are you sure you want to delete this idea?"
+
+#: src/app/[userCode]/list/[id]/_components/IdeaDrawerContent/index.tsx
+msgid "Once deleted, this idea cannot be recovered!"
+msgstr "Once deleted, this idea cannot be recovered!"
+
+#: src/app/[userCode]/list/[id]/_components/IdeaDrawerContent/index.tsx
+msgid "Confirm Delete"
+msgstr "Confirm Delete"
+
+#: src/app/[userCode]/list/[id]/_components/IdeaDrawerContent/index.tsx
+#: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
+#: src/app/[userCode]/list/_components/DeleteButton/index.tsx
+#: src/app/_shared/_components/List/DeleteButton/index.tsx
+#: src/app/list/_components/DeleteButton/index.tsx
+msgid "Cancel"
+msgstr "Cancel"
 
 #: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
 msgid "Edit List Info"
 msgstr "Edit List Info"
 
 #: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
+#: src/app/idea/_components/Form/index.tsx
 #: src/components/Drawer/CreateListOrIdeaDrawer.tsx
 msgid "Add Idea"
 msgstr "Add Idea"
@@ -142,13 +172,28 @@ msgstr "Edit list"
 msgid "Add an idea"
 msgstr "Add an idea"
 
-#: src/app/[userCode]/list/[id]/edit/page.tsx
-msgid "List Cover"
-msgstr "List Cover"
+#: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
+#: src/app/[userCode]/list/_components/DeleteButton/index.tsx
+#: src/app/_shared/_components/List/DeleteButton/index.tsx
+#: src/app/list/_components/DeleteButton/index.tsx
+msgid "Deleting the list title will also erase all ideas!"
+msgstr "Deleting the list title will also erase all ideas!"
+
+#: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
+#: src/app/[userCode]/list/_components/DeleteButton/index.tsx
+#: src/app/_shared/_components/List/DeleteButton/index.tsx
+#: src/app/list/_components/DeleteButton/index.tsx
+msgid "Permanently delete the entire list and all its ideas. This action cannot be undone!"
+msgstr "Permanently delete the entire list and all its ideas. This action cannot be undone!"
+
+#: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
+#: src/app/[userCode]/list/_components/DeleteButton/index.tsx
+#: src/app/_shared/_components/List/DeleteButton/index.tsx
+#: src/app/list/_components/DeleteButton/index.tsx
+msgid "Delete List and All Ideas"
+msgstr "Delete List and All Ideas"
 
 #: src/app/[userCode]/list/[id]/manage/page.tsx
-#: src/app/[userCode]/list/create/page.tsx
-#: src/app/list/create/page.tsx
 msgid "Idea List"
 msgstr "Idea List"
 
@@ -165,206 +210,13 @@ msgid "Tap an idea to edit. Drag the lines on the left to reorder."
 msgstr "Tap an idea to edit. Drag the lines on the left to reorder."
 
 #: src/app/[userCode]/list/[id]/manage/page.tsx
-#: src/app/[userCode]/list/_components/Form/index.tsx
-#: src/app/_shared/_components/List/Form/index.tsx
 #: src/app/list/_components/Form/index.tsx
-#: src/app/list/create/_components/Form/index.tsx
 msgid "Edit List"
 msgstr "Edit List"
 
 #: src/app/[userCode]/list/[id]/manage/page.tsx
 msgid "Save New Order"
 msgstr "Save New Order"
-
-#: src/app/[userCode]/list/_components/DeleteButton/index.tsx
-#: src/app/_shared/_components/List/DeleteButton/index.tsx
-#: src/app/list/_components/DeleteButton/index.tsx
-msgid "Deleting the list title will also erase all ideas!"
-msgstr "Deleting the list title will also erase all ideas!"
-
-#: src/app/[userCode]/list/_components/DeleteButton/index.tsx
-#: src/app/_shared/_components/List/DeleteButton/index.tsx
-#: src/app/list/_components/DeleteButton/index.tsx
-msgid "Permanently delete the entire list and all its ideas. This action cannot be undone!"
-msgstr "Permanently delete the entire list and all its ideas. This action cannot be undone!"
-
-#: src/app/[userCode]/list/_components/DeleteButton/index.tsx
-#: src/app/_shared/_components/List/DeleteButton/index.tsx
-#: src/app/list/_components/DeleteButton/index.tsx
-msgid "Delete List and All Ideas"
-msgstr "Delete List and All Ideas"
-
-#: src/app/[userCode]/list/_components/DeleteButton/index.tsx
-#: src/app/_shared/_components/List/DeleteButton/index.tsx
-#: src/app/idea/_components/DeleteButton/index.tsx
-#: src/app/list/_components/DeleteButton/index.tsx
-msgid "Cancel"
-msgstr "Cancel"
-
-#: src/app/[userCode]/list/_components/Form/index.tsx
-#: src/app/_shared/_components/List/Form/index.tsx
-#: src/app/idea/_components/Form/index.tsx
-#: src/app/list/_components/Form/index.tsx
-#: src/app/list/create/_components/Form/index.tsx
-msgid "Cover Image"
-msgstr "Cover Image"
-
-#: src/app/[userCode]/list/_components/Form/index.tsx
-#: src/app/_shared/_components/List/Form/index.tsx
-#: src/app/idea/_components/Form/index.tsx
-#: src/app/list/_components/Form/index.tsx
-#: src/app/list/create/_components/Form/index.tsx
-msgid "Hey, the title can't be left empty!"
-msgstr "Hey, the title can't be left empty!"
-
-#: src/app/[userCode]/list/_components/Form/index.tsx
-#: src/app/_shared/_components/List/Form/index.tsx
-#: src/app/list/_components/Form/index.tsx
-#: src/app/list/create/_components/Form/index.tsx
-msgid "Every list needs a title, so fill it in!"
-msgstr "Every list needs a title, so fill it in!"
-
-#: src/app/[userCode]/list/_components/Form/index.tsx
-#: src/app/_shared/_components/List/Form/index.tsx
-#: src/app/list/_components/Form/index.tsx
-#: src/app/list/create/_components/Form/index.tsx
-msgid "List title is too long!"
-msgstr "List title is too long!"
-
-#: src/app/[userCode]/list/_components/Form/index.tsx
-#: src/app/_shared/_components/List/Form/index.tsx
-#: src/app/idea/_components/Form/index.tsx
-#: src/app/list/_components/Form/index.tsx
-#: src/app/list/create/_components/Form/index.tsx
-msgid "Please keep it under {TITLE_MAX_LENGTH} characters."
-msgstr "Please keep it under {TITLE_MAX_LENGTH} characters."
-
-#: src/app/[userCode]/list/_components/Form/index.tsx
-#: src/app/_shared/_components/List/Form/index.tsx
-#: src/app/idea/_components/Form/index.tsx
-#: src/app/list/_components/Form/index.tsx
-#: src/app/list/create/_components/Form/index.tsx
-msgid "Description is too long!"
-msgstr "Description is too long!"
-
-#: src/app/[userCode]/list/_components/Form/index.tsx
-#: src/app/_shared/_components/List/Form/index.tsx
-#: src/app/idea/_components/Form/index.tsx
-#: src/app/list/_components/Form/index.tsx
-#: src/app/list/create/_components/Form/index.tsx
-msgid "Please keep it under {DESC_MAX_LENGTH} characters."
-msgstr "Please keep it under {DESC_MAX_LENGTH} characters."
-
-#: src/app/[userCode]/list/_components/Form/index.tsx
-#: src/app/_shared/_components/List/Form/index.tsx
-#: src/app/idea/_components/Form/index.tsx
-#: src/app/list/_components/Form/index.tsx
-#: src/app/list/create/_components/Form/index.tsx
-msgid "Error - Link must start with https:// "
-msgstr "Error - Link must start with https:// "
-
-#: src/app/[userCode]/list/_components/Form/index.tsx
-#: src/app/_shared/_components/List/Form/index.tsx
-#: src/app/list/_components/Form/index.tsx
-#: src/app/list/create/_components/Form/index.tsx
-msgid "This is the title of your list"
-msgstr "This is the title of your list"
-
-#: src/app/[userCode]/list/_components/Form/index.tsx
-#: src/app/[userCode]/list/_components/Form/index.tsx
-#: src/app/_shared/_components/List/Form/index.tsx
-#: src/app/_shared/_components/List/Form/index.tsx
-#: src/app/list/_components/Form/index.tsx
-#: src/app/list/_components/Form/index.tsx
-#: src/app/list/create/_components/Form/index.tsx
-#: src/app/list/create/_components/Form/index.tsx
-msgid "Describe what this title is about"
-msgstr "Describe what this title is about"
-
-#: src/app/[userCode]/list/_components/Form/index.tsx
-#: src/app/_shared/_components/List/Form/index.tsx
-#: src/app/idea/_components/Form/index.tsx
-#: src/app/list/_components/Form/index.tsx
-#: src/app/list/create/_components/Form/index.tsx
-msgid "Link a page"
-msgstr "Link a page"
-
-#: src/app/[userCode]/list/_components/Form/index.tsx
-#: src/app/_shared/_components/List/Form/index.tsx
-#: src/app/list/_components/Form/index.tsx
-#: src/app/list/create/_components/Form/index.tsx
-msgid "Edit List Topic"
-msgstr "Edit List Topic"
-
-#: src/app/[userCode]/list/_components/Form/index.tsx
-#: src/app/_shared/_components/List/Form/index.tsx
-#: src/app/list/_components/Form/index.tsx
-#: src/app/list/create/_components/Form/index.tsx
-msgid "List Topic"
-msgstr "List Topic"
-
-#: src/app/[userCode]/list/_components/Form/index.tsx
-#: src/app/_shared/_components/List/Form/index.tsx
-#: src/app/list/_components/Form/index.tsx
-#: src/app/list/create/_components/Form/index.tsx
-msgid "Choose a topic that vibes with your List."
-msgstr "Choose a topic that vibes with your List."
-
-#: src/app/[userCode]/list/_components/Form/index.tsx
-#: src/app/[userCode]/list/_components/Form/index.tsx
-#: src/app/[userCode]/list/_components/Form/index.tsx
-#: src/app/[userCode]/list/_components/Form/index.tsx
-#: src/app/_shared/_components/List/Form/index.tsx
-#: src/app/_shared/_components/List/Form/index.tsx
-#: src/app/_shared/_components/List/Form/index.tsx
-#: src/app/_shared/_components/List/Form/index.tsx
-#: src/app/list/_components/Form/index.tsx
-#: src/app/list/_components/Form/index.tsx
-#: src/app/list/_components/Form/index.tsx
-#: src/app/list/create/_components/Form/index.tsx
-#: src/app/list/create/_components/Form/index.tsx
-#: src/app/list/create/_components/Form/index.tsx
-#: src/app/list/create/_components/Form/index.tsx
-msgid "Next"
-msgstr "Next"
-
-#: src/app/[userCode]/list/_components/Form/index.tsx
-#: src/app/_shared/_components/List/Form/index.tsx
-#: src/app/idea/_components/Form/index.tsx
-#: src/app/list/_components/Form/index.tsx
-#: src/app/list/create/_components/Form/index.tsx
-msgid "Your edits will be lost if you cancel!"
-msgstr "Your edits will be lost if you cancel!"
-
-#: src/app/[userCode]/list/_components/Form/index.tsx
-#: src/app/_shared/_components/List/Form/index.tsx
-#: src/app/list/_components/Form/index.tsx
-#: src/app/list/create/_components/Form/index.tsx
-msgid "If you cancel, everything you've entered will be lost."
-msgstr "If you cancel, everything you've entered will be lost."
-
-#: src/app/[userCode]/list/_components/Form/index.tsx
-#: src/app/_shared/_components/List/Form/index.tsx
-#: src/app/idea/_components/Form/index.tsx
-#: src/app/list/_components/Form/index.tsx
-#: src/app/list/create/_components/Form/index.tsx
-msgid "Cancel Editing"
-msgstr "Cancel Editing"
-
-#: src/app/[userCode]/list/_components/Form/index.tsx
-#: src/app/_shared/_components/List/Form/index.tsx
-#: src/app/idea/_components/Form/index.tsx
-#: src/app/list/_components/Form/index.tsx
-#: src/app/list/create/_components/Form/index.tsx
-msgid "Continue Editing"
-msgstr "Continue Editing"
-
-#: src/app/[userCode]/list/_components/Form/index.tsx
-#: src/app/_shared/_components/List/Form/index.tsx
-#: src/app/list/_components/Form/index.tsx
-#: src/app/list/create/_components/Form/index.tsx
-msgid "Create Idea List"
-msgstr "Create Idea List"
 
 #: src/app/[userCode]/list/_components/i18n.ts
 #: src/app/list/_components/i18n.ts
@@ -546,56 +398,114 @@ msgstr "Oops something is wrong!"
 msgid "<0>Relist works best on mobile.</0><1>Use a mobile device for the best experience.</1>"
 msgstr "<0>Relist works best on mobile.</0><1>Use a mobile device for the best experience.</1>"
 
-#: src/app/idea/[ideaID]/edit/page.tsx
-msgid "Idea"
-msgstr "Idea"
-
-#: src/app/idea/_components/DeleteButton/index.tsx
-msgid "Are you sure you want to delete this idea?"
-msgstr "Are you sure you want to delete this idea?"
-
-#: src/app/idea/_components/DeleteButton/index.tsx
-msgid "Once deleted, this idea cannot be recovered!"
-msgstr "Once deleted, this idea cannot be recovered!"
-
-#: src/app/idea/_components/DeleteButton/index.tsx
-msgid "Confirm Delete"
-msgstr "Confirm Delete"
+#: src/app/idea/_components/Form/index.tsx
+#: src/app/list/_components/Form/index.tsx
+msgid "Cover Image"
+msgstr "Cover Image"
 
 #: src/app/idea/_components/Form/index.tsx
-msgid "Every idea needs a title, so fill it in!"
-msgstr "Every idea needs a title, so fill it in!"
-
-#: src/app/idea/_components/Form/index.tsx
-msgid "Idea title is too long!"
-msgstr "Idea title is too long!"
-
-#: src/app/idea/_components/Form/index.tsx
-msgid "This is the title of your idea"
-msgstr "This is the title of your idea"
-
-#: src/app/idea/_components/Form/index.tsx
-#: src/app/idea/_components/Form/index.tsx
-msgid "Describe what this idea is about"
-msgstr "Describe what this idea is about"
-
-#: src/app/idea/_components/Form/index.tsx
-msgid "Title is saved, but your idea edits will be lost! Are you sure you want to cancel?"
-msgstr "Title is saved, but your idea edits will be lost! Are you sure you want to cancel?"
-
-#: src/app/idea/_components/Form/index.tsx
-msgid "Edit Idea"
-msgstr "Edit Idea"
-
-#: src/app/idea/_components/Form/index.tsx
-#: src/app/idea/create/page.tsx
-msgid "New Idea"
-msgstr "New Idea"
-
-#: src/app/idea/_components/Form/index.tsx
+#: src/app/list/_components/Form/index.tsx
+#: src/app/list/_components/Form/index.tsx
 #: src/components/FakePage/EditFieldFakePage.tsx
 msgid "Done"
 msgstr "Done"
+
+#: src/app/idea/_components/Form/index.tsx
+#: src/app/list/_components/Form/index.tsx
+msgid "Next"
+msgstr "Next"
+
+#: src/app/idea/_components/Form/index.tsx
+msgid "What’s your idea? (must-have)"
+msgstr "What’s your idea? (must-have)"
+
+#: src/app/idea/_components/Form/index.tsx
+msgid "Description"
+msgstr "Description"
+
+#: src/app/idea/_components/Form/index.tsx
+msgid "Link"
+msgstr "Link"
+
+#: src/app/idea/_components/Form/index.tsx
+msgid "Discarding your edits?"
+msgstr "Discarding your edits?"
+
+#: src/app/idea/_components/Form/index.tsx
+msgid "If you choose to discard, you’ll lose this edit."
+msgstr "If you choose to discard, you’ll lose this edit."
+
+#: src/app/idea/_components/Form/index.tsx
+msgid "Discard"
+msgstr "Discard"
+
+#: src/app/idea/_components/Form/index.tsx
+msgid "Continue editing"
+msgstr "Continue editing"
+
+#: src/app/idea/_components/Form/index.tsx
+#: src/app/list/_components/Form/index.tsx
+msgid "Still got an draft waiting for you"
+msgstr "Still got an draft waiting for you"
+
+#: src/app/idea/_components/Form/index.tsx
+#: src/app/list/_components/Form/index.tsx
+msgid "Would you like to delete it or keep editing?"
+msgstr "Would you like to delete it or keep editing?"
+
+#: src/app/idea/_components/Form/index.tsx
+#: src/app/list/_components/Form/index.tsx
+msgid "Delete draft"
+msgstr "Delete draft"
+
+#: src/app/idea/_components/Form/index.tsx
+#: src/app/list/_components/Form/index.tsx
+msgid "Keep editing"
+msgstr "Keep editing"
+
+#: src/app/list/_components/Form/index.tsx
+msgid "Create Idea List"
+msgstr "Create Idea List"
+
+#: src/app/list/_components/Form/index.tsx
+msgid "This is the title of your list"
+msgstr "This is the title of your list"
+
+#: src/app/list/_components/Form/index.tsx
+msgid "Describe what this title is about"
+msgstr "Describe what this title is about"
+
+#: src/app/list/_components/Form/index.tsx
+msgid "Link a page"
+msgstr "Link a page"
+
+#: src/app/list/_components/Form/index.tsx
+msgid "Edit List Topic"
+msgstr "Edit List Topic"
+
+#: src/app/list/_components/Form/index.tsx
+msgid "List Topic"
+msgstr "List Topic"
+
+#: src/app/list/_components/Form/index.tsx
+msgid "Choose a topic that vibes with your List."
+msgstr "Choose a topic that vibes with your List."
+
+#: src/app/list/_components/Form/index.tsx
+msgid "Your edits will be lost if you cancel!"
+msgstr "Your edits will be lost if you cancel!"
+
+#: src/app/list/_components/Form/index.tsx
+msgid "If you cancel, everything you've entered will be lost."
+msgstr "If you cancel, everything you've entered will be lost."
+
+#: src/app/list/_components/Form/index.tsx
+msgid "Cancel Editing"
+msgstr "Cancel Editing"
+
+#: src/app/list/_components/Form/index.tsx
+msgid "Continue Editing"
+msgstr "Continue Editing"
 
 #: src/app/official/_components/FeatureSection/index.tsx
 msgid "Life Style"
@@ -761,12 +671,12 @@ msgid "Followings"
 msgstr "Followings"
 
 #: src/components/Drawer/CreateListOrIdeaDrawer.tsx
-msgid "說說你的好點子"
-msgstr "說說你的好點子"
+msgid "What’s on your mind?"
+msgstr "What’s on your mind?"
 
 #: src/components/Drawer/CreateListOrIdeaDrawer.tsx
-msgid "先來創個新名單，還是記下靈感，隨心所欲！"
-msgstr "先來創個新名單，還是記下靈感，隨心所欲！"
+msgid "A list groups your ideas. Start wherever you vibe."
+msgstr "A list groups your ideas. Start wherever you vibe."
 
 #: src/components/Drawer/CreateListOrIdeaDrawer.tsx
 msgid "Create List"
@@ -812,10 +722,6 @@ msgstr "Choose your image"
 #: src/components/ImageCropper/index.tsx
 msgid "500x500px, JPG or PNG, max 4MB"
 msgstr "500x500px, JPG or PNG, max 4MB"
-
-#: src/components/ImageUploader/index.tsx
-#~ msgid "Upload a cover"
-#~ msgstr "Upload a cover"
 
 #. placeholder {0}: choice.label || choice.value
 #: src/components/Radio/index.tsx
@@ -1170,6 +1076,14 @@ msgstr "Login Error - Creator Account Not Found"
 msgid "Only approved and verified “Creator Accounts” can log in and create lists. If you have any questions, please contact us."
 msgstr "Only approved and verified “Creator Accounts” can log in and create lists. If you have any questions, please contact us."
 
+#: src/constants/i18n.ts
+msgid "List"
+msgstr "List"
+
+#: src/constants/i18n.ts
+msgid "Idea"
+msgstr "Idea"
+
 #: src/hooks/mutations/useEditProfile.ts
 msgid "Please login again"
 msgstr "Please login again"
@@ -1181,3 +1095,35 @@ msgstr "Please login to do this action"
 #: src/hooks/useCheckStorage.ts
 msgid "The app is outdated, please login again"
 msgstr "The app is outdated, please login again"
+
+#: src/lib/validator.ts
+#~ msgid "{0} title is too long!"
+#~ msgstr "{0} title is too long!"
+
+#: src/lib/validator.ts
+msgid "Hey, the title can't be left empty!"
+msgstr "Hey, the title can't be left empty!"
+
+#: src/lib/validator.ts
+msgid "Every {entityName} needs a title, so fill it in!"
+msgstr "Every {entityName} needs a title, so fill it in!"
+
+#: src/lib/validator.ts
+msgid "{entityName} title is too long!"
+msgstr "{entityName} title is too long!"
+
+#: src/lib/validator.ts
+msgid "Please keep it under {titleMaxLength} characters."
+msgstr "Please keep it under {titleMaxLength} characters."
+
+#: src/lib/validator.ts
+msgid "Description is too long!"
+msgstr "Description is too long!"
+
+#: src/lib/validator.ts
+msgid "Please keep it under {descMaxLength} characters."
+msgstr "Please keep it under {descMaxLength} characters."
+
+#: src/lib/validator.ts
+msgid "Error - Link must start with https:// "
+msgstr "Error - Link must start with https:// "

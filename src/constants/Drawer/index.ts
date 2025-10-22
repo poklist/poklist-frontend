@@ -1,5 +1,6 @@
 export const DrawerIds: Record<string, string> = {
   DELETE_IDEA_DRAWER_ID: 'delete-idea-drawer',
+  DELETE_LIST_DRAWER_ID: 'delete-list-drawer',
   ERROR_DRAWER_ID: 'error-drawer',
   CATEGORY_DRAWER_ID: 'category-drawer',
   LIST_CARD_DRAWER_ID: 'list-card-drawer',
@@ -8,4 +9,6 @@ export const DrawerIds: Record<string, string> = {
   CANCEL_LIST_FORM_CONFIRM_DRAWER_ID: 'cancel-list-form-confirm-drawer',
   CANCEL_IDEA_FORM_CONFIRM_DRAWER_ID: 'cancel-idea-form-confirm-drawer',
   CREATE_LIST_OR_IDEA_DRAWER_ID: 'create-list-or-idea-drawer',
+  IDEA_DRAFT_DRAWER_ID: 'idea-draft-drawer',
+  LIST_DRAFT_DRAWER_ID: 'list-draft-drawer',
 };

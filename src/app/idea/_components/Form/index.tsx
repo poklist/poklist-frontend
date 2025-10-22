@@ -4,32 +4,34 @@ import { EditFieldFakePageComponent } from '@/components/FakePage/EditFieldFakeP
 import { useFakePage } from '@/components/FakePage/useFakePage';
 import ImageUploader from '@/components/ImageUploader';
 import { Button, ButtonShape, ButtonVariant } from '@/components/ui/button';
-import IconClose from '@/components/ui/icons/CloseIcon';
 import IconExteriorLink from '@/components/ui/icons/ExteriorLinkIcon';
+import IconLeftArrowThin from '@/components/ui/icons/LeftArrowThinIcon';
 import IconTextarea from '@/components/ui/icons/TextareaIcon';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { DrawerIds } from '@/constants/Drawer';
+import { DESC_MAX_LENGTH, TITLE_MAX_LENGTH } from '@/constants/form';
 import { EditFieldVariant } from '@/enums/EditField/index.enum';
 import { LocalStorageKey } from '@/enums/index.enum';
-import { MessageType } from '@/enums/Style/index.enum';
 import useAutoResizeTextarea from '@/hooks/ui/useAutoResizeTextarea';
+import useFormErrorHandler from '@/hooks/ui/useFormErrorHandler';
 import useIdle from '@/hooks/useIdle';
 import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
-import { toast } from '@/hooks/useToast';
-import { formatInput, getLocalStorage, setLocalStorage } from '@/lib/utils';
-import useCommonStore from '@/stores/useCommonStore';
+import {
+  formatInput,
+  getLocalStorage,
+  removeLocalStorage,
+  setLocalStorage,
+} from '@/lib/utils';
+import { resolveIdeaFormError } from '@/lib/validator';
 import { IEditFieldConfig } from '@/types/EditField/index.d';
 import { IdeaBody, IdeaResponse } from '@/types/Idea';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
 import React, { useEffect, useState } from 'react';
-import { Controller, FieldErrors, useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
-
-const TITLE_MAX_LENGTH = 60;
-const DESC_MAX_LENGTH = 250;
 
 const FormSchema = z.object({
   title: z.string().min(1).max(TITLE_MAX_LENGTH),
@@ -39,12 +41,14 @@ const FormSchema = z.object({
 });
 
 interface IIdeaFormProps {
+  isNavigateFromList: boolean;
   previousIdeaInfo?: IdeaResponse;
   dismissCallback: (isFormNotEdited: boolean) => void;
   completedCallback: (completedIdeaForm: IdeaBody) => void;
 }
 
 const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
+  isNavigateFromList,
   previousIdeaInfo = {
     title: '',
     description: '',
@@ -54,13 +58,13 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
   dismissCallback,
   completedCallback,
 }) => {
-  const { setErrorDrawerMessage } = useCommonStore();
-  const { openDrawer: openCancelDrawer, closeDrawer: closeCancelDrawer } =
-    useDrawer(DrawerIds.CANCEL_IDEA_FORM_CONFIRM_DRAWER_ID);
   const navigateTo = useStrictNavigateNext();
-
   const { openFakePage } = useFakePage();
   const [fieldConfig, setFieldConfig] = useState<IEditFieldConfig>();
+  const { openDrawer: openCancelDrawer, closeDrawer: closeCancelDrawer } =
+    useDrawer(DrawerIds.CANCEL_IDEA_FORM_CONFIRM_DRAWER_ID);
+  const { openDrawer: openDraftDrawer, closeDrawer: closeDraftDrawer } =
+    useDrawer(DrawerIds.IDEA_DRAFT_DRAWER_ID);
 
   // TODO load from localStorage in v0.3.5
   const ideaForm = useForm<z.infer<typeof FormSchema>>({
@@ -72,35 +76,18 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
       coverImage: previousIdeaInfo.coverImage,
     },
   });
-  const isFormModified =
-    ideaForm.getValues('title') !== '' ||
-    ideaForm.getValues('title') !== previousIdeaInfo.title ||
-    ideaForm.getValues('description') !== previousIdeaInfo.description ||
-    ideaForm.getValues('externalLink') !== previousIdeaInfo.externalLink ||
-    ideaForm.getValues('coverImage') !== previousIdeaInfo.coverImage;
 
   const { isIdle, reset } = useIdle({
     timeout: 2000,
     watch: ideaForm.watch,
   });
 
-  useEffect(() => {
-    if (
-      !(isIdle && ideaForm.formState.isDirty) ||
-      previousIdeaInfo.title !== ''
-    ) {
-      return;
-    }
-    setLocalStorage(
-      LocalStorageKey.IDEA_DRAFT,
-      ideaForm.getValues(),
-      FormSchema
-    );
-    ideaForm.reset(getLocalStorage(LocalStorageKey.IDEA_DRAFT, FormSchema), {
-      keepValues: true,
-    });
-    reset();
-  }, [isIdle, ideaForm.formState.isDirty, previousIdeaInfo.title]);
+  const isFormModified =
+    ideaForm.getValues('title') !== '' ||
+    ideaForm.getValues('title') !== previousIdeaInfo.title ||
+    ideaForm.getValues('description') !== previousIdeaInfo.description ||
+    ideaForm.getValues('externalLink') !== previousIdeaInfo.externalLink ||
+    ideaForm.getValues('coverImage') !== previousIdeaInfo.coverImage;
 
   const onOpenFakePage = () => {
     setFieldConfig({
@@ -130,7 +117,6 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
   const onDismiss = () => {
     let isFormEmpty = true;
     if (ideaForm.formState.isDirty) {
-      // TODO load from localStorage in v0.3.5
       openCancelDrawer();
       isFormEmpty = false;
     } else {
@@ -138,56 +124,9 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
     }
   };
 
-  const onSubmitFailed = (
-    value: FieldErrors<{
-      title: string;
-      description: string;
-      externalLink?: string | undefined;
-      coverImage?: File | null | undefined;
-    }>
-  ) => {
-    const errorKey = Object.keys(value)[0];
-    // TODO 目前解法
-    switch (errorKey) {
-      case 'title': {
-        if (value.title?.type === 'too_small') {
-          setErrorDrawerMessage({
-            title: t`Hey, the title can't be left empty!`,
-            content: t`Every idea needs a title, so fill it in!`,
-          });
-        }
-        if (value.title?.type === 'too_big') {
-          setErrorDrawerMessage({
-            title: t`Idea title is too long!`,
-            content: t`Please keep it under ${TITLE_MAX_LENGTH} characters.`,
-          });
-        }
-
-        break;
-      }
-      case 'description': {
-        if (value.description?.type === 'too_big') {
-          setErrorDrawerMessage({
-            title: t`Description is too long!`,
-            content: t`Please keep it under ${DESC_MAX_LENGTH} characters.`,
-          });
-        }
-
-        break;
-      }
-      case 'externalLink': {
-        toast({
-          title: t`Error - Link must start with https:// `,
-          variant: MessageType.ERROR,
-        });
-        break;
-      }
-
-      default: {
-        return;
-      }
-    }
-  };
+  const onSubmitFailed = useFormErrorHandler<z.infer<typeof FormSchema>>({
+    resolver: resolveIdeaFormError,
+  });
 
   const onCoverImageChange = (base64: string | null) => {
     ideaForm.setValue('coverImage', base64);
@@ -197,7 +136,24 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
     completedCallback(data);
   };
 
-  // // TODO load from localStorage in v0.3.5
+  useEffect(() => {
+    if (
+      !(isIdle && ideaForm.formState.isDirty) ||
+      previousIdeaInfo.title !== ''
+    ) {
+      return;
+    }
+    setLocalStorage(
+      LocalStorageKey.IDEA_DRAFT,
+      ideaForm.getValues(),
+      FormSchema
+    );
+    ideaForm.reset(getLocalStorage(LocalStorageKey.IDEA_DRAFT, FormSchema), {
+      keepValues: true,
+    });
+    reset();
+  }, [isIdle, ideaForm.formState.isDirty, previousIdeaInfo.title]);
+
   useEffect(() => {
     if (previousIdeaInfo.title === '') return;
     ideaForm.reset({
@@ -205,16 +161,52 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
     });
     setTimeout(() => {
       titleTextarea.bind.onChange();
+      descriptionTextarea.bind.onChange();
       ideaForm.setFocus('title');
     }, 0);
   }, [previousIdeaInfo]);
 
   useEffect(() => {
     ideaForm.setFocus('title');
+    if (getLocalStorage(LocalStorageKey.IDEA_DRAFT, FormSchema)) {
+      openDraftDrawer();
+    }
   }, []);
 
   return (
     <>
+      <div className="fixed top-0 z-10 flex h-14 w-full justify-between overflow-hidden border-b border-b-gray-note-05 bg-white px-4 py-2">
+        <div className="flex items-center gap-1 font-bold">
+          <div
+            onClick={() => onDismiss()}
+            aria-label="Previous"
+            className="flex h-10 w-10 items-center justify-center"
+          >
+            <IconLeftArrowThin width={7.5} height={15} color="black" />
+          </div>
+          {previousIdeaInfo.title !== '' &&
+          previousIdeaInfo.description !== '' &&
+          previousIdeaInfo.externalLink !== '' &&
+          previousIdeaInfo.coverImage !== '' ? (
+            <Trans>Edit Idea</Trans>
+          ) : (
+            <Trans>Add Idea</Trans>
+          )}
+        </div>
+        <Button
+          disabled={
+            !isFormModified ||
+            ideaForm.watch('title') === '' ||
+            ideaForm.formState.isSubmitting ||
+            ideaForm.formState.isSubmitted
+          }
+          onClick={() => void ideaForm.handleSubmit(onSubmit, onSubmitFailed)()}
+          variant={ButtonVariant.BLACK}
+          shape={ButtonShape.ROUNDED_5PX}
+        >
+          {isNavigateFromList ? <Trans>Done</Trans> : <Trans>Next</Trans>}
+        </Button>
+      </div>
       <form
         onSubmit={() => void ideaForm.handleSubmit(onSubmit, onSubmitFailed)()}
         className="mx-4 mb-24 mt-4 flex flex-1 flex-col gap-6 md:max-w-mobile-max"
@@ -241,7 +233,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
             return (
               <div className="relative flex items-center justify-center font-bold">
                 <Textarea
-                  placeholder={t`This is the title of your idea`}
+                  placeholder={t`What’s your idea? (must-have)`}
                   className="relative min-h-16 w-full resize-none overflow-hidden rounded-lg border border-black-tint-04 px-3 py-4 text-lg placeholder:text-base focus:border-black focus:pb-10 focus:ring-1 focus:ring-black"
                   rows={1}
                   {...field}
@@ -277,7 +269,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
                 <IconTextarea className="absolute left-3 top-4 z-10" />
                 <>
                   <Textarea
-                    placeholder={t`Describe what this idea is about`}
+                    placeholder={t`Description`}
                     className="relative min-h-14 w-full resize-none overflow-hidden rounded-lg border border-black-tint-04 py-4 pl-10 pr-3 focus:border-black focus:pb-10 focus:ring-1 focus:ring-black"
                     rows={1}
                     {...field}
@@ -307,22 +299,18 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
           <IconExteriorLink className="absolute left-3 top-4 z-10" />
           <Input
             {...ideaForm.register('externalLink')}
-            placeholder={t`Link a page`}
+            placeholder={t`Link`}
             className="line-clamp-1 min-h-14 w-full truncate border-black-tint-04 py-4 pl-10 pr-3 focus:border-black focus:ring-1 focus:ring-black"
           />
         </div>
       </form>
-      {fieldConfig && <EditFieldFakePageComponent {...fieldConfig} />}
 
       <DrawerComponent
         drawerId={DrawerIds.CANCEL_IDEA_FORM_CONFIRM_DRAWER_ID}
         isShowClose={false}
-        header={<Trans>Your edits will be lost if you cancel!</Trans>}
+        header={<Trans>Discarding your edits?</Trans>}
         subHeader={
-          <Trans>
-            Title is saved, but your idea edits will be lost! Are you sure you
-            want to cancel?
-          </Trans>
+          <Trans>If you choose to discard, you’ll lose this edit.</Trans>
         }
         content={<></>}
         startFooter={
@@ -334,7 +322,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
             variant={ButtonVariant.WARNING}
             shape={ButtonShape.ROUNDED_5PX}
           >
-            <Trans>Cancel Editing</Trans>
+            <Trans>Discard</Trans>
           </Button>
         }
         endFooter={
@@ -343,39 +331,46 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
             variant={ButtonVariant.BLACK}
             shape={ButtonShape.ROUNDED_5PX}
           >
-            <Trans>Continue Editing</Trans>
+            <Trans>Continue editing</Trans>
+          </Button>
+        }
+      />
+      
+      <DrawerComponent
+        drawerId={DrawerIds.IDEA_DRAFT_DRAWER_ID}
+        isShowClose={true}
+        header={<Trans>Still got an draft waiting for you</Trans>}
+        subHeader={<Trans>Would you like to delete it or keep editing?</Trans>}
+        content={<></>}
+        startFooter={
+          <Button
+            onClick={() => {
+              removeLocalStorage(LocalStorageKey.IDEA_DRAFT);
+              closeDraftDrawer();
+            }}
+            variant={ButtonVariant.WARNING}
+            shape={ButtonShape.ROUNDED_5PX}
+          >
+            <Trans>Delete draft</Trans>
+          </Button>
+        }
+        endFooter={
+          <Button
+            onClick={() => {
+              ideaForm.reset(
+                getLocalStorage(LocalStorageKey.IDEA_DRAFT, FormSchema)
+              );
+              closeDraftDrawer();
+            }}
+            variant={ButtonVariant.BLACK}
+            shape={ButtonShape.ROUNDED_5PX}
+          >
+            <Trans>Keep editing</Trans>
           </Button>
         }
       />
 
-      <footer className="fixed bottom-0 left-0 z-10 flex w-full justify-between border-t border-t-gray-main-03 bg-white px-4 py-2 sm:sticky">
-        <div className="flex items-center gap-2">
-          <div
-            onClick={() => onDismiss()}
-            aria-label="Previous"
-            className="h-auto rounded-full bg-inherit p-0"
-          >
-            <IconClose />
-          </div>
-          {previousIdeaInfo.title !== '' &&
-          previousIdeaInfo.description !== '' &&
-          previousIdeaInfo.externalLink !== '' &&
-          previousIdeaInfo.coverImage !== '' ? (
-            <Trans>Edit Idea</Trans>
-          ) : (
-            <Trans>New Idea</Trans>
-          )}
-        </div>
-
-        <Button
-          disabled={!isFormModified || ideaForm.watch('title') === ''}
-          variant={ButtonVariant.BLACK}
-          shape={ButtonShape.ROUNDED_5PX}
-          onClick={() => void ideaForm.handleSubmit(onSubmit, onSubmitFailed)()}
-        >
-          <Trans>Done</Trans>
-        </Button>
-      </footer>
+      {fieldConfig && <EditFieldFakePageComponent {...fieldConfig} />}
     </>
   );
 };

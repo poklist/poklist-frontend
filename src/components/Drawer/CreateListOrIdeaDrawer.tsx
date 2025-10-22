@@ -1,18 +1,17 @@
-import React from 'react';
 import { DrawerComponent } from '@/components/Drawer';
-import { DrawerIds } from '@/constants/Drawer';
+import { useDrawer } from '@/components/Drawer/useDrawer';
 import {
   Button,
-  ButtonVariant,
-  ButtonSize,
   ButtonShape,
+  ButtonSize,
+  ButtonVariant,
 } from '@/components/ui/button';
+import { DrawerIds } from '@/constants/Drawer';
 import { useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
 import { Trans } from '@lingui/react/macro';
-import { useDrawer } from '@/components/Drawer/useDrawer';
-import CreateHintChinese from '@/assets/images/hint/create_hint_chinese.svg';
 import Image from 'next/image';
+import React from 'react';
 
 const CreateListOrIdeaDrawer: React.FC = () => {
   const { withAuth } = useAuthWrapper();
@@ -33,19 +32,19 @@ const CreateListOrIdeaDrawer: React.FC = () => {
     <div className="flex flex-col gap-4 pt-4">
       <div className="flex justify-center">
         <Image
-          src={CreateHintChinese}
+          src="/images/hint/create_hint_chinese.svg"
           alt="Create Hint"
           width={280}
           height={160}
-          className="w-max-w-full h-auto"
+          className="h-auto max-w-full"
         />
       </div>
       <div className="flex flex-col gap-2">
         <h2 className="text-2xl font-bold">
-          <Trans>說說你的好點子</Trans>
+          <Trans>What’s on your mind?</Trans>
         </h2>
         <p className="text-t1">
-          <Trans>先來創個新名單，還是記下靈感，隨心所欲！</Trans>
+          <Trans>A list groups your ideas. Start wherever you vibe.</Trans>
         </p>
       </div>
 

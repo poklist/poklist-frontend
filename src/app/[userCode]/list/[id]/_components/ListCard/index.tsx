@@ -31,8 +31,11 @@ import IconThreeDots from '@/components/ui/icons/ThreeDots';
 import TrashIcon from '@/components/ui/icons/TrashIcon';
 import { CategoriesI18n } from '@/constants/Lists/i18n';
 import { DropdownItemType, MessageType } from '@/enums/Style/index.enum';
+import { useDeleteList } from '@/hooks/mutations/useDeleteList';
+import { useAuthWrapper } from '@/hooks/useAuth';
 import { toast } from '@/hooks/useToast';
 import useAuthStore from '@/stores/useAuthStore';
+import useCommonStore from '@/stores/useCommonStore';
 import useLikeStore from '@/stores/useLikeStore';
 import useUserStore from '@/stores/useUserStore';
 import { List } from '@/types/List';
@@ -59,10 +62,17 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
   const { i18n } = useLingui();
   const navigateTo = useStrictNavigationAdapter();
 
+  const { setIsLoading } = useCommonStore();
   const { isLoggedIn } = useAuthStore();
   const { me } = useUserStore();
   const { getIsLiked } = useLikeStore();
   const { openDrawer } = useDrawer(DrawerIds.LIST_CARD_DRAWER_ID);
+  const deleteDrawer = useDrawer(DrawerIds.DELETE_LIST_DRAWER_ID);
+  const { withAuth } = useAuthWrapper();
+  const { deleteList, isDeleteListLoading } = useDeleteList({
+    userCode: me.userCode,
+  });
+
   const [drawerContent, setDrawerContent] = useState<React.ReactNode>(null);
   const [selectedIdeaID, setSelectedIdeaID] = useState<number | null>(null);
   // FUTURE: move to custom hook?
@@ -198,11 +208,19 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
     }
   }, [searchParams]);
 
+  useEffect(() => {
+    if (isDeleteListLoading) {
+      setIsLoading(true);
+    } else {
+      setIsLoading(false);
+    }
+  }, [isDeleteListLoading]);
+
   const items: DropdownItem[] = [
     {
       type: DropdownItemType.ITEM,
       label: t`Edit List Info`,
-      onClick: () => navigateTo.manageList(me.userCode, data.id.toString()),
+      onClick: () => navigateTo.editList(me.userCode, data.id.toString()),
       icon: <IconEdit />,
     },
     {
@@ -219,18 +237,26 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
     {
       type: DropdownItemType.ITEM,
       label: t`Reorder Idea`,
-      onClick: () => console.warn('Sort'),
+      onClick: () => navigateTo.manageList(me.userCode, data.id.toString()),
       icon: <IconSort />,
     },
     { type: DropdownItemType.SEPARATOR },
     {
       type: DropdownItemType.ITEM,
       label: t`Delete List`,
-      onClick: () => console.warn('Delete List'),
+      onClick: () => deleteDrawer.openDrawer(),
       icon: <TrashIcon />,
       danger: true,
     },
   ];
+
+  const onDeleteList = withAuth(() => {
+    deleteList(data.id, {
+      onSuccess: () => {
+        navigateTo.user(me.userCode);
+      },
+    });
+  });
   return (
     <>
       <div className="relative flex flex-col items-center rounded-[32px] border border-black bg-white py-6">
@@ -270,7 +296,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
                 size={ButtonSize.H40}
                 shape={ButtonShape.ROUNDED_5PX}
                 onClick={() =>
-                  navigateTo.manageList(me.userCode, data.id.toString())
+                  navigateTo.editList(me.userCode, data.id.toString())
                 }
               >
                 <Trans>Edit list</Trans>
@@ -361,7 +387,41 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
         drawerId={DrawerIds.LIST_CARD_DRAWER_ID}
         isShowClose={false}
         content={drawerContent}
-        className="px-6"
+        className="max-h-[75dvh] px-0 py-0"
+      />
+      <DrawerComponent
+        drawerId={DrawerIds.DELETE_LIST_DRAWER_ID}
+        isShowClose={true}
+        header={
+          <Trans>Deleting the list title will also erase all ideas!</Trans>
+        }
+        subHeader={
+          <Trans>
+            Permanently delete the entire list and all its ideas. This action
+            cannot be undone!
+          </Trans>
+        }
+        startFooter={
+          <Button
+            onClick={() => {
+              deleteDrawer.closeDrawer();
+              onDeleteList();
+            }}
+            variant={ButtonVariant.WARNING}
+            shape={ButtonShape.ROUNDED_5PX}
+          >
+            <Trans>Delete List and All Ideas</Trans>
+          </Button>
+        }
+        endFooter={
+          <Button
+            onClick={() => deleteDrawer.closeDrawer()}
+            variant={ButtonVariant.BLACK}
+            shape={ButtonShape.ROUNDED_5PX}
+          >
+            <Trans>Cancel</Trans>
+          </Button>
+        }
       />
     </>
   );

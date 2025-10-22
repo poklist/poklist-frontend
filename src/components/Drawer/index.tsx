@@ -19,6 +19,7 @@ export const DrawerProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const openDrawer = useCallback((drawerId: string) => {
     setOpenDrawers((prev) => {
+      if (prev.has(drawerId)) return prev;
       const newSet = new Set(prev);
       newSet.add(drawerId);
       return newSet;
@@ -78,22 +79,25 @@ export const DrawerComponent: React.FC<IDrawerProps> = ({
   const { isOpen, closeDrawer } = useDrawer(drawerId);
 
   // 處理關閉事件
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     closeDrawer();
     if (onClose) {
       onClose();
     }
-  };
+  }, [closeDrawer, onClose]);
 
   return (
     <Drawer
       open={isOpen}
       onOpenChange={(open) => {
-        if (!open) handleClose();
+        if (!open && isOpen) handleClose();
       }}
     >
       <DrawerContent
-        className={cn('bottom-0 w-full max-w-full bg-white shadow', className)}
+        className={cn(
+          'bottom-0 flex w-full max-w-full flex-col bg-white shadow',
+          className
+        )}
       >
         {isShowClose && (
           <div className="flex justify-end">

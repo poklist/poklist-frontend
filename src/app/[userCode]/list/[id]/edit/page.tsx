@@ -1,8 +1,6 @@
 'use client';
 
-import Header from '@/app/[userCode]/list/_components/Header';
 import ListForm from '@/app/list/_components/Form';
-import { useDeleteList } from '@/hooks/mutations/useDeleteList';
 import { useEditList } from '@/hooks/mutations/useEditList';
 import { useList } from '@/hooks/queries/useList';
 import { useAuthCheck, useAuthWrapper } from '@/hooks/useAuth';
@@ -11,7 +9,6 @@ import { useUserRouteContext } from '@/hooks/useUserRouteContext';
 import useCommonStore from '@/stores/useCommonStore';
 import useUserStore from '@/stores/useUserStore';
 import { ListBody, ListCover } from '@/types/List';
-import { Trans } from '@lingui/react/macro';
 import { useParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
@@ -31,26 +28,12 @@ const EditListPage: React.FC = () => {
   const { isEditListLoading, editList } = useEditList({
     userCode: me.userCode,
   });
-  const { deleteList, isDeleteListLoading } = useDeleteList({
-    userCode: me.userCode,
-  });
 
   const [listCoverDraft, setListCoverDraft] = useState<ListCover>();
 
-  const onDeleteList = withAuth(() => {
-    if (list) {
-      deleteList(list.id, {
-        onSuccess: () => {
-          navigateTo.user(me.userCode);
-          setIsLoading(false);
-        },
-      });
-    }
-  });
-
   const onDismissEdit = (isFormEmpty: boolean) => {
     if (list && isFormEmpty) {
-      navigateTo.manageList(me.userCode, list.id.toString());
+      navigateTo.viewList(me.userCode, list.id.toString());
     }
   };
 
@@ -76,19 +59,19 @@ const EditListPage: React.FC = () => {
           if (!data) {
             throw new Error('Failed to edit list');
           }
-          navigateTo.manageList(me.userCode, data.id.toString());
+          navigateTo.viewList(me.userCode, data.id.toString());
         },
       }
     );
   });
 
   useEffect(() => {
-    if (isEditListLoading || isDeleteListLoading || isListInfoLoading) {
+    if (isEditListLoading || isListInfoLoading) {
       setIsLoading(true);
     } else {
       setIsLoading(false);
     }
-  }, [isEditListLoading, isDeleteListLoading, isListInfoLoading]);
+  }, [isEditListLoading, isListInfoLoading]);
 
   useEffect(() => {
     if (list) {
@@ -113,8 +96,7 @@ const EditListPage: React.FC = () => {
 
   return (
     <>
-      <Header title={<Trans>List Cover</Trans>} deleteCallback={onDeleteList} />
-      <div className="flex h-full flex-col gap-6">
+      <div className="flex h-full flex-col gap-4">
         <ListForm
           defaultListInfo={listCoverDraft}
           dismissCallback={onDismissEdit}
