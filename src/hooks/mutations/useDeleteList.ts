@@ -35,10 +35,8 @@ export const useDeleteList = ({
       return;
     },
     onSuccess: async (_, listID) => {
-      // 移除已刪除列表的快取
-      queryClient.removeQueries({
-        queryKey: [QueryKeys.LIST, listID.toString()],
-      });
+      // 將單筆列表資料清空，而非刪除快取，為免因尚有 Component 仍在使用相關資料而重新 fetch
+      queryClient.setQueryData([QueryKeys.LIST, listID.toString()], null);
 
       // 重新獲取列表預覽資料
       await queryClient.invalidateQueries({

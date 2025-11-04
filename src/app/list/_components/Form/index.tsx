@@ -1,3 +1,4 @@
+import { TileBackground } from '@/app/user/_components/TileBackground';
 import { DrawerComponent } from '@/components/Drawer';
 import { useDrawer } from '@/components/Drawer/useDrawer';
 import { EditFieldFakePageComponent } from '@/components/FakePage/EditFieldFakePage';
@@ -5,22 +6,29 @@ import { useFakePage } from '@/components/FakePage/useFakePage';
 import ImageUploader from '@/components/ImageUploader';
 import { IChoice, RadioComponent } from '@/components/Radio';
 import { Button, ButtonShape, ButtonVariant } from '@/components/ui/button';
-import IconClose from '@/components/ui/icons/CloseIcon';
 import IconExteriorLink from '@/components/ui/icons/ExteriorLinkIcon';
+import IconLeftArrowThin from '@/components/ui/icons/LeftArrowThinIcon';
 import IconTextarea from '@/components/ui/icons/TextareaIcon';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { DrawerIds } from '@/constants/Drawer';
+import { DESC_MAX_LENGTH, TITLE_MAX_LENGTH } from '@/constants/form';
 import { CategoriesI18n } from '@/constants/Lists/i18n';
 import { EditFieldVariant } from '@/enums/EditField/index.enum';
 import { LocalStorageKey } from '@/enums/index.enum';
-import { MessageType, RadioType } from '@/enums/Style/index.enum';
+import { RadioType } from '@/enums/Style/index.enum';
 import { useCategories } from '@/hooks/queries/useCategories';
 import useAutoResizeTextarea from '@/hooks/ui/useAutoResizeTextarea';
+import useFormErrorHandler from '@/hooks/ui/useFormErrorHandler';
 import useIdle from '@/hooks/useIdle';
 import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
-import { toast } from '@/hooks/useToast';
-import { formatInput, getLocalStorage, setLocalStorage } from '@/lib/utils';
+import {
+  formatInput,
+  getLocalStorage,
+  removeLocalStorage,
+  setLocalStorage,
+} from '@/lib/utils';
+import { resolveListFormError } from '@/lib/validator';
 import useCommonStore from '@/stores/useCommonStore';
 import { IEditFieldConfig } from '@/types/EditField/index.d';
 import { ListBody } from '@/types/List';
@@ -29,11 +37,8 @@ import { i18n } from '@lingui/core';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
 import React, { useEffect, useState } from 'react';
-import { Controller, FieldErrors, useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
-
-const TITLE_MAX_LENGTH = 60;
-const DESC_MAX_LENGTH = 250;
 
 const FormSchema = z.object({
   title: z.string().min(1).max(TITLE_MAX_LENGTH),
@@ -60,15 +65,39 @@ const ListForm: React.FC<IListFormProps> = ({
   dismissCallback,
   completedCallback,
 }) => {
-  const { setErrorDrawerMessage, setIsLoading } = useCommonStore();
+  const { setIsLoading } = useCommonStore();
+  const navigateTo = useStrictNavigateNext();
+  const { openFakePage } = useFakePage();
+  const [fieldConfig, setFieldConfig] = useState<IEditFieldConfig>();
   const { openDrawer: openCategoryDrawer, closeDrawer: closeCategoryDrawer } =
     useDrawer(DrawerIds.CATEGORY_DRAWER_ID);
   const { openDrawer: openCancelDrawer, closeDrawer: closeCancelDrawer } =
     useDrawer(DrawerIds.CANCEL_LIST_FORM_CONFIRM_DRAWER_ID);
+  const { openDrawer: openDraftDrawer, closeDrawer: closeDraftDrawer } =
+    useDrawer(DrawerIds.LIST_DRAFT_DRAWER_ID);
   const { data: categories, isLoading: categoriesLoading } = useCategories();
 
-  const { openFakePage } = useFakePage();
-  const [fieldConfig, setFieldConfig] = useState<IEditFieldConfig>();
+  // TODO load from localStorage in v0.3.5
+  const listForm = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      title: defaultListInfo.title,
+      description: defaultListInfo.description,
+      externalLink: defaultListInfo.externalLink,
+      coverImage: defaultListInfo.coverImage,
+      categoryID: defaultListInfo.categoryID,
+    },
+  });
+
+  const { isIdle, reset } = useIdle({ timeout: 2000, watch: listForm.watch });
+
+  const isFormModified =
+    listForm.getValues('title') !== '' ||
+    listForm.getValues('title') !== defaultListInfo.title ||
+    listForm.getValues('description') !== defaultListInfo.description ||
+    listForm.getValues('externalLink') !== defaultListInfo.externalLink ||
+    listForm.getValues('coverImage') !== defaultListInfo.coverImage ||
+    listForm.getValues('categoryID') !== defaultListInfo.categoryID;
 
   const onOpenFakePage = () => {
     setFieldConfig({
@@ -85,33 +114,6 @@ const ListForm: React.FC<IListFormProps> = ({
     openFakePage();
   };
 
-  const onOpenCategoryDrawer = () => {
-    openCategoryDrawer();
-  };
-
-  const onCloseCategoryDrawer = () => {
-    closeCategoryDrawer();
-  };
-
-  // TODO load from localStorage in v0.3.5
-  const listForm = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
-    defaultValues: {
-      title: defaultListInfo.title,
-      description: defaultListInfo.description,
-      externalLink: defaultListInfo.externalLink,
-      coverImage: defaultListInfo.coverImage,
-      categoryID: defaultListInfo.categoryID,
-    },
-  });
-  const isFormModified =
-    listForm.getValues('title') !== '' ||
-    listForm.getValues('title') !== defaultListInfo.title ||
-    listForm.getValues('description') !== defaultListInfo.description ||
-    listForm.getValues('externalLink') !== defaultListInfo.externalLink ||
-    listForm.getValues('coverImage') !== defaultListInfo.coverImage ||
-    listForm.getValues('categoryID') !== defaultListInfo.categoryID;
-
   const titleTextarea = useAutoResizeTextarea({
     minHeight: 56,
     focusMinHeight: 83,
@@ -122,7 +124,40 @@ const ListForm: React.FC<IListFormProps> = ({
     focusMinHeight: 83,
   });
 
-  const { isIdle, reset } = useIdle({ timeout: 2000, watch: listForm.watch });
+  const onDismiss = () => {
+    let isFormEmpty = true;
+    if (listForm.formState.isDirty) {
+      openCancelDrawer();
+      isFormEmpty = false;
+    } else {
+      dismissCallback(isFormEmpty);
+    }
+  };
+
+  const onSubmit = (data: z.infer<typeof FormSchema>) => {
+    completedCallback(data);
+  };
+
+  const onSubmitFailed = useFormErrorHandler<z.infer<typeof FormSchema>>({
+    resolver: resolveListFormError,
+  });
+
+  const onCoverImageChange = (base64: string | null) => {
+    listForm.setValue('coverImage', base64);
+  };
+
+  const [radioChoice, setRadioChoice] = useState<IChoice[]>([]);
+
+  const onCategoryChange = (category: string) => {
+    listForm.setValue('categoryID', Number(category));
+  };
+
+  useEffect(() => {
+    listForm.setFocus('title');
+    if (getLocalStorage(LocalStorageKey.LIST_DRAFT, FormSchema)) {
+      openDraftDrawer();
+    }
+  }, []);
 
   useEffect(() => {
     if (
@@ -142,89 +177,6 @@ const ListForm: React.FC<IListFormProps> = ({
     reset();
   }, [isIdle, listForm.formState.isDirty, defaultListInfo.title]);
 
-  const onDismiss = () => {
-    let isFormEmpty = true;
-    if (listForm.formState.isDirty) {
-      // TODO load from localStorage in v0.3.5
-      openCancelDrawer();
-      isFormEmpty = false;
-    } else {
-      dismissCallback(isFormEmpty);
-    }
-  };
-
-  const onSubmitFailed = (
-    value: FieldErrors<{
-      title: string;
-      description: string;
-      externalLink?: string | undefined;
-      coverImage?: File | null | undefined;
-    }>
-  ) => {
-    const errorKey = Object.keys(value)[0];
-    // TODO 目前解法
-    switch (errorKey) {
-      case 'title': {
-        if (value.title?.type === 'too_small') {
-          setErrorDrawerMessage({
-            title: t`Hey, the title can't be left empty!`,
-            content: t`Every list needs a title, so fill it in!`,
-          });
-        }
-        if (value.title?.type === 'too_big') {
-          setErrorDrawerMessage({
-            title: t`List title is too long!`,
-            content: t`Please keep it under ${TITLE_MAX_LENGTH} characters.`,
-          });
-        }
-
-        break;
-      }
-      case 'description': {
-        if (value.description?.type === 'too_big') {
-          setErrorDrawerMessage({
-            title: t`Description is too long!`,
-            content: t`Please keep it under ${DESC_MAX_LENGTH} characters.`,
-          });
-        }
-
-        break;
-      }
-      case 'externalLink': {
-        toast({
-          title: t`Error - Link must start with https:// `,
-          variant: MessageType.ERROR,
-        });
-        break;
-      }
-
-      default: {
-        return;
-      }
-    }
-  };
-
-  const onCoverImageChange = (base64: string | null) => {
-    listForm.setValue('coverImage', base64);
-  };
-
-  const onCategoryChange = (category: string) => {
-    listForm.setValue('categoryID', Number(category));
-  };
-
-  const onSubmit = (data: z.infer<typeof FormSchema>) => {
-    completedCallback(data);
-  };
-
-  useEffect(() => {
-    // Close drawers when the component is unmounted
-    return () => {
-      closeCategoryDrawer();
-      closeCancelDrawer();
-    };
-  }, []);
-
-  // TODO load from localStorage in v0.3.5
   useEffect(() => {
     if (defaultListInfo.title === '') {
       return;
@@ -237,20 +189,6 @@ const ListForm: React.FC<IListFormProps> = ({
   }, [defaultListInfo]);
 
   useEffect(() => {
-    if (categoriesLoading) {
-      setIsLoading(true);
-    } else {
-      setIsLoading(false);
-    }
-  }, [categoriesLoading]);
-
-  useEffect(() => {
-    listForm.setFocus('title');
-  }, []);
-
-  const [radioChoice, setRadioChoice] = useState<IChoice[]>([]);
-
-  useEffect(() => {
     if (!categories) return;
     const _radioChoice = categories.map((_category) => {
       const { id: value } = { id: String(_category.id) };
@@ -260,15 +198,63 @@ const ListForm: React.FC<IListFormProps> = ({
     setRadioChoice(_radioChoice);
   }, [categories]);
 
-  const navigateTo = useStrictNavigateNext();
+  useEffect(() => {
+    if (categoriesLoading || listForm.formState.isSubmitting) {
+      setIsLoading(true);
+    } else {
+      setIsLoading(false);
+    }
+  }, [categoriesLoading, listForm.formState.isSubmitting]);
+
+  useEffect(() => {
+    // Close drawers when the component is unmounted
+    return () => {
+      closeCategoryDrawer();
+      closeCancelDrawer();
+    };
+  }, []);
 
   return (
     <>
+      <div className="fixed top-0 z-10 flex h-14 w-full justify-between overflow-hidden border-b border-b-gray-note-05 bg-white px-4 py-2">
+        <div className="flex items-center gap-1 font-bold">
+          <div
+            onClick={() => onDismiss()}
+            aria-label="Previous"
+            className="flex h-10 w-10 items-center justify-center"
+          >
+            <IconLeftArrowThin width={7.5} height={15} color="black" />
+          </div>
+          {defaultListInfo.title !== '' &&
+          defaultListInfo.description !== '' &&
+          defaultListInfo.externalLink !== '' &&
+          defaultListInfo.coverImage !== '' ? (
+            <Trans>Edit List</Trans>
+          ) : (
+            <Trans>Create Idea List</Trans>
+          )}
+        </div>
+        <Button
+          disabled={!isFormModified || listForm.watch('title') === ''}
+          onClick={() => {
+            if (defaultListInfo.title === '') {
+              openCategoryDrawer();
+            } else {
+              void listForm.handleSubmit(onSubmit, onSubmitFailed)();
+            }
+          }}
+          variant={ButtonVariant.BLACK}
+          shape={ButtonShape.ROUNDED_5PX}
+        >
+          <Trans>Done</Trans>
+        </Button>
+      </div>
+      <TileBackground />
       <form
         onSubmit={() => {
           void listForm.handleSubmit(onSubmit, onSubmitFailed)();
         }}
-        className="mx-4 mb-24 mt-6 flex flex-1 flex-col gap-6 px-4 md:max-w-mobile-max"
+        className="relative mx-4 mt-[4.5rem] flex flex-1 flex-col gap-6 rounded-2xl border border-black-tint-04 bg-white px-4 py-6 md:max-w-mobile-max"
       >
         <Controller
           name="title"
@@ -364,15 +350,15 @@ const ListForm: React.FC<IListFormProps> = ({
             )}
           />
         </div>
-        {defaultListInfo.title !== '' && (
-          <div
-            onClick={() => onOpenCategoryDrawer()}
-            className="inline-flex h-10 cursor-pointer items-center justify-center whitespace-nowrap rounded-lg bg-black text-h2 font-bold text-white ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:bg-gray-main-03 disabled:text-black-tint-04"
-          >
-            <Trans>Edit List Topic</Trans>
-          </div>
-        )}
       </form>
+      {defaultListInfo.title !== '' && (
+        <div
+          onClick={() => openCategoryDrawer()}
+          className="relative mx-4 inline-flex items-center justify-center whitespace-nowrap rounded-lg border border-black-tint-04 bg-white py-2 font-bold text-black-text-01 ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
+        >
+          <Trans>Edit List Topic</Trans>
+        </div>
+      )}
 
       <DrawerComponent
         drawerId={DrawerIds.CATEGORY_DRAWER_ID}
@@ -401,6 +387,10 @@ const ListForm: React.FC<IListFormProps> = ({
         endFooter={
           defaultListInfo.title === '' ? (
             <Button
+              disabled={
+                listForm.formState.isSubmitting ||
+                listForm.formState.isSubmitted
+              }
               onClick={() =>
                 void listForm.handleSubmit(onSubmit, onSubmitFailed)()
               }
@@ -412,11 +402,11 @@ const ListForm: React.FC<IListFormProps> = ({
             </Button>
           ) : (
             <Button
-              onClick={() => onCloseCategoryDrawer()}
+              onClick={() => closeCategoryDrawer()}
               variant={ButtonVariant.BLACK}
               shape={ButtonShape.ROUNDED_5PX}
             >
-              <Trans>Next</Trans>
+              <Trans>Done</Trans>
             </Button>
           )
         }
@@ -455,46 +445,41 @@ const ListForm: React.FC<IListFormProps> = ({
         }
       />
 
-      {fieldConfig && <EditFieldFakePageComponent {...fieldConfig} />}
-
-      {/* FUTURE: merge into reusable component */}
-      <footer className="fixed bottom-0 left-0 z-10 flex w-full justify-between border-t border-t-gray-main-03 bg-white px-4 py-2 sm:sticky md:max-w-full">
-        <div className="flex items-center gap-2">
-          <div
-            onClick={() => onDismiss()}
-            aria-label="Previous"
-            className="h-auto rounded-full bg-inherit p-0"
+      <DrawerComponent
+        drawerId={DrawerIds.LIST_DRAFT_DRAWER_ID}
+        isShowClose={true}
+        header={<Trans>Still got an draft waiting for you</Trans>}
+        subHeader={<Trans>Would you like to delete it or keep editing?</Trans>}
+        content={<></>}
+        startFooter={
+          <Button
+            onClick={() => {
+              removeLocalStorage(LocalStorageKey.LIST_DRAFT);
+              closeDraftDrawer();
+            }}
+            variant={ButtonVariant.WARNING}
+            shape={ButtonShape.ROUNDED_5PX}
           >
-            <IconClose />
-          </div>
-          <p className="text-[17px] font-bold">
-            {defaultListInfo.title === '' ? (
-              <Trans>Create Idea List</Trans>
-            ) : (
-              <Trans>Edit List</Trans>
-            )}
-          </p>
-        </div>
-        <Button
-          disabled={!isFormModified || listForm.watch('title') === ''}
-          type="submit"
-          variant={
-            !isFormModified || listForm.watch('title') === ''
-              ? ButtonVariant.GRAY
-              : ButtonVariant.BLACK
-          }
-          shape={ButtonShape.ROUNDED_5PX}
-          onClick={() => {
-            if (defaultListInfo.title === '') {
-              onOpenCategoryDrawer();
-            } else {
-              void listForm.handleSubmit(onSubmit, onSubmitFailed)();
-            }
-          }}
-        >
-          <Trans>Next</Trans>
-        </Button>
-      </footer>
+            <Trans>Delete draft</Trans>
+          </Button>
+        }
+        endFooter={
+          <Button
+            onClick={() => {
+              listForm.reset(
+                getLocalStorage(LocalStorageKey.LIST_DRAFT, FormSchema)
+              );
+              closeDraftDrawer();
+            }}
+            variant={ButtonVariant.BLACK}
+            shape={ButtonShape.ROUNDED_5PX}
+          >
+            <Trans>Keep editing</Trans>
+          </Button>
+        }
+      />
+
+      {fieldConfig && <EditFieldFakePageComponent {...fieldConfig} />}
     </>
   );
 };

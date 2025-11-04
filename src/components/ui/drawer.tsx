@@ -41,6 +41,8 @@ const DrawerContent = React.forwardRef<
     <DrawerOverlay />
     <DrawerPrimitive.Content
       ref={ref}
+      // For console warning
+      aria-describedby={undefined}
       className={cn(
         'fixed inset-x-0 bottom-0 z-50 flex h-auto flex-col border bg-background px-4 py-6',
         className
