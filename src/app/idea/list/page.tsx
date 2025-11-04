@@ -37,17 +37,13 @@ const FormSchema = z.object({
   categoryID: z.number().nonnegative(),
 });
 
-interface TemporaryCreateListProps {
-  defaultListInfo: ListBody;
-}
+const defaultListInfo: z.infer<typeof FormSchema> = {
+  title: '',
+  externalLink: '',
+  categoryID: 0,
+};
 
-const TemporaryCreateListPage: React.FC<TemporaryCreateListProps> = ({
-  defaultListInfo = {
-    title: '',
-    externalLink: '',
-    categoryID: 0,
-  },
-}: TemporaryCreateListProps) => {
+const TemporaryCreateListPage: React.FC = () => {
   const navigateTo = useStrictNavigationNext();
 
   const { setIsLoading } = useCommonStore();
