@@ -1,7 +1,9 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { migrateUserRoute } from '@/lib/routeMigration';
+import { useTemporaryIdeaStore } from '@/stores/useTemporaryIdeaStore';
+import { IdeaBody } from '@/types/Idea';
+import { useRouter } from 'next/navigation';
 
 interface CreateIdeaOptions {
   listID?: number;
@@ -10,6 +12,7 @@ interface CreateIdeaOptions {
 
 const useStrictNavigationNext = () => {
   const router = useRouter();
+  const temporaryIdeaStore = useTemporaryIdeaStore();
 
   return {
     refresh: () => router.refresh(),
@@ -37,6 +40,7 @@ const useStrictNavigationNext = () => {
       } else {
         router.push(path);
       }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     },
     manageList: (userCode: string, listID: string) => {
       const cleanUserCode = migrateUserRoute(userCode);
@@ -45,6 +49,10 @@ const useStrictNavigationNext = () => {
     editList: (userCode: string, listID: string) => {
       const cleanUserCode = migrateUserRoute(userCode);
       router.push(`/${cleanUserCode}/list/${listID}/edit`);
+    },
+    temporaryCreateList: (ideaForm: IdeaBody) => {
+      temporaryIdeaStore.setIdeaWithSync(ideaForm);
+      router.push(`/idea/list`);
     },
     createIdea: (options?: CreateIdeaOptions | string) => {
       if (typeof options === 'string') {
@@ -62,8 +70,12 @@ const useStrictNavigationNext = () => {
       } else {
         router.push('/idea/create');
       }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     },
-    editIdea: (ideaID: string) => router.push(`/idea/${ideaID}/edit`),
+    editIdea: (ideaID: string) => {
+      router.push(`/idea/${ideaID}/edit`);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    },
   };
 };
 

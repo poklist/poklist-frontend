@@ -24,7 +24,7 @@ const ListSection: React.FC = () => {
           const isLastItem = index === listPreviews.length - 1;
           return (
             <div
-              key={listPreview.title}
+              key={listPreview.id}
               className={`flex min-h-[72px] items-center justify-between ${
                 isLastItem ? 'border-b-[3px]' : 'border-b'
               } border-black-text-01 p-4 -tracking-1.1%`}

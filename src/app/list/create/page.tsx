@@ -42,8 +42,8 @@ const CreatePage: React.FC = () => {
         if (!data) {
           throw new Error('Failed to create list');
         }
-        removeLocalStorage(LocalStorageKey.LIST_DRAFT);
         navigateTo.viewList(me.userCode, data.id.toString());
+        removeLocalStorage(LocalStorageKey.LIST_DRAFT);
       },
     });
   });

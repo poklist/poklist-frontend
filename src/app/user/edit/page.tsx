@@ -237,7 +237,7 @@ const EditUserPage: React.FC = () => {
 
   const onOpenFakePage = (fieldType: FieldType | SocialLinkType) => {
     setFieldConfig(fieldConfigMap[fieldType]);
-    openFakePage();
+    openFakePage('editField');
   };
 
   const onSubmit = () => {

@@ -1,9 +1,11 @@
 'use client';
 
 import IdeaForm from '@/app/idea/_components/Form';
+import { useFakePage } from '@/components/FakePage/useFakePage';
 import { LocalStorageKey } from '@/enums/index.enum';
 import { MessageType } from '@/enums/Style/index.enum';
 import { useCreateIdea } from '@/hooks/mutations/useCreateIdea';
+import { useListPreviews } from '@/hooks/queries/useLists';
 import { useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { toast } from '@/hooks/useToast';
@@ -13,6 +15,7 @@ import useUserStore from '@/stores/useUserStore';
 import { IdeaBody } from '@/types/Idea';
 import { useSearchParams } from 'next/navigation';
 import React, { useEffect } from 'react';
+import ListSelectorFakePage from '../_components/ListSelectorFakePage.tsx';
 
 const IdeaCreatePage: React.FC = () => {
   const navigateTo = useStrictNavigationAdapter();
@@ -22,9 +25,15 @@ const IdeaCreatePage: React.FC = () => {
   const { setIsLoading } = useCommonStore();
   const { me } = useUserStore();
 
+  const { openFakePage } = useFakePage();
+
   const { withAuth } = useAuthWrapper();
 
   const { mutate: createIdea, isPending: createIdeaLoading } = useCreateIdea();
+
+  const { data: lists, isLoading: isGettingLists } = useListPreviews({
+    userCode: me.userCode,
+  });
 
   const onDismissCreate = (isFormEmpty: boolean) => {
     if (isFormEmpty) {
@@ -51,28 +60,25 @@ const IdeaCreatePage: React.FC = () => {
         }
       );
     } else {
-      toast({
-        title: 'No list selected',
-        variant: MessageType.ERROR,
-      });
+      openFakePage('listSelector', { lists, ideaForm: ideaFormData });
     }
   });
 
   useEffect(() => {
-    if (createIdeaLoading) {
+    if (createIdeaLoading || isGettingLists) {
       setIsLoading(true);
     } else {
       setIsLoading(false);
     }
-  }, [createIdeaLoading, setIsLoading]);
+  }, [createIdeaLoading, isGettingLists]);
 
   return (
     <div className="mt-16 flex min-h-screen flex-col gap-6 sm:min-h-[calc(100vh-196px)]">
       <IdeaForm
-        isNavigateFromList={isNavigateFromList}
         completedCallback={onCreateIdea}
         dismissCallback={onDismissCreate}
       />
+      <ListSelectorFakePage />
     </div>
   );
 };

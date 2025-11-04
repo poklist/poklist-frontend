@@ -1,5 +1,8 @@
+import {
+  FakePageContext,
+  IFakePageContext,
+} from '@/components/FakePage/context';
 import { useContext } from 'react';
-import { FakePageContext, IFakePageContext } from './context';
 
 export const useFakePage = (): IFakePageContext => {
   const context = useContext(FakePageContext);

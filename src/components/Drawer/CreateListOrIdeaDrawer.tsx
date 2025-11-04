@@ -9,6 +9,7 @@ import {
 import { DrawerIds } from '@/constants/Drawer';
 import { useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
+import { i18n } from '@lingui/core';
 import { Trans } from '@lingui/react/macro';
 import Image from 'next/image';
 import React from 'react';
@@ -25,14 +26,14 @@ const CreateListOrIdeaDrawer: React.FC = () => {
 
   const handleCreateIdea = withAuth(() => {
     closeDrawer();
-    // TODO: ...
+    navigateTo.createIdea();
   });
 
   const drawerContent = (
     <div className="flex flex-col gap-4 pt-4">
       <div className="flex justify-center">
         <Image
-          src="/images/hint/create_hint_chinese.svg"
+          src={`/images/hint/create_hint_${i18n.locale}.svg`}
           alt="Create Hint"
           width={280}
           height={160}

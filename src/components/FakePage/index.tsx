@@ -1,52 +1,42 @@
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { FakePageContext, FakePageType } from '@/components/FakePage/context';
+import { IdeaBody } from '@/types/Idea';
+import { ListPreview } from '@/types/List';
 import { useState } from 'react';
-import { FakePageContext } from './context';
-import { useFakePage } from './useFakePage';
 
 export const FakePageProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }: {
   children: React.ReactNode;
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const openFakePage = () => {
-    setIsOpen(true);
+  const [openedPage, setOpenedPage] = useState<FakePageType | null>(null);
+  const [payload, setPayload] = useState<{
+    lists: ListPreview[] | undefined;
+    ideaForm: IdeaBody;
+  } | null>(null);
+  const openFakePage = (
+    pageType: FakePageType,
+    data?: { lists: ListPreview[] | undefined; ideaForm: IdeaBody } | null
+  ) => {
+    setOpenedPage(pageType);
+    if (data) setPayload(data);
   };
 
   const closeFakePage = () => {
-    setIsOpen(false);
+    setOpenedPage(null);
   };
+  const isOpen = (pageType: FakePageType) => openedPage === pageType;
 
   return (
     <FakePageContext.Provider
       value={{
         isOpen,
+        openedPage,
+        payload,
         openFakePage,
         closeFakePage,
       }}
     >
       {children}
     </FakePageContext.Provider>
-  );
-};
-
-interface IFakePageProps {
-  content?: React.ReactNode;
-}
-
-export const FakePageComponent: React.FC<IFakePageProps> = ({
-  content,
-}: IFakePageProps) => {
-  const { isOpen, closeFakePage } = useFakePage();
-  return (
-    <Dialog open={isOpen} onOpenChange={closeFakePage}>
-      <DialogContent
-        className="bottom-0 h-screen w-full bg-white shadow"
-        aria-describedby="fake-page-content"
-      >
-        {content}
-      </DialogContent>
-    </Dialog>
   );
 };

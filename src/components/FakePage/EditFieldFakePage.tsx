@@ -43,7 +43,7 @@ export const EditFieldFakePageComponent: React.FC<IEditFieldConfig> = ({
   }, [editingFieldValue, variant]);
 
   return (
-    <Dialog open={isOpen} onOpenChange={closeFakePage}>
+    <Dialog open={isOpen('editField')} onOpenChange={closeFakePage}>
       <DialogContent
         // For console warning
         aria-describedby={undefined}
