@@ -6,7 +6,7 @@ import IdeaList, {
 import { Button, ButtonShape, ButtonVariant } from '@/components/ui/button';
 import IconLeftArrowThin from '@/components/ui/icons/LeftArrowThinIcon';
 import { useReorderIdeas } from '@/hooks/mutations/useReorderIdeas';
-import { useInfiniteList } from '@/hooks/queries/infinite/useInfiniteList';
+import { useInfiniteIdea } from '@/hooks/queries/infinite/useInfiniteIdea';
 import { useOrderIdeas } from '@/hooks/queries/useOrderIdeas';
 import { useAuthCheck, useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
@@ -39,7 +39,7 @@ const ListManagePage: React.FC = () => {
     hasNextPage,
     isLoading: isListLoading,
     isFetchingNextPage,
-  } = useInfiniteList({
+  } = useInfiniteIdea({
     listID,
     // enabled: !isDeleting,
     limit: 20,

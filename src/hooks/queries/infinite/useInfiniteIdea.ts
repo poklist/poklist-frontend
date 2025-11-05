@@ -12,7 +12,7 @@ interface UseInfiniteListOptions {
   enabled?: boolean;
 }
 
-export const useInfiniteList = ({
+export const useInfiniteIdea = ({
   listID,
   limit = Idea.DEFAULT_BATCH_SIZE,
   enabled = true,

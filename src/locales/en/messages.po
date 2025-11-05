@@ -163,7 +163,6 @@ msgid "Likes"
 msgstr "Likes"
 
 #: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
-#: src/app/[userCode]/list/[id]/manage/page.tsx
 msgid "Add an idea"
 msgstr "Add an idea"
 
@@ -186,29 +185,42 @@ msgid "Delete List and All Ideas"
 msgstr "Delete List and All Ideas"
 
 #: src/app/[userCode]/list/[id]/manage/page.tsx
-msgid "Idea List"
-msgstr "Idea List"
+#~ msgid "Idea List"
+#~ msgstr "Idea List"
 
 #: src/app/[userCode]/list/[id]/manage/page.tsx
-msgid "Edit list cover"
-msgstr "Edit list cover"
+#~ msgid "Edit list cover"
+#~ msgstr "Edit list cover"
 
 #: src/app/[userCode]/list/[id]/manage/page.tsx
+#~ msgid "Tap an idea to edit. Drag the lines on the left to reorder."
+#~ msgstr "Tap an idea to edit. Drag the lines on the left to reorder."
+
+#: src/app/[userCode]/list/[id]/manage/page.tsx
+#~ msgid "Save New Order"
+#~ msgstr "Save New Order"
+
+#: src/app/[userCode]/list/[id]/reorder/_components/IdeasList/index.tsx
 msgid "Your ideas live here. Create one!"
 msgstr "Your ideas live here. Create one!"
 
-#: src/app/[userCode]/list/[id]/manage/page.tsx
-msgid "Tap an idea to edit. Drag the lines on the left to reorder."
-msgstr "Tap an idea to edit. Drag the lines on the left to reorder."
+#: src/app/[userCode]/list/[id]/reorder/_components/IdeasList/index.tsx
+msgid "Drag the lines on the left to reorder."
+msgstr "Drag the lines on the left to reorder."
 
-#: src/app/[userCode]/list/[id]/manage/page.tsx
+#: src/app/[userCode]/list/[id]/reorder/page.tsx
+msgid "Reorder Ideas"
+msgstr "Reorder Ideas"
+
+#: src/app/[userCode]/list/[id]/reorder/page.tsx
+#: src/app/[userCode]/list/_components/Header/index.tsx
+#: src/app/idea/_components/Form/index.tsx
+#: src/app/idea/list/page.tsx
 #: src/app/list/_components/Form/index.tsx
-msgid "Edit List"
-msgstr "Edit List"
-
-#: src/app/[userCode]/list/[id]/manage/page.tsx
-msgid "Save New Order"
-msgstr "Save New Order"
+#: src/app/list/_components/Form/index.tsx
+#: src/components/FakePage/EditFieldFakePage.tsx
+msgid "Done"
+msgstr "Done"
 
 #: src/app/_layout/_components/BottomNav.tsx
 #: src/constants/Home/index.en.ts
@@ -365,14 +377,6 @@ msgstr "Cover Image"
 
 #: src/app/idea/_components/Form/index.tsx
 #: src/app/idea/list/page.tsx
-#: src/app/list/_components/Form/index.tsx
-#: src/app/list/_components/Form/index.tsx
-#: src/components/FakePage/EditFieldFakePage.tsx
-msgid "Done"
-msgstr "Done"
-
-#: src/app/idea/_components/Form/index.tsx
-#: src/app/idea/list/page.tsx
 #: src/app/idea/list/page.tsx
 #: src/app/list/_components/Form/index.tsx
 #: src/app/list/_components/Form/index.tsx
@@ -496,6 +500,10 @@ msgstr "Cancel Editing"
 #: src/app/list/_components/Form/index.tsx
 msgid "Continue Editing"
 msgstr "Continue Editing"
+
+#: src/app/list/_components/Form/index.tsx
+msgid "Edit List"
+msgstr "Edit List"
 
 #: src/app/list/_components/Form/index.tsx
 msgid "Describe what this title is about"
