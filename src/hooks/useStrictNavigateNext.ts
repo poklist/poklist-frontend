@@ -42,9 +42,9 @@ const useStrictNavigationNext = () => {
       }
       window.scrollTo({ top: 0, behavior: 'smooth' });
     },
-    manageList: (userCode: string, listID: string) => {
+    reorderList: (userCode: string, listID: string) => {
       const cleanUserCode = migrateUserRoute(userCode);
-      router.push(`/${cleanUserCode}/list/${listID}/manage`);
+      router.push(`/${cleanUserCode}/list/${listID}/reorder`);
     },
     editList: (userCode: string, listID: string) => {
       const cleanUserCode = migrateUserRoute(userCode);
