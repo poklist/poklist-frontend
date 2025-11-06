@@ -76,6 +76,7 @@ const ListForm: React.FC<IListFormProps> = ({
   const { openDrawer: openDraftDrawer, closeDrawer: closeDraftDrawer } =
     useDrawer(DrawerIds.LIST_DRAFT_DRAWER_ID);
   const { data: categories, isLoading: categoriesLoading } = useCategories();
+  const [mounted, setMounted] = useState(false);
 
   // TODO load from localStorage in v0.3.5
   const listForm = useForm<z.infer<typeof FormSchema>>({
@@ -111,7 +112,7 @@ const ListForm: React.FC<IListFormProps> = ({
         }
       },
     });
-    openFakePage();
+    openFakePage('editField');
   };
 
   const titleTextarea = useAutoResizeTextarea({
@@ -135,6 +136,7 @@ const ListForm: React.FC<IListFormProps> = ({
   };
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
+    closeCategoryDrawer();
     completedCallback(data);
   };
 
@@ -154,10 +156,16 @@ const ListForm: React.FC<IListFormProps> = ({
 
   useEffect(() => {
     listForm.setFocus('title');
-    if (getLocalStorage(LocalStorageKey.LIST_DRAFT, FormSchema)) {
-      openDraftDrawer();
-    }
+    setMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
+    if (defaultListInfo.title !== '') return;
+
+    const draft = getLocalStorage(LocalStorageKey.LIST_DRAFT, FormSchema);
+    if (draft) openDraftDrawer();
+  }, [mounted, defaultListInfo.title]);
 
   useEffect(() => {
     if (
@@ -184,6 +192,7 @@ const ListForm: React.FC<IListFormProps> = ({
     listForm.reset({ ...defaultListInfo });
     setTimeout(() => {
       titleTextarea.bind.onChange();
+      descriptionTextarea.bind.onChange();
       listForm.setFocus('title');
     }, 0);
   }, [defaultListInfo]);
@@ -225,10 +234,7 @@ const ListForm: React.FC<IListFormProps> = ({
           >
             <IconLeftArrowThin width={7.5} height={15} color="black" />
           </div>
-          {defaultListInfo.title !== '' &&
-          defaultListInfo.description !== '' &&
-          defaultListInfo.externalLink !== '' &&
-          defaultListInfo.coverImage !== '' ? (
+          {!mounted || defaultListInfo.title !== '' ? (
             <Trans>Edit List</Trans>
           ) : (
             <Trans>Create Idea List</Trans>
@@ -246,7 +252,11 @@ const ListForm: React.FC<IListFormProps> = ({
           variant={ButtonVariant.BLACK}
           shape={ButtonShape.ROUNDED_5PX}
         >
-          <Trans>Done</Trans>
+          {!mounted || defaultListInfo.title !== '' ? (
+            <Trans>Done</Trans>
+          ) : (
+            <Trans>Next</Trans>
+          )}
         </Button>
       </div>
       <TileBackground />
@@ -470,6 +480,11 @@ const ListForm: React.FC<IListFormProps> = ({
                 getLocalStorage(LocalStorageKey.LIST_DRAFT, FormSchema)
               );
               closeDraftDrawer();
+              setTimeout(() => {
+                titleTextarea.bind.onChange();
+                descriptionTextarea.bind.onChange();
+                listForm.setFocus('title');
+              }, 0);
             }}
             variant={ButtonVariant.BLACK}
             shape={ButtonShape.ROUNDED_5PX}

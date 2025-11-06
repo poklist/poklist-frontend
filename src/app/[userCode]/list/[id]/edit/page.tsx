@@ -92,18 +92,16 @@ const EditListPage: React.FC = () => {
         navigateTo.home();
       }
     }
-  }, [checkAuthAndRedirect, listID, me.userCode, navigateTo, userCode]);
+  }, [listID, me.userCode, navigateTo, userCode]);
 
   return (
-    <>
-      <div className="flex h-full flex-col gap-4">
-        <ListForm
-          defaultListInfo={listCoverDraft}
-          dismissCallback={onDismissEdit}
-          completedCallback={onEditList}
-        />
-      </div>
-    </>
+    <div className="flex h-full flex-col gap-4">
+      <ListForm
+        defaultListInfo={listCoverDraft}
+        dismissCallback={onDismissEdit}
+        completedCallback={onEditList}
+      />
+    </div>
   );
 };
 

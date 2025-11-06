@@ -41,14 +41,12 @@ const FormSchema = z.object({
 });
 
 interface IIdeaFormProps {
-  isNavigateFromList: boolean;
   previousIdeaInfo?: IdeaResponse;
   dismissCallback: (isFormNotEdited: boolean) => void;
   completedCallback: (completedIdeaForm: IdeaBody) => void;
 }
 
 const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
-  isNavigateFromList,
   previousIdeaInfo = {
     title: '',
     description: '',
@@ -65,6 +63,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
     useDrawer(DrawerIds.CANCEL_IDEA_FORM_CONFIRM_DRAWER_ID);
   const { openDrawer: openDraftDrawer, closeDrawer: closeDraftDrawer } =
     useDrawer(DrawerIds.IDEA_DRAFT_DRAWER_ID);
+  const [mounted, setMounted] = useState(false);
 
   // TODO load from localStorage in v0.3.5
   const ideaForm = useForm<z.infer<typeof FormSchema>>({
@@ -101,7 +100,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
         }
       },
     });
-    openFakePage();
+    openFakePage('editField');
   };
 
   const titleTextarea = useAutoResizeTextarea({
@@ -168,10 +167,16 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
 
   useEffect(() => {
     ideaForm.setFocus('title');
-    if (getLocalStorage(LocalStorageKey.IDEA_DRAFT, FormSchema)) {
-      openDraftDrawer();
-    }
+    setMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
+    if (previousIdeaInfo.title !== '') return;
+
+    const draft = getLocalStorage(LocalStorageKey.IDEA_DRAFT, FormSchema);
+    if (draft) openDraftDrawer();
+  }, [mounted, previousIdeaInfo.title]);
 
   return (
     <>
@@ -184,10 +189,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
           >
             <IconLeftArrowThin width={7.5} height={15} color="black" />
           </div>
-          {previousIdeaInfo.title !== '' &&
-          previousIdeaInfo.description !== '' &&
-          previousIdeaInfo.externalLink !== '' &&
-          previousIdeaInfo.coverImage !== '' ? (
+          {!mounted || previousIdeaInfo.title !== '' ? (
             <Trans>Edit Idea</Trans>
           ) : (
             <Trans>Add Idea</Trans>
@@ -197,14 +199,17 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
           disabled={
             !isFormModified ||
             ideaForm.watch('title') === '' ||
-            ideaForm.formState.isSubmitting ||
-            ideaForm.formState.isSubmitted
+            ideaForm.formState.isSubmitting
           }
           onClick={() => void ideaForm.handleSubmit(onSubmit, onSubmitFailed)()}
           variant={ButtonVariant.BLACK}
           shape={ButtonShape.ROUNDED_5PX}
         >
-          {isNavigateFromList ? <Trans>Done</Trans> : <Trans>Next</Trans>}
+          {!mounted || previousIdeaInfo.title !== '' ? (
+            <Trans>Done</Trans>
+          ) : (
+            <Trans>Next</Trans>
+          )}
         </Button>
       </div>
       <form
@@ -335,7 +340,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
           </Button>
         }
       />
-      
+
       <DrawerComponent
         drawerId={DrawerIds.IDEA_DRAFT_DRAWER_ID}
         isShowClose={true}
@@ -361,6 +366,11 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
                 getLocalStorage(LocalStorageKey.IDEA_DRAFT, FormSchema)
               );
               closeDraftDrawer();
+              setTimeout(() => {
+                titleTextarea.bind.onChange();
+                descriptionTextarea.bind.onChange();
+                ideaForm.setFocus('title');
+              }, 0);
             }}
             variant={ButtonVariant.BLACK}
             shape={ButtonShape.ROUNDED_5PX}

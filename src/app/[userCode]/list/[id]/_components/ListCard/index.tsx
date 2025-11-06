@@ -1,11 +1,6 @@
 import { DrawerComponent } from '@/components/Drawer';
 import { useDrawer } from '@/components/Drawer/useDrawer';
-import {
-  Button,
-  ButtonShape,
-  ButtonSize,
-  ButtonVariant,
-} from '@/components/ui/button';
+import { Button, ButtonShape, ButtonVariant } from '@/components/ui/button';
 import LinkIconWrapper from '@/components/ui/wrappers/LinkIconWrapper';
 import { DrawerIds } from '@/constants/Drawer';
 import {
@@ -259,7 +254,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
   });
   return (
     <>
-      <div className="relative flex flex-col items-center rounded-[32px] border border-black bg-white py-6">
+      <div className="relative flex flex-col items-center rounded-[32px] border border-black bg-white pb-10 pt-6">
         {isLoggedIn && me?.id === data.owner.id && (
           <DropdownMenuComponent
             trigger={
@@ -289,34 +284,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
               {likeCount} <Trans>Likes</Trans>
             </p>
           </div>
-          {isLoggedIn && me?.id === data.owner.id && (
-            <div className="mt-6 flex w-full gap-2">
-              <Button
-                variant={ButtonVariant.BLACK}
-                size={ButtonSize.H40}
-                shape={ButtonShape.ROUNDED_5PX}
-                onClick={() =>
-                  navigateTo.editList(me.userCode, data.id.toString())
-                }
-              >
-                <Trans>Edit list</Trans>
-              </Button>
-              <Button
-                variant={ButtonVariant.HIGHLIGHTED}
-                size={ButtonSize.H40}
-                shape={ButtonShape.ROUNDED_5PX}
-                onClick={() => {
-                  // 使用 URL parameters 代替 state 來傳遞數據
-                  const params = new URLSearchParams();
-                  params.set('listID', data.id.toString());
-                  params.set('listTitle', data.title);
-                  navigateTo.createIdea(`/idea/create?${params.toString()}`);
-                }}
-              >
-                <Trans>Add an idea</Trans>
-              </Button>
-            </div>
-          )}
+
           {data.description && (
             <div
               className="mt-6 line-clamp-1 w-full text-[15px] -tracking-1.1%"
@@ -346,13 +314,34 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
             />
           )}
         </div>
+        {isLoggedIn && me?.id === data.owner.id && (
+          <div className="mt-4 w-full">
+            <div
+              onClick={() => {
+                // 使用 URL parameters 代替 state 來傳遞數據
+                const params = new URLSearchParams();
+                params.set('listID', data.id.toString());
+                params.set('listTitle', data.title);
+                navigateTo.createIdea(`/idea/create?${params.toString()}`);
+              }}
+              className="flex min-h-[65px] items-center gap-2.5 border-b border-t border-gray-main-03 p-4 text-[15px] font-semibold -tracking-1.1% text-black-text-01"
+            >
+              <IconAddCircle
+                width={18}
+                height={18}
+                className="rounded-full bg-yellow-bright-01"
+              />
+              <Trans>Add an idea</Trans>
+            </div>
+          </div>
+        )}
         {data.ideas.length > 0 ? (
-          <div className="mt-4 flex w-full flex-col">
+          <div className="flex w-full flex-col">
             {data.ideas.map((idea) => {
               return (
                 <div
-                  key={idea.title}
-                  className="flex min-h-[65px] items-center justify-between gap-2 border-t border-gray-main-03 p-4 -tracking-1.1%"
+                  key={idea.id}
+                  className="flex min-h-[65px] items-center justify-between gap-2 border-t border-gray-main-03 p-4 -tracking-1.1% first:border-t-0 last:pb-0"
                   onClick={() => onClickIdea(idea.id)}
                 >
                   <div className="flex w-full flex-col gap-2">
@@ -379,7 +368,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
             })}
           </div>
         ) : (
-          // 無靈感文字/NoDataComponent？
+          // FIXME 無靈感文字/NoDataComponent？
           <></>
         )}
       </div>

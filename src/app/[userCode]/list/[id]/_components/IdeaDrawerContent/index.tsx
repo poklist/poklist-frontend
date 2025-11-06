@@ -65,7 +65,10 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({
     {
       type: DropdownItemType.ITEM,
       label: t`Edit Idea`,
-      onClick: () => navigateTo.editIdea(data.id.toString()),
+      onClick: () => {
+        navigateTo.editIdea(data.id.toString());
+        closeSelf();
+      },
       icon: <IconEdit />,
     },
     { type: DropdownItemType.SEPARATOR },
