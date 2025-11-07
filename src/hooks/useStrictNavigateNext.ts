@@ -12,6 +12,7 @@ interface CreateIdeaOptions {
 
 const useStrictNavigationNext = () => {
   const router = useRouter();
+  // const {setIsLoading} = useCommonStore()
   const temporaryIdeaStore = useTemporaryIdeaStore();
 
   return {

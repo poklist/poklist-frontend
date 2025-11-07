@@ -1,9 +1,9 @@
 'use client';
 import { DrawerComponent } from '@/components/Drawer';
 import { useDrawer } from '@/components/Drawer/useDrawer';
+import EditModeHeader from '@/components/Header/EditModeHeader';
 import { IChoice, RadioComponent } from '@/components/Radio';
 import { Button, ButtonShape, ButtonVariant } from '@/components/ui/button';
-import IconLeftArrowThin from '@/components/ui/icons/LeftArrowThinIcon';
 import { Textarea } from '@/components/ui/textarea';
 import { DrawerIds } from '@/constants/Drawer';
 import { TITLE_MAX_LENGTH } from '@/constants/form';
@@ -177,28 +177,13 @@ const TemporaryCreateListPage: React.FC = () => {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <div className="border-b-gray-note-06 fixed top-0 z-10 flex h-14 w-full justify-between overflow-hidden border-b bg-white px-4 py-2">
-        <div className="flex items-center gap-1 font-bold">
-          <div
-            onClick={() => onDismiss()}
-            aria-label="Previous"
-            className="flex h-10 w-10 items-center justify-center"
-          >
-            <IconLeftArrowThin width={7.5} height={15} color="black" />
-          </div>
-          <Trans>Create Idea List</Trans>
-        </div>
-        <Button
-          disabled={listForm.watch('title') === ''}
-          onClick={() => {
-            openCategoryDrawer();
-          }}
-          variant={ButtonVariant.BLACK}
-          shape={ButtonShape.ROUNDED_5PX}
-        >
-          <Trans>Next</Trans>
-        </Button>
-      </div>
+      <EditModeHeader
+        onClose={() => onDismiss()}
+        title={t`Create Idea List`}
+        disabled={listForm.watch('title') === ''}
+        onSave={() => openCategoryDrawer()}
+        saveButtonText={t`Next`}
+      />
       <div className="mt-14 border-b border-note-gray-06 bg-gray-note-05 p-4 text-sm text-black-gray-03">
         <Trans>Give it a fun title! Like: My weekend musts</Trans>
       </div>

@@ -9,6 +9,7 @@ import { UpdateUserResponse, User } from '@/types/User';
 import { t } from '@lingui/core/macro';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
+import { useState } from 'react';
 import { toast } from '../useToast';
 
 interface UseEditProfileOptions {
@@ -24,6 +25,7 @@ export const useEditProfile = ({
   const { setMe, me } = useUserStore();
   const navigateTo = useStrictNavigateNext();
   const queryClient = useQueryClient();
+  const [isLoading, setIsLoading] = useState(false);
 
   const mutation = useMutation({
     mutationFn: async ({ newUserInfo }: { newUserInfo: User }) => {
@@ -36,6 +38,9 @@ export const useEditProfile = ({
         params
       );
       return response.data.content;
+    },
+    onMutate: () => {
+      setIsLoading(true);
     },
     onSuccess: async (data) => {
       if (!data) {
@@ -70,11 +75,14 @@ export const useEditProfile = ({
       navigateTo.user(me.userCode);
       onError?.(error);
     },
+    onSettled: () => {
+      setIsLoading(false);
+    },
   });
 
   return {
     editProfile: mutation.mutate,
-    isLoading: mutation.isPending,
+    isLoading: mutation.isPending || isLoading,
     isError: mutation.isError,
     error: mutation.error,
   };

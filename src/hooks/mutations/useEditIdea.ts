@@ -7,9 +7,11 @@ import axios from '@/lib/axios';
 import { EditIdeaResponse, IdeaPreview } from '@/types/Idea';
 import { IResponse } from '@/types/response';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
 
 const useEditIdea = () => {
   const queryClient = useQueryClient();
+  const [isLoading, setIsLoading] = useState(false);
 
   const mutation = useMutation({
     mutationFn: async (params: IdeaPreview) => {
@@ -21,6 +23,9 @@ const useEditIdea = () => {
         throw new Error('Failed to edit idea');
       }
       return response.data.content;
+    },
+    onMutate: () => {
+      setIsLoading(true);
     },
     onSuccess: async (data) => {
       const ideaQueryKey = [QueryKeys.IDEA, data.id.toString()];
@@ -45,11 +50,14 @@ const useEditIdea = () => {
         variant: MessageType.ERROR,
       });
     },
+    onSettled: () => {
+      setIsLoading(false);
+    },
   });
 
   return {
     editIdea: mutation.mutate,
-    isEditIdeaLoading: mutation.isPending,
+    isEditIdeaLoading: mutation.isPending || isLoading,
     isEditIdeaError: mutation.isError,
     editIdeaError: mutation.error,
   };

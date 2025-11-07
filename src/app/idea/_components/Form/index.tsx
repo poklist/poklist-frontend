@@ -2,10 +2,10 @@ import { DrawerComponent } from '@/components/Drawer';
 import { useDrawer } from '@/components/Drawer/useDrawer';
 import { EditFieldFakePageComponent } from '@/components/FakePage/EditFieldFakePage';
 import { useFakePage } from '@/components/FakePage/useFakePage';
+import EditModeHeader from '@/components/Header/EditModeHeader';
 import ImageUploader from '@/components/ImageUploader';
 import { Button, ButtonShape, ButtonVariant } from '@/components/ui/button';
 import IconExteriorLink from '@/components/ui/icons/ExteriorLinkIcon';
-import IconLeftArrowThin from '@/components/ui/icons/LeftArrowThinIcon';
 import IconTextarea from '@/components/ui/icons/TextareaIcon';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -29,7 +29,7 @@ import { IdeaBody, IdeaResponse } from '@/types/Idea';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -81,13 +81,6 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
     watch: ideaForm.watch,
   });
 
-  const isFormModified =
-    ideaForm.getValues('title') !== '' ||
-    ideaForm.getValues('title') !== previousIdeaInfo.title ||
-    ideaForm.getValues('description') !== previousIdeaInfo.description ||
-    ideaForm.getValues('externalLink') !== previousIdeaInfo.externalLink ||
-    ideaForm.getValues('coverImage') !== previousIdeaInfo.coverImage;
-
   const onOpenFakePage = () => {
     setFieldConfig({
       fieldName: t`Cover Image`,
@@ -135,6 +128,22 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
     completedCallback(data);
   };
 
+  const onRestoreDraft = async () => {
+    const ideaDraft = getLocalStorage(LocalStorageKey.IDEA_DRAFT, FormSchema);
+    if (!ideaDraft) return;
+    ideaForm.setValue('title', ideaDraft.title || '');
+    ideaForm.setValue('description', ideaDraft.description || '');
+    ideaForm.setValue('coverImage', ideaDraft.coverImage || '');
+    ideaForm.setValue('externalLink', ideaDraft.externalLink || '');
+    closeDraftDrawer();
+    await ideaForm.trigger();
+    setTimeout(() => {
+      titleTextarea.bind.onChange();
+      descriptionTextarea.bind.onChange();
+      ideaForm.setFocus('title');
+    }, 0);
+  };
+
   useEffect(() => {
     if (
       !(isIdle && ideaForm.formState.isDirty) ||
@@ -149,6 +158,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
     );
     ideaForm.reset(getLocalStorage(LocalStorageKey.IDEA_DRAFT, FormSchema), {
       keepValues: true,
+      keepDirty: true,
     });
     reset();
   }, [isIdle, ideaForm.formState.isDirty, previousIdeaInfo.title]);
@@ -170,7 +180,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
     setMounted(true);
   }, []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!mounted) return;
     if (previousIdeaInfo.title !== '') return;
 
@@ -180,38 +190,17 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
 
   return (
     <>
-      <div className="fixed top-0 z-10 flex h-14 w-full justify-between overflow-hidden border-b border-b-gray-note-05 bg-white px-4 py-2">
-        <div className="flex items-center gap-1 font-bold">
-          <div
-            onClick={() => onDismiss()}
-            aria-label="Previous"
-            className="flex h-10 w-10 items-center justify-center"
-          >
-            <IconLeftArrowThin width={7.5} height={15} color="black" />
-          </div>
-          {!mounted || previousIdeaInfo.title !== '' ? (
-            <Trans>Edit Idea</Trans>
-          ) : (
-            <Trans>Add Idea</Trans>
-          )}
-        </div>
-        <Button
-          disabled={
-            !isFormModified ||
-            ideaForm.watch('title') === '' ||
-            ideaForm.formState.isSubmitting
-          }
-          onClick={() => void ideaForm.handleSubmit(onSubmit, onSubmitFailed)()}
-          variant={ButtonVariant.BLACK}
-          shape={ButtonShape.ROUNDED_5PX}
-        >
-          {!mounted || previousIdeaInfo.title !== '' ? (
-            <Trans>Done</Trans>
-          ) : (
-            <Trans>Next</Trans>
-          )}
-        </Button>
-      </div>
+      <EditModeHeader
+        onClose={() => onDismiss()}
+        title={
+          !mounted || previousIdeaInfo.title !== '' ? t`Edit Idea` : t`Add Idea`
+        }
+        disabled={!ideaForm.formState.isDirty || ideaForm.watch('title') === ''}
+        onSave={() => void ideaForm.handleSubmit(onSubmit, onSubmitFailed)()}
+        saveButtonText={
+          !mounted || previousIdeaInfo.title !== '' ? t`Done` : t`Next`
+        }
+      />
       <form
         onSubmit={() => void ideaForm.handleSubmit(onSubmit, onSubmitFailed)()}
         className="mx-4 mb-24 mt-4 flex flex-1 flex-col gap-6 md:max-w-mobile-max"
@@ -361,17 +350,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
         }
         endFooter={
           <Button
-            onClick={() => {
-              ideaForm.reset(
-                getLocalStorage(LocalStorageKey.IDEA_DRAFT, FormSchema)
-              );
-              closeDraftDrawer();
-              setTimeout(() => {
-                titleTextarea.bind.onChange();
-                descriptionTextarea.bind.onChange();
-                ideaForm.setFocus('title');
-              }, 0);
-            }}
+            onClick={() => void onRestoreDraft()}
             variant={ButtonVariant.BLACK}
             shape={ButtonShape.ROUNDED_5PX}
           >

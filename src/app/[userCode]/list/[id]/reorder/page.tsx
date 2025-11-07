@@ -3,8 +3,7 @@
 import IdeaList, {
   DropEvent,
 } from '@/app/[userCode]/list/[id]/reorder/_components/IdeasList';
-import { Button, ButtonShape, ButtonVariant } from '@/components/ui/button';
-import IconLeftArrowThin from '@/components/ui/icons/LeftArrowThinIcon';
+import EditModeHeader from '@/components/Header/EditModeHeader';
 import { useReorderIdeas } from '@/hooks/mutations/useReorderIdeas';
 import { useInfiniteIdea } from '@/hooks/queries/infinite/useInfiniteIdea';
 import { useOrderIdeas } from '@/hooks/queries/useOrderIdeas';
@@ -14,11 +13,11 @@ import { useUserRouteContext } from '@/hooks/useUserRouteContext';
 import useCommonStore from '@/stores/useCommonStore';
 import useUserStore from '@/stores/useUserStore';
 import { IdeaPreview } from '@/types/Idea';
-import { Trans } from '@lingui/react/macro';
+import { t } from '@lingui/core/macro';
 import { useParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 
-const ListManagePage: React.FC = () => {
+const ReorderIdeaPage: React.FC = () => {
   const { userCode } = useUserRouteContext();
   const params = useParams();
   const listID = params?.id as string;
@@ -29,7 +28,6 @@ const ListManagePage: React.FC = () => {
 
   const { me } = useUserStore();
   const { setIsLoading } = useCommonStore();
-  // const [isDeleting, setIsDeleting] = useState(false);
   const [ideasDraft, setIdeasDraft] = useState<IdeaPreview[]>();
   const [isOrderModified, setIsOrderModified] = useState(false);
 
@@ -51,11 +49,6 @@ const ListManagePage: React.FC = () => {
   const { reorderIdeas, isReorderIdeasLoading } = useReorderIdeas({
     listID: listID ?? '',
   });
-  // const { deleteList, isDeleteListLoading } = useDeleteList({
-  //   userCode: me.userCode,
-  // });
-
-  // const list = useMemo(() => data?.pages?.[0]?.listInfo, [data]);
 
   useEffect(() => {
     if (!data?.pages) return;
@@ -96,56 +89,17 @@ const ListManagePage: React.FC = () => {
     );
   });
 
-  // const onDeleteList = withAuth(() => {
-  //   if (!list) return;
-  //   setIsDeleting(true);
-  //   deleteList(list.id, {
-  //     onSuccess: () => {
-  //       navigateTo.user(me.userCode);
-  //       setIsLoading(false);
-  //     },
-  //   });
-  // });
-
-  // const onEditList = withAuth(() => {
-  //   if (!listID) return navigateTo.error();
-  //   navigateTo.editList(me.userCode, listID);
-  // });
-
-  // const onAddIdea = withAuth(() => {
-  //   if (!listID) return navigateTo.error();
-  //   navigateTo.createIdea({
-  //     listID: Number(listID),
-  //     listTitle: list?.title,
-  //   });
-  // });
-
-  // const onClose = () => {
-  //   if (!listID) return navigateTo.error();
-  //   navigateTo.viewList(me.userCode, listID);
-  // };
-
   const onBottomReached = () => {
     if (hasNextPage && !isFetchingNextPage) void fetchNextPage();
   };
 
   useEffect(() => {
-    if (
-      isListLoading ||
-      isOrderIdeaLoading ||
-      isReorderIdeasLoading
-      // isDeleteListLoading
-    ) {
+    if (isListLoading || isOrderIdeaLoading || isReorderIdeasLoading) {
       setIsLoading(true);
     } else {
       setIsLoading(false);
     }
-  }, [
-    isListLoading,
-    isOrderIdeaLoading,
-    isReorderIdeasLoading,
-    // isDeleteListLoading,
-  ]);
+  }, [isListLoading, isOrderIdeaLoading, isReorderIdeasLoading]);
 
   useEffect(() => {
     checkAuthAndRedirect();
@@ -164,27 +118,13 @@ const ListManagePage: React.FC = () => {
 
   return (
     <>
-      <div className="fixed top-0 z-10 flex h-14 w-full justify-between overflow-hidden border-b border-b-note-gray-06 bg-white px-4 py-2">
-        <div className="flex items-center gap-1 font-bold">
-          <div
-            onClick={() => navigateTo.backward()}
-            aria-label="Previous"
-            className="flex h-10 w-10 items-center justify-center"
-          >
-            <IconLeftArrowThin width={7.5} height={15} color="black" />
-          </div>
-          <Trans>Reorder Ideas</Trans>
-        </div>
-        <Button
-          disabled={!isOrderModified}
-          onClick={() => onConfirmReorder()}
-          variant={ButtonVariant.BLACK}
-          shape={ButtonShape.ROUNDED_5PX}
-        >
-          <Trans>Done</Trans>
-        </Button>
-      </div>
-
+      <EditModeHeader
+        onClose={() => navigateTo.backward()}
+        title={t`Reorder Ideas`}
+        disabled={!isOrderModified}
+        onSave={() => onConfirmReorder()}
+        saveButtonText={t`Done`}
+      />
       <div className="flex min-h-screen flex-col">
         <IdeaList
           ideaList={ideasDraft}
@@ -193,25 +133,8 @@ const ListManagePage: React.FC = () => {
           hasMore={hasNextPage}
         />
       </div>
-
-      {/* <footer className="fixed bottom-0 left-0 z-10 flex w-full justify-between border-t border-t-gray-main-03 bg-white px-4 py-2 sm:sticky md:max-w-mobile-max">
-        <div className="flex items-center gap-2">
-          <IconClose onClick={() => onClose()} />
-          <Trans>Edit List</Trans>
-        </div>
-        <div className="flex items-center gap-4">
-          <Button
-            disabled={!isOrderModified}
-            onClick={() => onConfirmReorder()}
-            variant={ButtonVariant.BLACK}
-            shape={ButtonShape.ROUNDED_5PX}
-          >
-            <Trans>Save New Order</Trans>
-          </Button>
-        </div>
-      </footer> */}
     </>
   );
 };
 
-export default ListManagePage;
+export default ReorderIdeaPage;

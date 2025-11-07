@@ -6,6 +6,7 @@ import { toast } from '@/hooks/useToast';
 import axios from '@/lib/axios';
 import { IResponse } from '@/types/response';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
 
 interface UseDeleteListOptions {
   userCode: string; // to invalidate the useLists cache
@@ -23,6 +24,7 @@ export const useDeleteList = ({
   onError,
 }: UseDeleteListOptions) => {
   const queryClient = useQueryClient();
+  const [isLoading, setIsLoading] = useState(false);
 
   const mutation = useMutation({
     mutationFn: async (listID: number) => {
@@ -33,6 +35,9 @@ export const useDeleteList = ({
         throw new Error('Failed to delete list');
       }
       return;
+    },
+    onMutate: () => {
+      setIsLoading(true);
     },
     onSuccess: async (_, listID) => {
       // 將單筆列表資料清空，而非刪除快取，為免因尚有 Component 仍在使用相關資料而重新 fetch
@@ -53,11 +58,14 @@ export const useDeleteList = ({
       });
       onError?.(error);
     },
+    onSettled: () => {
+      setIsLoading(false);
+    },
   });
 
   return {
     deleteList: mutation.mutate,
-    isDeleteListLoading: mutation.isPending,
+    isDeleteListLoading: mutation.isPending || isLoading,
     deleteListError: mutation.error,
   };
 };

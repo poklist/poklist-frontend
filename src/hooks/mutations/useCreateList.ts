@@ -7,6 +7,7 @@ import axios from '@/lib/axios';
 import { CreateListResponse, ListBody } from '@/types/List';
 import { IResponse } from '@/types/response';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
 
 interface UseCreateListOptions {
   userCode: string; // to invalidate the useLists cache
@@ -24,6 +25,7 @@ export const useCreateList = ({
   onError,
 }: UseCreateListOptions) => {
   const queryClient = useQueryClient();
+  const [isLoading, setIsLoading] = useState(false);
 
   const mutation = useMutation({
     mutationFn: async (listForm: ListBody) => {
@@ -40,6 +42,9 @@ export const useCreateList = ({
         params
       );
       return response.data.content;
+    },
+    onMutate: () => {
+      setIsLoading(true);
     },
     onSuccess: async (data) => {
       if (!data) {
@@ -59,11 +64,14 @@ export const useCreateList = ({
       });
       onError?.(error);
     },
+    onSettled: () => {
+      setIsLoading(false);
+    },
   });
 
   return {
     createList: mutation.mutate,
     createListAsync: mutation.mutateAsync,
-    isCreateListLoading: mutation.isPending,
+    isCreateListLoading: mutation.isPending || isLoading,
   };
 };
