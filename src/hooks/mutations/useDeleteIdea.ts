@@ -6,6 +6,7 @@ import { toast } from '@/hooks/useToast';
 import axios from '@/lib/axios';
 import { IResponse } from '@/types/response';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
 
 interface UseDeleteIdeaOptions {
   listID: string;
@@ -13,6 +14,7 @@ interface UseDeleteIdeaOptions {
 
 const useDeleteIdea = ({ listID }: UseDeleteIdeaOptions) => {
   const queryClient = useQueryClient();
+  const [isLoading, setIsLoading] = useState(false);
 
   const mutation = useMutation({
     mutationFn: async (ideaID: number) => {
@@ -23,6 +25,9 @@ const useDeleteIdea = ({ listID }: UseDeleteIdeaOptions) => {
         throw new Error('Failed to delete idea');
       }
       return;
+    },
+    onMutate: () => {
+      setIsLoading(true);
     },
     onSuccess: async (_, ideaID) => {
       // Remove the deleted idea's cache
@@ -49,11 +54,14 @@ const useDeleteIdea = ({ listID }: UseDeleteIdeaOptions) => {
         variant: MessageType.ERROR,
       });
     },
+    onSettled: () => {
+      setIsLoading(false);
+    },
   });
 
   return {
     deleteIdea: mutation.mutate,
-    isDeleteIdeaLoading: mutation.isPending,
+    isDeleteIdeaLoading: mutation.isPending || isLoading,
     isDeleteIdeaError: mutation.isError,
     deleteIdeaError: mutation.error,
   };

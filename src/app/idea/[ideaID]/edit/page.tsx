@@ -69,7 +69,7 @@ const EditIdeaPage: React.FC = () => {
     }
     editIdea(_params, {
       onSuccess: (data) => {
-        navigateTo.manageList(me.userCode, data.listID.toString());
+        navigateTo.viewList(me.userCode, data.listID.toString());
       },
     });
   });

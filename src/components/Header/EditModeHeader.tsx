@@ -22,7 +22,7 @@ const EditModeHeader: React.FC<EditModeHeaderProps> = ({
     <div
       id="edit-mode-header"
       aria-label="Edit mode header"
-      className="fixed top-0 z-10 flex h-14 w-full justify-between border-b border-b-gray-note-05 bg-white px-4 py-2 sm:sticky"
+      className="fixed top-0 z-10 flex h-14 w-full justify-between border-b border-b-note-gray-06 bg-white px-4 py-2 sm:sticky"
     >
       <div className="flex items-center gap-1">
         <div
@@ -40,7 +40,7 @@ const EditModeHeader: React.FC<EditModeHeaderProps> = ({
         disabled={disabled}
         onClick={() => onSave(value)}
       >
-        <p className="text-base font-bold">{saveButtonText} </p>
+        <p className="text-base font-bold">{saveButtonText}</p>
       </Button>
     </div>
   );

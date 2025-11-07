@@ -1,5 +1,4 @@
-const { transform } = require('typescript');
-
+import tailwindcssAnimate from 'tailwindcss-animate';
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ['class'],
@@ -39,6 +38,7 @@ module.exports = {
         'gray-main-03': '#F1F1F1',
         'gray-sub-04': '#F8F7F4',
         'gray-note-05': '#F6F6F6',
+        'note-gray-06': '#E8E8E8',
         'red-warning-01': '#EB6052',
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
@@ -143,8 +143,8 @@ module.exports = {
     },
   },
   plugins: [
-    require('tailwindcss-animate'),
-    function ({ addUtilities }) {
+    tailwindcssAnimate,
+    ({ addUtilities }) => {
       const newUtilities = {
         '.text-stroke-white': {
           '-webkit-text-stroke-width': '1px',

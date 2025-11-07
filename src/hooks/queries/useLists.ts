@@ -1,3 +1,4 @@
+import ApiPath from '@/constants/apiPath';
 import { List } from '@/constants/list';
 import QueryKeys from '@/constants/queryKeys';
 import axios from '@/lib/axios';
@@ -27,7 +28,7 @@ export const useListPreviews = ({
         throw new Error('userCode is required');
       }
       const response = await axios.get<IResponse<ListPreview[]>>(
-        `/${userCode}/lists`,
+        `/${userCode}${ApiPath.lists}`,
         {
           params: {
             offset,

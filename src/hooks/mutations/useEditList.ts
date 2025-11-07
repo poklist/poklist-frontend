@@ -7,6 +7,7 @@ import axios from '@/lib/axios';
 import { CreateListResponse, ListBody } from '@/types/List';
 import { IResponse } from '@/types/response';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
 
 interface UseEditListOptions {
   userCode: string; // to invalidate the useLists cache
@@ -23,6 +24,7 @@ export const useEditList = ({
   ideaOffset = Idea.DEFAULT_FIRST_BATCH_OFFSET,
   ideaLimit = Idea.DEFAULT_BATCH_SIZE,
 }: UseEditListOptions) => {
+  const [isLoading, setIsLoading] = useState(false);
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
@@ -49,6 +51,9 @@ export const useEditList = ({
       }
       return response.data.content;
     },
+    onMutate: () => {
+      setIsLoading(true);
+    },
     onSuccess: async (data) => {
       // Invalidate the list cache, trigger refetching
       await queryClient.invalidateQueries({
@@ -70,10 +75,13 @@ export const useEditList = ({
         variant: MessageType.ERROR,
       });
     },
+    onSettled: () => {
+      setIsLoading(false);
+    },
   });
 
   return {
-    isEditListLoading: mutation.isPending,
+    isEditListLoading: mutation.isPending || isLoading,
     editList: mutation.mutate,
     editListAsync: mutation.mutateAsync,
   };

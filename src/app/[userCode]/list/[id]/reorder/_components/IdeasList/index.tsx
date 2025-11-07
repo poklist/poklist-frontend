@@ -1,6 +1,7 @@
 import IconDrag from '@/components/ui/icons/DragIcon';
 import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
 import { IdeaPreview } from '@/types/Idea';
+import { Trans } from '@lingui/react/macro';
 import Image from 'next/image';
 import React from 'react';
 import VirtualList from 'react-virtual-sortable';
@@ -38,7 +39,14 @@ const IdeaListSection: React.FC<IdeaListProps> = ({
   const navigateTo = useStrictNavigateNext();
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex max-h-[calc(100dvh-57px)] flex-col">
+      <div className="mt-14 border-b border-note-gray-06 bg-gray-note-05 p-4 text-sm text-black-gray-03">
+        {!ideaList || ideaList.length === 0 ? (
+          <Trans>Your ideas live here. Create one!</Trans>
+        ) : (
+          <Trans>Drag the lines on the left to reorder.</Trans>
+        )}
+      </div>
       {ideaList && (
         <VirtualList
           dataKey="id"
@@ -50,7 +58,7 @@ const IdeaListSection: React.FC<IdeaListProps> = ({
           chosenClass="chosen"
           ghostClass="ghost"
           placeholderClass="placeholder"
-          className="mb-14 max-h-[calc(100dvh-57px)]"
+          className="mt-2 gap-2"
         >
           {(idea, _index, dataKey) => (
             <div

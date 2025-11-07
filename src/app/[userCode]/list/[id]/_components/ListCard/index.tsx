@@ -232,7 +232,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
     {
       type: DropdownItemType.ITEM,
       label: t`Reorder Idea`,
-      onClick: () => navigateTo.manageList(me.userCode, data.id.toString()),
+      onClick: () => navigateTo.reorderList(me.userCode, data.id.toString()),
       icon: <IconSort />,
     },
     { type: DropdownItemType.SEPARATOR },

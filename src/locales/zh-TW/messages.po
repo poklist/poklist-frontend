@@ -163,7 +163,6 @@ msgid "Likes"
 msgstr "喜歡"
 
 #: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
-#: src/app/[userCode]/list/[id]/manage/page.tsx
 msgid "Add an idea"
 msgstr "新增靈感"
 
@@ -186,29 +185,42 @@ msgid "Delete List and All Ideas"
 msgstr "刪除名單與所有靈感"
 
 #: src/app/[userCode]/list/[id]/manage/page.tsx
-msgid "Idea List"
-msgstr "靈感名單"
+#~ msgid "Idea List"
+#~ msgstr "靈感名單"
 
 #: src/app/[userCode]/list/[id]/manage/page.tsx
-msgid "Edit list cover"
-msgstr "編輯名單封面"
+#~ msgid "Edit list cover"
+#~ msgstr "編輯名單封面"
 
 #: src/app/[userCode]/list/[id]/manage/page.tsx
+#~ msgid "Tap an idea to edit. Drag the lines on the left to reorder."
+#~ msgstr "點擊靈感可編輯，拖曳左側三條線可排序。"
+
+#: src/app/[userCode]/list/[id]/manage/page.tsx
+#~ msgid "Save New Order"
+#~ msgstr "儲存新排序"
+
+#: src/app/[userCode]/list/[id]/reorder/_components/IdeasList/index.tsx
 msgid "Your ideas live here. Create one!"
 msgstr "新增的靈感會在這裡，丟個靈感進來吧！"
 
-#: src/app/[userCode]/list/[id]/manage/page.tsx
-msgid "Tap an idea to edit. Drag the lines on the left to reorder."
-msgstr "點擊靈感可編輯，拖曳左側三條線可排序。"
+#: src/app/[userCode]/list/[id]/reorder/_components/IdeasList/index.tsx
+msgid "Drag the lines on the left to reorder."
+msgstr "拖曳左側三條線可排序"
 
-#: src/app/[userCode]/list/[id]/manage/page.tsx
+#: src/app/[userCode]/list/[id]/reorder/page.tsx
+msgid "Reorder Ideas"
+msgstr "排序靈感"
+
+#: src/app/[userCode]/list/[id]/reorder/page.tsx
+#: src/app/[userCode]/list/_components/Header/index.tsx
+#: src/app/idea/_components/Form/index.tsx
+#: src/app/idea/list/page.tsx
 #: src/app/list/_components/Form/index.tsx
-msgid "Edit List"
-msgstr "編輯名單"
-
-#: src/app/[userCode]/list/[id]/manage/page.tsx
-msgid "Save New Order"
-msgstr "儲存新排序"
+#: src/app/list/_components/Form/index.tsx
+#: src/components/FakePage/EditFieldFakePage.tsx
+msgid "Done"
+msgstr "完成"
 
 #: src/app/_layout/_components/BottomNav.tsx
 #: src/constants/Home/index.en.ts
@@ -365,14 +377,6 @@ msgstr "封面圖片"
 
 #: src/app/idea/_components/Form/index.tsx
 #: src/app/idea/list/page.tsx
-#: src/app/list/_components/Form/index.tsx
-#: src/app/list/_components/Form/index.tsx
-#: src/components/FakePage/EditFieldFakePage.tsx
-msgid "Done"
-msgstr "完成"
-
-#: src/app/idea/_components/Form/index.tsx
-#: src/app/idea/list/page.tsx
 #: src/app/idea/list/page.tsx
 #: src/app/list/_components/Form/index.tsx
 #: src/app/list/_components/Form/index.tsx
@@ -496,6 +500,10 @@ msgstr "取消編輯"
 #: src/app/list/_components/Form/index.tsx
 msgid "Continue Editing"
 msgstr "繼續編輯"
+
+#: src/app/list/_components/Form/index.tsx
+msgid "Edit List"
+msgstr "編輯名單"
 
 #: src/app/list/_components/Form/index.tsx
 msgid "Describe what this title is about"

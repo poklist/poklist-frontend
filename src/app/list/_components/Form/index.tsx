@@ -3,11 +3,11 @@ import { DrawerComponent } from '@/components/Drawer';
 import { useDrawer } from '@/components/Drawer/useDrawer';
 import { EditFieldFakePageComponent } from '@/components/FakePage/EditFieldFakePage';
 import { useFakePage } from '@/components/FakePage/useFakePage';
+import EditModeHeader from '@/components/Header/EditModeHeader';
 import ImageUploader from '@/components/ImageUploader';
 import { IChoice, RadioComponent } from '@/components/Radio';
 import { Button, ButtonShape, ButtonVariant } from '@/components/ui/button';
 import IconExteriorLink from '@/components/ui/icons/ExteriorLinkIcon';
-import IconLeftArrowThin from '@/components/ui/icons/LeftArrowThinIcon';
 import IconTextarea from '@/components/ui/icons/TextareaIcon';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -92,14 +92,6 @@ const ListForm: React.FC<IListFormProps> = ({
 
   const { isIdle, reset } = useIdle({ timeout: 2000, watch: listForm.watch });
 
-  const isFormModified =
-    listForm.getValues('title') !== '' ||
-    listForm.getValues('title') !== defaultListInfo.title ||
-    listForm.getValues('description') !== defaultListInfo.description ||
-    listForm.getValues('externalLink') !== defaultListInfo.externalLink ||
-    listForm.getValues('coverImage') !== defaultListInfo.coverImage ||
-    listForm.getValues('categoryID') !== defaultListInfo.categoryID;
-
   const onOpenFakePage = () => {
     setFieldConfig({
       fieldName: t`Cover Image`,
@@ -154,6 +146,22 @@ const ListForm: React.FC<IListFormProps> = ({
     listForm.setValue('categoryID', Number(category));
   };
 
+  const onRestoreDraft = () => {
+    const listDraft = getLocalStorage(LocalStorageKey.LIST_DRAFT, FormSchema);
+    if (!listDraft) return;
+    listForm.setValue('title', listDraft.title || '');
+    listForm.setValue('description', listDraft.description || '');
+    listForm.setValue('coverImage', listDraft.coverImage || '');
+    listForm.setValue('externalLink', listDraft.externalLink || '');
+    listForm.setValue('categoryID', listDraft.categoryID || 0);
+    closeDraftDrawer();
+    setTimeout(() => {
+      titleTextarea.bind.onChange();
+      descriptionTextarea.bind.onChange();
+      listForm.setFocus('title');
+    }, 0);
+  };
+
   useEffect(() => {
     listForm.setFocus('title');
     setMounted(true);
@@ -181,6 +189,7 @@ const ListForm: React.FC<IListFormProps> = ({
     );
     listForm.reset(getLocalStorage(LocalStorageKey.LIST_DRAFT, FormSchema), {
       keepValues: true,
+      keepDirty: true,
     });
     reset();
   }, [isIdle, listForm.formState.isDirty, defaultListInfo.title]);
@@ -225,40 +234,25 @@ const ListForm: React.FC<IListFormProps> = ({
 
   return (
     <>
-      <div className="fixed top-0 z-10 flex h-14 w-full justify-between overflow-hidden border-b border-b-gray-note-05 bg-white px-4 py-2">
-        <div className="flex items-center gap-1 font-bold">
-          <div
-            onClick={() => onDismiss()}
-            aria-label="Previous"
-            className="flex h-10 w-10 items-center justify-center"
-          >
-            <IconLeftArrowThin width={7.5} height={15} color="black" />
-          </div>
-          {!mounted || defaultListInfo.title !== '' ? (
-            <Trans>Edit List</Trans>
-          ) : (
-            <Trans>Create Idea List</Trans>
-          )}
-        </div>
-        <Button
-          disabled={!isFormModified || listForm.watch('title') === ''}
-          onClick={() => {
-            if (defaultListInfo.title === '') {
-              openCategoryDrawer();
-            } else {
-              void listForm.handleSubmit(onSubmit, onSubmitFailed)();
-            }
-          }}
-          variant={ButtonVariant.BLACK}
-          shape={ButtonShape.ROUNDED_5PX}
-        >
-          {!mounted || defaultListInfo.title !== '' ? (
-            <Trans>Done</Trans>
-          ) : (
-            <Trans>Next</Trans>
-          )}
-        </Button>
-      </div>
+      <EditModeHeader
+        onClose={() => onDismiss()}
+        title={
+          !mounted || defaultListInfo.title !== ''
+            ? t`Edit List`
+            : t`Create Idea List`
+        }
+        disabled={!listForm.formState.isDirty || listForm.watch('title') === ''}
+        onSave={() => {
+          if (defaultListInfo.title === '') {
+            openCategoryDrawer();
+          } else {
+            void listForm.handleSubmit(onSubmit, onSubmitFailed)();
+          }
+        }}
+        saveButtonText={
+          !mounted || defaultListInfo.title !== '' ? t`Done` : t`Next`
+        }
+      />
       <TileBackground />
       <form
         onSubmit={() => {
@@ -475,17 +469,7 @@ const ListForm: React.FC<IListFormProps> = ({
         }
         endFooter={
           <Button
-            onClick={() => {
-              listForm.reset(
-                getLocalStorage(LocalStorageKey.LIST_DRAFT, FormSchema)
-              );
-              closeDraftDrawer();
-              setTimeout(() => {
-                titleTextarea.bind.onChange();
-                descriptionTextarea.bind.onChange();
-                listForm.setFocus('title');
-              }, 0);
-            }}
+            onClick={() => onRestoreDraft()}
             variant={ButtonVariant.BLACK}
             shape={ButtonShape.ROUNDED_5PX}
           >
