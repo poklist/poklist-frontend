@@ -121,7 +121,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
   });
 
   const onCoverImageChange = (base64: string | null) => {
-    ideaForm.setValue('coverImage', base64);
+    ideaForm.setValue('coverImage', base64, { shouldValidate: true });
   };
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {

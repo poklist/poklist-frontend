@@ -48,7 +48,7 @@ const ListSelectorFakePage: React.FC = () => {
           },
           onError: (error: Error) => {
             toast({
-              title: String(error),
+              title: error.message,
               variant: MessageType.ERROR,
             });
             setIsLoading(false);

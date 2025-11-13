@@ -46,7 +46,7 @@ const useEditIdea = () => {
     },
     onError: (error) => {
       toast({
-        title: String(error),
+        title: error.message,
         variant: MessageType.ERROR,
       });
     },

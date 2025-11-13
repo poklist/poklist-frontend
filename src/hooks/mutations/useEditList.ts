@@ -71,7 +71,7 @@ export const useEditList = ({
     },
     onError: (error) => {
       toast({
-        title: String(error),
+        title: error.message,
         variant: MessageType.ERROR,
       });
     },

@@ -50,7 +50,7 @@ const useDeleteIdea = ({ listID }: UseDeleteIdeaOptions) => {
     },
     onError: (error) => {
       toast({
-        title: String(error),
+        title: error.message,
         variant: MessageType.ERROR,
       });
     },
