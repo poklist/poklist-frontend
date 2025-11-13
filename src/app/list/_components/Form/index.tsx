@@ -37,7 +37,7 @@ import { i18n } from '@lingui/core';
 import { t } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
 import React, { useEffect, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 const FormSchema = z.object({
@@ -127,9 +127,14 @@ const ListForm: React.FC<IListFormProps> = ({
     }
   };
 
-  const onSubmit = (data: z.infer<typeof FormSchema>) => {
+  const onSubmit: SubmitHandler<z.infer<typeof FormSchema>> = (data) => {
     closeCategoryDrawer();
-    completedCallback(data);
+    try {
+      completedCallback(data);
+    } catch (error) {
+      console.error(`Failed to submit: ${String(error)}`);
+      listForm.reset(listForm.getValues(), { keepDirty: true });
+    }
   };
 
   const onSubmitFailed = useFormErrorHandler<z.infer<typeof FormSchema>>({
@@ -137,13 +142,17 @@ const ListForm: React.FC<IListFormProps> = ({
   });
 
   const onCoverImageChange = (base64: string | null) => {
-    listForm.setValue('coverImage', base64);
+    if (defaultListInfo.title === '') {
+      listForm.setValue('coverImage', base64);
+    } else {
+      listForm.setValue('coverImage', base64, { shouldDirty: true });
+    }
   };
 
   const [radioChoice, setRadioChoice] = useState<IChoice[]>([]);
 
   const onCategoryChange = (category: string) => {
-    listForm.setValue('categoryID', Number(category));
+    listForm.setValue('categoryID', Number(category), { shouldDirty: true });
   };
 
   const onRestoreDraft = () => {

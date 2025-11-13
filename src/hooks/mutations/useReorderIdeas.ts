@@ -100,7 +100,7 @@ export const useReorderIdeas = ({
     },
     onError: (error) => {
       toast({
-        title: String(error),
+        title: error.message,
         variant: MessageType.ERROR,
       });
       onError?.(error);
