@@ -3,7 +3,7 @@ import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
 import { toast } from '@/hooks/useToast';
 import { checkAndMigrateStorage } from '@/lib/storage';
 import useAuthStore from '@/stores/useAuthStore';
-import { t } from '@lingui/core/macro';
+import { t } from '@lingui/macro';
 import { useEffect } from 'react';
 
 const useCheckStorage = () => {

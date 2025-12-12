@@ -1,7 +1,9 @@
+'use client';
+
 import { useListPreviews } from '@/hooks/queries/useLists';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { useUserRouteContext } from '@/hooks/useUserRouteContext';
-import { Trans } from '@lingui/react/macro';
+import { Trans } from '@lingui/macro';
 import Image from 'next/image';
 import { ListSectionSkeleton } from './ListSectionSkeleton';
 

@@ -7,7 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { EditFieldVariant } from '@/enums/EditField/index.enum';
 import useAutosizeTextArea from '@/hooks/useAutosizeTextArea';
 import { IEditFieldConfig } from '@/types/EditField/index.d';
-import { t } from '@lingui/core/macro';
+import { t } from '@lingui/macro';
 import { useEffect, useRef, useState } from 'react';
 
 export const EditFieldFakePageComponent: React.FC<IEditFieldConfig> = ({

@@ -17,8 +17,7 @@ import useUserStore from '@/stores/useUserStore';
 import { IResponse } from '@/types/response';
 import { User } from '@/types/User';
 import { i18n } from '@lingui/core';
-import { t } from '@lingui/core/macro';
-import { Trans } from '@lingui/react/macro';
+import { t, Trans } from '@lingui/macro';
 import {
   CredentialResponse,
   GoogleLogin,

@@ -733,7 +733,6 @@ msgstr "選擇圖片"
 msgid "500x500px, JPG or PNG, max 4MB"
 msgstr "500x500像素，限 JPG 或 PNG，最大4MB"
 
-#. placeholder {0}: choice.label || choice.value
 #: src/components/Radio/index.tsx
 msgid "<0>{0}</0>"
 msgstr "<0>{0}</0>"
@@ -1107,6 +1106,10 @@ msgid "The app is outdated, please login again"
 msgstr "網頁更新，請重新登入"
 
 #: src/lib/validator.ts
+#~ msgid "Error - Link must start with https:// "
+#~ msgstr "網址有誤 - 需以 https:// 開頭"
+
+#: src/lib/validator.ts
 msgid "Hey, the title can't be left empty!"
 msgstr "欸，標題不能留空喔！"
 
@@ -1131,5 +1134,5 @@ msgid "Please keep it under {descMaxLength} characters."
 msgstr "字數有點爆表，請減到 {descMaxLength} 個字元以內。"
 
 #: src/lib/validator.ts
-msgid "Error - Link must start with https:// "
+msgid "Error - Link must start with https://"
 msgstr "網址有誤 - 需以 https:// 開頭"

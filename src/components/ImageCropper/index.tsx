@@ -3,8 +3,7 @@ import { Input } from '@/components/ui/input';
 import { Slider } from '@/components/ui/slider';
 import { throttle } from '@/lib/functional';
 import { cn } from '@/lib/utils';
-import { t } from '@lingui/core/macro';
-import { Trans } from '@lingui/react/macro';
+import { t, Trans } from '@lingui/macro';
 import { useCallback, useState } from 'react';
 import Cropper, { Area, Point } from 'react-easy-crop';
 

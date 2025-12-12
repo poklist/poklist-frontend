@@ -3,7 +3,7 @@ import { useFollowAction } from '@/hooks/mutations/useFollowAction';
 import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
 import useUserStore from '@/stores/useUserStore';
 import { SocialLink } from '@/types/Relation';
-import { Trans } from '@lingui/react/macro';
+import { Trans } from '@lingui/macro';
 import Image from 'next/image';
 import { useState } from 'react';
 

@@ -7,7 +7,7 @@ import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
 import useAuthStore from '@/stores/useAuthStore';
 import useFollowingStore from '@/stores/useFollowingStore';
 import { User, UserPreview } from '@/types/User';
-import { Trans } from '@lingui/react/macro';
+import { Trans } from '@lingui/macro';
 import React, { useEffect } from 'react';
 import { Button, ButtonShape, ButtonSize, ButtonVariant } from '../ui/button';
 

@@ -18,8 +18,8 @@ import { validateUserCode } from '@/lib/validator';
 import useEditProfileStore from '@/stores/useEditProfileStore';
 import useUserStore from '@/stores/useUserStore';
 import { IEditFieldConfig } from '@/types/EditField/index.d';
-import { t } from '@lingui/core/macro';
-import { Trans } from '@lingui/react/macro';
+import { t, Trans } from '@lingui/macro';
+
 import { useEffect, useState } from 'react';
 
 const EditUserPage: React.FC = () => {

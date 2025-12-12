@@ -2,7 +2,7 @@
 
 import mascotPhone from '@/assets/images/mascot/mascot-phone.svg';
 import Header from '@/components/Header';
-import { Trans } from '@lingui/react/macro';
+import { Trans } from '@lingui/macro';
 
 export default function GoToMobilePage() {
   return (

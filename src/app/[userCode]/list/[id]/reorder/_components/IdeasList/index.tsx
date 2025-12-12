@@ -1,6 +1,6 @@
 import IconDrag from '@/components/ui/icons/DragIcon';
 import { IdeaPreview } from '@/types/Idea';
-import { Trans } from '@lingui/react/macro';
+import { Trans } from '@lingui/macro';
 import Image from 'next/image';
 import React from 'react';
 import VirtualList from 'react-virtual-sortable';

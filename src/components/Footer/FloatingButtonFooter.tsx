@@ -1,3 +1,4 @@
+import { useDrawer } from '@/components/Drawer/useDrawer';
 import {
   Button,
   ButtonShape,
@@ -7,14 +8,12 @@ import {
 import IconAdd from '@/components/ui/icons/AddIcon';
 import IconLike from '@/components/ui/icons/LikeIcon';
 import IconLink from '@/components/ui/icons/LinkIcon';
+import { DrawerIds } from '@/constants/Drawer';
 import { MessageType } from '@/enums/Style/index.enum';
 import { useAuthWrapper } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/useToast';
 import { cn, copyHref } from '@/lib/utils';
-import { t } from '@lingui/core/macro';
-import { Trans } from '@lingui/react/macro';
-import { useDrawer } from '@/components/Drawer/useDrawer';
-import { DrawerIds } from '@/constants/Drawer';
+import { t, Trans } from '@lingui/macro';
 
 interface IFooterProps {
   hasLikeButton?: boolean;

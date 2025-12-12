@@ -8,10 +8,10 @@ import { ExternalLinks } from '@/constants/externalLink';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { openWindow } from '@/lib/openLink';
 import useAuthStore from '@/stores/useAuthStore';
-import useUserStore from '@/stores/useUserStore';
 import useCommonStore from '@/stores/useCommonStore';
+import useUserStore from '@/stores/useUserStore';
 import '@/types/global';
-import { Trans } from '@lingui/react/macro';
+import { Trans } from '@lingui/macro';
 import { useEffect } from 'react';
 
 export const HeaderSection = () => {

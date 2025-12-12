@@ -2,7 +2,7 @@ import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { RadioType } from '@/enums/Style/index.enum';
 import { cn } from '@/lib/utils';
-import { Trans } from '@lingui/react/macro';
+import { Trans } from '@lingui/macro';
 import React, { Fragment } from 'react';
 export interface IChoice {
   value: string;

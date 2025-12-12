@@ -30,8 +30,7 @@ import useAuthStore from '@/stores/useAuthStore';
 import useFollowingStore from '@/stores/useFollowingStore';
 import useUserStore from '@/stores/useUserStore';
 import { User } from '@/types/User';
-import { t } from '@lingui/core/macro';
-import { Trans } from '@lingui/react/macro';
+import { t, Trans } from '@lingui/macro';
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
 import FollowingListDrawer from '@/app/user/_components/HeroSection/FollowingListDrawer';
