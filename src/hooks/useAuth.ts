@@ -12,8 +12,19 @@ export const useAuthCheck = () => {
   const { setIsLoginDrawerOpen } = useCommonStore();
   const navigateTo = useStrictNavigateNext();
 
-  const checkAuthRef = useRef<() => boolean>();
-  const checkAuthAndRedirectRef = useRef<() => boolean>();
+  const checkAuthRef = useRef<() => boolean>(() => {
+    if (!isLoggedIn) {
+      setIsLoginDrawerOpen(true);
+      return false;
+    }
+    return true;
+  });
+  const checkAuthAndRedirectRef = useRef<() => boolean>(() => {
+    if (!isLoggedIn) {
+      navigateTo.home();
+    }
+    return true;
+  });
 
   useEffect(() => {
     checkAuthRef.current = () => {

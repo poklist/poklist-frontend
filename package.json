@@ -57,6 +57,7 @@
     "@lingui/swc-plugin": "^5.5.2",
     "@next/eslint-plugin-next": "15.3.8",
     "@types/node": "^22.5.0",
+    "@types/prop-types": "^15.7.15",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "autoprefixer": "^10.4.20",
