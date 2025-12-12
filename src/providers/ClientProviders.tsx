@@ -54,12 +54,12 @@ export const ClientProviders = ({ children }: ClientProvidersProps) => {
             <LoginDrawer />
             <ErrorDrawer />
             <CreateListOrIdeaDrawer />
-            <Toaster />
 
             <ReactQueryDevtools initialIsOpen={false} />
           </FakePageProvider>
         </DrawerProvider>
       </Theme>
+      <Toaster />
     </QueryClientProvider>
   );
 };

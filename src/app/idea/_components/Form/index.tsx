@@ -131,7 +131,9 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
   const onRestoreDraft = async () => {
     const ideaDraft = getLocalStorage(LocalStorageKey.IDEA_DRAFT, FormSchema);
     if (!ideaDraft) return;
-    ideaForm.setValue('title', ideaDraft.title || '');
+    ideaForm.setValue('title', ideaDraft.title || '', {
+      shouldDirty: ideaDraft.title !== '',
+    });
     ideaForm.setValue('description', ideaDraft.description || '');
     ideaForm.setValue('coverImage', ideaDraft.coverImage || '');
     ideaForm.setValue('externalLink', ideaDraft.externalLink || '');
@@ -156,10 +158,11 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
       ideaForm.getValues(),
       FormSchema
     );
-    ideaForm.reset(getLocalStorage(LocalStorageKey.IDEA_DRAFT, FormSchema), {
-      keepValues: true,
-      keepDirty: true,
-    });
+    // // 這裡有時候會引致 onSubmit 的 Button 變回 disabled 和 isDirty 狀態被重置有關
+    // ideaForm.reset(getLocalStorage(LocalStorageKey.IDEA_DRAFT, FormSchema), {
+    //   keepValues: true,
+    //   keepDirty: true,
+    // });
     reset();
   }, [isIdle, ideaForm.formState.isDirty, previousIdeaInfo.title]);
 
@@ -187,7 +190,6 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
     const draft = getLocalStorage(LocalStorageKey.IDEA_DRAFT, FormSchema);
     if (draft) openDraftDrawer();
   }, [mounted, previousIdeaInfo.title]);
-
   return (
     <>
       <EditModeHeader

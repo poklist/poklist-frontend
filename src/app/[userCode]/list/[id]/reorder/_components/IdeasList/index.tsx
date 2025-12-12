@@ -1,5 +1,4 @@
 import IconDrag from '@/components/ui/icons/DragIcon';
-import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
 import { IdeaPreview } from '@/types/Idea';
 import { Trans } from '@lingui/react/macro';
 import Image from 'next/image';
@@ -36,8 +35,6 @@ const IdeaListSection: React.FC<IdeaListProps> = ({
     reorderCallback(event);
   };
 
-  const navigateTo = useStrictNavigateNext();
-
   return (
     <div className="flex max-h-[calc(100dvh-57px)] flex-col">
       <div className="mt-14 border-b border-note-gray-06 bg-gray-note-05 p-4 text-sm text-black-gray-03">
@@ -63,7 +60,6 @@ const IdeaListSection: React.FC<IdeaListProps> = ({
           {(idea, _index, dataKey) => (
             <div
               key={dataKey}
-              onClick={() => navigateTo.editIdea(idea.id.toString())}
               className="mb-2 border border-l-gray-main-03 bg-gray-note-05 px-4 py-2 last:mb-0"
             >
               <div className="flex items-center justify-between gap-4">
