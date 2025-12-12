@@ -1,7 +1,7 @@
-import useAuthStore from '@/stores/useAuthStore';
 import { Button, ButtonSize, ButtonVariant } from '@/components/ui/button';
-import { Trans } from '@lingui/react/macro';
 import { ExternalLinks } from '@/constants/externalLink';
+import useAuthStore from '@/stores/useAuthStore';
+import { Trans } from '@lingui/macro';
 
 const IntroSection: React.FC = () => {
   const { isLoggedIn } = useAuthStore();

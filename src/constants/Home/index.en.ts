@@ -1,4 +1,4 @@
-import { msg } from '@lingui/core/macro';
+import { msg } from '@lingui/macro';
 import { ExternalLinks } from '../externalLink';
 import { IMAGES } from './images';
 

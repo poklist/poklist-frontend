@@ -13,7 +13,7 @@ import { useUserRouteContext } from '@/hooks/useUserRouteContext';
 import useCommonStore from '@/stores/useCommonStore';
 import useUserStore from '@/stores/useUserStore';
 import { IdeaPreview } from '@/types/Idea';
-import { t } from '@lingui/core/macro';
+import { t } from '@lingui/macro';
 import { useParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 

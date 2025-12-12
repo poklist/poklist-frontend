@@ -1,7 +1,7 @@
+import { Footer } from '@/app/official/_components/Footer';
 import { FOOTER_SECTION, SOCIAL_MEDIA } from '@/constants/Home/index.en';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
-import { Footer } from '@/app/official/_components/Footer';
-import { Trans } from '@lingui/react/macro';
+import { Trans } from '@lingui/macro';
 import { ChevronRight } from 'lucide-react';
 
 const FooterSection = () => {

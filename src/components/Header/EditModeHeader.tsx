@@ -1,6 +1,6 @@
 import { Button, ButtonShape, ButtonVariant } from '@/components/ui/button';
 import IconLeftArrowThin from '@/components/ui/icons/LeftArrowThinIcon';
-import { t } from '@lingui/core/macro';
+import { t } from '@lingui/macro';
 interface EditModeHeaderProps {
   onClose: () => void;
   title: string;

@@ -733,7 +733,6 @@ msgstr "Choose your image"
 msgid "500x500px, JPG or PNG, max 4MB"
 msgstr "500x500px, JPG or PNG, max 4MB"
 
-#. placeholder {0}: choice.label || choice.value
 #: src/components/Radio/index.tsx
 msgid "<0>{0}</0>"
 msgstr ""
@@ -1107,6 +1106,10 @@ msgid "The app is outdated, please login again"
 msgstr "The app is outdated, please login again"
 
 #: src/lib/validator.ts
+#~ msgid "Error - Link must start with https:// "
+#~ msgstr "Error - Link must start with https:// "
+
+#: src/lib/validator.ts
 msgid "Hey, the title can't be left empty!"
 msgstr "Hey, the title can't be left empty!"
 
@@ -1131,5 +1134,5 @@ msgid "Please keep it under {descMaxLength} characters."
 msgstr "Please keep it under {descMaxLength} characters."
 
 #: src/lib/validator.ts
-msgid "Error - Link must start with https:// "
-msgstr "Error - Link must start with https:// "
+msgid "Error - Link must start with https://"
+msgstr "Error - Link must start with https://"

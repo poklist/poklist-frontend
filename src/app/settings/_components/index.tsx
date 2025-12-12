@@ -3,7 +3,7 @@ import BackToUserHeader from '@/components/Header/BackToUserHeader';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import useAuthStore from '@/stores/useAuthStore';
 import useUserStore from '@/stores/useUserStore';
-import { t } from '@lingui/core/macro';
+import { t } from '@lingui/macro';
 import BlocksSection from './BlocksSection';
 import IntroSection from './IntroSection';
 

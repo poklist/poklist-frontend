@@ -26,9 +26,8 @@ import { copyHref, urlPreview } from '@/lib/utils';
 import useAuthStore from '@/stores/useAuthStore';
 import useUserStore from '@/stores/useUserStore';
 import { IdeaResponse } from '@/types/Idea';
-import { t } from '@lingui/core/macro';
+import { t, Trans } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { Trans } from '@lingui/react/macro';
 import { TrashIcon } from 'lucide-react';
 import Image from 'next/image';
 

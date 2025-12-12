@@ -3,7 +3,7 @@
 import mascotError from '@/assets/images/mascot/mascot-error.svg';
 import Header from '@/components/Header';
 import { LanguageProvider } from '@/components/Language';
-import { Trans } from '@lingui/react/macro';
+import { Trans } from '@lingui/macro';
 import { TileBackground } from '../user/_components/TileBackground';
 
 export default function ErrorPage() {

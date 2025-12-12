@@ -3,7 +3,7 @@ import TileList from '@/app/discovery/_components/TileList';
 import TileSectionSkeleton from '@/app/discovery/_components/TileSection/TileSectionSkeleton';
 import { useOfficialCollections } from '@/hooks/queries/useOfficialCollections';
 import { OfficialCollection } from '@/types/Discovery';
-import { t } from '@lingui/core/macro';
+import { t } from '@lingui/macro';
 import { useEffect, useRef, useState } from 'react';
 
 const TileSection = () => {

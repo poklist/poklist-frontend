@@ -19,7 +19,7 @@ import { toast } from '@/hooks/useToast';
 import { cn, removeLocalStorage } from '@/lib/utils';
 import useCommonStore from '@/stores/useCommonStore';
 import useUserStore from '@/stores/useUserStore';
-import { Trans } from '@lingui/react/macro';
+import { Trans } from '@lingui/macro';
 import { useEffect, useState } from 'react';
 
 const ListSelectorFakePage: React.FC = () => {

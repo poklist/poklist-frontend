@@ -3,7 +3,7 @@ import { EntityNameI18n } from '@/constants/i18n';
 import { MessageType } from '@/enums/Style/index.enum';
 import { ErrorMessage, FormErrorDetail } from '@/types/common';
 import { i18n } from '@lingui/core';
-import { t } from '@lingui/core/macro';
+import { t } from '@lingui/macro';
 
 export const validateUserCode = (value: string): boolean => {
   const blacklist = ['admin', 'poklist', 'list', 'login']; // FUTURE: get from backend

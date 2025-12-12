@@ -6,7 +6,7 @@ import useAuthStore from '@/stores/useAuthStore';
 import useUserStore from '@/stores/useUserStore';
 import { IResponse } from '@/types/response';
 import { UpdateUserResponse, User } from '@/types/User';
-import { t } from '@lingui/core/macro';
+import { t } from '@lingui/macro';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { useState } from 'react';

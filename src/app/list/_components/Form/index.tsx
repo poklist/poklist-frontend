@@ -34,8 +34,7 @@ import { IEditFieldConfig } from '@/types/EditField/index.d';
 import { ListBody } from '@/types/List';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { i18n } from '@lingui/core';
-import { t } from '@lingui/core/macro';
-import { Trans } from '@lingui/react/macro';
+import { t, Trans } from '@lingui/macro';
 import React, { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -43,7 +42,17 @@ import { z } from 'zod';
 const FormSchema = z.object({
   title: z.string().min(1).max(TITLE_MAX_LENGTH),
   description: z.string().max(DESC_MAX_LENGTH).optional(),
-  externalLink: z.string().url().or(z.literal('')),
+  externalLink: z
+    .string()
+    .trim()
+    .transform((link) => {
+      if (link === '') return link;
+      if (!link.startsWith('http://') && !link.startsWith('https://')) {
+        return `https://${link}`;
+      }
+      return link;
+    })
+    .pipe(z.string().url().or(z.literal(''))),
   coverImage: z.string().or(z.literal('')).nullable().optional(), // FUTURE: base64 check
   categoryID: z.number().nonnegative(),
 });
@@ -158,7 +167,9 @@ const ListForm: React.FC<IListFormProps> = ({
   const onRestoreDraft = () => {
     const listDraft = getLocalStorage(LocalStorageKey.LIST_DRAFT, FormSchema);
     if (!listDraft) return;
-    listForm.setValue('title', listDraft.title || '');
+    listForm.setValue('title', listDraft.title || '', {
+      shouldDirty: listDraft.title !== '',
+    });
     listForm.setValue('description', listDraft.description || '');
     listForm.setValue('coverImage', listDraft.coverImage || '');
     listForm.setValue('externalLink', listDraft.externalLink || '');
@@ -196,10 +207,11 @@ const ListForm: React.FC<IListFormProps> = ({
       listForm.getValues(),
       FormSchema
     );
-    listForm.reset(getLocalStorage(LocalStorageKey.LIST_DRAFT, FormSchema), {
-      keepValues: true,
-      keepDirty: true,
-    });
+    // // 這裡有時候會引致 onSubmit 的 Button 變回 disabled 和 isDirty 狀態被重置有關
+    // listForm.reset(getLocalStorage(LocalStorageKey.LIST_DRAFT, FormSchema), {
+    //   keepValues: true,
+    //   keepDirty: true,
+    // });
     reset();
   }, [isIdle, listForm.formState.isDirty, defaultListInfo.title]);
 
@@ -255,7 +267,9 @@ const ListForm: React.FC<IListFormProps> = ({
           if (defaultListInfo.title === '') {
             openCategoryDrawer();
           } else {
-            void listForm.handleSubmit(onSubmit, onSubmitFailed)();
+            void listForm.handleSubmit(onSubmit, (errors) => {
+              onSubmitFailed(errors);
+            })();
           }
         }}
         saveButtonText={
@@ -401,8 +415,7 @@ const ListForm: React.FC<IListFormProps> = ({
           defaultListInfo.title === '' ? (
             <Button
               disabled={
-                listForm.formState.isSubmitting ||
-                listForm.formState.isSubmitted
+                !listForm.formState.isDirty || listForm.watch('title') === ''
               }
               onClick={() =>
                 void listForm.handleSubmit(onSubmit, onSubmitFailed)()

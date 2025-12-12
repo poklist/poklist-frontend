@@ -1,7 +1,7 @@
 import { MessageType } from '@/enums/Style/index.enum';
 import { toast } from '@/hooks/useToast';
 import useCommonStore from '@/stores/useCommonStore';
-import { t } from '@lingui/core/macro';
+import { t } from '@lingui/macro';
 import { useCallback } from 'react';
 
 /**

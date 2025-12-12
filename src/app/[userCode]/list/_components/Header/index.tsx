@@ -1,7 +1,7 @@
 import { Button, ButtonShape, ButtonVariant } from '@/components/ui/button';
 import IconLeftArrowThin from '@/components/ui/icons/LeftArrowThinIcon';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
-import { Trans } from '@lingui/react/macro';
+import { Trans } from '@lingui/macro';
 import React from 'react';
 
 interface IHeaderProps {

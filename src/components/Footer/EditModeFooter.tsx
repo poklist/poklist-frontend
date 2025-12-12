@@ -1,7 +1,7 @@
 import IconClose from '@/components/ui/icons/CloseIcon';
 
 import { Button, ButtonShape, ButtonVariant } from '@/components/ui/button';
-import { t } from '@lingui/core/macro';
+import { t } from '@lingui/macro';
 
 interface IEditModeFooterProps {
   onClose: () => void;

@@ -1,7 +1,7 @@
 import phoneMobile from '@/assets/images/device-phone-mobile.png';
 import { cn } from '@/lib/utils';
 import useLayoutStore from '@/stores/useLayoutStore';
-import { Trans } from '@lingui/react/macro';
+import { Trans } from '@lingui/macro';
 
 // 提示文字組件
 const PromptText = () => {
