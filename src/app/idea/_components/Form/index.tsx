@@ -24,6 +24,7 @@ import {
   setLocalStorage,
 } from '@/lib/utils';
 import { resolveIdeaFormError } from '@/lib/validator';
+import { IdeaFormSchema } from '@/types/common';
 import { IEditFieldConfig } from '@/types/EditField/index.d';
 import { IdeaBody, IdeaResponse } from '@/types/Idea';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -31,13 +32,6 @@ import { t, Trans } from '@lingui/macro';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
-
-const FormSchema = z.object({
-  title: z.string().min(1).max(TITLE_MAX_LENGTH),
-  description: z.string().max(DESC_MAX_LENGTH).optional(),
-  externalLink: z.string().url().optional().or(z.literal('')),
-  coverImage: z.string().or(z.literal('')).nullable().optional(), // FUTURE: base64 check
-});
 
 interface IIdeaFormProps {
   previousIdeaInfo?: IdeaResponse;
@@ -65,8 +59,8 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
   const [mounted, setMounted] = useState(false);
 
   // TODO load from localStorage in v0.3.5
-  const ideaForm = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
+  const ideaForm = useForm<z.infer<typeof IdeaFormSchema>>({
+    resolver: zodResolver(IdeaFormSchema),
     defaultValues: {
       title: previousIdeaInfo.title,
       description: previousIdeaInfo.description,
@@ -115,7 +109,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
     }
   };
 
-  const onSubmitFailed = useFormErrorHandler<z.infer<typeof FormSchema>>({
+  const onSubmitFailed = useFormErrorHandler<z.infer<typeof IdeaFormSchema>>({
     resolver: resolveIdeaFormError,
   });
 
@@ -123,12 +117,15 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
     ideaForm.setValue('coverImage', base64, { shouldValidate: true });
   };
 
-  const onSubmit = (data: z.infer<typeof FormSchema>) => {
+  const onSubmit = (data: z.infer<typeof IdeaFormSchema>) => {
     completedCallback(data);
   };
 
   const onRestoreDraft = async () => {
-    const ideaDraft = getLocalStorage(LocalStorageKey.IDEA_DRAFT, FormSchema);
+    const ideaDraft = getLocalStorage(
+      LocalStorageKey.IDEA_DRAFT,
+      IdeaFormSchema
+    );
     if (!ideaDraft) return;
     ideaForm.setValue('title', ideaDraft.title || '', {
       shouldDirty: ideaDraft.title !== '',
@@ -155,10 +152,10 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
     setLocalStorage(
       LocalStorageKey.IDEA_DRAFT,
       ideaForm.getValues(),
-      FormSchema
+      IdeaFormSchema
     );
     // // 這裡有時候會引致 onSubmit 的 Button 變回 disabled 和 isDirty 狀態被重置有關
-    // ideaForm.reset(getLocalStorage(LocalStorageKey.IDEA_DRAFT, FormSchema), {
+    // ideaForm.reset(getLocalStorage(LocalStorageKey.IDEA_DRAFT, IdeaFormSchema), {
     //   keepValues: true,
     //   keepDirty: true,
     // });
@@ -186,7 +183,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
     if (!mounted) return;
     if (previousIdeaInfo.title !== '') return;
 
-    const draft = getLocalStorage(LocalStorageKey.IDEA_DRAFT, FormSchema);
+    const draft = getLocalStorage(LocalStorageKey.IDEA_DRAFT, IdeaFormSchema);
     if (draft) openDraftDrawer();
   }, [mounted, previousIdeaInfo.title]);
   return (

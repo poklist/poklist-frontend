@@ -149,7 +149,22 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
     ) {
       return;
     }
-    setDrawerContent(<p>{data.description}</p>);
+    setDrawerContent(
+      <div className="mx-6 mb-14 mt-6">
+        <>{data.description}</>
+        {data.externalLink !== '' && (
+          <div className="mt-4 flex flex-nowrap items-center gap-2">
+            <LinkIconWrapper variant={SocialLinkType.CUSTOMIZED} />
+            <p
+              ref={externalLinkRef}
+              className="line-clamp-1 min-w-0 flex-1 truncate"
+            >
+              {urlPreview(data.externalLink)}
+            </p>
+          </div>
+        )}
+      </div>
+    );
     openDrawer();
   };
 

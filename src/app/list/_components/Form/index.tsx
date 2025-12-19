@@ -30,6 +30,7 @@ import {
 } from '@/lib/utils';
 import { resolveListFormError } from '@/lib/validator';
 import useCommonStore from '@/stores/useCommonStore';
+import { ListFormSchema } from '@/types/common';
 import { IEditFieldConfig } from '@/types/EditField/index.d';
 import { ListBody } from '@/types/List';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -38,24 +39,6 @@ import { t, Trans } from '@lingui/macro';
 import React, { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
-
-const FormSchema = z.object({
-  title: z.string().min(1).max(TITLE_MAX_LENGTH),
-  description: z.string().max(DESC_MAX_LENGTH).optional(),
-  externalLink: z
-    .string()
-    .trim()
-    .transform((link) => {
-      if (link === '') return link;
-      if (!link.startsWith('http://') && !link.startsWith('https://')) {
-        return `https://${link}`;
-      }
-      return link;
-    })
-    .pipe(z.string().url().or(z.literal(''))),
-  coverImage: z.string().or(z.literal('')).nullable().optional(), // FUTURE: base64 check
-  categoryID: z.number().nonnegative(),
-});
 
 interface IListFormProps {
   defaultListInfo?: ListBody;
@@ -88,8 +71,8 @@ const ListForm: React.FC<IListFormProps> = ({
   const [mounted, setMounted] = useState(false);
 
   // TODO load from localStorage in v0.3.5
-  const listForm = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
+  const listForm = useForm<z.infer<typeof ListFormSchema>>({
+    resolver: zodResolver(ListFormSchema),
     defaultValues: {
       title: defaultListInfo.title,
       description: defaultListInfo.description,
@@ -136,7 +119,7 @@ const ListForm: React.FC<IListFormProps> = ({
     }
   };
 
-  const onSubmit: SubmitHandler<z.infer<typeof FormSchema>> = (data) => {
+  const onSubmit: SubmitHandler<z.infer<typeof ListFormSchema>> = (data) => {
     closeCategoryDrawer();
     try {
       completedCallback(data);
@@ -146,7 +129,7 @@ const ListForm: React.FC<IListFormProps> = ({
     }
   };
 
-  const onSubmitFailed = useFormErrorHandler<z.infer<typeof FormSchema>>({
+  const onSubmitFailed = useFormErrorHandler<z.infer<typeof ListFormSchema>>({
     resolver: resolveListFormError,
   });
 
@@ -165,7 +148,10 @@ const ListForm: React.FC<IListFormProps> = ({
   };
 
   const onRestoreDraft = () => {
-    const listDraft = getLocalStorage(LocalStorageKey.LIST_DRAFT, FormSchema);
+    const listDraft = getLocalStorage(
+      LocalStorageKey.LIST_DRAFT,
+      ListFormSchema
+    );
     if (!listDraft) return;
     listForm.setValue('title', listDraft.title || '', {
       shouldDirty: listDraft.title !== '',
@@ -191,7 +177,7 @@ const ListForm: React.FC<IListFormProps> = ({
     if (!mounted) return;
     if (defaultListInfo.title !== '') return;
 
-    const draft = getLocalStorage(LocalStorageKey.LIST_DRAFT, FormSchema);
+    const draft = getLocalStorage(LocalStorageKey.LIST_DRAFT, ListFormSchema);
     if (draft) openDraftDrawer();
   }, [mounted, defaultListInfo.title]);
 
@@ -205,10 +191,10 @@ const ListForm: React.FC<IListFormProps> = ({
     setLocalStorage(
       LocalStorageKey.LIST_DRAFT,
       listForm.getValues(),
-      FormSchema
+      ListFormSchema
     );
     // // 這裡有時候會引致 onSubmit 的 Button 變回 disabled 和 isDirty 狀態被重置有關
-    // listForm.reset(getLocalStorage(LocalStorageKey.LIST_DRAFT, FormSchema), {
+    // listForm.reset(getLocalStorage(LocalStorageKey.LIST_DRAFT, ListFormSchema), {
     //   keepValues: true,
     //   keepDirty: true,
     // });
