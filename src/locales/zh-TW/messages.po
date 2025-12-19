@@ -362,6 +362,7 @@ msgid "Updated weekly"
 msgstr "每週精選更新"
 
 #: src/app/error/page.tsx
+#: src/app/not-found.tsx
 msgid "Oops something is wrong!"
 msgstr "哎呀！網頁又在耍脾氣啦！"
 

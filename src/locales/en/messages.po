@@ -362,6 +362,7 @@ msgid "Updated weekly"
 msgstr "Updated weekly"
 
 #: src/app/error/page.tsx
+#: src/app/not-found.tsx
 msgid "Oops something is wrong!"
 msgstr "Oops something is wrong!"
 

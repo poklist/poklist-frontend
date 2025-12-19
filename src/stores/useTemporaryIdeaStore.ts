@@ -1,12 +1,11 @@
-import { DESC_MAX_LENGTH, TITLE_MAX_LENGTH } from '@/constants/form';
 import { LocalStorageKey } from '@/enums/index.enum';
 import {
   getLocalStorage,
   removeLocalStorage,
   setLocalStorage,
 } from '@/lib/utils';
+import { IdeaFormSchema } from '@/types/common';
 import { IdeaBody } from '@/types/Idea';
-import z from 'zod';
 import { create } from 'zustand';
 
 interface TemporaryIdeaStore {
@@ -17,25 +16,18 @@ interface TemporaryIdeaStore {
   clearIfMatchLocalStorage: () => void;
 }
 
-const FormSchema = z.object({
-  title: z.string().min(1).max(TITLE_MAX_LENGTH),
-  description: z.string().max(DESC_MAX_LENGTH).optional(),
-  externalLink: z.string().url().optional().or(z.literal('')),
-  coverImage: z.string().or(z.literal('')).nullable().optional(), // FUTURE: base64 check
-});
-
 export const useTemporaryIdeaStore = create<TemporaryIdeaStore>((set, get) => ({
   idea: null,
 
   setIdeaWithSync: (idea) => {
     set({ idea });
-    setLocalStorage(LocalStorageKey.IDEA_DRAFT, idea, FormSchema);
+    setLocalStorage(LocalStorageKey.IDEA_DRAFT, idea, IdeaFormSchema);
   },
 
   // /** 從 localStorage 載入資料（頁面重新整理後用） */
   // loadFromLocalStorage: () => {
   //   try {
-  //     const stored = getLocalStorage(LocalStorageKey.IDEA_DRAFT, FormSchema);
+  //     const stored = getLocalStorage(LocalStorageKey.IDEA_DRAFT, IdeaFormSchema);
   //     if (!stored) return;
   //     const parsed: IdeaBody = stored;
   //     set({ idea: parsed });
@@ -52,7 +44,7 @@ export const useTemporaryIdeaStore = create<TemporaryIdeaStore>((set, get) => ({
 
   clearIfMatchLocalStorage: () => {
     try {
-      const local = getLocalStorage(LocalStorageKey.IDEA_DRAFT, FormSchema);
+      const local = getLocalStorage(LocalStorageKey.IDEA_DRAFT, IdeaFormSchema);
       const storeIdea = get().idea;
       if (!local || !storeIdea) return;
 

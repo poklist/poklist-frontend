@@ -22,6 +22,7 @@ import { resolveListFormError } from '@/lib/validator';
 import useCommonStore from '@/stores/useCommonStore';
 import { useTemporaryIdeaStore } from '@/stores/useTemporaryIdeaStore';
 import useUserStore from '@/stores/useUserStore';
+import { ListFormSchema } from '@/types/common';
 import { ListBody } from '@/types/List';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { i18n } from '@lingui/core';
@@ -30,13 +31,7 @@ import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import z from 'zod';
 
-const FormSchema = z.object({
-  title: z.string().min(1).max(TITLE_MAX_LENGTH),
-  externalLink: z.string().url().or(z.literal('')),
-  categoryID: z.number().nonnegative(),
-});
-
-const defaultListInfo: z.infer<typeof FormSchema> = {
+const defaultListInfo: z.infer<typeof ListFormSchema> = {
   title: '',
   externalLink: '',
   categoryID: 0,
@@ -63,8 +58,8 @@ const TemporaryCreateListPage: React.FC = () => {
   const { openDrawer: openCancelDrawer, closeDrawer: closeCancelDrawer } =
     useDrawer(DrawerIds.CANCEL_LIST_FORM_CONFIRM_DRAWER_ID);
 
-  const listForm = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
+  const listForm = useForm<z.infer<typeof ListFormSchema>>({
+    resolver: zodResolver(ListFormSchema),
     defaultValues: {
       title: defaultListInfo.title,
       externalLink: defaultListInfo.externalLink,
@@ -85,11 +80,11 @@ const TemporaryCreateListPage: React.FC = () => {
     }
   };
 
-  const onSubmit = (data: z.infer<typeof FormSchema>) => {
+  const onSubmit = (data: z.infer<typeof ListFormSchema>) => {
     onCreateNewList(data);
   };
 
-  const onSubmitFailed = useFormErrorHandler<z.infer<typeof FormSchema>>({
+  const onSubmitFailed = useFormErrorHandler<z.infer<typeof ListFormSchema>>({
     resolver: resolveListFormError,
   });
 
