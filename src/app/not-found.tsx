@@ -1,7 +1,6 @@
 'use client';
 
 import { TileBackground } from '@/app/user/_components/TileBackground';
-// import mascotError from '@/assets/images/mascot/mascot-error.svg';
 import Header from '@/components/Header';
 import { LanguageProvider } from '@/components/Language';
 import { Trans } from '@lingui/macro';

@@ -1,9 +1,9 @@
 'use client';
 
-import mascotError from '@/assets/images/mascot/mascot-error.svg';
 import Header from '@/components/Header';
 import { LanguageProvider } from '@/components/Language';
 import { Trans } from '@lingui/macro';
+import Image from 'next/image';
 import { TileBackground } from '../user/_components/TileBackground';
 
 export default function ErrorPage() {
@@ -17,10 +17,11 @@ export default function ErrorPage() {
         {/* 內容 */}
         <div className="flex flex-1 flex-col items-center justify-start pt-28">
           <div className="flex flex-col items-center gap-6">
-            <img
-              src={mascotError.src}
+            <Image
+              src="/images/mascot/mascot-error.svg"
               alt="Error Mascot"
-              className="h-[125px]"
+              width={101}
+              height={125}
             />
             <h2 className="text-center text-[17px] font-bold text-black-text-01">
               <Trans>Oops something is wrong!</Trans>
