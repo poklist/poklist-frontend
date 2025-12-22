@@ -4,6 +4,7 @@ import QueryKeys from '@/constants/queryKeys';
 import { MessageType } from '@/enums/Style/index.enum';
 import { toast } from '@/hooks/useToast';
 import axios from '@/lib/axios';
+import useCommonStore from '@/stores/useCommonStore';
 import { CreateListResponse, ListBody } from '@/types/List';
 import { IResponse } from '@/types/response';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -25,7 +26,8 @@ export const useCreateList = ({
   onError,
 }: UseCreateListOptions) => {
   const queryClient = useQueryClient();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isCreating, setIsCreating] = useState(false);
+  const { setIsLoading } = useCommonStore();
 
   const mutation = useMutation({
     mutationFn: async (listForm: ListBody) => {
@@ -44,6 +46,7 @@ export const useCreateList = ({
       return response.data.content;
     },
     onMutate: () => {
+      setIsCreating(true);
       setIsLoading(true);
     },
     onSuccess: async (data) => {
@@ -65,6 +68,7 @@ export const useCreateList = ({
       onError?.(error);
     },
     onSettled: () => {
+      setIsCreating(false);
       setIsLoading(false);
     },
   });
@@ -72,6 +76,6 @@ export const useCreateList = ({
   return {
     createList: mutation.mutate,
     createListAsync: mutation.mutateAsync,
-    isCreateListLoading: mutation.isPending || isLoading,
+    isCreateListLoading: mutation.isPending || isCreating,
   };
 };

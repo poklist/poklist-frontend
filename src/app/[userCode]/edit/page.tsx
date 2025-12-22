@@ -1,4 +1,4 @@
-'use client';
+// 'use client';
 
 import { EditFieldFakePageComponent } from '@/components/FakePage/EditFieldFakePage';
 import { useFakePage } from '@/components/FakePage/useFakePage';

@@ -1,4 +1,3 @@
-import logoR from '@/assets/images/logo-r.svg';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useFollowAction } from '@/hooks/mutations/useFollowAction';
 import { useAuthWrapper } from '@/hooks/useAuth';
@@ -8,6 +7,7 @@ import useAuthStore from '@/stores/useAuthStore';
 import useFollowingStore from '@/stores/useFollowingStore';
 import { User, UserPreview } from '@/types/User';
 import { Trans } from '@lingui/macro';
+import Image from 'next/image';
 import React, { useEffect } from 'react';
 import { Button, ButtonShape, ButtonSize, ButtonVariant } from '../ui/button';
 
@@ -78,11 +78,12 @@ const BackToUserHeader: React.FC<IBackToUserHeaderProps> = ({
           id="header-left"
           className="flex w-[90px] min-w-[90px] items-center justify-start"
         >
-          <img
-            src={logoR.src}
-            alt="P"
+          <Image
+            src="/images/logo/logo-r.svg"
+            alt="Relist logo"
+            width={32}
+            height={32}
             onClick={handleClickLogo}
-            className="h-8"
           />
         </div>
         <div

@@ -13,7 +13,7 @@ import { useIdea } from '@/hooks/queries/useIdea';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { openWindow } from '@/lib/openLink';
 import { getFormattedTime, parsePostgresDate } from '@/lib/time';
-import { urlPreview } from '@/lib/utils';
+import { cn, urlPreview } from '@/lib/utils';
 
 import DropdownMenuComponent, {
   DropdownItem,
@@ -272,8 +272,13 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
         {isLoggedIn && me?.id === data.owner.id && (
           <DropdownMenuComponent
             trigger={
-              <div className="absolute right-4 top-4 flex h-5 w-5 items-center justify-center">
-                <IconThreeDots />
+              <div
+                className={cn(
+                  'absolute right-4 flex h-7 w-7 items-center justify-center',
+                  isUpdatedRecently() ? 'top-6' : 'top-5'
+                )}
+              >
+                <IconThreeDots width={17.5} />
               </div>
             }
             items={items}

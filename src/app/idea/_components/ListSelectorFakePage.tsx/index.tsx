@@ -148,22 +148,24 @@ const ListSelectorFakePage: React.FC = () => {
                 })
               )}
               <div className="my-4 px-4">
-                <Button
-                  disabled={selectedList !== 0}
-                  onClick={() => {
-                    if (payload?.ideaForm) {
-                      closeFakePage();
-                      navigateTo.temporaryCreateList(payload.ideaForm);
-                    }
-                  }}
-                  variant={ButtonVariant.BLACK}
-                  size={ButtonSize.H40}
-                  shape={ButtonShape.ROUNDED_8PX}
-                  className="flex justify-start gap-2 px-5"
-                >
-                  <IconAdd width={12} height={12} className="text-white" />
-                  <Trans>Create a new list</Trans>
-                </Button>
+                <div className="" onClick={() => setSelectedList(0)}>
+                  <Button
+                    disabled={selectedList !== 0}
+                    onClick={() => {
+                      if (payload?.ideaForm) {
+                        closeFakePage();
+                        navigateTo.temporaryCreateList(payload.ideaForm);
+                      }
+                    }}
+                    variant={ButtonVariant.BLACK}
+                    size={ButtonSize.H40}
+                    shape={ButtonShape.ROUNDED_8PX}
+                    className="flex justify-start gap-2 px-5"
+                  >
+                    <IconAdd width={12} height={12} className="text-white" />
+                    <Trans>Create a new list</Trans>
+                  </Button>
+                </div>
               </div>
             </div>
           </div>

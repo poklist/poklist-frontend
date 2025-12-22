@@ -1,8 +1,8 @@
 'use client';
 
-import mascotPhone from '@/assets/images/mascot/mascot-phone.svg';
 import Header from '@/components/Header';
 import { Trans } from '@lingui/macro';
+import Image from 'next/image';
 
 export default function GoToMobilePage() {
   return (
@@ -12,7 +12,12 @@ export default function GoToMobilePage() {
 
       {/* 內容 */}
       <div className="flex flex-1 flex-col items-center justify-start pt-28">
-        <img src={mascotPhone.src} alt="Mascot Phone" className="h-[125px]" />
+        <Image
+          src="/images/mascot/mascot-phone.svg"
+          alt="Mascot Phone"
+          height={125}
+          width={140}
+        />
         <div className="mt-6 flex flex-col items-start">
           <Trans>
             <p className="text-start text-[17px] font-bold text-black-text-01">

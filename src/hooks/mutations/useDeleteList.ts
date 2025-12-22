@@ -4,6 +4,7 @@ import QueryKeys from '@/constants/queryKeys';
 import { MessageType } from '@/enums/Style/index.enum';
 import { toast } from '@/hooks/useToast';
 import axios from '@/lib/axios';
+import useCommonStore from '@/stores/useCommonStore';
 import { IResponse } from '@/types/response';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
@@ -24,7 +25,8 @@ export const useDeleteList = ({
   onError,
 }: UseDeleteListOptions) => {
   const queryClient = useQueryClient();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const { setIsLoading } = useCommonStore();
 
   const mutation = useMutation({
     mutationFn: async (listID: number) => {
@@ -37,6 +39,7 @@ export const useDeleteList = ({
       return;
     },
     onMutate: () => {
+      setIsDeleting(true);
       setIsLoading(true);
     },
     onSuccess: async (_, listID) => {
@@ -59,13 +62,14 @@ export const useDeleteList = ({
       onError?.(error);
     },
     onSettled: () => {
+      setIsDeleting(false);
       setIsLoading(false);
     },
   });
 
   return {
     deleteList: mutation.mutate,
-    isDeleteListLoading: mutation.isPending || isLoading,
+    isDeleteListLoading: mutation.isPending || isDeleting,
     deleteListError: mutation.error,
   };
 };

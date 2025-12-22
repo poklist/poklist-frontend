@@ -4,6 +4,7 @@ import QueryKeys from '@/constants/queryKeys';
 import { MessageType } from '@/enums/Style/index.enum';
 import { toast } from '@/hooks/useToast';
 import axios from '@/lib/axios';
+import useCommonStore from '@/stores/useCommonStore';
 import { CreateIdeaRequest, CreateIdeaResponse } from '@/types/Idea';
 import { IResponse } from '@/types/response';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -20,6 +21,7 @@ export const useCreateIdea = ({
 }: UseCreateIdeaOptions = {}) => {
   const queryClient = useQueryClient();
   const [isCreating, setIsCreating] = useState(false);
+  const { setIsLoading } = useCommonStore();
 
   const mutation = useMutation({
     mutationFn: async (ideaData: CreateIdeaRequest) => {
@@ -31,6 +33,7 @@ export const useCreateIdea = ({
     },
     onMutate: () => {
       setIsCreating(true);
+      setIsLoading(true);
     },
     onSuccess: async (data) => {
       // 使相關的查詢失效，強制重新獲取
@@ -61,6 +64,7 @@ export const useCreateIdea = ({
     },
     onSettled: () => {
       setIsCreating(false);
+      setIsLoading(false);
     },
   });
 
