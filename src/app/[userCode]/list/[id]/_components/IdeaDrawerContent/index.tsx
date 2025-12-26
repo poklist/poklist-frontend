@@ -96,8 +96,8 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({
           <div className="mb-2 flex w-full justify-end">
             <DropdownMenuComponent
               trigger={
-                <div className="flex h-5 w-5 items-center justify-center">
-                  <IconThreeDots />
+                <div className="flex h-7 w-7 items-center justify-center">
+                  <IconThreeDots width={17.5} />
                 </div>
               }
               items={items}

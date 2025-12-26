@@ -3,8 +3,6 @@ import type { SVGProps } from 'react';
 export default function IconThreeDots(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
-      width="12.5"
-      height="2.5"
       viewBox="0 0 16 4"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

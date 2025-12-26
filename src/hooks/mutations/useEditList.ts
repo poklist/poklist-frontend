@@ -4,6 +4,7 @@ import QueryKeys from '@/constants/queryKeys';
 import { MessageType } from '@/enums/Style/index.enum';
 import { toast } from '@/hooks/useToast';
 import axios from '@/lib/axios';
+import useCommonStore from '@/stores/useCommonStore';
 import { CreateListResponse, ListBody } from '@/types/List';
 import { IResponse } from '@/types/response';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -24,7 +25,8 @@ export const useEditList = ({
   ideaOffset = Idea.DEFAULT_FIRST_BATCH_OFFSET,
   ideaLimit = Idea.DEFAULT_BATCH_SIZE,
 }: UseEditListOptions) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const { setIsLoading } = useCommonStore();
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
@@ -52,6 +54,7 @@ export const useEditList = ({
       return response.data.content;
     },
     onMutate: () => {
+      setIsEditing(true);
       setIsLoading(true);
     },
     onSuccess: async (data) => {
@@ -76,12 +79,13 @@ export const useEditList = ({
       });
     },
     onSettled: () => {
+      setIsEditing(false);
       setIsLoading(false);
     },
   });
 
   return {
-    isEditListLoading: mutation.isPending || isLoading,
+    isEditListLoading: mutation.isPending || isEditing,
     editList: mutation.mutate,
     editListAsync: mutation.mutateAsync,
   };

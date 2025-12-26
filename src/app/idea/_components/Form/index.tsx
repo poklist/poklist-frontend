@@ -114,7 +114,11 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
   });
 
   const onCoverImageChange = (base64: string | null) => {
-    ideaForm.setValue('coverImage', base64, { shouldValidate: true });
+    if (previousIdeaInfo.title === '') {
+      ideaForm.setValue('coverImage', base64);
+    } else {
+      ideaForm.setValue('coverImage', base64, { shouldDirty: true });
+    }
   };
 
   const onSubmit = (data: z.infer<typeof IdeaFormSchema>) => {

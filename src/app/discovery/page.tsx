@@ -1,5 +1,6 @@
 'use client';
 
+import FloatingButtonFooter from '@/components/Footer/FloatingButtonFooter';
 import Header from '@/components/Header';
 import useAuthStore from '@/stores/useAuthStore';
 import { GoogleOAuthProvider } from '@react-oauth/google';
@@ -7,7 +8,6 @@ import FooterSection from './_components/FooterSection';
 import { HeaderSection } from './_components/HeaderSection';
 import ListSection from './_components/ListSection';
 import TileSection from './_components/TileSection';
-import FloatingButtonFooter from '@/components/Footer/FloatingButtonFooter';
 
 const DiscoveryContent = () => {
   const { isLoggedIn } = useAuthStore();

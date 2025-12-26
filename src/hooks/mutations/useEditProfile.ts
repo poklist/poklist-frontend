@@ -3,6 +3,7 @@ import { MessageType } from '@/enums/Style/index.enum';
 import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
 import axios from '@/lib/axios';
 import useAuthStore from '@/stores/useAuthStore';
+import useCommonStore from '@/stores/useCommonStore';
 import useUserStore from '@/stores/useUserStore';
 import { IResponse } from '@/types/response';
 import { UpdateUserResponse, User } from '@/types/User';
@@ -25,7 +26,8 @@ export const useEditProfile = ({
   const { setMe, me } = useUserStore();
   const navigateTo = useStrictNavigateNext();
   const queryClient = useQueryClient();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const { setIsLoading } = useCommonStore();
 
   const mutation = useMutation({
     mutationFn: async ({ newUserInfo }: { newUserInfo: User }) => {
@@ -40,6 +42,7 @@ export const useEditProfile = ({
       return response.data.content;
     },
     onMutate: () => {
+      setIsEditing(true);
       setIsLoading(true);
     },
     onSuccess: async (data) => {
@@ -76,13 +79,14 @@ export const useEditProfile = ({
       onError?.(error);
     },
     onSettled: () => {
+      setIsEditing(false);
       setIsLoading(false);
     },
   });
 
   return {
     editProfile: mutation.mutate,
-    isLoading: mutation.isPending || isLoading,
+    isLoading: mutation.isPending || isEditing,
     isError: mutation.isError,
     error: mutation.error,
   };

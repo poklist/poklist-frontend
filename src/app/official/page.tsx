@@ -1,5 +1,6 @@
 'use client';
 
+import FloatingButtonFooter from '@/components/Footer/FloatingButtonFooter';
 import Header from '@/components/Header';
 import {
   FEATURE_SECTION,
@@ -12,7 +13,6 @@ import { Divider } from './_components/Divider';
 import { FeatureSection } from './_components/FeatureSection';
 import { Footer } from './_components/Footer';
 import { TutorialSection } from './_components/TutorialSection';
-import FloatingButtonFooter from '@/components/Footer/FloatingButtonFooter';
 
 export default function OfficialPage() {
   const content = {

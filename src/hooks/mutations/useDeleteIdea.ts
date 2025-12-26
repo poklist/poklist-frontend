@@ -4,6 +4,7 @@ import QueryKeys from '@/constants/queryKeys';
 import { MessageType } from '@/enums/Style/index.enum';
 import { toast } from '@/hooks/useToast';
 import axios from '@/lib/axios';
+import useCommonStore from '@/stores/useCommonStore';
 import { IResponse } from '@/types/response';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
@@ -14,7 +15,8 @@ interface UseDeleteIdeaOptions {
 
 const useDeleteIdea = ({ listID }: UseDeleteIdeaOptions) => {
   const queryClient = useQueryClient();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const { setIsLoading } = useCommonStore();
 
   const mutation = useMutation({
     mutationFn: async (ideaID: number) => {
@@ -27,6 +29,7 @@ const useDeleteIdea = ({ listID }: UseDeleteIdeaOptions) => {
       return;
     },
     onMutate: () => {
+      setIsDeleting(true);
       setIsLoading(true);
     },
     onSuccess: async (_, ideaID) => {
@@ -55,13 +58,14 @@ const useDeleteIdea = ({ listID }: UseDeleteIdeaOptions) => {
       });
     },
     onSettled: () => {
+      setIsDeleting(false);
       setIsLoading(false);
     },
   });
 
   return {
     deleteIdea: mutation.mutate,
-    isDeleteIdeaLoading: mutation.isPending || isLoading,
+    isDeleteIdeaLoading: mutation.isPending || isDeleting,
     isDeleteIdeaError: mutation.isError,
     deleteIdeaError: mutation.error,
   };
