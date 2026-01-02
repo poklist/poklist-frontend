@@ -53,7 +53,7 @@ export const useCreateIdea = ({
       await queryClient.refetchQueries({
         queryKey: [QueryKeys.INFINITE_IDEA, data.listID.toString()],
       });
-      onSuccess?.(data);
+      if (onSuccess) onSuccess(data);
     },
     onError: (error) => {
       toast({

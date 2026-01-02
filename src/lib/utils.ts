@@ -1,6 +1,6 @@
+import { LINK_PREVIEW_LENGTH } from '@/constants/list';
 import { socialLinkStarterMap } from '@/constants/User';
 import { LocalStorageKey, SocialLinkType } from '@/enums/index.enum';
-import { LINK_PREVIEW_LENGTH } from '@/constants/list';
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { z } from 'zod';
