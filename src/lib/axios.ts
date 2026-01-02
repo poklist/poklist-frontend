@@ -43,7 +43,7 @@ instance.interceptors.response.use(
 
     return response;
   },
-  async (error: AxiosError) => {
+  async (error: AxiosError<{ response: unknown }>) => {
     // Do something with response error
     console.error(error);
     toast({
