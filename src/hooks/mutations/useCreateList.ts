@@ -53,11 +53,14 @@ export const useCreateList = ({
       if (!data) {
         throw new Error('Failed to create list');
       }
-      // 使列表緩存失效，觸發重新獲取
-      await queryClient.invalidateQueries({
-        queryKey: [QueryKeys.LISTS, userCode, offset, limit],
-        refetchType: 'inactive',
-      });
+      try {
+        await queryClient.invalidateQueries({
+          queryKey: [QueryKeys.LISTS, userCode, offset, limit],
+          refetchType: 'inactive',
+        });
+      } catch (error) {
+        console.warn("Refetch failed, but list was created:", error)
+      }
       onSuccess?.(data);
     },
     onError: (error) => {

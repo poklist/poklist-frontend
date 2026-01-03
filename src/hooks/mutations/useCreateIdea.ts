@@ -40,19 +40,22 @@ export const useCreateIdea = ({
       if (!data) {
         throw new Error('Failed to create idea');
       }
-
-      await queryClient.invalidateQueries({
-        queryKey: [
-          QueryKeys.LIST,
-          data.listID.toString(),
-          Idea.DEFAULT_FIRST_BATCH_OFFSET,
-          Idea.DEFAULT_BATCH_SIZE,
-        ],
-        refetchType: 'inactive',
-      });
-      await queryClient.refetchQueries({
-        queryKey: [QueryKeys.INFINITE_IDEA, data.listID.toString()],
-      });
+      try {
+        await queryClient.invalidateQueries({
+          queryKey: [
+            QueryKeys.LIST,
+            data.listID.toString(),
+            Idea.DEFAULT_FIRST_BATCH_OFFSET,
+            Idea.DEFAULT_BATCH_SIZE,
+          ],
+          refetchType: 'inactive',
+        });
+        await queryClient.refetchQueries({
+          queryKey: [QueryKeys.INFINITE_IDEA, data.listID.toString()],
+        });
+      } catch (error) {
+        console.warn("Refetch failed, but idea was created: ", error)
+      }
       if (onSuccess) onSuccess(data);
     },
     onError: (error) => {

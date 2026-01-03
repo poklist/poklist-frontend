@@ -53,12 +53,16 @@ export const useEditProfile = ({
       if (data?.accessToken) {
         setAccessToken(data.accessToken);
       }
-      // NOTE: if we don't await, the profile image might not be updated before navigation
-      await queryClient.refetchQueries({
-        queryKey: [QueryKeys.USER, newUserCode],
-      });
-      if (newUserCode !== oldUserCode) {
-        queryClient.removeQueries({ queryKey: [QueryKeys.USER, oldUserCode] });
+      try {
+        // NOTE: if we don't await, the profile image might not be updated before navigation
+        await queryClient.refetchQueries({
+          queryKey: [QueryKeys.USER, newUserCode],
+        });
+        if (newUserCode !== oldUserCode) {
+          queryClient.removeQueries({ queryKey: [QueryKeys.USER, oldUserCode] });
+        }
+      } catch (error) {
+        console.warn("Refetch failed, but profile was edited:", error)
       }
       setMe({ ...data });
       onSuccess?.(data);

@@ -43,14 +43,17 @@ export const useDeleteList = ({
       setIsLoading(true);
     },
     onSuccess: async (_, listID) => {
-      // 將單筆列表資料清空，而非刪除快取，為免因尚有 Component 仍在使用相關資料而重新 fetch
-      queryClient.setQueryData([QueryKeys.LIST, listID.toString()], null);
-
-      // 重新獲取列表預覽資料
-      await queryClient.invalidateQueries({
-        queryKey: [QueryKeys.LISTS, userCode, offset, limit],
-        refetchType: 'inactive',
-      });
+      try {
+        // 將單筆列表資料清空，而非刪除快取，為免因尚有 Component 仍在使用相關資料而重新 fetch
+        queryClient.setQueryData([QueryKeys.LIST, listID.toString()], null);
+        // 重新獲取列表預覽資料
+        await queryClient.invalidateQueries({
+          queryKey: [QueryKeys.LISTS, userCode, offset, limit],
+          refetchType: 'inactive',
+        });
+      } catch (error) {
+        console.warn("Refetch failed, but list was deleted:", error)
+      }
 
       onSuccess?.();
     },
