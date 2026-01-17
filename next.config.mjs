@@ -9,5 +9,15 @@ const nextConfig = {
     swcPlugins: [['@lingui/swc-plugin', {}]],
   },
   output: 'standalone',
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'image.relist.cc',
+        port: '',
+        pathname: '/**',
+      },
+    ],
+  },
 };
 export default nextConfig;
