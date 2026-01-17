@@ -1,5 +1,10 @@
 import ConditionalLayout from '@/components/ConditionalLayout';
 import '@/index.css';
+import {
+  createBaseMetadata,
+  createOpenGraphMetadata,
+  createTwitterMetadata,
+} from '@/lib/metadata';
 import { AppProviders } from '@/providers';
 import '@radix-ui/themes/styles.css';
 import type { Metadata } from 'next';
@@ -17,19 +22,30 @@ const noto_sans = Noto_Sans({
   variable: '--font-noto-sans',
 });
 
+const SITE_NAME = 'Relist';
+const SITE_DESCRIPTION = 'Your lists say more than posts ever could. ';
+const DEFAULT_IMAGES = [
+  'https://drive.google.com/u/1/drive-viewer/AKGpihZQxtG_KNMHWpX-3kwe1-imNVR742u1_7bzDqKzPrZ2ZwRsRWUHwPcG_dEkpv4aeEE-R9EdMmbXBLUHlmpd0cndc68KdGgbjog=s1600-rw-v1?auditContext=forDisplay',
+];
+
 export const metadata: Metadata = {
-  title: 'Relist',
+  ...createBaseMetadata(),
+  title: {
+    template: `%s | ${SITE_NAME}`,
+    default: SITE_NAME,
+  },
+  description: SITE_DESCRIPTION,
+  openGraph: createOpenGraphMetadata(
+    SITE_NAME,
+    SITE_DESCRIPTION,
+    DEFAULT_IMAGES,
+    '/'
+  ),
+  twitter: createTwitterMetadata(SITE_NAME, SITE_DESCRIPTION, DEFAULT_IMAGES),
   icons: {
     icon: [
-      {
-        url: '/favicon/favicon.svg',
-        type: 'image/svg+xml',
-      },
-      {
-        url: '/favicon/favicon-16x16.png',
-        type: 'image/png',
-        sizes: '16x16',
-      },
+      { url: '/favicon/favicon.svg', type: 'image/svg+xml' },
+      { url: '/favicon/favicon-16x16.png', type: 'image/png', sizes: '16x16' },
       // Android/Chrome Icons
       {
         url: '/favicon/favicon-192x192.png',
@@ -42,12 +58,7 @@ export const metadata: Metadata = {
         sizes: '512x512',
       },
     ],
-    apple: [
-      {
-        url: '/favicon/apple-touch-icon.png',
-        sizes: '180x180',
-      },
-    ],
+    apple: [{ url: '/favicon/apple-touch-icon.png', sizes: '180x180' }],
   },
   manifest: '/site.webmanifest',
 };

@@ -1,17 +1,17 @@
-import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
-import ViewListPageClient from './client';
-import { List } from '@/types/List';
-import { User } from '@/types/User';
-import { IResponse } from '@/types/response';
+import ViewListPageClient from '@/app/[userCode]/list/[id]/client';
 import {
-  truncateTitle,
-  getUserDisplayText,
   createBaseMetadata,
   createOpenGraphMetadata,
   createTwitterMetadata,
   getPreviewImage,
-} from './utils/metadata';
+  getUserDisplayText,
+  truncateTitle,
+} from '@/lib/metadata';
+import { List } from '@/types/List';
+import { User } from '@/types/User';
+import { IResponse } from '@/types/response';
+import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 
 interface PageProps {
   params: Promise<{
