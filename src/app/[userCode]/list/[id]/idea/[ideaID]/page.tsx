@@ -1,14 +1,14 @@
-import { Metadata } from 'next';
-import { redirect } from 'next/navigation';
-import { IdeaResponse } from '@/types/Idea';
-import { IResponse } from '@/types/response';
 import {
-  truncateTitle,
-  getPreviewImage,
   createBaseMetadata,
   createOpenGraphMetadata,
   createTwitterMetadata,
-} from '../../utils/metadata';
+  getPreviewImage,
+  truncateTitle,
+} from '@/lib/metadata';
+import { IdeaResponse } from '@/types/Idea';
+import { IResponse } from '@/types/response';
+import { Metadata } from 'next';
+import { redirect } from 'next/navigation';
 
 interface PageProps {
   params: Promise<{
