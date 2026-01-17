@@ -41,7 +41,6 @@ const useStrictNavigationNext = () => {
       } else {
         router.push(path);
       }
-      window.scrollTo({ top: 0, behavior: 'smooth' });
     },
     reorderList: (userCode: string, listID: string) => {
       const cleanUserCode = migrateUserRoute(userCode);
