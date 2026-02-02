@@ -1,3 +1,5 @@
+import LinksBlock from '@/app/settings/_components/BlocksSection/LinksBlock';
+import { ButtonRadioGroup } from '@/app/settings/_components/ButtonRadioGroup';
 import { DrawerComponent } from '@/components/Drawer';
 import { useDrawer } from '@/components/Drawer/useDrawer';
 import { activateI18n } from '@/components/Language/useLanguage';
@@ -11,8 +13,6 @@ import { ILinksBlock, UrlString } from '@/types/Settings';
 import { t, Trans } from '@lingui/macro';
 import { useEffect, useState } from 'react';
 import { z } from 'zod';
-import { ButtonRadioGroup } from '../ButtonRadioGroup';
-import LinksBlock from './LinksBlock';
 
 const BlocksSection: React.FC = () => {
   const navigateTo = useStrictNavigationAdapter();

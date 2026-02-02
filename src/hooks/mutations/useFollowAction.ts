@@ -1,4 +1,5 @@
 import QueryKeys from '@/constants/queryKeys';
+import { createOptimisticUpdateHandler } from '@/hooks/mutations/optimisticUpdateHandler';
 import axios, { AxiosPayload } from '@/lib/axios';
 import useFollowingStore from '@/stores/useFollowingStore';
 import useUserStore from '@/stores/useUserStore';
@@ -11,7 +12,6 @@ import {
 } from '@tanstack/react-query';
 import { AxiosError, AxiosRequestConfig, Method } from 'axios';
 import { useRef } from 'react';
-import { createOptimisticUpdateHandler } from './optimisticUpdateHandler';
 
 interface FollowActionOptions {
   currentUserCode: string;
@@ -106,8 +106,8 @@ export const useFollowAction = ({
 
         const exists = Array.isArray(followers)
           ? followers.some(
-              (follower) => follower.id === latestSocialLinkRef.current?.id
-            )
+            (follower) => follower.id === latestSocialLinkRef.current?.id
+          )
           : false;
 
         // 在看別人的Profile & unfollow

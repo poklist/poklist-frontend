@@ -7,6 +7,19 @@ const nextConfig = {
   },
   experimental: {
     swcPlugins: [['@lingui/swc-plugin', {}]],
+    // FIXME
+    optimizePackageImports: [
+      '@eslint',
+      '@hookform',
+      '@lingui',
+      '@radix-ui',
+      '@tanstack',
+      'lucide-react',
+      'react-easy-crop',
+      'react-hook-form',
+      'zod',
+      'zustand',
+    ],
   },
   output: 'standalone',
   images: {

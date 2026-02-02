@@ -4,7 +4,7 @@ import { FeatureListSection, FeatureSectionContent } from '@/types/Home';
 import { MessageDescriptor } from '@lingui/core';
 import { msg, t } from '@lingui/macro';
 import { Trans, useLingui } from '@lingui/react';
-import { StaticImageData } from 'next/image';
+import Image, { StaticImageData } from 'next/image';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 interface FeatureSectionProps {
@@ -63,8 +63,8 @@ export const FeatureSection = ({
   useEffect(() => {
     const preloadImages = () => {
       // preload avatar images
-      Object.values(IMAGES.avatar).forEach((imageData: any) => {
-        const img = new Image();
+      Object.values(IMAGES.avatar).forEach((imageData: StaticImageData) => {
+        const img = new window.Image();
         img.src = getImageSrc(imageData);
       });
 
@@ -72,15 +72,15 @@ export const FeatureSection = ({
       Object.keys(IMAGES.list).forEach((category) => {
         Object.values(
           IMAGES.list[category as keyof typeof IMAGES.list]
-        ).forEach((imageData: any) => {
-          const img = new Image();
+        ).forEach((imageData: StaticImageData) => {
+          const img = new window.Image();
           img.src = getImageSrc(imageData);
         });
       });
 
       // preload feature images
-      Object.values(IMAGES.feature).forEach((imageData: any) => {
-        const img = new Image();
+      Object.values(IMAGES.feature).forEach((imageData: StaticImageData) => {
+        const img = new window.Image();
         img.src = getImageSrc(imageData);
       });
     };
@@ -120,7 +120,7 @@ export const FeatureSection = ({
       {/* List Content */}
       <div className="mx-6 mb-4 mt-4 rounded-3xl border-[1px] border-black bg-white px-4 py-8">
         <div className="mb-4 flex items-center gap-1">
-          <img
+          <Image
             src={getImageSrc(selectedList.userAvatar)}
             alt={selectedList.user.id}
             className="size-10 rounded-full"
@@ -158,7 +158,7 @@ export const FeatureSection = ({
                     {truncatedDescriptions[index]}
                   </p>
                 </div>
-                <img
+                <Image
                   src={getImageSrc(item.image)}
                   alt={item.title.id}
                   className="size-10 self-end rounded-lg border border-black"

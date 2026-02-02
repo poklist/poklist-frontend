@@ -1,7 +1,7 @@
+import useEditProfileStore from '@/stores/useEditProfileStore';
+import useUserStore from '@/stores/useUserStore';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import useEditProfileStore from './useEditProfileStore';
-import useUserStore from './useUserStore';
 
 export type UserStoreState = {
   isLoggedIn: boolean;

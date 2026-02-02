@@ -1,3 +1,6 @@
+import ListItem from '@/app/discovery/_components/ListItem';
+import ListSectionSkeleton from '@/app/discovery/_components/ListSection/ListSectionSkeleton';
+import SectionTitle from '@/app/discovery/_components/SectionTitle';
 import {
   Button,
   ButtonShape,
@@ -10,9 +13,6 @@ import { useUIStore } from '@/stores/useUIStore';
 import { LatestList } from '@/types/Discovery';
 import { t, Trans } from '@lingui/macro';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import ListItem from '../ListItem';
-import SectionTitle from '../SectionTitle';
-import ListSectionSkeleton from './ListSectionSkeleton';
 
 // initial display count
 const INITIAL_DISPLAY_COUNT = 5;

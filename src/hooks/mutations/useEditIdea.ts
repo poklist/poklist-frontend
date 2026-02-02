@@ -39,13 +39,13 @@ const useEditIdea = () => {
         Idea.DEFAULT_FIRST_BATCH_OFFSET,
         Idea.DEFAULT_BATCH_SIZE,
       ];
-      // Invalidate for triggering refetch
-      await queryClient.invalidateQueries({ queryKey: ideaQueryKey });
-      await queryClient.invalidateQueries({ queryKey: listQueryKey });
-      await queryClient.invalidateQueries({
+      // Invalidate for triggering refetch     
+      await Promise.all([queryClient.invalidateQueries({ queryKey: ideaQueryKey }),
+      queryClient.invalidateQueries({ queryKey: listQueryKey }),
+      queryClient.invalidateQueries({
         queryKey: [QueryKeys.INFINITE_IDEA, data.listID.toString()],
         refetchType: 'inactive',
-      });
+      })])
     },
     onError: (error) => {
       toast({

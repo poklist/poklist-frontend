@@ -1,6 +1,6 @@
+import ListItemSkeleton from '@/app/discovery/_components/ListItem/ListItemSkeleton';
+import SectionTitleSkeleton from '@/app/discovery/_components/SectionTitle/SectionTitleSkeleton';
 import { Skeleton } from '@radix-ui/themes';
-import SectionTitleSkeleton from '../SectionTitle/SectionTitleSkeleton';
-import ListItemSkeleton from '../ListItem/ListItemSkeleton';
 
 const CATEGORY_COUNT = 9;
 const LIST_ITEM_COUNT = 5;

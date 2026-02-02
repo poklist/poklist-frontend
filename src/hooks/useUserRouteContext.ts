@@ -8,6 +8,10 @@ export interface UserRouteLayoutContextType {
 export const UserRouteContext =
   createContext<UserRouteLayoutContextType | null>(null);
 
+export const useUserRouteContextSafe = () => {
+  return useContext(UserRouteContext);
+};
+
 // 提供Hook來使用Context（向後兼容）
 export const useUserRouteContext = () => {
   const context = useContext(UserRouteContext);

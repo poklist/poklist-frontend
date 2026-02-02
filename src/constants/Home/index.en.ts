@@ -1,6 +1,6 @@
+import { ExternalLinks } from '@/constants/externalLink';
+import { IMAGES } from '@/constants/Home/images';
 import { msg } from '@lingui/macro';
-import { ExternalLinks } from '../externalLink';
-import { IMAGES } from './images';
 
 export const HERO_SECTION = {
   joinInformation: {

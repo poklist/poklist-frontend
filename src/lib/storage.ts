@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 // Define the current version of localStorage schema
-export const STORAGE_VERSION = '0.3.5';
+export const STORAGE_VERSION = '0.3.9';
 
 // Define the version key in localStorage
 const VERSION_KEY = '_storage_version';

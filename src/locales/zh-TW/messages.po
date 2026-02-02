@@ -242,8 +242,16 @@ msgid "Relist works best on mobile. Use a mobile device for the best experience.
 msgstr "Relist 在手機畫面運作更順暢，使用行動裝置以取得更好的使用體驗。"
 
 #: src/app/discovery/_components/FooterSection/index.tsx
-msgid "<0>Your lists say more than posts ever could.</0><1><2>Next wave of content</2><3/></1>"
-msgstr "<0>你的生活精選，比誰都有料</0><1><2>下個內容浪潮</2><3/></1>"
+#~ msgid "<0>Your lists say more than posts ever could.</0><1><2>Next wave of content</2><3/></1>"
+#~ msgstr "<0>你的生活精選，比誰都有料</0><1><2>下個內容浪潮</2><3/></1>"
+
+#: src/app/discovery/_components/FooterSection/index.tsx
+msgid "Your lists say more than posts ever could."
+msgstr "你的生活精選，比誰都有料"
+
+#: src/app/discovery/_components/FooterSection/index.tsx
+msgid "Next wave of content"
+msgstr "下個內容浪潮"
 
 #: src/app/discovery/_components/HeaderSection/index.tsx
 msgid "<0>My life in my lists</0><1>Invitation only. Ready to join?</1>"
@@ -367,9 +375,18 @@ msgid "Oops something is wrong!"
 msgstr "哎呀！網頁又在耍脾氣啦！"
 
 #: src/app/goToMobile/_components/index.tsx
+#~ msgid "<0>Relist works best on mobile.</0><1>Use a mobile device for the best experience.</1>"
+#~ msgstr "<0>Relist 在手機畫面運作更順暢</0><1>使用行動裝置以取得更好的使用體驗</1>"
+
+#: src/app/goToMobile/_components/index.tsx
 #: src/app/goToMobile/page.tsx
-msgid "<0>Relist works best on mobile.</0><1>Use a mobile device for the best experience.</1>"
-msgstr "<0>Relist 在手機畫面運作更順暢</0><1>使用行動裝置以取得更好的使用體驗</1>"
+msgid "Relist works best on mobile."
+msgstr "Relist 在手機畫面運作更順暢"
+
+#: src/app/goToMobile/_components/index.tsx
+#: src/app/goToMobile/page.tsx
+msgid "Use a mobile device for the best experience."
+msgstr "使用行動裝置以取得更好的使用體驗"
 
 #: src/app/idea/_components/Form/index.tsx
 #: src/app/list/_components/Form/index.tsx

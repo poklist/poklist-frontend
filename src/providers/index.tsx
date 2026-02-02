@@ -1,8 +1,8 @@
 'use client';
 
-import { ReactNode } from 'react';
 import { LanguageProvider } from '@/components/Language';
-import { ClientProviders } from './ClientProviders';
+import { ClientProviders } from '@/providers/ClientProviders';
+import { ReactNode } from 'react';
 
 interface AppProvidersProps {
   children: ReactNode;

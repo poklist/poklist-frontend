@@ -107,7 +107,9 @@ module.exports = {
         'swipe-up': 'swipe-up 1s ease-in-out',
       },
       fontFamily: {
-        inter: 'Inter, sans-serif',
+        // inter: 'Inter, sans-serif',
+        inter: ['var(--font-inter)', 'sans-serif'],
+        'noto-sans': ['var(--font-noto-sans)', 'sans-serif'],
       },
       backgroundImage: {
         'user-page-grid': "url('/tile.jpeg')",

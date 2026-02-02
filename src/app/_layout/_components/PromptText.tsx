@@ -2,6 +2,7 @@ import phoneMobile from '@/assets/images/device-phone-mobile.png';
 import { cn } from '@/lib/utils';
 import useLayoutStore from '@/stores/useLayoutStore';
 import { Trans } from '@lingui/macro';
+import Image from 'next/image';
 
 // 提示文字組件
 const PromptText = () => {
@@ -12,7 +13,7 @@ const PromptText = () => {
         'sm:flex': !isMobile,
       })}
     >
-      <img src={phoneMobile.src} alt="Device Phone Mobile" className="h-5" />
+      <Image src={phoneMobile} alt="Device Phone Mobile" className="h-5" />
       <p className="text-start text-t1 font-bold text-black-text-01">
         <Trans>
           Relist works best on mobile. Use a mobile device for the best

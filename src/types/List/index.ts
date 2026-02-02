@@ -1,6 +1,6 @@
 import { Category as CategoryEnum } from '@/enums/Lists/index.enum';
-import { IdeaPreview } from '../Idea';
-import { UserPreview } from '../User';
+import { IdeaPreview } from '@/types/Idea';
+import { UserPreview } from '@/types/User';
 
 export interface ListBody {
   title: string;
@@ -37,9 +37,9 @@ export interface ListDetail {
 // TODO: conflict with IListInfo
 export interface List
   extends ListCover,
-    ListSocialStats,
-    ListSocialStatus,
-    ListDetail {
+  ListSocialStats,
+  ListSocialStatus,
+  ListDetail {
   ideas: IdeaPreview[];
   ideaTotalCount: number;
   owner: UserPreview;

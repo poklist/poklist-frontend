@@ -1,6 +1,7 @@
 'use client';
 
 import DropdownComponent from '@/components/Dropdown';
+import { activateI18n } from '@/components/Language/useLanguage';
 import { Button, ButtonSize, ButtonVariant } from '@/components/ui/button';
 import { Language, LocalStorageKey } from '@/enums/index.enum';
 import { getLocalStorage, setLocalStorage } from '@/lib/utils';
@@ -8,7 +9,6 @@ import { i18n } from '@lingui/core';
 import { I18nProvider, useLingui } from '@lingui/react';
 import { Fragment, useEffect, useState } from 'react';
 import { z } from 'zod';
-import { activateI18n } from './useLanguage';
 
 /**
  * A component that forces re-rendering when the locale changes

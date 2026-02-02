@@ -1,5 +1,9 @@
 'use client';
 
+import { Divider } from '@/app/official/_components/Divider';
+import { FeatureSection } from '@/app/official/_components/FeatureSection';
+import { Footer } from '@/app/official/_components/Footer';
+import { TutorialSection } from '@/app/official/_components/TutorialSection';
 import FloatingButtonFooter from '@/components/Footer/FloatingButtonFooter';
 import Header from '@/components/Header';
 import {
@@ -9,10 +13,6 @@ import {
   SOCIAL_MEDIA,
   TUTORIAL_SECTION,
 } from '@/constants/Home/index.en';
-import { Divider } from './_components/Divider';
-import { FeatureSection } from './_components/FeatureSection';
-import { Footer } from './_components/Footer';
-import { TutorialSection } from './_components/TutorialSection';
 
 export default function OfficialPage() {
   const content = {

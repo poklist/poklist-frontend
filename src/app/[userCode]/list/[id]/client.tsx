@@ -1,5 +1,7 @@
 'use client';
 
+import ListCard from '@/app/[userCode]/list/[id]/_components/ListCard';
+import ListCardSkeleton from '@/app/[userCode]/list/[id]/_components/ListCard/ListCardSkeleton';
 import { Tile20Background } from '@/app/user/_components/TileBackground';
 import FloatingButtonFooter from '@/components/Footer/FloatingButtonFooter';
 import BackToUserHeader from '@/components/Header/BackToUserHeader';
@@ -16,7 +18,6 @@ import useFollowingStore from '@/stores/useFollowingStore';
 import useLikeStore from '@/stores/useLikeStore';
 import useUserStore from '@/stores/useUserStore';
 import { useEffect } from 'react';
-import ListCard from './_components/ListCard';
 
 interface ViewListPageClientProps {
   listID: string;
@@ -122,7 +123,12 @@ const ViewListPageClient: React.FC<ViewListPageClientProps> = ({ listID }) => {
       <div className="relative flex min-h-screen flex-col sm:min-h-desktop-container">
         <BackToUserHeader owner={list?.owner} hasFollowButton={!isMyPage} />
         <div className="mb-[55px] flex-1 px-3 pt-4">
-          {list && <ListCard data={list} />}
+          {/* {list && <ListCard data={list} />} */}
+          {isListLoading ? (
+            <ListCardSkeleton />
+          ) : (
+            list && <ListCard data={list} />
+          )}
         </div>
         <FloatingButtonFooter
           hasLikeButton={true}

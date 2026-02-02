@@ -1,11 +1,11 @@
+import { CustomizedLinkIcon } from '@/components/ui/icons/CustomizedLinkIcon';
+import { InstagramIcon } from '@/components/ui/icons/InstagramIcon';
+import { LinkedInIcon } from '@/components/ui/icons/LinkedInIcon';
+import { ThreadsIcon } from '@/components/ui/icons/ThreadsIcon';
+import { TikTokIcon } from '@/components/ui/icons/TikTokIcon';
+import { YouTubeIcon } from '@/components/ui/icons/YouTubeIcon';
 import { SocialLinkType } from '@/enums/index.enum';
 import type { ReactNode } from 'react';
-import { CustomizedLinkIcon } from '../icons/CustomizedLinkIcon';
-import { InstagramIcon } from '../icons/InstagramIcon';
-import { LinkedInIcon } from '../icons/LinkedInIcon';
-import { ThreadsIcon } from '../icons/ThreadsIcon';
-import { TikTokIcon } from '../icons/TikTokIcon';
-import { YouTubeIcon } from '../icons/YouTubeIcon';
 
 interface LinkIconWrapperProps {
   children?: ReactNode;

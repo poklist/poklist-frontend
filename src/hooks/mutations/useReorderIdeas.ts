@@ -82,7 +82,7 @@ export const useReorderIdeas = ({
         });
       }
 
-      await queryClient.invalidateQueries({
+      await Promise.all([queryClient.invalidateQueries({
         queryKey: [
           QueryKeys.LIST,
           listID,
@@ -90,11 +90,10 @@ export const useReorderIdeas = ({
           Idea.DEFAULT_BATCH_SIZE,
         ],
         refetchType: 'inactive',
-      });
-
-      await queryClient.invalidateQueries({
+      }),
+      queryClient.invalidateQueries({
         queryKey: [QueryKeys.ORDER_IDEAS, listID],
-      });
+      })])
 
       onSuccess?.(serverData);
     },

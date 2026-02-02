@@ -1,6 +1,7 @@
 import QueryKeys from '@/constants/queryKeys';
 import { MessageType } from '@/enums/Style/index.enum';
 import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
+import { toast } from '@/hooks/useToast';
 import axios from '@/lib/axios';
 import useAuthStore from '@/stores/useAuthStore';
 import useCommonStore from '@/stores/useCommonStore';
@@ -11,7 +12,6 @@ import { t } from '@lingui/macro';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { useState } from 'react';
-import { toast } from '../useToast';
 
 interface UseEditProfileOptions {
   onSuccess?: (data: UpdateUserResponse) => void;

@@ -306,7 +306,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
 
           {data.description && (
             <div
-              className="mt-6 line-clamp-1 w-full text-[15px] -tracking-1.1%"
+              className="mt-6 line-clamp-1 w-full truncate text-[15px] -tracking-1.1%"
               onClick={onClickDescription}
             >
               {data.description}
@@ -364,7 +364,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
                   onClick={() => onClickIdea(idea.id)}
                 >
                   <div className="flex w-full flex-col gap-2">
-                    <p className="text-[15px] font-semibold text-black-text-01">
+                    <p className="line-clamp-1 text-[15px] font-semibold text-black-text-01">
                       {idea.title}
                     </p>
                     {idea.description && (

@@ -1,8 +1,8 @@
+import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
 import { pipe } from '@/lib/functional';
 import useAuthStore from '@/stores/useAuthStore';
 import useCommonStore from '@/stores/useCommonStore';
 import { useEffect, useMemo, useRef } from 'react';
-import useStrictNavigateNext from './useStrictNavigateNext';
 
 /**
  * 檢查使用者是否已登入，如未登入則顯示登入對話框
