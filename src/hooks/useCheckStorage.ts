@@ -11,14 +11,15 @@ const useCheckStorage = () => {
   const navigateTo = useStrictNavigateNext();
 
   useEffect(() => {
-    if (isLoggedIn && checkAndMigrateStorage()) {
-      logout();
-      navigateTo.discovery();
-      toast({
-        title: t`The app is outdated, please login again`,
-        variant: MessageType.ERROR,
-      });
+    if (!(isLoggedIn && checkAndMigrateStorage())) {
+      return;
     }
-  }, [isLoggedIn, logout, navigateTo, toast]);
+    logout();
+    navigateTo.discovery();
+    toast({
+      title: t`The app is outdated, please login again`,
+      variant: MessageType.ERROR,
+    });
+  }, [isLoggedIn, logout, navigateTo]);
 };
 export default useCheckStorage;

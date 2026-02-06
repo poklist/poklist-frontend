@@ -6,14 +6,12 @@ import { Button, ButtonSize, ButtonVariant } from '@/components/ui/button';
 import IconSetting from '@/components/ui/icons/SettingIcon';
 import { StaticRoutes } from '@/constants/routes';
 import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
-import {
-  UserRouteLayoutContextType,
-  useUserRouteContext,
-} from '@/hooks/useUserRouteContext';
+import { useUserRouteContextSafe } from '@/hooks/useUserRouteContext';
 import { cn } from '@/lib/utils';
 import useAuthStore from '@/stores/useAuthStore';
 import useCommonStore from '@/stores/useCommonStore';
 import useUserStore from '@/stores/useUserStore';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import React from 'react';
 
@@ -40,31 +38,24 @@ const Header: React.FC<HeaderProps> = ({
 }) => {
   const navigateTo = useStrictNavigateNext();
 
-  // NOTE: This is a workaround to prevent the userCode from being null
-  let outletContext: UserRouteLayoutContextType | null = null;
-  try {
-    // 在App Router環境中，這個會失敗
-    outletContext = useUserRouteContext();
-  } catch {
-    // 在App Router環境中，我們暫時不使用outlet context
-    outletContext = null;
-  }
+  const userRouteContext = useUserRouteContextSafe();
+  const { me } = useUserStore();
+  const isMyPage = userRouteContext?.userCode === me.userCode; // NOTE: to trim leading '@' sign
 
   const { isLoggedIn } = useAuthStore();
-  const { me } = useUserStore();
   const { setIsLoginDrawerOpen } = useCommonStore();
 
   // 使用Next.js的usePathname替代React Router的useLocation
+  const rawPathname = usePathname();
   let pathname = '/';
   try {
-    pathname = usePathname() || '/';
+    pathname = rawPathname || '/';
   } catch {
     // 如果在React Router環境中，fallback到空字符串
     pathname = '/';
   }
 
   const isHomePage = pathname === StaticRoutes.HOME;
-  const isMyPage = outletContext?.userCode === me.userCode; // NOTE: to trim leading '@' sign
 
   const handleClickSignIn = () => {
     setIsLoginDrawerOpen(true);
@@ -94,8 +85,8 @@ const Header: React.FC<HeaderProps> = ({
           id="header-left"
           className="flex items-center justify-center gap-4"
         >
-          <img
-            src={logoRelist.src}
+          <Image
+            src={logoRelist}
             alt="Relist"
             onClick={handleClickLogo}
             className="h-8"

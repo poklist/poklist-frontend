@@ -1,7 +1,7 @@
+import { UserRouteProvider } from '@/app/[userCode]/UserRouteProvider';
+import { isUserRoute, migrateUserRoute } from '@/lib/routeMigration';
 import { notFound } from 'next/navigation';
-import { migrateUserRoute, isUserRoute } from '@/lib/routeMigration';
 import { ReactNode } from 'react';
-import { UserRouteProvider } from './UserRouteProvider';
 
 interface UserLayoutProps {
   children: ReactNode;

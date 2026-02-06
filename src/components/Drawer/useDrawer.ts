@@ -1,5 +1,5 @@
+import { DrawerContext, IDrawerContext } from '@/components/Drawer/context';
 import { useContext } from 'react';
-import { DrawerContext, IDrawerContext } from './context';
 
 interface IDrawerControls {
   isOpen: boolean;

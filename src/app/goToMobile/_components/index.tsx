@@ -17,14 +17,12 @@ export default function GoToMobilePage() {
           width={140}
         />
         <div className="mt-6 flex flex-col items-start">
-          <Trans>
-            <p className="text-start text-[17px] font-bold text-black-text-01">
-              Relist works best on mobile.
-            </p>
-            <p className="text-start text-[17px] font-bold text-black-text-01">
-              Use a mobile device for the best experience.
-            </p>
-          </Trans>
+          <p className="text-start text-[17px] font-bold text-black-text-01">
+            <Trans>Relist works best on mobile.</Trans>
+          </p>
+          <p className="text-start text-[17px] font-bold text-black-text-01">
+            <Trans>Use a mobile device for the best experience.</Trans>
+          </p>
         </div>
       </div>
     </div>

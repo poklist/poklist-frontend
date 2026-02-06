@@ -1,10 +1,10 @@
+import IconClose from '@/components/ui/icons/CloseIcon';
 import { MessageType } from '@/enums/Style/index.enum';
 import { cn } from '@/lib/utils';
 import * as ToastPrimitives from '@radix-ui/react-toast';
 import { cva, type VariantProps } from 'class-variance-authority';
 import PropTypes from 'prop-types';
 import * as React from 'react';
-import IconClose from './icons/CloseIcon';
 
 const ToastProvider = ToastPrimitives.Provider;
 

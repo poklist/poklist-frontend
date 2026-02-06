@@ -1,6 +1,7 @@
 'use client';
 
 import IdeaForm from '@/app/idea/_components/Form';
+import ListSelectorFakePage from '@/app/idea/_components/ListSelectorFakePage.tsx';
 import { useFakePage } from '@/components/FakePage/useFakePage';
 import { LocalStorageKey } from '@/enums/index.enum';
 import { MessageType } from '@/enums/Style/index.enum';
@@ -15,7 +16,6 @@ import useUserStore from '@/stores/useUserStore';
 import { IdeaBody } from '@/types/Idea';
 import { useSearchParams } from 'next/navigation';
 import React, { useEffect } from 'react';
-import ListSelectorFakePage from '../_components/ListSelectorFakePage.tsx';
 
 const IdeaCreatePage: React.FC = () => {
   const navigateTo = useStrictNavigationAdapter();

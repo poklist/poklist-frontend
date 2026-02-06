@@ -1,11 +1,11 @@
+import BlocksSection from '@/app/settings/_components/BlocksSection';
+import IntroSection from '@/app/settings/_components/IntroSection';
 import Footer from '@/components/Footer';
 import BackToUserHeader from '@/components/Header/BackToUserHeader';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import useAuthStore from '@/stores/useAuthStore';
 import useUserStore from '@/stores/useUserStore';
 import { t } from '@lingui/macro';
-import BlocksSection from './BlocksSection';
-import IntroSection from './IntroSection';
 
 const SettingsPage: React.FC = () => {
   const { isLoggedIn } = useAuthStore();

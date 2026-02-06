@@ -37,19 +37,20 @@ const useDeleteIdea = ({ listID }: UseDeleteIdeaOptions) => {
       queryClient.removeQueries({
         queryKey: [QueryKeys.IDEA, ideaID.toString()],
       });
-
       // Invalidate and refetch the list
-      await queryClient.invalidateQueries({
-        queryKey: [
-          QueryKeys.LIST,
-          listID,
-          Idea.DEFAULT_FIRST_BATCH_OFFSET,
-          Idea.DEFAULT_BATCH_SIZE,
-        ],
-      });
-      await queryClient.refetchQueries({
-        queryKey: [QueryKeys.INFINITE_IDEA, listID],
-      });
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: [
+            QueryKeys.LIST,
+            listID,
+            Idea.DEFAULT_FIRST_BATCH_OFFSET,
+            Idea.DEFAULT_BATCH_SIZE,
+          ],
+        }),
+        queryClient.refetchQueries({
+          queryKey: [QueryKeys.INFINITE_IDEA, listID],
+        })
+      ])
     },
     onError: (error) => {
       toast({

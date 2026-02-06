@@ -1,4 +1,10 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import {
+  Button,
+  ButtonShape,
+  ButtonSize,
+  ButtonVariant,
+} from '@/components/ui/button';
 import { useFollowAction } from '@/hooks/mutations/useFollowAction';
 import { useAuthWrapper } from '@/hooks/useAuth';
 import { useAuthRequired } from '@/hooks/useAuthRequired';
@@ -9,7 +15,6 @@ import { User, UserPreview } from '@/types/User';
 import { Trans } from '@lingui/macro';
 import Image from 'next/image';
 import React, { useEffect } from 'react';
-import { Button, ButtonShape, ButtonSize, ButtonVariant } from '../ui/button';
 
 interface IBackToUserHeaderProps {
   owner?: UserPreview | User;

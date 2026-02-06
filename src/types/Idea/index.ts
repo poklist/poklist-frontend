@@ -1,4 +1,4 @@
-import { UserPreview } from '../User';
+import { UserPreview } from '@/types/User';
 
 export interface IdeaBody {
   title: string;

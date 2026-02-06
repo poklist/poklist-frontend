@@ -1,11 +1,11 @@
 'use client';
 
+import { ListSectionSkeleton } from '@/app/user/_components/ListSection/ListSectionSkeleton';
 import { useListPreviews } from '@/hooks/queries/useLists';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { useUserRouteContext } from '@/hooks/useUserRouteContext';
 import { Trans } from '@lingui/macro';
 import Image from 'next/image';
-import { ListSectionSkeleton } from './ListSectionSkeleton';
 
 const ListSection: React.FC = () => {
   const { userCode } = useUserRouteContext();

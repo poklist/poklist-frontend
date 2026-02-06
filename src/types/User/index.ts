@@ -1,5 +1,5 @@
 import { SocialLinkType } from '@/enums/index.enum';
-import { PartialRecord } from '../common';
+import { PartialRecord } from '@/types/common';
 
 export interface User {
   id: number;

@@ -1,7 +1,7 @@
 import { SocialLinkType } from '@/enums/index.enum';
+import useUserStore from '@/stores/useUserStore';
 import { User } from '@/types/User';
 import { create } from 'zustand';
-import useUserStore from './useUserStore';
 
 export interface EditProfileStoreState {
   newUserInfo: User;
