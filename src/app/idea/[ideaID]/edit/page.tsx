@@ -109,7 +109,7 @@ const EditIdeaPage: React.FC = () => {
 
   return (
     <>
-      <div className="sticky top-0 z-10 flex flex-col">
+      <div className="flex flex-col">
         <div className="flex h-12 items-center border-b border-b-black bg-white px-4 text-[15px]">
           {list ? (
             list?.title

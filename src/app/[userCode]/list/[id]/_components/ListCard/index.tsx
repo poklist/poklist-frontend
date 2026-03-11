@@ -293,7 +293,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
           <div className="tracking-0.8% text-[13px]">
             <Trans>Listing since</Trans> {createdAtString}
           </div>
-          <div className="-tracking-2% mt-4 text-center text-[26px] font-extrabold">
+          <div className="-tracking-2% mt-4 break-words text-center text-[26px] font-extrabold [line-break:anywhere]">
             {data.title}
           </div>
           <div className="tracking-0.8% mt-4 flex gap-2 text-[13px]">
@@ -363,12 +363,17 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
                   className="flex min-h-[65px] items-center justify-between gap-2 border-t border-gray-main-03 p-4 -tracking-1.1% first:border-t-0 last:pb-0"
                   onClick={() => onClickIdea(idea.id)}
                 >
-                  <div className="flex w-full flex-col gap-2">
-                    <p className="line-clamp-1 text-[15px] font-semibold text-black-text-01">
+                  <div
+                    className={cn(
+                      `flex flex-col gap-2`,
+                      idea.coverImage ? 'w-[calc(100%-72px)]' : 'w-full'
+                    )}
+                  >
+                    <p className="break-words text-[15px] font-semibold text-black-text-01 [line-break:anywhere]">
                       {idea.title}
                     </p>
                     {idea.description && (
-                      <p className="line-clamp-1 max-w-[80%] text-[13px] text-gray-storm-01">
+                      <p className="line-clamp-1 truncate text-[13px] text-gray-storm-01">
                         {idea.description}
                       </p>
                     )}

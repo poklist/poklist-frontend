@@ -20,6 +20,6 @@ const useCheckStorage = () => {
       title: t`The app is outdated, please login again`,
       variant: MessageType.ERROR,
     });
-  }, [isLoggedIn, logout, navigateTo]);
+  }, [isLoggedIn, navigateTo]);
 };
 export default useCheckStorage;

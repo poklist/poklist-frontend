@@ -4,9 +4,9 @@
   "version": "0.3.5",
   "type": "module",
   "scripts": {
-    "dev": "lingui extract && lingui compile && next dev -p 5173",
+    "dev": "lingui extract && lingui compile && next dev -p 8080",
     "build": "lingui extract && lingui compile && next build",
-    "start": "next start -p 5173",
+    "start": "next start -p 8080",
     "tsc": "tsc --noEmit",
     "format": "prettier --write ./src",
     "lint": "next lint",

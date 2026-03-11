@@ -60,7 +60,7 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({
     });
   };
 
-  const items: DropdownItem[] = [
+  const dropdownItems: DropdownItem[] = [
     {
       type: DropdownItemType.ITEM,
       label: t`Edit Idea`,
@@ -100,7 +100,7 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({
                   <IconThreeDots width={17.5} />
                 </div>
               }
-              items={items}
+              items={dropdownItems}
             />
           </div>
         )}
@@ -113,11 +113,11 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({
             className="mt-6 self-center rounded-xl border border-black"
           />
         )}
-        <div className="-tracking-2% mt-6 text-[17px] font-bold leading-[1.45]">
+        <div className="-tracking-2% mt-6 break-words text-[17px] font-bold leading-[1.45] [line-break:anywhere]">
           {data.title}
         </div>
         {data.description && (
-          <div className="mt-1 text-[15px] leading-[1.45] -tracking-1.1%">
+          <div className="mt-1 break-words text-[15px] leading-[1.45] -tracking-1.1% [line-break:anywhere]">
             {data.description}
           </div>
         )}

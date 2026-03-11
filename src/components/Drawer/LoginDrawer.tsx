@@ -63,6 +63,7 @@ export const LoginDrawer = () => {
       if (!res.data.content?.accessToken) {
         throw new Error('No access token');
       }
+      localStorage.clear();
       login(res.data.content?.accessToken);
       const userData = res.data.content?.user;
       setMe(userData);
