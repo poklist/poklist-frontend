@@ -1,9 +1,9 @@
+import axios from '@/api/axios';
 import ApiPath from '@/constants/apiPath';
 import { List } from '@/constants/list';
 import QueryKeys from '@/constants/queryKeys';
 import { MessageType } from '@/enums/Style/index.enum';
 import { toast } from '@/hooks/useToast';
-import axios from '@/lib/axios';
 import useCommonStore from '@/stores/useCommonStore';
 import { CreateListResponse, ListBody } from '@/types/List';
 import { IResponse } from '@/types/response';
@@ -59,7 +59,7 @@ export const useCreateList = ({
           refetchType: 'inactive',
         });
       } catch (error) {
-        console.warn("Refetch failed, but list was created:", error)
+        console.warn('Refetch failed, but list was created:', error);
       }
       onSuccess?.(data);
     },

@@ -1,4 +1,5 @@
 export enum LocalStorageKey {
+  VERSION_KEY = '_storage_version',
   SELECTED_LANGUAGE = 'selected_language',
   SELECTED_LOCATION = 'selected_location',
   IDEA_DRAFT = 'idea_draft',

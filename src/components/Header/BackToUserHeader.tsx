@@ -88,6 +88,7 @@ const BackToUserHeader: React.FC<IBackToUserHeaderProps> = ({
             alt="Relist logo"
             width={32}
             height={32}
+            priority
             onClick={handleClickLogo}
           />
         </div>

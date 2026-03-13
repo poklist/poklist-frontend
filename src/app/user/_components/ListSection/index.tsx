@@ -34,7 +34,7 @@ const ListSection: React.FC = () => {
                 navigateTo.viewList(userCode, listPreview.id.toString());
               }}
             >
-              <p className="text-[15px] font-semibold text-black-text-01">
+              <p className="break-words text-[15px] font-semibold text-black-text-01 [line-break:anywhere]">
                 {listPreview.title}
               </p>
               {listPreview.coverImage && (

@@ -13,8 +13,9 @@ export default function GoToMobilePage() {
         <Image
           src="/images/mascot/mascot-phone.svg"
           alt="Mascot Phone"
-          height={125}
-          width={140}
+          height={121}
+          width={134}
+          priority
         />
         <div className="mt-6 flex flex-col items-start">
           <p className="text-start text-[17px] font-bold text-black-text-01">

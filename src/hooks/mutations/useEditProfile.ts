@@ -1,8 +1,8 @@
+import axios from '@/api/axios';
 import QueryKeys from '@/constants/queryKeys';
 import { MessageType } from '@/enums/Style/index.enum';
 import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
 import { toast } from '@/hooks/useToast';
-import axios from '@/lib/axios';
 import useAuthStore from '@/stores/useAuthStore';
 import useCommonStore from '@/stores/useCommonStore';
 import useUserStore from '@/stores/useUserStore';
@@ -59,10 +59,12 @@ export const useEditProfile = ({
           queryKey: [QueryKeys.USER, newUserCode],
         });
         if (newUserCode !== oldUserCode) {
-          queryClient.removeQueries({ queryKey: [QueryKeys.USER, oldUserCode] });
+          queryClient.removeQueries({
+            queryKey: [QueryKeys.USER, oldUserCode],
+          });
         }
       } catch (error) {
-        console.warn("Refetch failed, but profile was edited:", error)
+        console.warn('Refetch failed, but profile was edited:', error);
       }
       setMe({ ...data });
       onSuccess?.(data);

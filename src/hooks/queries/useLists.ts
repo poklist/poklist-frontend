@@ -1,7 +1,7 @@
+import axios from '@/api/axios';
 import ApiPath from '@/constants/apiPath';
 import { List } from '@/constants/list';
 import QueryKeys from '@/constants/queryKeys';
-import axios from '@/lib/axios';
 import { ListPreview } from '@/types/List';
 import { IResponse } from '@/types/response';
 import { useQuery } from '@tanstack/react-query';

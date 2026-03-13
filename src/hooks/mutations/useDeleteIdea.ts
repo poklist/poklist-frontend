@@ -1,9 +1,9 @@
+import axios from '@/api/axios';
 import ApiPath from '@/constants/apiPath';
 import { Idea } from '@/constants/list';
 import QueryKeys from '@/constants/queryKeys';
 import { MessageType } from '@/enums/Style/index.enum';
 import { toast } from '@/hooks/useToast';
-import axios from '@/lib/axios';
 import useCommonStore from '@/stores/useCommonStore';
 import { IResponse } from '@/types/response';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -49,8 +49,8 @@ const useDeleteIdea = ({ listID }: UseDeleteIdeaOptions) => {
         }),
         queryClient.refetchQueries({
           queryKey: [QueryKeys.INFINITE_IDEA, listID],
-        })
-      ])
+        }),
+      ]);
     },
     onError: (error) => {
       toast({
