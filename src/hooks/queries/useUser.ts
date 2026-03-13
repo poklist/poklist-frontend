@@ -1,5 +1,5 @@
+import axios from '@/api/axios';
 import QueryKeys from '@/constants/queryKeys';
-import axios from '@/lib/axios';
 import { IResponse } from '@/types/response';
 import { User } from '@/types/User';
 import { useQuery } from '@tanstack/react-query';

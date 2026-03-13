@@ -1,5 +1,6 @@
 'use client';
 
+import axios from '@/api/axios';
 import {
   Button,
   ButtonShape,
@@ -9,7 +10,6 @@ import {
 import { Drawer, DrawerContent } from '@/components/ui/drawer';
 import { ExternalLinks } from '@/constants/externalLink';
 import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
-import axios from '@/lib/axios';
 import { openWindow } from '@/lib/openLink';
 import useAuthStore from '@/stores/useAuthStore';
 import useCommonStore from '@/stores/useCommonStore';

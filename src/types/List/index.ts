@@ -36,10 +36,7 @@ export interface ListDetail {
 
 // TODO: conflict with IListInfo
 export interface List
-  extends ListCover,
-  ListSocialStats,
-  ListSocialStatus,
-  ListDetail {
+  extends ListCover, ListSocialStats, ListSocialStatus, ListDetail {
   ideas: IdeaPreview[];
   ideaTotalCount: number;
   owner: UserPreview;

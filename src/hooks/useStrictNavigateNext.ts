@@ -15,23 +15,23 @@ interface CreateIdeaOptions {
 const useStrictNavigationNext = () => {
   const router = useRouter();
   const temporaryIdeaStore = useTemporaryIdeaStore();
-  const { setIsLoading } = useCommonStore()
+  const { setIsLoading } = useCommonStore();
 
   const [isPending, startTransition] = useTransition();
   useEffect(() => {
-    setIsLoading(isPending)
-  }, [isPending])
+    setIsLoading(isPending);
+  }, [isPending]);
 
   const atNavigate = (navigationAction: () => void) => {
     startTransition(() => {
-      navigationAction()
-    })
-  }
+      navigationAction();
+    });
+  };
 
   return {
     refresh: () => {
       setIsLoading(true);
-      startTransition(() => router.refresh())
+      startTransition(() => router.refresh());
     },
     backward: () => atNavigate(() => router.back()),
     home: () => atNavigate(() => router.push('/')),
@@ -46,7 +46,7 @@ const useStrictNavigationNext = () => {
       atNavigate(() => {
         const cleanUserCode = migrateUserRoute(userCode);
         router.push(`/${cleanUserCode}`);
-      })
+      });
     },
     editUser: () => atNavigate(() => router.push('/user/edit')),
     createList: () => atNavigate(() => router.push('/list/create')),
@@ -60,25 +60,25 @@ const useStrictNavigationNext = () => {
         } else {
           router.push(path);
         }
-      })
+      });
     },
     reorderList: (userCode: string, listID: string) => {
       atNavigate(() => {
         const cleanUserCode = migrateUserRoute(userCode);
         router.push(`/${cleanUserCode}/list/${listID}/reorder`);
-      })
+      });
     },
     editList: (userCode: string, listID: string) => {
       atNavigate(() => {
         const cleanUserCode = migrateUserRoute(userCode);
         router.push(`/${cleanUserCode}/list/${listID}/edit`);
-      })
+      });
     },
     temporaryCreateList: (ideaForm: IdeaBody) => {
       atNavigate(() => {
         temporaryIdeaStore.setIdeaWithSync(ideaForm);
         router.push(`/idea/list`);
-      })
+      });
     },
     createIdea: (options?: CreateIdeaOptions | string) => {
       atNavigate(() => {
@@ -98,13 +98,13 @@ const useStrictNavigationNext = () => {
           router.push('/idea/create');
         }
         window.scrollTo({ top: 0, behavior: 'smooth' });
-      })
+      });
     },
     editIdea: (ideaID: string) => {
       atNavigate(() => {
         router.push(`/idea/${ideaID}/edit`);
         window.scrollTo({ top: 0, behavior: 'smooth' });
-      })
+      });
     },
   };
 };

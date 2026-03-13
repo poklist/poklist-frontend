@@ -1,9 +1,9 @@
+import axios from '@/api/axios';
 import ApiPath from '@/constants/apiPath';
 import { List } from '@/constants/list';
 import QueryKeys from '@/constants/queryKeys';
 import { MessageType } from '@/enums/Style/index.enum';
 import { toast } from '@/hooks/useToast';
-import axios from '@/lib/axios';
 import useCommonStore from '@/stores/useCommonStore';
 import { IResponse } from '@/types/response';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -52,7 +52,7 @@ export const useDeleteList = ({
           refetchType: 'inactive',
         });
       } catch (error) {
-        console.warn("Refetch failed, but list was deleted:", error)
+        console.warn('Refetch failed, but list was deleted:', error);
       }
 
       onSuccess?.();

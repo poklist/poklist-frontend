@@ -1,6 +1,6 @@
+import axios from '@/api/axios';
 import ApiPath from '@/constants/apiPath';
 import QueryKeys from '@/constants/queryKeys';
-import axios from '@/lib/axios';
 import { Category } from '@/types/List';
 import { IResponse } from '@/types/response';
 import { useQuery } from '@tanstack/react-query';

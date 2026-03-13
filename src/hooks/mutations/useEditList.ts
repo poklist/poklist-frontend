@@ -1,9 +1,9 @@
+import axios from '@/api/axios';
 import ApiPath from '@/constants/apiPath';
 import { Idea, List } from '@/constants/list';
 import QueryKeys from '@/constants/queryKeys';
 import { MessageType } from '@/enums/Style/index.enum';
 import { toast } from '@/hooks/useToast';
-import axios from '@/lib/axios';
 import useCommonStore from '@/stores/useCommonStore';
 import { CreateListResponse, ListBody } from '@/types/List';
 import { IResponse } from '@/types/response';
@@ -59,18 +59,20 @@ export const useEditList = ({
     },
     onSuccess: async (data) => {
       // Invalidate the list cache, trigger refetching
-      await Promise.all([queryClient.invalidateQueries({
-        queryKey: [QueryKeys.LISTS, userCode, listOffset, listLimit],
-        refetchType: 'inactive',
-      }),
-      // NOTE: I changed to listID to data.id.toString() to make the refetch work but idk why
-      queryClient.refetchQueries({
-        queryKey: [QueryKeys.LIST, data.id.toString(), ideaOffset, ideaLimit],
-      }),
-      queryClient.invalidateQueries({
-        queryKey: [QueryKeys.INFINITE_IDEA, data.id.toString()],
-        refetchType: 'inactive',
-      })])
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: [QueryKeys.LISTS, userCode, listOffset, listLimit],
+          refetchType: 'inactive',
+        }),
+        // NOTE: I changed to listID to data.id.toString() to make the refetch work but idk why
+        queryClient.refetchQueries({
+          queryKey: [QueryKeys.LIST, data.id.toString(), ideaOffset, ideaLimit],
+        }),
+        queryClient.invalidateQueries({
+          queryKey: [QueryKeys.INFINITE_IDEA, data.id.toString()],
+          refetchType: 'inactive',
+        }),
+      ]);
     },
     onError: (error) => {
       toast({

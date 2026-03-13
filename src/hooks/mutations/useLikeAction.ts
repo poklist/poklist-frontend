@@ -1,5 +1,5 @@
+import axios, { AxiosPayload } from '@/api/axios';
 import QueryKeys from '@/constants/queryKeys';
-import axios, { AxiosPayload } from '@/lib/axios';
 import useLikeStore from '@/stores/useLikeStore';
 import { useMutation, UseMutationResult } from '@tanstack/react-query';
 import { AxiosError, AxiosRequestConfig, Method } from 'axios';

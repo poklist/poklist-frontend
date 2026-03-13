@@ -1,9 +1,9 @@
+import axios from '@/api/axios';
 import ApiPath from '@/constants/apiPath';
 import { Idea } from '@/constants/list';
 import QueryKeys from '@/constants/queryKeys';
 import { MessageType } from '@/enums/Style/index.enum';
 import { toast } from '@/hooks/useToast';
-import axios from '@/lib/axios';
 import useCommonStore from '@/stores/useCommonStore';
 import { EditIdeaResponse, IdeaPreview } from '@/types/Idea';
 import { IResponse } from '@/types/response';
@@ -39,13 +39,15 @@ const useEditIdea = () => {
         Idea.DEFAULT_FIRST_BATCH_OFFSET,
         Idea.DEFAULT_BATCH_SIZE,
       ];
-      // Invalidate for triggering refetch     
-      await Promise.all([queryClient.invalidateQueries({ queryKey: ideaQueryKey }),
-      queryClient.invalidateQueries({ queryKey: listQueryKey }),
-      queryClient.invalidateQueries({
-        queryKey: [QueryKeys.INFINITE_IDEA, data.listID.toString()],
-        refetchType: 'inactive',
-      })])
+      // Invalidate for triggering refetch
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ideaQueryKey }),
+        queryClient.invalidateQueries({ queryKey: listQueryKey }),
+        queryClient.invalidateQueries({
+          queryKey: [QueryKeys.INFINITE_IDEA, data.listID.toString()],
+          refetchType: 'inactive',
+        }),
+      ]);
     },
     onError: (error) => {
       toast({

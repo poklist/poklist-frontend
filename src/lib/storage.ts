@@ -13,7 +13,10 @@ const versionSchema = z.string().regex(/^\d+\.\d+\.\d+$/);
  * This function should be called when the app initializes
  */
 export const checkAndMigrateStorage = (): boolean => {
-  const currentVersion = getLocalStorage(LocalStorageKey.VERSION_KEY, versionSchema);
+  const currentVersion = getLocalStorage(
+    LocalStorageKey.VERSION_KEY,
+    versionSchema
+  );
 
   // If no version exists or version doesn't match, clear all storage
   if (
@@ -22,8 +25,12 @@ export const checkAndMigrateStorage = (): boolean => {
     currentVersion !== STORAGE_VERSION
   ) {
     if (currentVersion === undefined) {
-      setLocalStorage(LocalStorageKey.VERSION_KEY, STORAGE_VERSION, versionSchema);
-      return false
+      setLocalStorage(
+        LocalStorageKey.VERSION_KEY,
+        STORAGE_VERSION,
+        versionSchema
+      );
+      return false;
     }
 
     console.warn(
@@ -33,7 +40,11 @@ export const checkAndMigrateStorage = (): boolean => {
     localStorage.clear();
 
     // Set the new version
-    setLocalStorage(LocalStorageKey.VERSION_KEY, STORAGE_VERSION, versionSchema);
+    setLocalStorage(
+      LocalStorageKey.VERSION_KEY,
+      STORAGE_VERSION,
+      versionSchema
+    );
 
     // You can add specific migration logic here if needed
     // For example:

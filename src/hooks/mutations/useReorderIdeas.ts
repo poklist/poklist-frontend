@@ -1,9 +1,9 @@
+import axios from '@/api/axios';
 import ApiPath from '@/constants/apiPath';
 import { Idea } from '@/constants/list';
 import QueryKeys from '@/constants/queryKeys';
 import { MessageType } from '@/enums/Style/index.enum';
 import { toast } from '@/hooks/useToast';
-import axios from '@/lib/axios';
 import { IdeaPreview } from '@/types/Idea';
 import { List } from '@/types/List';
 import { IResponse } from '@/types/response';
@@ -82,18 +82,20 @@ export const useReorderIdeas = ({
         });
       }
 
-      await Promise.all([queryClient.invalidateQueries({
-        queryKey: [
-          QueryKeys.LIST,
-          listID,
-          Idea.DEFAULT_FIRST_BATCH_OFFSET,
-          Idea.DEFAULT_BATCH_SIZE,
-        ],
-        refetchType: 'inactive',
-      }),
-      queryClient.invalidateQueries({
-        queryKey: [QueryKeys.ORDER_IDEAS, listID],
-      })])
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: [
+            QueryKeys.LIST,
+            listID,
+            Idea.DEFAULT_FIRST_BATCH_OFFSET,
+            Idea.DEFAULT_BATCH_SIZE,
+          ],
+          refetchType: 'inactive',
+        }),
+        queryClient.invalidateQueries({
+          queryKey: [QueryKeys.ORDER_IDEAS, listID],
+        }),
+      ]);
 
       onSuccess?.(serverData);
     },
