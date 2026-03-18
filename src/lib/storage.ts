@@ -3,7 +3,7 @@ import { getLocalStorage, setLocalStorage } from '@/lib/utils';
 import { z } from 'zod';
 
 // Define the current version of localStorage schema
-export const STORAGE_VERSION = '0.3.9';
+export const STORAGE_VERSION = '0.3.10';
 
 // Define the schema for version check
 const versionSchema = z.string().regex(/^\d+\.\d+\.\d+$/);

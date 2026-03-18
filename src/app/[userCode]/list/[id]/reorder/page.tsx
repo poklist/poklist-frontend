@@ -10,7 +10,6 @@ import { useOrderIdeas } from '@/hooks/queries/useOrderIdeas';
 import { useAuthCheck, useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { useUserRouteContext } from '@/hooks/useUserRouteContext';
-import useCommonStore from '@/stores/useCommonStore';
 import useUserStore from '@/stores/useUserStore';
 import { IdeaPreview } from '@/types/Idea';
 import { t } from '@lingui/macro';
@@ -27,26 +26,20 @@ const ReorderIdeaPage: React.FC = () => {
   const { checkAuthAndRedirect } = useAuthCheck();
 
   const { me } = useUserStore();
-  const { setIsLoading } = useCommonStore();
   const [ideasDraft, setIdeasDraft] = useState<IdeaPreview[]>();
   const [isOrderModified, setIsOrderModified] = useState(false);
 
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isLoading: isListLoading,
-    isFetchingNextPage,
-  } = useInfiniteIdea({
-    listID,
-    // enabled: !isDeleting,
-    limit: 20,
-  });
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useInfiniteIdea({
+      listID,
+      // enabled: !isDeleting,
+      limit: 20,
+    });
 
-  const { data: orderedIdeas, isLoading: isOrderIdeaLoading } = useOrderIdeas({
+  const { data: orderedIdeas } = useOrderIdeas({
     listID: listID ?? '',
   });
-  const { reorderIdeas, isReorderIdeasLoading } = useReorderIdeas({
+  const { reorderIdeas } = useReorderIdeas({
     listID: listID ?? '',
   });
 
@@ -92,14 +85,6 @@ const ReorderIdeaPage: React.FC = () => {
   const onBottomReached = () => {
     if (hasNextPage && !isFetchingNextPage) void fetchNextPage();
   };
-
-  useEffect(() => {
-    if (isListLoading || isOrderIdeaLoading || isReorderIdeasLoading) {
-      setIsLoading(true);
-    } else {
-      setIsLoading(false);
-    }
-  }, [isListLoading, isOrderIdeaLoading, isReorderIdeasLoading]);
 
   useEffect(() => {
     checkAuthAndRedirect();

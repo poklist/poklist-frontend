@@ -30,7 +30,6 @@ import { useDeleteList } from '@/hooks/mutations/useDeleteList';
 import { useAuthWrapper } from '@/hooks/useAuth';
 import { toast } from '@/hooks/useToast';
 import useAuthStore from '@/stores/useAuthStore';
-import useCommonStore from '@/stores/useCommonStore';
 import useLikeStore from '@/stores/useLikeStore';
 import useUserStore from '@/stores/useUserStore';
 import { List } from '@/types/List';
@@ -56,14 +55,13 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
   const { i18n } = useLingui();
   const navigateTo = useStrictNavigationAdapter();
 
-  const { setIsLoading } = useCommonStore();
   const { isLoggedIn } = useAuthStore();
   const { me } = useUserStore();
   const { getIsLiked } = useLikeStore();
   const { openDrawer } = useDrawer(DrawerIds.LIST_CARD_DRAWER_ID);
   const deleteDrawer = useDrawer(DrawerIds.DELETE_LIST_DRAWER_ID);
   const { withAuth } = useAuthWrapper();
-  const { deleteList, isDeleteListLoading } = useDeleteList({
+  const { deleteList } = useDeleteList({
     userCode: me.userCode,
   });
 
@@ -216,14 +214,6 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
       window.history.replaceState({}, '', newUrl.toString());
     }
   }, [searchParams]);
-
-  useEffect(() => {
-    if (isDeleteListLoading) {
-      setIsLoading(true);
-    } else {
-      setIsLoading(false);
-    }
-  }, [isDeleteListLoading]);
 
   const items: DropdownItem[] = [
     {

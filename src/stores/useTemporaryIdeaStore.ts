@@ -13,7 +13,7 @@ interface TemporaryIdeaStore {
   setIdeaWithSync: (idea: IdeaBody) => void;
   // loadFromLocalStorage: () => void;
   // clearIdea: () => void;
-  clearIfMatchLocalStorage: () => void;
+  // clearIfMatchLocalStorage: () => void;
 }
 
 export const useTemporaryIdeaStore = create<TemporaryIdeaStore>((set, get) => ({
@@ -43,25 +43,31 @@ export const useTemporaryIdeaStore = create<TemporaryIdeaStore>((set, get) => ({
   // },
 
   clearIfMatchLocalStorage: () => {
-    try {
-      const local = getLocalStorage(LocalStorageKey.IDEA_DRAFT, IdeaFormSchema);
-      const storeIdea = get().idea;
-      if (!local || !storeIdea) return;
+    // try {
+    const local = getLocalStorage(LocalStorageKey.IDEA_DRAFT, IdeaFormSchema);
+    const storeIdea = get().idea;
+    if (!local || !storeIdea) return;
 
-      const localIdea: IdeaBody = local;
+    const localIdea: IdeaBody = local;
 
-      const isMatch =
-        localIdea.title === storeIdea.title &&
-        localIdea.description === storeIdea.description &&
-        localIdea.coverImage === storeIdea.coverImage &&
-        localIdea.externalLink === storeIdea.externalLink;
+    const isMatch =
+      localIdea.title === storeIdea.title &&
+      localIdea.description === storeIdea.description &&
+      localIdea.coverImage === storeIdea.coverImage &&
+      localIdea.externalLink === storeIdea.externalLink;
 
-      if (isMatch) {
-        set({ idea: null });
-        removeLocalStorage(LocalStorageKey.IDEA_DRAFT);
-      }
-    } catch (error) {
-      console.error('clearIfMatchLocalStorage error:', error);
+    if (isMatch) {
+      set({ idea: null });
+      removeLocalStorage(LocalStorageKey.IDEA_DRAFT);
+    } else {
+
+      // } catch (error) {
+      console.error('clearIfMatchLocalStorage error:', `
+        title: ${localIdea.title} === ${storeIdea.title} | ${localIdea.title === storeIdea.title} &&
+      description: ${localIdea.description} === ${storeIdea.description} | ${localIdea.description === storeIdea.description} &&
+      coverImage: ${localIdea.coverImage} === ${storeIdea.coverImage} | ${localIdea.coverImage === storeIdea.coverImage} &&
+      externalLink: ${localIdea.externalLink} === ${storeIdea.externalLink} | ${localIdea.externalLink === storeIdea.externalLink}`);
     }
+    // }
   },
 }));

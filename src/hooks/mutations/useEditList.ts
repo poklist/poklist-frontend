@@ -4,11 +4,9 @@ import { Idea, List } from '@/constants/list';
 import QueryKeys from '@/constants/queryKeys';
 import { MessageType } from '@/enums/Style/index.enum';
 import { toast } from '@/hooks/useToast';
-import useCommonStore from '@/stores/useCommonStore';
 import { CreateListResponse, ListBody } from '@/types/List';
 import { IResponse } from '@/types/response';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
 
 interface UseEditListOptions {
   userCode: string; // to invalidate the useLists cache
@@ -25,8 +23,6 @@ export const useEditList = ({
   ideaOffset = Idea.DEFAULT_FIRST_BATCH_OFFSET,
   ideaLimit = Idea.DEFAULT_BATCH_SIZE,
 }: UseEditListOptions) => {
-  const [isEditing, setIsEditing] = useState(false);
-  const { setIsLoading } = useCommonStore();
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
@@ -53,10 +49,6 @@ export const useEditList = ({
       }
       return response.data.content;
     },
-    onMutate: () => {
-      setIsEditing(true);
-      setIsLoading(true);
-    },
     onSuccess: async (data) => {
       // Invalidate the list cache, trigger refetching
       await Promise.all([
@@ -80,14 +72,9 @@ export const useEditList = ({
         variant: MessageType.ERROR,
       });
     },
-    onSettled: () => {
-      setIsEditing(false);
-      setIsLoading(false);
-    },
   });
 
   return {
-    isEditListLoading: mutation.isPending || isEditing,
     editList: mutation.mutate,
     editListAsync: mutation.mutateAsync,
   };

@@ -6,7 +6,6 @@ import { useList } from '@/hooks/queries/useList';
 import { useAuthCheck, useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { useUserRouteContext } from '@/hooks/useUserRouteContext';
-import useCommonStore from '@/stores/useCommonStore';
 import useUserStore from '@/stores/useUserStore';
 import { ListBody, ListCover } from '@/types/List';
 import { useParams } from 'next/navigation';
@@ -18,14 +17,13 @@ const EditListPage: React.FC = () => {
   const listID = params?.id as string;
   const navigateTo = useStrictNavigationAdapter();
   const { checkAuthAndRedirect } = useAuthCheck();
-  const { setIsLoading } = useCommonStore();
   const { me } = useUserStore();
   const { withAuth } = useAuthWrapper();
 
-  const { data: list, isLoading: isListInfoLoading } = useList({
-    listID: listID,
+  const { data: list } = useList({
+    listID,
   });
-  const { isEditListLoading, editList } = useEditList({
+  const { editList } = useEditList({
     userCode: me.userCode,
   });
 
@@ -64,14 +62,6 @@ const EditListPage: React.FC = () => {
       }
     );
   });
-
-  useEffect(() => {
-    if (isEditListLoading || isListInfoLoading) {
-      setIsLoading(true);
-    } else {
-      setIsLoading(false);
-    }
-  }, [isEditListLoading, isListInfoLoading]);
 
   useEffect(() => {
     if (list) {

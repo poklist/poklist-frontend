@@ -93,7 +93,7 @@ export const LoginDrawer = () => {
     <GoogleOAuthProvider clientId={clientId}>
       <Drawer open={isLoginDrawerOpen} onOpenChange={handleClose}>
         <DrawerContent
-          aria-describedby="login-drawer-description"
+          aria-describedby={undefined}
           className="bg-white px-0 py-0"
         >
           <div className="flex flex-col justify-center gap-6 px-[72px] pt-8">

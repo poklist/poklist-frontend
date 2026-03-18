@@ -8,18 +8,18 @@ import { Textarea } from '@/components/ui/textarea';
 import { DrawerIds } from '@/constants/Drawer';
 import { TITLE_MAX_LENGTH } from '@/constants/form';
 import { CategoriesI18n } from '@/constants/Lists/i18n';
+import { LocalStorageKey } from '@/enums/index.enum';
 import { MessageType, RadioType } from '@/enums/Style/index.enum';
+import { useGetCategories } from '@/hooks/api/categories/useGetCategories';
 import { useCreateIdea } from '@/hooks/mutations/useCreateIdea';
 import { useCreateList } from '@/hooks/mutations/useCreateList';
-import { useCategories } from '@/hooks/queries/useCategories';
 import useAutoResizeTextarea from '@/hooks/ui/useAutoResizeTextarea';
 import useFormErrorHandler from '@/hooks/ui/useFormErrorHandler';
 import { useAuthCheck, useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigationNext from '@/hooks/useStrictNavigateNext';
 import { toast } from '@/hooks/useToast';
-import { formatInput } from '@/lib/utils';
+import { formatInput, removeLocalStorage } from '@/lib/utils';
 import { resolveListFormError } from '@/lib/validator';
-import useCommonStore from '@/stores/useCommonStore';
 import { useTemporaryIdeaStore } from '@/stores/useTemporaryIdeaStore';
 import useUserStore from '@/stores/useUserStore';
 import { ListFormSchema } from '@/types/common';
@@ -40,18 +40,17 @@ const defaultListInfo: z.infer<typeof ListFormSchema> = {
 const TemporaryCreateListPage: React.FC = () => {
   const navigateTo = useStrictNavigationNext();
 
-  const { setIsLoading } = useCommonStore();
   const { me } = useUserStore();
-  const { idea, clearIfMatchLocalStorage } = useTemporaryIdeaStore();
+  const { idea } = useTemporaryIdeaStore();
 
   const { withAuth } = useAuthWrapper();
   const { checkAuthAndRedirect } = useAuthCheck();
 
-  const { data: categories, isLoading: categoriesLoading } = useCategories();
-  const { createList, isCreateListLoading } = useCreateList({
+  const { categories, categoriesLoading } = useGetCategories();
+  const { createList } = useCreateList({
     userCode: me.userCode,
   });
-  const { mutate: createIdea, isPending: createIdeaLoading } = useCreateIdea();
+  const { mutate: createIdea } = useCreateIdea();
 
   const { openDrawer: openCategoryDrawer, closeDrawer: closeCategoryDrawer } =
     useDrawer(DrawerIds.CATEGORY_DRAWER_ID);
@@ -95,21 +94,20 @@ const TemporaryCreateListPage: React.FC = () => {
         if (!data) {
           throw new Error('Failed to create list');
         }
+        removeLocalStorage(LocalStorageKey.LIST_DRAFT);
         if (idea) {
           createIdea(
             { ...idea, listID: data.id },
             {
               onSuccess: () => {
-                // removeLocalStorage(LocalStorageKey.LIST_DRAFT);
-                clearIfMatchLocalStorage();
                 navigateTo.viewList(me.userCode, data.id.toString());
+                removeLocalStorage(LocalStorageKey.IDEA_DRAFT);
               },
               onError: (error: Error) => {
                 toast({
                   title: error.message,
                   variant: MessageType.ERROR,
                 });
-                setIsLoading(false);
               },
             }
           );
@@ -142,24 +140,6 @@ const TemporaryCreateListPage: React.FC = () => {
     });
     setRadioChoice(_radioChoice);
   }, [categories]);
-
-  useEffect(() => {
-    if (
-      isCreateListLoading ||
-      categoriesLoading ||
-      listForm.formState.isSubmitting ||
-      createIdeaLoading
-    ) {
-      setIsLoading(true);
-    } else {
-      setIsLoading(false);
-    }
-  }, [
-    isCreateListLoading,
-    categoriesLoading,
-    listForm.formState.isSubmitting,
-    createIdeaLoading,
-  ]);
 
   useEffect(() => {
     // Close drawers when the component is unmounted

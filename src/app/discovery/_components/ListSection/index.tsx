@@ -7,7 +7,7 @@ import {
   ButtonSize,
   ButtonVariant,
 } from '@/components/ui/button';
-import { useCategories } from '@/hooks/queries/useCategories';
+import { useGetCategories } from '@/hooks/api/categories/useGetCategories';
 import { useLatestListGroups } from '@/hooks/queries/useLatestListGroups';
 import { useUIStore } from '@/stores/useUIStore';
 import { LatestList } from '@/types/Discovery';
@@ -105,7 +105,7 @@ const ListSection = () => {
   }, [isVisible]);
 
   // 只在組件可見時加載數據
-  const { categories, categoriesLoading } = useCategories();
+  const { categories, categoriesLoading } = useGetCategories();
   const { latestListGroups = {}, isLoading: groupsLoading } =
     useLatestListGroups({
       enabled: isVisible,

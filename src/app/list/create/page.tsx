@@ -6,19 +6,17 @@ import { useCreateList } from '@/hooks/mutations/useCreateList';
 import { useAuthCheck, useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
 import { removeLocalStorage } from '@/lib/utils';
-import useCommonStore from '@/stores/useCommonStore';
 import useUserStore from '@/stores/useUserStore';
 import { ListBody } from '@/types/List';
 import React, { useEffect } from 'react';
 
 const CreatePage: React.FC = () => {
   const navigateTo = useStrictNavigateNext();
-  const { setIsLoading } = useCommonStore();
   const { me } = useUserStore();
   const { checkAuthAndRedirect } = useAuthCheck();
   const { withAuth } = useAuthWrapper();
 
-  const { createList, isCreateListLoading } = useCreateList({
+  const { createList } = useCreateList({
     userCode: me.userCode,
   });
 
@@ -27,14 +25,6 @@ const CreatePage: React.FC = () => {
       navigateTo.backward();
     }
   };
-
-  useEffect(() => {
-    if (isCreateListLoading) {
-      setIsLoading(true);
-    } else {
-      setIsLoading(false);
-    }
-  }, [isCreateListLoading]);
 
   const onCreateList = withAuth((listData: ListBody) => {
     createList(listData, {

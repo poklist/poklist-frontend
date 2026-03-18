@@ -4,16 +4,12 @@ import { Idea } from '@/constants/list';
 import QueryKeys from '@/constants/queryKeys';
 import { MessageType } from '@/enums/Style/index.enum';
 import { toast } from '@/hooks/useToast';
-import useCommonStore from '@/stores/useCommonStore';
 import { EditIdeaResponse, IdeaPreview } from '@/types/Idea';
 import { IResponse } from '@/types/response';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
 
 const useEditIdea = () => {
   const queryClient = useQueryClient();
-  const [isEditing, setIsEditing] = useState(false);
-  const { setIsLoading } = useCommonStore();
 
   const mutation = useMutation({
     mutationFn: async (params: IdeaPreview) => {
@@ -25,10 +21,6 @@ const useEditIdea = () => {
         throw new Error('Failed to edit idea');
       }
       return response.data.content;
-    },
-    onMutate: () => {
-      setIsEditing(true);
-      setIsLoading(true);
     },
     onSuccess: async (data) => {
       const ideaQueryKey = [QueryKeys.IDEA, data.id.toString()];
@@ -55,15 +47,10 @@ const useEditIdea = () => {
         variant: MessageType.ERROR,
       });
     },
-    onSettled: () => {
-      setIsEditing(false);
-      setIsLoading(false);
-    },
   });
 
   return {
     editIdea: mutation.mutate,
-    isEditIdeaLoading: mutation.isPending || isEditing,
     isEditIdeaError: mutation.isError,
     editIdeaError: mutation.error,
   };

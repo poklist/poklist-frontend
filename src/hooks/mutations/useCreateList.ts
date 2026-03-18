@@ -4,11 +4,9 @@ import { List } from '@/constants/list';
 import QueryKeys from '@/constants/queryKeys';
 import { MessageType } from '@/enums/Style/index.enum';
 import { toast } from '@/hooks/useToast';
-import useCommonStore from '@/stores/useCommonStore';
 import { CreateListResponse, ListBody } from '@/types/List';
 import { IResponse } from '@/types/response';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
 
 interface UseCreateListOptions {
   userCode: string; // to invalidate the useLists cache
@@ -26,8 +24,6 @@ export const useCreateList = ({
   onError,
 }: UseCreateListOptions) => {
   const queryClient = useQueryClient();
-  const [isCreating, setIsCreating] = useState(false);
-  const { setIsLoading } = useCommonStore();
 
   const mutation = useMutation({
     mutationFn: async (listForm: ListBody) => {
@@ -44,10 +40,6 @@ export const useCreateList = ({
         params
       );
       return response.data.content;
-    },
-    onMutate: () => {
-      setIsCreating(true);
-      setIsLoading(true);
     },
     onSuccess: async (data) => {
       if (!data) {
@@ -70,15 +62,10 @@ export const useCreateList = ({
       });
       onError?.(error);
     },
-    onSettled: () => {
-      setIsCreating(false);
-      setIsLoading(false);
-    },
   });
 
   return {
     createList: mutation.mutate,
     createListAsync: mutation.mutateAsync,
-    isCreateListLoading: mutation.isPending || isCreating,
   };
 };

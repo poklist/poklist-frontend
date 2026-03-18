@@ -9,17 +9,36 @@ import LoadingSpinner from '@/components/Loading';
 import { Toaster } from '@/components/ui/toaster';
 import useCommonStore from '@/stores/useCommonStore';
 import { Theme } from '@radix-ui/themes';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import {
+  QueryClient,
+  QueryClientProvider,
+  useIsFetching,
+  useIsMutating,
+} from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { AxiosError } from 'axios';
 import { ReactNode } from 'react';
 
 // 將 QueryClient 實例化移到組件外部
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      retry: 1,
-      staleTime: 1000 * 60,
-      gcTime: 1000 * 60 * 5,
+      retry: (failureCount, error) => {
+        const axiosError = error as AxiosError;
+        const statusCode = axiosError.response?.status;
+
+        if (statusCode === 401 || statusCode === 403 || statusCode === 404) {
+          return false;
+        }
+
+        if (failureCount >= 1) {
+          return false;
+        }
+
+        return true;
+      },
+      staleTime: 60000,
+      gcTime: 300000,
     },
   },
 });
@@ -27,6 +46,16 @@ const queryClient = new QueryClient({
 interface ClientProvidersProps {
   children: ReactNode;
 }
+
+const GlobalLoading = () => {
+  const { isLoading } = useCommonStore();
+  // 之後看要不要加個 Filter 指定某些行為用其他的 Loading 方式
+  const isFetching = useIsFetching();
+  const isMutating = useIsMutating();
+  const isApiLoading = isFetching > 0 || isMutating > 0;
+
+  return <LoadingSpinner isLoading={isLoading || isApiLoading} />;
+};
 
 /**
  * 客戶端 Provider 組件
@@ -40,8 +69,6 @@ interface ClientProvidersProps {
  * - ReactQueryDevtools: 開發工具
  */
 export const ClientProviders = ({ children }: ClientProvidersProps) => {
-  const { isLoading } = useCommonStore();
-
   return (
     <QueryClientProvider client={queryClient}>
       <Theme>
@@ -50,7 +77,7 @@ export const ClientProviders = ({ children }: ClientProvidersProps) => {
             {children}
 
             {/* 全域 UI 組件 */}
-            <LoadingSpinner isLoading={isLoading} />
+            <GlobalLoading />
             <LoginDrawer />
             <ErrorDrawer />
             <CreateListOrIdeaDrawer />

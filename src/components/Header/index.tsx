@@ -90,6 +90,7 @@ const Header: React.FC<HeaderProps> = ({
             alt="Relist"
             onClick={handleClickLogo}
             className="h-8"
+            priority
           />
         </div>
         <div

@@ -215,7 +215,7 @@ msgstr "排序靈感"
 #: src/app/[userCode]/list/[id]/reorder/page.tsx
 #: src/app/[userCode]/list/_components/Header/index.tsx
 #: src/app/idea/_components/Form/index.tsx
-#: src/app/idea/list/page.tsx
+#: src/app/idea/create/list/page.tsx
 #: src/app/list/_components/Form/index.tsx
 #: src/app/list/_components/Form/index.tsx
 #: src/components/FakePage/EditFieldFakePage.tsx
@@ -394,8 +394,8 @@ msgid "Cover Image"
 msgstr "封面圖片"
 
 #: src/app/idea/_components/Form/index.tsx
-#: src/app/idea/list/page.tsx
-#: src/app/idea/list/page.tsx
+#: src/app/idea/create/list/page.tsx
+#: src/app/idea/create/list/page.tsx
 #: src/app/list/_components/Form/index.tsx
 #: src/app/list/_components/Form/index.tsx
 msgid "Next"
@@ -471,50 +471,50 @@ msgstr "儲存"
 msgid "Create a new list"
 msgstr "建立新名單"
 
-#: src/app/idea/list/page.tsx
+#: src/app/idea/create/list/page.tsx
 #: src/app/list/_components/Form/index.tsx
 msgid "Create Idea List"
 msgstr "建立靈感名單"
 
-#: src/app/idea/list/page.tsx
+#: src/app/idea/create/list/page.tsx
 msgid "Give it a fun title! Like: My weekend musts"
 msgstr "取個響亮的名稱吧！像是：我最愛的週末小去處"
 
-#: src/app/idea/list/page.tsx
+#: src/app/idea/create/list/page.tsx
 #: src/app/list/_components/Form/index.tsx
 msgid "This is the title of your list"
 msgstr "在這輸入名單標題"
 
-#: src/app/idea/list/page.tsx
+#: src/app/idea/create/list/page.tsx
 msgid "Don’t worry, you can edit more details later!"
 msgstr "放心，稍後可以為名單編輯更多資訊！"
 
-#: src/app/idea/list/page.tsx
+#: src/app/idea/create/list/page.tsx
 #: src/app/list/_components/Form/index.tsx
 msgid "List Topic"
 msgstr "名單主題"
 
-#: src/app/idea/list/page.tsx
+#: src/app/idea/create/list/page.tsx
 #: src/app/list/_components/Form/index.tsx
 msgid "Choose a topic that vibes with your List."
 msgstr "選擇一項接近此份名單的分類"
 
-#: src/app/idea/list/page.tsx
+#: src/app/idea/create/list/page.tsx
 #: src/app/list/_components/Form/index.tsx
 msgid "Your edits will be lost if you cancel!"
 msgstr "取消後，資料就飛走囉！"
 
-#: src/app/idea/list/page.tsx
+#: src/app/idea/create/list/page.tsx
 #: src/app/list/_components/Form/index.tsx
 msgid "If you cancel, everything you've entered will be lost."
 msgstr "如果取消，所填的內容都會消失"
 
-#: src/app/idea/list/page.tsx
+#: src/app/idea/create/list/page.tsx
 #: src/app/list/_components/Form/index.tsx
 msgid "Cancel Editing"
 msgstr "取消編輯"
 
-#: src/app/idea/list/page.tsx
+#: src/app/idea/create/list/page.tsx
 #: src/app/list/_components/Form/index.tsx
 msgid "Continue Editing"
 msgstr "繼續編輯"
