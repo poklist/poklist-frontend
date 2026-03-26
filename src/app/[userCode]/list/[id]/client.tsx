@@ -48,8 +48,7 @@ const ViewListPageClient: React.FC<ViewListPageClientProps> = ({ listID }) => {
   } = useList({
     listID,
     offset: Idea.DEFAULT_FIRST_BATCH_OFFSET,
-    limit: Idea.DEFAULT_BATCH_SIZE,
-    // limit: 20,
+    limit: 0,
   });
 
   useEffect(() => {

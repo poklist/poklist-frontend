@@ -8,12 +8,14 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 
 interface UseInfiniteListOptions {
   listID?: string;
+  offset?: number;
   limit?: number;
   enabled?: boolean;
 }
 
 export const useInfiniteIdea = ({
   listID,
+  // offset = 0,
   limit = Idea.DEFAULT_BATCH_SIZE,
   enabled = true,
 }: UseInfiniteListOptions) => {

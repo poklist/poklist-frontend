@@ -132,6 +132,22 @@ msgstr "Confirm Delete"
 msgid "Cancel"
 msgstr "Cancel"
 
+#: src/app/[userCode]/list/[id]/_components/ListCard/_components/AddIdeaRow/index.tsx
+msgid "Add an idea"
+msgstr "Add an idea"
+
+#: src/app/[userCode]/list/[id]/_components/ListCard/_components/ListCardHeader/index.tsx
+msgid "Recently Updated"
+msgstr "Recently Updated"
+
+#: src/app/[userCode]/list/[id]/_components/ListCard/_components/ListCardHeader/index.tsx
+msgid "Listing since"
+msgstr "Listing since"
+
+#: src/app/[userCode]/list/[id]/_components/ListCard/_components/ListCardHeader/index.tsx
+msgid "Likes"
+msgstr "Likes"
+
 #: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
 msgid "Edit List Info"
 msgstr "Edit List Info"
@@ -149,22 +165,6 @@ msgstr "Reorder Idea"
 #: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
 msgid "Delete List"
 msgstr "Delete List"
-
-#: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
-msgid "Recently Updated"
-msgstr "Recently Updated"
-
-#: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
-msgid "Listing since"
-msgstr "Listing since"
-
-#: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
-msgid "Likes"
-msgstr "Likes"
-
-#: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
-msgid "Add an idea"
-msgstr "Add an idea"
 
 #: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
 #: src/app/[userCode]/list/_components/DeleteButton/index.tsx
