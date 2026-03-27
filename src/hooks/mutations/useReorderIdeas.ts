@@ -12,7 +12,6 @@ import {
   useMutation,
   useQueryClient,
 } from '@tanstack/react-query';
-import { useState } from 'react';
 
 interface UseReorderIdeasOptions {
   listID: string;
@@ -28,7 +27,6 @@ export const useReorderIdeas = ({
   onError,
 }: UseReorderIdeasOptions) => {
   const queryClient = useQueryClient();
-  const [isLoading, setIsLoading] = useState(false);
 
   const mutation = useMutation({
     mutationFn: async ({ ideaOrder }: { ideaOrder: number[] }) => {
@@ -44,9 +42,6 @@ export const useReorderIdeas = ({
         serverData: response.data.content,
         newOrder: ideaOrder,
       };
-    },
-    onMutate: () => {
-      setIsLoading(true);
     },
     onSuccess: async ({ serverData, newOrder }) => {
       const previousData = queryClient.getQueryData<
@@ -106,13 +101,9 @@ export const useReorderIdeas = ({
       });
       onError?.(error);
     },
-    onSettled: () => {
-      setIsLoading(false);
-    },
   });
 
   return {
-    isReorderIdeasLoading: mutation.isPending || isLoading,
     reorderIdeas: mutation.mutate,
   };
 };

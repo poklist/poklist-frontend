@@ -132,6 +132,22 @@ msgstr "Confirm Delete"
 msgid "Cancel"
 msgstr "Cancel"
 
+#: src/app/[userCode]/list/[id]/_components/ListCard/_components/AddIdeaRow/index.tsx
+msgid "Add an idea"
+msgstr "Add an idea"
+
+#: src/app/[userCode]/list/[id]/_components/ListCard/_components/ListCardHeader/index.tsx
+msgid "Recently Updated"
+msgstr "Recently Updated"
+
+#: src/app/[userCode]/list/[id]/_components/ListCard/_components/ListCardHeader/index.tsx
+msgid "Listing since"
+msgstr "Listing since"
+
+#: src/app/[userCode]/list/[id]/_components/ListCard/_components/ListCardHeader/index.tsx
+msgid "Likes"
+msgstr "Likes"
+
 #: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
 msgid "Edit List Info"
 msgstr "Edit List Info"
@@ -149,22 +165,6 @@ msgstr "Reorder Idea"
 #: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
 msgid "Delete List"
 msgstr "Delete List"
-
-#: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
-msgid "Recently Updated"
-msgstr "Recently Updated"
-
-#: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
-msgid "Listing since"
-msgstr "Listing since"
-
-#: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
-msgid "Likes"
-msgstr "Likes"
-
-#: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
-msgid "Add an idea"
-msgstr "Add an idea"
 
 #: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
 #: src/app/[userCode]/list/_components/DeleteButton/index.tsx
@@ -215,7 +215,7 @@ msgstr "Reorder Ideas"
 #: src/app/[userCode]/list/[id]/reorder/page.tsx
 #: src/app/[userCode]/list/_components/Header/index.tsx
 #: src/app/idea/_components/Form/index.tsx
-#: src/app/idea/list/page.tsx
+#: src/app/idea/create/list/page.tsx
 #: src/app/list/_components/Form/index.tsx
 #: src/app/list/_components/Form/index.tsx
 #: src/components/FakePage/EditFieldFakePage.tsx
@@ -394,8 +394,8 @@ msgid "Cover Image"
 msgstr "Cover Image"
 
 #: src/app/idea/_components/Form/index.tsx
-#: src/app/idea/list/page.tsx
-#: src/app/idea/list/page.tsx
+#: src/app/idea/create/list/page.tsx
+#: src/app/idea/create/list/page.tsx
 #: src/app/list/_components/Form/index.tsx
 #: src/app/list/_components/Form/index.tsx
 msgid "Next"
@@ -471,50 +471,50 @@ msgstr "Save"
 msgid "Create a new list"
 msgstr "Create a new list"
 
-#: src/app/idea/list/page.tsx
+#: src/app/idea/create/list/page.tsx
 #: src/app/list/_components/Form/index.tsx
 msgid "Create Idea List"
 msgstr "Create Idea List"
 
-#: src/app/idea/list/page.tsx
+#: src/app/idea/create/list/page.tsx
 msgid "Give it a fun title! Like: My weekend musts"
 msgstr "Give it a fun title! Like: My weekend musts"
 
-#: src/app/idea/list/page.tsx
+#: src/app/idea/create/list/page.tsx
 #: src/app/list/_components/Form/index.tsx
 msgid "This is the title of your list"
 msgstr "This is the title of your list"
 
-#: src/app/idea/list/page.tsx
+#: src/app/idea/create/list/page.tsx
 msgid "Don’t worry, you can edit more details later!"
 msgstr "Don’t worry, you can edit more details later!"
 
-#: src/app/idea/list/page.tsx
+#: src/app/idea/create/list/page.tsx
 #: src/app/list/_components/Form/index.tsx
 msgid "List Topic"
 msgstr "List Topic"
 
-#: src/app/idea/list/page.tsx
+#: src/app/idea/create/list/page.tsx
 #: src/app/list/_components/Form/index.tsx
 msgid "Choose a topic that vibes with your List."
 msgstr "Choose a topic that vibes with your List."
 
-#: src/app/idea/list/page.tsx
+#: src/app/idea/create/list/page.tsx
 #: src/app/list/_components/Form/index.tsx
 msgid "Your edits will be lost if you cancel!"
 msgstr "Your edits will be lost if you cancel!"
 
-#: src/app/idea/list/page.tsx
+#: src/app/idea/create/list/page.tsx
 #: src/app/list/_components/Form/index.tsx
 msgid "If you cancel, everything you've entered will be lost."
 msgstr "If you cancel, everything you've entered will be lost."
 
-#: src/app/idea/list/page.tsx
+#: src/app/idea/create/list/page.tsx
 #: src/app/list/_components/Form/index.tsx
 msgid "Cancel Editing"
 msgstr "Cancel Editing"
 
-#: src/app/idea/list/page.tsx
+#: src/app/idea/create/list/page.tsx
 #: src/app/list/_components/Form/index.tsx
 msgid "Continue Editing"
 msgstr "Continue Editing"

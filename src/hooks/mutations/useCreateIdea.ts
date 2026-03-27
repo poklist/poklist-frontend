@@ -4,11 +4,9 @@ import { Idea } from '@/constants/list';
 import QueryKeys from '@/constants/queryKeys';
 import { MessageType } from '@/enums/Style/index.enum';
 import { toast } from '@/hooks/useToast';
-import useCommonStore from '@/stores/useCommonStore';
 import { CreateIdeaRequest, CreateIdeaResponse } from '@/types/Idea';
 import { IResponse } from '@/types/response';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
 
 interface UseCreateIdeaOptions {
   onSuccess?: (data: CreateIdeaResponse) => void;
@@ -20,8 +18,6 @@ export const useCreateIdea = ({
   onError,
 }: UseCreateIdeaOptions = {}) => {
   const queryClient = useQueryClient();
-  const [isCreating, setIsCreating] = useState(false);
-  const { setIsLoading } = useCommonStore();
 
   const mutation = useMutation({
     mutationFn: async (ideaData: CreateIdeaRequest) => {
@@ -30,10 +26,6 @@ export const useCreateIdea = ({
         ideaData
       );
       return response.data.content;
-    },
-    onMutate: () => {
-      setIsCreating(true);
-      setIsLoading(true);
     },
     onSuccess: async (data) => {
       // 使相關的查詢失效，強制重新獲取
@@ -67,16 +59,11 @@ export const useCreateIdea = ({
       });
       onError?.(error);
     },
-    onSettled: () => {
-      setIsCreating(false);
-      setIsLoading(false);
-    },
   });
 
   return {
     ...mutation,
     createIdea: mutation.mutate,
     createIdeaAsync: mutation.mutateAsync,
-    isLoading: mutation.isPending || isCreating,
   };
 };

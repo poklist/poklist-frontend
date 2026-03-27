@@ -17,13 +17,11 @@ import { useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { toast } from '@/hooks/useToast';
 import { cn, removeLocalStorage } from '@/lib/utils';
-import useCommonStore from '@/stores/useCommonStore';
 import useUserStore from '@/stores/useUserStore';
 import { Trans } from '@lingui/macro';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 const ListSelectorFakePage: React.FC = () => {
-  const { setIsLoading } = useCommonStore();
   const { me } = useUserStore();
   const navigateTo = useStrictNavigationAdapter();
 
@@ -32,7 +30,7 @@ const ListSelectorFakePage: React.FC = () => {
 
   const { withAuth } = useAuthWrapper();
 
-  const { mutate: createIdea, isPending: createIdeaLoading } = useCreateIdea();
+  const { mutate: createIdea } = useCreateIdea();
 
   const [selectedList, setSelectedList] = useState(0);
 
@@ -42,16 +40,15 @@ const ListSelectorFakePage: React.FC = () => {
         { ...payload?.ideaForm, listID: selectedList },
         {
           onSuccess: () => {
-            removeLocalStorage(LocalStorageKey.IDEA_DRAFT);
-            onClosePage();
             navigateTo.viewList(me?.userCode, selectedList.toString());
+            onClosePage();
+            removeLocalStorage(LocalStorageKey.IDEA_DRAFT);
           },
           onError: (error: Error) => {
             toast({
               title: error.message,
               variant: MessageType.ERROR,
             });
-            setIsLoading(false);
           },
         }
       );
@@ -62,14 +59,6 @@ const ListSelectorFakePage: React.FC = () => {
     setSelectedList(0);
     closeFakePage();
   };
-
-  useEffect(() => {
-    if (createIdeaLoading) {
-      setIsLoading(true);
-    } else {
-      setIsLoading(false);
-    }
-  }, [createIdeaLoading]);
 
   return (
     <Dialog open={open} onOpenChange={onClosePage}>

@@ -1,231 +1,77 @@
-import { DrawerComponent } from '@/components/Drawer';
-import { useDrawer } from '@/components/Drawer/useDrawer';
-import { Button, ButtonShape, ButtonVariant } from '@/components/ui/button';
-import LinkIconWrapper from '@/components/ui/wrappers/LinkIconWrapper';
-import { DrawerIds } from '@/constants/Drawer';
-import {
-  DAY_IN_MS,
-  DESCRIPTION_PREVIEW_LENGTH,
-  RECENTLY_UPDATED_DAYS,
-} from '@/constants/list';
-import { Language, SocialLinkType } from '@/enums/index.enum';
-import { useIdea } from '@/hooks/queries/useIdea';
-import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
-import { openWindow } from '@/lib/openLink';
-import { getFormattedTime, parsePostgresDate } from '@/lib/time';
-import { cn, urlPreview } from '@/lib/utils';
-
 import DropdownMenuComponent, {
   DropdownItem,
 } from '@/app/[userCode]/list/[id]/_components/DropdownMenu';
-import IdeaDrawerContent from '@/app/[userCode]/list/[id]/_components/IdeaDrawerContent';
+import { AddIdeaRow } from '@/app/[userCode]/list/[id]/_components/ListCard/_components/AddIdeaRow';
+import { IdeaList } from '@/app/[userCode]/list/[id]/_components/ListCard/_components/IdeaList';
+import { ListCardDescription } from '@/app/[userCode]/list/[id]/_components/ListCard/_components/ListCardDescription';
+import ListCardHeader from '@/app/[userCode]/list/[id]/_components/ListCard/_components/ListCardHeader';
+import useListCard from '@/app/[userCode]/list/[id]/_components/ListCard/_hooks/useListCard';
+import { DrawerComponent } from '@/components/Drawer';
+import { Button, ButtonShape, ButtonVariant } from '@/components/ui/button';
 import IconAddCircle from '@/components/ui/icons/AddCircleIcon';
 import IconEdit from '@/components/ui/icons/EditIcon';
 import IconSort from '@/components/ui/icons/SortIcon';
 import IconThreeDots from '@/components/ui/icons/ThreeDots';
 import TrashIcon from '@/components/ui/icons/TrashIcon';
-import { CategoriesI18n } from '@/constants/Lists/i18n';
-import { DropdownItemType, MessageType } from '@/enums/Style/index.enum';
+import { DrawerIds } from '@/constants/Drawer';
+import { Language } from '@/enums/index.enum';
+import { DropdownItemType } from '@/enums/Style/index.enum';
 import { useDeleteList } from '@/hooks/mutations/useDeleteList';
 import { useAuthWrapper } from '@/hooks/useAuth';
-import { toast } from '@/hooks/useToast';
+import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
+import { getFormattedTime } from '@/lib/time';
+import { cn } from '@/lib/utils';
 import useAuthStore from '@/stores/useAuthStore';
-import useCommonStore from '@/stores/useCommonStore';
-import useLikeStore from '@/stores/useLikeStore';
 import useUserStore from '@/stores/useUserStore';
 import { List } from '@/types/List';
 import { t, Trans } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import Image from 'next/image';
-import { useParams, useSearchParams } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
-
-export interface ViewListNavigateState {
-  ideaID?: number;
-}
+import { useEffect, useState } from 'react';
 
 interface IListCardProps {
   data: List;
 }
 
 const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
-  const params = useParams();
-  const searchParams = useSearchParams();
-  const listID = params?.id as string;
-
   const { i18n } = useLingui();
   const navigateTo = useStrictNavigationAdapter();
 
-  const { setIsLoading } = useCommonStore();
   const { isLoggedIn } = useAuthStore();
   const { me } = useUserStore();
-  const { getIsLiked } = useLikeStore();
-  const { openDrawer } = useDrawer(DrawerIds.LIST_CARD_DRAWER_ID);
-  const deleteDrawer = useDrawer(DrawerIds.DELETE_LIST_DRAWER_ID);
   const { withAuth } = useAuthWrapper();
-  const { deleteList, isDeleteListLoading } = useDeleteList({
-    userCode: me.userCode,
-  });
+  const { deleteList } = useDeleteList({ userCode: me.userCode });
 
-  const [drawerContent, setDrawerContent] = useState<React.ReactNode>(null);
-  const [selectedIdeaID, setSelectedIdeaID] = useState<number | null>(null);
-  // FUTURE: move to custom hook?
+  const {
+    likeCount,
+    drawerContent,
+    setDrawerContent,
+    openDrawer,
+    openDeleteDrawer,
+    closeDeleteDrawer,
+    isUpdatedRecently,
+    onClickIdea,
+  } = useListCard(data);
+
+  // TODO: move to custom hook?
   const [createdAtString, setCreatedAtString] = useState('');
-  // Use useState to manage like count, initial value from data.likeCount
-  const [likeCount, setLikeCount] = useState(data.likeCount);
-  const externalLinkRef = useRef<HTMLDivElement>(null);
-
-  // Get current like status for this list
-  const isLiked = listID ? getIsLiked(listID) : false;
-  // Use useRef to track isLiked changes, preventing likeCount updates on first render
-  const prevIsLikedRef = useRef(isLiked);
-
-  // Update likeCount when data.likeCount changes (from API refetch)
-  useEffect(() => {
-    setLikeCount(data.likeCount);
-  }, [data.likeCount]);
-
-  // Listen to isLiked changes, only update likeCount when actual changes occur
-  useEffect(() => {
-    // Decrease likeCount when isLiked changes from true to false
-    if (prevIsLikedRef.current === true && isLiked === false) {
-      setLikeCount((prev) => prev - 1);
-    }
-    // Increase likeCount when isLiked changes from false to true
-    else if (prevIsLikedRef.current === false && isLiked === true) {
-      setLikeCount((prev) => prev + 1);
-    }
-    // Update prevIsLikedRef for next comparison
-    prevIsLikedRef.current = isLiked;
-  }, [isLiked]);
-
-  const { idea, isError } = useIdea({
-    ideaID: selectedIdeaID?.toString(),
-    enabled: !!selectedIdeaID,
-  });
-
-  useEffect(() => {
-    if (isError) {
-      toast({
-        title: 'Failed to fetch idea detail',
-        variant: MessageType.ERROR,
-      });
-      setSelectedIdeaID(null);
-    }
-  }, [isError]);
-
-  useEffect(() => {
-    if (idea && selectedIdeaID) {
-      setDrawerContent(<IdeaDrawerContent data={idea} />);
-      openDrawer();
-      setSelectedIdeaID(null);
-    }
-  }, [idea, selectedIdeaID, openDrawer]);
-
-  const isUpdatedRecently = () => {
-    try {
-      const currentTime = new Date().getTime();
-      const updatedDate = parsePostgresDate(data.updatedAt);
-
-      if (!updatedDate) {
-        console.error('Invalid date:', data.updatedAt);
-        return false;
-      }
-
-      return (
-        currentTime - updatedDate.getTime() < DAY_IN_MS * RECENTLY_UPDATED_DAYS
-      );
-    } catch (error) {
-      console.error('Error checking update time:', error);
-      return false;
-    }
-  };
-
-  // FUTURE: refactor the drawer content because we may have more than one drawer
-  const onClickDescription = () => {
-    if (
-      data.description === undefined ||
-      data.description.length <= DESCRIPTION_PREVIEW_LENGTH
-    ) {
-      return;
-    }
-    setDrawerContent(
-      <div className="mx-6 mb-14 mt-6">
-        <>{data.description}</>
-        {data.externalLink !== '' && (
-          <div className="mt-4 flex flex-nowrap items-center gap-2">
-            <LinkIconWrapper variant={SocialLinkType.CUSTOMIZED} />
-            <p
-              ref={externalLinkRef}
-              className="line-clamp-1 min-w-0 flex-1 truncate"
-            >
-              {urlPreview(data.externalLink)}
-            </p>
-          </div>
-        )}
-      </div>
-    );
-    openDrawer();
-  };
-
-  const onClickExternalLink = () => {
-    if (
-      externalLinkRef.current?.scrollHeight === undefined ||
-      externalLinkRef.current?.clientHeight === undefined ||
-      externalLinkRef.current.scrollHeight <=
-        externalLinkRef.current.clientHeight
-    ) {
-      openWindow(data.externalLink);
-      return;
-    }
-
-    setDrawerContent(
-      <div className="flex h-8 cursor-pointer items-start gap-2 break-all px-2 text-[13px]">
-        <LinkIconWrapper variant={SocialLinkType.CUSTOMIZED} />
-        <a
-          className="text-black-text-01"
-          href={data.externalLink}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {data.externalLink}
-        </a>
-      </div>
-    );
-    openDrawer();
-  };
-
-  const onClickIdea = (ideaID: number) => {
-    setSelectedIdeaID(ideaID);
-  };
 
   useEffect(() => {
     const locale =
-      i18n.locale === (Language.ZH_TW as string) ? Language.ZH_TW : Language.EN; // FUTURE: be aware of the future i18n support
+      i18n.locale === (Language.ZH_TW as string) ? Language.ZH_TW : Language.EN;
     setCreatedAtString(getFormattedTime(data.createdAt, locale));
   }, [data.createdAt, i18n.locale]);
 
-  // 替換 location.state 的處理方式，使用 searchParams
-  useEffect(() => {
-    const ideaIDFromUrl = searchParams?.get('ideaID');
-    if (ideaIDFromUrl) {
-      onClickIdea(Number(ideaIDFromUrl));
-      // 清除 URL 中的 ideaID 參數
-      const newUrl = new URL(window.location.href);
-      newUrl.searchParams.delete('ideaID');
-      window.history.replaceState({}, '', newUrl.toString());
-    }
-  }, [searchParams]);
+  const isOwner = isLoggedIn && me?.id === data.owner.id;
 
-  useEffect(() => {
-    if (isDeleteListLoading) {
-      setIsLoading(true);
-    } else {
-      setIsLoading(false);
-    }
-  }, [isDeleteListLoading]);
+  const buildIdeaCreateUrl = () => {
+    const params = new URLSearchParams();
+    params.set('listID', data.id.toString());
+    params.set('listTitle', data.title);
+    return `/idea/create?${params.toString()}`;
+  };
 
-  const items: DropdownItem[] = [
+  const dropdownItems: DropdownItem[] = [
     {
       type: DropdownItemType.ITEM,
       label: t`Edit List Info`,
@@ -235,12 +81,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
     {
       type: DropdownItemType.ITEM,
       label: t`Add Idea`,
-      onClick: () => {
-        const params = new URLSearchParams();
-        params.set('listID', data.id.toString());
-        params.set('listTitle', data.title);
-        navigateTo.createIdea(`/idea/create?${params.toString()}`);
-      },
+      onClick: () => navigateTo.createIdea(buildIdeaCreateUrl()),
       icon: <IconAddCircle />,
     },
     {
@@ -253,7 +94,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
     {
       type: DropdownItemType.ITEM,
       label: t`Delete List`,
-      onClick: () => deleteDrawer.openDrawer(),
+      onClick: () => openDeleteDrawer(),
       icon: <TrashIcon />,
       danger: true,
     },
@@ -261,15 +102,20 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
 
   const onDeleteList = withAuth(() => {
     deleteList(data.id, {
-      onSuccess: () => {
-        navigateTo.user(me.userCode);
-      },
+      onSuccess: () => navigateTo.user(me.userCode),
     });
   });
+
+  const handleExpandContent = (content: React.ReactNode) => {
+    setDrawerContent(content);
+    openDrawer();
+  };
+
   return (
     <>
       <div className="relative flex flex-col items-center rounded-[32px] border border-black bg-white pb-10 pt-6">
-        {isLoggedIn && me?.id === data.owner.id && (
+        {/* Owner Dropdown */}
+        {isOwner && (
           <DropdownMenuComponent
             trigger={
               <div
@@ -281,127 +127,61 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
                 <IconThreeDots width={17.5} />
               </div>
             }
-            items={items}
+            items={dropdownItems}
           />
         )}
-        <div className="flex w-full flex-col items-center px-4">
-          {isUpdatedRecently() && (
-            <div className="-tracking-0.8% mb-2 flex h-[27px] items-center justify-center rounded-full bg-yellow-bright-01 px-4 text-[13px] font-semibold">
-              <Trans>Recently Updated</Trans>
-            </div>
-          )}
-          <div className="tracking-0.8% text-[13px]">
-            <Trans>Listing since</Trans> {createdAtString}
-          </div>
-          <div className="-tracking-2% mt-4 break-words text-center text-[26px] font-extrabold [line-break:anywhere]">
-            {data.title}
-          </div>
-          <div className="tracking-0.8% mt-4 flex gap-2 text-[13px]">
-            <p>{i18n._(CategoriesI18n[data.categoryID])}</p>
-            <p>•</p>
-            <p>
-              {likeCount} <Trans>Likes</Trans>
-            </p>
-          </div>
 
-          {data.description && (
-            <div
-              className="mt-6 line-clamp-1 w-full truncate text-[15px] -tracking-1.1%"
-              onClick={onClickDescription}
-            >
-              {data.description}
-            </div>
-          )}
-          {data.externalLink && (
-            <div
-              className="mt-4 flex h-8 cursor-pointer items-center gap-2 self-start text-[13px]"
-              onClick={onClickExternalLink}
-            >
-              <LinkIconWrapper variant={SocialLinkType.CUSTOMIZED} />
-              <p ref={externalLinkRef} className="line-clamp-1">
-                {urlPreview(data.externalLink)}
-              </p>
-            </div>
-          )}
-          {data.coverImage && (
+        {/* Header: Title, Category, Likes, Date */}
+        <ListCardHeader
+          title={data.title}
+          categoryID={data.categoryID}
+          likeCount={likeCount}
+          createdAtString={createdAtString}
+          isUpdatedRecently={isUpdatedRecently()}
+        />
+
+        {/* Description & External Link */}
+        <div className="w-full px-4">
+          <ListCardDescription
+            description={data.description}
+            externalLink={data.externalLink}
+            onExpandDescription={handleExpandContent}
+          />
+        </div>
+
+        {/* Cover Image */}
+        {data.coverImage && (
+          <div className="mt-4 px-4">
             <Image
-              src={data.coverImage || ''}
+              src={data.coverImage}
               alt={data.title}
               width={374}
               height={374}
-              className="mt-4 rounded-xl border border-black"
+              className="rounded-xl border border-black"
             />
-          )}
-        </div>
-        {isLoggedIn && me?.id === data.owner.id && (
-          <div className="mt-4 w-full">
-            <div
-              onClick={() => {
-                // 使用 URL parameters 代替 state 來傳遞數據
-                const params = new URLSearchParams();
-                params.set('listID', data.id.toString());
-                params.set('listTitle', data.title);
-                navigateTo.createIdea(`/idea/create?${params.toString()}`);
-              }}
-              className="flex min-h-[65px] items-center gap-2.5 border-b border-t border-gray-main-03 p-4 text-[15px] font-semibold -tracking-1.1% text-black-text-01"
-            >
-              <IconAddCircle
-                width={18}
-                height={18}
-                className="rounded-full bg-yellow-bright-01"
-              />
-              <Trans>Add an idea</Trans>
-            </div>
           </div>
         )}
-        {data.ideas.length > 0 ? (
-          <div className="flex w-full flex-col">
-            {data.ideas.map((idea) => {
-              return (
-                <div
-                  key={idea.id}
-                  className="flex min-h-[65px] items-center justify-between gap-2 border-t border-gray-main-03 p-4 -tracking-1.1% first:border-t-0 last:pb-0"
-                  onClick={() => onClickIdea(idea.id)}
-                >
-                  <div
-                    className={cn(
-                      `flex flex-col gap-2`,
-                      idea.coverImage ? 'w-[calc(100%-72px)]' : 'w-full'
-                    )}
-                  >
-                    <p className="break-words text-[15px] font-semibold text-black-text-01 [line-break:anywhere]">
-                      {idea.title}
-                    </p>
-                    {idea.description && (
-                      <p className="line-clamp-1 truncate text-[13px] text-gray-storm-01">
-                        {idea.description}
-                      </p>
-                    )}
-                  </div>
-                  {idea.coverImage && (
-                    <Image
-                      src={idea.coverImage || ''}
-                      alt={idea.title}
-                      width={64}
-                      height={64}
-                      className="rounded-lg border border-black-text-01"
-                    />
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        ) : (
-          // FIXME 無靈感文字/NoDataComponent？
-          <></>
+
+        {/* Owner: Add Idea */}
+        {isOwner && (
+          <AddIdeaRow
+            onClick={() => navigateTo.createIdea(buildIdeaCreateUrl())}
+          />
         )}
+
+        {/* Idea List */}
+        <IdeaList listID={data.id.toString()} onClickIdea={onClickIdea} />
       </div>
+
+      {/* Content Drawer (description / external link / idea detail) */}
       <DrawerComponent
         drawerId={DrawerIds.LIST_CARD_DRAWER_ID}
         isShowClose={false}
         content={drawerContent}
         className="max-h-[75dvh] px-0 py-0"
       />
+
+      {/* Delete Confirmation Drawer */}
       <DrawerComponent
         drawerId={DrawerIds.DELETE_LIST_DRAWER_ID}
         isShowClose={true}
@@ -417,7 +197,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
         startFooter={
           <Button
             onClick={() => {
-              deleteDrawer.closeDrawer();
+              closeDeleteDrawer();
               onDeleteList();
             }}
             variant={ButtonVariant.WARNING}
@@ -428,7 +208,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
         }
         endFooter={
           <Button
-            onClick={() => deleteDrawer.closeDrawer()}
+            onClick={() => closeDeleteDrawer()}
             variant={ButtonVariant.BLACK}
             shape={ButtonShape.ROUNDED_5PX}
           >

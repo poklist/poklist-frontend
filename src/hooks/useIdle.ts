@@ -12,6 +12,7 @@ type UseIdleOptions<T extends FieldValues> = {
 type UseIdleReturn = {
   isIdle: boolean;
   lastActive: number;
+  stop: () => void;
   reset: () => void;
 };
 
@@ -24,19 +25,20 @@ const useIdle = <T extends FieldValues>({
   const [isIdle, setIsIdle] = useState(initialState);
   const [lastActive, setLastActive] = useState<number>(Date.now());
   const lastActiveRef = useRef<number>(Date.now());
+  const isPending = useRef(false)
 
   // idle 到期時觸發
   const handleIdle = () => {
     setIsIdle(true);
   };
 
-  const { start, stop } = useTimeout(handleIdle, timeout);
+  const { start: timeoutStart, stop: timeoutStop } = useTimeout(handleIdle, timeout);
 
   const reset = useCallback(() => {
     setIsIdle(false);
-    stop();
-    start();
-  }, [start, stop]);
+    timeoutStop();
+    timeoutStart();
+  }, [timeoutStart, timeoutStop]);
 
   // Trigger
   const handleActivity = useCallback(() => {
@@ -48,9 +50,23 @@ const useIdle = <T extends FieldValues>({
       setLastActive(now); // 只在 idle → active 時更新狀態
     }
 
-    stop();
-    start();
-  }, [isIdle, start, stop]);
+    timeoutStop();
+    timeoutStart();
+  }, [isIdle, timeoutStart, timeoutStop]);
+
+  // const start = () => {
+  //   if (isPending.current) return
+  //   isPending.current = true;
+  //   if (!initialState) {
+  //     reset()
+  //   }
+  // }
+
+  const stop = () => {
+    setIsIdle(initialState)
+    timeoutStop();
+    isPending.current = false
+  }
 
   // // init lastActive
   // useEffect(() => {
@@ -82,15 +98,15 @@ const useIdle = <T extends FieldValues>({
       handleActivity();
     });
 
-    start();
+    timeoutStart();
 
     return () => {
       subscription.unsubscribe();
-      stop();
+      timeoutStop();
     };
   }, [watch]);
 
-  return { isIdle, lastActive, reset };
+  return { isIdle, lastActive, stop, reset };
 };
 
 export default useIdle;

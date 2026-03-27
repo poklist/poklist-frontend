@@ -77,7 +77,7 @@ const useStrictNavigationNext = () => {
     temporaryCreateList: (ideaForm: IdeaBody) => {
       atNavigate(() => {
         temporaryIdeaStore.setIdeaWithSync(ideaForm);
-        router.push(`/idea/list`);
+        router.push(`/idea/create/list`);
       });
     },
     createIdea: (options?: CreateIdeaOptions | string) => {

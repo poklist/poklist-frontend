@@ -69,7 +69,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
     },
   });
 
-  const { isIdle, reset } = useIdle({
+  const { isIdle, stop, reset } = useIdle({
     timeout: 2000,
     watch: ideaForm.watch,
   });
@@ -123,6 +123,12 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
 
   const onSubmit = (data: z.infer<typeof IdeaFormSchema>) => {
     completedCallback(data);
+    setLocalStorage(
+      LocalStorageKey.IDEA_DRAFT,
+      ideaForm.getValues(),
+      IdeaFormSchema
+    );
+    stop();
   };
 
   const onRestoreDraft = async () => {

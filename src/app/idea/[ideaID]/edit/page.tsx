@@ -6,7 +6,6 @@ import { useIdea } from '@/hooks/queries/useIdea';
 import { useList } from '@/hooks/queries/useList';
 import { useAuthCheck, useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
-import useCommonStore from '@/stores/useCommonStore';
 import useUserStore from '@/stores/useUserStore';
 import { IdeaBody } from '@/types/Idea';
 import { Skeleton, Text } from '@radix-ui/themes';
@@ -17,9 +16,7 @@ const EditIdeaPage: React.FC = () => {
   const params = useParams();
   const id = params?.ideaID as string;
   const navigateTo = useStrictNavigationAdapter();
-  // const [isDeleting, setIsDeleting] = useState(false);
 
-  const { setIsLoading } = useCommonStore();
   const { me } = useUserStore();
   const { checkAuthAndRedirect } = useAuthCheck();
   const { withAuth } = useAuthWrapper();
@@ -34,24 +31,10 @@ const EditIdeaPage: React.FC = () => {
   });
   const listID = useMemo(() => idea?.listID.toString() ?? '', [idea?.listID]);
 
-  // const { deleteIdea, isDeleteIdeaLoading } = useDeleteIdea({
-  //   listID,
-  // });
-  const { editIdea, isEditIdeaLoading } = useEditIdea();
-  const { data: list, isLoading: isListLoading } = useList({
+  const { editIdea } = useEditIdea();
+  const { data: list } = useList({
     listID,
   });
-
-  // const onDeleteIdea = withAuth(() => {
-  //   if (idea) {
-  //     setIsDeleting(true);
-  //     deleteIdea(idea.id, {
-  //       onSuccess: () => {
-  //         navigateTo.manageList(me.userCode, listID);
-  //       },
-  //     });
-  //   }
-  // });
 
   const onDismissEdit = (isFormNotEdited: boolean) => {
     if (idea && isFormNotEdited) {
@@ -73,19 +56,6 @@ const EditIdeaPage: React.FC = () => {
       },
     });
   });
-
-  useEffect(() => {
-    if (
-      isIdeaLoading ||
-      // isDeleteIdeaLoading ||
-      isListLoading ||
-      isEditIdeaLoading
-    ) {
-      setIsLoading(true);
-    } else {
-      setIsLoading(false);
-    }
-  }, [isListLoading, isEditIdeaLoading, isIdeaLoading]);
 
   useEffect(() => {
     checkAuthAndRedirect();

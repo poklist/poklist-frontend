@@ -4,10 +4,8 @@ import { Idea } from '@/constants/list';
 import QueryKeys from '@/constants/queryKeys';
 import { MessageType } from '@/enums/Style/index.enum';
 import { toast } from '@/hooks/useToast';
-import useCommonStore from '@/stores/useCommonStore';
 import { IResponse } from '@/types/response';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
 
 interface UseDeleteIdeaOptions {
   listID: string;
@@ -15,8 +13,6 @@ interface UseDeleteIdeaOptions {
 
 const useDeleteIdea = ({ listID }: UseDeleteIdeaOptions) => {
   const queryClient = useQueryClient();
-  const [isDeleting, setIsDeleting] = useState(false);
-  const { setIsLoading } = useCommonStore();
 
   const mutation = useMutation({
     mutationFn: async (ideaID: number) => {
@@ -27,10 +23,6 @@ const useDeleteIdea = ({ listID }: UseDeleteIdeaOptions) => {
         throw new Error('Failed to delete idea');
       }
       return;
-    },
-    onMutate: () => {
-      setIsDeleting(true);
-      setIsLoading(true);
     },
     onSuccess: async (_, ideaID) => {
       // Remove the deleted idea's cache
@@ -58,15 +50,10 @@ const useDeleteIdea = ({ listID }: UseDeleteIdeaOptions) => {
         variant: MessageType.ERROR,
       });
     },
-    onSettled: () => {
-      setIsDeleting(false);
-      setIsLoading(false);
-    },
   });
 
   return {
     deleteIdea: mutation.mutate,
-    isDeleteIdeaLoading: mutation.isPending || isDeleting,
     isDeleteIdeaError: mutation.isError,
     deleteIdeaError: mutation.error,
   };

@@ -4,14 +4,12 @@ import { MessageType } from '@/enums/Style/index.enum';
 import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
 import { toast } from '@/hooks/useToast';
 import useAuthStore from '@/stores/useAuthStore';
-import useCommonStore from '@/stores/useCommonStore';
 import useUserStore from '@/stores/useUserStore';
 import { IResponse } from '@/types/response';
 import { UpdateUserResponse, User } from '@/types/User';
 import { t } from '@lingui/macro';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { useState } from 'react';
 
 interface UseEditProfileOptions {
   onSuccess?: (data: UpdateUserResponse) => void;
@@ -26,8 +24,6 @@ export const useEditProfile = ({
   const { setMe, me } = useUserStore();
   const navigateTo = useStrictNavigateNext();
   const queryClient = useQueryClient();
-  const [isEditing, setIsEditing] = useState(false);
-  const { setIsLoading } = useCommonStore();
 
   const mutation = useMutation({
     mutationFn: async ({ newUserInfo }: { newUserInfo: User }) => {
@@ -40,10 +36,6 @@ export const useEditProfile = ({
         params
       );
       return response.data.content;
-    },
-    onMutate: () => {
-      setIsEditing(true);
-      setIsLoading(true);
     },
     onSuccess: async (data) => {
       if (!data) {
@@ -84,15 +76,10 @@ export const useEditProfile = ({
       navigateTo.user(me.userCode);
       onError?.(error);
     },
-    onSettled: () => {
-      setIsEditing(false);
-      setIsLoading(false);
-    },
   });
 
   return {
     editProfile: mutation.mutate,
-    isLoading: mutation.isPending || isEditing,
     isError: mutation.isError,
     error: mutation.error,
   };

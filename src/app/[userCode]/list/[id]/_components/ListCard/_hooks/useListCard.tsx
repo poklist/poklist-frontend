@@ -1,0 +1,109 @@
+import IdeaDrawerContent from '@/app/[userCode]/list/[id]/_components/IdeaDrawerContent';
+import { useDrawer } from '@/components/Drawer/useDrawer';
+import { DrawerIds } from '@/constants/Drawer';
+import { DAY_IN_MS, RECENTLY_UPDATED_DAYS } from '@/constants/list';
+import { MessageType } from '@/enums/Style/index.enum';
+import { useIdea } from '@/hooks/queries/useIdea';
+import { toast } from '@/hooks/useToast';
+import { parsePostgresDate } from '@/lib/time';
+import useLikeStore from '@/stores/useLikeStore';
+import { List } from '@/types/List';
+import { useParams, useSearchParams } from 'next/navigation';
+import { useEffect, useRef, useState } from 'react';
+
+const useListCard = (data: List) => {
+  const params = useParams();
+  const searchParams = useSearchParams();
+  const listID = params?.id as string;
+
+  const { getIsLiked } = useLikeStore();
+  const { openDrawer } = useDrawer(DrawerIds.LIST_CARD_DRAWER_ID);
+  const deleteDrawer = useDrawer(DrawerIds.DELETE_LIST_DRAWER_ID);
+
+  const [drawerContent, setDrawerContent] = useState<React.ReactNode>(null);
+  const [selectedIdeaID, setSelectedIdeaID] = useState<number | null>(null);
+  const [likeCount, setLikeCount] = useState(data.likeCount);
+
+  const isLiked = listID ? getIsLiked(listID) : false;
+  // Use useRef to track isLiked changes, preventing likeCount updates on first render
+  const prevIsLikedRef = useRef(isLiked);
+
+  // Sync likeCount from server data
+  useEffect(() => {
+    setLikeCount(data.likeCount);
+  }, [data.likeCount]);
+
+  // Listen to isLiked changes, only update likeCount when actual changes occur
+  useEffect(() => {
+    // Decrease likeCount when isLiked changes from true to false
+    if (prevIsLikedRef.current === true && isLiked === false) {
+      setLikeCount((prev) => prev - 1);
+      // Increase likeCount when isLiked changes from false to true
+    } else if (prevIsLikedRef.current === false && isLiked === true) {
+      setLikeCount((prev) => prev + 1);
+    }
+    // Update prevIsLikedRef for next comparison
+    prevIsLikedRef.current = isLiked;
+  }, [isLiked]);
+
+  const { idea, isError } = useIdea({
+    ideaID: selectedIdeaID?.toString(),
+    enabled: !!selectedIdeaID,
+  });
+
+  useEffect(() => {
+    if (isError) {
+      toast({
+        title: 'Failed to fetch idea detail',
+        variant: MessageType.ERROR,
+      });
+      setSelectedIdeaID(null);
+    }
+  }, [isError]);
+
+  useEffect(() => {
+    if (idea && selectedIdeaID) {
+      setDrawerContent(<IdeaDrawerContent data={idea} />);
+      openDrawer();
+      setSelectedIdeaID(null);
+    }
+  }, [idea, selectedIdeaID, openDrawer]);
+
+  // Handle ideaID from URL params (replaces location.state)
+  useEffect(() => {
+    const ideaIDFromUrl = searchParams?.get('ideaID');
+    if (!ideaIDFromUrl) return;
+
+    setSelectedIdeaID(Number(ideaIDFromUrl));
+    const newUrl = new URL(window.location.href);
+    newUrl.searchParams.delete('ideaID');
+    window.history.replaceState({}, '', newUrl.toString());
+  }, [searchParams]);
+
+  const isUpdatedRecently = (): boolean => {
+    try {
+      const updatedDate = parsePostgresDate(data.updatedAt);
+      if (!updatedDate) return false;
+      return (
+        Date.now() - updatedDate.getTime() < DAY_IN_MS * RECENTLY_UPDATED_DAYS
+      );
+    } catch {
+      return false;
+    }
+  };
+
+  const onClickIdea = (ideaID: number) => setSelectedIdeaID(ideaID);
+
+  return {
+    likeCount,
+    drawerContent,
+    setDrawerContent,
+    openDrawer,
+    openDeleteDrawer: deleteDrawer.openDrawer,
+    closeDeleteDrawer: deleteDrawer.closeDrawer,
+    isUpdatedRecently,
+    onClickIdea,
+  };
+};
+
+export default useListCard;

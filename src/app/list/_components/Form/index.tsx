@@ -17,7 +17,7 @@ import { CategoriesI18n } from '@/constants/Lists/i18n';
 import { EditFieldVariant } from '@/enums/EditField/index.enum';
 import { LocalStorageKey } from '@/enums/index.enum';
 import { RadioType } from '@/enums/Style/index.enum';
-import { useCategories } from '@/hooks/queries/useCategories';
+import { useGetCategories } from '@/hooks/api/categories/useGetCategories';
 import useAutoResizeTextarea from '@/hooks/ui/useAutoResizeTextarea';
 import useFormErrorHandler from '@/hooks/ui/useFormErrorHandler';
 import useIdle from '@/hooks/useIdle';
@@ -29,7 +29,6 @@ import {
   setLocalStorage,
 } from '@/lib/utils';
 import { resolveListFormError } from '@/lib/validator';
-import useCommonStore from '@/stores/useCommonStore';
 import { ListFormSchema } from '@/types/common';
 import { IEditFieldConfig } from '@/types/EditField/index.d';
 import { ListBody } from '@/types/List';
@@ -57,7 +56,6 @@ const ListForm: React.FC<IListFormProps> = ({
   dismissCallback,
   completedCallback,
 }) => {
-  const { setIsLoading } = useCommonStore();
   const navigateTo = useStrictNavigateNext();
   const { openFakePage } = useFakePage();
   const [fieldConfig, setFieldConfig] = useState<IEditFieldConfig>();
@@ -67,7 +65,7 @@ const ListForm: React.FC<IListFormProps> = ({
     useDrawer(DrawerIds.CANCEL_LIST_FORM_CONFIRM_DRAWER_ID);
   const { openDrawer: openDraftDrawer, closeDrawer: closeDraftDrawer } =
     useDrawer(DrawerIds.LIST_DRAFT_DRAWER_ID);
-  const { data: categories, isLoading: categoriesLoading } = useCategories();
+  const { categories, categoriesLoading } = useGetCategories();
   const [mounted, setMounted] = useState(false);
 
   // TODO load from localStorage in v0.3.5
@@ -82,7 +80,10 @@ const ListForm: React.FC<IListFormProps> = ({
     },
   });
 
-  const { isIdle, reset } = useIdle({ timeout: 2000, watch: listForm.watch });
+  const { isIdle, stop, reset } = useIdle({
+    timeout: 2000,
+    watch: listForm.watch,
+  });
 
   const onOpenFakePage = () => {
     setFieldConfig({
@@ -123,6 +124,12 @@ const ListForm: React.FC<IListFormProps> = ({
     closeCategoryDrawer();
     try {
       completedCallback(data);
+      setLocalStorage(
+        LocalStorageKey.LIST_DRAFT,
+        listForm.getValues(),
+        ListFormSchema
+      );
+      stop();
     } catch (error) {
       console.error(`Failed to submit: ${String(error)}`);
       listForm.reset(listForm.getValues(), { keepDirty: true });
@@ -222,14 +229,6 @@ const ListForm: React.FC<IListFormProps> = ({
     });
     setRadioChoice(_radioChoice);
   }, [categories]);
-
-  useEffect(() => {
-    if (categoriesLoading || listForm.formState.isSubmitting) {
-      setIsLoading(true);
-    } else {
-      setIsLoading(false);
-    }
-  }, [categoriesLoading, listForm.formState.isSubmitting]);
 
   useEffect(() => {
     // Close drawers when the component is unmounted

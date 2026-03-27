@@ -11,27 +11,25 @@ import { useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { toast } from '@/hooks/useToast';
 import { removeLocalStorage } from '@/lib/utils';
-import useCommonStore from '@/stores/useCommonStore';
 import useUserStore from '@/stores/useUserStore';
 import { IdeaBody } from '@/types/Idea';
 import { useSearchParams } from 'next/navigation';
-import React, { useEffect } from 'react';
+import React from 'react';
 
 const IdeaCreatePage: React.FC = () => {
   const navigateTo = useStrictNavigationAdapter();
   const searchParams = useSearchParams();
   const listID = Number(searchParams?.get('listID'));
   const isNavigateFromList = listID > 0;
-  const { setIsLoading } = useCommonStore();
   const { me } = useUserStore();
 
   const { openFakePage } = useFakePage();
 
   const { withAuth } = useAuthWrapper();
 
-  const { mutate: createIdea, isPending: createIdeaLoading } = useCreateIdea();
+  const { mutate: createIdea } = useCreateIdea();
 
-  const { data: lists, isLoading: isGettingLists } = useListPreviews({
+  const { data: lists } = useListPreviews({
     userCode: me.userCode,
   });
 
@@ -47,15 +45,14 @@ const IdeaCreatePage: React.FC = () => {
         { ...ideaFormData, listID },
         {
           onSuccess: () => {
-            removeLocalStorage(LocalStorageKey.IDEA_DRAFT);
             navigateTo.viewList(me?.userCode, listID.toString());
+            removeLocalStorage(LocalStorageKey.IDEA_DRAFT);
           },
           onError: (error: Error) => {
             toast({
               title: error.message,
               variant: MessageType.ERROR,
             });
-            setIsLoading(false);
           },
         }
       );
@@ -64,21 +61,13 @@ const IdeaCreatePage: React.FC = () => {
     }
   });
 
-  useEffect(() => {
-    if (createIdeaLoading || isGettingLists) {
-      setIsLoading(true);
-    } else {
-      setIsLoading(false);
-    }
-  }, [createIdeaLoading, isGettingLists]);
-
   return (
     <div className="mt-16 flex min-h-screen flex-col gap-6 sm:min-h-[calc(100vh-196px)]">
       <IdeaForm
         completedCallback={onCreateIdea}
         dismissCallback={onDismissCreate}
       />
-      <ListSelectorFakePage />
+      {!isNavigateFromList && <ListSelectorFakePage />}
     </div>
   );
 };

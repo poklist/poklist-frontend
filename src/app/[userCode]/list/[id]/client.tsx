@@ -13,7 +13,6 @@ import { useAuthRequired } from '@/hooks/useAuthRequired';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { useUserRouteContext } from '@/hooks/useUserRouteContext';
 import useAuthStore from '@/stores/useAuthStore';
-import useCommonStore from '@/stores/useCommonStore';
 import useFollowingStore from '@/stores/useFollowingStore';
 import useLikeStore from '@/stores/useLikeStore';
 import useUserStore from '@/stores/useUserStore';
@@ -31,7 +30,6 @@ const ViewListPageClient: React.FC<ViewListPageClientProps> = ({ listID }) => {
   const { me } = useUserStore();
   const isMyPage = listOwnerUserCode === me.userCode;
   const navigateTo = useStrictNavigationAdapter();
-  const { setIsLoading } = useCommonStore();
 
   const { getIsLiked, setIsLiked, hasLikeState } = useLikeStore();
   const { setIsFollowing, hasFollowingState } = useFollowingStore();
@@ -39,11 +37,7 @@ const ViewListPageClient: React.FC<ViewListPageClientProps> = ({ listID }) => {
 
   const isLiked = listID ? getIsLiked(listID) : false;
 
-  const {
-    data: listOwner,
-    isLoading: isListOwnerLoading,
-    isError: isListOwnerError,
-  } = useUser({
+  const { data: listOwner, isError: isListOwnerError } = useUser({
     userCode: listOwnerUserCode,
   });
 
@@ -52,9 +46,9 @@ const ViewListPageClient: React.FC<ViewListPageClientProps> = ({ listID }) => {
     isLoading: isListLoading,
     isError: isListError,
   } = useList({
-    listID: listID,
+    listID,
     offset: Idea.DEFAULT_FIRST_BATCH_OFFSET,
-    limit: Idea.DEFAULT_BATCH_SIZE,
+    limit: 0,
   });
 
   useEffect(() => {
@@ -63,21 +57,13 @@ const ViewListPageClient: React.FC<ViewListPageClientProps> = ({ listID }) => {
     } else if (isListError) {
       navigateTo.user(listOwnerUserCode);
     }
-  }, [isListOwnerError, isListError, listOwnerUserCode, navigateTo]);
+  }, [isListOwnerError, isListError, listOwnerUserCode]);
 
   const { like, unlike } = useLikeAction({
     listID: listID || '',
     shouldAllow: () => isLoggedIn,
     onNotAllowed: handleAuthRequired,
   });
-
-  useEffect(() => {
-    if (isListLoading) {
-      setIsLoading(true);
-    } else {
-      setIsLoading(false);
-    }
-  }, [isListLoading]);
 
   useEffect(() => {
     if (listID && list) {
@@ -91,31 +77,22 @@ const ViewListPageClient: React.FC<ViewListPageClientProps> = ({ listID }) => {
   }, [list, listID, setIsLiked, hasLikeState]);
 
   useEffect(() => {
-    if (listOwnerUserCode && listOwner) {
-      const followingState = listOwner.isFollowing ?? false;
-      const hasExistingState = hasFollowingState(listOwnerUserCode);
+    if (!(listOwnerUserCode && listOwner)) {
+      return;
+    }
+    const followingState = listOwner.isFollowing ?? false;
+    const hasExistingState = hasFollowingState(listOwnerUserCode);
 
-      if (!hasExistingState) {
-        setIsFollowing(listOwnerUserCode, followingState);
-      }
+    if (!hasExistingState) {
+      setIsFollowing(listOwnerUserCode, followingState);
     }
   }, [listOwner, listOwnerUserCode, setIsFollowing, hasFollowingState]);
 
   useEffect(() => {
-    if (!isListOwnerLoading && !isListLoading && list?.owner && listID) {
-      if (listOwnerUserCode !== list?.owner.userCode) {
-        navigateTo.viewList(list?.owner.userCode, listID);
-      }
+    if (list?.owner && listID && listOwnerUserCode !== list?.owner.userCode) {
+      navigateTo.viewList(list?.owner.userCode, listID);
     }
-  }, [
-    isListOwnerError,
-    isListOwnerLoading,
-    isListLoading,
-    list?.owner,
-    listID,
-    listOwnerUserCode,
-    navigateTo,
-  ]);
+  }, [list?.owner, listID, listOwnerUserCode, list?.owner.userCode]);
 
   return (
     <>
@@ -123,7 +100,6 @@ const ViewListPageClient: React.FC<ViewListPageClientProps> = ({ listID }) => {
       <div className="relative flex min-h-screen flex-col sm:min-h-desktop-container">
         <BackToUserHeader owner={list?.owner} hasFollowButton={!isMyPage} />
         <div className="mb-[55px] flex-1 px-3 pt-4">
-          {/* {list && <ListCard data={list} />} */}
           {isListLoading ? (
             <ListCardSkeleton />
           ) : (
