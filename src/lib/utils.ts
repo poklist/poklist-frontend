@@ -113,3 +113,18 @@ export const ensureProtocol = (url: string): string => {
 export const formatInput = (targetValue: string): string => {
   return targetValue.replace(/ {2,}/g, ' ').replace(/\n/g, '');
 };
+
+export const to = <T, U = Error>(
+  promise: Promise<T>,
+  errorExt?: object
+): Promise<[U, undefined] | [null, T]> =>
+  promise
+    .then<[null, T]>((data: T) => [null, data])
+    .catch<[U, undefined]>((error: U) => {
+      if (errorExt) {
+        const parsedError = { ...error, ...errorExt };
+        return [parsedError, undefined];
+      }
+
+      return [error, undefined];
+    });

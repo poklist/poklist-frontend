@@ -15,9 +15,41 @@ const ListSection: React.FC = () => {
     userCode,
   });
 
+  // const {
+  //   data,
+  //   fetchNextPage,
+  //   hasNextPage,
+  //   isLoading: isListsLoading,
+  //   isFetchingNextPage,
+  // } = useInfiniteLists({ userCode, limit: 5 });
+
+  // const [lists, setLists] = useState<ListPreview[]>();
+
   if (isLoading || !listPreviews) {
     return <ListSectionSkeleton />;
   }
+
+  // useEffect(() => {
+  //   if (!data?.pages) return;
+
+  //   const newLists = data.pages
+  //     .flatMap((page) => page.list)
+  //     .filter((list): list is ListPreview => Boolean(list));
+
+  //   setLists((prevLists) => {
+  //     if (!prevLists) return newLists;
+
+  //     const existingIds = new Set(prevLists.map((list) => list.id));
+  //     const newIdeaList = newLists.filter((list) => !existingIds.has(list.id));
+  //     return newIdeaList.length === 0
+  //       ? prevLists
+  //       : [...prevLists, ...newIdeaList];
+  //   });
+  // }, [data]);
+
+  // const onBottomReached = () => {
+  //   if (hasNextPage && !isFetchingNextPage) void fetchNextPage();
+  // };
 
   return (
     <div role="list-preview" className="mb-10 flex-1 bg-transparent sm:mb-0">
@@ -49,6 +81,36 @@ const ListSection: React.FC = () => {
             </div>
           );
         })}
+        {/* {lists && (
+          <VirtualList
+            dataKey="id"
+            dataSource={lists}
+            onBottom={() => onBottomReached()}
+          >
+            {(list, _index, dataKey) => (
+              <div
+                key={dataKey}
+                className={`flex min-h-[72px] items-center justify-between border-black-text-01 p-4 -tracking-1.1%`}
+                onClick={() => {
+                  navigateTo.viewList(userCode, list.id.toString());
+                }}
+              >
+                <p className="text-[15px] font-semibold text-black-text-01 break-words [line-break:anywhere]">
+                  {list.title}
+                </p>
+                {list.coverImage && (
+                  <Image
+                    src={list.coverImage || ''}
+                    alt={list.title}
+                    width={40}
+                    height={40}
+                    className="rounded-[3px] border border-black-text-01"
+                  />
+                )}
+              </div>
+            )}
+          </VirtualList>
+        )} */}
       </div>
       <div className="flex flex-col items-center">
         {listPreviews.length === 0 && (

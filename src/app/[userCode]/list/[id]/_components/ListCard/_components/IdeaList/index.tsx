@@ -24,7 +24,7 @@ export const IdeaList: React.FC<IdeaListProps> = ({
     isFetchingNextPage,
     isLoading,
     isError,
-  } = useInfiniteIdea({ listID, limit: 20 });
+  } = useInfiniteIdea({ listID, limit: 10 });
 
   const onBottomReached = useCallback(() => {
     if (hasNextPage && !isFetchingNextPage) {

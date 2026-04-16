@@ -72,12 +72,12 @@ export const ClientProviders = ({ children }: ClientProvidersProps) => {
   return (
     <QueryClientProvider client={queryClient}>
       <Theme>
+        <GlobalLoading />
         <DrawerProvider>
           <FakePageProvider>
             {children}
 
             {/* 全域 UI 組件 */}
-            <GlobalLoading />
             <LoginDrawer />
             <ErrorDrawer />
             <CreateListOrIdeaDrawer />
