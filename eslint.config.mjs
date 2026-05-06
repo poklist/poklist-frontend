@@ -41,7 +41,6 @@ export default tseslint.config(
       ...reactHooks.configs.recommended.rules,
       ...react.configs.recommended.rules,
       ...react.configs['jsx-runtime'].rules,
-      'no-console': ['error', { allow: ['warn', 'error'] }],
     },
     settings: {
       react: { version: '18.3' },

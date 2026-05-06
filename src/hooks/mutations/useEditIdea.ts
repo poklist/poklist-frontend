@@ -1,6 +1,5 @@
 import axios from '@/api/axios';
 import ApiPath from '@/constants/apiPath';
-import { Idea } from '@/constants/list';
 import QueryKeys from '@/constants/queryKeys';
 import { MessageType } from '@/enums/Style/index.enum';
 import { toast } from '@/hooks/useToast';
@@ -25,16 +24,14 @@ const useEditIdea = () => {
     onSuccess: async (data) => {
       const ideaQueryKey = [QueryKeys.IDEA, data.id.toString()];
 
-      const listQueryKey = [
-        QueryKeys.LIST,
-        data.listID.toString(),
-        Idea.DEFAULT_FIRST_BATCH_OFFSET,
-        Idea.DEFAULT_BATCH_SIZE,
-      ];
       // Invalidate for triggering refetch
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ideaQueryKey }),
-        queryClient.invalidateQueries({ queryKey: listQueryKey }),
+        queryClient.invalidateQueries({
+          predicate: (query) =>
+            query.queryKey[0] === QueryKeys.LIST &&
+            query.queryKey[1] === data.listID.toString(),
+        }),
         queryClient.invalidateQueries({
           queryKey: [QueryKeys.INFINITE_IDEA, data.listID.toString()],
           refetchType: 'inactive',

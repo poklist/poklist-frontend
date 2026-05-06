@@ -22,8 +22,9 @@ interface ViewListPageClientProps {
   listID: string;
 }
 
-// eslint-disable-next-line react/prop-types
-const ViewListPageClient: React.FC<ViewListPageClientProps> = ({ listID }) => {
+const ViewListPageClient: React.FC<ViewListPageClientProps> = ({
+  listID,
+}: ViewListPageClientProps) => {
   const { userCode: listOwnerUserCode } = useUserRouteContext();
 
   const { isLoggedIn } = useAuthStore();
@@ -66,13 +67,14 @@ const ViewListPageClient: React.FC<ViewListPageClientProps> = ({ listID }) => {
   });
 
   useEffect(() => {
-    if (listID && list) {
-      const likeState = list.isLiked ?? false;
-      const hasExistingLikeState = hasLikeState(listID);
+    if (!(listID && list)) {
+      return;
+    }
+    const likeState = list.isLiked ?? false;
+    const hasExistingLikeState = hasLikeState(listID);
 
-      if (!hasExistingLikeState) {
-        setIsLiked(listID, likeState);
-      }
+    if (!hasExistingLikeState) {
+      setIsLiked(listID, likeState);
     }
   }, [list, listID, setIsLiked, hasLikeState]);
 

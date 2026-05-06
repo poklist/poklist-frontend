@@ -27,7 +27,9 @@ const useFollowings = ({
       }
       const response = await axios.get<IResponse<SocialLink[]>>(
         `${ApiPath.following}`,
-        { params: { userID } }
+        {
+          params: { userID },
+        }
       );
 
       return response.data.content;

@@ -4,6 +4,7 @@ import { useLingui } from '@lingui/react';
 interface ListCardHeaderProps {
   title: string;
   categoryID: number;
+  ideaCount: number;
   likeCount: number;
   createdAtString: string;
   isUpdatedRecently: boolean;
@@ -12,6 +13,7 @@ interface ListCardHeaderProps {
 const ListCardHeader: React.FC<ListCardHeaderProps> = ({
   title,
   categoryID,
+  ideaCount,
   likeCount,
   createdAtString,
   isUpdatedRecently,
@@ -33,6 +35,10 @@ const ListCardHeader: React.FC<ListCardHeaderProps> = ({
       </div>
       <div className="tracking-0.8% mt-4 flex gap-2 text-[13px]">
         <p>{i18n._(CategoriesI18n[categoryID])}</p>
+        <p>•</p>
+        <p>
+          {ideaCount} <Trans>Ideas</Trans>
+        </p>
         <p>•</p>
         <p>
           {likeCount} <Trans>Likes</Trans>

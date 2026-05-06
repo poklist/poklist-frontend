@@ -27,7 +27,9 @@ const useFollowers = ({
       }
       const response = await axios.get<IResponse<SocialLink[]>>(
         `${ApiPath.followers}`,
-        { params: { userID } }
+        {
+          params: { userID },
+        }
       );
 
       return response.data.content;

@@ -1,10 +1,10 @@
+import { GetFollowersResponse } from '@/api/query/followers';
 import FollowRelationsDrawer from '@/app/user/_components/FollowRelationsDrawer';
 import UserConnectionRow from '@/app/user/_components/UserConnectionRow';
-import { SocialLink } from '@/types/Relation';
 import { t, Trans } from '@lingui/macro';
 
 export interface FollowersListDrawerProps {
-  followersList: SocialLink[] | undefined;
+  followersList: GetFollowersResponse['content'] | undefined;
 }
 
 const FollowersListDrawer = ({ followersList }: FollowersListDrawerProps) => {
@@ -12,10 +12,10 @@ const FollowersListDrawer = ({ followersList }: FollowersListDrawerProps) => {
     <FollowRelationsDrawer
       drawerTrigger={
         <>
-          {followersList?.length || ' '} <Trans>Followers</Trans>
+          {followersList?.length || '0'} <Trans>Followers</Trans>
         </>
       }
-      headerTitle={`${followersList?.length || ' '} ${t`Followers`}`}
+      headerTitle={`${followersList?.length || '0'} ${t`Followers`}`}
       content={(onClose) => (
         <>
           {followersList && followersList.length > 0 ? (

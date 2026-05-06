@@ -1,3 +1,4 @@
+import { GetIdeaResponse } from '@/api/query/idea';
 import { DrawerComponent } from '@/components/Drawer';
 import { useDrawer } from '@/components/Drawer/useDrawer';
 import { EditFieldFakePageComponent } from '@/components/FakePage/EditFieldFakePage';
@@ -34,7 +35,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 interface IIdeaFormProps {
-  previousIdeaInfo?: IdeaResponse;
+  previousIdeaInfo?: IdeaResponse | GetIdeaResponse;
   dismissCallback: (isFormNotEdited: boolean) => void;
   completedCallback: (completedIdeaForm: IdeaBody) => void;
 }

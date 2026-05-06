@@ -46,7 +46,7 @@ const TemporaryCreateListPage: React.FC = () => {
   const { withAuth } = useAuthWrapper();
   const { checkAuthAndRedirect } = useAuthCheck();
 
-  const { categories, categoriesLoading } = useGetCategories();
+  const { data: categories, isLoading: categoriesLoading } = useGetCategories();
   const { createList } = useCreateList({
     userCode: me.userCode,
   });

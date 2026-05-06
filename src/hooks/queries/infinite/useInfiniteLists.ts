@@ -30,8 +30,10 @@ export const useInfiniteLists = ({
       if (!userCode) throw new Error('userCode is required');
 
       const response = await axios.get<IResponse<ListPreview[]>>(
-        `/${userCode}${ApiPath.lists}`,
-        { params: { offset: pageParam, limit } }
+        `/${userCode}/${ApiPath.lists}`,
+        {
+          params: { offset: pageParam, limit },
+        }
       );
 
       const list = response.data.content!;

@@ -44,6 +44,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
 
   const {
     likeCount,
+    ideaCount,
     drawerContent,
     setDrawerContent,
     openDrawer,
@@ -135,6 +136,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
         <ListCardHeader
           title={data.title}
           categoryID={data.categoryID}
+          ideaCount={ideaCount}
           likeCount={likeCount}
           createdAtString={createdAtString}
           isUpdatedRecently={isUpdatedRecently()}
@@ -169,8 +171,19 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
           />
         )}
 
-        {/* Idea List */}
-        <IdeaList listID={data.id.toString()} onClickIdea={onClickIdea} />
+        {data.ideaTotalCount > 0 ? (
+          <IdeaList listID={data.id.toString()} onClickIdea={onClickIdea} />
+        ) : (
+          <div className='text-[15px] mt-4 w-full px-4 text-black-gray-03'>
+            {isOwner ? (
+              <Trans>This list has no ideas yet.
+                Add your first idea.</Trans>
+            ) : (
+              <Trans>Ideas will appear here soon.
+                Follow for updates. </Trans>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Content Drawer (description / external link / idea detail) */}

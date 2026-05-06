@@ -41,7 +41,7 @@ const ListSelectorFakePage: React.FC = () => {
         {
           onSuccess: () => {
             navigateTo.viewList(me?.userCode, selectedList.toString());
-            // onClosePage();
+            onClosePage();
             removeLocalStorage(LocalStorageKey.IDEA_DRAFT);
           },
           onError: (error: Error) => {

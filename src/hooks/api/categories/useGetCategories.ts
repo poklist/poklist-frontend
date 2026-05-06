@@ -1,23 +1,22 @@
-import { getCategories } from "@/api/paths/categories/get"
-import categoriesKeys from "./key"
+import { categoriesQuery } from '@/api/query/categories';
+import categoriesKeys from './keys';
 
 export const useGetCategories = () => {
-  const query = getCategories.get.useQuery(
+  const query = categoriesQuery.get.useQuery(
     categoriesKeys.list(),
     {},
     {
       queryKey: categoriesKeys.list(),
-      staleTime: 300000, // 5 minutes
+      staleTime: Infinity,
       gcTime: 600000, // 10 minutes
       refetchOnMount: false,
       refetchOnWindowFocus: false,
       refetchOnReconnect: false,
     }
-  )
+  );
 
   return {
     ...query,
-    categories: query.data?.body.content ?? [],
-    categoriesLoading: query.isLoading
-  }
-}
+    data: query.data?.body.content
+  };
+};

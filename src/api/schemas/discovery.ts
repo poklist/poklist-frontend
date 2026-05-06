@@ -1,0 +1,33 @@
+import { createResponseSchema, userSchema } from '@/api/schemas/common';
+import { IdeaFormSchema } from '@/types/common';
+import z from 'zod';
+
+const latestListSchema = z.object({
+  id: z.number().int().nonnegative(),
+  title: IdeaFormSchema.shape.title,
+  owner: userSchema,
+});
+
+export const getLatestListGroupsSchema = createResponseSchema(z.record(
+  z.array(latestListSchema)
+))
+
+const officialCollectionSchema = z.object({
+  id: z.number().int().nonnegative(),
+  title: IdeaFormSchema.shape.title,
+  coverImage: IdeaFormSchema.shape.coverImage,
+  owner: userSchema,
+});
+
+export const getOfficialCollectionsSchema = createResponseSchema(z.array(
+  officialCollectionSchema
+))
+
+export const discoverySchema = {
+  latestListGroups: {
+    getResponse: getLatestListGroupsSchema,
+  },
+  officialCollections: {
+    getResponse: getOfficialCollectionsSchema,
+  }
+}

@@ -105,7 +105,7 @@ const ListSection = () => {
   }, [isVisible]);
 
   // 只在組件可見時加載數據
-  const { categories, categoriesLoading } = useGetCategories();
+  const { data: categories, isLoading: categoriesLoading } = useGetCategories();
   const { latestListGroups = {}, isLoading: groupsLoading } =
     useLatestListGroups({
       enabled: isVisible,

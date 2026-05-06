@@ -65,7 +65,7 @@ const ListForm: React.FC<IListFormProps> = ({
     useDrawer(DrawerIds.CANCEL_LIST_FORM_CONFIRM_DRAWER_ID);
   const { openDrawer: openDraftDrawer, closeDrawer: closeDraftDrawer } =
     useDrawer(DrawerIds.LIST_DRAFT_DRAWER_ID);
-  const { categories, categoriesLoading } = useGetCategories();
+  const { data: categories, isLoading: categoriesLoading } = useGetCategories();
   const [mounted, setMounted] = useState(false);
 
   // TODO load from localStorage in v0.3.5
@@ -217,7 +217,7 @@ const ListForm: React.FC<IListFormProps> = ({
       titleTextarea.bind.onChange();
       descriptionTextarea.bind.onChange();
       listForm.setFocus('title');
-    }, 0);
+    }, 1);
   }, [defaultListInfo]);
 
   useEffect(() => {

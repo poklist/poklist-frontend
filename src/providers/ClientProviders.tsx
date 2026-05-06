@@ -17,31 +17,7 @@ import {
 } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { AxiosError } from 'axios';
-import { ReactNode } from 'react';
-
-// 將 QueryClient 實例化移到組件外部
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: (failureCount, error) => {
-        const axiosError = error as AxiosError;
-        const statusCode = axiosError.response?.status;
-
-        if (statusCode === 401 || statusCode === 403 || statusCode === 404) {
-          return false;
-        }
-
-        if (failureCount >= 1) {
-          return false;
-        }
-
-        return true;
-      },
-      staleTime: 60000,
-      gcTime: 300000,
-    },
-  },
-});
+import { ReactNode, useState } from 'react';
 
 interface ClientProvidersProps {
   children: ReactNode;
@@ -69,15 +45,44 @@ const GlobalLoading = () => {
  * - ReactQueryDevtools: 開發工具
  */
 export const ClientProviders = ({ children }: ClientProvidersProps) => {
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            retry: (failureCount, error) => {
+              const axiosError = error as AxiosError;
+              const statusCode = axiosError.response?.status;
+
+              if (
+                statusCode === 401 ||
+                statusCode === 403 ||
+                statusCode === 404
+              ) {
+                return false;
+              }
+
+              if (failureCount >= 1) {
+                return false;
+              }
+
+              return true;
+            },
+            staleTime: 60000,
+            gcTime: 300000,
+          },
+        },
+      })
+  );
   return (
     <QueryClientProvider client={queryClient}>
       <Theme>
-        <GlobalLoading />
         <DrawerProvider>
           <FakePageProvider>
             {children}
 
             {/* 全域 UI 組件 */}
+            <GlobalLoading />
             <LoginDrawer />
             <ErrorDrawer />
             <CreateListOrIdeaDrawer />

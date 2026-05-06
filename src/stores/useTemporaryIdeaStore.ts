@@ -43,7 +43,6 @@ export const useTemporaryIdeaStore = create<TemporaryIdeaStore>((set, get) => ({
   // },
 
   clearIfMatchLocalStorage: () => {
-    // try {
     const local = getLocalStorage(LocalStorageKey.IDEA_DRAFT, IdeaFormSchema);
     const storeIdea = get().idea;
     if (!local || !storeIdea) return;
@@ -59,15 +58,6 @@ export const useTemporaryIdeaStore = create<TemporaryIdeaStore>((set, get) => ({
     if (isMatch) {
       set({ idea: null });
       removeLocalStorage(LocalStorageKey.IDEA_DRAFT);
-    } else {
-
-      // } catch (error) {
-      console.error('clearIfMatchLocalStorage error:', `
-        title: ${localIdea.title} === ${storeIdea.title} | ${localIdea.title === storeIdea.title} &&
-      description: ${localIdea.description} === ${storeIdea.description} | ${localIdea.description === storeIdea.description} &&
-      coverImage: ${localIdea.coverImage} === ${storeIdea.coverImage} | ${localIdea.coverImage === storeIdea.coverImage} &&
-      externalLink: ${localIdea.externalLink} === ${storeIdea.externalLink} | ${localIdea.externalLink === storeIdea.externalLink}`);
     }
-    // }
   },
 }));

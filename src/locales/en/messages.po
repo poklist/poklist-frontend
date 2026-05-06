@@ -13,6 +13,11 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#: src/api/axios.ts
+#: src/hooks/mutations/useEditProfile.ts
+msgid "Please login again"
+msgstr "Please login again"
+
 #: src/app/[userCode]/edit/page.tsx
 #: src/app/[userCode]/edit/page.tsx
 #: src/app/user/edit/page.tsx
@@ -145,6 +150,10 @@ msgid "Listing since"
 msgstr "Listing since"
 
 #: src/app/[userCode]/list/[id]/_components/ListCard/_components/ListCardHeader/index.tsx
+msgid "Ideas"
+msgstr "Ideas"
+
+#: src/app/[userCode]/list/[id]/_components/ListCard/_components/ListCardHeader/index.tsx
 msgid "Likes"
 msgstr "Likes"
 
@@ -167,6 +176,14 @@ msgid "Delete List"
 msgstr "Delete List"
 
 #: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
+msgid "This list has no ideas yet. Add your first idea."
+msgstr "This list has no ideas yet. Add your first idea."
+
+#: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
+msgid "Ideas will appear here soon. Follow for updates."
+msgstr "Ideas will appear here soon. Follow for updates."
+
+#: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
 #: src/app/[userCode]/list/_components/DeleteButton/index.tsx
 #: src/app/_shared/_components/List/DeleteButton/index.tsx
 msgid "Deleting the list title will also erase all ideas!"
@@ -183,22 +200,6 @@ msgstr "Permanently delete the entire list and all its ideas. This action cannot
 #: src/app/_shared/_components/List/DeleteButton/index.tsx
 msgid "Delete List and All Ideas"
 msgstr "Delete List and All Ideas"
-
-#: src/app/[userCode]/list/[id]/manage/page.tsx
-#~ msgid "Idea List"
-#~ msgstr "Idea List"
-
-#: src/app/[userCode]/list/[id]/manage/page.tsx
-#~ msgid "Edit list cover"
-#~ msgstr "Edit list cover"
-
-#: src/app/[userCode]/list/[id]/manage/page.tsx
-#~ msgid "Tap an idea to edit. Drag the lines on the left to reorder."
-#~ msgstr "Tap an idea to edit. Drag the lines on the left to reorder."
-
-#: src/app/[userCode]/list/[id]/manage/page.tsx
-#~ msgid "Save New Order"
-#~ msgstr "Save New Order"
 
 #: src/app/[userCode]/list/[id]/reorder/_components/IdeasList/index.tsx
 msgid "Your ideas live here. Create one!"
@@ -240,10 +241,6 @@ msgstr "Privacy"
 #: src/app/_layout/_components/PromptText.tsx
 msgid "Relist works best on mobile. Use a mobile device for the best experience."
 msgstr "Relist works best on mobile. Use a mobile device for the best experience."
-
-#: src/app/discovery/_components/FooterSection/index.tsx
-#~ msgid "<0>Your lists say more than posts ever could.</0><1><2>Next wave of content</2><3/></1>"
-#~ msgstr "<0>Your lists say more than posts ever could.</0><1><2>Next wave of content</2><3/></1>"
 
 #: src/app/discovery/_components/FooterSection/index.tsx
 msgid "Your lists say more than posts ever could."
@@ -373,10 +370,6 @@ msgstr "Updated weekly"
 #: src/app/not-found.tsx
 msgid "Oops something is wrong!"
 msgstr "Oops something is wrong!"
-
-#: src/app/goToMobile/_components/index.tsx
-#~ msgid "<0>Relist works best on mobile.</0><1>Use a mobile device for the best experience.</1>"
-#~ msgstr "<0>Relist works best on mobile.</0><1>Use a mobile device for the best experience.</1>"
 
 #: src/app/goToMobile/_components/index.tsx
 #: src/app/goToMobile/page.tsx
@@ -1111,10 +1104,6 @@ msgstr "List"
 msgid "Idea"
 msgstr "Idea"
 
-#: src/hooks/mutations/useEditProfile.ts
-msgid "Please login again"
-msgstr "Please login again"
-
 #: src/hooks/useAuthRequired.ts
 msgid "Please login to do this action"
 msgstr "Please login to do this action"
@@ -1122,10 +1111,6 @@ msgstr "Please login to do this action"
 #: src/hooks/useCheckStorage.ts
 msgid "The app is outdated, please login again"
 msgstr "The app is outdated, please login again"
-
-#: src/lib/validator.ts
-#~ msgid "Error - Link must start with https:// "
-#~ msgstr "Error - Link must start with https:// "
 
 #: src/lib/validator.ts
 msgid "Hey, the title can't be left empty!"
