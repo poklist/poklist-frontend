@@ -12,6 +12,7 @@ import {
   useMutation,
   useQueryClient,
 } from '@tanstack/react-query';
+import listsKeys from '../api/lists/keys';
 
 interface UseReorderIdeasOptions {
   listID: string;
@@ -82,6 +83,10 @@ export const useReorderIdeas = ({
           predicate: (query) =>
             query.queryKey[0] === QueryKeys.LIST &&
             query.queryKey[1] === listID,
+          refetchType: 'inactive',
+        }),
+        queryClient.invalidateQueries({
+          queryKey: listsKeys.list(listID.toString()),
           refetchType: 'inactive',
         }),
         queryClient.invalidateQueries({

@@ -6,6 +6,7 @@ import { toast } from '@/hooks/useToast';
 import { CreateIdeaRequest, CreateIdeaResponse } from '@/types/Idea';
 import { IResponse } from '@/types/response';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import listsKeys from '../api/lists/keys';
 
 interface UseCreateIdeaOptions {
   onSuccess?: (data: CreateIdeaResponse) => void;
@@ -37,6 +38,10 @@ export const useCreateIdea = ({
             predicate: (query) =>
               query.queryKey[0] === QueryKeys.LIST &&
               query.queryKey[1] === data.listID.toString(),
+            refetchType: 'inactive',
+          }),
+          queryClient.invalidateQueries({
+            queryKey: listsKeys.list(data.listID.toString()),
             refetchType: 'inactive',
           }),
           queryClient.refetchQueries({

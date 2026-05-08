@@ -5,6 +5,7 @@ import { MessageType } from '@/enums/Style/index.enum';
 import { toast } from '@/hooks/useToast';
 import { IResponse } from '@/types/response';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import listsKeys from '../api/lists/keys';
 
 interface UseDeleteIdeaOptions {
   listID: string;
@@ -34,6 +35,10 @@ const useDeleteIdea = ({ listID }: UseDeleteIdeaOptions) => {
           predicate: (query) =>
             query.queryKey[0] === QueryKeys.LIST &&
             query.queryKey[1] === listID.toString(),
+          refetchType: 'inactive',
+        }),
+        queryClient.invalidateQueries({
+          queryKey: listsKeys.list(listID.toString()),
           refetchType: 'inactive',
         }),
         queryClient.refetchQueries({
