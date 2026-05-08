@@ -11,14 +11,16 @@ const getRequestSchema = z.object({
   ideaID: z.string(),
 });
 
-export const getIdeaSchema = createResponseSchema(ideaPreviewSchema.extend({
-  createdAt: z.string().datetime(),
-  updatedAt: z.string().datetime(),
-  listID: z.string(),
-  owner: userSchema,
-}))
+const getResponseSchema = createResponseSchema(
+  ideaPreviewSchema.extend({
+    createdAt: z.string().datetime(),
+    updatedAt: z.string().datetime(),
+    listID: z.string(),
+    owner: userSchema,
+  })
+);
 
-export const ideaSchema = {
+export const ideasSchema = {
   getRequest: getRequestSchema,
-  getResponse: getIdeaSchema,
+  getResponse: getResponseSchema,
 };

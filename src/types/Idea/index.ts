@@ -26,7 +26,7 @@ export interface IdeaResponse extends Omit<Idea, 'ownerID'> {
 }
 
 export interface CreateIdeaRequest extends IdeaBody {
-  listID: number;
+  listID: number | string;
 }
 
 export interface CreateIdeaResponse extends CreateIdeaRequest {

@@ -1,13 +1,14 @@
 'use client';
 
+import { GetUserListsResponse } from '@/api/query/lists';
 import ListForm from '@/app/list/_components/Form';
+import { useGetList } from '@/hooks/api/lists/useGetList';
 import { useEditList } from '@/hooks/mutations/useEditList';
-import { useList } from '@/hooks/queries/useList';
 import { useAuthCheck, useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { useUserRouteContext } from '@/hooks/useUserRouteContext';
 import useUserStore from '@/stores/useUserStore';
-import { ListBody, ListCover } from '@/types/List';
+import { ListBody } from '@/types/List';
 import { useParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
@@ -20,14 +21,15 @@ const EditListPage: React.FC = () => {
   const { me } = useUserStore();
   const { withAuth } = useAuthWrapper();
 
-  const { data: list } = useList({
+  const { data: list } = useGetList({
     listID,
   });
   const { editList } = useEditList({
     userCode: me.userCode,
   });
 
-  const [listCoverDraft, setListCoverDraft] = useState<ListCover>();
+  const [listCoverDraft, setListCoverDraft] =
+    useState<GetUserListsResponse['content'][number]>();
 
   const onDismissEdit = (isFormEmpty: boolean) => {
     if (list && isFormEmpty) {

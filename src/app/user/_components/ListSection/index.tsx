@@ -1,7 +1,7 @@
 'use client';
 
 import { ListSectionSkeleton } from '@/app/user/_components/ListSection/ListSectionSkeleton';
-import { useListPreviews } from '@/hooks/queries/useLists';
+import { useGetUserLists } from '@/hooks/api/lists/useGetUserLists';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { useUserRouteContext } from '@/hooks/useUserRouteContext';
 import { Trans } from '@lingui/macro';
@@ -11,8 +11,9 @@ const ListSection: React.FC = () => {
   const { userCode } = useUserRouteContext();
   const navigateTo = useStrictNavigationAdapter();
 
-  const { data: listPreviews, isLoading } = useListPreviews({
+  const { data: listPreviews, isLoading } = useGetUserLists({
     userCode,
+    limit: 99
   });
 
   // const {
@@ -59,9 +60,8 @@ const ListSection: React.FC = () => {
           return (
             <div
               key={listPreview.id}
-              className={`flex min-h-[72px] items-center justify-between ${
-                isLastItem ? 'border-b-[3px]' : 'border-b'
-              } border-black-text-01 p-4 -tracking-1.1%`}
+              className={`flex min-h-[72px] items-center justify-between ${isLastItem ? 'border-b-[3px]' : 'border-b'
+                } border-black-text-01 p-4 -tracking-1.1%`}
               onClick={() => {
                 navigateTo.viewList(userCode, listPreview.id.toString());
               }}

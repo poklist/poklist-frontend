@@ -1,0 +1,26 @@
+import {
+  GetIdeasOrderRequest,
+  GetListsRequest,
+  GetUserListsRequest,
+} from '@/api/query/lists';
+
+const listsKeys = {
+  all: 'lists',
+  list: (listID: GetListsRequest['listID']) => [
+    ...listsKeys.all,
+    'list',
+    listID,
+  ],
+  userLists: (userCode: GetUserListsRequest['userCode']) => [
+    ...listsKeys.all,
+    'userLists',
+    userCode,
+  ],
+  ideasOrder: (listID: GetIdeasOrderRequest['listID']) => [
+    ...listsKeys.all,
+    'ideasOrder',
+    listID,
+  ],
+};
+
+export default listsKeys;

@@ -60,7 +60,10 @@ instance.interceptors.response.use(
   },
   async (error: AxiosError<{ response: unknown }>) => {
     // Do something with response error
-    if (error.name === 'CanceledError') {
+    if (
+      process.env.NODE_ENV !== 'production' &&
+      error.name === 'CanceledError'
+    ) {
       console.warn('Request cancelled: ', error.message);
     }
     if (axios.isCancel(error)) {

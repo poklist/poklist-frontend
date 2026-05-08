@@ -8,9 +8,9 @@ const latestListSchema = z.object({
   owner: userSchema,
 });
 
-export const getLatestListGroupsSchema = createResponseSchema(z.record(
-  z.array(latestListSchema)
-))
+const getLatestListGroupsSchema = createResponseSchema(
+  z.record(z.array(latestListSchema))
+);
 
 const officialCollectionSchema = z.object({
   id: z.number().int().nonnegative(),
@@ -19,9 +19,9 @@ const officialCollectionSchema = z.object({
   owner: userSchema,
 });
 
-export const getOfficialCollectionsSchema = createResponseSchema(z.array(
-  officialCollectionSchema
-))
+const getOfficialCollectionsSchema = createResponseSchema(
+  z.array(officialCollectionSchema)
+);
 
 export const discoverySchema = {
   latestListGroups: {
@@ -29,5 +29,5 @@ export const discoverySchema = {
   },
   officialCollections: {
     getResponse: getOfficialCollectionsSchema,
-  }
-}
+  },
+};

@@ -6,8 +6,8 @@ import { Tile20Background } from '@/app/user/_components/TileBackground';
 import FloatingButtonFooter from '@/components/Footer/FloatingButtonFooter';
 import BackToUserHeader from '@/components/Header/BackToUserHeader';
 import { Idea } from '@/constants/list';
+import { useGetList } from '@/hooks/api/lists/useGetList';
 import { useLikeAction } from '@/hooks/mutations/useLikeAction';
-import { useList } from '@/hooks/queries/useList';
 import { useUser } from '@/hooks/queries/useUser';
 import { useAuthRequired } from '@/hooks/useAuthRequired';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
@@ -46,7 +46,7 @@ const ViewListPageClient: React.FC<ViewListPageClientProps> = ({
     data: list,
     isLoading: isListLoading,
     isError: isListError,
-  } = useList({
+  } = useGetList({
     listID,
     offset: Idea.DEFAULT_FIRST_BATCH_OFFSET,
     limit: 0,

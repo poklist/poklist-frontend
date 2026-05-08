@@ -3,8 +3,7 @@ import { followersSchema } from '@/api/schemas/followers';
 import z from 'zod';
 import followersKeys from './keys';
 
-const getFollowersSchema = z.object({
-  userID: followersSchema.getRequest.shape.userID,
+const getFollowersSchema = followersSchema.getRequest.extend({
   staleTime: z.number().int().nonnegative().default(60000),
   gcTime: z.number().int().nonnegative().default(300000),
 });
@@ -29,6 +28,6 @@ export const useGetFollowers = (options: UseGetFollowersOptions) => {
 
   return {
     ...query,
-    data: query.data?.body.content
+    data: query.data?.body.content,
   };
 };

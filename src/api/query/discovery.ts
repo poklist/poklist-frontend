@@ -1,19 +1,25 @@
-import { discoveryContract } from "@/api/contracts/discovery";
-import { axiosFetcher } from "@/api/fetcher";
-import { discoverySchema } from "@/api/schemas";
-import { initContract } from "@ts-rest/core";
-import { initQueryClient } from "@ts-rest/react-query";
-import z from "zod";
+import { discoveryContract } from '@/api/contracts/discovery';
+import { axiosFetcher } from '@/api/fetcher';
+import { discoverySchema } from '@/api/schemas';
+import { initContract } from '@ts-rest/core';
+import { initQueryClient } from '@ts-rest/react-query';
+import z from 'zod';
 
 const discoveryApi = initContract().router({
   getLatestListGroups: discoveryContract.getLatestListGroupsContract,
-  getOfficialCollections: discoveryContract.getOfficialCollectionsContract
-})
+  getOfficialCollections: discoveryContract.getOfficialCollectionsContract,
+});
 
-export type getLatestListGroupsResponse = z.infer<typeof discoverySchema.latestListGroups.getResponse>
-export type getOfficialCollectionsResponse = z.infer<typeof discoverySchema.officialCollections.getResponse>
+export type GetLatestListGroupsResponse = z.infer<
+  typeof discoverySchema.latestListGroups.getResponse
+>;
+export type GetOfficialCollectionsResponse = z.infer<
+  typeof discoverySchema.officialCollections.getResponse
+>;
 
 export const discoveryQuery = initQueryClient(discoveryApi, {
-  baseUrl: "",
-  api: axiosFetcher<getLatestListGroupsResponse | getOfficialCollectionsResponse>
-})
+  baseUrl: '',
+  api: axiosFetcher<
+    GetLatestListGroupsResponse | GetOfficialCollectionsResponse
+  >,
+});

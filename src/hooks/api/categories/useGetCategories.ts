@@ -17,6 +17,6 @@ export const useGetCategories = () => {
 
   return {
     ...query,
-    data: query.data?.body.content
+    data: query.data?.body.content,
   };
 };

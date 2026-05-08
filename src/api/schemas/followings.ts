@@ -1,7 +1,6 @@
 import { createResponseSchema } from '@/api/schemas/common';
 import z from 'zod';
 
-
 const getRequestSchema = z.object({ userID: z.number().int().nonnegative() });
 
 const getFollowingsSchema = createResponseSchema(

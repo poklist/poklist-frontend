@@ -1,9 +1,9 @@
 'use client';
 
 import IdeaFormComponent from '@/app/idea/_components/Form';
-import { useGetIdea } from '@/hooks/api/idea/useGetIdea';
+import { useGetIdea } from '@/hooks/api/ideas/useGetIdea';
+import { useGetList } from '@/hooks/api/lists/useGetList';
 import useEditIdea from '@/hooks/mutations/useEditIdea';
-import { useList } from '@/hooks/queries/useList';
 import { useAuthCheck, useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import useUserStore from '@/stores/useUserStore';
@@ -30,28 +30,25 @@ const EditIdeaPage: React.FC = () => {
     // enabled: !isDeleting,
   });
 
-  const listID = useMemo(
-    () => idea?.body?.listID.toString() ?? '',
-    [idea?.body?.listID]
-  );
+  const listID = useMemo(() => idea?.listID.toString() ?? '', [idea?.listID]);
 
   const { editIdea } = useEditIdea();
-  const { data: list } = useList({
+  const { data: list } = useGetList({
     listID,
   });
 
   const onDismissEdit = (isFormNotEdited: boolean) => {
-    if (idea?.body && isFormNotEdited) {
-      navigateTo.viewList(me.userCode, idea.body.listID.toString());
+    if (idea && isFormNotEdited) {
+      navigateTo.viewList(me.userCode, idea.listID.toString());
     }
   };
 
   const onEditIdea = withAuth((editedIdea: IdeaBody) => {
-    if (!id || !idea?.body) {
+    if (!id || !idea) {
       return;
     }
     const _params = { ...editedIdea, id: Number(id) };
-    if (editedIdea.coverImage === idea.body.coverImage) {
+    if (editedIdea.coverImage === idea.coverImage) {
       delete _params.coverImage;
     }
     editIdea(_params, {
@@ -66,19 +63,16 @@ const EditIdeaPage: React.FC = () => {
     if (isIdeaError) {
       navigateTo.home();
     }
-    if (isIdeaLoading || !idea?.body) {
+    if (isIdeaLoading || !idea) {
       return;
     }
-    if (idea.body.owner.userCode !== me.userCode) {
-      navigateTo.viewList(
-        idea.body.owner.userCode,
-        idea.body.listID.toString()
-      );
+    if (idea.owner.userCode !== me.userCode) {
+      navigateTo.viewList(idea.owner.userCode, idea.listID.toString());
     }
   }, [
     isIdeaError,
     isIdeaLoading,
-    idea?.body,
+    idea,
     me.userCode,
     navigateTo,
     checkAuthAndRedirect,
@@ -98,9 +92,9 @@ const EditIdeaPage: React.FC = () => {
         </div>
       </div>
       <div className="flex min-h-screen flex-col gap-6 sm:min-h-[calc(100vh-102px)]">
-        {idea?.body && (
+        {idea && (
           <IdeaFormComponent
-            previousIdeaInfo={idea.body}
+            previousIdeaInfo={idea}
             dismissCallback={onDismissEdit}
             completedCallback={onEditIdea}
           />

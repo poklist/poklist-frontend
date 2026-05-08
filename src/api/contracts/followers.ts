@@ -1,7 +1,7 @@
 import { followersSchema } from '@/api/schemas/followers';
 import { AppRoute } from '@ts-rest/core';
 
-export const getFollowersContract = {
+const getFollowersContract = {
   method: 'GET',
   path: '/followers',
   query: followersSchema.getRequest,

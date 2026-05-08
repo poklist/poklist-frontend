@@ -3,8 +3,7 @@ import { followingsSchema } from '@/api/schemas/followings';
 import z from 'zod';
 import followingsKeys from './keys';
 
-const getFollowingsSchema = z.object({
-  userID: followingsSchema.getRequest.shape.userID,
+const getFollowingsSchema = followingsSchema.getRequest.extend({
   staleTime: z.number().int().nonnegative().default(60000),
   gcTime: z.number().int().nonnegative().default(300000),
 });
@@ -27,6 +26,6 @@ export const useGetFollowings = (options: UseGetFollowingsOptions) => {
 
   return {
     ...query,
-    data: query.data?.body.content
+    data: query.data?.body.content,
   };
 };

@@ -16,7 +16,7 @@ import LinkIconWrapper from '@/components/ui/wrappers/LinkIconWrapper';
 import { DrawerIds } from '@/constants/Drawer';
 import { SocialLinkType } from '@/enums/index.enum';
 import { DropdownItemType, MessageType } from '@/enums/Style/index.enum';
-import { useGetIdea } from '@/hooks/api/idea/useGetIdea';
+import { useGetIdea } from '@/hooks/api/ideas/useGetIdea';
 import useDeleteIdea from '@/hooks/mutations/useDeleteIdea';
 import { useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
@@ -139,8 +139,7 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({
         )}
         <div className="mt-4 flex w-full items-center justify-between">
           <p className="text-[13px] text-black-text-01">
-            {data?.createdAt &&
-              getFormattedTime(data.createdAt, i18n.locale)}
+            {data?.createdAt && getFormattedTime(data.createdAt, i18n.locale)}
           </p>
           <Button
             variant={ButtonVariant.WHITE}

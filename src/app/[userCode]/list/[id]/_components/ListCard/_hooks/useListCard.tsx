@@ -1,14 +1,14 @@
+import { GetListsResponse } from '@/api/query/lists';
 import IdeaDrawerContent from '@/app/[userCode]/list/[id]/_components/IdeaDrawerContent';
 import { useDrawer } from '@/components/Drawer/useDrawer';
 import { DrawerIds } from '@/constants/Drawer';
 import { DAY_IN_MS, RECENTLY_UPDATED_DAYS } from '@/constants/list';
 import { parsePostgresDate } from '@/lib/time';
 import useLikeStore from '@/stores/useLikeStore';
-import { List } from '@/types/List';
 import { useParams, useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
-const useListCard = (data: List) => {
+const useListCard = (data: GetListsResponse['content']) => {
   const params = useParams();
   const searchParams = useSearchParams();
   const listID = params?.id as string;

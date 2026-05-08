@@ -1,10 +1,9 @@
-import { ideaQuery } from '@/api/query/idea';
-import { ideaSchema } from '@/api/schemas/idea';
+import { ideasQuery } from '@/api/query/ideas';
+import { ideasSchema } from '@/api/schemas/ideas';
 import z from 'zod';
-import ideaKeys from './keys';
+import ideasKeys from './keys';
 
-const getIdeaSchema = z.object({
-  ideaID: ideaSchema.getRequest.shape.ideaID,
+const getIdeaSchema = ideasSchema.getRequest.extend({
   staleTime: z.number().int().nonnegative().default(60000),
   gcTime: z.number().int().nonnegative().default(300000),
   enabled: z.boolean().default(true),
@@ -15,11 +14,11 @@ type UseGetIdeaOptions = z.input<typeof getIdeaSchema>;
 export const useGetIdea = (options: UseGetIdeaOptions) => {
   const { ideaID, staleTime, gcTime, enabled } = getIdeaSchema.parse(options);
 
-  const query = ideaQuery.get.useQuery(
-    ideaKeys.idea({ ideaID }),
+  const query = ideasQuery.get.useQuery(
+    ideasKeys.idea({ ideaID }),
     { params: { ideaID } },
     {
-      queryKey: ideaKeys.idea({ ideaID }),
+      queryKey: ideasKeys.idea({ ideaID }),
       staleTime,
       gcTime,
       enabled: enabled && !!ideaID,

@@ -1,8 +1,8 @@
 import axios from '@/api/axios';
+import { GetUserListsResponse } from '@/api/query/lists';
 import ApiPath from '@/constants/apiPath';
 import { List } from '@/constants/list';
 import QueryKeys from '@/constants/queryKeys';
-import { ListPreview } from '@/types/List';
 import { IResponse } from '@/types/response';
 import { useQuery } from '@tanstack/react-query';
 
@@ -27,15 +27,14 @@ export const useListPreviews = ({
       if (!userCode) {
         throw new Error('userCode is required');
       }
-      const response = await axios.get<IResponse<ListPreview[]>>(
-        `/${userCode}${ApiPath.lists}`,
-        {
-          params: {
-            offset,
-            limit,
-          },
-        }
-      );
+      const response = await axios.get<
+        IResponse<GetUserListsResponse['content']>
+      >(`/${userCode}${ApiPath.lists}`, {
+        params: {
+          offset,
+          limit,
+        },
+      });
       return response.data.content ?? [];
     },
     staleTime,

@@ -5,8 +5,8 @@ import ListSelectorFakePage from '@/app/idea/_components/ListSelectorFakePage.ts
 import { useFakePage } from '@/components/FakePage/useFakePage';
 import { LocalStorageKey } from '@/enums/index.enum';
 import { MessageType } from '@/enums/Style/index.enum';
+import { useGetUserLists } from '@/hooks/api/lists/useGetUserLists';
 import { useCreateIdea } from '@/hooks/mutations/useCreateIdea';
-import { useListPreviews } from '@/hooks/queries/useLists';
 import { useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { toast } from '@/hooks/useToast';
@@ -29,8 +29,9 @@ const IdeaCreatePage: React.FC = () => {
 
   const { mutate: createIdea } = useCreateIdea();
 
-  const { data: lists } = useListPreviews({
+  const { data: lists } = useGetUserLists({
     userCode: me.userCode,
+    limit: 99
   });
 
   const onDismissCreate = (isFormEmpty: boolean) => {

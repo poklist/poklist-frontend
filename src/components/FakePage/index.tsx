@@ -1,6 +1,6 @@
+import { GetUserListsResponse } from '@/api/query/lists';
 import { FakePageContext, FakePageType } from '@/components/FakePage/context';
 import { IdeaBody } from '@/types/Idea';
-import { ListPreview } from '@/types/List';
 import { useState } from 'react';
 
 export const FakePageProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -10,12 +10,15 @@ export const FakePageProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [openedPage, setOpenedPage] = useState<FakePageType | null>(null);
   const [payload, setPayload] = useState<{
-    lists: ListPreview[] | undefined;
+    lists: GetUserListsResponse['content'] | undefined;
     ideaForm: IdeaBody;
   } | null>(null);
   const openFakePage = (
     pageType: FakePageType,
-    data?: { lists: ListPreview[] | undefined; ideaForm: IdeaBody } | null
+    data?: {
+      lists: GetUserListsResponse['content'] | undefined;
+      ideaForm: IdeaBody;
+    } | null
   ) => {
     setOpenedPage(pageType);
     if (data) setPayload(data);

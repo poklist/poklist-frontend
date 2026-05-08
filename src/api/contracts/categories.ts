@@ -1,7 +1,7 @@
 import { categoriesSchema } from '@/api/schemas/categories';
 import { AppRoute } from '@ts-rest/core';
 
-export const getCategoriesContract = {
+const getCategoriesContract = {
   method: 'GET',
   path: '/categories',
   responses: {
