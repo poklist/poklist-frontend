@@ -10,13 +10,6 @@ export interface ListBody {
   categoryID: number;
 }
 
-export interface ListPreview {
-  id: number;
-  title: string;
-  description: string;
-  coverImage?: string | null;
-}
-
 export interface ListCover extends ListBody {
   id: number;
 }

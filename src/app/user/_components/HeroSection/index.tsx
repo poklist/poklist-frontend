@@ -11,8 +11,6 @@ import LinkIconWrapper from '@/components/ui/wrappers/LinkIconWrapper';
 import { DrawerIds } from '@/constants/Drawer';
 import { SocialLinkType } from '@/enums/index.enum';
 import { useFollowAction } from '@/hooks/mutations/useFollowAction';
-import useFollowers from '@/hooks/queries/useFollowers';
-import useFollowings from '@/hooks/queries/useFollowings';
 import { useUser } from '@/hooks/queries/useUser';
 import { useAuthWrapper } from '@/hooks/useAuth';
 import { useAuthRequired } from '@/hooks/useAuthRequired';
@@ -24,8 +22,6 @@ import {
   urlPreview,
 } from '@/lib/utils';
 
-import FollowersListDrawer from '@/app/user/_components/HeroSection/FollowersListDrawer';
-
 import useAuthStore from '@/stores/useAuthStore';
 import useFollowingStore from '@/stores/useFollowingStore';
 import useUserStore from '@/stores/useUserStore';
@@ -33,10 +29,10 @@ import { User } from '@/types/User';
 import { t, Trans } from '@lingui/macro';
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
-import FollowingListDrawer from '@/app/user/_components/HeroSection/FollowingListDrawer';
 import { HeroSectionSkeleton } from '@/app/user/_components/HeroSection/HeroSectionSkeleton';
 import { MessageType } from '@/enums/Style/index.enum';
 import { useUserRouteContext } from '@/hooks/useUserRouteContext';
+import UserConnectionStats from './UserConnectionStats';
 
 const HeroSection: React.FC = () => {
   const { userCode } = useUserRouteContext();
@@ -72,16 +68,6 @@ const HeroSection: React.FC = () => {
     isLoading: boolean;
     isError: boolean;
   };
-
-  const { data: followersList, isLoading: isFollowerLoading } = useFollowers({
-    userID: currentPageUser?.id,
-    onError: (error) => console.error(error),
-  });
-
-  const { data: followingList, isLoading: isFollowingLoading } = useFollowings({
-    userID: currentPageUser?.id,
-    onError: (error) => console.error(error),
-  });
 
   useEffect(() => {
     if (isError) {
@@ -207,11 +193,7 @@ const HeroSection: React.FC = () => {
   });
 
   // Check if data is loaded
-  const isDataLoaded =
-    !isLoading &&
-    currentPageUser !== undefined &&
-    !isFollowerLoading &&
-    !isFollowingLoading;
+  const isDataLoaded = !isLoading && currentPageUser !== undefined;
 
   if (!isDataLoaded) {
     return <HeroSectionSkeleton />;
@@ -269,8 +251,9 @@ const HeroSection: React.FC = () => {
           <p>
             {currentPageUser.listCount} <Trans>Lists</Trans>
           </p>
-          <FollowersListDrawer followersList={followersList} />
-          <FollowingListDrawer followingList={followingList} />
+          {currentPageUser && (
+            <UserConnectionStats userID={currentPageUser.id} />
+          )}
           <p
             className="cursor-pointer font-semibold"
             onClick={onOpenLinkDrawer}

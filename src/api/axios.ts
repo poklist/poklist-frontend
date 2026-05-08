@@ -3,7 +3,15 @@ import axios, { AxiosError } from 'axios';
 import { MessageType } from '@/enums/Style/index.enum';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { toast } from '@/hooks/useToast';
+import { track } from '@/lib/abortManager';
 import useAuthStore from '@/stores/useAuthStore';
+import { t } from '@lingui/macro';
+
+declare module 'axios' {
+  export interface AxiosRequestConfig {
+    isDebug?: boolean;
+  }
+}
 
 const instance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL as string,
@@ -11,6 +19,13 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
   (config) => {
+    if (!config.signal) {
+      const controller = new AbortController();
+      config.signal = controller.signal;
+      const method = config.method;
+      const path = config.url?.split('?')[0];
+      track(controller, `${method} ${path}`);
+    }
     // 從 localStorage 取得 token
     const { accessToken } = useAuthStore.getState();
     if (config.headers) config.headers.Authorization = `Bearer ${accessToken}`;
@@ -45,6 +60,19 @@ instance.interceptors.response.use(
   },
   async (error: AxiosError<{ response: unknown }>) => {
     // Do something with response error
+    if (
+      process.env.NODE_ENV !== 'production' &&
+      error.name === 'CanceledError'
+    ) {
+      console.warn('Request cancelled: ', error.message);
+    }
+    if (axios.isCancel(error)) {
+      if (error.config?.isDebug) {
+        console.warn(`Debugging: ${error}`);
+      }
+      return Promise.reject(error);
+    }
+
     console.error(error);
     toast({
       title: error.message || `錯誤${error.status}，請聯繫客服。`,
@@ -52,10 +80,15 @@ instance.interceptors.response.use(
     });
 
     if (error.response?.status === 401) {
-      const { logout } = useAuthStore();
+      const { logout } = useAuthStore.getState();
       logout();
-      const navigateTo = useStrictNavigationAdapter();
-      navigateTo.home();
+      // const navigateTo = useStrictNavigationAdapter();
+      // navigateTo.home();
+      window.location.href = '/';
+      toast({
+        title: t`Please login again`,
+        variant: MessageType.SUCCESS,
+      });
     }
     return Promise.reject(error);
   }

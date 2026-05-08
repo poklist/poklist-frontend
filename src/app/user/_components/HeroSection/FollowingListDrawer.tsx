@@ -1,10 +1,10 @@
+import { GetFollowingsResponse } from '@/api/query/followings';
 import FollowRelationsDrawer from '@/app/user/_components/FollowRelationsDrawer';
 import UserConnectionRow from '@/app/user/_components/UserConnectionRow';
-import { SocialLink } from '@/types/Relation';
 import { t, Trans } from '@lingui/macro';
 
 export interface FollowingListDrawerProps {
-  followingList: SocialLink[] | undefined;
+  followingList: GetFollowingsResponse['content'] | undefined;
 }
 
 const FollowingListDrawer = ({ followingList }: FollowingListDrawerProps) => {

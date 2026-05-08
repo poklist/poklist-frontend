@@ -79,12 +79,9 @@ export const useReorderIdeas = ({
 
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: [
-            QueryKeys.LIST,
-            listID,
-            Idea.DEFAULT_FIRST_BATCH_OFFSET,
-            Idea.DEFAULT_BATCH_SIZE,
-          ],
+          predicate: (query) =>
+            query.queryKey[0] === QueryKeys.LIST &&
+            query.queryKey[1] === listID,
           refetchType: 'inactive',
         }),
         queryClient.invalidateQueries({

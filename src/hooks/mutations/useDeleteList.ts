@@ -25,7 +25,7 @@ export const useDeleteList = ({
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: async (listID: number) => {
+    mutationFn: async (listID: number | string) => {
       const response = await axios.delete<IResponse<unknown>>(
         `${ApiPath.lists}/${listID}`
       );

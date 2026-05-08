@@ -1,13 +1,15 @@
+import { GetOfficialCollectionsResponse } from '@/api/query/discovery';
 import SectionTitle from '@/app/discovery/_components/SectionTitle';
 import TileList from '@/app/discovery/_components/TileList';
 import TileSectionSkeleton from '@/app/discovery/_components/TileSection/TileSectionSkeleton';
-import { useOfficialCollections } from '@/hooks/queries/useOfficialCollections';
-import { OfficialCollection } from '@/types/Discovery';
+import { useGetOfficialCollections } from '@/hooks/api/discovery/useGetOfficialCollections';
 import { t } from '@lingui/macro';
 import { useEffect, useRef, useState } from 'react';
 
 const TileSection = () => {
-  const { officialCollections = [], isLoading } = useOfficialCollections({});
+  const { data: officialCollections, isLoading } = useGetOfficialCollections(
+    {}
+  );
   const containerRef = useRef<HTMLDivElement>(null);
   const [columns, setColumns] = useState(2);
 
@@ -36,15 +38,20 @@ const TileSection = () => {
 
   // 將項目分配到各列
   const distributeItems = () => {
-    const cols = Array.from(
-      { length: columns },
-      () => [] as OfficialCollection[]
-    );
+    const cols = Array.from<
+      { length: number },
+      GetOfficialCollectionsResponse['content']
+    >({ length: columns }, () => []);
 
-    officialCollections.forEach((item: OfficialCollection, index: number) => {
-      const colIndex = index % columns;
-      cols[colIndex].push(item);
-    });
+    officialCollections?.forEach(
+      (
+        item: GetOfficialCollectionsResponse['content'][number],
+        index: number
+      ) => {
+        const colIndex = index % columns;
+        cols[colIndex].push(item);
+      }
+    );
 
     return cols;
   };

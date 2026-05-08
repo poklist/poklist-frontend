@@ -1,5 +1,5 @@
+import { GetUserListsResponse } from '@/api/query/lists';
 import { IdeaBody } from '@/types/Idea';
-import { ListPreview } from '@/types/List';
 import { createContext } from 'react';
 
 export const FakePageContext = createContext<IFakePageContext | undefined>(
@@ -10,7 +10,10 @@ export type FakePageType = 'editField' | 'listSelector';
 
 interface FakePagePayloadMap {
   editField: null;
-  listSelector: { lists: ListPreview[] | undefined; ideaForm: IdeaBody };
+  listSelector: {
+    lists: GetUserListsResponse['content'] | undefined;
+    ideaForm: IdeaBody;
+  };
 }
 
 export interface IFakePageContext {

@@ -32,7 +32,7 @@ const ListSelectorFakePage: React.FC = () => {
 
   const { mutate: createIdea } = useCreateIdea();
 
-  const [selectedList, setSelectedList] = useState(0);
+  const [selectedList, setSelectedList] = useState('');
 
   const onCreateIdea = withAuth(() => {
     if (payload) {
@@ -56,7 +56,7 @@ const ListSelectorFakePage: React.FC = () => {
   });
 
   const onClosePage = () => {
-    setSelectedList(0);
+    setSelectedList('');
     closeFakePage();
   };
 
@@ -77,14 +77,17 @@ const ListSelectorFakePage: React.FC = () => {
               >
                 <IconLeftArrowThin width={7.5} height={15} color="black" />
               </div>
-              <div onClick={() => setSelectedList(0)} className="w-full flex-1">
+              <div
+                onClick={() => setSelectedList('')}
+                className="w-full flex-1"
+              >
                 <Trans>Save Idea</Trans>
               </div>
             </div>
           </div>
           <div className="w-full bg-white text-black-gray-03">
             <div
-              onClick={() => setSelectedList(0)}
+              onClick={() => setSelectedList('')}
               className="w-full border-b border-note-gray-06 bg-gray-note-05 p-4"
             >
               <Trans>Select a list to save this idea</Trans>
@@ -108,7 +111,7 @@ const ListSelectorFakePage: React.FC = () => {
                       <div
                         className={cn(`line-clamp-1 max-h-14 overflow-hidden`, {
                           'text-black-tint-04':
-                            selectedList !== list.id && selectedList !== 0,
+                            selectedList !== list.id && selectedList !== '',
                         })}
                       >
                         {list.title}
@@ -137,9 +140,9 @@ const ListSelectorFakePage: React.FC = () => {
                 })
               )}
               <div className="my-4 px-4">
-                <div className="" onClick={() => setSelectedList(0)}>
+                <div className="" onClick={() => setSelectedList('')}>
                   <Button
-                    disabled={selectedList !== 0}
+                    disabled={selectedList !== ''}
                     onClick={() => {
                       if (payload?.ideaForm) {
                         closeFakePage();

@@ -1,17 +1,18 @@
+import { GetOfficialCollectionsResponse } from '@/api/query/discovery';
 import randomImage1 from '@/assets/images/officialCover/random-image-1.png';
 import randomImage2 from '@/assets/images/officialCover/random-image-2.png';
 import randomImage3 from '@/assets/images/officialCover/random-image-3.png';
 import randomImage4 from '@/assets/images/officialCover/random-image-4.png';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
-import { OfficialCollection } from '@/types/Discovery';
+import Image from 'next/image';
 
 const fallbackImages = [randomImage1, randomImage2, randomImage3, randomImage4];
 
 const TileList = ({
   officialCollection,
 }: {
-  officialCollection: OfficialCollection;
+  officialCollection: GetOfficialCollectionsResponse['content'][number];
 }) => {
   const navigateTo = useStrictNavigationAdapter();
 
@@ -40,10 +41,12 @@ const TileList = ({
         </h1>
       </header>
       <div className="flex justify-center">
-        <img
-          src={coverImage || undefined}
+        <Image
+          src={coverImage}
           alt="Official Collection Cover Image"
-          loading="lazy"
+          priority={!officialCollection.coverImage}
+          width={202}
+          height={202}
           className="aspect-square w-full max-w-[202px] rounded-lg border border-black object-cover"
         />
       </div>

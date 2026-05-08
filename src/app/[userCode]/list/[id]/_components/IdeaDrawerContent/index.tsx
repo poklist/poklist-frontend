@@ -16,6 +16,7 @@ import LinkIconWrapper from '@/components/ui/wrappers/LinkIconWrapper';
 import { DrawerIds } from '@/constants/Drawer';
 import { SocialLinkType } from '@/enums/index.enum';
 import { DropdownItemType, MessageType } from '@/enums/Style/index.enum';
+import { useGetIdea } from '@/hooks/api/ideas/useGetIdea';
 import useDeleteIdea from '@/hooks/mutations/useDeleteIdea';
 import { useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
@@ -25,26 +26,26 @@ import { getFormattedTime } from '@/lib/time';
 import { copyHref, urlPreview } from '@/lib/utils';
 import useAuthStore from '@/stores/useAuthStore';
 import useUserStore from '@/stores/useUserStore';
-import { IdeaResponse } from '@/types/Idea';
 import { t, Trans } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { TrashIcon } from 'lucide-react';
 import Image from 'next/image';
 
 interface IIdeaDrawerContentProps {
-  data: IdeaResponse;
+  ideaID: string;
 }
 
 const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({
-  data,
+  ideaID,
 }: IIdeaDrawerContentProps) => {
   const { i18n } = useLingui();
   const navigateTo = useStrictNavigationAdapter();
   const { me } = useUserStore();
   const { isLoggedIn } = useAuthStore();
   const { withAuth } = useAuthWrapper();
+  const { data } = useGetIdea({ ideaID });
   const { deleteIdea } = useDeleteIdea({
-    listID: String(data.listID),
+    listID: String(data?.listID),
   });
   const { openDrawer, closeDrawer } = useDrawer(
     DrawerIds.DELETE_IDEA_DRAWER_ID
@@ -53,7 +54,7 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({
   const { closeDrawer: closeSelf } = useDrawer(DrawerIds.LIST_CARD_DRAWER_ID);
 
   const handleCopyHref = () => {
-    copyHref(`/idea/${data.id}`);
+    copyHref(`/idea/${data?.id}`);
     toast({
       title: t`Copied to clipboard`,
       variant: MessageType.SUCCESS,
@@ -65,7 +66,8 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({
       type: DropdownItemType.ITEM,
       label: t`Edit Idea`,
       onClick: () => {
-        navigateTo.editIdea(data.id.toString());
+        if (!data) return;
+        navigateTo.editIdea(data?.id);
         closeSelf();
       },
       icon: <IconEdit />,
@@ -81,6 +83,7 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({
   ];
 
   const onDeleteIdea = withAuth(() => {
+    if (!data) return;
     deleteIdea(data.id, {
       onSuccess: () => {
         closeSelf();
@@ -92,7 +95,7 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({
   return (
     <>
       <div className="flex flex-col items-start overflow-y-auto px-6 pb-6 pt-4">
-        {isLoggedIn && me?.id === data.owner.id && (
+        {isLoggedIn && me?.id === data?.owner.id && (
           <div className="mb-2 flex w-full justify-end">
             <DropdownMenuComponent
               trigger={
@@ -104,7 +107,7 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({
             />
           </div>
         )}
-        {data.coverImage && (
+        {data?.coverImage && (
           <Image
             src={data.coverImage || ''}
             alt={data.title}
@@ -114,14 +117,14 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({
           />
         )}
         <div className="-tracking-2% mt-6 break-words text-[17px] font-bold leading-[1.45] [line-break:anywhere]">
-          {data.title}
+          {data?.title}
         </div>
-        {data.description && (
+        {data?.description && (
           <div className="mt-1 break-words text-[15px] leading-[1.45] -tracking-1.1% [line-break:anywhere]">
             {data.description}
           </div>
         )}
-        {data.externalLink && (
+        {data?.externalLink && (
           <div
             className="mt-4 flex h-8 cursor-pointer items-center gap-2 self-start text-[13px]"
             onClick={() => {
@@ -136,7 +139,7 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({
         )}
         <div className="mt-4 flex w-full items-center justify-between">
           <p className="text-[13px] text-black-text-01">
-            {getFormattedTime(data.createdAt, i18n.locale)}
+            {data?.createdAt && getFormattedTime(data.createdAt, i18n.locale)}
           </p>
           <Button
             variant={ButtonVariant.WHITE}

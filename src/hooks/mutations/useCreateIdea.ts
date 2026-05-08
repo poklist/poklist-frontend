@@ -1,6 +1,5 @@
 import axios from '@/api/axios';
 import ApiPath from '@/constants/apiPath';
-import { Idea } from '@/constants/list';
 import QueryKeys from '@/constants/queryKeys';
 import { MessageType } from '@/enums/Style/index.enum';
 import { toast } from '@/hooks/useToast';
@@ -35,12 +34,9 @@ export const useCreateIdea = ({
       try {
         await Promise.all([
           queryClient.invalidateQueries({
-            queryKey: [
-              QueryKeys.LIST,
-              data.listID.toString(),
-              Idea.DEFAULT_FIRST_BATCH_OFFSET,
-              Idea.DEFAULT_BATCH_SIZE,
-            ],
+            predicate: (query) =>
+              query.queryKey[0] === QueryKeys.LIST &&
+              query.queryKey[1] === data.listID.toString(),
             refetchType: 'inactive',
           }),
           queryClient.refetchQueries({

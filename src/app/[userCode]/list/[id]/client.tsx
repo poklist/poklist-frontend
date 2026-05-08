@@ -6,8 +6,8 @@ import { Tile20Background } from '@/app/user/_components/TileBackground';
 import FloatingButtonFooter from '@/components/Footer/FloatingButtonFooter';
 import BackToUserHeader from '@/components/Header/BackToUserHeader';
 import { Idea } from '@/constants/list';
+import { useGetList } from '@/hooks/api/lists/useGetList';
 import { useLikeAction } from '@/hooks/mutations/useLikeAction';
-import { useList } from '@/hooks/queries/useList';
 import { useUser } from '@/hooks/queries/useUser';
 import { useAuthRequired } from '@/hooks/useAuthRequired';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
@@ -22,8 +22,9 @@ interface ViewListPageClientProps {
   listID: string;
 }
 
-// eslint-disable-next-line react/prop-types
-const ViewListPageClient: React.FC<ViewListPageClientProps> = ({ listID }) => {
+const ViewListPageClient: React.FC<ViewListPageClientProps> = ({
+  listID,
+}: ViewListPageClientProps) => {
   const { userCode: listOwnerUserCode } = useUserRouteContext();
 
   const { isLoggedIn } = useAuthStore();
@@ -45,7 +46,7 @@ const ViewListPageClient: React.FC<ViewListPageClientProps> = ({ listID }) => {
     data: list,
     isLoading: isListLoading,
     isError: isListError,
-  } = useList({
+  } = useGetList({
     listID,
     offset: Idea.DEFAULT_FIRST_BATCH_OFFSET,
     limit: 0,
@@ -66,13 +67,14 @@ const ViewListPageClient: React.FC<ViewListPageClientProps> = ({ listID }) => {
   });
 
   useEffect(() => {
-    if (listID && list) {
-      const likeState = list.isLiked ?? false;
-      const hasExistingLikeState = hasLikeState(listID);
+    if (!(listID && list)) {
+      return;
+    }
+    const likeState = list.isLiked ?? false;
+    const hasExistingLikeState = hasLikeState(listID);
 
-      if (!hasExistingLikeState) {
-        setIsLiked(listID, likeState);
-      }
+    if (!hasExistingLikeState) {
+      setIsLiked(listID, likeState);
     }
   }, [list, listID, setIsLiked, hasLikeState]);
 

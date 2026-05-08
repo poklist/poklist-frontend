@@ -25,14 +25,17 @@ const useIdle = <T extends FieldValues>({
   const [isIdle, setIsIdle] = useState(initialState);
   const [lastActive, setLastActive] = useState<number>(Date.now());
   const lastActiveRef = useRef<number>(Date.now());
-  const isPending = useRef(false)
+  const isPending = useRef(false);
 
   // idle 到期時觸發
   const handleIdle = () => {
     setIsIdle(true);
   };
 
-  const { start: timeoutStart, stop: timeoutStop } = useTimeout(handleIdle, timeout);
+  const { start: timeoutStart, stop: timeoutStop } = useTimeout(
+    handleIdle,
+    timeout
+  );
 
   const reset = useCallback(() => {
     setIsIdle(false);
@@ -63,10 +66,10 @@ const useIdle = <T extends FieldValues>({
   // }
 
   const stop = () => {
-    setIsIdle(initialState)
+    setIsIdle(initialState);
     timeoutStop();
-    isPending.current = false
-  }
+    isPending.current = false;
+  };
 
   // // init lastActive
   // useEffect(() => {

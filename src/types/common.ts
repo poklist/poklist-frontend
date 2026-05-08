@@ -31,7 +31,6 @@ export const IdeaFormSchema = z.object({
     })
     .pipe(z.string().url().or(z.literal(''))),
   coverImage: z.string().or(z.literal('')).nullable().optional(), // FUTURE: base64 check
-  // categoryID: z.number().nonnegative(),
 });
 
 export const ListFormSchema = IdeaFormSchema.extend({

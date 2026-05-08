@@ -8,7 +8,7 @@ import {
   ButtonVariant,
 } from '@/components/ui/button';
 import { useGetCategories } from '@/hooks/api/categories/useGetCategories';
-import { useLatestListGroups } from '@/hooks/queries/useLatestListGroups';
+import { useGetLatestListGroups } from '@/hooks/api/discovery/useGetLatestListGroups';
 import { useUIStore } from '@/stores/useUIStore';
 import { LatestList } from '@/types/Discovery';
 import { t, Trans } from '@lingui/macro';
@@ -105,13 +105,14 @@ const ListSection = () => {
   }, [isVisible]);
 
   // 只在組件可見時加載數據
-  const { categories, categoriesLoading } = useGetCategories();
-  const { latestListGroups = {}, isLoading: groupsLoading } =
-    useLatestListGroups({
+  const { data: categories, isLoading: categoriesLoading } = useGetCategories();
+  const { data: latestListGroups, isLoading: groupsLoading } =
+    useGetLatestListGroups({
       enabled: isVisible,
     });
 
   const processedListGroups = useMemo(() => {
+    if (!latestListGroups) return;
     const result: Record<string, LatestList[]> = {};
     Object.entries(latestListGroups).forEach(([key, value]) => {
       result[key] = value;
@@ -133,9 +134,8 @@ const ListSection = () => {
     <section ref={sectionRef} className="flex flex-1 flex-col bg-white">
       {categories?.map((category) => {
         const categoryNameLower = category.name.toLowerCase();
-        const lists = processedListGroups[categoryNameLower] || [];
+        const lists = processedListGroups?.[categoryNameLower] || [];
 
-        // TODO: if no lists under this category, show nothing.
         if (lists.length === 0) return null;
 
         // decide how many lists to display based on expanded state

@@ -1,7 +1,7 @@
 import { categoriesSchema } from '@/api/schemas/categories';
 import { AppRoute } from '@ts-rest/core';
 
-export const getCategoriesResponse = {
+const getCategoriesContract = {
   method: 'GET',
   path: '/categories',
   responses: {
@@ -10,7 +10,7 @@ export const getCategoriesResponse = {
   summary: 'all categories of LIST',
 } satisfies AppRoute;
 
-export const categoriesContract = { getCategoriesResponse } satisfies Record<
+export const categoriesContract = { getCategoriesContract } satisfies Record<
   string,
   AppRoute
 >;

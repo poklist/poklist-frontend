@@ -1,9 +1,9 @@
 'use client';
 
 import IdeaFormComponent from '@/app/idea/_components/Form';
+import { useGetIdea } from '@/hooks/api/ideas/useGetIdea';
+import { useGetList } from '@/hooks/api/lists/useGetList';
 import useEditIdea from '@/hooks/mutations/useEditIdea';
-import { useIdea } from '@/hooks/queries/useIdea';
-import { useList } from '@/hooks/queries/useList';
 import { useAuthCheck, useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import useUserStore from '@/stores/useUserStore';
@@ -22,17 +22,18 @@ const EditIdeaPage: React.FC = () => {
   const { withAuth } = useAuthWrapper();
 
   const {
-    idea,
+    data: idea,
     isLoading: isIdeaLoading,
     isError: isIdeaError,
-  } = useIdea({
+  } = useGetIdea({
     ideaID: id,
     // enabled: !isDeleting,
   });
+
   const listID = useMemo(() => idea?.listID.toString() ?? '', [idea?.listID]);
 
   const { editIdea } = useEditIdea();
-  const { data: list } = useList({
+  const { data: list } = useGetList({
     listID,
   });
 
@@ -91,11 +92,13 @@ const EditIdeaPage: React.FC = () => {
         </div>
       </div>
       <div className="flex min-h-screen flex-col gap-6 sm:min-h-[calc(100vh-102px)]">
-        <IdeaFormComponent
-          previousIdeaInfo={idea}
-          dismissCallback={onDismissEdit}
-          completedCallback={onEditIdea}
-        />
+        {idea && (
+          <IdeaFormComponent
+            previousIdeaInfo={idea}
+            dismissCallback={onDismissEdit}
+            completedCallback={onEditIdea}
+          />
+        )}
       </div>
     </>
   );

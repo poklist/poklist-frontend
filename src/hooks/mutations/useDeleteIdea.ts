@@ -1,6 +1,5 @@
 import axios from '@/api/axios';
 import ApiPath from '@/constants/apiPath';
-import { Idea } from '@/constants/list';
 import QueryKeys from '@/constants/queryKeys';
 import { MessageType } from '@/enums/Style/index.enum';
 import { toast } from '@/hooks/useToast';
@@ -15,7 +14,7 @@ const useDeleteIdea = ({ listID }: UseDeleteIdeaOptions) => {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: async (ideaID: number) => {
+    mutationFn: async (ideaID: number | string) => {
       const response = await axios.delete<IResponse<unknown>>(
         `${ApiPath.ideas}/${ideaID}`
       );
@@ -32,12 +31,10 @@ const useDeleteIdea = ({ listID }: UseDeleteIdeaOptions) => {
       // Invalidate and refetch the list
       await Promise.all([
         queryClient.invalidateQueries({
-          queryKey: [
-            QueryKeys.LIST,
-            listID,
-            Idea.DEFAULT_FIRST_BATCH_OFFSET,
-            Idea.DEFAULT_BATCH_SIZE,
-          ],
+          predicate: (query) =>
+            query.queryKey[0] === QueryKeys.LIST &&
+            query.queryKey[1] === listID.toString(),
+          refetchType: 'inactive',
         }),
         queryClient.refetchQueries({
           queryKey: [QueryKeys.INFINITE_IDEA, listID],

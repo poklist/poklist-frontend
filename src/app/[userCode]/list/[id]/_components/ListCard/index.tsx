@@ -1,3 +1,4 @@
+import { GetListsResponse } from '@/api/query/lists';
 import DropdownMenuComponent, {
   DropdownItem,
 } from '@/app/[userCode]/list/[id]/_components/DropdownMenu';
@@ -23,14 +24,13 @@ import { getFormattedTime } from '@/lib/time';
 import { cn } from '@/lib/utils';
 import useAuthStore from '@/stores/useAuthStore';
 import useUserStore from '@/stores/useUserStore';
-import { List } from '@/types/List';
 import { t, Trans } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 interface IListCardProps {
-  data: List;
+  data: GetListsResponse['content'];
 }
 
 const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
@@ -44,6 +44,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
 
   const {
     likeCount,
+    ideaCount,
     drawerContent,
     setDrawerContent,
     openDrawer,
@@ -135,6 +136,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
         <ListCardHeader
           title={data.title}
           categoryID={data.categoryID}
+          ideaCount={ideaCount}
           likeCount={likeCount}
           createdAtString={createdAtString}
           isUpdatedRecently={isUpdatedRecently()}
@@ -169,8 +171,17 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
           />
         )}
 
-        {/* Idea List */}
-        <IdeaList listID={data.id.toString()} onClickIdea={onClickIdea} />
+        {data.ideaTotalCount > 0 ? (
+          <IdeaList listID={data.id.toString()} onClickIdea={onClickIdea} />
+        ) : (
+          <div className="mt-4 w-full px-4 text-[15px] text-black-gray-03">
+            {isOwner ? (
+              <Trans>This list has no ideas yet. Add your first idea.</Trans>
+            ) : (
+              <Trans>Ideas will appear here soon. Follow for updates. </Trans>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Content Drawer (description / external link / idea detail) */}

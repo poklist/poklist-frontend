@@ -1,3 +1,4 @@
+import { GetFollowersResponse } from '@/api/query/followers';
 import { Button, ButtonVariant } from '@/components/ui/button';
 import { useFollowAction } from '@/hooks/mutations/useFollowAction';
 import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
@@ -8,7 +9,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 
 export interface UserConnectionRowProps {
-  follower: SocialLink;
+  follower: GetFollowersResponse['content'][number] | SocialLink;
   callback: () => void;
 }
 

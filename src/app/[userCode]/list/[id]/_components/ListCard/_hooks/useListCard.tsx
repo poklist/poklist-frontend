@@ -1,17 +1,14 @@
+import { GetListsResponse } from '@/api/query/lists';
 import IdeaDrawerContent from '@/app/[userCode]/list/[id]/_components/IdeaDrawerContent';
 import { useDrawer } from '@/components/Drawer/useDrawer';
 import { DrawerIds } from '@/constants/Drawer';
 import { DAY_IN_MS, RECENTLY_UPDATED_DAYS } from '@/constants/list';
-import { MessageType } from '@/enums/Style/index.enum';
-import { useIdea } from '@/hooks/queries/useIdea';
-import { toast } from '@/hooks/useToast';
 import { parsePostgresDate } from '@/lib/time';
 import useLikeStore from '@/stores/useLikeStore';
-import { List } from '@/types/List';
 import { useParams, useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
-const useListCard = (data: List) => {
+const useListCard = (data: GetListsResponse['content']) => {
   const params = useParams();
   const searchParams = useSearchParams();
   const listID = params?.id as string;
@@ -23,10 +20,15 @@ const useListCard = (data: List) => {
   const [drawerContent, setDrawerContent] = useState<React.ReactNode>(null);
   const [selectedIdeaID, setSelectedIdeaID] = useState<number | null>(null);
   const [likeCount, setLikeCount] = useState(data.likeCount);
+  const [ideaCount, setIdeaCount] = useState(data.ideaTotalCount);
 
   const isLiked = listID ? getIsLiked(listID) : false;
   // Use useRef to track isLiked changes, preventing likeCount updates on first render
   const prevIsLikedRef = useRef(isLiked);
+
+  useEffect(() => {
+    setIdeaCount(data.ideaTotalCount);
+  }, [data.ideaTotalCount]);
 
   // Sync likeCount from server data
   useEffect(() => {
@@ -46,28 +48,15 @@ const useListCard = (data: List) => {
     prevIsLikedRef.current = isLiked;
   }, [isLiked]);
 
-  const { idea, isError } = useIdea({
-    ideaID: selectedIdeaID?.toString(),
-    enabled: !!selectedIdeaID,
-  });
-
   useEffect(() => {
-    if (isError) {
-      toast({
-        title: 'Failed to fetch idea detail',
-        variant: MessageType.ERROR,
-      });
-      setSelectedIdeaID(null);
-    }
-  }, [isError]);
-
-  useEffect(() => {
-    if (idea && selectedIdeaID) {
-      setDrawerContent(<IdeaDrawerContent data={idea} />);
+    if (selectedIdeaID) {
+      setDrawerContent(
+        <IdeaDrawerContent ideaID={selectedIdeaID.toString()} />
+      );
       openDrawer();
       setSelectedIdeaID(null);
     }
-  }, [idea, selectedIdeaID, openDrawer]);
+  }, [selectedIdeaID, openDrawer]);
 
   // Handle ideaID from URL params (replaces location.state)
   useEffect(() => {
@@ -95,6 +84,7 @@ const useListCard = (data: List) => {
   const onClickIdea = (ideaID: number) => setSelectedIdeaID(ideaID);
 
   return {
+    ideaCount,
     likeCount,
     drawerContent,
     setDrawerContent,
