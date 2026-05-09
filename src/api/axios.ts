@@ -81,11 +81,11 @@ instance.interceptors.response.use(
 
     if (error.response?.status === 401) {
       const { logout } = useAuthStore.getState();
-      logout();
       toast({
         title: t`Please login again`,
         variant: MessageType.SUCCESS,
       });
+      logout();
       window.location.href = '/';
     }
     return Promise.reject(error);

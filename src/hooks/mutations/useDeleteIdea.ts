@@ -37,9 +37,10 @@ const useDeleteIdea = ({ listID }: UseDeleteIdeaOptions) => {
             query.queryKey[1] === listID.toString(),
           refetchType: 'inactive',
         }),
+        // FIXME 不要Call BE
         queryClient.invalidateQueries({
           queryKey: listsKeys.list(listID.toString()),
-          refetchType: 'inactive',
+          refetchType: 'active',
         }),
         queryClient.refetchQueries({
           queryKey: [QueryKeys.INFINITE_IDEA, listID],

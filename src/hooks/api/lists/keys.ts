@@ -5,7 +5,7 @@ import {
 } from '@/api/query/lists';
 
 const listsKeys = {
-  all: 'lists',
+  all: ['lists'],
   list: (listID: GetListsRequest['listID']) => [
     ...listsKeys.all,
     'list',

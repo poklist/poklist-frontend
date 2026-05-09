@@ -1,5 +1,5 @@
 const categoriesKeys = {
-  all: 'categories',
+  all: ['categories'],
   list: () => [...categoriesKeys.all, 'list'],
 };
 

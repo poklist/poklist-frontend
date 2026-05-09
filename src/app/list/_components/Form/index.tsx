@@ -68,7 +68,6 @@ const ListForm: React.FC<IListFormProps> = ({
   const { data: categories, isLoading: categoriesLoading } = useGetCategories();
   const [mounted, setMounted] = useState(false);
 
-  // TODO load from localStorage in v0.3.5
   const listForm = useForm<z.infer<typeof ListFormSchema>>({
     resolver: zodResolver(ListFormSchema),
     defaultValues: {
@@ -124,6 +123,9 @@ const ListForm: React.FC<IListFormProps> = ({
     closeCategoryDrawer();
     try {
       completedCallback(data);
+      if (defaultListInfo.title !== '') {
+        return;
+      }
       setLocalStorage(
         LocalStorageKey.LIST_DRAFT,
         listForm.getValues(),
@@ -176,6 +178,9 @@ const ListForm: React.FC<IListFormProps> = ({
   };
 
   useEffect(() => {
+    document.body.style.pointerEvents = '';
+    document.body.removeAttribute('data-scroll-locked');
+
     listForm.setFocus('title');
     setMounted(true);
   }, []);
