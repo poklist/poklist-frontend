@@ -176,12 +176,20 @@ msgid "Delete List"
 msgstr "Delete List"
 
 #: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
-msgid "This list has no ideas yet. Add your first idea."
-msgstr "This list has no ideas yet. Add your first idea."
+msgid ""
+"This list has no ideas yet.\n"
+"Add your first idea."
+msgstr ""
+"This list has no ideas yet.\n"
+"Add your first idea."
 
 #: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
-msgid "Ideas will appear here soon. Follow for updates."
-msgstr "Ideas will appear here soon. Follow for updates."
+msgid ""
+"Ideas will appear here soon.\n"
+"Follow for updates."
+msgstr ""
+"Ideas will appear here soon.\n"
+"Follow for updates."
 
 #: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
 #: src/app/[userCode]/list/_components/DeleteButton/index.tsx

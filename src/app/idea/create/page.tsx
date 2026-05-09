@@ -31,7 +31,7 @@ const IdeaCreatePage: React.FC = () => {
 
   const { data: lists } = useGetUserLists({
     userCode: me.userCode,
-    limit: 99
+    limit: 99,
   });
 
   const onDismissCreate = (isFormEmpty: boolean) => {
