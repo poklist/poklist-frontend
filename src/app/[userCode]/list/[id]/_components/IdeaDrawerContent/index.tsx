@@ -67,8 +67,8 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({
       label: t`Edit Idea`,
       onClick: () => {
         if (!data) return;
-        navigateTo.editIdea(data?.id);
         closeSelf();
+        navigateTo.editIdea(data?.id);
       },
       icon: <IconEdit />,
     },

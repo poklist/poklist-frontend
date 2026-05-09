@@ -15,10 +15,10 @@ export const useGetIdea = (options: UseGetIdeaOptions) => {
   const { ideaID, staleTime, gcTime, enabled } = getIdeaSchema.parse(options);
 
   const query = ideasQuery.get.useQuery(
-    ideasKeys.idea({ ideaID }),
+    ideasKeys.idea(ideaID),
     { params: { ideaID } },
     {
-      queryKey: ideasKeys.idea({ ideaID }),
+      queryKey: ideasKeys.idea(ideaID),
       staleTime,
       gcTime,
       enabled: enabled && !!ideaID,

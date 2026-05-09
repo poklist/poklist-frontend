@@ -59,7 +59,6 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
     useDrawer(DrawerIds.IDEA_DRAFT_DRAWER_ID);
   const [mounted, setMounted] = useState(false);
 
-  // TODO load from localStorage in v0.3.5
   const ideaForm = useForm<z.infer<typeof IdeaFormSchema>>({
     resolver: zodResolver(IdeaFormSchema),
     defaultValues: {
@@ -124,6 +123,9 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
 
   const onSubmit = (data: z.infer<typeof IdeaFormSchema>) => {
     completedCallback(data);
+    if (previousIdeaInfo.title !== '') {
+      return;
+    }
     setLocalStorage(
       LocalStorageKey.IDEA_DRAFT,
       ideaForm.getValues(),
@@ -186,6 +188,9 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
   }, [previousIdeaInfo]);
 
   useEffect(() => {
+    document.body.style.pointerEvents = '';
+    document.body.removeAttribute('data-scroll-locked');
+
     ideaForm.setFocus('title');
     setMounted(true);
   }, []);

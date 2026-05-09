@@ -1,7 +1,7 @@
 import { GetFollowingsRequest } from '@/api/query/followings';
 
 const followingsKeys = {
-  all: 'followings',
+  all: ['followings'],
   user: ({ userID }: GetFollowingsRequest) => [
     ...followingsKeys.all,
     'user',
