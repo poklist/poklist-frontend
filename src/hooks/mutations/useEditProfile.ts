@@ -65,12 +65,11 @@ export const useEditProfile = ({
     onError: (error: AxiosError<IResponse<unknown>>) => {
       if (error.response?.status === 401) {
         logout();
-        navigateTo.discovery();
-
         toast({
           title: t`Please login again`,
           variant: MessageType.SUCCESS,
         });
+        navigateTo.discovery();
       }
       console.error(error);
       navigateTo.user(me.userCode);

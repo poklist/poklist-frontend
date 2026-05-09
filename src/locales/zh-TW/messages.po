@@ -176,12 +176,20 @@ msgid "Delete List"
 msgstr "刪除名單"
 
 #: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
-msgid "This list has no ideas yet. Add your first idea."
-msgstr "這份名單還空空的。 先來新增第一個靈感吧。"
+msgid ""
+"This list has no ideas yet.\n"
+"Add your first idea."
+msgstr ""
+"這份名單還空空的。\n"
+"先來新增第一個靈感吧。"
 
 #: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
-msgid "Ideas will appear here soon. Follow for updates."
-msgstr "靈感將會出現在這裡。 追蹤，掌握更新。"
+msgid ""
+"Ideas will appear here soon.\n"
+"Follow for updates."
+msgstr ""
+"靈感將會出現在這裡。\n"
+"追蹤，掌握更新。"
 
 #: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
 #: src/app/[userCode]/list/_components/DeleteButton/index.tsx
