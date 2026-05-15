@@ -7,7 +7,7 @@
     "skipLibCheck": true,
 
     /*Shadcn*/
-    "baseUrl": ".",
+    // "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     },

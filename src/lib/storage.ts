@@ -1,9 +1,9 @@
 import { LocalStorageKey } from '@/enums/index.enum';
-import { getLocalStorage, setLocalStorage } from '@/lib/utils';
+import { setLocalStorage } from '@/lib/utils';
 import { z } from 'zod';
 
 // Define the current version of localStorage schema
-export const STORAGE_VERSION = '0.3.10';
+export const STORAGE_VERSION = '0.3.12';
 
 // Define the schema for version check
 const versionSchema = z.string().regex(/^\d+\.\d+\.\d+$/);
@@ -13,9 +13,10 @@ const versionSchema = z.string().regex(/^\d+\.\d+\.\d+$/);
  * This function should be called when the app initializes
  */
 export const checkAndMigrateStorage = (): boolean => {
-  const currentVersion = getLocalStorage(
+  // NOTE: 這裡不要用 getLocalStorage
+  const currentVersion = localStorage.getItem(
     LocalStorageKey.VERSION_KEY,
-    versionSchema
+    // versionSchema
   );
 
   // If no version exists or version doesn't match, clear all storage
@@ -24,10 +25,10 @@ export const checkAndMigrateStorage = (): boolean => {
     !versionSchema.safeParse(currentVersion).success ||
     currentVersion !== STORAGE_VERSION
   ) {
-    if (currentVersion === undefined) {
+    if (currentVersion === undefined || currentVersion === null) {
       setLocalStorage(
         LocalStorageKey.VERSION_KEY,
-        STORAGE_VERSION,
+        JSON.stringify(STORAGE_VERSION),
         versionSchema
       );
       return false;
@@ -42,7 +43,7 @@ export const checkAndMigrateStorage = (): boolean => {
     // Set the new version
     setLocalStorage(
       LocalStorageKey.VERSION_KEY,
-      STORAGE_VERSION,
+      JSON.stringify(STORAGE_VERSION),
       versionSchema
     );
 
