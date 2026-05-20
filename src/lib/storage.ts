@@ -3,7 +3,7 @@ import { setLocalStorage } from '@/lib/utils';
 import { z } from 'zod';
 
 // Define the current version of localStorage schema
-export const STORAGE_VERSION = '0.3.12';
+export const STORAGE_VERSION = '0.3.14';
 
 // Define the schema for version check
 const versionSchema = z.string().regex(/^\d+\.\d+\.\d+$/);
@@ -14,26 +14,36 @@ const versionSchema = z.string().regex(/^\d+\.\d+\.\d+$/);
  */
 export const checkAndMigrateStorage = (): boolean => {
   // NOTE: 這裡不要用 getLocalStorage
-  const currentVersion = localStorage.getItem(
-    LocalStorageKey.VERSION_KEY,
-    // versionSchema
-  );
+  const rawVersion = localStorage.getItem(LocalStorageKey.VERSION_KEY);
 
-  // If no version exists or version doesn't match, clear all storage
+  // no version exists
+  if (rawVersion === null) {
+    setLocalStorage(
+      LocalStorageKey.VERSION_KEY,
+      STORAGE_VERSION,
+      versionSchema
+    );
+    return false;
+  }
+
+  let currentVersion = rawVersion;
+
+  // 處理帶引號的線上資料
   if (
-    !currentVersion ||
+    (currentVersion.startsWith('"') && currentVersion.endsWith('"')) ||
+    (currentVersion.startsWith(`'`) && currentVersion.endsWith(`'`))
+  ) {
+    try {
+      currentVersion = versionSchema.parse(JSON.parse(currentVersion));
+    } catch (e) {
+      console.error(e);
+    }
+  }
+  //  or version doesn't match, clear all storage
+  if (
     !versionSchema.safeParse(currentVersion).success ||
     currentVersion !== STORAGE_VERSION
   ) {
-    if (currentVersion === undefined || currentVersion === null) {
-      setLocalStorage(
-        LocalStorageKey.VERSION_KEY,
-        JSON.stringify(STORAGE_VERSION),
-        versionSchema
-      );
-      return false;
-    }
-
     console.warn(
       `[STORAGE] currentVersion=${currentVersion} is outdated (expectedVersion=${STORAGE_VERSION}), need to clear all storage`
     );
