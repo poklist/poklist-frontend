@@ -1,11 +1,11 @@
-import { createResponseSchema, userSchema } from '@/api/schemas/common';
+import { createResponseSchema, userBriefSchema } from '@/api/schemas/common';
 import { IdeaFormSchema } from '@/types/common';
 import z from 'zod';
 
 const latestListSchema = z.object({
   id: z.number().int().nonnegative(),
   title: IdeaFormSchema.shape.title,
-  owner: userSchema,
+  owner: userBriefSchema,
 });
 
 const getLatestListGroupsSchema = createResponseSchema(
@@ -16,7 +16,7 @@ const officialCollectionSchema = z.object({
   id: z.number().int().nonnegative(),
   title: IdeaFormSchema.shape.title,
   coverImage: IdeaFormSchema.shape.coverImage,
-  owner: userSchema,
+  owner: userBriefSchema,
 });
 
 const getOfficialCollectionsSchema = createResponseSchema(

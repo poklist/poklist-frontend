@@ -1,4 +1,4 @@
-import { createResponseSchema, userSchema } from '@/api/schemas/common';
+import { createResponseSchema, userBriefSchema } from '@/api/schemas/common';
 import { IdeaFormSchema } from '@/types/common';
 
 import z from 'zod';
@@ -16,7 +16,7 @@ const getResponseSchema = createResponseSchema(
     createdAt: z.string().datetime(),
     updatedAt: z.string().datetime(),
     listID: z.string(),
-    owner: userSchema,
+    owner: userBriefSchema,
   })
 );
 
