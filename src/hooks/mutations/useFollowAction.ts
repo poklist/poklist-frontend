@@ -1,10 +1,12 @@
 import axios, { AxiosPayload } from '@/api/axios';
+import { GetFollowersResponse } from '@/api/query/followers';
+import { GetUserInfoResponse } from '@/api/query/user';
 import QueryKeys from '@/constants/queryKeys';
+import followersKeys from '@/hooks/api/followers/keys';
+import followingsKeys from '@/hooks/api/followings/keys';
 import { createOptimisticUpdateHandler } from '@/hooks/mutations/optimisticUpdateHandler';
 import useFollowingStore from '@/stores/useFollowingStore';
 import useUserStore from '@/stores/useUserStore';
-import { SocialLink } from '@/types/Relation';
-import { User } from '@/types/User';
 import {
   useMutation,
   UseMutationResult,
@@ -12,6 +14,7 @@ import {
 } from '@tanstack/react-query';
 import { AxiosError, AxiosRequestConfig, Method } from 'axios';
 import { useRef } from 'react';
+import userKeys from '@/hooks/api/user/keys';
 
 interface FollowActionOptions {
   currentUserCode: string;
@@ -53,7 +56,9 @@ export const useFollowAction = ({
   const { me } = useUserStore();
   const { setIsFollowing, setFollowerCount } = useFollowingStore();
 
-  const latestSocialLinkRef = useRef<SocialLink | null>(null);
+  const latestSocialLinkRef = useRef<
+    GetFollowersResponse['content'][number] | null
+  >(null);
 
   const updateFollowCache = (
     targetUserID: number,
@@ -76,15 +81,13 @@ export const useFollowAction = ({
         return;
       }
 
-      const followers = queryClient.getQueryData<SocialLink[]>([
-        QueryKeys.FOLLOWERS,
-        currentUserID,
-      ]);
+      const followers = queryClient.getQueryData<
+        GetFollowersResponse['content']
+      >(followersKeys.user({ userID: currentUserID }));
 
-      const followings = queryClient.getQueryData<SocialLink[]>([
-        QueryKeys.FOLLOWING,
-        currentUserID,
-      ]);
+      const followings = queryClient.getQueryData<
+        GetFollowersResponse['content']
+      >(followingsKeys.user({ userID: currentUserID }));
 
       const foundInFollowers = Array.isArray(followers)
         ? followers.find((follower) => follower.id === targetUserID)
@@ -100,8 +103,8 @@ export const useFollowAction = ({
     ensureLatestSocialLink();
 
     queryClient.setQueryData(
-      [QueryKeys.FOLLOWERS, currentUserID],
-      (followers: SocialLink[]) => {
+      followersKeys.user({ userID: currentUserID }),
+      (followers: GetFollowersResponse['content']) => {
         if (!followers) return followers;
 
         const exists = Array.isArray(followers)
@@ -138,8 +141,8 @@ export const useFollowAction = ({
     );
 
     queryClient.setQueryData(
-      [QueryKeys.FOLLOWING, currentUserID],
-      (followings: SocialLink[]) => {
+      followingsKeys.user({ userID: currentUserID }),
+      (followings: GetFollowersResponse['content']) => {
         if (!followings || !latestSocialLinkRef.current) return followings;
 
         const exists = followings.some(
@@ -167,7 +170,17 @@ export const useFollowAction = ({
 
     queryClient.setQueryData(
       [QueryKeys.USER, currentUserCode],
-      (oldData: User) => {
+      (oldData: GetUserInfoResponse['content']) => {
+        if (!oldData) return oldData;
+        return {
+          ...oldData,
+          followingCount: (oldData.followingCount || 0) + countDelta,
+        };
+      }
+    );
+    queryClient.setQueryData(
+      userKeys.userInfo(currentUserCode),
+      (oldData: GetUserInfoResponse['content']) => {
         if (!oldData) return oldData;
         return {
           ...oldData,

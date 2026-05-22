@@ -1,5 +1,5 @@
+import { GetListsResponse } from '@/api/query/lists';
 import IconDrag from '@/components/ui/icons/DragIcon';
-import { IdeaPreview } from '@/types/Idea';
 import { Trans } from '@lingui/macro';
 import Image from 'next/image';
 import React from 'react';
@@ -7,8 +7,10 @@ import VirtualList from 'react-virtual-sortable';
 import { SortableEvent } from 'sortable-dnd';
 
 interface IdeaListProps {
-  ideaList?: IdeaPreview[];
-  reorderCallback: (event: DropEvent<IdeaPreview>) => void;
+  ideaList?: GetListsResponse['content']['ideas'];
+  reorderCallback: (
+    event: DropEvent<GetListsResponse['content']['ideas'][number]>
+  ) => void;
   onBottomCallback: () => void;
   hasMore: boolean;
 }
@@ -30,7 +32,9 @@ const IdeaListSection: React.FC<IdeaListProps> = ({
   onBottomCallback: atBottomCallback,
   hasMore,
 }) => {
-  const onReorderIdea = (event: DropEvent<IdeaPreview>) => {
+  const onReorderIdea = (
+    event: DropEvent<GetListsResponse['content']['ideas'][number]>
+  ) => {
     if (!ideaList) return;
     reorderCallback(event);
   };

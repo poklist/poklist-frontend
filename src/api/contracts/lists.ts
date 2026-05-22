@@ -1,5 +1,5 @@
 import { AppRoute } from '@ts-rest/core';
-import { listsSchema } from '../schemas';
+import { listsSchema } from '@/api/schemas';
 
 const getListsContract = {
   method: 'GET',

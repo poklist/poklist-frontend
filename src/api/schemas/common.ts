@@ -1,10 +1,18 @@
 import z from 'zod';
 
-export const userSchema = z.object({
+export const userBriefSchema = z.object({
   id: z.number().int().nonnegative(),
   displayName: z.string(),
   userCode: z.string(),
   profileImage: z.string().base64(),
+});
+
+export const socialLinkSchema = z.object({
+  displayName: z.string(),
+  id: z.number().nonnegative().int(),
+  profileImage: z.string().optional(),
+  userCode: z.string(),
+  isFollowing: z.boolean(),
 });
 
 export const createResponseSchema = <T extends z.ZodTypeAny>(

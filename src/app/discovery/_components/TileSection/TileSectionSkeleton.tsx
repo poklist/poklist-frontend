@@ -1,5 +1,5 @@
-import SectionTitleSkeleton from '../SectionTitle/SectionTitleSkeleton';
-import TileListSkeleton from '../TileList/TileListSkeleton';
+import SectionTitleSkeleton from '@/app/discovery/_components/SectionTitle/SectionTitleSkeleton';
+import TileListSkeleton from '@/app/discovery/_components/TileList/TileListSkeleton';
 
 const TileSectionSkeleton: React.FC = () => {
   return (

@@ -1,17 +1,17 @@
 'use client';
 
+import { GetListsResponse } from '@/api/query/lists';
 import IdeaList, {
   DropEvent,
 } from '@/app/[userCode]/list/[id]/reorder/_components/IdeasList';
 import EditModeHeader from '@/components/Header/EditModeHeader';
+import { useGetIdeasOrder } from '@/hooks/api/lists/useGetIdeasOrder';
+import { useGetListInfiniteIdeas } from '@/hooks/api/lists/useGetListInfiniteIdeas';
 import { useReorderIdeas } from '@/hooks/mutations/useReorderIdeas';
-import { useInfiniteIdea } from '@/hooks/queries/infinite/useInfiniteIdea';
-import { useOrderIdeas } from '@/hooks/queries/useOrderIdeas';
 import { useAuthCheck, useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { useUserRouteContext } from '@/hooks/useUserRouteContext';
 import useUserStore from '@/stores/useUserStore';
-import { IdeaPreview } from '@/types/Idea';
 import { t } from '@lingui/macro';
 import { useParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
@@ -19,28 +19,29 @@ import { useCallback, useEffect, useState } from 'react';
 const ReorderIdeaPage: React.FC = () => {
   const { userCode } = useUserRouteContext();
   const params = useParams();
-  const listID = params?.id as string;
+  const listID = params.id as string;
 
   const navigateTo = useStrictNavigationAdapter();
   const { withAuth } = useAuthWrapper();
   const { checkAuthAndRedirect } = useAuthCheck();
 
   const { me } = useUserStore();
-  const [ideasDraft, setIdeasDraft] = useState<IdeaPreview[]>();
+  const [ideasDraft, setIdeasDraft] =
+    useState<GetListsResponse['content']['ideas']>();
   const [isOrderModified, setIsOrderModified] = useState(false);
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useInfiniteIdea({
+    useGetListInfiniteIdeas({
       listID,
       // enabled: !isDeleting,
       limit: 20,
     });
 
-  const { data: orderedIdeas } = useOrderIdeas({
-    listID: listID ?? '',
+  const { data: orderedIdeas } = useGetIdeasOrder({
+    listID,
   });
   const { reorderIdeas } = useReorderIdeas({
-    listID: listID ?? '',
+    listID,
   });
 
   useEffect(() => {
@@ -48,7 +49,9 @@ const ReorderIdeaPage: React.FC = () => {
 
     const newIdeas = data.pages
       .flatMap((page) => page.ideas)
-      .filter((idea): idea is IdeaPreview => Boolean(idea));
+      .filter((idea): idea is GetListsResponse['content']['ideas'][number] =>
+        Boolean(idea)
+      );
 
     setIdeasDraft((prevDraft) => {
       if (!isOrderModified || !prevDraft) return newIdeas;
@@ -60,11 +63,14 @@ const ReorderIdeaPage: React.FC = () => {
   }, [data, isOrderModified]);
 
   const onReorder = withAuth(
-    useCallback((event: DropEvent<IdeaPreview>) => {
-      if (!event.changed) return;
-      setIdeasDraft(event.list);
-      setIsOrderModified(true);
-    }, [])
+    useCallback(
+      (event: DropEvent<GetListsResponse['content']['ideas'][number]>) => {
+        if (!event.changed) return;
+        setIdeasDraft(event.list);
+        setIsOrderModified(true);
+      },
+      []
+    )
   );
 
   const onConfirmReorder = withAuth(() => {

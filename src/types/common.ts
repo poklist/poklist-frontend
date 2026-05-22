@@ -18,7 +18,13 @@ export type FormErrors = Record<string, FormErrorDetail>;
 
 export const IdeaFormSchema = z.object({
   title: z.string().min(1).max(TITLE_MAX_LENGTH),
-  description: z.string().max(DESC_MAX_LENGTH).optional(),
+  description: z
+    .string()
+    .max(DESC_MAX_LENGTH)
+    .transform((value) => {
+      return value.replace(/^\s+/, ''); // 移除開頭所有空白
+    })
+    .optional(),
   externalLink: z
     .string()
     .trim()

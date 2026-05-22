@@ -3,6 +3,7 @@ import ApiPath from '@/constants/apiPath';
 import { List } from '@/constants/list';
 import QueryKeys from '@/constants/queryKeys';
 import { MessageType } from '@/enums/Style/index.enum';
+import listsKeys from '@/hooks/api/lists/keys';
 import { toast } from '@/hooks/useToast';
 import { IResponse } from '@/types/response';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -38,16 +39,26 @@ export const useDeleteList = ({
       try {
         // 將單筆列表資料清空，而非刪除快取，為免因尚有 Component 仍在使用相關資料而重新 fetch
         queryClient.setQueryData([QueryKeys.LIST, listID.toString()], null);
+        queryClient.setQueryData(listsKeys.list(listID.toString()), null);
         // 重新獲取列表預覽資料
-        await queryClient.invalidateQueries({
-          queryKey: [QueryKeys.LISTS, userCode, offset, limit],
-          refetchType: 'inactive',
-        });
+        await Promise.all([
+          queryClient.invalidateQueries({
+            queryKey: [QueryKeys.LISTS, userCode, offset, limit],
+            refetchType: 'inactive',
+          }),
+          queryClient.invalidateQueries({
+            queryKey: listsKeys.userLists(userCode),
+            refetchType: 'all',
+          }),
+          queryClient.invalidateQueries({
+            queryKey: listsKeys.list(listID.toString()),
+            refetchType: 'inactive',
+          }),
+        ]);
+        onSuccess?.();
       } catch (error) {
         console.warn('Refetch failed, but list was deleted:', error);
       }
-
-      onSuccess?.();
     },
     onError: (error) => {
       toast({

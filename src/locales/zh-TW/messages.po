@@ -18,87 +18,6 @@ msgstr ""
 msgid "Please login again"
 msgstr "請重新登入"
 
-#: src/app/[userCode]/edit/page.tsx
-#: src/app/[userCode]/edit/page.tsx
-#: src/app/user/edit/page.tsx
-#: src/app/user/edit/page.tsx
-msgid "Name"
-msgstr "姓名"
-
-#: src/app/[userCode]/edit/page.tsx
-#: src/app/user/edit/page.tsx
-msgid "Enter your name here"
-msgstr "輸入你的姓名"
-
-#: src/app/[userCode]/edit/page.tsx
-#: src/app/[userCode]/edit/page.tsx
-#: src/app/user/edit/page.tsx
-#: src/app/user/edit/page.tsx
-msgid "Username"
-msgstr "用戶帳號"
-
-#: src/app/[userCode]/edit/page.tsx
-#: src/app/user/edit/page.tsx
-msgid "Enter your username here"
-msgstr "輸入你的用戶帳號"
-
-#: src/app/[userCode]/edit/page.tsx
-#: src/app/[userCode]/edit/page.tsx
-#: src/app/user/edit/page.tsx
-#: src/app/user/edit/page.tsx
-msgid "Bio"
-msgstr "個人自介"
-
-#: src/app/[userCode]/edit/page.tsx
-#: src/app/user/edit/page.tsx
-msgid "Enter your bio here"
-msgstr "輸入你的個人自介"
-
-#: src/app/[userCode]/edit/page.tsx
-#: src/app/user/edit/page.tsx
-msgid "Profile Image"
-msgstr "個人檔案頭貼"
-
-#: src/app/[userCode]/edit/page.tsx
-#: src/app/user/edit/page.tsx
-msgid "Customized Link"
-msgstr "自訂連結"
-
-#: src/app/[userCode]/edit/page.tsx
-#: src/app/user/edit/page.tsx
-msgid "Add URL"
-msgstr "輸入網址"
-
-#: src/app/[userCode]/edit/page.tsx
-#: src/app/[userCode]/edit/page.tsx
-#: src/app/[userCode]/edit/page.tsx
-#: src/app/[userCode]/edit/page.tsx
-#: src/app/[userCode]/edit/page.tsx
-#: src/app/user/edit/page.tsx
-#: src/app/user/edit/page.tsx
-#: src/app/user/edit/page.tsx
-#: src/app/user/edit/page.tsx
-#: src/app/user/edit/page.tsx
-msgid "Add account"
-msgstr "輸入帳號"
-
-#: src/app/[userCode]/edit/page.tsx
-#: src/app/user/edit/page.tsx
-msgid "Profile"
-msgstr "個人檔案"
-
-#: src/app/[userCode]/edit/page.tsx
-#: src/app/user/edit/page.tsx
-msgctxt "title"
-msgid "Links"
-msgstr "連結"
-
-#: src/app/[userCode]/edit/page.tsx
-#: src/app/user/_components/HeroSection/index.tsx
-#: src/app/user/edit/page.tsx
-msgid "Edit profile and account"
-msgstr "編輯個人檔案與帳號"
-
 #: src/app/[userCode]/list/[id]/_components/IdeaDrawerContent/index.tsx
 #: src/components/Footer/FloatingButtonFooter.tsx
 msgid "Copied to clipboard"
@@ -682,6 +601,11 @@ msgid "The login session is expired, please login again"
 msgstr "登入已過期，請重新登入"
 
 #: src/app/user/_components/HeroSection/index.tsx
+#: src/app/user/edit/page.tsx
+msgid "Edit profile and account"
+msgstr "編輯個人檔案與帳號"
+
+#: src/app/user/_components/HeroSection/index.tsx
 #: src/app/user/_components/UserConnectionRow.tsx
 #: src/components/Header/BackToUserHeader.tsx
 msgid "Follow"
@@ -703,6 +627,62 @@ msgstr "先追蹤起來，隨時回來看看吧！"
 #: src/app/user/_components/UserConnectionRow.tsx
 msgid "Followings"
 msgstr "正追蹤"
+
+#: src/app/user/edit/page.tsx
+#: src/app/user/edit/page.tsx
+msgid "Name"
+msgstr "姓名"
+
+#: src/app/user/edit/page.tsx
+msgid "Enter your name here"
+msgstr "輸入你的姓名"
+
+#: src/app/user/edit/page.tsx
+#: src/app/user/edit/page.tsx
+msgid "Username"
+msgstr "用戶帳號"
+
+#: src/app/user/edit/page.tsx
+msgid "Enter your username here"
+msgstr "輸入你的用戶帳號"
+
+#: src/app/user/edit/page.tsx
+#: src/app/user/edit/page.tsx
+msgid "Bio"
+msgstr "個人自介"
+
+#: src/app/user/edit/page.tsx
+msgid "Enter your bio here"
+msgstr "輸入你的個人自介"
+
+#: src/app/user/edit/page.tsx
+msgid "Profile Image"
+msgstr "個人檔案頭貼"
+
+#: src/app/user/edit/page.tsx
+msgid "Customized Link"
+msgstr "自訂連結"
+
+#: src/app/user/edit/page.tsx
+msgid "Add URL"
+msgstr "輸入網址"
+
+#: src/app/user/edit/page.tsx
+#: src/app/user/edit/page.tsx
+#: src/app/user/edit/page.tsx
+#: src/app/user/edit/page.tsx
+#: src/app/user/edit/page.tsx
+msgid "Add account"
+msgstr "輸入帳號"
+
+#: src/app/user/edit/page.tsx
+msgid "Profile"
+msgstr "個人檔案"
+
+#: src/app/user/edit/page.tsx
+msgctxt "title"
+msgid "Links"
+msgstr "連結"
 
 #: src/components/Drawer/CreateListOrIdeaDrawer.tsx
 msgid "What’s on your mind?"

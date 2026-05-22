@@ -19,17 +19,19 @@ import { DropdownItemType, MessageType } from '@/enums/Style/index.enum';
 import { useGetIdea } from '@/hooks/api/ideas/useGetIdea';
 import useDeleteIdea from '@/hooks/mutations/useDeleteIdea';
 import { useAuthWrapper } from '@/hooks/useAuth';
+import useClipboard from '@/hooks/useClipboard';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { toast } from '@/hooks/useToast';
 import { openWindow } from '@/lib/openLink';
 import { getFormattedTime } from '@/lib/time';
-import { copyHref, urlPreview } from '@/lib/utils';
+import { urlPreview } from '@/lib/utils';
 import useAuthStore from '@/stores/useAuthStore';
 import useUserStore from '@/stores/useUserStore';
 import { t, Trans } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { TrashIcon } from 'lucide-react';
 import Image from 'next/image';
+import { useState } from 'react';
 
 interface IIdeaDrawerContentProps {
   ideaID: string;
@@ -43,7 +45,10 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({
   const { me } = useUserStore();
   const { isLoggedIn } = useAuthStore();
   const { withAuth } = useAuthWrapper();
-  const { data } = useGetIdea({ ideaID });
+  const { copy } = useClipboard();
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const { data } = useGetIdea({ ideaID, enabled: !isDeleting });
   const { deleteIdea } = useDeleteIdea({
     listID: String(data?.listID),
   });
@@ -54,7 +59,8 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({
   const { closeDrawer: closeSelf } = useDrawer(DrawerIds.LIST_CARD_DRAWER_ID);
 
   const handleCopyHref = () => {
-    copyHref(`/idea/${data?.id}`);
+    if (!data) return;
+    void copy(`${window.location.origin}/idea/${data.id}`);
     toast({
       title: t`Copied to clipboard`,
       variant: MessageType.SUCCESS,
@@ -84,10 +90,14 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({
 
   const onDeleteIdea = withAuth(() => {
     if (!data) return;
+    setIsDeleting(true);
     deleteIdea(data.id, {
       onSuccess: () => {
         closeSelf();
         navigateTo.viewList(me.userCode, String(data.listID));
+      },
+      onError: () => {
+        setIsDeleting(false);
       },
     });
   });

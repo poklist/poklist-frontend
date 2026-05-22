@@ -6,7 +6,7 @@ import { toast } from '@/hooks/useToast';
 import { CreateIdeaRequest, CreateIdeaResponse } from '@/types/Idea';
 import { IResponse } from '@/types/response';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import listsKeys from '../api/lists/keys';
+import listsKeys from '@/hooks/api/lists/keys';
 
 interface UseCreateIdeaOptions {
   onSuccess?: (data: CreateIdeaResponse) => void;
@@ -46,6 +46,9 @@ export const useCreateIdea = ({
           }),
           queryClient.refetchQueries({
             queryKey: [QueryKeys.INFINITE_IDEA, data.listID.toString()],
+          }),
+          queryClient.refetchQueries({
+            queryKey: listsKeys.infiniteIdeas(data.listID.toString()),
           }),
         ]);
       } catch (error) {

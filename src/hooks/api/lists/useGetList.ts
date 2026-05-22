@@ -4,7 +4,7 @@ import { List } from '@/constants/list';
 import z from 'zod';
 import listsKeys from './keys';
 
-const getListSchema = listsSchema.getRequest.extend({
+export const getListSchema = listsSchema.getRequest.extend({
   offset: z
     .number()
     .int()

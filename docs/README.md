@@ -14,7 +14,7 @@
 
 ### 架構設計
 
-- 待添加
+- [專案接管手冊 (Architecture & Handover)](./ARCHITECTURE.md) - 技術棧、目錄分層、跨切核心、慣例與已知債務（接手者 / AI 必讀）
 
 ### API 文檔
 

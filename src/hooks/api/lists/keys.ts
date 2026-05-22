@@ -21,6 +21,11 @@ const listsKeys = {
     'ideasOrder',
     listID,
   ],
+  infiniteIdeas: (listID: GetListsRequest['listID']) => [
+    ...listsKeys.all,
+    'infiniteIdeas',
+    listID,
+  ],
 };
 
 export default listsKeys;

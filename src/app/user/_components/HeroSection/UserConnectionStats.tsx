@@ -1,7 +1,7 @@
 import { useGetFollowers } from '@/hooks/api/followers/useGetFollowers';
 import { useGetFollowings } from '@/hooks/api/followings/useGetFollowings';
-import FollowersListDrawer from './FollowersListDrawer';
-import FollowingListDrawer from './FollowingListDrawer';
+import FollowersListDrawer from '@/app/user/_components/HeroSection/FollowersListDrawer';
+import FollowingListDrawer from '@/app/user/_components/HeroSection/FollowingListDrawer';
 
 const UserConnectionStats = ({ userID }: { userID: number }) => {
   const {

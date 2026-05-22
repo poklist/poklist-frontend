@@ -289,7 +289,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
                     onFocus={() => descriptionTextarea.bind.onFocus()}
                     onChange={(event) => {
                       descriptionTextarea.bind.onChange();
-                      field.onChange(formatInput(event.target.value));
+                      field.onChange(event.target.value.replace(/^\s+/, ''));
                     }}
                   />
                   {descriptionTextarea.isFocus && (
@@ -308,7 +308,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
           <Input
             {...ideaForm.register('externalLink')}
             placeholder={t`Link`}
-            className="line-clamp-1 min-h-14 w-full truncate border-black-tint-04 py-4 pl-10 pr-3 focus:border-black focus:ring-1 focus:ring-black"
+            className="line-clamp-1 block min-h-14 w-full truncate border-black-tint-04 py-4 pl-10 pr-3 focus:border-black focus:ring-1 focus:ring-black"
           />
         </div>
       </form>
