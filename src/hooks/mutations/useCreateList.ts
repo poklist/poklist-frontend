@@ -7,6 +7,7 @@ import { toast } from '@/hooks/useToast';
 import { CreateListResponse, ListBody } from '@/types/List';
 import { IResponse } from '@/types/response';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import listsKeys from '@/hooks/api/lists/keys';
 
 interface UseCreateListOptions {
   userCode: string; // to invalidate the useLists cache
@@ -46,10 +47,16 @@ export const useCreateList = ({
         throw new Error('Failed to create list');
       }
       try {
-        await queryClient.invalidateQueries({
-          queryKey: [QueryKeys.LISTS, userCode, offset, limit],
-          refetchType: 'inactive',
-        });
+        await Promise.all([
+          queryClient.invalidateQueries({
+            queryKey: [QueryKeys.LISTS, userCode, offset, limit],
+            refetchType: 'inactive',
+          }),
+          queryClient.invalidateQueries({
+            queryKey: listsKeys.userLists(userCode),
+            refetchType: 'inactive',
+          }),
+        ]);
       } catch (error) {
         console.warn('Refetch failed, but list was created:', error);
       }

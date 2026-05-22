@@ -40,7 +40,10 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
   const { isLoggedIn } = useAuthStore();
   const { me } = useUserStore();
   const { withAuth } = useAuthWrapper();
-  const { deleteList } = useDeleteList({ userCode: me.userCode });
+  const { deleteList } = useDeleteList({
+    userCode: me.userCode,
+    onSuccess: () => navigateTo.user(me.userCode),
+  });
 
   const {
     likeCount,
@@ -102,9 +105,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
   ];
 
   const onDeleteList = withAuth(() => {
-    deleteList(data.id, {
-      onSuccess: () => navigateTo.user(me.userCode),
-    });
+    deleteList(data.id);
   });
 
   const handleExpandContent = (content: React.ReactNode) => {

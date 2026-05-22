@@ -18,7 +18,7 @@ const useListCard = (data: GetListsResponse['content']) => {
   const deleteDrawer = useDrawer(DrawerIds.DELETE_LIST_DRAWER_ID);
 
   const [drawerContent, setDrawerContent] = useState<React.ReactNode>(null);
-  const [selectedIdeaID, setSelectedIdeaID] = useState<number | null>(null);
+  const [selectedIdeaID, setSelectedIdeaID] = useState<string | null>(null);
   const [likeCount, setLikeCount] = useState(data.likeCount);
   const [ideaCount, setIdeaCount] = useState(data.ideaTotalCount);
 
@@ -63,7 +63,7 @@ const useListCard = (data: GetListsResponse['content']) => {
     const ideaIDFromUrl = searchParams?.get('ideaID');
     if (!ideaIDFromUrl) return;
 
-    setSelectedIdeaID(Number(ideaIDFromUrl));
+    setSelectedIdeaID(ideaIDFromUrl);
     const newUrl = new URL(window.location.href);
     newUrl.searchParams.delete('ideaID');
     window.history.replaceState({}, '', newUrl.toString());
@@ -81,7 +81,7 @@ const useListCard = (data: GetListsResponse['content']) => {
     }
   };
 
-  const onClickIdea = (ideaID: number) => setSelectedIdeaID(ideaID);
+  const onClickIdea = (ideaID: string) => setSelectedIdeaID(ideaID);
 
   return {
     ideaCount,

@@ -18,87 +18,6 @@ msgstr ""
 msgid "Please login again"
 msgstr "Please login again"
 
-#: src/app/[userCode]/edit/page.tsx
-#: src/app/[userCode]/edit/page.tsx
-#: src/app/user/edit/page.tsx
-#: src/app/user/edit/page.tsx
-msgid "Name"
-msgstr "Name"
-
-#: src/app/[userCode]/edit/page.tsx
-#: src/app/user/edit/page.tsx
-msgid "Enter your name here"
-msgstr "Enter your name here"
-
-#: src/app/[userCode]/edit/page.tsx
-#: src/app/[userCode]/edit/page.tsx
-#: src/app/user/edit/page.tsx
-#: src/app/user/edit/page.tsx
-msgid "Username"
-msgstr "Username"
-
-#: src/app/[userCode]/edit/page.tsx
-#: src/app/user/edit/page.tsx
-msgid "Enter your username here"
-msgstr "Enter your username here"
-
-#: src/app/[userCode]/edit/page.tsx
-#: src/app/[userCode]/edit/page.tsx
-#: src/app/user/edit/page.tsx
-#: src/app/user/edit/page.tsx
-msgid "Bio"
-msgstr "Bio"
-
-#: src/app/[userCode]/edit/page.tsx
-#: src/app/user/edit/page.tsx
-msgid "Enter your bio here"
-msgstr "Enter your bio here"
-
-#: src/app/[userCode]/edit/page.tsx
-#: src/app/user/edit/page.tsx
-msgid "Profile Image"
-msgstr "Profile Image"
-
-#: src/app/[userCode]/edit/page.tsx
-#: src/app/user/edit/page.tsx
-msgid "Customized Link"
-msgstr "Customized Link"
-
-#: src/app/[userCode]/edit/page.tsx
-#: src/app/user/edit/page.tsx
-msgid "Add URL"
-msgstr "Add URL"
-
-#: src/app/[userCode]/edit/page.tsx
-#: src/app/[userCode]/edit/page.tsx
-#: src/app/[userCode]/edit/page.tsx
-#: src/app/[userCode]/edit/page.tsx
-#: src/app/[userCode]/edit/page.tsx
-#: src/app/user/edit/page.tsx
-#: src/app/user/edit/page.tsx
-#: src/app/user/edit/page.tsx
-#: src/app/user/edit/page.tsx
-#: src/app/user/edit/page.tsx
-msgid "Add account"
-msgstr "Add account"
-
-#: src/app/[userCode]/edit/page.tsx
-#: src/app/user/edit/page.tsx
-msgid "Profile"
-msgstr "Profile"
-
-#: src/app/[userCode]/edit/page.tsx
-#: src/app/user/edit/page.tsx
-msgctxt "title"
-msgid "Links"
-msgstr "Links"
-
-#: src/app/[userCode]/edit/page.tsx
-#: src/app/user/_components/HeroSection/index.tsx
-#: src/app/user/edit/page.tsx
-msgid "Edit profile and account"
-msgstr "Edit profile and account"
-
 #: src/app/[userCode]/list/[id]/_components/IdeaDrawerContent/index.tsx
 #: src/components/Footer/FloatingButtonFooter.tsx
 msgid "Copied to clipboard"
@@ -682,6 +601,11 @@ msgid "The login session is expired, please login again"
 msgstr "The login session is expired, please login again"
 
 #: src/app/user/_components/HeroSection/index.tsx
+#: src/app/user/edit/page.tsx
+msgid "Edit profile and account"
+msgstr "Edit profile and account"
+
+#: src/app/user/_components/HeroSection/index.tsx
 #: src/app/user/_components/UserConnectionRow.tsx
 #: src/components/Header/BackToUserHeader.tsx
 msgid "Follow"
@@ -703,6 +627,62 @@ msgstr "Follow and check back soon for surprise lists!"
 #: src/app/user/_components/UserConnectionRow.tsx
 msgid "Followings"
 msgstr "Followings"
+
+#: src/app/user/edit/page.tsx
+#: src/app/user/edit/page.tsx
+msgid "Name"
+msgstr "Name"
+
+#: src/app/user/edit/page.tsx
+msgid "Enter your name here"
+msgstr "Enter your name here"
+
+#: src/app/user/edit/page.tsx
+#: src/app/user/edit/page.tsx
+msgid "Username"
+msgstr "Username"
+
+#: src/app/user/edit/page.tsx
+msgid "Enter your username here"
+msgstr "Enter your username here"
+
+#: src/app/user/edit/page.tsx
+#: src/app/user/edit/page.tsx
+msgid "Bio"
+msgstr "Bio"
+
+#: src/app/user/edit/page.tsx
+msgid "Enter your bio here"
+msgstr "Enter your bio here"
+
+#: src/app/user/edit/page.tsx
+msgid "Profile Image"
+msgstr "Profile Image"
+
+#: src/app/user/edit/page.tsx
+msgid "Customized Link"
+msgstr "Customized Link"
+
+#: src/app/user/edit/page.tsx
+msgid "Add URL"
+msgstr "Add URL"
+
+#: src/app/user/edit/page.tsx
+#: src/app/user/edit/page.tsx
+#: src/app/user/edit/page.tsx
+#: src/app/user/edit/page.tsx
+#: src/app/user/edit/page.tsx
+msgid "Add account"
+msgstr "Add account"
+
+#: src/app/user/edit/page.tsx
+msgid "Profile"
+msgstr "Profile"
+
+#: src/app/user/edit/page.tsx
+msgctxt "title"
+msgid "Links"
+msgstr "Links"
 
 #: src/components/Drawer/CreateListOrIdeaDrawer.tsx
 msgid "What’s on your mind?"

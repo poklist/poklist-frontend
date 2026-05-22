@@ -1,12 +1,12 @@
-import { useInfiniteIdea } from '@/hooks/queries/infinite/useInfiniteIdea';
+import { GetListsResponse } from '@/api/query/lists';
+import { useGetListInfiniteIdeas } from '@/hooks/api/lists/useGetListInfiniteIdeas';
 import { cn } from '@/lib/utils';
-import { IdeaPreview } from '@/types/Idea';
 import Image from 'next/image';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 interface IdeaListProps {
   listID: string;
-  onClickIdea: (id: number) => void;
+  onClickIdea: (id: string) => void;
 }
 
 export const IdeaList: React.FC<IdeaListProps> = ({
@@ -15,7 +15,8 @@ export const IdeaList: React.FC<IdeaListProps> = ({
 }: IdeaListProps) => {
   const sentinelRef = useRef<HTMLDivElement>(null);
 
-  const [ideasDraft, setIdeasDraft] = useState<IdeaPreview[]>();
+  const [ideasDraft, setIdeasDraft] =
+    useState<GetListsResponse['content']['ideas']>();
 
   const {
     data,
@@ -24,7 +25,7 @@ export const IdeaList: React.FC<IdeaListProps> = ({
     isFetchingNextPage,
     isLoading,
     isError,
-  } = useInfiniteIdea({ listID, limit: 10 });
+  } = useGetListInfiniteIdeas({ listID, limit: 20 });
 
   const onBottomReached = useCallback(() => {
     if (hasNextPage && !isFetchingNextPage) {
@@ -54,10 +55,16 @@ export const IdeaList: React.FC<IdeaListProps> = ({
 
     const newIdeas = data.pages
       .flatMap((page) => page.ideas)
-      .filter((idea): idea is IdeaPreview => Boolean(idea));
+      .filter((idea): idea is GetListsResponse['content']['ideas'][number] =>
+        Boolean(idea)
+      );
 
     setIdeasDraft((prevDraft) => {
       if (!prevDraft) return newIdeas;
+
+      const newIds = new Set(newIdeas.map((idea) => idea.id));
+      const hasRemovals = prevDraft.some((idea) => !newIds.has(idea.id));
+      if (hasRemovals) return newIdeas;
 
       const existingIds = new Set(prevDraft.map((idea) => idea.id));
       const newItems = newIdeas.filter((idea) => !existingIds.has(idea.id));
@@ -88,7 +95,7 @@ export const IdeaList: React.FC<IdeaListProps> = ({
               {idea.title}
             </p>
             {idea.description && (
-              <p className="line-clamp-1 truncate text-[13px] text-gray-storm-01">
+              <p className="line-clamp-1 block truncate text-[13px] text-gray-storm-01">
                 {idea.description}
               </p>
             )}

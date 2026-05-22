@@ -1,18 +1,19 @@
 import axios from '@/api/axios';
+import { listsContract } from '@/api/contracts';
+import { GetListsResponse } from '@/api/query/lists';
 import ApiPath from '@/constants/apiPath';
 import { Idea } from '@/constants/list';
 import QueryKeys from '@/constants/queryKeys';
 import { MessageType } from '@/enums/Style/index.enum';
+import listsKeys from '@/hooks/api/lists/keys';
 import { toast } from '@/hooks/useToast';
-import { IdeaPreview } from '@/types/Idea';
-import { List } from '@/types/List';
 import { IResponse } from '@/types/response';
 import {
   InfiniteData,
   useMutation,
   useQueryClient,
 } from '@tanstack/react-query';
-import listsKeys from '../api/lists/keys';
+import type { DataResponse } from '@ts-rest/react-query';
 
 interface UseReorderIdeasOptions {
   listID: string;
@@ -30,10 +31,10 @@ export const useReorderIdeas = ({
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: async ({ ideaOrder }: { ideaOrder: number[] }) => {
-      const _params: { ideaOrder: number[] } = { ideaOrder: [] };
-      ideaOrder.forEach((ideaID: number) => {
-        _params.ideaOrder.push(Number(ideaID));
+    mutationFn: async ({ ideaOrder }: { ideaOrder: string[] }) => {
+      const _params: { ideaOrder: string[] } = { ideaOrder: [] };
+      ideaOrder.forEach((ideaID: string) => {
+        _params.ideaOrder.push(ideaID);
       });
       const response = await axios.post<IResponse<unknown>>(
         `${ApiPath.lists}/${listID}/reorder`,
@@ -46,33 +47,34 @@ export const useReorderIdeas = ({
     },
     onSuccess: async ({ serverData, newOrder }) => {
       const previousData = queryClient.getQueryData<
-        InfiniteData<{
-          listInfo: List;
-          ideas: IdeaPreview[];
-          nextOffset: number;
-          total: number;
-        }>
-      >([QueryKeys.INFINITE_IDEA, listID]);
+        InfiniteData<DataResponse<typeof listsContract.getListsContract>>
+      >(listsKeys.infiniteIdeas(listID));
 
       if (previousData) {
-        const existingIdeas = previousData.pages.flatMap((p) => p.ideas);
+        const existingIdeas = previousData.pages.flatMap(
+          (p) => p.body.content.ideas
+        );
         const ideaIdMap = new Map(existingIdeas.map((idea) => [idea.id, idea]));
 
         const updatedIdeas = newOrder
           .map((id) => ideaIdMap.get(id))
-          .filter((idea): idea is IdeaPreview => !!idea);
+          .filter(
+            (idea): idea is GetListsResponse['content']['ideas'][number] =>
+              !!idea
+          );
 
-        const updatedPages = [];
-        for (let i = 0; i < updatedIdeas.length; i += limit) {
-          const pageIdeas = updatedIdeas.slice(i, i + limit);
-          updatedPages.push({
-            listInfo: previousData.pages[0].listInfo,
-            ideas: pageIdeas,
-            nextOffset: i + pageIdeas.length, // 正確設定 nextOffset
-            total: previousData.pages[0].total,
-          });
-        }
-        queryClient.setQueryData([QueryKeys.INFINITE_IDEA, listID], {
+        const updatedPages = previousData.pages.map((page, i) => ({
+          ...page,
+          body: {
+            ...page.body,
+            content: {
+              ...page.body.content,
+              ideas: updatedIdeas.slice(i * limit, (i + 1) * limit),
+            },
+          },
+        }));
+
+        queryClient.setQueryData(listsKeys.infiniteIdeas(listID), {
           pageParams: previousData.pageParams,
           pages: updatedPages,
         });
@@ -91,6 +93,9 @@ export const useReorderIdeas = ({
         }),
         queryClient.invalidateQueries({
           queryKey: [QueryKeys.ORDER_IDEAS, listID],
+        }),
+        queryClient.invalidateQueries({
+          queryKey: listsKeys.ideasOrder(listID),
         }),
       ]);
 

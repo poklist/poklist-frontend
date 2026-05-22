@@ -7,8 +7,8 @@ import FloatingButtonFooter from '@/components/Footer/FloatingButtonFooter';
 import BackToUserHeader from '@/components/Header/BackToUserHeader';
 import { Idea } from '@/constants/list';
 import { useGetList } from '@/hooks/api/lists/useGetList';
+import { useGetUserInfo } from '@/hooks/api/user/useGetUserInfo';
 import { useLikeAction } from '@/hooks/mutations/useLikeAction';
-import { useUser } from '@/hooks/queries/useUser';
 import { useAuthRequired } from '@/hooks/useAuthRequired';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { useUserRouteContext } from '@/hooks/useUserRouteContext';
@@ -38,7 +38,7 @@ const ViewListPageClient: React.FC<ViewListPageClientProps> = ({
 
   const isLiked = listID ? getIsLiked(listID) : false;
 
-  const { data: listOwner, isError: isListOwnerError } = useUser({
+  const { data: listOwner, isError: isListOwnerError } = useGetUserInfo({
     userCode: listOwnerUserCode,
   });
 

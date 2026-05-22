@@ -2,10 +2,11 @@ import axios from '@/api/axios';
 import ApiPath from '@/constants/apiPath';
 import QueryKeys from '@/constants/queryKeys';
 import { MessageType } from '@/enums/Style/index.enum';
+import ideasKeys from '@/hooks/api/ideas/keys';
+import listsKeys from '@/hooks/api/lists/keys';
 import { toast } from '@/hooks/useToast';
 import { IResponse } from '@/types/response';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import listsKeys from '../api/lists/keys';
 
 interface UseDeleteIdeaOptions {
   listID: string;
@@ -27,6 +28,9 @@ const useDeleteIdea = ({ listID }: UseDeleteIdeaOptions) => {
     onSuccess: async (_, ideaID) => {
       // Remove the deleted idea's cache
       queryClient.removeQueries({
+        queryKey: ideasKeys.idea(ideaID.toString()),
+      });
+      queryClient.removeQueries({
         queryKey: [QueryKeys.IDEA, ideaID.toString()],
       });
       // Invalidate and refetch the list
@@ -40,10 +44,13 @@ const useDeleteIdea = ({ listID }: UseDeleteIdeaOptions) => {
         // FIXME 不要Call BE
         queryClient.invalidateQueries({
           queryKey: listsKeys.list(listID.toString()),
-          refetchType: 'active',
+          refetchType: 'all',
         }),
         queryClient.refetchQueries({
           queryKey: [QueryKeys.INFINITE_IDEA, listID],
+        }),
+        queryClient.invalidateQueries({
+          queryKey: listsKeys.infiniteIdeas(listID),
         }),
       ]);
     },

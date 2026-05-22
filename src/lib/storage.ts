@@ -2,11 +2,13 @@ import { LocalStorageKey } from '@/enums/index.enum';
 import { setLocalStorage } from '@/lib/utils';
 import { z } from 'zod';
 
-// Define the current version of localStorage schema
-export const STORAGE_VERSION = '0.3.14';
-
 // Define the schema for version check
 const versionSchema = z.string().regex(/^\d+\.\d+\.\d+$/);
+
+// Define the current version of localStorage schema (synced from package.json via next.config.mjs)
+export const STORAGE_VERSION = versionSchema.parse(
+  process.env.NEXT_PUBLIC_APP_VERSION
+);
 
 /**
  * Check and migrate localStorage data based on version

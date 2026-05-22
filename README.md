@@ -1,100 +1,81 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Relist
 
-### Core module
+**重新整理你的清單** — 建立和管理你的 Idea 清單，追蹤有趣的創作者，探索社群內容。
 
-- zustand
-- tailwind
-- lingui
+🔗 **Live Demo**: [relist.cc](https://relist.cc/)
 
-### UI library
+---
 
-- radix
-- shadcn/ui
-- React DnD
+## Features
+
+- **清單管理** — 建立、編輯、刪除清單與 Idea
+- **拖曳排序** — 以拖曳方式即時調整 Idea 順序
+- **社群互動** — 追蹤用戶、按讚、探索他人清單
+- **個人主頁** — 查看用戶資料、追蹤/被追蹤統計
+- **i18n** — 繁體中文 / English 即時切換（Lingui）
+- **Google OAuth** — 一鍵登入
+
+---
+
+## Tech Stack
+
+| 類別 | 技術 |
+|------|------|
+| Framework | Next.js 14 (App Router) |
+| Language | TypeScript |
+| API Layer | ts-rest + Axios (contract-first, end-to-end type-safe) |
+| Server State | TanStack Query v5 |
+| Client State | Zustand |
+| Form | React Hook Form + Zod |
+| UI | Radix UI + shadcn/ui + Tailwind CSS |
+| Drag & Drop | react-virtual-sortable |
+| i18n | Lingui (en / zh-TW) |
+| Auth | Google OAuth (`@react-oauth/google`) |
+
+---
+
+## Architecture Highlights
+
+### Contract-First API（ts-rest）
+前後端共享同一份 contract schema，API 請求/回應型別在編譯期驗證，消除 runtime 型別錯誤。
+
+### Abort Control
+自製 `abortManager`（`src/lib/abortManager.ts`）管理 `AbortController` 生命週期：
+- 路由切換時自動取消 in-flight requests
+- 支援 whitelist 排除不應中斷的 API（如登入）
+- 按 key（method + path）精準取消特定請求
+
+### Optimistic Update + Rollback
+按讚、追蹤等操作即時更新 UI，API 失敗時自動 rollback，提升感知效能。
+
+### 型別安全的 Query Hooks
+所有 query hooks 以 Zod schema 驗證 options，`onError` 型別對齊 ts-rest `ErrorResponse<TAppRoute>`，不依賴 `as` 型別斷言。
+
+---
 
 ## Getting Started
 
-First, run the development server:
-
-- with node v22.15.1 (npm v10.9.2)
+需要 Node v22.15.1 / npm v10.9.2
 
 ```bash
 npm i
 npm run dev
 ```
 
-## i18n/lingui
+### i18n
+
+新增或修改翻譯後執行：
 
 ```bash
 npm run build-lang
 ```
 
-# Component Folder Structure Guidelines
+---
 
-To maintain a clear and consistent structure for components in the project, follow these rules:
+## Component Structure
 
-1. **Shadcn UI Components**  
-   Components imported from Shadcn UI must be placed under `@/components/ui/` as `.tsx` files with **lowercase file names**.  
-   Example: `@/components/ui/button.tsx`
-
-2. **Custom Shared Components**  
-   Custom reusable components must be placed under `@/components/` inside **uppercase-named folders**, and the main component file must be named `index.tsx`.  
-   Example: `@/components/Alert/index.tsx`
-
-3. **Page-Specific Components**  
-   Components that are not yet confirmed for reuse can be placed under the corresponding folder for your page in `@/app/`.  
-   Example: `@/app/list/_components/Form/index.tsx`
-
-4. **Legacy Components**  
-   Any components not adhering to the above structure are considered legacy components (handled by Sail but not yet reorganized).
-
-By following these rules, we aim to maintain better code organization and improve overall maintainability.
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-});
-```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react';
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-});
-```
+| 類型 | 路徑 | 命名規則 |
+|------|------|----------|
+| shadcn/ui | `src/components/ui/*.tsx` | 小寫檔名 |
+| 共用元件 | `src/components/<Name>/index.tsx` | 大寫資料夾 |
+| 頁面元件 | `src/app/<page>/_components/<Name>/index.tsx` | 大寫資料夾 |

@@ -2,12 +2,12 @@ import axios from '@/api/axios';
 import ApiPath from '@/constants/apiPath';
 import QueryKeys from '@/constants/queryKeys';
 import { MessageType } from '@/enums/Style/index.enum';
+import ideasKeys from '@/hooks/api/ideas/keys';
+import listsKeys from '@/hooks/api/lists/keys';
 import { toast } from '@/hooks/useToast';
 import { EditIdeaResponse, IdeaPreview } from '@/types/Idea';
 import { IResponse } from '@/types/response';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import ideasKeys from '../api/ideas/keys';
-import listsKeys from '../api/lists/keys';
 
 const useEditIdea = () => {
   const queryClient = useQueryClient();
@@ -25,7 +25,6 @@ const useEditIdea = () => {
     },
     onSuccess: async (data) => {
       const ideaQueryKey = [QueryKeys.IDEA, data.id.toString()];
-
       // Invalidate for triggering refetch
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ideaQueryKey }),
@@ -36,14 +35,16 @@ const useEditIdea = () => {
         }),
         queryClient.invalidateQueries({
           queryKey: listsKeys.list(data.listID.toString()),
-          refetchType: 'inactive',
         }),
         queryClient.invalidateQueries({
           queryKey: ideasKeys.idea(data.id.toString()),
-          refetchType: 'all',
         }),
         queryClient.invalidateQueries({
           queryKey: [QueryKeys.INFINITE_IDEA, data.listID.toString()],
+          refetchType: 'inactive',
+        }),
+        queryClient.invalidateQueries({
+          queryKey: listsKeys.infiniteIdeas(data.listID.toString()),
           refetchType: 'inactive',
         }),
       ]);

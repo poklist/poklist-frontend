@@ -29,7 +29,7 @@ export const ListCardDescription: React.FC<ListCardDescriptionProps> = ({
         {externalLink && (
           <div className="mt-4 flex flex-nowrap items-center gap-2">
             <LinkIconWrapper variant={SocialLinkType.CUSTOMIZED} />
-            <p className="line-clamp-1 min-w-0 flex-1 truncate">
+            <p className="line-clamp-1 block min-w-0 flex-1 truncate">
               {urlPreview(externalLink)}
             </p>
           </div>
@@ -70,7 +70,7 @@ export const ListCardDescription: React.FC<ListCardDescriptionProps> = ({
     <>
       {description && (
         <div
-          className="mt-6 line-clamp-1 w-full truncate text-[15px] -tracking-1.1%"
+          className="mt-6 line-clamp-1 block w-full truncate text-[15px] -tracking-1.1%"
           onClick={atClickDescription}
         >
           {description}

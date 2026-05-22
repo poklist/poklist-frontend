@@ -11,7 +11,6 @@ import LinkIconWrapper from '@/components/ui/wrappers/LinkIconWrapper';
 import { DrawerIds } from '@/constants/Drawer';
 import { SocialLinkType } from '@/enums/index.enum';
 import { useFollowAction } from '@/hooks/mutations/useFollowAction';
-import { useUser } from '@/hooks/queries/useUser';
 import { useAuthWrapper } from '@/hooks/useAuth';
 import { useAuthRequired } from '@/hooks/useAuthRequired';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
@@ -30,9 +29,10 @@ import { t, Trans } from '@lingui/macro';
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
 import { HeroSectionSkeleton } from '@/app/user/_components/HeroSection/HeroSectionSkeleton';
+import UserConnectionStats from '@/app/user/_components/HeroSection/UserConnectionStats';
 import { MessageType } from '@/enums/Style/index.enum';
+import { useGetUserInfo } from '@/hooks/api/user/useGetUserInfo';
 import { useUserRouteContext } from '@/hooks/useUserRouteContext';
-import UserConnectionStats from './UserConnectionStats';
 
 const HeroSection: React.FC = () => {
   const { userCode } = useUserRouteContext();
@@ -57,7 +57,7 @@ const HeroSection: React.FC = () => {
     data: currentPageUser,
     isLoading,
     isError,
-  } = useUser({
+  } = useGetUserInfo({
     userCode,
     onError: (error) => {
       console.error(error);

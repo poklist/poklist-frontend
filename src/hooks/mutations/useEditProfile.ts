@@ -10,6 +10,7 @@ import { UpdateUserResponse, User } from '@/types/User';
 import { t } from '@lingui/macro';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
+import userKeys from '@/hooks/api/user/keys';
 
 interface UseEditProfileOptions {
   onSuccess?: (data: UpdateUserResponse) => void;
@@ -47,12 +48,20 @@ export const useEditProfile = ({
       }
       try {
         // NOTE: if we don't await, the profile image might not be updated before navigation
-        await queryClient.refetchQueries({
-          queryKey: [QueryKeys.USER, newUserCode],
-        });
+        await Promise.all([
+          queryClient.refetchQueries({
+            queryKey: [QueryKeys.USER, newUserCode],
+          }),
+          queryClient.refetchQueries({
+            queryKey: userKeys.userInfo(newUserCode),
+          }),
+        ]);
         if (newUserCode !== oldUserCode) {
           queryClient.removeQueries({
             queryKey: [QueryKeys.USER, oldUserCode],
+          });
+          queryClient.removeQueries({
+            queryKey: userKeys.userInfo(oldUserCode),
           });
         }
       } catch (error) {
