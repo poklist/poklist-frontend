@@ -24,7 +24,7 @@ export const ListCardDescription: React.FC<ListCardDescriptionProps> = ({
       return;
 
     onExpandDescription(
-      <div className="mx-6 mb-14 mt-6">
+      <div className="mb-14 ml-6 mr-px mt-6 overflow-y-auto whitespace-pre-line pr-6">
         {description}
         {externalLink && (
           <div className="mt-4 flex flex-nowrap items-center gap-2">
