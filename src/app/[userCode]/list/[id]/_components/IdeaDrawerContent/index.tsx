@@ -104,9 +104,9 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({
 
   return (
     <>
-      <div className="flex flex-col items-start overflow-y-auto px-6 pb-6 pt-4">
+      <div className="flex flex-col items-start overflow-y-auto pb-6 pl-6 pt-4">
         {isLoggedIn && me?.id === data?.owner.id && (
-          <div className="mb-2 flex w-full justify-end">
+          <div className="mb-2 flex w-full justify-end pr-6">
             <DropdownMenuComponent
               trigger={
                 <div className="flex h-7 w-7 items-center justify-center">
@@ -123,20 +123,20 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({
             alt={data.title}
             width={240}
             height={240}
-            className="mt-6 self-center rounded-xl border border-black"
+            className="mt-6 self-center rounded-xl border border-black pr-6"
           />
         )}
-        <div className="-tracking-2% mt-6 break-words text-[17px] font-bold leading-[1.45] [line-break:anywhere]">
+        <div className="-tracking-2% mt-6 break-words pr-6 text-[17px] font-bold leading-[1.45] [line-break:anywhere]">
           {data?.title}
         </div>
         {data?.description && (
-          <div className="mt-1 break-words text-[15px] leading-[1.45] -tracking-1.1% [line-break:anywhere]">
+          <div className="mt-1 w-full overflow-y-auto whitespace-pre-line break-words text-[15px] leading-[1.45] -tracking-1.1% [line-break:anywhere]">
             {data.description}
           </div>
         )}
         {data?.externalLink && (
           <div
-            className="mt-4 flex h-8 cursor-pointer items-center gap-2 self-start text-[13px]"
+            className="mt-4 flex h-8 cursor-pointer items-center gap-2 self-start pr-6 text-[13px]"
             onClick={() => {
               openWindow(data.externalLink);
             }}
@@ -147,7 +147,7 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({
             </p>
           </div>
         )}
-        <div className="mt-4 flex w-full items-center justify-between">
+        <div className="mt-4 flex w-full items-center justify-between pr-6">
           <p className="text-[13px] text-black-text-01">
             {data?.createdAt && getFormattedTime(data.createdAt, i18n.locale)}
           </p>
