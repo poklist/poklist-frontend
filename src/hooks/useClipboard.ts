@@ -9,7 +9,9 @@ const useClipboard = (): {
   isCopied: boolean;
   copy: (text: string) => Promise<void>;
 } => {
-  const [isSupport] = useState(false);
+  const [isSupport] = useState(
+    typeof navigator !== 'undefined' && !!navigator.clipboard
+  );
 
   const [text, setText] = useState<string | null>(null);
   const [isCopied, setIsCopied] = useState(false);
@@ -23,6 +25,7 @@ const useClipboard = (): {
       _textarea.value = text ?? '';
       _textarea.style.position = 'absolute';
       _textarea.style.opacity = '0';
+      _textarea.setAttribute('readonly', '');
       document.body.appendChild(_textarea);
       _textarea.select();
       document.execCommand('copy');

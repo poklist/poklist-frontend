@@ -11,8 +11,9 @@ import IconLink from '@/components/ui/icons/LinkIcon';
 import { DrawerIds } from '@/constants/Drawer';
 import { MessageType } from '@/enums/Style/index.enum';
 import { useAuthWrapper } from '@/hooks/useAuth';
+import useClipboard from '@/hooks/useClipboard';
 import { useToast } from '@/hooks/useToast';
-import { cn, copyHref } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import { t, Trans } from '@lingui/macro';
 
 interface IFooterProps {
@@ -33,9 +34,10 @@ const FloatingButtonFooter: React.FC<IFooterProps> = ({
   const { toast } = useToast();
   const { withAuth } = useAuthWrapper();
   const { openDrawer } = useDrawer(DrawerIds.CREATE_LIST_OR_IDEA_DRAWER_ID);
+  const { copy } = useClipboard();
 
   const handleCopyHref = () => {
-    copyHref();
+    void copy(`${window.location.href}`);
     toast({
       title: t`Copied to clipboard`,
       variant: MessageType.SUCCESS,
