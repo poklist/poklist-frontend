@@ -60,7 +60,7 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({
 
   const handleCopyHref = () => {
     if (!data) return;
-    void copy(`${window.location.origin}/idea/${data.id}`);
+    void copy(`${window.location.href}/idea/${data.id}`);
     toast({
       title: t`Copied to clipboard`,
       variant: MessageType.SUCCESS,
@@ -123,14 +123,14 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({
             alt={data.title}
             width={240}
             height={240}
-            className="mt-6 self-center rounded-xl border border-black pr-6"
+            className="mt-6 self-center rounded-xl border border-black"
           />
         )}
         <div className="-tracking-2% mt-6 break-words pr-6 text-[17px] font-bold leading-[1.45] [line-break:anywhere]">
           {data?.title}
         </div>
         {data?.description && (
-          <div className="mt-1 w-full overflow-y-auto whitespace-pre-line break-words text-[15px] leading-[1.45] -tracking-1.1% [line-break:anywhere]">
+          <div className="mt-1 w-full overflow-y-auto whitespace-pre-line break-words pr-6 text-[15px] leading-[1.45] -tracking-1.1% [line-break:anywhere]">
             {data.description}
           </div>
         )}
