@@ -130,7 +130,7 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({
           {data?.title}
         </div>
         {data?.description && (
-          <div className="mt-1 w-full whitespace-pre-line break-normal pr-6 text-[15px] leading-[1.45] -tracking-1.1% [overflow-wrap:anywhere]">
+          <div className="mt-1 w-full whitespace-pre-line break-normal pr-5 text-[15px] leading-[1.45] -tracking-1.1% [overflow-wrap:anywhere] overflow-y-auto">
             {data.description}
           </div>
         )}
