@@ -123,14 +123,14 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({
             alt={data.title}
             width={240}
             height={240}
-            className="mt-6 self-center rounded-xl border border-black"
+            className="mb-6 self-center rounded-2xl border border-black mr-6"
           />
         )}
-        <div className="-tracking-2% mt-6 break-words pr-6 text-[17px] font-bold leading-[1.45] [line-break:anywhere]">
+        <div className="-tracking-2% break-normal pr-6 text-[17px] font-bold leading-[1.45] [overflow-wrap:anywhere]">
           {data?.title}
         </div>
         {data?.description && (
-          <div className="mt-1 w-full overflow-y-auto whitespace-pre-line break-words pr-6 text-[15px] leading-[1.45] -tracking-1.1% [line-break:anywhere]">
+          <div className="mt-1 w-full whitespace-pre-line break-normal pr-6 text-[15px] leading-[1.45] -tracking-1.1% [overflow-wrap:anywhere]">
             {data.description}
           </div>
         )}

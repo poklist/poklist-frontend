@@ -30,7 +30,7 @@ const ListCardHeader: React.FC<ListCardHeaderProps> = ({
       <div className="tracking-0.8% text-[13px]">
         <Trans>Listing since</Trans> {createdAtString}
       </div>
-      <div className="-tracking-2% mt-4 break-words text-center text-[26px] font-extrabold [line-break:anywhere]">
+      <div className="-tracking-2% mt-4 break-normal text-center text-[26px] font-extrabold [overflow-wrap:anywhere]">
         {title}
       </div>
       <div className="tracking-0.8% mt-4 flex gap-2 text-[13px]">
