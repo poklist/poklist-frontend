@@ -91,7 +91,7 @@ export const IdeaList: React.FC<IdeaListProps> = ({
               idea.coverImage ? 'w-[calc(100%-72px)]' : 'w-full'
             )}
           >
-            <p className="break-words text-[15px] font-semibold text-black-text-01 [line-break:anywhere]">
+            <p className="break-normal text-[15px] font-semibold text-black-text-01 [overflow-wrap:anywhere]">
               {idea.title}
             </p>
             {idea.description && (

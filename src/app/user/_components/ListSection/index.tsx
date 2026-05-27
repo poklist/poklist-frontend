@@ -60,14 +60,13 @@ const ListSection: React.FC = () => {
           return (
             <div
               key={listPreview.id}
-              className={`flex min-h-[72px] items-center justify-between ${
-                isLastItem ? 'border-b-[3px]' : 'border-b'
-              } border-black-text-01 p-4 -tracking-1.1%`}
+              className={`flex min-h-[72px] items-center justify-between ${isLastItem ? 'border-b-[3px]' : 'border-b'
+                } border-black-text-01 p-4 -tracking-1.1%`}
               onClick={() => {
                 navigateTo.viewList(userCode, listPreview.id.toString());
               }}
             >
-              <p className="break-words text-[15px] font-semibold text-black-text-01 [line-break:anywhere]">
+              <p className="break-normal text-[15px] font-semibold text-black-text-01 [overflow-wrap:anywhere]">
                 {listPreview.title}
               </p>
               {listPreview.coverImage && (
