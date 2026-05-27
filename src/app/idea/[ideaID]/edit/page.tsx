@@ -27,7 +27,6 @@ const EditIdeaPage: React.FC = () => {
     ideaID: id,
   });
 
-
   const { editIdea } = useEditIdea();
 
   const onDismissEdit = (isFormNotEdited: boolean) => {
@@ -72,7 +71,7 @@ const EditIdeaPage: React.FC = () => {
   ]);
 
   return (
-    <div className="flex min-h-screen flex-col gap-6 sm:min-h-[calc(100vh-102px)] mt-14">
+    <div className="mt-14 flex min-h-screen flex-col gap-6 sm:min-h-[calc(100vh-102px)]">
       {idea && (
         <IdeaFormComponent
           previousIdeaInfo={idea}

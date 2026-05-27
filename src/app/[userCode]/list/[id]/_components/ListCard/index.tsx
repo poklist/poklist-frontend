@@ -190,7 +190,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
         drawerId={DrawerIds.LIST_CARD_DRAWER_ID}
         isShowClose={false}
         content={drawerContent}
-        className="max-h-[75dvh] px-0 py-0"
+        className="max-h-[calc(100dvh-200px)] px-0 py-0"
       />
 
       {/* Delete Confirmation Drawer */}

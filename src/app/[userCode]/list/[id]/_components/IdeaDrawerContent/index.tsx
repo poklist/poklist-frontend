@@ -123,14 +123,14 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({
             alt={data.title}
             width={240}
             height={240}
-            className="mb-6 self-center rounded-2xl border border-black mr-6"
+            className="mb-6 mr-6 self-center rounded-2xl border border-black"
           />
         )}
         <div className="-tracking-2% break-normal pr-6 text-[17px] font-bold leading-[1.45] [overflow-wrap:anywhere]">
           {data?.title}
         </div>
         {data?.description && (
-          <div className="mt-1 w-full whitespace-pre-line break-normal pr-5 text-[15px] leading-[1.45] -tracking-1.1% [overflow-wrap:anywhere] overflow-y-auto">
+          <div className="mt-1 w-full whitespace-pre-line break-normal pr-5 text-[15px] leading-[1.45] -tracking-1.1% [overflow-wrap:anywhere]">
             {data.description}
           </div>
         )}
@@ -142,26 +142,30 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({
             }}
           >
             <LinkIconWrapper variant={SocialLinkType.CUSTOMIZED} />
-            <p className="line-clamp-1 max-w-40">
+            <p className="line-clamp-1 max-w-40 truncate block">
               {urlPreview(data.externalLink)}
             </p>
           </div>
         )}
-        <div className="mt-4 flex w-full items-center justify-between pr-6">
-          <p className="text-[13px] text-black-text-01">
-            {data?.createdAt && getFormattedTime(data.createdAt, i18n.locale)}
-          </p>
-          <Button
-            variant={ButtonVariant.WHITE}
-            shape={ButtonShape.ROUNDED_FULL}
-            size={ButtonSize.MD}
-            className="flex gap-1"
-            onClick={handleCopyHref}
-          >
-            <IconLink />
-            <Trans>Copy</Trans>
-          </Button>
+        <div className="flex w-full items-center justify-between pr-6 mb-20">
+          {data?.createdAt && (
+            <p className="mt-4 text-[13px] text-black-text-01">
+              {getFormattedTime(data.createdAt, i18n.locale)}
+            </p>
+          )}
         </div>
+      </div>
+      <div className="fixed bottom-0 w-full pb-4 pt-2 bg-gray-note-05 px-6">
+        <Button
+          variant={ButtonVariant.GRAY}
+          shape={ButtonShape.ROUNDED_FULL}
+          size={ButtonSize.H40}
+          className="flex gap-1 border border-note-gray-06 text-[13px] text-black-gray-03"
+          onClick={handleCopyHref}
+        >
+          <IconLink width={13} height={13} />
+          <Trans>Copy</Trans>
+        </Button>
       </div>
       <DrawerComponent
         drawerId={DrawerIds.DELETE_IDEA_DRAWER_ID}
