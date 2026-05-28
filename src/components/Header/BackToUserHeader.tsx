@@ -13,6 +13,7 @@ import useAuthStore from '@/stores/useAuthStore';
 import useFollowingStore from '@/stores/useFollowingStore';
 import { User, UserPreview } from '@/types/User';
 import { Trans } from '@lingui/macro';
+import { Skeleton } from '@radix-ui/themes';
 import Image from 'next/image';
 import React, { useEffect } from 'react';
 
@@ -25,23 +26,30 @@ const BackToUserHeader: React.FC<IBackToUserHeaderProps> = ({
   owner,
   hasFollowButton = false,
 }) => {
-  const { getIsFollowing, setIsFollowing, hasFollowingState } =
-    useFollowingStore();
+  const {
+    getIsFollowing,
+    setIsFollowing,
+    hasFollowingState,
+    setConfirmedIsFollowing,
+    hasConfirmedFollowingState,
+  } = useFollowingStore();
   const navigateTo = useStrictNavigateNext();
   const { isLoggedIn } = useAuthStore();
   const { withAuth } = useAuthWrapper();
   const { handleAuthRequired } = useAuthRequired();
 
-  // 獲取當前用戶的關注狀態
+  // 獲取當前用戶的 Following status
   const isFollowing = owner ? getIsFollowing(owner.userCode) : false;
 
-  // 如果 store 中沒有該用戶的狀態，且 owner 有 isFollowing 屬性，則初始化
   useEffect(() => {
-    if (owner && 'isFollowing' in owner && !hasFollowingState(owner.userCode)) {
+    if (owner && 'isFollowing' in owner) {
       const apiFollowingState = owner.isFollowing ?? false;
-      setIsFollowing(owner.userCode, apiFollowingState);
+      if (!hasFollowingState(owner.userCode)) {
+        setIsFollowing(owner.userCode, apiFollowingState);
+      }
+      setConfirmedIsFollowing(owner.userCode, apiFollowingState);
     }
-  }, [owner, hasFollowingState, setIsFollowing]);
+  }, [owner, hasFollowingState, setIsFollowing, setConfirmedIsFollowing]);
 
   const { follow, unfollow } = useFollowAction({
     currentUserCode: owner?.userCode || '',
@@ -74,62 +82,68 @@ const BackToUserHeader: React.FC<IBackToUserHeaderProps> = ({
   });
 
   return (
-    <>
-      <header
-        id="back-to-user-header"
-        className="sticky top-0 z-50 box-border flex h-14 items-center border-b border-black-text-01 bg-white px-4"
+    <header
+      id="back-to-user-header"
+      className="sticky top-0 z-50 box-border flex h-14 items-center border-b border-black-text-01 bg-white px-4"
+    >
+      <div
+        id="header-left"
+        className="flex w-[90px] min-w-[90px] items-center justify-start"
       >
-        <div
-          id="header-left"
-          className="flex w-[90px] min-w-[90px] items-center justify-start"
-        >
-          <Image
-            src="/images/logo/logo-r.svg"
-            alt="Relist logo"
-            width={32}
-            height={32}
-            priority
-            onClick={handleClickLogo}
-          />
-        </div>
-        <div
-          id="header-middle"
-          className="flex flex-grow items-center justify-center"
-        >
-          {owner && (
-            <div
-              className="flex cursor-pointer items-center justify-center"
-              onClick={handleClickBackToUser}
-            >
-              <Avatar className="ml-1 h-6 w-6">
-                <AvatarImage src={owner?.profileImage || undefined} />
-                <AvatarFallback>{owner?.displayName?.[0]}</AvatarFallback>
-              </Avatar>
-              <p className="font-regular ml-2 line-clamp-1 text-[15px]">
-                {owner?.displayName}
-              </p>
-            </div>
-          )}
-        </div>
-        <div
-          id="header-right"
-          className="flex w-[90px] min-w-[90px] items-center justify-end"
-        >
-          {hasFollowButton && (
-            <Button
-              variant={
-                isFollowing ? ButtonVariant.SUB_ACTIVE : ButtonVariant.BLACK
-              }
-              shape={ButtonShape.ROUNDED_FULL}
-              size={ButtonSize.SM}
-              onClick={handleFollowOrUnfollow}
-            >
-              {isFollowing ? <Trans>Following</Trans> : <Trans>Follow</Trans>}
-            </Button>
-          )}
-        </div>
-      </header>
-    </>
+        <Image
+          src="/images/logo/logo-r.svg"
+          alt="Relist logo"
+          width={32}
+          height={32}
+          priority
+          onClick={handleClickLogo}
+        />
+      </div>
+      <div
+        id="header-middle"
+        className="flex flex-grow items-center justify-center"
+      >
+        {owner ? (
+          <div
+            className="flex cursor-pointer items-center justify-center"
+            onClick={handleClickBackToUser}
+          >
+            <Avatar className="ml-1 h-6 w-6">
+              <AvatarImage src={owner?.profileImage || undefined} />
+              <AvatarFallback>{owner?.displayName?.[0]}</AvatarFallback>
+            </Avatar>
+            <p className="font-regular ml-2 line-clamp-1 text-[15px]">
+              {owner?.displayName}
+            </p>
+          </div>
+        ) : (
+          <div className="flex items-center justify-center gap-2">
+            <Skeleton className="ml-1 h-6 w-6 rounded-full" />
+            <Skeleton className="h-4 w-16" />
+          </div>
+        )}
+      </div>
+      <div
+        id="header-right"
+        className="flex w-[90px] min-w-[90px] items-center justify-end"
+      >
+        {hasFollowButton &&
+        hasConfirmedFollowingState(owner?.userCode ?? '') ? (
+          <Button
+            variant={
+              isFollowing ? ButtonVariant.SUB_ACTIVE : ButtonVariant.BLACK
+            }
+            shape={ButtonShape.ROUNDED_FULL}
+            size={ButtonSize.SM}
+            onClick={handleFollowOrUnfollow}
+          >
+            {isFollowing ? <Trans>Following</Trans> : <Trans>Follow</Trans>}
+          </Button>
+        ) : (
+          <Skeleton className="h-8 w-20 rounded-full" />
+        )}
+      </div>
+    </header>
   );
 };
 

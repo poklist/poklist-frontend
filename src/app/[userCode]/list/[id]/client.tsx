@@ -32,8 +32,10 @@ const ViewListPageClient: React.FC<ViewListPageClientProps> = ({
   const isMyPage = listOwnerUserCode === me.userCode;
   const navigateTo = useStrictNavigationAdapter();
 
-  const { getIsLiked, setIsLiked, hasLikeState } = useLikeStore();
-  const { setIsFollowing, hasFollowingState } = useFollowingStore();
+  const { getIsLiked, setIsLiked, hasLikeState, setConfirmedIsLiked } =
+    useLikeStore();
+  const { setIsFollowing, hasFollowingState, setConfirmedIsFollowing } =
+    useFollowingStore();
   const { handleAuthRequired } = useAuthRequired();
 
   const isLiked = listID ? getIsLiked(listID) : false;
@@ -76,7 +78,9 @@ const ViewListPageClient: React.FC<ViewListPageClientProps> = ({
     if (!hasExistingLikeState) {
       setIsLiked(listID, likeState);
     }
-  }, [list, listID, setIsLiked, hasLikeState]);
+
+    setConfirmedIsLiked(listID, likeState);
+  }, [list, listID, setIsLiked, hasLikeState, setConfirmedIsLiked]);
 
   useEffect(() => {
     if (!(listOwnerUserCode && listOwner)) {
@@ -88,7 +92,14 @@ const ViewListPageClient: React.FC<ViewListPageClientProps> = ({
     if (!hasExistingState) {
       setIsFollowing(listOwnerUserCode, followingState);
     }
-  }, [listOwner, listOwnerUserCode, setIsFollowing, hasFollowingState]);
+    setConfirmedIsFollowing(listOwnerUserCode, followingState);
+  }, [
+    listOwner,
+    listOwnerUserCode,
+    setIsFollowing,
+    hasFollowingState,
+    setConfirmedIsFollowing,
+  ]);
 
   useEffect(() => {
     if (list?.owner && listID && listOwnerUserCode !== list?.owner.userCode) {
@@ -112,8 +123,8 @@ const ViewListPageClient: React.FC<ViewListPageClientProps> = ({
           hasLikeButton={true}
           isLiked={isLiked}
           hasCreateListButton={!isMyPage}
-          onClickLike={() => like({ params: { listID: listID } })}
-          onClickUnlike={() => unlike({ params: { listID: listID } })}
+          onClickLike={() => like({ params: { listID } })}
+          onClickUnlike={() => unlike({ params: { listID } })}
         />
       </div>
     </>

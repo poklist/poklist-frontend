@@ -142,12 +142,12 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({
             }}
           >
             <LinkIconWrapper variant={SocialLinkType.CUSTOMIZED} />
-            <p className="line-clamp-1 max-w-40 truncate block">
+            <p className="line-clamp-1 block max-w-40 truncate">
               {urlPreview(data.externalLink)}
             </p>
           </div>
         )}
-        <div className="flex w-full items-center justify-between pr-6 mb-20">
+        <div className="mb-20 flex w-full items-center justify-between pr-6">
           {data?.createdAt && (
             <p className="mt-4 text-[13px] text-black-text-01">
               {getFormattedTime(data.createdAt, i18n.locale)}
@@ -155,7 +155,7 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({
           )}
         </div>
       </div>
-      <div className="fixed bottom-0 w-full pb-4 pt-2 bg-gray-note-05 px-6">
+      <div className="fixed bottom-0 w-full bg-gray-note-05 px-6 pb-4 pt-2">
         <Button
           variant={ButtonVariant.GRAY}
           shape={ButtonShape.ROUNDED_FULL}

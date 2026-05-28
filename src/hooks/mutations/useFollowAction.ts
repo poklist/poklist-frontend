@@ -4,17 +4,13 @@ import { GetUserInfoResponse } from '@/api/query/user';
 import QueryKeys from '@/constants/queryKeys';
 import followersKeys from '@/hooks/api/followers/keys';
 import followingsKeys from '@/hooks/api/followings/keys';
+import userKeys from '@/hooks/api/user/keys';
 import { createOptimisticUpdateHandler } from '@/hooks/mutations/optimisticUpdateHandler';
 import useFollowingStore from '@/stores/useFollowingStore';
 import useUserStore from '@/stores/useUserStore';
-import {
-  useMutation,
-  UseMutationResult,
-  useQueryClient,
-} from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError, AxiosRequestConfig, Method } from 'axios';
 import { useRef } from 'react';
-import userKeys from '@/hooks/api/user/keys';
 
 interface FollowActionOptions {
   currentUserCode: string;
@@ -54,7 +50,12 @@ export const useFollowAction = ({
   const queryClient = useQueryClient();
 
   const { me } = useUserStore();
-  const { setIsFollowing, setFollowerCount } = useFollowingStore();
+  const {
+    setIsFollowing,
+    setFollowerCount,
+    getConfirmedIsFollowing,
+    setConfirmedIsFollowing,
+  } = useFollowingStore();
 
   const latestSocialLinkRef = useRef<
     GetFollowersResponse['content'][number] | null
@@ -195,13 +196,14 @@ export const useFollowAction = ({
     mutationFn: async (variables: AxiosPayload) => {
       const config: AxiosRequestConfig = {
         url: '/follow',
-        method: 'POST' as Method,
+        method: 'POST' satisfies Method,
         ...(variables?.params && { params: variables.params }),
       };
 
       return axios.request(config);
     },
     onSuccess: (res: unknown, variables: AxiosPayload) => {
+      setConfirmedIsFollowing(currentUserCode, true);
       onSuccess?.(res, variables);
     },
     onError: (error: AxiosError, variables: AxiosPayload) => {
@@ -218,13 +220,14 @@ export const useFollowAction = ({
     mutationFn: async (variables: AxiosPayload) => {
       const config: AxiosRequestConfig = {
         url: '/unfollow',
-        method: 'POST' as Method,
+        method: 'POST' satisfies Method,
         ...(variables?.params && { params: variables.params }),
       };
 
       return axios.request(config);
     },
     onSuccess: (res: unknown, variables: AxiosPayload) => {
+      setConfirmedIsFollowing(currentUserCode, false);
       onSuccess?.(res, variables);
     },
     onError: (error: AxiosError, variables: AxiosPayload) => {
@@ -236,10 +239,7 @@ export const useFollowAction = ({
     },
   });
 
-  const createDebouncedAction = (
-    mutation: UseMutationResult<unknown, AxiosError, AxiosPayload>,
-    optimisticValue: boolean
-  ) => {
+  const createDebouncedAction = (optimisticValue: boolean) => {
     return ({ params }: { params: { userID: number } }) => {
       if (shouldAllow && !shouldAllow()) {
         onNotAllowed?.();
@@ -260,21 +260,32 @@ export const useFollowAction = ({
       optimisticHandler.optimisticUpdate();
 
       const timer = setTimeout(() => {
-        mutation.mutate(
+        debounceMap.delete(debounceKey);
+
+        // 如 Optimistic 已與 confirmed 一致就不打 API
+        const confirmedValue = getConfirmedIsFollowing(currentUserCode);
+        if (optimisticValue === confirmedValue) {
+          return;
+        }
+
+        // 依目前 optimistic 期望選正確 mutation
+        const targetMutation = optimisticValue
+          ? followMutation
+          : unfollowMutation;
+        targetMutation.mutate(
           { params },
           {
             onError: () => optimisticHandler.rollback(),
           }
         );
-        debounceMap.delete(debounceKey);
       }, debounceMs);
 
       debounceMap.set(debounceKey, timer);
     };
   };
 
-  const follow = createDebouncedAction(followMutation, true);
-  const unfollow = createDebouncedAction(unfollowMutation, false);
+  const follow = createDebouncedAction(true);
+  const unfollow = createDebouncedAction(false);
 
   const cancelPending = () => {
     const debounceKey = `follow-${currentUserCode}`;

@@ -27,7 +27,17 @@ const GlobalLoading = () => {
   const { isLoading } = useCommonStore();
   // 之後看要不要加個 Filter 指定某些行為用其他的 Loading 方式
   const isFetching = useIsFetching();
-  const isMutating = useIsMutating();
+  const isMutating = useIsMutating({
+    predicate: (mutation) => {
+      const keys = mutation.options.mutationKey;
+      const isIgnoreKey =
+        Array.isArray(keys) &&
+        ['like', 'unlike', 'follow', 'unfollow'].some((ignoreKey) =>
+          keys.includes(ignoreKey)
+        );
+      return !isIgnoreKey && mutation.state.status === 'pending';
+    },
+  });
   const isApiLoading = isFetching > 0 || isMutating > 0;
 
   return <LoadingSpinner isLoading={isLoading || isApiLoading} />;
