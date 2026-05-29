@@ -128,20 +128,20 @@ const BackToUserHeader: React.FC<IBackToUserHeaderProps> = ({
         className="flex w-[90px] min-w-[90px] items-center justify-end"
       >
         {hasFollowButton &&
-        hasConfirmedFollowingState(owner?.userCode ?? '') ? (
-          <Button
-            variant={
-              isFollowing ? ButtonVariant.SUB_ACTIVE : ButtonVariant.BLACK
-            }
-            shape={ButtonShape.ROUNDED_FULL}
-            size={ButtonSize.SM}
-            onClick={handleFollowOrUnfollow}
-          >
-            {isFollowing ? <Trans>Following</Trans> : <Trans>Follow</Trans>}
-          </Button>
-        ) : (
-          <Skeleton className="h-8 w-20 rounded-full" />
-        )}
+          (hasConfirmedFollowingState(owner?.userCode ?? '') ? (
+            <Button
+              variant={
+                isFollowing ? ButtonVariant.SUB_ACTIVE : ButtonVariant.BLACK
+              }
+              shape={ButtonShape.ROUNDED_FULL}
+              size={ButtonSize.SM}
+              onClick={handleFollowOrUnfollow}
+            >
+              {isFollowing ? <Trans>Following</Trans> : <Trans>Follow</Trans>}
+            </Button>
+          ) : (
+            <Skeleton className="h-8 w-20 rounded-full" />
+          ))}
       </div>
     </header>
   );

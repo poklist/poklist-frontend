@@ -5,8 +5,7 @@ import ListCardSkeleton from '@/app/[userCode]/list/[id]/_components/ListCard/Li
 import { Tile20Background } from '@/app/user/_components/TileBackground';
 import FloatingButtonFooter from '@/components/Footer/FloatingButtonFooter';
 import BackToUserHeader from '@/components/Header/BackToUserHeader';
-import { Idea } from '@/constants/list';
-import { useGetList } from '@/hooks/api/lists/useGetList';
+import { useGetListInfiniteIdeas } from '@/hooks/api/lists/useGetListInfiniteIdeas';
 import { useGetUserInfo } from '@/hooks/api/user/useGetUserInfo';
 import { useLikeAction } from '@/hooks/mutations/useLikeAction';
 import { useAuthRequired } from '@/hooks/useAuthRequired';
@@ -48,9 +47,8 @@ const ViewListPageClient: React.FC<ViewListPageClientProps> = ({
     data: list,
     isLoading: isListLoading,
     isError: isListError,
-  } = useGetList({
+  } = useGetListInfiniteIdeas({
     listID,
-    offset: Idea.DEFAULT_FIRST_BATCH_OFFSET,
     limit: 0,
   });
 
@@ -72,7 +70,7 @@ const ViewListPageClient: React.FC<ViewListPageClientProps> = ({
     if (!(listID && list)) {
       return;
     }
-    const likeState = list.isLiked ?? false;
+    const likeState = list.pages[0].listInfo.isLiked ?? false;
     const hasExistingLikeState = hasLikeState(listID);
 
     if (!hasExistingLikeState) {
@@ -101,22 +99,22 @@ const ViewListPageClient: React.FC<ViewListPageClientProps> = ({
     setConfirmedIsFollowing,
   ]);
 
-  useEffect(() => {
-    if (list?.owner && listID && listOwnerUserCode !== list?.owner.userCode) {
-      navigateTo.viewList(list?.owner.userCode, listID);
-    }
-  }, [list?.owner, listID, listOwnerUserCode, list?.owner.userCode]);
+  // useEffect(() => {
+  //   if (list?.pages[0].listInfo.owner && listID && listOwnerUserCode !== list?.pages[0].listInfo.owner.userCode) {
+  //     navigateTo.viewList(list?.pages[0].listInfo.owner.userCode, listID);
+  //   }
+  // }, [list?.pages[0].listInfo.owner, listID, listOwnerUserCode, list?.pages[0].listInfo.owner.userCode]);
 
   return (
     <>
       <Tile20Background />
       <div className="relative flex min-h-screen flex-col sm:min-h-desktop-container">
-        <BackToUserHeader owner={list?.owner} hasFollowButton={!isMyPage} />
+        <BackToUserHeader owner={listOwner} hasFollowButton={!isMyPage} />
         <div className="mb-[55px] flex-1 px-3 pt-4">
           {isListLoading ? (
             <ListCardSkeleton />
           ) : (
-            list && <ListCard data={list} />
+            list && <ListCard data={list.pages[0].listInfo} />
           )}
         </div>
         <FloatingButtonFooter

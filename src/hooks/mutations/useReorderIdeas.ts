@@ -88,7 +88,7 @@ export const useReorderIdeas = ({
           refetchType: 'inactive',
         }),
         queryClient.invalidateQueries({
-          queryKey: listsKeys.list(listID.toString()),
+          queryKey: listsKeys.infiniteIdeas(listID.toString()),
           refetchType: 'inactive',
         }),
         queryClient.invalidateQueries({

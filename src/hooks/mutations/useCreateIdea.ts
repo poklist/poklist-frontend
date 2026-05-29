@@ -41,7 +41,7 @@ export const useCreateIdea = ({
             refetchType: 'inactive',
           }),
           queryClient.invalidateQueries({
-            queryKey: listsKeys.list(data.listID.toString()),
+            queryKey: listsKeys.infiniteIdeas(data.listID.toString()),
             refetchType: 'inactive',
           }),
           queryClient.refetchQueries({

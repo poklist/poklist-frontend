@@ -67,7 +67,7 @@ const HeroSection: React.FC = () => {
       console.error(error);
       navigateTo.home();
     },
-  }) as {
+  }) satisfies {
     data: User | undefined;
     isLoading: boolean;
     isError: boolean;

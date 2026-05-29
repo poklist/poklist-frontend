@@ -66,7 +66,7 @@ export const useEditList = ({
           queryKey: [QueryKeys.LIST, data.id.toString(), ideaOffset, ideaLimit],
         }),
         queryClient.refetchQueries({
-          queryKey: listsKeys.list(data.id.toString()),
+          queryKey: listsKeys.infiniteIdeas(data.id.toString()),
         }),
         queryClient.invalidateQueries({
           queryKey: [QueryKeys.INFINITE_IDEA, data.id.toString()],

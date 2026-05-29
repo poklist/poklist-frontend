@@ -43,7 +43,7 @@ const useDeleteIdea = ({ listID }: UseDeleteIdeaOptions) => {
         }),
         // FIXME 不要Call BE
         queryClient.invalidateQueries({
-          queryKey: listsKeys.list(listID.toString()),
+          queryKey: listsKeys.infiniteIdeas(listID.toString()),
           refetchType: 'all',
         }),
         queryClient.refetchQueries({
