@@ -1,5 +1,5 @@
-import { AppRoute } from '@ts-rest/core';
 import { listsSchema } from '@/api/schemas';
+import { AppRoute } from '@ts-rest/core';
 
 const getListsContract = {
   method: 'GET',
@@ -16,6 +16,7 @@ const getUserListsContract = {
   pathParams: listsSchema.getUserListsRequest.pick({ userCode: true }),
   query: listsSchema.getUserListsRequest.omit({ userCode: true }),
   responses: { 200: listsSchema.getUserListsResponse },
+  summary: 'all LISTS under specific user',
 } satisfies AppRoute;
 
 const getIdeasOrderContract = {
@@ -23,6 +24,7 @@ const getIdeasOrderContract = {
   path: '/lists/:listID/order',
   pathParams: listsSchema.getIdeasOrderRequest,
   responses: { 200: listsSchema.getIdeasOrderResponse },
+  summary: 'all ideas ORDER in specific list',
 } satisfies AppRoute;
 
 export const listsContract = {

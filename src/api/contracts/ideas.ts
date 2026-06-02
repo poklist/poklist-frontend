@@ -6,10 +6,18 @@ const getIdeasContract = {
   path: '/ideas/:ideaID',
   pathParams: ideasSchema.getRequest,
   responses: { 200: ideasSchema.getResponse },
-  summary: 'info of idea',
+  summary: 'info of IDEA',
 } satisfies AppRoute;
 
-export const ideasContract = { getIdeasContract } satisfies Record<
-  string,
-  AppRoute
->;
+const postIdeasContract = {
+  method: 'POST',
+  path: '/ideas',
+  body: ideasSchema.postRequest,
+  responses: { 200: ideasSchema.postResponse },
+  summary: 'create IDEA to specific list',
+} satisfies AppRoute;
+
+export const ideasContract = {
+  getIdeasContract,
+  postIdeasContract,
+} satisfies Record<string, AppRoute>;

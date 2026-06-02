@@ -1,7 +1,7 @@
 import { listsQuery } from '@/api/query/lists';
 import { listsSchema } from '@/api/schemas';
 import z from 'zod';
-import listsKeys from './keys';
+import listsKeys from '@/hooks/api/lists/keys';
 
 const getIdeasOrderSchema = listsSchema.getIdeasOrderRequest.extend({
   staleTime: z.number().int().nonnegative().default(60000),

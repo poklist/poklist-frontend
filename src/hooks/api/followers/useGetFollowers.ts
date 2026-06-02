@@ -1,7 +1,7 @@
 import { followersQuery } from '@/api/query/followers';
 import { followersSchema } from '@/api/schemas/followers';
 import z from 'zod';
-import followersKeys from './keys';
+import followersKeys from '@/hooks/api/followers/keys';
 
 const getFollowersSchema = followersSchema.getRequest.extend({
   staleTime: z.number().int().nonnegative().default(60000),

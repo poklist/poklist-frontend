@@ -1,7 +1,7 @@
 import { listsQuery } from '@/api/query/lists';
 import z from 'zod';
-import listsKeys from './keys';
-import { getListSchema } from './useGetList';
+import listsKeys from '@/hooks/api/lists/keys';
+import { getListSchema } from '@/hooks/api/lists/useGetList';
 
 const getListInfiniteIdeasSchema = getListSchema.omit({ offset: true }).extend({
   staleTime: z.number().int().nonnegative().default(60000),

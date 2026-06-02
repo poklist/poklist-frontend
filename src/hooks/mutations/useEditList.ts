@@ -3,11 +3,11 @@ import ApiPath from '@/constants/apiPath';
 import { Idea, List } from '@/constants/list';
 import QueryKeys from '@/constants/queryKeys';
 import { MessageType } from '@/enums/Style/index.enum';
+import listsKeys from '@/hooks/api/lists/keys';
 import { toast } from '@/hooks/useToast';
 import { CreateListResponse, ListBody } from '@/types/List';
 import { IResponse } from '@/types/response';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import listsKeys from '@/hooks/api/lists/keys';
 
 interface UseEditListOptions {
   userCode: string; // to invalidate the useLists cache
@@ -64,9 +64,6 @@ export const useEditList = ({
         // NOTE: I changed to listID to data.id.toString() to make the refetch work but idk why
         queryClient.refetchQueries({
           queryKey: [QueryKeys.LIST, data.id.toString(), ideaOffset, ideaLimit],
-        }),
-        queryClient.refetchQueries({
-          queryKey: listsKeys.infiniteIdeas(data.id.toString()),
         }),
         queryClient.invalidateQueries({
           queryKey: [QueryKeys.INFINITE_IDEA, data.id.toString()],

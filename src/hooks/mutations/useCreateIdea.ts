@@ -2,11 +2,11 @@ import axios from '@/api/axios';
 import ApiPath from '@/constants/apiPath';
 import QueryKeys from '@/constants/queryKeys';
 import { MessageType } from '@/enums/Style/index.enum';
+import listsKeys from '@/hooks/api/lists/keys';
 import { toast } from '@/hooks/useToast';
 import { CreateIdeaRequest, CreateIdeaResponse } from '@/types/Idea';
 import { IResponse } from '@/types/response';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import listsKeys from '@/hooks/api/lists/keys';
 
 interface UseCreateIdeaOptions {
   onSuccess?: (data: CreateIdeaResponse) => void;
@@ -38,10 +38,6 @@ export const useCreateIdea = ({
             predicate: (query) =>
               query.queryKey[0] === QueryKeys.LIST &&
               query.queryKey[1] === data.listID.toString(),
-            refetchType: 'inactive',
-          }),
-          queryClient.invalidateQueries({
-            queryKey: listsKeys.infiniteIdeas(data.listID.toString()),
             refetchType: 'inactive',
           }),
           queryClient.refetchQueries({

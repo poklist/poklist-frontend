@@ -34,9 +34,6 @@ const useEditIdea = () => {
             query.queryKey[1] === data.listID.toString(),
         }),
         queryClient.invalidateQueries({
-          queryKey: listsKeys.infiniteIdeas(data.listID.toString()),
-        }),
-        queryClient.invalidateQueries({
           queryKey: ideasKeys.idea(data.id.toString()),
         }),
         queryClient.invalidateQueries({

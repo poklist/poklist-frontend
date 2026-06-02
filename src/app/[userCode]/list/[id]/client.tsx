@@ -99,11 +99,20 @@ const ViewListPageClient: React.FC<ViewListPageClientProps> = ({
     setConfirmedIsFollowing,
   ]);
 
-  // useEffect(() => {
-  //   if (list?.pages[0].listInfo.owner && listID && listOwnerUserCode !== list?.pages[0].listInfo.owner.userCode) {
-  //     navigateTo.viewList(list?.pages[0].listInfo.owner.userCode, listID);
-  //   }
-  // }, [list?.pages[0].listInfo.owner, listID, listOwnerUserCode, list?.pages[0].listInfo.owner.userCode]);
+  useEffect(() => {
+    if (
+      list?.pages[0].listInfo.owner &&
+      listID &&
+      listOwnerUserCode !== list?.pages[0].listInfo.owner.userCode
+    ) {
+      navigateTo.viewList(list?.pages[0].listInfo.owner.userCode, listID);
+    }
+  }, [
+    list?.pages[0].listInfo.owner,
+    listID,
+    listOwnerUserCode,
+    list?.pages[0].listInfo.owner.userCode,
+  ]);
 
   return (
     <>
