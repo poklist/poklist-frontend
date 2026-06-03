@@ -52,6 +52,9 @@ const ViewListPageClient: React.FC<ViewListPageClientProps> = ({
     limit: 0,
   });
 
+  const listInfo = list?.pages[0]?.listInfo;
+  const listOwnerOfData = listInfo?.owner;
+
   useEffect(() => {
     if (isListOwnerError) {
       navigateTo.home();
@@ -67,18 +70,11 @@ const ViewListPageClient: React.FC<ViewListPageClientProps> = ({
   });
 
   useEffect(() => {
-    if (!(listID && list)) {
-      return;
-    }
-    const likeState = list.pages[0].listInfo.isLiked ?? false;
-    const hasExistingLikeState = hasLikeState(listID);
-
-    if (!hasExistingLikeState) {
-      setIsLiked(listID, likeState);
-    }
-
+    if (!listID || !listInfo) return;
+    const likeState = listInfo.isLiked ?? false;
+    if (!hasLikeState(listID)) setIsLiked(listID, likeState);
     setConfirmedIsLiked(listID, likeState);
-  }, [list, listID, setIsLiked, hasLikeState, setConfirmedIsLiked]);
+  }, [listInfo, listID]);
 
   useEffect(() => {
     if (!(listOwnerUserCode && listOwner)) {
@@ -94,25 +90,20 @@ const ViewListPageClient: React.FC<ViewListPageClientProps> = ({
   }, [
     listOwner,
     listOwnerUserCode,
-    setIsFollowing,
-    hasFollowingState,
-    setConfirmedIsFollowing,
+    // setIsFollowing,
+    // hasFollowingState,
+    // setConfirmedIsFollowing,
   ]);
 
   useEffect(() => {
     if (
-      list?.pages[0].listInfo.owner &&
+      listOwnerOfData &&
       listID &&
-      listOwnerUserCode !== list?.pages[0].listInfo.owner.userCode
+      listOwnerUserCode !== listOwnerOfData.userCode
     ) {
-      navigateTo.viewList(list?.pages[0].listInfo.owner.userCode, listID);
+      navigateTo.viewList(listOwnerOfData.userCode, listID);
     }
-  }, [
-    list?.pages[0].listInfo.owner,
-    listID,
-    listOwnerUserCode,
-    list?.pages[0].listInfo.owner.userCode,
-  ]);
+  }, [listOwnerOfData, listID, listOwnerUserCode]);
 
   return (
     <>
@@ -123,7 +114,7 @@ const ViewListPageClient: React.FC<ViewListPageClientProps> = ({
           {isListLoading ? (
             <ListCardSkeleton />
           ) : (
-            list && <ListCard data={list.pages[0].listInfo} />
+            list && listInfo && <ListCard data={listInfo} />
           )}
         </div>
         <FloatingButtonFooter

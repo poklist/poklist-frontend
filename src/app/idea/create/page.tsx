@@ -17,8 +17,8 @@ import React from 'react';
 const IdeaCreatePage: React.FC = () => {
   const navigateTo = useStrictNavigationAdapter();
   const searchParams = useSearchParams();
-  const listID = Number(searchParams?.get('listID'));
-  const isNavigateFromList = listID > 0;
+  const listID = searchParams?.get('listID');
+  const isNavigateFromList = listID !== null;
   const { me } = useUserStore();
 
   const { openFakePage } = useFakePage();
@@ -26,8 +26,8 @@ const IdeaCreatePage: React.FC = () => {
   const { withAuth } = useAuthWrapper();
 
   const { mutate: createIdea } = usePostNewIdea({
-    onSuccess: () => {
-      navigateTo.viewList(me?.userCode, listID.toString());
+    onSuccess: (data) => {
+      navigateTo.viewList(me?.userCode, data.listID);
       removeLocalStorage(LocalStorageKey.IDEA_DRAFT);
     },
     // toast({
@@ -50,7 +50,7 @@ const IdeaCreatePage: React.FC = () => {
   const onCreateIdea = withAuth(
     (ideaFormData: Omit<PostIdeasRequest, 'listID'>) => {
       if (isNavigateFromList) {
-        createIdea({ body: { ...ideaFormData, listID } });
+        createIdea({ body: { ...ideaFormData, listID: listID.toString() } });
       } else {
         openFakePage('listSelector', { lists, ideaForm: ideaFormData });
       }

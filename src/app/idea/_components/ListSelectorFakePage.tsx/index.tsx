@@ -11,11 +11,9 @@ import IconAdd from '@/components/ui/icons/AddIcon';
 import IconLeftArrowThin from '@/components/ui/icons/LeftArrowThinIcon';
 import IconRightArrowSave from '@/components/ui/icons/RightArrowSaveIcon';
 import { LocalStorageKey } from '@/enums/index.enum';
-import { MessageType } from '@/enums/Style/index.enum';
-import { useCreateIdea } from '@/hooks/mutations/useCreateIdea';
+import { usePostNewIdea } from '@/hooks/api/ideas/usePostNewIdea';
 import { useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
-import { toast } from '@/hooks/useToast';
 import { cn, removeLocalStorage } from '@/lib/utils';
 import useUserStore from '@/stores/useUserStore';
 import { Trans } from '@lingui/macro';
@@ -30,28 +28,31 @@ const ListSelectorFakePage: React.FC = () => {
 
   const { withAuth } = useAuthWrapper();
 
-  const { mutate: createIdea } = useCreateIdea();
+  const { mutate: createIdea } = usePostNewIdea({
+    onSuccess: () => {
+      navigateTo.viewList(me?.userCode, selectedList);
+      onClosePage();
+      removeLocalStorage(LocalStorageKey.IDEA_DRAFT);
+    },
+    // onError: (error) => {
+    //   toast({
+    //     title: error.message,
+    //     variant: MessageType.ERROR,
+    //   });
+    // },
+  });
 
   const [selectedList, setSelectedList] = useState('');
 
   const onCreateIdea = withAuth(() => {
     if (payload) {
-      createIdea(
-        { ...payload?.ideaForm, listID: selectedList },
-        {
-          onSuccess: () => {
-            navigateTo.viewList(me?.userCode, selectedList.toString());
-            onClosePage();
-            removeLocalStorage(LocalStorageKey.IDEA_DRAFT);
-          },
-          onError: (error: Error) => {
-            toast({
-              title: error.message,
-              variant: MessageType.ERROR,
-            });
-          },
-        }
-      );
+      createIdea({
+        body: {
+          ...payload?.ideaForm,
+          listID: selectedList,
+          externalLink: payload.ideaForm.externalLink ?? '',
+        },
+      });
     }
   });
 

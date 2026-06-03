@@ -40,7 +40,7 @@ const IdeaListSection: React.FC<IdeaListProps> = ({
   };
 
   return (
-    <div className="flex max-h-[calc(100dvh-57px)] flex-col">
+    <div className="flex max-h-dvh flex-col">
       <div className="mt-14 border-b border-note-gray-06 bg-gray-note-05 p-4 text-sm text-black-gray-03">
         {!ideaList || ideaList.length === 0 ? (
           <Trans>Your ideas live here. Create one!</Trans>
@@ -59,7 +59,7 @@ const IdeaListSection: React.FC<IdeaListProps> = ({
           chosenClass="chosen"
           ghostClass="ghost"
           placeholderClass="placeholder"
-          className="mt-2 gap-2"
+          className="mt-2 gap-2 pb-2"
         >
           {(idea, _index, dataKey) => (
             <div

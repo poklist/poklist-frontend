@@ -262,6 +262,23 @@ export const useFollowAction = ({
     },
     onSuccess: (res: unknown, variables: AxiosPayload) => {
       setConfirmedIsFollowing(currentUserCode, true);
+      queryClient.setQueryData<
+        TanStackCache<
+          ClientInferResponseBody<typeof userContract.getInfoContract, 200>
+        >
+      >(userKeys.userInfo(currentUserCode), (oldData) => {
+        if (!oldData) return oldData;
+        return {
+          ...oldData,
+          body: {
+            ...oldData.body,
+            content: {
+              ...oldData.body.content,
+              isFollowing: true,
+            },
+          },
+        };
+      });
       onSuccess?.(res, variables);
     },
     onError: (error: AxiosError, variables: AxiosPayload) => {
@@ -286,6 +303,23 @@ export const useFollowAction = ({
     },
     onSuccess: (res: unknown, variables: AxiosPayload) => {
       setConfirmedIsFollowing(currentUserCode, false);
+      queryClient.setQueryData<
+        TanStackCache<
+          ClientInferResponseBody<typeof userContract.getInfoContract, 200>
+        >
+      >(userKeys.userInfo(currentUserCode), (oldData) => {
+        if (!oldData) return oldData;
+        return {
+          ...oldData,
+          body: {
+            ...oldData.body,
+            content: {
+              ...oldData.body.content,
+              isFollowing: false,
+            },
+          },
+        };
+      });
       onSuccess?.(res, variables);
     },
     onError: (error: AxiosError, variables: AxiosPayload) => {

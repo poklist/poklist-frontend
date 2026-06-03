@@ -20,7 +20,7 @@ const getResponseSchema = createResponseSchema(
   })
 );
 
-const postRequestSchema = IdeaFormSchema.extend({ listID: z.number() });
+const postRequestSchema = IdeaFormSchema.extend({ listID: z.string() });
 
 const postResponseSchema = createResponseSchema(
   postRequestSchema.extend({ id: z.string() })

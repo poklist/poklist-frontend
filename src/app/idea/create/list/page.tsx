@@ -9,15 +9,14 @@ import { DrawerIds } from '@/constants/Drawer';
 import { TITLE_MAX_LENGTH } from '@/constants/form';
 import { CategoriesI18n } from '@/constants/Lists/i18n';
 import { LocalStorageKey } from '@/enums/index.enum';
-import { MessageType, RadioType } from '@/enums/Style/index.enum';
+import { RadioType } from '@/enums/Style/index.enum';
 import { useGetCategories } from '@/hooks/api/categories/useGetCategories';
-import { useCreateIdea } from '@/hooks/mutations/useCreateIdea';
+import { usePostNewIdea } from '@/hooks/api/ideas/usePostNewIdea';
 import { useCreateList } from '@/hooks/mutations/useCreateList';
 import useAutoResizeTextarea from '@/hooks/ui/useAutoResizeTextarea';
 import useFormErrorHandler from '@/hooks/ui/useFormErrorHandler';
 import { useAuthCheck, useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigationNext from '@/hooks/useStrictNavigateNext';
-import { toast } from '@/hooks/useToast';
 import { formatInput, removeLocalStorage } from '@/lib/utils';
 import { resolveListFormError } from '@/lib/validator';
 import { useTemporaryIdeaStore } from '@/stores/useTemporaryIdeaStore';
@@ -50,7 +49,7 @@ const TemporaryCreateListPage: React.FC = () => {
   const { createList } = useCreateList({
     userCode: me.userCode,
   });
-  const { mutate: createIdea } = useCreateIdea();
+  const { mutate: createIdea } = usePostNewIdea({});
 
   const { openDrawer: openCategoryDrawer, closeDrawer: closeCategoryDrawer } =
     useDrawer(DrawerIds.CATEGORY_DRAWER_ID);
@@ -97,18 +96,24 @@ const TemporaryCreateListPage: React.FC = () => {
         removeLocalStorage(LocalStorageKey.LIST_DRAFT);
         if (idea) {
           createIdea(
-            { ...idea, listID: data.id },
+            {
+              body: {
+                ...idea,
+                listID: data.id.toString(),
+                externalLink: idea.externalLink ?? '',
+              },
+            },
             {
               onSuccess: () => {
                 navigateTo.viewList(me.userCode, data.id.toString());
                 removeLocalStorage(LocalStorageKey.IDEA_DRAFT);
               },
-              onError: (error: Error) => {
-                toast({
-                  title: error.message,
-                  variant: MessageType.ERROR,
-                });
-              },
+              // onError: (error: Error) => {
+              //   toast({
+              //     title: error.message,
+              //     variant: MessageType.ERROR,
+              //   });
+              // },
             }
           );
         }
@@ -234,10 +239,7 @@ const TemporaryCreateListPage: React.FC = () => {
         endFooter={
           defaultListInfo.title === '' ? (
             <Button
-              disabled={
-                listForm.formState.isSubmitting ||
-                listForm.formState.isSubmitted
-              }
+              disabled={listForm.watch('categoryID') === 0}
               onClick={() =>
                 void listForm.handleSubmit(onSubmit, onSubmitFailed)()
               }

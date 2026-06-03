@@ -1,14 +1,17 @@
-import { listsContract } from '@/api/contracts';
-import { InfiniteCache, TsRestCacheEntry } from '@/api/fetcher';
+import { ideasContract, listsContract } from '@/api/contracts';
+import { InfiniteCache } from '@/api/fetcher';
 import { ideasQuery, PostIdeasResponse } from '@/api/query/ideas';
+import listsKeys from '@/hooks/api/lists/keys';
 import { toBackendTimestamp } from '@/lib/time';
 import { useQueryClient } from '@tanstack/react-query';
 import { ClientInferResponseBody } from '@ts-rest/core';
-import listsKeys from '../lists/keys';
+import { ErrorResponse } from '@ts-rest/react-query';
 
 interface UsePostNewIdeaOptions {
   onSuccess?: (data: PostIdeasResponse['content']) => void;
-  onError?: (error: TsRestCacheEntry<unknown>) => void;
+  onError?: (
+    error: ErrorResponse<typeof ideasContract.postIdeasContract>
+  ) => void;
 }
 
 export const usePostNewIdea = (options: UsePostNewIdeaOptions) => {
@@ -60,7 +63,7 @@ export const usePostNewIdea = (options: UsePostNewIdeaOptions) => {
       }
     },
     onError: (error) => {
-      console.error(error)
+      console.error(error);
       options.onError?.(error);
     },
   });
