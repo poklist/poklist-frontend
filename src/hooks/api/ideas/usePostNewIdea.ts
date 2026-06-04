@@ -17,7 +17,7 @@ interface UsePostNewIdeaOptions {
 export const usePostNewIdea = (options: UsePostNewIdeaOptions) => {
   const queryClient = useQueryClient();
 
-  const mutation = ideasQuery.post.useMutation({
+  return ideasQuery.post.useMutation({
     onSuccess: (response) => {
       const data = response.body.content;
       try {
@@ -67,8 +67,4 @@ export const usePostNewIdea = (options: UsePostNewIdeaOptions) => {
       options.onError?.(error);
     },
   });
-
-  return {
-    ...mutation,
-  };
 };

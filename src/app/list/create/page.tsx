@@ -1,13 +1,13 @@
 'use client';
 
+import { PostListsRequest } from '@/api/query/lists';
 import ListForm from '@/app/list/_components/Form';
 import { LocalStorageKey } from '@/enums/index.enum';
-import { useCreateList } from '@/hooks/mutations/useCreateList';
+import { usePostNewList } from '@/hooks/api/lists/usePostNewList';
 import { useAuthCheck, useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
 import { removeLocalStorage } from '@/lib/utils';
 import useUserStore from '@/stores/useUserStore';
-import { ListBody } from '@/types/List';
 import React, { useEffect } from 'react';
 
 const CreatePage: React.FC = () => {
@@ -16,8 +16,15 @@ const CreatePage: React.FC = () => {
   const { checkAuthAndRedirect } = useAuthCheck();
   const { withAuth } = useAuthWrapper();
 
-  const { createList } = useCreateList({
+  const { mutate: createList } = usePostNewList({
     userCode: me.userCode,
+    onSuccess: (data) => {
+      if (!data) {
+        throw new Error('Failed to create list');
+      }
+      navigateTo.viewList(me.userCode, data.id.toString());
+      removeLocalStorage(LocalStorageKey.LIST_DRAFT);
+    },
   });
 
   const onDismissCreate = (isFormEmpty: boolean) => {
@@ -26,16 +33,8 @@ const CreatePage: React.FC = () => {
     }
   };
 
-  const onCreateList = withAuth((listData: ListBody) => {
-    createList(listData, {
-      onSuccess: (data) => {
-        if (!data) {
-          throw new Error('Failed to create list');
-        }
-        navigateTo.viewList(me.userCode, data.id.toString());
-        removeLocalStorage(LocalStorageKey.LIST_DRAFT);
-      },
-    });
+  const onCreateList = withAuth((listData: PostListsRequest) => {
+    createList({ body: listData });
   });
 
   useEffect(() => {

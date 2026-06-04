@@ -27,8 +27,17 @@ const getIdeasOrderContract = {
   summary: 'all ideas ORDER in specific list',
 } satisfies AppRoute;
 
+const postListsContract = {
+  method: 'POST',
+  path: '/lists',
+  body: listsSchema.postRequest,
+  responses: { 200: listsSchema.postResponse },
+  summary: 'create LIST',
+} satisfies AppRoute;
+
 export const listsContract = {
   getListsContract,
   getUserListsContract,
   getIdeasOrderContract,
+  postListsContract,
 } satisfies Record<string, AppRoute>;

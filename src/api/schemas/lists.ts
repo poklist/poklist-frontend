@@ -42,6 +42,12 @@ const getIdeasOrderRequestSchema = z.object({ listID: z.string() });
 
 const getIdeasOrderResponseSchema = createResponseSchema(z.array(z.string()));
 
+const postRequestSchema = ListFormSchema;
+
+const postResponseSchema = createResponseSchema(
+  ListFormSchema.omit({ coverImage: true }).extend({ id: z.string() })
+);
+
 export const listsSchema = {
   getRequest: getRequestSchema,
   getResponse: getResponseSchema,
@@ -49,4 +55,6 @@ export const listsSchema = {
   getUserListsResponse: getUserListsResponseSchema,
   getIdeasOrderRequest: getIdeasOrderRequestSchema,
   getIdeasOrderResponse: getIdeasOrderResponseSchema,
+  postRequest: postRequestSchema,
+  postResponse: postResponseSchema,
 };
