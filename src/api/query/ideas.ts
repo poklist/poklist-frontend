@@ -8,6 +8,7 @@ import z from 'zod';
 const ideasApi = initContract().router({
   get: ideasContract.getIdeasContract,
   post: ideasContract.postIdeasContract,
+  delete: ideasContract.deleteIdeasContract,
 });
 
 export type GetIdeasRequest = z.input<typeof ideasSchema.getRequest>;
@@ -17,7 +18,9 @@ export type PostIdeasRequest = z.input<typeof ideasSchema.postRequest>;
 
 export type PostIdeasResponse = z.infer<typeof ideasSchema.postResponse>;
 
+export type DeleteIdeasRequest = z.input<typeof ideasSchema.deleteRequest>;
+
 export const ideasQuery = initQueryClient(ideasApi, {
   baseUrl: '',
-  api: axiosFetcher<GetIdeasResponse | PostIdeasResponse>,
+  api: axiosFetcher,
 });

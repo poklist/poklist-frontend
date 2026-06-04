@@ -26,9 +26,15 @@ const postResponseSchema = createResponseSchema(
   postRequestSchema.extend({ id: z.string() })
 );
 
+const deleteRequestSchema = z.object({ ideaID: z.string() });
+
+const deleteResponseSchema = z.unknown();
+
 export const ideasSchema = {
   getRequest: getRequestSchema,
   getResponse: getResponseSchema,
   postRequest: postRequestSchema,
   postResponse: postResponseSchema,
+  deleteRequest: deleteRequestSchema,
+  deleteResponse: deleteResponseSchema,
 };

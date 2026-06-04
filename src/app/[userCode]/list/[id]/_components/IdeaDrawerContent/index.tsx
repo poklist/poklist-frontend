@@ -16,8 +16,8 @@ import LinkIconWrapper from '@/components/ui/wrappers/LinkIconWrapper';
 import { DrawerIds } from '@/constants/Drawer';
 import { SocialLinkType } from '@/enums/index.enum';
 import { DropdownItemType, MessageType } from '@/enums/Style/index.enum';
+import { useDeleteIdea } from '@/hooks/api/ideas/useDeleteIdea';
 import { useGetIdea } from '@/hooks/api/ideas/useGetIdea';
-import useDeleteIdea from '@/hooks/mutations/useDeleteIdea';
 import { useAuthWrapper } from '@/hooks/useAuth';
 import useClipboard from '@/hooks/useClipboard';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
@@ -49,7 +49,7 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({
   const [isDeleting, setIsDeleting] = useState(false);
 
   const { data } = useGetIdea({ ideaID, enabled: !isDeleting });
-  const { deleteIdea } = useDeleteIdea({
+  const { mutate: deleteIdea } = useDeleteIdea({
     listID: String(data?.listID),
   });
   const { openDrawer, closeDrawer } = useDrawer(
@@ -91,15 +91,18 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({
   const onDeleteIdea = withAuth(() => {
     if (!data) return;
     setIsDeleting(true);
-    deleteIdea(data.id, {
-      onSuccess: () => {
-        closeSelf();
-        navigateTo.viewList(me.userCode, String(data.listID));
-      },
-      onError: () => {
-        setIsDeleting(false);
-      },
-    });
+    deleteIdea(
+      { params: { ideaID: data.id } },
+      {
+        onSuccess: () => {
+          closeSelf();
+          navigateTo.viewList(me.userCode, data.listID);
+        },
+        onError: () => {
+          setIsDeleting(false);
+        },
+      }
+    );
   });
 
   return (

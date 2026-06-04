@@ -25,7 +25,7 @@ export const usePostNewIdea = (options: UsePostNewIdeaOptions) => {
           InfiniteCache<
             ClientInferResponseBody<typeof listsContract.getListsContract, 200>
           >
-        >(listsKeys.infiniteIdeas(data.listID.toString()), (caches) => {
+        >(listsKeys.infiniteIdeas(data.listID), (caches) => {
           if (!caches) return caches;
           const newIdea = {
             id: data.id,

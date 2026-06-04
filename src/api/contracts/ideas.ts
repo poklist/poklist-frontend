@@ -1,5 +1,6 @@
 import { ideasSchema } from '@/api/schemas';
 import { AppRoute } from '@ts-rest/core';
+import z from 'zod';
 
 const getIdeasContract = {
   method: 'GET',
@@ -17,7 +18,17 @@ const postIdeasContract = {
   summary: 'create IDEA to specific list',
 } satisfies AppRoute;
 
+const deleteIdeasContract = {
+  method: 'DELETE',
+  path: '/ideas/:ideaID',
+  pathParams: ideasSchema.deleteRequest,
+  body: z.object({}),
+  responses: { 200: ideasSchema.deleteResponse },
+  summary: 'delete IDEA',
+} satisfies AppRoute;
+
 export const ideasContract = {
   getIdeasContract,
   postIdeasContract,
+  deleteIdeasContract,
 } satisfies Record<string, AppRoute>;
