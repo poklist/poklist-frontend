@@ -1,11 +1,13 @@
 import axios, { AxiosError } from 'axios';
 
+import { StatusErrorMessageI18n } from '@/constants/i18n';
 import { MessageType } from '@/enums/Style/index.enum';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { toast } from '@/hooks/useToast';
 import { track } from '@/lib/abortManager';
 import useAuthStore from '@/stores/useAuthStore';
-import { t } from '@lingui/macro';
+import { i18n } from '@lingui/core';
+import { isStatusWhitelist } from './whitelist';
 
 declare module 'axios' {
   export interface AxiosRequestConfig {
@@ -49,11 +51,10 @@ instance.interceptors.response.use(
   (response) => {
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
-    if (response.status !== 200) {
-      toast({
-        title: `錯誤${response.status}，請聯繫客服。`,
-        variant: MessageType.ERROR,
-      });
+    if (process.env.NODE_ENV !== 'production' && response.status !== 200) {
+      console.warn(
+        `[API] non-200 success: ${response.status} ${response.config.url}`
+      );
     }
 
     return response;
@@ -74,19 +75,38 @@ instance.interceptors.response.use(
     }
 
     console.error(error);
-    toast({
-      title: error.message || `錯誤${error.status}，請聯繫客服。`,
-      variant: MessageType.ERROR,
-    });
 
-    if (error.response?.status === 401) {
+    const status = error.response?.status;
+    if (status === 401) {
       const { logout } = useAuthStore.getState();
       toast({
-        title: t`Please login again`,
+        title: i18n._(StatusErrorMessageI18n[401]),
         variant: MessageType.SUCCESS,
       });
       logout();
       window.location.href = '/';
+      return Promise.reject(error);
+    }
+
+    const path = error.config?.url?.split('?')[0];
+    const method = error.config?.method;
+    if (method && path && status && isStatusWhitelist(method, path, status)) {
+      return Promise.reject(error);
+    }
+
+    if (status) {
+      const errorMessage = StatusErrorMessageI18n[status];
+      toast({
+        title: errorMessage
+          ? i18n._(errorMessage)
+          : `錯誤${status}，請聯繫客服。`,
+        variant: MessageType.ERROR,
+      });
+    } else {
+      toast({
+        title: i18n._(StatusErrorMessageI18n[500]),
+        variant: MessageType.ERROR,
+      });
     }
     return Promise.reject(error);
   }

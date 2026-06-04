@@ -13,11 +13,6 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/api/axios.ts
-#: src/hooks/mutations/useEditProfile.ts
-msgid "Please login again"
-msgstr "請重新登入"
-
 #: src/app/[userCode]/list/[id]/_components/IdeaDrawerContent/index.tsx
 #: src/components/Footer/FloatingButtonFooter.tsx
 msgid "Copied to clipboard"
@@ -1085,12 +1080,57 @@ msgid "Only approved and verified “Creator Accounts” can log in and create l
 msgstr "目前僅限已申請並被認證的「創作者帳號」登入並創作名單。如有疑問，請聯繫我們。"
 
 #: src/constants/i18n.ts
+#~ msgid "You’re logged out.Please log in again."
+#~ msgstr "登入已失效了，請重新登入"
+
+#: src/constants/i18n.ts
 msgid "List"
 msgstr "名單"
 
 #: src/constants/i18n.ts
 msgid "Idea"
 msgstr "靈感"
+
+#: src/constants/i18n.ts
+msgid "You’re logged out. Please log in again."
+msgstr "登入已失效了，請重新登入"
+
+#: src/constants/i18n.ts
+msgid "You don’t have access to this."
+msgstr "你目前沒有權限查看"
+
+#: src/constants/i18n.ts
+msgid "Oops, something’s missing. Check your info and try again."
+msgstr "資料可能有缺誤，請再確認"
+
+#: src/constants/i18n.ts
+msgid "We couldn’t find this page."
+msgstr "哇～找不到這個內容了！"
+
+#: src/constants/i18n.ts
+msgid "Connection took too long. Try again."
+msgstr "連線逾時了，請再試一次"
+
+#: src/constants/i18n.ts
+msgid "Slow down a little. Try again in a moment."
+msgstr "操作太快了，請稍後再試"
+
+#: src/constants/i18n.ts
+#: src/constants/i18n.ts
+msgid "Our bad. Something went wrong."
+msgstr "系統出了狀況，請稍後再試"
+
+#: src/constants/i18n.ts
+msgid "We’re doing a quick tune-up. Try again soon."
+msgstr "系統維護中，請稍後再試"
+
+#: src/constants/i18n.ts
+msgid "The server took too long. Try again later."
+msgstr "伺服器等太久了，請稍後再試"
+
+#: src/hooks/mutations/useEditProfile.ts
+msgid "Please login again"
+msgstr "請重新登入"
 
 #: src/hooks/useAuthRequired.ts
 msgid "Please login to do this action"
