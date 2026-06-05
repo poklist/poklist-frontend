@@ -40,14 +40,18 @@ const HeroSection: React.FC = () => {
   const navigateTo = useStrictNavigationAdapter();
   const { isLoggedIn, logout } = useAuthStore();
   const { me, setMe } = useUserStore();
-  const { getIsFollowing, setIsFollowing, hasFollowingState } =
-    useFollowingStore();
+  const {
+    getIsFollowing,
+    setIsFollowing,
+    hasFollowingState,
+    setConfirmedIsFollowing,
+  } = useFollowingStore();
   const { openDrawer } = useDrawer();
   const [drawerContent, setDrawerContent] = useState<React.ReactNode>(null);
   const bioRef = useRef<HTMLParagraphElement>(null);
   const { handleAuthRequired } = useAuthRequired();
 
-  // 獲取當前用戶的關注狀態
+  // 獲取當前用戶的 Following state
   const isFollowing = userCode ? getIsFollowing(userCode) : false;
 
   const { withAuth } = useAuthWrapper();
@@ -63,7 +67,7 @@ const HeroSection: React.FC = () => {
       console.error(error);
       navigateTo.home();
     },
-  }) as {
+  }) satisfies {
     data: User | undefined;
     isLoading: boolean;
     isError: boolean;
@@ -120,6 +124,8 @@ const HeroSection: React.FC = () => {
         // 只有當 store 中沒有該用戶的狀態時，才使用 API 資料初始化
         setIsFollowing(userCode, apiFollowingState);
       }
+
+      setConfirmedIsFollowing(userCode, apiFollowingState);
     }
   }, [
     isLoggedIn,
@@ -127,6 +133,7 @@ const HeroSection: React.FC = () => {
     userCode,
     setIsFollowing,
     hasFollowingState,
+    setConfirmedIsFollowing,
   ]);
 
   // FUTURE: refactor the drawer content because we may have more than one drawer

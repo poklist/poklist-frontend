@@ -1,6 +1,6 @@
 import { discoveryQuery } from '@/api/query/discovery';
 import z from 'zod';
-import discoveryKeys from './keys';
+import discoveryKeys from '@/hooks/api/discovery/keys';
 
 const getOfficialCollectionsSchema = z.object({
   staleTime: z.number().int().nonnegative().default(60000),

@@ -4,7 +4,7 @@ import { userSchema } from '@/api/schemas';
 import { ErrorResponse } from '@ts-rest/react-query';
 import { useEffect } from 'react';
 import z from 'zod';
-import userKeys from './keys';
+import userKeys from '@/hooks/api/user/keys';
 
 const getUserInfoSchema = userSchema.getInfoRequest.extend({
   staleTime: z.number().int().nonnegative().default(60000),

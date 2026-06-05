@@ -17,7 +17,7 @@ import TrashIcon from '@/components/ui/icons/TrashIcon';
 import { DrawerIds } from '@/constants/Drawer';
 import { Language } from '@/enums/index.enum';
 import { DropdownItemType } from '@/enums/Style/index.enum';
-import { useDeleteList } from '@/hooks/mutations/useDeleteList';
+import { useDeleteList } from '@/hooks/api/lists/useDeleteList';
 import { useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { getFormattedTime } from '@/lib/time';
@@ -40,7 +40,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
   const { isLoggedIn } = useAuthStore();
   const { me } = useUserStore();
   const { withAuth } = useAuthWrapper();
-  const { deleteList } = useDeleteList({
+  const { mutate: deleteList } = useDeleteList({
     userCode: me.userCode,
     onSuccess: () => navigateTo.user(me.userCode),
   });
@@ -105,7 +105,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
   ];
 
   const onDeleteList = withAuth(() => {
-    deleteList(data.id);
+    deleteList({ params: { listID: data.id } });
   });
 
   const handleExpandContent = (content: React.ReactNode) => {
@@ -190,7 +190,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
         drawerId={DrawerIds.LIST_CARD_DRAWER_ID}
         isShowClose={false}
         content={drawerContent}
-        className="max-h-[75dvh] px-0 py-0"
+        className="max-h-[calc(100dvh-200px)] px-0 py-0"
       />
 
       {/* Delete Confirmation Drawer */}

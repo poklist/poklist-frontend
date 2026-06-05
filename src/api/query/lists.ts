@@ -9,6 +9,8 @@ const listsApi = initContract().router({
   get: listsContract.getListsContract,
   getUserLists: listsContract.getUserListsContract,
   getIdeasOrder: listsContract.getIdeasOrderContract,
+  post: listsContract.postListsContract,
+  delete: listsContract.deleteListsContract,
 });
 
 export type GetListsRequest = z.input<typeof listsSchema.getRequest>;
@@ -31,9 +33,13 @@ export type GetIdeasOrderResponse = z.infer<
   typeof listsSchema.getIdeasOrderResponse
 >;
 
+export type PostListsRequest = z.input<typeof listsSchema.postRequest>;
+
+export type PostListsResponse = z.infer<typeof listsSchema.postResponse>;
+
+export type DeleteListsRequest = z.input<typeof listsSchema.deleteRequest>;
+
 export const listsQuery = initQueryClient(listsApi, {
   baseUrl: '',
-  api: axiosFetcher<
-    GetListsResponse | GetUserListsResponse | GetIdeasOrderResponse
-  >,
+  api: axiosFetcher,
 });

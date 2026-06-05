@@ -16,8 +16,8 @@ import LinkIconWrapper from '@/components/ui/wrappers/LinkIconWrapper';
 import { DrawerIds } from '@/constants/Drawer';
 import { SocialLinkType } from '@/enums/index.enum';
 import { DropdownItemType, MessageType } from '@/enums/Style/index.enum';
+import { useDeleteIdea } from '@/hooks/api/ideas/useDeleteIdea';
 import { useGetIdea } from '@/hooks/api/ideas/useGetIdea';
-import useDeleteIdea from '@/hooks/mutations/useDeleteIdea';
 import { useAuthWrapper } from '@/hooks/useAuth';
 import useClipboard from '@/hooks/useClipboard';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
@@ -49,7 +49,7 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({
   const [isDeleting, setIsDeleting] = useState(false);
 
   const { data } = useGetIdea({ ideaID, enabled: !isDeleting });
-  const { deleteIdea } = useDeleteIdea({
+  const { mutate: deleteIdea } = useDeleteIdea({
     listID: String(data?.listID),
   });
   const { openDrawer, closeDrawer } = useDrawer(
@@ -91,15 +91,18 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({
   const onDeleteIdea = withAuth(() => {
     if (!data) return;
     setIsDeleting(true);
-    deleteIdea(data.id, {
-      onSuccess: () => {
-        closeSelf();
-        navigateTo.viewList(me.userCode, String(data.listID));
-      },
-      onError: () => {
-        setIsDeleting(false);
-      },
-    });
+    deleteIdea(
+      { params: { ideaID: data.id } },
+      {
+        onSuccess: () => {
+          closeSelf();
+          navigateTo.viewList(me.userCode, data.listID);
+        },
+        onError: () => {
+          setIsDeleting(false);
+        },
+      }
+    );
   });
 
   return (
@@ -123,14 +126,14 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({
             alt={data.title}
             width={240}
             height={240}
-            className="mb-6 self-center rounded-2xl border border-black mr-6"
+            className="mb-6 mr-6 self-center rounded-2xl border border-black"
           />
         )}
         <div className="-tracking-2% break-normal pr-6 text-[17px] font-bold leading-[1.45] [overflow-wrap:anywhere]">
           {data?.title}
         </div>
         {data?.description && (
-          <div className="mt-1 w-full whitespace-pre-line break-normal pr-5 text-[15px] leading-[1.45] -tracking-1.1% [overflow-wrap:anywhere] overflow-y-auto">
+          <div className="mt-1 w-full whitespace-pre-line break-normal pr-5 text-[15px] leading-[1.45] -tracking-1.1% [overflow-wrap:anywhere]">
             {data.description}
           </div>
         )}
@@ -142,26 +145,30 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({
             }}
           >
             <LinkIconWrapper variant={SocialLinkType.CUSTOMIZED} />
-            <p className="line-clamp-1 max-w-40">
+            <p className="line-clamp-1 block max-w-40 truncate">
               {urlPreview(data.externalLink)}
             </p>
           </div>
         )}
-        <div className="mt-4 flex w-full items-center justify-between pr-6">
-          <p className="text-[13px] text-black-text-01">
-            {data?.createdAt && getFormattedTime(data.createdAt, i18n.locale)}
-          </p>
-          <Button
-            variant={ButtonVariant.WHITE}
-            shape={ButtonShape.ROUNDED_FULL}
-            size={ButtonSize.MD}
-            className="flex gap-1"
-            onClick={handleCopyHref}
-          >
-            <IconLink />
-            <Trans>Copy</Trans>
-          </Button>
+        <div className="mb-20 flex w-full items-center justify-between pr-6">
+          {data?.createdAt && (
+            <p className="mt-4 text-[13px] text-black-text-01">
+              {getFormattedTime(data.createdAt, i18n.locale)}
+            </p>
+          )}
         </div>
+      </div>
+      <div className="fixed bottom-0 w-full bg-gray-note-05 px-6 pb-4 pt-2">
+        <Button
+          variant={ButtonVariant.GRAY}
+          shape={ButtonShape.ROUNDED_FULL}
+          size={ButtonSize.H40}
+          className="flex gap-1 border border-note-gray-06 text-[13px] text-black-gray-03"
+          onClick={handleCopyHref}
+        >
+          <IconLink width={13} height={13} />
+          <Trans>Copy</Trans>
+        </Button>
       </div>
       <DrawerComponent
         drawerId={DrawerIds.DELETE_IDEA_DRAWER_ID}

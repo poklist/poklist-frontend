@@ -88,10 +88,6 @@ export const useReorderIdeas = ({
           refetchType: 'inactive',
         }),
         queryClient.invalidateQueries({
-          queryKey: listsKeys.list(listID.toString()),
-          refetchType: 'inactive',
-        }),
-        queryClient.invalidateQueries({
           queryKey: [QueryKeys.ORDER_IDEAS, listID],
         }),
         queryClient.invalidateQueries({

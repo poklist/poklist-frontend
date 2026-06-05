@@ -1,5 +1,6 @@
-import { AppRoute } from '@ts-rest/core';
 import { listsSchema } from '@/api/schemas';
+import { AppRoute } from '@ts-rest/core';
+import z from 'zod';
 
 const getListsContract = {
   method: 'GET',
@@ -16,6 +17,7 @@ const getUserListsContract = {
   pathParams: listsSchema.getUserListsRequest.pick({ userCode: true }),
   query: listsSchema.getUserListsRequest.omit({ userCode: true }),
   responses: { 200: listsSchema.getUserListsResponse },
+  summary: 'all LISTS under specific user',
 } satisfies AppRoute;
 
 const getIdeasOrderContract = {
@@ -23,10 +25,30 @@ const getIdeasOrderContract = {
   path: '/lists/:listID/order',
   pathParams: listsSchema.getIdeasOrderRequest,
   responses: { 200: listsSchema.getIdeasOrderResponse },
+  summary: 'all ideas ORDER in specific list',
+} satisfies AppRoute;
+
+const postListsContract = {
+  method: 'POST',
+  path: '/lists',
+  body: listsSchema.postRequest,
+  responses: { 200: listsSchema.postResponse },
+  summary: 'create LIST',
+} satisfies AppRoute;
+
+const deleteListsContract = {
+  method: 'DELETE',
+  path: '/lists/:listID',
+  pathParams: listsSchema.deleteRequest,
+  body: z.object({}),
+  responses: { 200: listsSchema.deleteResponse },
+  summary: 'delete LIST',
 } satisfies AppRoute;
 
 export const listsContract = {
   getListsContract,
   getUserListsContract,
   getIdeasOrderContract,
+  postListsContract,
+  deleteListsContract,
 } satisfies Record<string, AppRoute>;

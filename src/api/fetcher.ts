@@ -1,5 +1,6 @@
 import axios from '@/api/axios';
 import { isAbortWhitelist } from '@/api/whitelist';
+import { InfiniteData } from '@tanstack/react-query';
 import { ApiFetcherArgs } from '@ts-rest/core';
 
 export const axiosFetcher = async <T = unknown>({
@@ -39,3 +40,16 @@ export const axiosFetcher = async <T = unknown>({
     headers: nativeHeaders,
   };
 };
+
+export type TsRestCacheEntry<TBody> = {
+  status: number;
+  body: TBody;
+  headers: Headers;
+};
+
+export type TanStackCache<TBody> = TsRestCacheEntry<TBody>;
+
+export type InfiniteCache<TBody> = InfiniteData<
+  TsRestCacheEntry<TBody>,
+  number
+>;

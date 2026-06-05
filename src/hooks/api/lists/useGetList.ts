@@ -2,7 +2,7 @@ import { listsQuery } from '@/api/query/lists';
 import { listsSchema } from '@/api/schemas';
 import { List } from '@/constants/list';
 import z from 'zod';
-import listsKeys from './keys';
+import listsKeys from '@/hooks/api/lists/keys';
 
 export const getListSchema = listsSchema.getRequest.extend({
   offset: z

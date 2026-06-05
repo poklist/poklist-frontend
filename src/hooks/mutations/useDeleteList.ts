@@ -39,7 +39,10 @@ export const useDeleteList = ({
       try {
         // 將單筆列表資料清空，而非刪除快取，為免因尚有 Component 仍在使用相關資料而重新 fetch
         queryClient.setQueryData([QueryKeys.LIST, listID.toString()], null);
-        queryClient.setQueryData(listsKeys.list(listID.toString()), null);
+        queryClient.setQueryData(
+          listsKeys.infiniteIdeas(listID.toString()),
+          undefined
+        );
         // 重新獲取列表預覽資料
         await Promise.all([
           queryClient.invalidateQueries({
@@ -49,10 +52,6 @@ export const useDeleteList = ({
           queryClient.invalidateQueries({
             queryKey: listsKeys.userLists(userCode),
             refetchType: 'all',
-          }),
-          queryClient.invalidateQueries({
-            queryKey: listsKeys.list(listID.toString()),
-            refetchType: 'inactive',
           }),
         ]);
         onSuccess?.();

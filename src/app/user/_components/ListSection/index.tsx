@@ -60,8 +60,9 @@ const ListSection: React.FC = () => {
           return (
             <div
               key={listPreview.id}
-              className={`flex min-h-[72px] items-center justify-between ${isLastItem ? 'border-b-[3px]' : 'border-b'
-                } border-black-text-01 p-4 -tracking-1.1%`}
+              className={`flex min-h-[72px] items-center justify-between ${
+                isLastItem ? 'border-b-[3px]' : 'border-b'
+              } border-black-text-01 p-4 -tracking-1.1%`}
               onClick={() => {
                 navigateTo.viewList(userCode, listPreview.id.toString());
               }}

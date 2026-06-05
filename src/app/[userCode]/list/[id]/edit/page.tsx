@@ -2,7 +2,7 @@
 
 import { GetUserListsResponse } from '@/api/query/lists';
 import ListForm from '@/app/list/_components/Form';
-import { useGetList } from '@/hooks/api/lists/useGetList';
+import { useGetListInfiniteIdeas } from '@/hooks/api/lists/useGetListInfiniteIdeas';
 import { useEditList } from '@/hooks/mutations/useEditList';
 import { useAuthCheck, useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
@@ -21,8 +21,9 @@ const EditListPage: React.FC = () => {
   const { me } = useUserStore();
   const { withAuth } = useAuthWrapper();
 
-  const { data: list } = useGetList({
+  const { data: list } = useGetListInfiniteIdeas({
     listID,
+    limit: 0,
   });
   const { editList } = useEditList({
     userCode: me.userCode,
@@ -33,7 +34,7 @@ const EditListPage: React.FC = () => {
 
   const onDismissEdit = (isFormEmpty: boolean) => {
     if (list && isFormEmpty) {
-      navigateTo.viewList(me.userCode, list.id.toString());
+      navigateTo.viewList(me.userCode, list.pages[0].listInfo.id);
     }
   };
 
@@ -42,7 +43,7 @@ const EditListPage: React.FC = () => {
       return;
     }
     setListCoverDraft({
-      ...list,
+      ...list.pages[0].listInfo,
       title: listFormData.title,
       description: listFormData.description,
       externalLink: listFormData.externalLink,
@@ -67,7 +68,7 @@ const EditListPage: React.FC = () => {
 
   useEffect(() => {
     if (list) {
-      setListCoverDraft(list);
+      setListCoverDraft(list.pages[0].listInfo);
     }
   }, [list]);
 

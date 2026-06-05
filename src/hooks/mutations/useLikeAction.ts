@@ -1,7 +1,7 @@
 import axios, { AxiosPayload } from '@/api/axios';
 import QueryKeys from '@/constants/queryKeys';
 import useLikeStore from '@/stores/useLikeStore';
-import { useMutation, UseMutationResult } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { AxiosError, AxiosRequestConfig, Method } from 'axios';
 import { useRef } from 'react';
 
@@ -39,7 +39,22 @@ export const useLikeAction = ({
   onError,
 }: LikeActionOptions): LikeActionReturn => {
   const latestParamsRef = useRef<AxiosPayload | null>(null);
-  const { setIsLiked } = useLikeStore();
+  const { setIsLiked, getConfirmedIsLiked, setConfirmedIsLiked } =
+    useLikeStore();
+
+  // 共用 onError rollback
+  const handleMutationError = (
+    error: AxiosError,
+    variables: AxiosPayload,
+    confirmedValue: boolean
+  ) => {
+    setIsLiked(listID, confirmedValue);
+    if (error.response?.status === 401) {
+      onUnauthorized?.();
+    } else {
+      onError?.(error, variables);
+    }
+  };
 
   const likeMutation = useMutation({
     mutationKey: [QueryKeys.LIST, listID, 'like'],
@@ -48,21 +63,19 @@ export const useLikeAction = ({
 
       const config = {
         url: '/like',
-        method: 'POST' as Method,
+        method: 'POST' satisfies Method,
         ...(variables?.params && { params: variables.params }),
-      } as AxiosRequestConfig;
+      } satisfies AxiosRequestConfig;
 
       return axios.request(config);
     },
     onSuccess: (res: unknown, variables: AxiosPayload) => {
+      // 更新 confirmed 狀態
+      setConfirmedIsLiked(listID, true);
       onSuccess?.(res, variables);
     },
     onError: (error: AxiosError, variables: AxiosPayload) => {
-      if (error.response?.status === 401) {
-        onUnauthorized?.();
-      } else {
-        onError?.(error, variables);
-      }
+      handleMutationError(error, variables, false);
     },
   });
 
@@ -73,28 +86,22 @@ export const useLikeAction = ({
 
       const config: AxiosRequestConfig = {
         url: '/unlike',
-        method: 'POST' as Method,
+        method: 'POST' satisfies Method,
         ...(variables?.params && { params: variables.params }),
       };
 
       return axios.request(config);
     },
     onSuccess: (res: unknown, variables: AxiosPayload) => {
+      setConfirmedIsLiked(listID, false);
       onSuccess?.(res, variables);
     },
     onError: (error: AxiosError, variables: AxiosPayload) => {
-      if (error.response?.status === 401) {
-        onUnauthorized?.();
-      } else {
-        onError?.(error, variables);
-      }
+      handleMutationError(error, variables, true);
     },
   });
 
-  const createDebouncedAction = (
-    mutation: UseMutationResult<unknown, AxiosError, AxiosPayload, unknown>,
-    optimisticValue: boolean
-  ) => {
+  const createDebouncedAction = (optimisticValue: boolean) => {
     return (variables: AxiosPayload = {}) => {
       if (shouldAllow && !shouldAllow()) {
         onNotAllowed?.();
@@ -111,16 +118,25 @@ export const useLikeAction = ({
       setIsLiked(listID, optimisticValue);
 
       const timer = setTimeout(() => {
-        mutation.mutate(variables);
         debounceMap.delete(debounceKey);
+
+        // 狀態比對
+        const confirmedValue = getConfirmedIsLiked(listID);
+        if (optimisticValue === confirmedValue) {
+          return;
+        }
+
+        // 依 optimistic 狀態選擇正確 mutation
+        const targetMutation = optimisticValue ? likeMutation : unlikeMutation;
+        targetMutation.mutate(variables);
       }, debounceMs);
 
       debounceMap.set(debounceKey, timer);
     };
   };
 
-  const like = createDebouncedAction(likeMutation, true);
-  const unlike = createDebouncedAction(unlikeMutation, false);
+  const like = createDebouncedAction(true);
+  const unlike = createDebouncedAction(false);
 
   const cancelPending = () => {
     const debounceKey = `like-${listID}`;

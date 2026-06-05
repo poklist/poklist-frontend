@@ -6,7 +6,7 @@ const getFollowersContract = {
   path: '/followers',
   query: followersSchema.getRequest,
   responses: { 200: followersSchema.getResponse },
-  summary: 'all followers of specific user',
+  summary: 'all FOLLOWERS of specific user',
 } satisfies AppRoute;
 
 export const followersContract = { getFollowersContract } satisfies Record<

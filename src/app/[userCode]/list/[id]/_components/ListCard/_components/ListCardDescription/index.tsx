@@ -24,7 +24,7 @@ export const ListCardDescription: React.FC<ListCardDescriptionProps> = ({
       return;
 
     onExpandDescription(
-      <div className="mb-14 ml-6 mr-px mt-6 overflow-y-auto whitespace-pre-line pr-6 break-normal [overflow-wrap:anywhere]">
+      <div className="mb-14 ml-6 mr-px mt-6 overflow-y-auto whitespace-pre-line break-normal pr-6 [overflow-wrap:anywhere]">
         {description}
         {externalLink && (
           <div className="mt-4 flex flex-nowrap items-center gap-2">
@@ -44,7 +44,7 @@ export const ListCardDescription: React.FC<ListCardDescriptionProps> = ({
     const isTextTruncated =
       externalLinkRef.current &&
       externalLinkRef.current.scrollHeight >
-      externalLinkRef.current.clientHeight;
+        externalLinkRef.current.clientHeight;
 
     if (!isTextTruncated) {
       openWindow(externalLink);

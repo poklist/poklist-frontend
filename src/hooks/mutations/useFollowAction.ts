@@ -1,20 +1,23 @@
 import axios, { AxiosPayload } from '@/api/axios';
+import {
+  followersContract,
+  followingsContract,
+  userContract,
+} from '@/api/contracts';
+import { TanStackCache } from '@/api/fetcher';
 import { GetFollowersResponse } from '@/api/query/followers';
 import { GetUserInfoResponse } from '@/api/query/user';
 import QueryKeys from '@/constants/queryKeys';
 import followersKeys from '@/hooks/api/followers/keys';
 import followingsKeys from '@/hooks/api/followings/keys';
+import userKeys from '@/hooks/api/user/keys';
 import { createOptimisticUpdateHandler } from '@/hooks/mutations/optimisticUpdateHandler';
 import useFollowingStore from '@/stores/useFollowingStore';
 import useUserStore from '@/stores/useUserStore';
-import {
-  useMutation,
-  UseMutationResult,
-  useQueryClient,
-} from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { ClientInferResponseBody } from '@ts-rest/core';
 import { AxiosError, AxiosRequestConfig, Method } from 'axios';
 import { useRef } from 'react';
-import userKeys from '@/hooks/api/user/keys';
 
 interface FollowActionOptions {
   currentUserCode: string;
@@ -54,7 +57,12 @@ export const useFollowAction = ({
   const queryClient = useQueryClient();
 
   const { me } = useUserStore();
-  const { setIsFollowing, setFollowerCount } = useFollowingStore();
+  const {
+    setIsFollowing,
+    setFollowerCount,
+    getConfirmedIsFollowing,
+    setConfirmedIsFollowing,
+  } = useFollowingStore();
 
   const latestSocialLinkRef = useRef<
     GetFollowersResponse['content'][number] | null
@@ -81,19 +89,23 @@ export const useFollowAction = ({
         return;
       }
 
-      const followers = queryClient.getQueryData<
-        GetFollowersResponse['content']
-      >(followersKeys.user({ userID: currentUserID }));
+      const followersResponse = queryClient.getQueryData<GetFollowersResponse>(
+        followersKeys.user({ userID: currentUserID })
+      );
 
-      const followings = queryClient.getQueryData<
-        GetFollowersResponse['content']
-      >(followingsKeys.user({ userID: currentUserID }));
+      const followingsResponse = queryClient.getQueryData<GetFollowersResponse>(
+        followingsKeys.user({ userID: currentUserID })
+      );
 
-      const foundInFollowers = Array.isArray(followers)
-        ? followers.find((follower) => follower.id === targetUserID)
+      const foundInFollowers = Array.isArray(followersResponse?.content)
+        ? followersResponse.content.find(
+            (follower) => follower.id === targetUserID
+          )
         : undefined;
-      const foundInFollowing = Array.isArray(followings)
-        ? followings.find((followings) => followings.id === targetUserID)
+      const foundInFollowing = Array.isArray(followingsResponse?.content)
+        ? followingsResponse.content.find(
+            (followings) => followings.id === targetUserID
+          )
         : undefined;
 
       latestSocialLinkRef.current =
@@ -102,71 +114,110 @@ export const useFollowAction = ({
 
     ensureLatestSocialLink();
 
-    queryClient.setQueryData(
-      followersKeys.user({ userID: currentUserID }),
-      (followers: GetFollowersResponse['content']) => {
-        if (!followers) return followers;
+    queryClient.setQueryData<
+      TanStackCache<
+        ClientInferResponseBody<
+          typeof followersContract.getFollowersContract,
+          200
+        >
+      >
+    >(followersKeys.user({ userID: currentUserID }), (followersResponse) => {
+      if (!followersResponse) return followersResponse;
 
-        const exists = Array.isArray(followers)
-          ? followers.some(
-              (follower) => follower.id === latestSocialLinkRef.current?.id
-            )
-          : false;
+      const exists = Array.isArray(followersResponse.body.content)
+        ? followersResponse.body.content.some(
+            (follower) => follower.id === latestSocialLinkRef.current?.id
+          )
+        : false;
 
-        // 在看別人的Profile & unfollow
-        if (exists && targetUserID === currentUserID) {
-          return followers.filter(
-            (follower) => follower.id !== latestSocialLinkRef.current?.id
-          );
-        }
-        // 只要改follow/unfollow
-        if (exists) {
-          return followers.map((follower) =>
-            follower.id === targetUserID
-              ? { ...follower, isFollowing }
-              : follower
-          );
-        }
-
-        // 在看別人的Profile & follow
-        if (latestSocialLinkRef.current && targetUserID === currentUserID) {
-          return [
-            { ...latestSocialLinkRef.current, isFollowing },
-            ...followers,
-          ];
-        }
-
-        return followers;
+      // 在看別人的Profile & unfollow
+      if (exists && targetUserID === currentUserID) {
+        return {
+          ...followersResponse,
+          body: {
+            ...followersResponse.body,
+            content: followersResponse.body.content.filter(
+              (follower) => follower.id !== latestSocialLinkRef.current?.id
+            ),
+          },
+        };
       }
-    );
-
-    queryClient.setQueryData(
-      followingsKeys.user({ userID: currentUserID }),
-      (followings: GetFollowersResponse['content']) => {
-        if (!followings || !latestSocialLinkRef.current) return followings;
-
-        const exists = followings.some(
-          (following) => following.id === latestSocialLinkRef.current?.id
-        );
-
-        // 在看別人的Profile & follow
-        if (targetUserID !== currentUserID && !exists) {
-          return [
-            { ...latestSocialLinkRef.current, isFollowing },
-            ...followings,
-          ];
-        }
-
-        // 在看別人的Profile & unfollow
-        if (!isFollowing && targetUserID !== currentUserID) {
-          return followings.filter(
-            (following) => following.id !== latestSocialLinkRef.current?.id
-          );
-        }
-
-        return followings;
+      // 只要改follow/unfollow
+      if (exists) {
+        return {
+          ...followersResponse,
+          body: {
+            ...followersResponse.body,
+            content: followersResponse.body.content.map((follower) =>
+              follower.id === targetUserID
+                ? { ...follower, isFollowing }
+                : follower
+            ),
+          },
+        };
       }
-    );
+
+      // 在看別人的Profile & follow
+      if (latestSocialLinkRef.current && targetUserID === currentUserID) {
+        return {
+          ...followersResponse,
+          body: {
+            ...followersResponse.body,
+            content: [
+              { ...latestSocialLinkRef.current, isFollowing },
+              ...followersResponse.body.content,
+            ],
+          },
+        };
+      }
+
+      return followersResponse;
+    });
+
+    queryClient.setQueryData<
+      TanStackCache<
+        ClientInferResponseBody<
+          typeof followingsContract.getFollowingsContract,
+          200
+        >
+      >
+    >(followingsKeys.user({ userID: currentUserID }), (followingsResponse) => {
+      if (!followingsResponse || !latestSocialLinkRef.current)
+        return followingsResponse;
+
+      const exists = followingsResponse.body.content.some(
+        (following) => following.id === latestSocialLinkRef.current?.id
+      );
+
+      // 在看別人的Profile & follow
+      if (targetUserID !== currentUserID && !exists) {
+        return {
+          ...followingsResponse,
+          body: {
+            ...followingsResponse.body,
+            content: [
+              { ...latestSocialLinkRef.current, isFollowing },
+              ...followingsResponse.body.content,
+            ],
+          },
+        };
+      }
+
+      // 在看別人的Profile & unfollow
+      if (!isFollowing && targetUserID !== currentUserID) {
+        return {
+          ...followingsResponse,
+          body: {
+            ...followingsResponse.body,
+            content: followingsResponse.body.content.filter(
+              (following) => following.id !== latestSocialLinkRef.current?.id
+            ),
+          },
+        };
+      }
+
+      return followingsResponse;
+    });
 
     queryClient.setQueryData(
       [QueryKeys.USER, currentUserCode],
@@ -178,16 +229,24 @@ export const useFollowAction = ({
         };
       }
     );
-    queryClient.setQueryData(
-      userKeys.userInfo(currentUserCode),
-      (oldData: GetUserInfoResponse['content']) => {
-        if (!oldData) return oldData;
-        return {
-          ...oldData,
-          followingCount: (oldData.followingCount || 0) + countDelta,
-        };
-      }
-    );
+    queryClient.setQueryData<
+      TanStackCache<
+        ClientInferResponseBody<typeof userContract.getInfoContract, 200>
+      >
+    >(userKeys.userInfo(currentUserCode), (oldData) => {
+      if (!oldData) return oldData;
+      return {
+        ...oldData,
+        body: {
+          ...oldData.body,
+          content: {
+            ...oldData.body.content,
+            followingCount:
+              (oldData.body.content.followingCount || 0) + countDelta,
+          },
+        },
+      };
+    });
   };
 
   const followMutation = useMutation({
@@ -195,13 +254,31 @@ export const useFollowAction = ({
     mutationFn: async (variables: AxiosPayload) => {
       const config: AxiosRequestConfig = {
         url: '/follow',
-        method: 'POST' as Method,
+        method: 'POST' satisfies Method,
         ...(variables?.params && { params: variables.params }),
       };
 
       return axios.request(config);
     },
     onSuccess: (res: unknown, variables: AxiosPayload) => {
+      setConfirmedIsFollowing(currentUserCode, true);
+      queryClient.setQueryData<
+        TanStackCache<
+          ClientInferResponseBody<typeof userContract.getInfoContract, 200>
+        >
+      >(userKeys.userInfo(currentUserCode), (oldData) => {
+        if (!oldData) return oldData;
+        return {
+          ...oldData,
+          body: {
+            ...oldData.body,
+            content: {
+              ...oldData.body.content,
+              isFollowing: true,
+            },
+          },
+        };
+      });
       onSuccess?.(res, variables);
     },
     onError: (error: AxiosError, variables: AxiosPayload) => {
@@ -218,13 +295,31 @@ export const useFollowAction = ({
     mutationFn: async (variables: AxiosPayload) => {
       const config: AxiosRequestConfig = {
         url: '/unfollow',
-        method: 'POST' as Method,
+        method: 'POST' satisfies Method,
         ...(variables?.params && { params: variables.params }),
       };
 
       return axios.request(config);
     },
     onSuccess: (res: unknown, variables: AxiosPayload) => {
+      setConfirmedIsFollowing(currentUserCode, false);
+      queryClient.setQueryData<
+        TanStackCache<
+          ClientInferResponseBody<typeof userContract.getInfoContract, 200>
+        >
+      >(userKeys.userInfo(currentUserCode), (oldData) => {
+        if (!oldData) return oldData;
+        return {
+          ...oldData,
+          body: {
+            ...oldData.body,
+            content: {
+              ...oldData.body.content,
+              isFollowing: false,
+            },
+          },
+        };
+      });
       onSuccess?.(res, variables);
     },
     onError: (error: AxiosError, variables: AxiosPayload) => {
@@ -236,10 +331,7 @@ export const useFollowAction = ({
     },
   });
 
-  const createDebouncedAction = (
-    mutation: UseMutationResult<unknown, AxiosError, AxiosPayload>,
-    optimisticValue: boolean
-  ) => {
+  const createDebouncedAction = (optimisticValue: boolean) => {
     return ({ params }: { params: { userID: number } }) => {
       if (shouldAllow && !shouldAllow()) {
         onNotAllowed?.();
@@ -260,21 +352,32 @@ export const useFollowAction = ({
       optimisticHandler.optimisticUpdate();
 
       const timer = setTimeout(() => {
-        mutation.mutate(
+        debounceMap.delete(debounceKey);
+
+        // 如 Optimistic 已與 confirmed 一致就不打 API
+        const confirmedValue = getConfirmedIsFollowing(currentUserCode);
+        if (optimisticValue === confirmedValue) {
+          return;
+        }
+
+        // 依目前 optimistic 期望選正確 mutation
+        const targetMutation = optimisticValue
+          ? followMutation
+          : unfollowMutation;
+        targetMutation.mutate(
           { params },
           {
             onError: () => optimisticHandler.rollback(),
           }
         );
-        debounceMap.delete(debounceKey);
       }, debounceMs);
 
       debounceMap.set(debounceKey, timer);
     };
   };
 
-  const follow = createDebouncedAction(followMutation, true);
-  const unfollow = createDebouncedAction(unfollowMutation, false);
+  const follow = createDebouncedAction(true);
+  const unfollow = createDebouncedAction(false);
 
   const cancelPending = () => {
     const debounceKey = `follow-${currentUserCode}`;

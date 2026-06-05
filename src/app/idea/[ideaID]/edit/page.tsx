@@ -2,13 +2,14 @@
 
 import IdeaFormComponent from '@/app/idea/_components/Form';
 import { useGetIdea } from '@/hooks/api/ideas/useGetIdea';
-import useEditIdea from '@/hooks/mutations/useEditIdea';
+import { usePutIdea } from '@/hooks/api/ideas/usePutIdea';
 import { useAuthCheck, useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import useUserStore from '@/stores/useUserStore';
-import { IdeaBody } from '@/types/Idea';
+import { IdeaFormSchema } from '@/types/common';
 import { useParams } from 'next/navigation';
 import { useEffect } from 'react';
+import z from 'zod';
 
 const EditIdeaPage: React.FC = () => {
   const params = useParams();
@@ -27,8 +28,11 @@ const EditIdeaPage: React.FC = () => {
     ideaID: id,
   });
 
-
-  const { editIdea } = useEditIdea();
+  const { mutate: editIdea } = usePutIdea({
+    onSuccess: (data) => {
+      navigateTo.viewList(me.userCode, data.listID);
+    },
+  });
 
   const onDismissEdit = (isFormNotEdited: boolean) => {
     if (idea && isFormNotEdited) {
@@ -36,19 +40,16 @@ const EditIdeaPage: React.FC = () => {
     }
   };
 
-  const onEditIdea = withAuth((editedIdea: IdeaBody) => {
+  const onEditIdea = withAuth((editedIdea: z.input<typeof IdeaFormSchema>) => {
     if (!id || !idea) {
       return;
     }
-    const _params = { ...editedIdea, id: Number(id) };
+    const payload = { ...editedIdea };
     if (editedIdea.coverImage === idea.coverImage) {
-      delete _params.coverImage;
+      delete payload.coverImage;
     }
-    editIdea(_params, {
-      onSuccess: (data) => {
-        navigateTo.viewList(me.userCode, data.listID.toString());
-      },
-    });
+
+    editIdea({ params: { id }, body: { ...payload } });
   });
 
   useEffect(() => {
@@ -72,7 +73,7 @@ const EditIdeaPage: React.FC = () => {
   ]);
 
   return (
-    <div className="flex min-h-screen flex-col gap-6 sm:min-h-[calc(100vh-102px)] mt-14">
+    <div className="mt-14 flex min-h-screen flex-col gap-6 sm:min-h-[calc(100vh-102px)]">
       {idea && (
         <IdeaFormComponent
           previousIdeaInfo={idea}

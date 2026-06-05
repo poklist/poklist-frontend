@@ -1,4 +1,8 @@
-import { createResponseSchema, userBriefSchema } from '@/api/schemas/common';
+import {
+  createInfiniteResponseSchema,
+  createResponseSchema,
+  userBriefSchema,
+} from '@/api/schemas/common';
 import { ideaPreviewSchema } from '@/api/schemas/ideas';
 import { ListFormSchema } from '@/types/common';
 import z from 'zod';
@@ -22,7 +26,7 @@ const getRequestSchema = z.object({
   limit: z.number().int().nonnegative(),
 });
 
-const getResponseSchema = createResponseSchema(
+const getResponseSchema = createInfiniteResponseSchema(
   listPreviewSchema.extend({
     likeCount: z.number().int().nonnegative(),
     isLiked: z.boolean(),
@@ -38,6 +42,16 @@ const getIdeasOrderRequestSchema = z.object({ listID: z.string() });
 
 const getIdeasOrderResponseSchema = createResponseSchema(z.array(z.string()));
 
+const postRequestSchema = ListFormSchema;
+
+const postResponseSchema = createResponseSchema(
+  ListFormSchema.omit({ coverImage: true }).extend({ id: z.string() })
+);
+
+const deleteRequestSchema = z.object({ listID: z.string() });
+
+const deleteResponseSchema = createResponseSchema(z.unknown());
+
 export const listsSchema = {
   getRequest: getRequestSchema,
   getResponse: getResponseSchema,
@@ -45,4 +59,8 @@ export const listsSchema = {
   getUserListsResponse: getUserListsResponseSchema,
   getIdeasOrderRequest: getIdeasOrderRequestSchema,
   getIdeasOrderResponse: getIdeasOrderResponseSchema,
+  postRequest: postRequestSchema,
+  postResponse: postResponseSchema,
+  deleteRequest: deleteRequestSchema,
+  deleteResponse: deleteResponseSchema,
 };

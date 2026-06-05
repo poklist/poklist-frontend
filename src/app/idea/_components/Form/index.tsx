@@ -1,4 +1,4 @@
-import { GetIdeasResponse } from '@/api/query/ideas';
+import { GetIdeasResponse, PostIdeasRequest } from '@/api/query/ideas';
 import { DrawerComponent } from '@/components/Drawer';
 import { useDrawer } from '@/components/Drawer/useDrawer';
 import { EditFieldFakePageComponent } from '@/components/FakePage/EditFieldFakePage';
@@ -27,7 +27,6 @@ import {
 import { resolveIdeaFormError } from '@/lib/validator';
 import { IdeaFormSchema } from '@/types/common';
 import { IEditFieldConfig } from '@/types/EditField/index.d';
-import { IdeaBody } from '@/types/Idea';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { t, Trans } from '@lingui/macro';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
@@ -37,7 +36,9 @@ import { z } from 'zod';
 interface IIdeaFormProps {
   previousIdeaInfo?: GetIdeasResponse['content'];
   dismissCallback: (isFormNotEdited: boolean) => void;
-  completedCallback: (completedIdeaForm: IdeaBody) => void;
+  completedCallback: (
+    completedIdeaForm: Omit<PostIdeasRequest, 'listID'>
+  ) => void;
 }
 
 const IdeaFormComponent: React.FC<IIdeaFormProps> = ({

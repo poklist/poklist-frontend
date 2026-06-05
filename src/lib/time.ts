@@ -22,3 +22,12 @@ export const parsePostgresDate = (dateStr: string): Date | null => {
   const date = moment(dateStr, 'YYYY-MM-DD HH:mm:ss.SSSSS Z').toDate();
   return isNaN(date.getTime()) ? null : date;
 };
+
+export const toBackendTimestamp = (date: Date): string => {
+  const [main, ms = ''] = date
+    .toISOString()
+    .replace('T', ' ')
+    .replace('Z', '')
+    .split('.');
+  return `${main}.${ms.padEnd(6, '0')} +0000 UTC`;
+};

@@ -1,7 +1,7 @@
 import { followingsQuery } from '@/api/query/followings';
 import { followingsSchema } from '@/api/schemas/followings';
 import z from 'zod';
-import followingsKeys from './keys';
+import followingsKeys from '@/hooks/api/followings/keys';
 
 const getFollowingsSchema = followingsSchema.getRequest.extend({
   staleTime: z.number().int().nonnegative().default(60000),

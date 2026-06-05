@@ -1,5 +1,5 @@
 import { categoriesQuery } from '@/api/query/categories';
-import categoriesKeys from './keys';
+import categoriesKeys from '@/hooks/api/categories/keys';
 
 export const useGetCategories = () => {
   const query = categoriesQuery.get.useQuery(

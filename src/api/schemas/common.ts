@@ -26,3 +26,15 @@ export const createResponseSchema = <T extends z.ZodTypeAny>(
     limit: z.number().optional(),
     totalElements: z.number().optional(),
   });
+
+export const createInfiniteResponseSchema = <T extends z.ZodTypeAny>(
+  contentSchema: T
+) =>
+  z.object({
+    code: z.string().regex(/^\d+$/),
+    message: z.string(),
+    content: contentSchema,
+    offset: z.number(),
+    limit: z.number(),
+    totalElements: z.number(),
+  });

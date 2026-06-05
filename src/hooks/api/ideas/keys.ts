@@ -5,7 +5,7 @@ const ideasKeys = {
   idea: (ideaID: GetIdeasRequest['ideaID']) => [
     ...ideasKeys.all,
     'idea',
-    ideaID,
+    String(ideaID),
   ],
 };
 

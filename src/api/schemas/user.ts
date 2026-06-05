@@ -1,6 +1,6 @@
 import { SocialLinkType } from '@/enums/index.enum';
 import z from 'zod';
-import { createResponseSchema, userBriefSchema } from './common';
+import { createResponseSchema, userBriefSchema } from '@/api/schemas/common';
 
 const userInfoSchema = userBriefSchema.extend({
   bio: z.string().optional(),

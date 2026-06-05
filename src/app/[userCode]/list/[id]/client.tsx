@@ -5,8 +5,7 @@ import ListCardSkeleton from '@/app/[userCode]/list/[id]/_components/ListCard/Li
 import { Tile20Background } from '@/app/user/_components/TileBackground';
 import FloatingButtonFooter from '@/components/Footer/FloatingButtonFooter';
 import BackToUserHeader from '@/components/Header/BackToUserHeader';
-import { Idea } from '@/constants/list';
-import { useGetList } from '@/hooks/api/lists/useGetList';
+import { useGetListInfiniteIdeas } from '@/hooks/api/lists/useGetListInfiniteIdeas';
 import { useGetUserInfo } from '@/hooks/api/user/useGetUserInfo';
 import { useLikeAction } from '@/hooks/mutations/useLikeAction';
 import { useAuthRequired } from '@/hooks/useAuthRequired';
@@ -32,8 +31,10 @@ const ViewListPageClient: React.FC<ViewListPageClientProps> = ({
   const isMyPage = listOwnerUserCode === me.userCode;
   const navigateTo = useStrictNavigationAdapter();
 
-  const { getIsLiked, setIsLiked, hasLikeState } = useLikeStore();
-  const { setIsFollowing, hasFollowingState } = useFollowingStore();
+  const { getIsLiked, setIsLiked, hasLikeState, setConfirmedIsLiked } =
+    useLikeStore();
+  const { setIsFollowing, hasFollowingState, setConfirmedIsFollowing } =
+    useFollowingStore();
   const { handleAuthRequired } = useAuthRequired();
 
   const isLiked = listID ? getIsLiked(listID) : false;
@@ -46,11 +47,13 @@ const ViewListPageClient: React.FC<ViewListPageClientProps> = ({
     data: list,
     isLoading: isListLoading,
     isError: isListError,
-  } = useGetList({
+  } = useGetListInfiniteIdeas({
     listID,
-    offset: Idea.DEFAULT_FIRST_BATCH_OFFSET,
     limit: 0,
   });
+
+  const listInfo = list?.pages[0]?.listInfo;
+  const listOwnerOfData = listInfo?.owner;
 
   useEffect(() => {
     if (isListOwnerError) {
@@ -67,16 +70,11 @@ const ViewListPageClient: React.FC<ViewListPageClientProps> = ({
   });
 
   useEffect(() => {
-    if (!(listID && list)) {
-      return;
-    }
-    const likeState = list.isLiked ?? false;
-    const hasExistingLikeState = hasLikeState(listID);
-
-    if (!hasExistingLikeState) {
-      setIsLiked(listID, likeState);
-    }
-  }, [list, listID, setIsLiked, hasLikeState]);
+    if (!listID || !listInfo) return;
+    const likeState = listInfo.isLiked ?? false;
+    if (!hasLikeState(listID)) setIsLiked(listID, likeState);
+    setConfirmedIsLiked(listID, likeState);
+  }, [listInfo, listID]);
 
   useEffect(() => {
     if (!(listOwnerUserCode && listOwner)) {
@@ -88,32 +86,43 @@ const ViewListPageClient: React.FC<ViewListPageClientProps> = ({
     if (!hasExistingState) {
       setIsFollowing(listOwnerUserCode, followingState);
     }
-  }, [listOwner, listOwnerUserCode, setIsFollowing, hasFollowingState]);
+    setConfirmedIsFollowing(listOwnerUserCode, followingState);
+  }, [
+    listOwner,
+    listOwnerUserCode,
+    // setIsFollowing,
+    // hasFollowingState,
+    // setConfirmedIsFollowing,
+  ]);
 
   useEffect(() => {
-    if (list?.owner && listID && listOwnerUserCode !== list?.owner.userCode) {
-      navigateTo.viewList(list?.owner.userCode, listID);
+    if (
+      listOwnerOfData &&
+      listID &&
+      listOwnerUserCode !== listOwnerOfData.userCode
+    ) {
+      navigateTo.viewList(listOwnerOfData.userCode, listID);
     }
-  }, [list?.owner, listID, listOwnerUserCode, list?.owner.userCode]);
+  }, [listOwnerOfData, listID, listOwnerUserCode]);
 
   return (
     <>
       <Tile20Background />
       <div className="relative flex min-h-screen flex-col sm:min-h-desktop-container">
-        <BackToUserHeader owner={list?.owner} hasFollowButton={!isMyPage} />
+        <BackToUserHeader owner={listOwner} hasFollowButton={!isMyPage} />
         <div className="mb-[55px] flex-1 px-3 pt-4">
           {isListLoading ? (
             <ListCardSkeleton />
           ) : (
-            list && <ListCard data={list} />
+            list && listInfo && <ListCard data={listInfo} />
           )}
         </div>
         <FloatingButtonFooter
           hasLikeButton={true}
           isLiked={isLiked}
           hasCreateListButton={!isMyPage}
-          onClickLike={() => like({ params: { listID: listID } })}
-          onClickUnlike={() => unlike({ params: { listID: listID } })}
+          onClickLike={() => like({ params: { listID } })}
+          onClickUnlike={() => unlike({ params: { listID } })}
         />
       </div>
     </>

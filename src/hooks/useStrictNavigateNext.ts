@@ -1,5 +1,6 @@
 'use client';
 
+import { useAuthWrapper } from '@/hooks/useAuth';
 import { migrateUserRoute } from '@/lib/routeMigration';
 import useCommonStore from '@/stores/useCommonStore';
 import { useTemporaryIdeaStore } from '@/stores/useTemporaryIdeaStore';
@@ -16,6 +17,7 @@ const useStrictNavigationNext = () => {
   const router = useRouter();
   const temporaryIdeaStore = useTemporaryIdeaStore();
   const { setIsLoading } = useCommonStore();
+  const { withAuth } = useAuthWrapper();
 
   const [isPending, startTransition] = useTransition();
   useEffect(() => {
@@ -48,8 +50,8 @@ const useStrictNavigationNext = () => {
         router.push(`/${cleanUserCode}`);
       });
     },
-    editUser: () => atNavigate(() => router.push('/user/edit')),
-    createList: () => atNavigate(() => router.push('/list/create')),
+    editUser: withAuth(() => atNavigate(() => router.push('/user/edit'))),
+    createList: withAuth(() => atNavigate(() => router.push('/list/create'))),
     viewList: (userCode: string, listID: string, ideaID?: string) => {
       atNavigate(() => {
         const cleanUserCode = migrateUserRoute(userCode);
@@ -62,25 +64,25 @@ const useStrictNavigationNext = () => {
         }
       });
     },
-    reorderList: (userCode: string, listID: string) => {
+    reorderList: withAuth((userCode: string, listID: string) =>
       atNavigate(() => {
         const cleanUserCode = migrateUserRoute(userCode);
         router.push(`/${cleanUserCode}/list/${listID}/reorder`);
-      });
-    },
-    editList: (userCode: string, listID: string) => {
+      })
+    ),
+    editList: withAuth((userCode: string, listID: string) =>
       atNavigate(() => {
         const cleanUserCode = migrateUserRoute(userCode);
         router.push(`/${cleanUserCode}/list/${listID}/edit`);
-      });
-    },
-    temporaryCreateList: (ideaForm: IdeaBody) => {
+      })
+    ),
+    temporaryCreateList: withAuth((ideaForm: IdeaBody) =>
       atNavigate(() => {
         temporaryIdeaStore.setIdeaWithSync(ideaForm);
         router.push(`/idea/create/list`);
-      });
-    },
-    createIdea: (options?: CreateIdeaOptions | string) => {
+      })
+    ),
+    createIdea: withAuth((options?: CreateIdeaOptions | string) =>
       atNavigate(() => {
         if (typeof options === 'string') {
           router.push(options);
@@ -98,14 +100,14 @@ const useStrictNavigationNext = () => {
           router.push('/idea/create');
         }
         window.scrollTo({ top: 0, behavior: 'smooth' });
-      });
-    },
-    editIdea: (ideaID: string) => {
+      })
+    ),
+    editIdea: withAuth((ideaID: string) =>
       atNavigate(() => {
         router.push(`/idea/${ideaID}/edit`);
         window.scrollTo({ top: 0, behavior: 'smooth' });
-      });
-    },
+      })
+    ),
   };
 };
 
