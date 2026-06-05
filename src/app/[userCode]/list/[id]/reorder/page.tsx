@@ -107,6 +107,13 @@ const ReorderIdeaPage: React.FC = () => {
     }
   }, [checkAuthAndRedirect, listID, me.userCode, navigateTo, userCode]);
 
+  useEffect(() => {
+    if (ideasDraft && ideasDraft.length < 20) {
+      onBottomReached()
+    }
+  },
+    [ideasDraft?.length])
+
   return (
     <>
       <EditModeHeader
