@@ -158,7 +158,7 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({
           )}
         </div>
       </div>
-      <div className="fixed bottom-0 w-full bg-gray-note-05 px-6 pb-4 pt-2">
+      <div className="fixed bottom-0 w-full border-t border-t-note-gray-06 bg-gray-note-05 px-6 pb-4 pt-2">
         <Button
           variant={ButtonVariant.GRAY}
           shape={ButtonShape.ROUNDED_FULL}

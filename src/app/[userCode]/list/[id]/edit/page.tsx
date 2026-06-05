@@ -3,7 +3,7 @@
 import { GetUserListsResponse } from '@/api/query/lists';
 import ListForm from '@/app/list/_components/Form';
 import { useGetListInfiniteIdeas } from '@/hooks/api/lists/useGetListInfiniteIdeas';
-import { useEditList } from '@/hooks/mutations/useEditList';
+import { usePutList } from '@/hooks/api/lists/usePutList';
 import { useAuthCheck, useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { useUserRouteContext } from '@/hooks/useUserRouteContext';
@@ -25,8 +25,14 @@ const EditListPage: React.FC = () => {
     listID,
     limit: 0,
   });
-  const { editList } = useEditList({
+  const { mutate: editList } = usePutList({
     userCode: me.userCode,
+    onSuccess: (data) => {
+      if (!data) {
+        throw new Error('Failed to edit list');
+      }
+      navigateTo.viewList(me.userCode, data.id);
+    },
   });
 
   const [listCoverDraft, setListCoverDraft] =
@@ -50,20 +56,10 @@ const EditListPage: React.FC = () => {
       coverImage: listFormData.coverImage,
       categoryID: listFormData.categoryID,
     });
-    editList(
-      {
-        listID: Number(listID),
-        editListRequest: listFormData,
-      },
-      {
-        onSuccess: (data) => {
-          if (!data) {
-            throw new Error('Failed to edit list');
-          }
-          navigateTo.viewList(me.userCode, data.id.toString());
-        },
-      }
-    );
+    editList({
+      params: { listID },
+      body: listFormData,
+    });
   });
 
   useEffect(() => {
@@ -85,7 +81,7 @@ const EditListPage: React.FC = () => {
         navigateTo.home();
       }
     }
-  }, [listID, me.userCode, navigateTo, userCode]);
+  }, [listID, me.userCode, userCode]);
 
   return (
     <div className="flex h-full flex-col gap-4">
