@@ -45,10 +45,20 @@ const deleteListsContract = {
   summary: 'delete LIST',
 } satisfies AppRoute;
 
+const putListsContract = {
+  method: 'PUT',
+  path: '/lists/:listID',
+  pathParams: listsSchema.putRequest.pick({ listID: true }),
+  body: listsSchema.putRequest.omit({ listID: true }),
+  responses: { 200: listsSchema.putResponse },
+  summary: 'edit LIST',
+} satisfies AppRoute;
+
 export const listsContract = {
   getListsContract,
   getUserListsContract,
   getIdeasOrderContract,
   postListsContract,
   deleteListsContract,
+  putListsContract,
 } satisfies Record<string, AppRoute>;

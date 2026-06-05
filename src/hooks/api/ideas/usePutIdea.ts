@@ -14,7 +14,7 @@ interface UsePutIdeaOptions {
 export const usePutIdea = (options: UsePutIdeaOptions) => {
   const queryClient = useQueryClient();
   return ideasQuery.put.useMutation({
-    onSuccess: (response) => {
+    onSuccess: (response, request) => {
       const newData = response.body.content;
       try {
         const updatedAt = toBackendTimestamp(new Date());
@@ -32,7 +32,8 @@ export const usePutIdea = (options: UsePutIdeaOptions) => {
                 ...caches.body.content,
                 title: newData.title,
                 description: newData.description,
-                coverImage: newData.coverImage,
+                coverImage:
+                  request.body.coverImage ?? caches.body.content.coverImage,
                 externalLink: newData.externalLink,
                 updatedAt,
               },
@@ -50,7 +51,15 @@ export const usePutIdea = (options: UsePutIdeaOptions) => {
             pages: caches.pages.map((page) => {
               const content = page.body.content;
               const updatedIdeas = content.ideas.map((idea) =>
-                idea.id === newData.id ? { ...idea, ...newData } : idea
+                idea.id === newData.id
+                  ? {
+                      ...idea,
+                      title: newData.title,
+                      description: newData.description,
+                      coverImage: request.body.coverImage ?? idea.coverImage,
+                      externalLink: newData.externalLink,
+                    }
+                  : idea
               );
               return {
                 ...page,

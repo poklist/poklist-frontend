@@ -52,6 +52,25 @@ const deleteRequestSchema = z.object({ listID: z.string() });
 
 const deleteResponseSchema = createResponseSchema(z.unknown());
 
+const putRequestSchema = ListFormSchema.extend({ listID: z.string() });
+
+const putResponseSchema = createResponseSchema(
+  listPreviewSchema.extend({
+    likeCount: z.number().int().nonnegative(),
+    isLiked: z.boolean(),
+    createdAt: z.string().min(0).max(0),
+    updatedAt: z.string().min(0).max(0),
+    ideas: z.null(),
+    ideaTotalCount: z.number().min(0).max(0),
+    owner: userBriefSchema.extend({
+      id: z.number().min(0).max(0),
+      displayName: z.string().min(0).max(0),
+      userCode: z.string().min(0).max(0),
+      profileImage: z.string().min(0).max(0),
+    }),
+  })
+);
+
 export const listsSchema = {
   getRequest: getRequestSchema,
   getResponse: getResponseSchema,
@@ -63,4 +82,6 @@ export const listsSchema = {
   postResponse: postResponseSchema,
   deleteRequest: deleteRequestSchema,
   deleteResponse: deleteResponseSchema,
+  putRequest: putRequestSchema,
+  putResponse: putResponseSchema,
 };

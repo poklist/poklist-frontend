@@ -11,6 +11,7 @@ const listsApi = initContract().router({
   getIdeasOrder: listsContract.getIdeasOrderContract,
   post: listsContract.postListsContract,
   delete: listsContract.deleteListsContract,
+  put: listsContract.putListsContract,
 });
 
 export type GetListsRequest = z.input<typeof listsSchema.getRequest>;
@@ -38,6 +39,10 @@ export type PostListsRequest = z.input<typeof listsSchema.postRequest>;
 export type PostListsResponse = z.infer<typeof listsSchema.postResponse>;
 
 export type DeleteListsRequest = z.input<typeof listsSchema.deleteRequest>;
+
+export type PutListsRequest = z.input<typeof listsSchema.putRequest>;
+
+export type PutListsResponse = z.infer<typeof listsSchema.putResponse>;
 
 export const listsQuery = initQueryClient(listsApi, {
   baseUrl: '',
