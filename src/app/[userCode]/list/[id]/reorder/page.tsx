@@ -109,10 +109,9 @@ const ReorderIdeaPage: React.FC = () => {
 
   useEffect(() => {
     if (ideasDraft && ideasDraft.length < 20) {
-      onBottomReached()
+      onBottomReached();
     }
-  },
-    [ideasDraft?.length])
+  }, [ideasDraft?.length]);
 
   return (
     <>
