@@ -27,8 +27,18 @@ const deleteIdeasContract = {
   summary: 'delete IDEA',
 } satisfies AppRoute;
 
+const putIdeasContract = {
+  method: 'PUT',
+  path: '/ideas/:id',
+  pathParams: ideasSchema.putRequest.pick({ id: true }),
+  body: ideasSchema.putRequest.omit({ id: true }),
+  responses: { 200: ideasSchema.putResponse },
+  summary: 'edit IDEA',
+} satisfies AppRoute;
+
 export const ideasContract = {
   getIdeasContract,
   postIdeasContract,
   deleteIdeasContract,
+  putIdeasContract,
 } satisfies Record<string, AppRoute>;

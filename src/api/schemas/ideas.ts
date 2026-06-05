@@ -30,6 +30,22 @@ const deleteRequestSchema = z.object({ ideaID: z.string() });
 
 const deleteResponseSchema = createResponseSchema(z.unknown());
 
+const putRequestSchema = IdeaFormSchema.extend({ id: z.string() });
+
+const putResponseSchema = createResponseSchema(
+  ideaPreviewSchema.extend({
+    createdAt: z.string().min(0).max(0),
+    updatedAt: z.string().min(0).max(0),
+    listID: z.string(),
+    owner: z.object({
+      id: z.number().min(0).max(0),
+      displayName: z.string().min(0).max(0),
+      userCode: z.string().min(0).max(0),
+      profileImage: z.string().min(0).max(0),
+    }),
+  })
+);
+
 export const ideasSchema = {
   getRequest: getRequestSchema,
   getResponse: getResponseSchema,
@@ -37,4 +53,6 @@ export const ideasSchema = {
   postResponse: postResponseSchema,
   deleteRequest: deleteRequestSchema,
   deleteResponse: deleteResponseSchema,
+  putRequest: putRequestSchema,
+  putResponse: putResponseSchema,
 };

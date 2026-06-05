@@ -9,6 +9,7 @@ const ideasApi = initContract().router({
   get: ideasContract.getIdeasContract,
   post: ideasContract.postIdeasContract,
   delete: ideasContract.deleteIdeasContract,
+  put: ideasContract.putIdeasContract,
 });
 
 export type GetIdeasRequest = z.input<typeof ideasSchema.getRequest>;
@@ -19,6 +20,10 @@ export type PostIdeasRequest = z.input<typeof ideasSchema.postRequest>;
 export type PostIdeasResponse = z.infer<typeof ideasSchema.postResponse>;
 
 export type DeleteIdeasRequest = z.input<typeof ideasSchema.deleteRequest>;
+
+export type PutIdeasRequest = z.input<typeof ideasSchema.putRequest>;
+
+export type PutIdeasResponse = z.infer<typeof ideasSchema.putResponse>;
 
 export const ideasQuery = initQueryClient(ideasApi, {
   baseUrl: '',
