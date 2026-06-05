@@ -41,7 +41,13 @@ export const Footer = ({ content, socialMedia }: FooterProps) => (
                 className="flex size-8 justify-center rounded-full bg-black"
                 rel="noreferrer"
               >
-                <img src={item.icon.src} alt={item.name} className="size-fit" />
+                <Image
+                  src={item.icon.src}
+                  alt={item.name}
+                  className="size-fit"
+                  width={32}
+                  height={32}
+                />
               </a>
             ))}
           </div>

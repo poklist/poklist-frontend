@@ -1,5 +1,6 @@
 import { listsSchema } from '@/api/schemas';
 import { AppRoute } from '@ts-rest/core';
+import z from 'zod';
 
 const getListsContract = {
   method: 'GET',
@@ -35,9 +36,19 @@ const postListsContract = {
   summary: 'create LIST',
 } satisfies AppRoute;
 
+const deleteListsContract = {
+  method: 'DELETE',
+  path: '/lists/:listID',
+  pathParams: listsSchema.deleteRequest,
+  body: z.object({}),
+  responses: { 200: listsSchema.deleteResponse },
+  summary: 'delete LIST',
+} satisfies AppRoute;
+
 export const listsContract = {
   getListsContract,
   getUserListsContract,
   getIdeasOrderContract,
   postListsContract,
+  deleteListsContract,
 } satisfies Record<string, AppRoute>;

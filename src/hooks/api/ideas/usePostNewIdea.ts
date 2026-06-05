@@ -59,11 +59,10 @@ export const usePostNewIdea = (options: UsePostNewIdeaOptions) => {
       } catch (error) {
         console.warn('Refetch failed, but idea was created: ', error);
       } finally {
-        if (options.onSuccess) options.onSuccess(data);
+        options.onSuccess?.(data);
       }
     },
     onError: (error) => {
-      console.error(error);
       options.onError?.(error);
     },
   });

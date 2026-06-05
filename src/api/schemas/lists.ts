@@ -48,6 +48,10 @@ const postResponseSchema = createResponseSchema(
   ListFormSchema.omit({ coverImage: true }).extend({ id: z.string() })
 );
 
+const deleteRequestSchema = z.object({ listID: z.string() });
+
+const deleteResponseSchema = createResponseSchema(z.unknown());
+
 export const listsSchema = {
   getRequest: getRequestSchema,
   getResponse: getResponseSchema,
@@ -57,4 +61,6 @@ export const listsSchema = {
   getIdeasOrderResponse: getIdeasOrderResponseSchema,
   postRequest: postRequestSchema,
   postResponse: postResponseSchema,
+  deleteRequest: deleteRequestSchema,
+  deleteResponse: deleteResponseSchema,
 };

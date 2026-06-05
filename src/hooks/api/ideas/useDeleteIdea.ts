@@ -1,11 +1,11 @@
 import { listsContract } from '@/api/contracts';
 import { InfiniteCache } from '@/api/fetcher';
 import { ideasQuery } from '@/api/query/ideas';
+import ideasKeys from '@/hooks/api/ideas/keys';
+import listsKeys from '@/hooks/api/lists/keys';
 import { useQueryClient } from '@tanstack/react-query';
 import { ClientInferResponseBody } from '@ts-rest/core';
 import z from 'zod';
-import listsKeys from '../lists/keys';
-import ideasKeys from './keys';
 
 type UseDeleteIdeaOptions = z.infer<z.ZodObject<{ listID: z.ZodString }>>;
 

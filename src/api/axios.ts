@@ -1,5 +1,6 @@
 import axios, { AxiosError } from 'axios';
 
+import { isStatusWhitelist } from '@/api/whitelist';
 import { StatusErrorMessageI18n } from '@/constants/i18n';
 import { MessageType } from '@/enums/Style/index.enum';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
@@ -7,7 +8,6 @@ import { toast } from '@/hooks/useToast';
 import { track } from '@/lib/abortManager';
 import useAuthStore from '@/stores/useAuthStore';
 import { i18n } from '@lingui/core';
-import { isStatusWhitelist } from './whitelist';
 
 declare module 'axios' {
   export interface AxiosRequestConfig {

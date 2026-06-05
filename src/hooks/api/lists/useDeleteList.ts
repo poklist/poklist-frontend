@@ -1,28 +1,32 @@
 import { listsContract } from '@/api/contracts';
 import { TsRestCacheEntry } from '@/api/fetcher';
-import { listsQuery, PostListsResponse } from '@/api/query/lists';
+import { listsQuery } from '@/api/query/lists';
 import listsKeys from '@/hooks/api/lists/keys';
 import { useQueryClient } from '@tanstack/react-query';
 import { ClientInferResponseBody } from '@ts-rest/core';
 import { ErrorResponse } from '@ts-rest/react-query';
 import z from 'zod';
 
-type UsePostNewListSchema = z.input<z.ZodObject<{ userCode: z.ZodString }>>;
+type UseDeleteListSchema = z.input<z.ZodObject<{ userCode: z.ZodString }>>;
 
-type UsePostNewListOptions = UsePostNewListSchema & {
-  onSuccess?: (data: PostListsResponse['content']) => void;
+type UseDeleteListOptions = UseDeleteListSchema & {
+  onSuccess?: () => void;
   onError?: (
-    error: ErrorResponse<typeof listsContract.postListsContract>
+    error: ErrorResponse<typeof listsContract.deleteListsContract>
   ) => void;
 };
 
-export const usePostNewList = (options: UsePostNewListOptions) => {
+export const useDeleteList = (options: UseDeleteListOptions) => {
   const queryClient = useQueryClient();
 
-  return listsQuery.post.useMutation({
-    onSuccess: (response) => {
-      const data = response.body.content;
+  return listsQuery.delete.useMutation({
+    onSuccess: (_, request) => {
       try {
+        // 將單筆列表資料清空，而非刪除快取，為免因尚有 Component 仍在使用相關資料而重新 fetch
+        queryClient.setQueryData(
+          listsKeys.infiniteIdeas(request.params.listID),
+          undefined
+        );
         queryClient.setQueryData<
           TsRestCacheEntry<
             ClientInferResponseBody<
@@ -36,18 +40,19 @@ export const usePostNewList = (options: UsePostNewListOptions) => {
             ...caches,
             body: {
               ...caches.body,
-              content: [data, ...caches.body.content],
+              content: caches.body.content.filter(
+                (list) => list.id !== request.params.listID
+              ),
             },
           };
         });
       } catch (error) {
-        console.warn('Refetch failed, but list was created:', error);
+        console.warn('Refetch failed, but list was deleted:', error);
       } finally {
-        options.onSuccess?.(data);
+        options.onSuccess?.();
       }
     },
     onError: (error) => {
-      console.error(error);
       options.onError?.(error);
     },
   });
