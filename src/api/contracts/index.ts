@@ -4,4 +4,4 @@ export * from './followers';
 export * from './followings';
 export * from './ideas';
 export * from './lists';
-export * from './user';
+export * from './users';

@@ -4,7 +4,7 @@ export const userBriefSchema = z.object({
   id: z.number().int().nonnegative(),
   displayName: z.string(),
   userCode: z.string(),
-  profileImage: z.string().base64(),
+  profileImage: z.string().base64().or(z.literal('')), // FUTURE: base64 check
 });
 
 export const socialLinkSchema = z.object({

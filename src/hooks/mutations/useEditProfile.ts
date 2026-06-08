@@ -1,6 +1,7 @@
 import axios from '@/api/axios';
 import QueryKeys from '@/constants/queryKeys';
 import { MessageType } from '@/enums/Style/index.enum';
+import usersKeys from '@/hooks/api/users/keys';
 import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
 import { toast } from '@/hooks/useToast';
 import useAuthStore from '@/stores/useAuthStore';
@@ -10,7 +11,6 @@ import { UpdateUserResponse, User } from '@/types/User';
 import { t } from '@lingui/macro';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import userKeys from '@/hooks/api/user/keys';
 
 interface UseEditProfileOptions {
   onSuccess?: (data: UpdateUserResponse) => void;
@@ -53,7 +53,7 @@ export const useEditProfile = ({
             queryKey: [QueryKeys.USER, newUserCode],
           }),
           queryClient.refetchQueries({
-            queryKey: userKeys.userInfo(newUserCode),
+            queryKey: usersKeys.userInfo(newUserCode),
           }),
         ]);
         if (newUserCode !== oldUserCode) {
@@ -61,7 +61,7 @@ export const useEditProfile = ({
             queryKey: [QueryKeys.USER, oldUserCode],
           });
           queryClient.removeQueries({
-            queryKey: userKeys.userInfo(oldUserCode),
+            queryKey: usersKeys.userInfo(oldUserCode),
           });
         }
       } catch (error) {

@@ -31,7 +31,7 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { HeroSectionSkeleton } from '@/app/user/_components/HeroSection/HeroSectionSkeleton';
 import UserConnectionStats from '@/app/user/_components/HeroSection/UserConnectionStats';
 import { MessageType } from '@/enums/Style/index.enum';
-import { useGetUserInfo } from '@/hooks/api/user/useGetUserInfo';
+import { useGetUserInfo } from '@/hooks/api/users/useGetUserInfo';
 import { useUserRouteContext } from '@/hooks/useUserRouteContext';
 
 const HeroSection: React.FC = () => {

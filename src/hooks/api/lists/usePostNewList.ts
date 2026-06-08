@@ -47,7 +47,6 @@ export const usePostNewList = (options: UsePostNewListOptions) => {
       }
     },
     onError: (error) => {
-      console.error(error);
       options.onError?.(error);
     },
   });

@@ -2,15 +2,15 @@ import axios, { AxiosPayload } from '@/api/axios';
 import {
   followersContract,
   followingsContract,
-  userContract,
+  usersContract,
 } from '@/api/contracts';
 import { TanStackCache } from '@/api/fetcher';
 import { GetFollowersResponse } from '@/api/query/followers';
-import { GetUserInfoResponse } from '@/api/query/user';
+import { GetUserInfoResponse } from '@/api/query/users';
 import QueryKeys from '@/constants/queryKeys';
 import followersKeys from '@/hooks/api/followers/keys';
 import followingsKeys from '@/hooks/api/followings/keys';
-import userKeys from '@/hooks/api/user/keys';
+import usersKeys from '@/hooks/api/users/keys';
 import { createOptimisticUpdateHandler } from '@/hooks/mutations/optimisticUpdateHandler';
 import useFollowingStore from '@/stores/useFollowingStore';
 import useUserStore from '@/stores/useUserStore';
@@ -231,9 +231,9 @@ export const useFollowAction = ({
     );
     queryClient.setQueryData<
       TanStackCache<
-        ClientInferResponseBody<typeof userContract.getInfoContract, 200>
+        ClientInferResponseBody<typeof usersContract.getInfoContract, 200>
       >
-    >(userKeys.userInfo(currentUserCode), (oldData) => {
+    >(usersKeys.userInfo(currentUserCode), (oldData) => {
       if (!oldData) return oldData;
       return {
         ...oldData,
@@ -264,9 +264,9 @@ export const useFollowAction = ({
       setConfirmedIsFollowing(currentUserCode, true);
       queryClient.setQueryData<
         TanStackCache<
-          ClientInferResponseBody<typeof userContract.getInfoContract, 200>
+          ClientInferResponseBody<typeof usersContract.getInfoContract, 200>
         >
-      >(userKeys.userInfo(currentUserCode), (oldData) => {
+      >(usersKeys.userInfo(currentUserCode), (oldData) => {
         if (!oldData) return oldData;
         return {
           ...oldData,
@@ -305,9 +305,9 @@ export const useFollowAction = ({
       setConfirmedIsFollowing(currentUserCode, false);
       queryClient.setQueryData<
         TanStackCache<
-          ClientInferResponseBody<typeof userContract.getInfoContract, 200>
+          ClientInferResponseBody<typeof usersContract.getInfoContract, 200>
         >
-      >(userKeys.userInfo(currentUserCode), (oldData) => {
+      >(usersKeys.userInfo(currentUserCode), (oldData) => {
         if (!oldData) return oldData;
         return {
           ...oldData,
