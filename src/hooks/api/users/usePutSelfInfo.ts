@@ -23,7 +23,7 @@ export const usePutSelfInfo = (options: UsePutSelfInfoOptions) => {
     onSuccess: (response, payload) => {
       const newData = response.body.content;
       const [newUserCode, previousUserCode] = [newData.userCode, me.userCode];
-      if (newData.accessToken) {
+      if (newData.accessToken.length > 0) {
         setAccessToken(newData.accessToken);
       }
       try {

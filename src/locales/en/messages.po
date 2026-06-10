@@ -692,6 +692,10 @@ msgid "Create List"
 msgstr "Create List"
 
 #: src/components/Drawer/LoginDrawer.tsx
+#~ msgid "New to Relist? Get started!"
+#~ msgstr "New to Relist? Get started!"
+
+#: src/components/Drawer/LoginDrawer.tsx
 msgid "Right now, only invited users can log in"
 msgstr "Right now, only invited users can log in"
 
@@ -700,8 +704,8 @@ msgid "Already got your invite? Jump in and apply now!"
 msgstr "Already got your invite? Jump in and apply now!"
 
 #: src/components/Drawer/LoginDrawer.tsx
-msgid "New to Relist? Get started!"
-msgstr "New to Relist? Get started!"
+msgid "Let’s jump in"
+msgstr "Let’s jump in"
 
 #: src/components/Drawer/LoginDrawer.tsx
 msgid "By continuing, you agree to our <0>Terms of Service</0>, <1>Privacy Policy</1>. You confirm you're 13+."

@@ -1,11 +1,11 @@
-import { listsContract } from '@/api/contracts';
-import { TsRestCacheEntry } from '@/api/fetcher';
+import { listsContract, usersContract } from '@/api/contracts';
 import { listsQuery, PostListsResponse } from '@/api/query/lists';
 import listsKeys from '@/hooks/api/lists/keys';
 import { useQueryClient } from '@tanstack/react-query';
-import { ClientInferResponseBody } from '@ts-rest/core';
 import { ErrorResponse } from '@ts-rest/react-query';
 import z from 'zod';
+import usersKeys from '../users/keys';
+import { updateEntryCaches } from '../utils';
 
 type UsePostNewListSchema = z.input<z.ZodObject<{ userCode: z.ZodString }>>;
 
@@ -23,23 +23,29 @@ export const usePostNewList = (options: UsePostNewListOptions) => {
     onSuccess: (response) => {
       const data = response.body.content;
       try {
-        queryClient.setQueryData<
-          TsRestCacheEntry<
-            ClientInferResponseBody<
-              typeof listsContract.getUserListsContract,
-              200
-            >
-          >
-        >(listsKeys.userLists(options.userCode), (caches) => {
-          if (!caches) return caches;
-          return {
-            ...caches,
-            body: {
-              ...caches.body,
-              content: [data, ...caches.body.content],
-            },
-          };
-        });
+        updateEntryCaches<typeof listsContract.getUserListsContract>(
+          queryClient,
+          listsKeys.userLists(options.userCode),
+          (caches) => {
+            return {
+              ...caches,
+              content: [data, ...caches.content],
+            };
+          }
+        );
+        updateEntryCaches<typeof usersContract.getInfoContract>(
+          queryClient,
+          usersKeys.userInfo(options.userCode),
+          (caches) => {
+            return {
+              ...caches,
+              content: {
+                ...caches.content,
+                listCount: caches.content.listCount + 1,
+              },
+            };
+          }
+        );
       } catch (error) {
         console.warn('Refetch failed, but list was created:', error);
       } finally {

@@ -6,15 +6,19 @@ const userInfoSchema = userBriefSchema.extend({
   bio: z.string().optional(),
   email: z.string().email().optional(),
   socialLinks: z.record(z.nativeEnum(SocialLinkType), z.string()).optional(),
-  listCount: z.number().optional(),
-  followerCount: z.number().optional(),
-  followingCount: z.number().optional(),
+  listCount: z.number().int().nonnegative().optional(),
+  followerCount: z.number().int().nonnegative().optional(),
+  followingCount: z.number().int().nonnegative().optional(),
   isFollowing: z.boolean().optional(),
 });
 
 const getInfoRequestSchema = z.object({ userCode: z.string() });
 
-const getInfoResponseSchema = createResponseSchema(userInfoSchema);
+const getInfoResponseSchema = createResponseSchema(
+  userInfoSchema.extend({
+    listCount: z.number().int().nonnegative(),
+  })
+);
 
 const putRequestSchema = userInfoSchema.extend({
   profileImage: z.string().nullable().optional().or(z.literal('')),

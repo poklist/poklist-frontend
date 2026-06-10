@@ -37,7 +37,7 @@ const EditUserPage: React.FC = () => {
   } = useEditProfileStore();
   const { checkAuthAndRedirect } = useAuthCheck();
   const { mutate: editProfile } = usePutSelfInfo({
-    onSuccess: (response) => navigateTo.user(response.userCode)
+    onSuccess: (response) => navigateTo.user(response.userCode),
   });
   const { openFakePage, closeFakePage } = useFakePage();
   const socialLinkTypeList = Object.values(SocialLinkType);

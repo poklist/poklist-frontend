@@ -1,11 +1,10 @@
 import { listsContract } from '@/api/contracts';
-import { InfiniteCache } from '@/api/fetcher';
 import { ideasQuery } from '@/api/query/ideas';
 import ideasKeys from '@/hooks/api/ideas/keys';
 import listsKeys from '@/hooks/api/lists/keys';
 import { useQueryClient } from '@tanstack/react-query';
-import { ClientInferResponseBody } from '@ts-rest/core';
 import z from 'zod';
+import { updateInfiniteCaches } from '../utils';
 
 type UseDeleteIdeaOptions = z.infer<z.ZodObject<{ listID: z.ZodString }>>;
 
@@ -16,15 +15,11 @@ export const useDeleteIdea = (options: UseDeleteIdeaOptions) => {
       queryClient.removeQueries({
         queryKey: ideasKeys.idea(request.params.ideaID),
       });
-      queryClient.setQueryData<
-        InfiniteCache<
-          ClientInferResponseBody<typeof listsContract.getListsContract, 200>
-        >
-      >(listsKeys.infiniteIdeas(options.listID), (caches) => {
-        if (!caches) return caches;
-        return {
-          pageParams: caches.pageParams,
-          pages: caches.pages.map((page) => {
+      updateInfiniteCaches<typeof listsContract.getListsContract>(
+        queryClient,
+        listsKeys.infiniteIdeas(options.listID),
+        (caches) => {
+          return caches.map((page) => {
             const content = page.body.content;
             const filteredIdeas = content.ideas.filter(
               (idea) => idea.id !== request.params.ideaID
@@ -41,9 +36,9 @@ export const useDeleteIdea = (options: UseDeleteIdeaOptions) => {
                 },
               },
             };
-          }),
-        };
-      });
+          });
+        }
+      );
     },
   });
 };

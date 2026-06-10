@@ -692,6 +692,10 @@ msgid "Create List"
 msgstr "建立新名單"
 
 #: src/components/Drawer/LoginDrawer.tsx
+#~ msgid "New to Relist? Get started!"
+#~ msgstr "第一次登入 RELIST ？立即申請"
+
+#: src/components/Drawer/LoginDrawer.tsx
 msgid "Right now, only invited users can log in"
 msgstr "現在僅開放受邀請的用戶登入體驗"
 
@@ -700,8 +704,8 @@ msgid "Already got your invite? Jump in and apply now!"
 msgstr "收到邀請了嗎？現在就去申請加入！"
 
 #: src/components/Drawer/LoginDrawer.tsx
-msgid "New to Relist? Get started!"
-msgstr "第一次登入 RELIST ？立即申請"
+msgid "Let’s jump in"
+msgstr "免費登入 立即體驗"
 
 #: src/components/Drawer/LoginDrawer.tsx
 msgid "By continuing, you agree to our <0>Terms of Service</0>, <1>Privacy Policy</1>. You confirm you're 13+."
