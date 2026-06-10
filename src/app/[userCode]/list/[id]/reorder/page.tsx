@@ -7,7 +7,7 @@ import IdeaList, {
 import EditModeHeader from '@/components/Header/EditModeHeader';
 import { useGetIdeasOrder } from '@/hooks/api/lists/useGetIdeasOrder';
 import { useGetListInfiniteIdeas } from '@/hooks/api/lists/useGetListInfiniteIdeas';
-import { useReorderIdeas } from '@/hooks/mutations/useReorderIdeas';
+import { usePostIdeasReorder } from '@/hooks/api/lists/usePostIdeasReorder';
 import { useAuthCheck, useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { useUserRouteContext } from '@/hooks/useUserRouteContext';
@@ -40,8 +40,9 @@ const ReorderIdeaPage: React.FC = () => {
   const { data: orderedIdeas } = useGetIdeasOrder({
     listID,
   });
-  const { reorderIdeas } = useReorderIdeas({
+  const { mutate: reorderIdeas } = usePostIdeasReorder({
     listID,
+    limit: orderedIdeas?.length ?? 20,
   });
 
   useEffect(() => {
@@ -83,7 +84,7 @@ const ReorderIdeaPage: React.FC = () => {
     ];
 
     reorderIdeas(
-      { ideaOrder: finalOrder },
+      { params: { listID }, body: { ideaOrder: finalOrder } },
       { onSuccess: () => setIsOrderModified(false) }
     );
   });

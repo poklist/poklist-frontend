@@ -1,12 +1,11 @@
 import { usersContract } from '@/api/contracts';
-import { TsRestCacheEntry } from '@/api/fetcher';
 import { PutSelfResponse, usersQuery } from '@/api/query/users';
+import usersKeys from '@/hooks/api/users/keys';
+import { updateEntryCaches } from '@/hooks/api/utils';
 import useAuthStore from '@/stores/useAuthStore';
 import useUserStore from '@/stores/useUserStore';
 import { useQueryClient } from '@tanstack/react-query';
-import { ClientInferResponseBody } from '@ts-rest/core';
 import { ErrorResponse } from '@ts-rest/react-query';
-import usersKeys from './keys';
 
 type UsePutSelfInfoOptions = {
   onSuccess?: (data: PutSelfResponse['content']) => void;
@@ -28,51 +27,43 @@ export const usePutSelfInfo = (options: UsePutSelfInfoOptions) => {
       }
       try {
         if (newUserCode === previousUserCode) {
-          queryClient.setQueryData<
-            TsRestCacheEntry<
-              ClientInferResponseBody<typeof usersContract.getInfoContract, 200>
-            >
-          >(usersKeys.userInfo(previousUserCode), (caches) => {
-            if (!caches) return caches;
-            return {
-              ...caches,
-              body: {
-                ...caches.body,
+          updateEntryCaches<typeof usersContract.getInfoContract>(
+            queryClient,
+            usersKeys.userInfo(previousUserCode),
+            (caches) => {
+              return {
+                ...caches,
                 content: {
-                  ...caches.body.content,
+                  ...caches.content,
                   ...payload.body,
                   profileImage: payload.body.profileImage?.startsWith('data:')
                     ? payload.body.profileImage
-                    : caches.body.content.profileImage,
+                    : caches.content.profileImage,
                 },
-              },
-            };
-          });
+              };
+            }
+          );
         } else {
           queryClient.setQueryData(
             usersKeys.userInfo(previousUserCode),
             undefined
           );
-          queryClient.setQueryData<
-            TsRestCacheEntry<
-              ClientInferResponseBody<typeof usersContract.getInfoContract, 200>
-            >
-          >(usersKeys.userInfo(newUserCode), (caches) => {
-            if (!caches) return caches;
-            return {
-              ...caches,
-              body: {
-                ...caches.body,
+          updateEntryCaches<typeof usersContract.getInfoContract>(
+            queryClient,
+            usersKeys.userInfo(newUserCode),
+            (caches) => {
+              return {
+                ...caches,
                 content: {
-                  ...caches.body.content,
+                  ...caches.content,
                   ...payload.body,
                   profileImage: payload.body.profileImage?.startsWith('data:')
                     ? payload.body.profileImage
-                    : caches.body.content.profileImage,
+                    : caches.content.profileImage,
                 },
-              },
-            };
-          });
+              };
+            }
+          );
         }
       } catch (error) {
         console.warn('Refetch failed, but profile was edited:', error);

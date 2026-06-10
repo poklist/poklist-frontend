@@ -2,9 +2,9 @@ import { listsContract } from '@/api/contracts';
 import { ideasQuery } from '@/api/query/ideas';
 import ideasKeys from '@/hooks/api/ideas/keys';
 import listsKeys from '@/hooks/api/lists/keys';
+import { updateInfiniteCaches } from '@/hooks/api/utils';
 import { useQueryClient } from '@tanstack/react-query';
 import z from 'zod';
-import { updateInfiniteCaches } from '../utils';
 
 type UseDeleteIdeaOptions = z.infer<z.ZodObject<{ listID: z.ZodString }>>;
 
@@ -18,8 +18,8 @@ export const useDeleteIdea = (options: UseDeleteIdeaOptions) => {
       updateInfiniteCaches<typeof listsContract.getListsContract>(
         queryClient,
         listsKeys.infiniteIdeas(options.listID),
-        (caches) => {
-          return caches.map((page) => {
+        (previousPages) => {
+          return previousPages.map((page) => {
             const content = page.body.content;
             const filteredIdeas = content.ideas.filter(
               (idea) => idea.id !== request.params.ideaID

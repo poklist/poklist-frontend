@@ -1,11 +1,11 @@
 import { listsContract, usersContract } from '@/api/contracts';
 import { listsQuery } from '@/api/query/lists';
 import listsKeys from '@/hooks/api/lists/keys';
+import usersKeys from '@/hooks/api/users/keys';
+import { updateEntryCaches } from '@/hooks/api/utils';
 import { useQueryClient } from '@tanstack/react-query';
 import { ErrorResponse } from '@ts-rest/react-query';
 import z from 'zod';
-import usersKeys from '../users/keys';
-import { updateEntryCaches } from '../utils';
 
 type UseDeleteListSchema = z.input<z.ZodObject<{ userCode: z.ZodString }>>;
 
@@ -30,10 +30,10 @@ export const useDeleteList = (options: UseDeleteListOptions) => {
         updateEntryCaches<typeof listsContract.getUserListsContract>(
           queryClient,
           listsKeys.userLists(options.userCode),
-          (caches) => {
+          (previousBody) => {
             return {
-              ...caches,
-              content: caches.content.filter(
+              ...previousBody,
+              content: previousBody.content.filter(
                 (list) => list.id !== request.params.listID
               ),
             };
@@ -42,12 +42,12 @@ export const useDeleteList = (options: UseDeleteListOptions) => {
         updateEntryCaches<typeof usersContract.getInfoContract>(
           queryClient,
           usersKeys.userInfo(options.userCode),
-          (caches) => {
+          (previousBody) => {
             return {
-              ...caches,
+              ...previousBody,
               content: {
-                ...caches.content,
-                listCount: caches.content.listCount - 1,
+                ...previousBody.content,
+                listCount: previousBody.content.listCount - 1,
               },
             };
           }

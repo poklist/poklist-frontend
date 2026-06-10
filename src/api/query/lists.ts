@@ -12,6 +12,7 @@ const listsApi = initContract().router({
   post: listsContract.postListsContract,
   delete: listsContract.deleteListsContract,
   put: listsContract.putListsContract,
+  postIdeasReorder: listsContract.postIdeasReorderContract,
 });
 
 export type GetListsRequest = z.input<typeof listsSchema.getRequest>;
@@ -43,6 +44,14 @@ export type DeleteListsRequest = z.input<typeof listsSchema.deleteRequest>;
 export type PutListsRequest = z.input<typeof listsSchema.putRequest>;
 
 export type PutListsResponse = z.infer<typeof listsSchema.putResponse>;
+
+export type PostIdeasReorderRequest = z.input<
+  typeof listsSchema.postIdeasReorderRequest
+>;
+
+export type PostIdeasReorderResponse = z.infer<
+  typeof listsSchema.postIdeasReorderResponse
+>;
 
 export const listsQuery = initQueryClient(listsApi, {
   baseUrl: '',

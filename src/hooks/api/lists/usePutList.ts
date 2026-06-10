@@ -1,11 +1,10 @@
 import { listsContract } from '@/api/contracts';
-import { InfiniteCache, TsRestCacheEntry } from '@/api/fetcher';
 import { listsQuery, PutListsResponse } from '@/api/query/lists';
+import listsKeys from '@/hooks/api/lists/keys';
+import { updateEntryCaches, updateInfiniteCaches } from '@/hooks/api/utils';
 import { toBackendTimestamp } from '@/lib/time';
 import { useQueryClient } from '@tanstack/react-query';
-import { ClientInferResponseBody } from '@ts-rest/core';
 import z from 'zod';
-import listsKeys from './keys';
 
 type UsePutIdeaSchema = z.infer<z.ZodObject<{ userCode: z.ZodString }>>;
 type UsePutListOptions = UsePutIdeaSchema & {
@@ -19,20 +18,13 @@ export const usePutList = (options: UsePutListOptions) => {
       const newData = response.body.content;
       try {
         const updatedAt = toBackendTimestamp(new Date());
-        queryClient.setQueryData<
-          TsRestCacheEntry<
-            ClientInferResponseBody<
-              typeof listsContract.getUserListsContract,
-              200
-            >
-          >
-        >(listsKeys.userLists(options.userCode), (caches) => {
-          if (!caches) return caches;
-          return {
-            ...caches,
-            body: {
-              ...caches.body,
-              content: caches.body.content.map((list) =>
+        updateEntryCaches<typeof listsContract.getUserListsContract>(
+          queryClient,
+          listsKeys.userLists(options.userCode),
+          (previousBody) => {
+            return {
+              ...previousBody,
+              content: previousBody.content.map((list) =>
                 list.id === newData.id
                   ? {
                       ...list,
@@ -44,18 +36,14 @@ export const usePutList = (options: UsePutListOptions) => {
                     }
                   : list
               ),
-            },
-          };
-        });
-        queryClient.setQueryData<
-          InfiniteCache<
-            ClientInferResponseBody<typeof listsContract.getListsContract, 200>
-          >
-        >(listsKeys.infiniteIdeas(newData.id), (caches) => {
-          if (!caches) return caches;
-          return {
-            ...caches,
-            pages: caches.pages.map((page) => {
+            };
+          }
+        );
+        updateInfiniteCaches<typeof listsContract.getListsContract>(
+          queryClient,
+          listsKeys.infiniteIdeas(newData.id),
+          (previousPages) => {
+            return previousPages.map((page) => {
               return {
                 ...page,
                 body: {
@@ -72,9 +60,9 @@ export const usePutList = (options: UsePutListOptions) => {
                   },
                 },
               };
-            }),
-          };
-        });
+            });
+          }
+        );
       } catch (error) {
         console.warn('Refetch failed, but list was edited: ', error);
       } finally {

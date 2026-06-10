@@ -2,9 +2,9 @@ import { ideasContract, listsContract } from '@/api/contracts';
 import { ideasQuery, PutIdeasResponse } from '@/api/query/ideas';
 import ideasKeys from '@/hooks/api/ideas/keys';
 import listsKeys from '@/hooks/api/lists/keys';
+import { updateEntryCaches, updateInfiniteCaches } from '@/hooks/api/utils';
 import { toBackendTimestamp } from '@/lib/time';
 import { useQueryClient } from '@tanstack/react-query';
-import { updateEntryCaches, updateInfiniteCaches } from '../utils';
 
 interface UsePutIdeaOptions {
   onSuccess?: (data: PutIdeasResponse['content']) => void;
@@ -20,15 +20,15 @@ export const usePutIdea = (options: UsePutIdeaOptions) => {
         updateEntryCaches<typeof ideasContract.getIdeasContract>(
           queryClient,
           ideasKeys.idea(newData.id),
-          (caches) => {
+          (previousBody) => {
             return {
-              ...caches,
+              ...previousBody,
               content: {
-                ...caches.content,
+                ...previousBody.content,
                 title: newData.title,
                 description: newData.description,
                 coverImage:
-                  request.body.coverImage ?? caches.content.coverImage,
+                  request.body.coverImage ?? previousBody.content.coverImage,
                 externalLink: newData.externalLink,
                 updatedAt,
               },
@@ -38,8 +38,8 @@ export const usePutIdea = (options: UsePutIdeaOptions) => {
         updateInfiniteCaches<typeof listsContract.getListsContract>(
           queryClient,
           listsKeys.infiniteIdeas(newData.listID),
-          (caches) => {
-            return caches.map((page) => {
+          (previousPages) => {
+            return previousPages.map((page) => {
               const content = page.body.content;
               const updatedIdeas = content.ideas.map((idea) =>
                 idea.id === newData.id

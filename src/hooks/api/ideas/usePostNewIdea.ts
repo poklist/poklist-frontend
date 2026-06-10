@@ -1,10 +1,10 @@
 import { ideasContract, listsContract } from '@/api/contracts';
 import { ideasQuery, PostIdeasResponse } from '@/api/query/ideas';
 import listsKeys from '@/hooks/api/lists/keys';
+import { updateInfiniteCaches } from '@/hooks/api/utils';
 import { toBackendTimestamp } from '@/lib/time';
 import { useQueryClient } from '@tanstack/react-query';
 import { ErrorResponse } from '@ts-rest/react-query';
-import { updateInfiniteCaches } from '../utils';
 
 interface UsePostNewIdeaOptions {
   onSuccess?: (data: PostIdeasResponse['content']) => void;
@@ -23,7 +23,7 @@ export const usePostNewIdea = (options: UsePostNewIdeaOptions) => {
         updateInfiniteCaches<typeof listsContract.getListsContract>(
           queryClient,
           listsKeys.infiniteIdeas(data.listID),
-          (caches) => {
+          (previousPages) => {
             const newIdea = {
               id: data.id,
               title: data.title,
@@ -32,7 +32,7 @@ export const usePostNewIdea = (options: UsePostNewIdeaOptions) => {
               externalLink: data.externalLink,
             };
             const updatedAt = toBackendTimestamp(new Date());
-            return caches.map((page, index) => {
+            return previousPages.map((page, index) => {
               const content = page.body.content;
               return {
                 ...page,

@@ -1,12 +1,6 @@
 'use client';
 
 import axios from '@/api/axios';
-import {
-  Button,
-  ButtonShape,
-  ButtonSize,
-  ButtonVariant,
-} from '@/components/ui/button';
 import { Drawer, DrawerContent } from '@/components/ui/drawer';
 import { ExternalLinks } from '@/constants/externalLink';
 import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
@@ -23,6 +17,7 @@ import {
   GoogleLogin,
   GoogleOAuthProvider,
 } from '@react-oauth/google';
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 interface LoginInfo {
@@ -94,32 +89,53 @@ export const LoginDrawer = () => {
       <Drawer open={isLoginDrawerOpen} onOpenChange={handleClose}>
         <DrawerContent
           aria-describedby={undefined}
-          className="bg-white px-0 py-0"
+          className="border-none bg-transparent px-0 py-0"
         >
-          <div className="flex flex-col justify-center gap-6 px-[72px] pt-8">
-            <GoogleLogin
-              onSuccess={(credentialResponse) => {
-                void handleGoogleLogin(credentialResponse);
-              }}
-              onError={handleLoginError}
-              useOneTap={false}
-              type="standard"
-              theme="outline"
-              size="large"
-              text="signin_with"
-              shape="pill"
-              width={buttonWidth.toString()}
+          <div className="relative bg-transparent">
+            <Image
+              src="/images/mascot/mascot-phone.svg"
+              alt="Mascot Phone"
+              width={152}
+              height={137}
+              className="mx-auto"
             />
-            <Button
+            <Image
+              src="/images/login/thought-bubble.svg"
+              alt="Thought Bubble"
+              width={282}
+              height={175}
+              className="absolute inset-x-0 top-6 -z-10 mx-auto"
+            />
+          </div>
+          <div className="flex flex-col justify-center gap-6 border-t border-t-black bg-yellow-bright-01 pt-8">
+            <div className="text-center text-xl font-bold text-black-text-01">
+              <Trans>Let’s jump in</Trans>
+            </div>
+            <div className="mx-[72px] mb-0.5 rounded-full ring-1 ring-black">
+              <GoogleLogin
+                onSuccess={(credentialResponse) => {
+                  void handleGoogleLogin(credentialResponse);
+                }}
+                onError={handleLoginError}
+                useOneTap={false}
+                type="standard"
+                theme="outline"
+                size="large"
+                text="signin_with"
+                shape="pill"
+                width={buttonWidth.toString()}
+              />
+            </div>
+            {/* <Button
               variant={ButtonVariant.BLACK}
               size={ButtonSize.LG}
               shape={ButtonShape.ROUNDED_FULL}
               onClick={() => openWindow(ExternalLinks.SIGNUP)}
             >
               <Trans>New to Relist? Get started!</Trans>
-            </Button>
+            </Button> */}
           </div>
-          <div className="px-[50px] pb-8 pt-6 text-center text-[13px] text-[#909090]">
+          <div className="bg-yellow-bright-01 px-14 py-6 text-center text-[13px] text-black-text-01">
             <Trans>
               By continuing, you agree to our{' '}
               <span
