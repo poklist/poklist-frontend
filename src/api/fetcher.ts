@@ -2,6 +2,24 @@ import axios from '@/api/axios';
 import { isAbortWhitelist } from '@/api/whitelist';
 import { InfiniteData } from '@tanstack/react-query';
 import { ApiFetcherArgs } from '@ts-rest/core';
+import { AxiosHeaders, isAxiosError, RawAxiosResponseHeaders } from 'axios';
+
+const buildHeaders = (
+  rawHeaders: RawAxiosResponseHeaders | AxiosHeaders
+): Headers => {
+  const nativeHeaders = new Headers();
+  Object.entries(rawHeaders).forEach(([key, value]: [string, unknown]) => {
+    if (Array.isArray(value)) {
+      value.forEach((v: unknown) => {
+        if (typeof v === 'string') nativeHeaders.append(key, v);
+      });
+    } else if (['string', 'number', 'boolean'].includes(typeof value)) {
+      nativeHeaders.append(key, String(value));
+    }
+  });
+
+  return nativeHeaders;
+};
 
 export const axiosFetcher = async <T = unknown>({
   path,
@@ -19,26 +37,30 @@ export const axiosFetcher = async <T = unknown>({
     ? undefined
     : (fetchOptions?.signal ?? undefined);
 
-  const response = await axios<T>({
-    url: path,
-    method,
-    headers,
-    data: body,
-    signal,
-  });
+  try {
+    const response = await axios<T>({
+      url: path,
+      method,
+      headers,
+      data: body,
+      signal,
+    });
 
-  const nativeHeaders = new Headers();
-  Object.entries(response.headers).forEach(([key, value]) => {
-    if (value !== undefined && value !== null) {
-      nativeHeaders.append(key, String(value));
+    return {
+      status: response.status,
+      body: response.data,
+      headers: buildHeaders(response.headers),
+    };
+  } catch (error) {
+    if (isAxiosError(error) && error.response) {
+      return {
+        status: error.response.status,
+        body: error.response.data as T, // error body 由 ts-rest 按 status 對應 contract
+        headers: buildHeaders(error.response.headers),
+      };
     }
-  });
-
-  return {
-    status: response.status,
-    body: response.data,
-    headers: nativeHeaders,
-  };
+    throw error; // network error / cancel
+  }
 };
 
 export type TsRestCacheEntry<TBody> = {
