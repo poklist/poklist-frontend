@@ -1,26 +1,17 @@
 'use client';
 
-import axios from '@/api/axios';
 import { Drawer, DrawerContent } from '@/components/ui/drawer';
 import { ExternalLinks } from '@/constants/externalLink';
-import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
+import { useLogin } from '@/hooks/useLogin';
 import { openWindow } from '@/lib/openLink';
-import useAuthStore from '@/stores/useAuthStore';
 import useCommonStore from '@/stores/useCommonStore';
-import useUserStore from '@/stores/useUserStore';
-import { IResponse } from '@/types/response';
 import { User } from '@/types/User';
 import { i18n } from '@lingui/core';
-import { t, Trans } from '@lingui/macro';
-import {
-  CredentialResponse,
-  GoogleLogin,
-  GoogleOAuthProvider,
-} from '@react-oauth/google';
+import { Trans } from '@lingui/macro';
+import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
 
-interface LoginInfo {
+export interface LoginInfo {
   accessToken: string;
   user: User;
 }
@@ -33,50 +24,8 @@ interface LoginInfo {
  * 當任何地方調用 setIsLoginDrawerOpen(true) 時，都會顯示登入抽屜。
  */
 export const LoginDrawer = () => {
-  const { isLoginDrawerOpen, setIsLoginDrawerOpen, setErrorDrawerMessage } =
-    useCommonStore();
-  const { login } = useAuthStore();
-  const { setMe } = useUserStore();
-  const navigateTo = useStrictNavigateNext();
-  const [buttonWidth, setButtonWidth] = useState(376);
-
-  useEffect(() => {
-    const updateWidth = () => {
-      setButtonWidth(window.innerWidth - 144);
-    };
-
-    updateWidth();
-    window.addEventListener('resize', updateWidth);
-    return () => window.removeEventListener('resize', updateWidth);
-  }, []);
-
-  const handleGoogleLogin = async (response: CredentialResponse) => {
-    try {
-      const res = await axios.post<IResponse<LoginInfo>>('/auth/google', {
-        idToken: response.credential,
-      });
-      if (!res.data.content?.accessToken) {
-        throw new Error('No access token');
-      }
-      localStorage.clear();
-      login(res.data.content?.accessToken);
-      const userData = res.data.content?.user;
-      setMe(userData);
-      setIsLoginDrawerOpen(false);
-      navigateTo.discovery();
-    } catch (error) {
-      console.error('Google login failed:', error);
-      handleLoginError();
-    }
-  };
-
-  const handleLoginError = () => {
-    setIsLoginDrawerOpen(false);
-    setErrorDrawerMessage({
-      title: t`Right now, only invited users can log in`,
-      content: t`Already got your invite? Jump in and apply now!`,
-    });
-  };
+  const { isLoginDrawerOpen, setIsLoginDrawerOpen } = useCommonStore();
+  const { handleLogin, handleLoginError } = useLogin();
 
   const handleClose = () => {
     setIsLoginDrawerOpen(false);
@@ -111,10 +60,10 @@ export const LoginDrawer = () => {
             <div className="text-center text-xl font-bold text-black-text-01">
               <Trans>Let’s jump in</Trans>
             </div>
-            <div className="mx-[72px] mb-0.5 rounded-full ring-1 ring-black">
+            <div className="mx-[4.5rem] mb-0.5 rounded-full ring-1 ring-black">
               <GoogleLogin
                 onSuccess={(credentialResponse) => {
-                  void handleGoogleLogin(credentialResponse);
+                  void handleLogin(credentialResponse);
                 }}
                 onError={handleLoginError}
                 useOneTap={false}
@@ -123,17 +72,8 @@ export const LoginDrawer = () => {
                 size="large"
                 text="signin_with"
                 shape="pill"
-                width={buttonWidth.toString()}
               />
             </div>
-            {/* <Button
-              variant={ButtonVariant.BLACK}
-              size={ButtonSize.LG}
-              shape={ButtonShape.ROUNDED_FULL}
-              onClick={() => openWindow(ExternalLinks.SIGNUP)}
-            >
-              <Trans>New to Relist? Get started!</Trans>
-            </Button> */}
           </div>
           <div className="bg-yellow-bright-01 px-14 py-6 text-center text-[13px] text-black-text-01">
             <Trans>

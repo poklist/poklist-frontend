@@ -173,16 +173,18 @@ msgid "Next wave of content"
 msgstr "Next wave of content"
 
 #: src/app/discovery/_components/HeaderSection/index.tsx
-msgid "<0>My life in my lists</0><1>Invitation only. Ready to join?</1>"
-msgstr "<0>My life in my lists</0><1>Invitation only. Ready to join?</1>"
+msgid "Whoa, list-making pro!"
+msgstr "Whoa, list-making pro!"
 
 #: src/app/discovery/_components/HeaderSection/index.tsx
-msgid "Create your account"
-msgstr "Create your account"
+#: src/components/Drawer/LoginDrawer.tsx
+msgid "Let’s jump in"
+msgstr "Let’s jump in"
 
 #: src/app/discovery/_components/HeaderSection/index.tsx
-msgid "Sign in"
-msgstr "Sign in"
+#: src/components/Drawer/LoginDrawer.tsx
+msgid "By continuing, you agree to our <0>Terms of Service</0>, <1>Privacy Policy</1>. You confirm you're 13+."
+msgstr "By continuing, you agree to our <0>Terms of Service</0>, <1>Privacy Policy</1>. You confirm you're 13+."
 
 #: src/app/discovery/_components/ListSection/index.tsx
 #: src/constants/Lists/i18n.ts
@@ -691,26 +693,6 @@ msgstr "A list groups your ideas. Start wherever you vibe."
 msgid "Create List"
 msgstr "Create List"
 
-#: src/components/Drawer/LoginDrawer.tsx
-#~ msgid "New to Relist? Get started!"
-#~ msgstr "New to Relist? Get started!"
-
-#: src/components/Drawer/LoginDrawer.tsx
-msgid "Right now, only invited users can log in"
-msgstr "Right now, only invited users can log in"
-
-#: src/components/Drawer/LoginDrawer.tsx
-msgid "Already got your invite? Jump in and apply now!"
-msgstr "Already got your invite? Jump in and apply now!"
-
-#: src/components/Drawer/LoginDrawer.tsx
-msgid "Let’s jump in"
-msgstr "Let’s jump in"
-
-#: src/components/Drawer/LoginDrawer.tsx
-msgid "By continuing, you agree to our <0>Terms of Service</0>, <1>Privacy Policy</1>. You confirm you're 13+."
-msgstr "By continuing, you agree to our <0>Terms of Service</0>, <1>Privacy Policy</1>. You confirm you're 13+."
-
 #: src/components/FakePage/EditFieldFakePage.tsx
 msgid "Enter your text here"
 msgstr "Enter your text here"
@@ -1139,6 +1121,14 @@ msgstr "Please login to do this action"
 #: src/hooks/useCheckStorage.ts
 msgid "The app is outdated, please login again"
 msgstr "The app is outdated, please login again"
+
+#: src/hooks/useLogin.ts
+msgid "Right now, only invited users can log in"
+msgstr "Right now, only invited users can log in"
+
+#: src/hooks/useLogin.ts
+msgid "Already got your invite? Jump in and apply now!"
+msgstr "Already got your invite? Jump in and apply now!"
 
 #: src/lib/validator.ts
 msgid "Hey, the title can't be left empty!"

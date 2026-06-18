@@ -7,8 +7,8 @@ export type FollowingStoreState = {
   // 上一次 API 已確認的狀態作為 rollback 基準
   confirmedFollowingMap: Map<string, boolean>;
 
-  setFollowerCount: (userCode: string, count: number) => void;
-  getFollowerCount: (userCode: string) => number;
+  // setFollowerCount: (userCode: string, count: number) => void;
+  // getFollowerCount: (userCode: string) => number;
 
   // 設定特定用戶的關注狀態
   setIsFollowing: (userCode: string, isFollowing: boolean) => void;
@@ -38,17 +38,17 @@ const useFollowingStore = create<FollowingStoreState>((set, get) => ({
   followerCountMap: new Map<string, number>(),
   confirmedFollowingMap: new Map<string, boolean>(),
 
-  setFollowerCount: (userCode: string, count: number): void => {
-    set((state) => {
-      const newFollowerCountMap = new Map(state.followerCountMap);
-      newFollowerCountMap.set(userCode, count);
-      return { followerCountMap: newFollowerCountMap };
-    });
-  },
-  getFollowerCount: (userCode: string): number => {
-    const { followerCountMap } = get();
-    return followerCountMap.get(userCode) ?? 0;
-  },
+  // setFollowerCount: (userCode: string, count: number): void => {
+  //   set((state) => {
+  //     const newFollowerCountMap = new Map(state.followerCountMap);
+  //     newFollowerCountMap.set(userCode, count);
+  //     return { followerCountMap: newFollowerCountMap };
+  //   });
+  // },
+  // getFollowerCount: (userCode: string): number => {
+  //   const { followerCountMap } = get();
+  //   return followerCountMap.get(userCode) ?? 0;
+  // },
 
   setIsFollowing: (userCode: string, isFollowing: boolean) =>
     set((state) => {

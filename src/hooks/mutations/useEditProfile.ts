@@ -67,7 +67,13 @@ export const useEditProfile = ({
       } catch (error) {
         console.warn('Refetch failed, but profile was edited:', error);
       }
-      setMe({ ...data });
+      setMe({
+        ...data,
+        profileImage: data.profileImage?.startsWith('data:')
+          ? data.profileImage
+          : me.profileImage,
+        listCount: data.listCount || me.listCount,
+      });
       onSuccess?.(data);
       navigateTo.user(newUserCode);
     },

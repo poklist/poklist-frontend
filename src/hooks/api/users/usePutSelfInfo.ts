@@ -73,6 +73,7 @@ export const usePutSelfInfo = (options: UsePutSelfInfoOptions) => {
           profileImage: newData.profileImage?.startsWith('data:')
             ? newData.profileImage
             : me.profileImage,
+          listCount: newData.listCount || me.listCount,
         });
         options.onSuccess?.(newData);
       }

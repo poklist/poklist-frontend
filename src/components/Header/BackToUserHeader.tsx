@@ -5,7 +5,7 @@ import {
   ButtonSize,
   ButtonVariant,
 } from '@/components/ui/button';
-import { useFollowAction } from '@/hooks/mutations/useFollowAction';
+import { useFollowAction } from '@/hooks/mutations/followUnfollow/useFollowAction';
 import { useAuthWrapper } from '@/hooks/useAuth';
 import { useAuthRequired } from '@/hooks/useAuthRequired';
 import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
@@ -52,8 +52,12 @@ const BackToUserHeader: React.FC<IBackToUserHeaderProps> = ({
   }, [owner, hasFollowingState, setIsFollowing, setConfirmedIsFollowing]);
 
   const { follow, unfollow } = useFollowAction({
+    target: {
+      userID: owner?.id || 0,
+      userCode: owner?.userCode || '',
+    },
     currentUserCode: owner?.userCode || '',
-    currentUserID: owner?.id || -1,
+    currentUserID: owner?.id || 0,
     shouldAllow: () => isLoggedIn,
     onNotAllowed: handleAuthRequired,
   });
@@ -75,9 +79,9 @@ const BackToUserHeader: React.FC<IBackToUserHeaderProps> = ({
       return;
     }
     if (isFollowing) {
-      unfollow({ params: { userID: owner.id } });
+      unfollow();
     } else {
-      follow({ params: { userID: owner.id } });
+      follow();
     }
   });
 
