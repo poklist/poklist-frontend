@@ -173,8 +173,12 @@ msgid "Next wave of content"
 msgstr "Next wave of content"
 
 #: src/app/discovery/_components/HeaderSection/index.tsx
-msgid "Whoa, list-making pro!"
-msgstr "Whoa, list-making pro!"
+#~ msgid "Whoa, list-making pro!"
+#~ msgstr "Whoa, list-making pro!"
+
+#: src/app/discovery/_components/HeaderSection/index.tsx
+msgid "My life is my lists"
+msgstr "My life is my lists"
 
 #: src/app/discovery/_components/HeaderSection/index.tsx
 #: src/components/Drawer/LoginDrawer.tsx

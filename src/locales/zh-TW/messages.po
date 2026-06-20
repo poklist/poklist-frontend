@@ -173,7 +173,11 @@ msgid "Next wave of content"
 msgstr "下個內容浪潮"
 
 #: src/app/discovery/_components/HeaderSection/index.tsx
-msgid "Whoa, list-making pro!"
+#~ msgid "Whoa, list-making pro!"
+#~ msgstr "好料都在我的口袋名單"
+
+#: src/app/discovery/_components/HeaderSection/index.tsx
+msgid "My life is my lists"
 msgstr "好料都在我的口袋名單"
 
 #: src/app/discovery/_components/HeaderSection/index.tsx

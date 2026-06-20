@@ -65,14 +65,14 @@ export const LoginDrawer = () => {
               alt="Thought Bubble"
               width={282}
               height={175}
-              className="absolute inset-x-0 top-6 -z-10 mx-auto"
+              className="absolute left-24 top-6 -z-10 mx-auto"
             />
           </div>
-          <div className="flex flex-col justify-center gap-6 border-t border-t-black bg-yellow-bright-01 pt-8">
+          <div className="flex flex-col justify-center gap-6 border-t border-t-black bg-yellow-bright-01 pt-8 pb-px">
             <div className="text-center text-xl font-bold text-black-text-01">
               <Trans>Let’s jump in</Trans>
             </div>
-            <div className="mx-[4.5rem] mb-0.5 rounded-full ring-1 ring-black max-w-[25rem]">
+            <div className="mx-[4.5rem] mb-px rounded-full ring-1 ring-black">
               <GoogleLogin
                 onSuccess={(credentialResponse) => {
                   void handleLogin(credentialResponse);
