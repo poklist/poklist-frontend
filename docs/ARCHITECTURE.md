@@ -373,10 +373,21 @@ src/
 - **Provider 位置**：`Drawer / FakePage / Language` 目前在 `components/`，README 註記未來會搬到 `providers/` 或 `contexts/`。
 - **Pages Router 殘骸**：README 仍提到 Pages Router 遷移；目前 `src/` 已純 App Router，可清理舊文檔。
 - **`useScrollPosition` 與 sessionStorage 滾動還原**：`useScrollPosition` hook（`src/hooks/useScrollPosition.ts`）已提供完整的 save / restore / clear 機制，以 `keyPrefix_pathname` 作為 key。**現況問題**：`src/components/Header/index.tsx` 與 `BackToUserHeader.tsx` 直接呼叫 `sessionStorage.removeItem('scroll_pos_/discovery')`（硬編字串），而非透過 hook 的 `clearScrollPosition`，導致若 keyPrefix 日後變更將造成遺留 key。**架構不需大改**，僅需把 Header 元件改用 hook 回傳的 `clearScrollPosition`，或將 key 建構邏輯匯出為共用 util，即可解決。Discovery ListSection 的 `SESSION_VISITED_KEY`（是否曾訪問的 flag）是獨立用途，不在此問題範圍內。
-- **HTTP 狀態碼提示文案**：**【未來規劃】** 常見 HTTP 回應狀態碼（如 400 / 401 / 403 / 404 / 409 / 422 / 429 / 500 / 503）將各有對應的使用者可見提示文案（hint/copy），統一由前端 i18n 管理並在 axios 回應攔截器或 `ErrorDrawer` 中依狀態碼展示。設計新錯誤處理時請預留「以狀態碼查表取得提示文案」的介面，不要硬編個別錯誤訊息字串。
+- **HTTP 狀態碼提示文案**：**【✅ 已實作 — commit `3d3db3e`】** 設計稿見 [`docs/superpowers/specs/2026-06-02-axios-status-code-management-design.md`](superpowers/specs/2026-06-02-axios-status-code-management-design.md)。狀態碼相關的「是否彈 toast / 彈什麼文案」已收斂到 axios response 攔截器：per-(API + 狀態碼) 靜默白名單（中央 registry + regex matcher）+ 狀態碼文案表 + fallback 三段決策；401 獨立優先處理不可被白名單繞過；2xx 一律不彈 toast。
+- **ts-rest mutation 接線（進行中）**：新 ts-rest hook（`usePostNewIdea` / `usePostNewList` / `useDeleteList` 等）已建立並驗證可編譯，但部分消費端仍使用舊的 `hooks/mutations/*`（例：`ListCard` 仍用舊 `useDeleteList`）。待辦：逐一把消費端切到 `hooks/api/*` 的新 hook，再刪除 `hooks/mutations/` 對應舊檔。完成後才能進行下方「清舊 `QueryKeys.*`」。
+- **✅ 點擊型社交動作 race condition**（Like / Follow）— **已於 commit `4bc46a9` 解決**：
+  - **原問題**：debounce 期間連點 Like→Unlike（或 Follow→Unfollow），會以「toggle 前的 optimistic 值」決定送哪個 API，導致對未曾 Like / Follow 的目標送出 Unlike / Unfollow → 後端回錯。
+  - **修法**：`useLikeStore` / `useFollowingStore` 新增 `confirmedIsLiked` / `confirmedIsFollowing` 狀態，每次 mutation `onSuccess` 寫入；`useLikeAction` / `useFollowAction` 的 debounce flush 前比對 `optimisticValue === confirmedValue`，相同則跳過 API；不同才依 `optimisticValue` 選擇 `(un)follow` / `(un)like` mutation 發送。
+  - **保留紀錄供未來類似 optimistic + debounce 場景參考**。
 - **`prop-types`**：依然在 dependencies，但 TS 接管後僅留作 transitive — 可考慮移除。
 - **Storybook**：尚未引入，元件文件靠 README + 程式碼。
 - **測試**：完全缺失（沒有 unit / e2e 套件設定）。
+- **ts-rest mutation 遷移（進行中）**：`usePostNewIdea`（`src/hooks/api/ideas/usePostNewIdea.ts`）為第一支 ts-rest mutation 範本，`onSuccess` 內以 `setQueryData<InfiniteCache<...>>` 主動更新 `listsKeys.infiniteIdeas` 快取。後續待辦：
+  - **POST/PUT/DELETE contract 補齊**：✅ 已完成 — post/delete/put idea（`usePostNewIdea` / `useDeleteIdea` / `usePutIdea`）、post/delete list（`usePostNewList` / `useDeleteList`）、edit list（`useEditList`，commit `756c640`）。**剩 `useReorderIdeas`（reorder contract）** 尚未遷 ts-rest；遷完即可全面接線 + 清舊 mutation。
+  - **快取更新 helper 抽離（🔴 最迫切）**：`usePostNewIdea` / `usePostNewList` / `useDeleteList` / `usePutIdea` 已累積**四份** `setQueryData` 樣板，橫跨兩種 cache 型別（`InfiniteCache<...>` 的 list 無限捲、`TsRestCacheEntry<...>` 的單筆 entry）。應抽兩支共用 helper（`updateInfiniteCacheContent(queryClient, key, updater)` + `updateEntryCacheContent(queryClient, key, updater)`），封裝不可變展開邏輯，避免每支 mutation 重寫 immutability 樣板、杜絕直接 mutate cache object 的反模式。每多寫一支 ts-rest mutation 此債務就擴大一次，建議在繼續 `useEditList` / `useReorderIdeas` 之前先抽。
+  - **`updatedAt` 由後端值取代**：`usePostNewIdea` 目前前端手拼 `YYYY-MM-DD HH:mm:ss.ffffff +0000 UTC` 字串塞進快取，格式脆弱。應改用 POST response 回傳的 `updatedAt`，或於 schema 標註此欄非必須。
+  - **ts-rest mutation `onError` 型別對齊**：`UsePostNewIdeaOptions.onError` 目前用 `TsRestCacheEntry<unknown>`，與 ts-rest hook 真實 error 型別不符。新的 `usePostNewList` 已改用正確的 `ErrorResponse<typeof listsContract.postListsContract>`（`@ts-rest/react-query`），應反向套回 `usePostNewIdea` 並作為後續所有 ts-rest mutation 的統一模式（與「HTTP 狀態碼提示文案」待辦連動）。
+  - **POST `/lists` response 缺 `coverImage`**：`listsSchema.postResponse` 由 `ListFormSchema.omit({ coverImage }).extend({ id })` 定義，但 `getUserLists` 的 content item（`listPreviewSchema`）含 `coverImage`。導致 `usePostNewList` 無法直接把 POST 回應 prepend 進 `userLists` 快取（型別不符 + UI 缺封面圖）。需後端於 POST 回應補 `coverImage`，或前端 prepend 時補 fallback，待定案。
 
 ---
 

@@ -1,7 +1,7 @@
 import { followersQuery } from '@/api/query/followers';
 import { followersSchema } from '@/api/schemas/followers';
-import z from 'zod';
 import followersKeys from '@/hooks/api/followers/keys';
+import z from 'zod';
 
 const getFollowersSchema = followersSchema.getRequest.extend({
   staleTime: z.number().int().nonnegative().default(60000),
@@ -14,12 +14,12 @@ export const useGetFollowers = (options: UseGetFollowersOptions) => {
   const { userID, staleTime, gcTime } = getFollowersSchema.parse(options);
 
   const query = followersQuery.get.useQuery(
-    followersKeys.user({ userID }),
+    followersKeys.user(userID),
     {
       query: { userID },
     },
     {
-      queryKey: followersKeys.user({ userID }),
+      queryKey: followersKeys.user(userID),
       staleTime,
       gcTime,
       enabled: !!userID,

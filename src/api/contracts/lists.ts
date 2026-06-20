@@ -17,7 +17,7 @@ const getUserListsContract = {
   pathParams: listsSchema.getUserListsRequest.pick({ userCode: true }),
   query: listsSchema.getUserListsRequest.omit({ userCode: true }),
   responses: { 200: listsSchema.getUserListsResponse },
-  summary: 'all LISTS under specific user',
+  summary: 'all LISTs under specific user',
 } satisfies AppRoute;
 
 const getIdeasOrderContract = {
@@ -54,6 +54,15 @@ const putListsContract = {
   summary: 'edit LIST',
 } satisfies AppRoute;
 
+const postIdeasReorderContract = {
+  method: 'POST',
+  path: '/lists/:listID/reorder',
+  pathParams: listsSchema.postIdeasReorderRequest.pick({ listID: true }),
+  body: listsSchema.postIdeasReorderRequest.omit({ listID: true }),
+  responses: { 200: listsSchema.postIdeasReorderResponse },
+  summary: 'reorder IDEAs in specific list',
+} satisfies AppRoute;
+
 export const listsContract = {
   getListsContract,
   getUserListsContract,
@@ -61,4 +70,5 @@ export const listsContract = {
   postListsContract,
   deleteListsContract,
   putListsContract,
+  postIdeasReorderContract,
 } satisfies Record<string, AppRoute>;

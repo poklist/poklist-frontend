@@ -71,6 +71,15 @@ const putResponseSchema = createResponseSchema(
   })
 );
 
+const postIdeasReorderRequestSchema = z.object({
+  listID: z.string(),
+  ideaOrder: z.string().array(),
+});
+
+const postIdeasReorderResponseSchema = createResponseSchema(
+  z.object({ ideaOrder: z.string().array() })
+);
+
 export const listsSchema = {
   getRequest: getRequestSchema,
   getResponse: getResponseSchema,
@@ -84,4 +93,6 @@ export const listsSchema = {
   deleteResponse: deleteResponseSchema,
   putRequest: putRequestSchema,
   putResponse: putResponseSchema,
+  postIdeasReorderRequest: postIdeasReorderRequestSchema,
+  postIdeasReorderResponse: postIdeasReorderResponseSchema,
 };

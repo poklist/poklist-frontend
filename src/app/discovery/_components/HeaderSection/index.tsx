@@ -1,24 +1,16 @@
-import {
-  Button,
-  ButtonShape,
-  ButtonSize,
-  ButtonVariant,
-} from '@/components/ui/button';
 import { ExternalLinks } from '@/constants/externalLink';
-import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
+import { useLogin } from '@/hooks/useLogin';
 import { openWindow } from '@/lib/openLink';
 import useAuthStore from '@/stores/useAuthStore';
-import useCommonStore from '@/stores/useCommonStore';
-import useUserStore from '@/stores/useUserStore';
 import '@/types/global';
+import { i18n } from '@lingui/core';
 import { Trans } from '@lingui/macro';
+import { GoogleLogin } from '@react-oauth/google';
 import { useEffect } from 'react';
 
 export const HeaderSection = () => {
-  const navigateTo = useStrictNavigationAdapter();
   const { isLoggedIn } = useAuthStore();
-  const { me } = useUserStore();
-  const { setIsLoginDrawerOpen } = useCommonStore();
+  const { handleLogin, handleLoginError } = useLogin();
 
   // Clean up Google account resources
   useEffect(() => {
@@ -29,45 +21,55 @@ export const HeaderSection = () => {
     };
   }, [isLoggedIn]);
 
-  const handleSignIn = () => {
-    if (isLoggedIn && me?.userCode) {
-      navigateTo.user(me.userCode);
-    } else {
-      // 使用全域 LoginDrawer 而不是本地狀態
-      setIsLoginDrawerOpen(true);
-    }
-  };
-
   return (
     <section className="flex flex-1 items-center justify-center bg-yellow-bright-01">
       <div className="flex w-full flex-col justify-center gap-6 px-6 pb-8 pt-6">
         <div className="flex flex-col items-center justify-center">
-          <Trans>
-            <h1 className="text-h1 font-bold text-black-text-01">
-              My life in my lists
-            </h1>
-            <p className="text-t1 text-black-text-01">
-              Invitation only. Ready to join?
-            </p>
-          </Trans>
+          <h1 className="text-h1 font-bold text-black-text-01">
+            <Trans>Whoa, list-making pro!</Trans>
+          </h1>
+          <p className="text-t1 text-black-text-01">
+            <Trans>Let’s jump in</Trans>
+          </p>
         </div>
-        <div className="flex flex-col gap-2">
-          <Button
-            variant={ButtonVariant.BLACK}
-            size={ButtonSize.MD}
-            shape={ButtonShape.ROUNDED_8PX}
-            onClick={() => openWindow(ExternalLinks.SIGNUP)}
-          >
-            <Trans>Create your account</Trans>
-          </Button>
-          <Button
-            variant={ButtonVariant.WHITE}
-            size={ButtonSize.MD}
-            shape={ButtonShape.ROUNDED_8PX}
-            onClick={handleSignIn}
-          >
-            <Trans>Sign in</Trans>
-          </Button>
+        <div className="mx-12 flex flex-col gap-2 rounded-full ring-1 ring-black">
+          <GoogleLogin
+            onSuccess={(credentialResponse) => {
+              void handleLogin(credentialResponse);
+            }}
+            onError={handleLoginError}
+            useOneTap={false}
+            type="standard"
+            theme="outline"
+            size="large"
+            text="signin_with"
+            shape="pill"
+          />
+        </div>
+        <div className="bg-yellow-bright-01 px-6 text-center text-[13px] text-black-text-01">
+          <Trans>
+            By continuing, you agree to our{' '}
+            <span
+              className={
+                'cursor-pointer text-black-text-01' +
+                (i18n.locale === 'en' ? ' underline decoration-[#909090]' : '')
+              }
+              onClick={() => openWindow(ExternalLinks.TERMS)}
+            >
+              Terms of Service
+            </span>
+            ,{' '}
+            <span
+              className={
+                'cursor-pointer text-black-text-01' +
+                (i18n.locale === 'en' ? ' underline decoration-[#909090]' : '')
+              }
+              onClick={() => openWindow(ExternalLinks.PRIVACY)}
+            >
+              Privacy Policy
+            </span>
+            . You confirm you&apos;re 13+.
+          </Trans>
         </div>
       </div>
     </section>

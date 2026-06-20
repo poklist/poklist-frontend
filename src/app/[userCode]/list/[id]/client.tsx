@@ -6,7 +6,7 @@ import { Tile20Background } from '@/app/user/_components/TileBackground';
 import FloatingButtonFooter from '@/components/Footer/FloatingButtonFooter';
 import BackToUserHeader from '@/components/Header/BackToUserHeader';
 import { useGetListInfiniteIdeas } from '@/hooks/api/lists/useGetListInfiniteIdeas';
-import { useGetUserInfo } from '@/hooks/api/user/useGetUserInfo';
+import { useGetUserInfo } from '@/hooks/api/users/useGetUserInfo';
 import { useLikeAction } from '@/hooks/mutations/useLikeAction';
 import { useAuthRequired } from '@/hooks/useAuthRequired';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';

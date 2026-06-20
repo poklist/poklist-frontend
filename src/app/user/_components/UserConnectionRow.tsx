@@ -1,12 +1,13 @@
 import { GetFollowersResponse } from '@/api/query/followers';
 import { Button, ButtonVariant } from '@/components/ui/button';
-import { useFollowAction } from '@/hooks/mutations/useFollowAction';
+import { useFollowAction } from '@/hooks/mutations/followUnfollow/useFollowAction';
 import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
+import useFollowingStore from '@/stores/useFollowingStore';
 import useUserStore from '@/stores/useUserStore';
 import { SocialLink } from '@/types/Relation';
 import { Trans } from '@lingui/macro';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect } from 'react';
 
 export interface UserConnectionRowProps {
   follower: GetFollowersResponse['content'][number] | SocialLink;
@@ -17,22 +18,25 @@ const UserConnectionRow = ({ follower, callback }: UserConnectionRowProps) => {
   const navigateTo = useStrictNavigateNext();
   const { me } = useUserStore();
   const { follow, unfollow, isLoading } = useFollowAction({
+    target: { userID: follower.id, userCode: follower.userCode },
     currentUserCode: me.userCode,
     currentUserID: me.id,
     shouldAllow: () => true,
   });
 
-  const [isFollowing, setIsFollowing] = useState(follower.isFollowing);
+  const { setConfirmedIsFollowing } = useFollowingStore();
 
   const onClick = () => {
-    if (isFollowing) {
-      unfollow({ params: { userID: follower.id } });
-      setIsFollowing(false);
+    if (follower.isFollowing) {
+      unfollow();
     } else {
-      follow({ params: { userID: follower.id } });
-      setIsFollowing(true);
+      follow();
     }
   };
+
+  useEffect(() => {
+    setConfirmedIsFollowing(follower.userCode, follower.isFollowing ?? false);
+  }, [follower.userCode, follower.isFollowing]);
 
   return (
     <div className="mx-4 flex justify-between" key={follower.userCode}>
@@ -60,10 +64,16 @@ const UserConnectionRow = ({ follower, callback }: UserConnectionRowProps) => {
         <Button
           disabled={isLoading}
           onClick={() => onClick()}
-          variant={isFollowing ? ButtonVariant.GRAY : ButtonVariant.BLACK}
+          variant={
+            follower.isFollowing ? ButtonVariant.GRAY : ButtonVariant.BLACK
+          }
           className="font-normal"
         >
-          {isFollowing ? <Trans>Followings</Trans> : <Trans>Follow</Trans>}
+          {follower.isFollowing ? (
+            <Trans>Followings</Trans>
+          ) : (
+            <Trans>Follow</Trans>
+          )}
         </Button>
       )}
     </div>

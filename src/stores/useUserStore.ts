@@ -1,18 +1,20 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-import { User } from '@/types/User';
+import { GetUserInfoResponse } from '@/api/query/users';
 
 export interface UserStoreState {
-  me: User;
-  setMe: (user: User) => void;
+  me: GetUserInfoResponse['content'];
+  setMe: (user: GetUserInfoResponse['content']) => void;
   resetMe: () => void;
 }
 
-export const emptyUser: User = {
+export const emptyUser: GetUserInfoResponse['content'] = {
   id: 0,
   displayName: '',
   userCode: '',
+  profileImage: '',
+  listCount: 0,
 };
 
 const useUserStore = create<UserStoreState>()(

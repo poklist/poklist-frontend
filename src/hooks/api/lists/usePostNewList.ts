@@ -1,9 +1,9 @@
-import { listsContract } from '@/api/contracts';
-import { TsRestCacheEntry } from '@/api/fetcher';
+import { listsContract, usersContract } from '@/api/contracts';
 import { listsQuery, PostListsResponse } from '@/api/query/lists';
 import listsKeys from '@/hooks/api/lists/keys';
+import usersKeys from '@/hooks/api/users/keys';
+import { updateEntryCaches } from '@/hooks/api/utils';
 import { useQueryClient } from '@tanstack/react-query';
-import { ClientInferResponseBody } from '@ts-rest/core';
 import { ErrorResponse } from '@ts-rest/react-query';
 import z from 'zod';
 
@@ -23,23 +23,29 @@ export const usePostNewList = (options: UsePostNewListOptions) => {
     onSuccess: (response) => {
       const data = response.body.content;
       try {
-        queryClient.setQueryData<
-          TsRestCacheEntry<
-            ClientInferResponseBody<
-              typeof listsContract.getUserListsContract,
-              200
-            >
-          >
-        >(listsKeys.userLists(options.userCode), (caches) => {
-          if (!caches) return caches;
-          return {
-            ...caches,
-            body: {
-              ...caches.body,
-              content: [data, ...caches.body.content],
-            },
-          };
-        });
+        updateEntryCaches<typeof listsContract.getUserListsContract>(
+          queryClient,
+          listsKeys.userLists(options.userCode),
+          (previousBody) => {
+            return {
+              ...previousBody,
+              content: [data, ...previousBody.content],
+            };
+          }
+        );
+        updateEntryCaches<typeof usersContract.getInfoContract>(
+          queryClient,
+          usersKeys.userInfo(options.userCode),
+          (previousBody) => {
+            return {
+              ...previousBody,
+              content: {
+                ...previousBody.content,
+                listCount: previousBody.content.listCount + 1,
+              },
+            };
+          }
+        );
       } catch (error) {
         console.warn('Refetch failed, but list was created:', error);
       } finally {
@@ -47,7 +53,6 @@ export const usePostNewList = (options: UsePostNewListOptions) => {
       }
     },
     onError: (error) => {
-      console.error(error);
       options.onError?.(error);
     },
   });

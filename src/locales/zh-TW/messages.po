@@ -173,16 +173,18 @@ msgid "Next wave of content"
 msgstr "下個內容浪潮"
 
 #: src/app/discovery/_components/HeaderSection/index.tsx
-msgid "<0>My life in my lists</0><1>Invitation only. Ready to join?</1>"
-msgstr "<0>靈感都在我的名單裡</0><1>歡迎受邀朋友申請帳號！</1>"
+msgid "Whoa, list-making pro!"
+msgstr "好料都在我的口袋名單"
 
 #: src/app/discovery/_components/HeaderSection/index.tsx
-msgid "Create your account"
-msgstr "申請帳號"
+#: src/components/Drawer/LoginDrawer.tsx
+msgid "Let’s jump in"
+msgstr "免費登入 立即體驗"
 
 #: src/app/discovery/_components/HeaderSection/index.tsx
-msgid "Sign in"
-msgstr "登入"
+#: src/components/Drawer/LoginDrawer.tsx
+msgid "By continuing, you agree to our <0>Terms of Service</0>, <1>Privacy Policy</1>. You confirm you're 13+."
+msgstr "登入或註冊即表示您已閱讀並同意我們的<0>《使用者條款》</0>與<1>《隱私權保護政策》</1>，並確認您已年滿 13 歲。"
 
 #: src/app/discovery/_components/ListSection/index.tsx
 #: src/constants/Lists/i18n.ts
@@ -691,22 +693,6 @@ msgstr "名單裝著每一筆靈感，從哪裡開寫，隨心所欲。"
 msgid "Create List"
 msgstr "建立新名單"
 
-#: src/components/Drawer/LoginDrawer.tsx
-msgid "Right now, only invited users can log in"
-msgstr "現在僅開放受邀請的用戶登入體驗"
-
-#: src/components/Drawer/LoginDrawer.tsx
-msgid "Already got your invite? Jump in and apply now!"
-msgstr "收到邀請了嗎？現在就去申請加入！"
-
-#: src/components/Drawer/LoginDrawer.tsx
-msgid "New to Relist? Get started!"
-msgstr "第一次登入 RELIST ？立即申請"
-
-#: src/components/Drawer/LoginDrawer.tsx
-msgid "By continuing, you agree to our <0>Terms of Service</0>, <1>Privacy Policy</1>. You confirm you're 13+."
-msgstr "登入或註冊即表示您已閱讀並同意我們的<0>《使用者條款》</0>與<1>《隱私權保護政策》</1>，並確認您已年滿 13 歲。"
-
 #: src/components/FakePage/EditFieldFakePage.tsx
 msgid "Enter your text here"
 msgstr "請輸入內容"
@@ -1135,6 +1121,14 @@ msgstr "請先登入以進行此操作"
 #: src/hooks/useCheckStorage.ts
 msgid "The app is outdated, please login again"
 msgstr "網頁更新，請重新登入"
+
+#: src/hooks/useLogin.ts
+msgid "Right now, only invited users can log in"
+msgstr "現在僅開放受邀請的用戶登入體驗"
+
+#: src/hooks/useLogin.ts
+msgid "Already got your invite? Jump in and apply now!"
+msgstr "收到邀請了嗎？現在就去申請加入！"
 
 #: src/lib/validator.ts
 msgid "Hey, the title can't be left empty!"

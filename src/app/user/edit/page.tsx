@@ -10,7 +10,7 @@ import LinkIconWrapper from '@/components/ui/wrappers/LinkIconWrapper';
 import { socialLinkStarterMap } from '@/constants/User';
 import { EditFieldVariant, FieldType } from '@/enums/EditField/index.enum';
 import { SocialLinkType } from '@/enums/index.enum';
-import { useEditProfile } from '@/hooks/mutations/useEditProfile';
+import { usePutSelfInfo } from '@/hooks/api/users/usePutSelfInfo';
 import { useAuthCheck } from '@/hooks/useAuth';
 import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
 import { extractUsernameFromUrl, urlPreview } from '@/lib/utils';
@@ -36,7 +36,9 @@ const EditUserPage: React.FC = () => {
     isModified,
   } = useEditProfileStore();
   const { checkAuthAndRedirect } = useAuthCheck();
-  const { editProfile } = useEditProfile();
+  const { mutate: editProfile } = usePutSelfInfo({
+    onSuccess: (response) => navigateTo.user(response.userCode),
+  });
   const { openFakePage, closeFakePage } = useFakePage();
   const socialLinkTypeList = Object.values(SocialLinkType);
 
@@ -240,7 +242,7 @@ const EditUserPage: React.FC = () => {
   };
 
   const onSubmit = () => {
-    editProfile({ newUserInfo });
+    editProfile({ body: newUserInfo });
   };
 
   useEffect(() => {

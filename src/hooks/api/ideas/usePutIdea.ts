@@ -1,11 +1,10 @@
 import { ideasContract, listsContract } from '@/api/contracts';
-import { InfiniteCache, TsRestCacheEntry } from '@/api/fetcher';
 import { ideasQuery, PutIdeasResponse } from '@/api/query/ideas';
 import ideasKeys from '@/hooks/api/ideas/keys';
 import listsKeys from '@/hooks/api/lists/keys';
+import { updateEntryCaches, updateInfiniteCaches } from '@/hooks/api/utils';
 import { toBackendTimestamp } from '@/lib/time';
 import { useQueryClient } from '@tanstack/react-query';
-import { ClientInferResponseBody } from '@ts-rest/core';
 
 interface UsePutIdeaOptions {
   onSuccess?: (data: PutIdeasResponse['content']) => void;
@@ -18,37 +17,29 @@ export const usePutIdea = (options: UsePutIdeaOptions) => {
       const newData = response.body.content;
       try {
         const updatedAt = toBackendTimestamp(new Date());
-        queryClient.setQueryData<
-          TsRestCacheEntry<
-            ClientInferResponseBody<typeof ideasContract.getIdeasContract, 200>
-          >
-        >(ideasKeys.idea(newData.id), (caches) => {
-          if (!caches) return caches;
-          return {
-            ...caches,
-            body: {
-              ...caches.body,
+        updateEntryCaches<typeof ideasContract.getIdeasContract>(
+          queryClient,
+          ideasKeys.idea(newData.id),
+          (previousBody) => {
+            return {
+              ...previousBody,
               content: {
-                ...caches.body.content,
+                ...previousBody.content,
                 title: newData.title,
                 description: newData.description,
                 coverImage:
-                  request.body.coverImage ?? caches.body.content.coverImage,
+                  request.body.coverImage ?? previousBody.content.coverImage,
                 externalLink: newData.externalLink,
                 updatedAt,
               },
-            },
-          };
-        });
-        queryClient.setQueryData<
-          InfiniteCache<
-            ClientInferResponseBody<typeof listsContract.getListsContract, 200>
-          >
-        >(listsKeys.infiniteIdeas(newData.listID), (caches) => {
-          if (!caches) return caches;
-          return {
-            pageParams: caches.pageParams,
-            pages: caches.pages.map((page) => {
+            };
+          }
+        );
+        updateInfiniteCaches<typeof listsContract.getListsContract>(
+          queryClient,
+          listsKeys.infiniteIdeas(newData.listID),
+          (previousPages) => {
+            return previousPages.map((page) => {
               const content = page.body.content;
               const updatedIdeas = content.ideas.map((idea) =>
                 idea.id === newData.id
@@ -68,9 +59,9 @@ export const usePutIdea = (options: UsePutIdeaOptions) => {
                   content: { ...content, updatedAt, ideas: updatedIdeas },
                 },
               };
-            }),
-          };
-        });
+            });
+          }
+        );
       } catch (error) {
         console.warn('Refetch failed, but idea was edited: ', error);
       } finally {

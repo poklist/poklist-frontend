@@ -10,7 +10,7 @@ import {
 import LinkIconWrapper from '@/components/ui/wrappers/LinkIconWrapper';
 import { DrawerIds } from '@/constants/Drawer';
 import { SocialLinkType } from '@/enums/index.enum';
-import { useFollowAction } from '@/hooks/mutations/useFollowAction';
+import { useFollowAction } from '@/hooks/mutations/followUnfollow/useFollowAction';
 import { useAuthWrapper } from '@/hooks/useAuth';
 import { useAuthRequired } from '@/hooks/useAuthRequired';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
@@ -24,14 +24,13 @@ import {
 import useAuthStore from '@/stores/useAuthStore';
 import useFollowingStore from '@/stores/useFollowingStore';
 import useUserStore from '@/stores/useUserStore';
-import { User } from '@/types/User';
 import { t, Trans } from '@lingui/macro';
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
 import { HeroSectionSkeleton } from '@/app/user/_components/HeroSection/HeroSectionSkeleton';
 import UserConnectionStats from '@/app/user/_components/HeroSection/UserConnectionStats';
 import { MessageType } from '@/enums/Style/index.enum';
-import { useGetUserInfo } from '@/hooks/api/user/useGetUserInfo';
+import { useGetUserInfo } from '@/hooks/api/users/useGetUserInfo';
 import { useUserRouteContext } from '@/hooks/useUserRouteContext';
 
 const HeroSection: React.FC = () => {
@@ -67,11 +66,7 @@ const HeroSection: React.FC = () => {
       console.error(error);
       navigateTo.home();
     },
-  }) satisfies {
-    data: User | undefined;
-    isLoading: boolean;
-    isError: boolean;
-  };
+  });
 
   useEffect(() => {
     if (isError) {
@@ -94,8 +89,12 @@ const HeroSection: React.FC = () => {
     unfollow,
     isPending: isFollowPending,
   } = useFollowAction({
+    target: {
+      userCode: currentPageUser?.userCode || '',
+      userID: currentPageUser?.id || 0,
+    },
     currentUserCode: currentPageUser?.userCode || '',
-    currentUserID: currentPageUser?.id || -1,
+    currentUserID: currentPageUser?.id || 0,
     shouldAllow: () => isLoggedIn,
     onNotAllowed: handleAuthRequired,
   });
@@ -189,13 +188,13 @@ const HeroSection: React.FC = () => {
 
   const handleFollow = withAuth(() => {
     if (currentPageUser) {
-      follow({ params: { userID: currentPageUser.id } });
+      follow();
     }
   });
 
   const handleUnfollow = withAuth(() => {
     if (currentPageUser) {
-      unfollow({ params: { userID: currentPageUser.id } });
+      unfollow();
     }
   });
 

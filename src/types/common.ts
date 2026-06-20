@@ -36,7 +36,13 @@ export const IdeaFormSchema = z.object({
       return link;
     })
     .pipe(z.string().url().or(z.literal(''))),
-  coverImage: z.string().or(z.literal('')).nullable().optional(), // FUTURE: base64 check
+  coverImage: z.string().nullable().optional().or(z.literal('')), // FUTURE: base64 check
+  // .regex(
+  //   /^data:image\/(jpeg|png|webp|gif);base64,[A-Za-z0-9+/=]+$/,
+  //   "必須是有效的 Base64 圖片格式 (支援 jpg, png, webp, gif)"
+  // )
+  // .max(MAX_BASE64_LENGTH, "圖片檔案過大")
+  // .transform((val) => (val === '' ? null : val));
 });
 
 export const ListFormSchema = IdeaFormSchema.extend({

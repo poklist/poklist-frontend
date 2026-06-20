@@ -1,56 +1,69 @@
-import axios, { AxiosPayload } from '@/api/axios';
 import {
   followersContract,
   followingsContract,
-  userContract,
+  usersContract,
 } from '@/api/contracts';
 import { TanStackCache } from '@/api/fetcher';
 import { GetFollowersResponse } from '@/api/query/followers';
-import { GetUserInfoResponse } from '@/api/query/user';
+import { GetUserInfoResponse } from '@/api/query/users';
 import QueryKeys from '@/constants/queryKeys';
 import followersKeys from '@/hooks/api/followers/keys';
 import followingsKeys from '@/hooks/api/followings/keys';
-import userKeys from '@/hooks/api/user/keys';
-import { createOptimisticUpdateHandler } from '@/hooks/mutations/optimisticUpdateHandler';
+import usersKeys from '@/hooks/api/users/keys';
 import useFollowingStore from '@/stores/useFollowingStore';
 import useUserStore from '@/stores/useUserStore';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { ClientInferResponseBody } from '@ts-rest/core';
-import { AxiosError, AxiosRequestConfig, Method } from 'axios';
 import { useRef } from 'react';
+import { usePostFollowUser } from '../api/follow/usePostFollowUser';
+import { usePostUnfollowUser } from '../api/unfollow/usePostUnfollowUser';
+import {
+  FollowActionOptions,
+  FollowActionReturn,
+} from './followUnfollow/schema';
+import { createOptimisticUpdateHandler } from './optimisticUpdateHandler';
 
-interface FollowActionOptions {
-  currentUserCode: string;
-  currentUserID: number;
-  debounceMs?: number;
-  shouldAllow?: () => boolean;
-  onNotAllowed?: () => void;
-  onUnauthorized?: () => void;
-  onSuccess?: (res?: unknown, variables?: AxiosPayload) => void;
-  onError?: (error?: unknown, variables?: AxiosPayload) => void;
-}
+// interface FollowTarget {
+//   userID: number;
+//   userCode: string;
+// }
 
-interface FollowActionReturn {
-  follow: (variables: { params: { userID: number } }) => void;
-  unfollow: (variables: { params: { userID: number } }) => void;
-  cancelPending: () => void;
-  isLoading: boolean;
-  isPending: boolean;
-  isError: boolean;
-  isSuccess: boolean;
-  error: unknown;
-  data: unknown;
-}
+// interface FollowActionOptions {
+//   target: FollowTarget;
+//   listOwner?: { userID: number; userCode: string };
+//   currentUserCode: string;
+//   currentUserID: number;
+//   debounceMs?: number;
+//   shouldAllow?: () => boolean;
+//   onNotAllowed?: () => void;
+//   onSuccess?: (data: PostFollowResponse['content']) => void;
+//   onError?: (
+//     error: unknown,
+//     request?: PostFollowRequest | PostUnfollowRequest
+//   ) => void;
+// }
+
+// interface FollowActionReturn {
+//   follow: () => void;
+//   unfollow: () => void;
+//   cancelPending: () => void;
+//   isLoading: boolean;
+//   isPending: boolean;
+//   isError: boolean;
+//   isSuccess: boolean;
+//   error: unknown;
+//   data: unknown;
+// }
 
 const debounceMap = new Map<string, ReturnType<typeof setTimeout>>();
 
 export const useFollowAction = ({
+  target,
   currentUserCode,
   currentUserID,
   debounceMs = 5000,
   shouldAllow,
   onNotAllowed,
-  onUnauthorized,
   onSuccess,
   onError,
 }: FollowActionOptions): FollowActionReturn => {
@@ -59,9 +72,8 @@ export const useFollowAction = ({
   const { me } = useUserStore();
   const {
     setIsFollowing,
-    setFollowerCount,
     getConfirmedIsFollowing,
-    setConfirmedIsFollowing,
+    hasConfirmedFollowingState,
   } = useFollowingStore();
 
   const latestSocialLinkRef = useRef<
@@ -73,8 +85,8 @@ export const useFollowAction = ({
     isFollowing: boolean,
     countDelta: number
   ) => {
-    setIsFollowing(currentUserCode, isFollowing);
-    setFollowerCount(currentUserCode, countDelta);
+    setIsFollowing(target.userCode, isFollowing);
+    // setFollowerCount(currentUserCode, countDelta);
 
     const ensureLatestSocialLink = () => {
       if (latestSocialLinkRef.current?.id === targetUserID) return;
@@ -90,11 +102,11 @@ export const useFollowAction = ({
       }
 
       const followersResponse = queryClient.getQueryData<GetFollowersResponse>(
-        followersKeys.user({ userID: currentUserID })
+        followersKeys.user(currentUserID)
       );
 
       const followingsResponse = queryClient.getQueryData<GetFollowersResponse>(
-        followingsKeys.user({ userID: currentUserID })
+        followingsKeys.user(currentUserID)
       );
 
       const foundInFollowers = Array.isArray(followersResponse?.content)
@@ -121,7 +133,7 @@ export const useFollowAction = ({
           200
         >
       >
-    >(followersKeys.user({ userID: currentUserID }), (followersResponse) => {
+    >(followersKeys.user(currentUserID), (followersResponse) => {
       if (!followersResponse) return followersResponse;
 
       const exists = Array.isArray(followersResponse.body.content)
@@ -181,7 +193,7 @@ export const useFollowAction = ({
           200
         >
       >
-    >(followingsKeys.user({ userID: currentUserID }), (followingsResponse) => {
+    >(followingsKeys.user(currentUserID), (followingsResponse) => {
       if (!followingsResponse || !latestSocialLinkRef.current)
         return followingsResponse;
 
@@ -231,9 +243,9 @@ export const useFollowAction = ({
     );
     queryClient.setQueryData<
       TanStackCache<
-        ClientInferResponseBody<typeof userContract.getInfoContract, 200>
+        ClientInferResponseBody<typeof usersContract.getInfoContract, 200>
       >
-    >(userKeys.userInfo(currentUserCode), (oldData) => {
+    >(usersKeys.userInfo(currentUserCode), (oldData) => {
       if (!oldData) return oldData;
       return {
         ...oldData,
@@ -249,127 +261,67 @@ export const useFollowAction = ({
     });
   };
 
-  const followMutation = useMutation({
-    mutationKey: [QueryKeys.USER, currentUserCode, 'follow'],
-    mutationFn: async (variables: AxiosPayload) => {
-      const config: AxiosRequestConfig = {
-        url: '/follow',
-        method: 'POST' satisfies Method,
-        ...(variables?.params && { params: variables.params }),
-      };
-
-      return axios.request(config);
-    },
-    onSuccess: (res: unknown, variables: AxiosPayload) => {
-      setConfirmedIsFollowing(currentUserCode, true);
-      queryClient.setQueryData<
-        TanStackCache<
-          ClientInferResponseBody<typeof userContract.getInfoContract, 200>
-        >
-      >(userKeys.userInfo(currentUserCode), (oldData) => {
-        if (!oldData) return oldData;
-        return {
-          ...oldData,
-          body: {
-            ...oldData.body,
-            content: {
-              ...oldData.body.content,
-              isFollowing: true,
-            },
-          },
-        };
-      });
-      onSuccess?.(res, variables);
-    },
-    onError: (error: AxiosError, variables: AxiosPayload) => {
-      if (error.response?.status === 401) {
-        onUnauthorized?.();
-      } else {
-        onError?.(error, variables);
-      }
+  const followMutation = usePostFollowUser({
+    targetUserCode: target.userCode,
+    onSuccess: (data) => onSuccess?.(data),
+    onError: (error, request) => {
+      // rollback delta，從 request 取回 target
+      createOptimisticUpdateHandler(
+        1,
+        request.userID,
+        updateFollowCache
+      ).rollback();
+      onError?.(error, request);
     },
   });
 
-  const unfollowMutation = useMutation({
-    mutationKey: [QueryKeys.USER, currentUserCode, 'unfollow'],
-    mutationFn: async (variables: AxiosPayload) => {
-      const config: AxiosRequestConfig = {
-        url: '/unfollow',
-        method: 'POST' satisfies Method,
-        ...(variables?.params && { params: variables.params }),
-      };
-
-      return axios.request(config);
-    },
-    onSuccess: (res: unknown, variables: AxiosPayload) => {
-      setConfirmedIsFollowing(currentUserCode, false);
-      queryClient.setQueryData<
-        TanStackCache<
-          ClientInferResponseBody<typeof userContract.getInfoContract, 200>
-        >
-      >(userKeys.userInfo(currentUserCode), (oldData) => {
-        if (!oldData) return oldData;
-        return {
-          ...oldData,
-          body: {
-            ...oldData.body,
-            content: {
-              ...oldData.body.content,
-              isFollowing: false,
-            },
-          },
-        };
-      });
-      onSuccess?.(res, variables);
-    },
-    onError: (error: AxiosError, variables: AxiosPayload) => {
-      if (error.response?.status === 401) {
-        onUnauthorized?.();
-      } else {
-        onError?.(error, variables);
-      }
+  const unfollowMutation = usePostUnfollowUser({
+    targetUserCode: target.userCode,
+    onSuccess: (data) => onSuccess?.(data),
+    onError: (error, request) => {
+      // rollback delta，從 request 取回 target
+      createOptimisticUpdateHandler(
+        -1,
+        request.userID,
+        updateFollowCache
+      ).rollback();
+      onError?.(error, request);
     },
   });
 
   const createDebouncedAction = (optimisticValue: boolean) => {
-    return ({ params }: { params: { userID: number } }) => {
+    return () => {
+      const { userID, userCode } = target;
       if (shouldAllow && !shouldAllow()) {
         onNotAllowed?.();
         return;
       }
 
-      const debounceKey = `follow-${currentUserCode}`;
+      // key 在 target 上：不同 target 各自有 debounce timer，互不干擾
+      const debounceKey = `follow-${userCode}`;
       clearTimeout(debounceMap.get(debounceKey));
       const delta = optimisticValue ? 1 : -1;
 
-      const optimisticHandler = createOptimisticUpdateHandler(
-        delta,
-        params.userID,
-        updateFollowCache
-      );
-
       // 樂觀更新
-      optimisticHandler.optimisticUpdate();
+      createOptimisticUpdateHandler(
+        delta,
+        userID,
+        updateFollowCache
+      ).optimisticUpdate();
 
       const timer = setTimeout(() => {
         debounceMap.delete(debounceKey);
-
-        // 如 Optimistic 已與 confirmed 一致就不打 API
-        const confirmedValue = getConfirmedIsFollowing(currentUserCode);
-        if (optimisticValue === confirmedValue) {
+        // confirmed 比對拿 target 的，不是拿 currentUserCode 的
+        if (
+          hasConfirmedFollowingState(userCode) &&
+          optimisticValue === getConfirmedIsFollowing(userCode)
+        )
           return;
-        }
 
-        // 依目前 optimistic 期望選正確 mutation
         const targetMutation = optimisticValue
           ? followMutation
           : unfollowMutation;
-        targetMutation.mutate(
-          { params },
-          {
-            onError: () => optimisticHandler.rollback(),
-          }
-        );
+        targetMutation.mutate({ query: { userID }, body: {} });
       }, debounceMs);
 
       debounceMap.set(debounceKey, timer);
@@ -380,7 +332,7 @@ export const useFollowAction = ({
   const unfollow = createDebouncedAction(false);
 
   const cancelPending = () => {
-    const debounceKey = `follow-${currentUserCode}`;
+    const debounceKey = `follow-${target.userCode}`;
     const existingTimer = debounceMap.get(debounceKey);
     if (existingTimer) {
       clearTimeout(existingTimer);
