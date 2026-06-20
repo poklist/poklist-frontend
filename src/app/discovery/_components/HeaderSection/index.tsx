@@ -6,11 +6,22 @@ import '@/types/global';
 import { i18n } from '@lingui/core';
 import { Trans } from '@lingui/macro';
 import { GoogleLogin } from '@react-oauth/google';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export const HeaderSection = () => {
   const { isLoggedIn } = useAuthStore();
   const { handleLogin, handleLoginError } = useLogin();
+  const [buttonWidth, setButtonWidth] = useState(376);
+
+  useEffect(() => {
+    const updateWidth = () => {
+      setButtonWidth(window.innerWidth - 144);
+    };
+
+    updateWidth();
+    window.addEventListener('resize', updateWidth);
+    return () => window.removeEventListener('resize', updateWidth);
+  }, []);
 
   // Clean up Google account resources
   useEffect(() => {
@@ -44,6 +55,7 @@ export const HeaderSection = () => {
             size="large"
             text="signin_with"
             shape="pill"
+            width={buttonWidth.toString()}
           />
         </div>
         <div className="bg-yellow-bright-01 px-6 text-center text-[13px] text-black-text-01">
