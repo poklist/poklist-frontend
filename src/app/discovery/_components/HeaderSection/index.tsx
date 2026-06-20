@@ -37,7 +37,7 @@ export const HeaderSection = () => {
       <div className="flex w-full flex-col justify-center gap-6 px-6 pb-8 pt-6">
         <div className="flex flex-col items-center justify-center">
           <h1 className="text-h1 font-bold text-black-text-01">
-            <Trans>Whoa, list-making pro!</Trans>
+            <Trans>My life is my lists</Trans>
           </h1>
           <p className="text-t1 text-black-text-01">
             <Trans>Let’s jump in</Trans>
