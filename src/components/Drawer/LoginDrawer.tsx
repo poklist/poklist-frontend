@@ -10,6 +10,7 @@ import { i18n } from '@lingui/core';
 import { Trans } from '@lingui/macro';
 import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 
 export interface LoginInfo {
   accessToken: string;
@@ -26,6 +27,17 @@ export interface LoginInfo {
 export const LoginDrawer = () => {
   const { isLoginDrawerOpen, setIsLoginDrawerOpen } = useCommonStore();
   const { handleLogin, handleLoginError } = useLogin();
+  const [buttonWidth, setButtonWidth] = useState(376);
+
+  useEffect(() => {
+    const updateWidth = () => {
+      setButtonWidth(window.innerWidth - 144);
+    };
+
+    updateWidth();
+    window.addEventListener('resize', updateWidth);
+    return () => window.removeEventListener('resize', updateWidth);
+  }, []);
 
   const handleClose = () => {
     setIsLoginDrawerOpen(false);
@@ -60,7 +72,7 @@ export const LoginDrawer = () => {
             <div className="text-center text-xl font-bold text-black-text-01">
               <Trans>Let’s jump in</Trans>
             </div>
-            <div className="mx-[4.5rem] mb-0.5 rounded-full ring-1 ring-black">
+            <div className="mx-[4.5rem] mb-0.5 rounded-full ring-1 ring-black max-w-[25rem]">
               <GoogleLogin
                 onSuccess={(credentialResponse) => {
                   void handleLogin(credentialResponse);
@@ -72,6 +84,7 @@ export const LoginDrawer = () => {
                 size="large"
                 text="signin_with"
                 shape="pill"
+                width={buttonWidth.toString()}
               />
             </div>
           </div>
