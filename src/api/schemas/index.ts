@@ -5,5 +5,6 @@ export * from './followers';
 export * from './followings';
 export * from './ideas';
 export * from './lists';
+export * from './publish';
 export * from './unfollow';
 export * from './users';
