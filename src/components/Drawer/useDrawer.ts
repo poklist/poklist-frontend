@@ -1,10 +1,15 @@
-import { DrawerContext, IDrawerContext } from '@/components/Drawer/context';
+import {
+  DrawerContext,
+  DrawerOpenOptions,
+  IDrawerContext,
+} from '@/components/Drawer/context';
 import { useContext } from 'react';
 
 interface IDrawerControls {
   isOpen: boolean;
-  openDrawer: () => void;
+  openDrawer: (options?: DrawerOpenOptions) => void;
   closeDrawer: () => void;
+  options: DrawerOpenOptions | undefined;
 }
 
 export function useDrawer(): IDrawerContext;
@@ -21,7 +26,9 @@ export function useDrawer(drawerId?: string) {
 
   return {
     isOpen: context.isDrawerOpen(drawerId),
-    openDrawer: () => context.openDrawer(drawerId),
+    openDrawer: (options?: DrawerOpenOptions) =>
+      context.openDrawer(drawerId, options),
     closeDrawer: () => context.closeDrawer(drawerId),
+    options: context.getDrawerOptions(drawerId),
   };
 }

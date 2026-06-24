@@ -68,11 +68,11 @@ export const LoginDrawer = () => {
               className="absolute left-24 top-6 -z-10 mx-auto"
             />
           </div>
-          <div className="flex flex-col justify-center gap-6 border-t border-t-black bg-yellow-bright-01 pt-8 pb-px">
+          <div className="flex flex-col justify-center gap-6 border-t border-t-black bg-yellow-bright-01 pb-px pt-8">
             <div className="text-center text-xl font-bold text-black-text-01">
               <Trans>Let’s jump in</Trans>
             </div>
-            <div className="mx-[4.5rem] pb-0.5 mb-px rounded-full ring-1 ring-black">
+            <div className="mx-[4.5rem] mb-px rounded-full pb-0.5 ring-1 ring-black">
               <GoogleLogin
                 onSuccess={(credentialResponse) => {
                   void handleLogin(credentialResponse);
@@ -88,7 +88,7 @@ export const LoginDrawer = () => {
               />
             </div>
           </div>
-          <div className="bg-yellow-bright-01 px-14 py-6 text-center text-[13px] text-black-text-01">
+          <div className="bg-yellow-bright-01 px-14 py-6 text-center text-t2 text-black-text-01">
             <Trans>
               By continuing, you agree to our{' '}
               <span

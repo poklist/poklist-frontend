@@ -164,7 +164,7 @@ const HeroSection: React.FC = () => {
             return (
               <div
                 key={linkType}
-                className="flex h-8 cursor-pointer items-center gap-2 px-2 text-[13px]"
+                className="flex h-8 cursor-pointer items-center gap-2 px-2 text-t2"
               >
                 <LinkIconWrapper variant={linkType} />
                 <a
@@ -216,14 +216,12 @@ const HeroSection: React.FC = () => {
             <AvatarImage src={currentPageUser.profileImage || undefined} />
             <AvatarFallback>{currentPageUser.displayName[0]}</AvatarFallback>
           </Avatar>
-          <p className="text-[17px] font-bold">{currentPageUser.displayName}</p>
-          <p className="text-[13px] font-semibold">
-            @{currentPageUser.userCode}
-          </p>
+          <p className="text-h2 font-bold">{currentPageUser.displayName}</p>
+          <p className="text-t2 font-semibold">@{currentPageUser.userCode}</p>
           {currentPageUser.bio && (
             <p
               ref={bioRef}
-              className="line-clamp-1 max-w-[350px] text-[13px] font-normal"
+              className="line-clamp-1 max-w-[350px] text-t2 font-normal"
               onClick={onOpenBioDrawer}
             >
               {currentPageUser.bio}

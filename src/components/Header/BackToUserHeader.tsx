@@ -116,7 +116,7 @@ const BackToUserHeader: React.FC<IBackToUserHeaderProps> = ({
               <AvatarImage src={owner?.profileImage || undefined} />
               <AvatarFallback>{owner?.displayName?.[0]}</AvatarFallback>
             </Avatar>
-            <p className="font-regular ml-2 line-clamp-1 text-[15px]">
+            <p className="font-regular ml-2 line-clamp-1 text-t1">
               {owner?.displayName}
             </p>
           </div>

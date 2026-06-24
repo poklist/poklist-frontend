@@ -1,33 +1,56 @@
 'use client';
 
+import { publishContracts } from '@/api/contracts';
+import { TsRestCacheEntry } from '@/api/fetcher';
 import { PostIdeasRequest } from '@/api/query/ideas';
 import IdeaForm from '@/app/idea/_components/Form';
-import ListSelectorFakePage from '@/app/idea/_components/ListSelectorFakePage.tsx';
+import ListSelectorFakePage from '@/app/idea/_components/ListSelectorFakePage';
+import { useDrawer } from '@/components/Drawer/useDrawer';
 import { useFakePage } from '@/components/FakePage/useFakePage';
+import { DrawerIds } from '@/constants/Drawer';
 import { LocalStorageKey } from '@/enums/index.enum';
 import { usePostNewIdea } from '@/hooks/api/ideas/usePostNewIdea';
 import { useGetUserLists } from '@/hooks/api/lists/useGetUserLists';
+import publishKeys from '@/hooks/api/publish/keys';
+import { useCheckCreateQuota } from '@/hooks/queries/useCheckCreateQuota';
 import { useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { removeLocalStorage } from '@/lib/utils';
 import useUserStore from '@/stores/useUserStore';
+import { useQueryClient } from '@tanstack/react-query';
+import { ClientInferResponseBody } from '@ts-rest/core';
 import { useSearchParams } from 'next/navigation';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 const IdeaCreatePage: React.FC = () => {
   const navigateTo = useStrictNavigationAdapter();
+
   const searchParams = useSearchParams();
   const listID = searchParams?.get('listID');
   const isNavigateFromList = listID !== null;
+
   const { me } = useUserStore();
+
+  const listsLimits = useQueryClient().getQueryData<
+    TsRestCacheEntry<
+      ClientInferResponseBody<
+        typeof publishContracts.getListsLimitsContract,
+        200
+      >
+    >
+  >(publishKeys.listsLimits());
+
+  const { openDrawer } = useDrawer(DrawerIds.SIGNUP_DRAWER_ID);
 
   const { openFakePage } = useFakePage();
 
   const { withAuth } = useAuthWrapper();
 
+  const { checkCanCreate } = useCheckCreateQuota();
+
   const { mutate: createIdea } = usePostNewIdea({
     onSuccess: (data) => {
-      navigateTo.viewList(me?.userCode, data.listID);
+      navigateTo.viewList(me.userCode, data.listID);
       removeLocalStorage(LocalStorageKey.IDEA_DRAFT);
     },
     // toast({
@@ -38,7 +61,7 @@ const IdeaCreatePage: React.FC = () => {
 
   const { data: lists } = useGetUserLists({
     userCode: me.userCode,
-    limit: 99,
+    limit: listsLimits?.body.content.usedCount ?? 99,
   });
 
   const onDismissCreate = (isFormEmpty: boolean) => {
@@ -56,6 +79,18 @@ const IdeaCreatePage: React.FC = () => {
       }
     }
   );
+
+  useEffect(() => {
+    if (!me.userCode) return;
+    let active = true;
+    void (async () => {
+      const canCreate = await checkCanCreate(listID ?? undefined);
+      if (active && !canCreate) openDrawer();
+    })();
+    return () => {
+      active = false;
+    };
+  }, [me.userCode, listID]);
 
   return (
     <div className="mt-16 flex min-h-screen flex-col gap-6 sm:min-h-[calc(100vh-196px)]">

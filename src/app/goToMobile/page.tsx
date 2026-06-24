@@ -20,10 +20,10 @@ export default function GoToMobilePage() {
           priority
         />
         <div className="mt-6 flex flex-col items-start">
-          <p className="text-start text-[17px] font-bold text-black-text-01">
+          <p className="text-start text-h2 font-bold text-black-text-01">
             <Trans>Relist works best on mobile.</Trans>
           </p>
-          <p className="text-start text-[17px] font-bold text-black-text-01">
+          <p className="text-start text-h2 font-bold text-black-text-01">
             <Trans>Use a mobile device for the best experience.</Trans>
           </p>
         </div>

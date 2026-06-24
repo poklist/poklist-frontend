@@ -17,7 +17,7 @@ export const ListSectionSkeleton: React.FC = () => {
           key={index}
           className="flex min-h-[72px] items-center justify-between p-4 -tracking-1.1%"
         >
-          <Text as="p" className="text-[15px] font-semibold text-black-text-01">
+          <Text as="p" className="text-t1 font-semibold text-black-text-01">
             <Skeleton>{placeholder}</Skeleton>
           </Text>
           <Skeleton width="40px" height="40px" />

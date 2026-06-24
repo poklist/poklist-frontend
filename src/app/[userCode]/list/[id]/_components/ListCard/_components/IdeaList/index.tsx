@@ -91,11 +91,11 @@ export const IdeaList: React.FC<IdeaListProps> = ({
               idea.coverImage ? 'w-[calc(100%-72px)]' : 'w-full'
             )}
           >
-            <p className="break-normal text-[15px] font-semibold text-black-text-01 [overflow-wrap:anywhere]">
+            <p className="break-normal text-t1 font-semibold text-black-text-01 [overflow-wrap:anywhere]">
               {idea.title}
             </p>
             {idea.description && (
-              <p className="line-clamp-1 block truncate text-[13px] text-gray-storm-01">
+              <p className="line-clamp-1 block truncate text-t2 text-gray-storm-01">
                 {idea.description}
               </p>
             )}
@@ -139,7 +139,7 @@ const IdeaListSkeleton: React.FC = () => (
 );
 
 const IdeaListError: React.FC = () => (
-  <div className="py-6 text-center text-[13px] text-gray-storm-01">
+  <div className="py-6 text-center text-t2 text-gray-storm-01">
     Failed to load ideas.
   </div>
 );

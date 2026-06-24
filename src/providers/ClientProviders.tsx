@@ -3,6 +3,7 @@
 import { DrawerProvider } from '@/components/Drawer';
 import CreateListOrIdeaDrawer from '@/components/Drawer/CreateListOrIdeaDrawer';
 import { LoginDrawer } from '@/components/Drawer/LoginDrawer';
+import SignupDrawer from '@/components/Drawer/SignupDrawer';
 import { ErrorDrawer } from '@/components/ErrorDrawer';
 import { FakePageProvider } from '@/components/FakePage';
 import LoadingSpinner from '@/components/Loading';
@@ -92,10 +93,11 @@ export const ClientProviders = ({ children }: ClientProvidersProps) => {
             {children}
 
             {/* 全域 UI 組件 */}
-            <GlobalLoading />
-            <LoginDrawer />
-            <ErrorDrawer />
             <CreateListOrIdeaDrawer />
+            <LoginDrawer />
+            <SignupDrawer />
+            <ErrorDrawer />
+            <GlobalLoading />
 
             <ReactQueryDevtools initialIsOpen={false} />
           </FakePageProvider>

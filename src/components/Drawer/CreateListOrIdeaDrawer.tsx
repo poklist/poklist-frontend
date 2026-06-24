@@ -7,6 +7,7 @@ import {
   ButtonVariant,
 } from '@/components/ui/button';
 import { DrawerIds } from '@/constants/Drawer';
+import { useGetListsLimits } from '@/hooks/api/publish/useGetListsLimits';
 import { useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
 import { i18n } from '@lingui/core';
@@ -18,10 +19,16 @@ const CreateListOrIdeaDrawer: React.FC = () => {
   const { withAuth } = useAuthWrapper();
   const navigateTo = useStrictNavigateNext();
   const { closeDrawer } = useDrawer(DrawerIds.CREATE_LIST_OR_IDEA_DRAWER_ID);
+  const { openDrawer } = useDrawer(DrawerIds.SIGNUP_DRAWER_ID);
+  const { data } = useGetListsLimits({});
 
   const handleCreateList = withAuth(() => {
-    closeDrawer();
-    navigateTo.createList();
+    if ((data?.remainingCount ?? 0) > 0) {
+      closeDrawer();
+      navigateTo.createList();
+    } else {
+      openDrawer({ isCloseable: true });
+    }
   });
 
   const handleCreateIdea = withAuth(() => {
