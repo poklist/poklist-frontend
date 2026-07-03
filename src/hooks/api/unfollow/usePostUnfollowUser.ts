@@ -9,6 +9,8 @@ import {
   PostUnfollowResponse,
   unfollowQuery,
 } from '@/api/query/unfollow';
+import followersKeys from '@/hooks/api/followers/keys';
+import followingsKeys from '@/hooks/api/followings/keys';
 import unfollowKeys from '@/hooks/api/unfollow/keys';
 import usersKeys from '@/hooks/api/users/keys';
 import { updateEntryCaches } from '@/hooks/api/utils';
@@ -17,8 +19,6 @@ import useUserStore from '@/stores/useUserStore';
 import { useQueryClient } from '@tanstack/react-query';
 import { ErrorResponse } from '@ts-rest/react-query';
 import z from 'zod';
-import followersKeys from '../followers/keys';
-import followingsKeys from '../followings/keys';
 
 type UsePostUnfollowUserOptions = {
   targetUserCode: z.input<z.ZodString>;

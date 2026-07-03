@@ -1,3 +1,6 @@
+import { publishQuery } from '@/api/query/publish';
+import { SignupDrawerVariant } from '@/components/Drawer/SignupDrawer';
+import { useDrawer } from '@/components/Drawer/useDrawer';
 import { useFakePage } from '@/components/FakePage/useFakePage';
 import {
   Button,
@@ -10,21 +13,27 @@ import IconAddCircle from '@/components/ui/icons/AddCircleIcon';
 import IconAdd from '@/components/ui/icons/AddIcon';
 import IconLeftArrowThin from '@/components/ui/icons/LeftArrowThinIcon';
 import IconRightArrowSave from '@/components/ui/icons/RightArrowSaveIcon';
+import { DrawerIds } from '@/constants/Drawer';
 import { LocalStorageKey } from '@/enums/index.enum';
 import { usePostNewIdea } from '@/hooks/api/ideas/usePostNewIdea';
+import publishKeys from '@/hooks/api/publish/keys';
+import { useGetListsLimits } from '@/hooks/api/publish/useGetListsLimits';
 import { useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { cn, removeLocalStorage } from '@/lib/utils';
+import useAuthStore from '@/stores/useAuthStore';
 import useUserStore from '@/stores/useUserStore';
 import { Trans } from '@lingui/macro';
 import { useState } from 'react';
 
 const ListSelectorFakePage: React.FC = () => {
   const { me } = useUserStore();
+  const { isLoggedIn } = useAuthStore();
   const navigateTo = useStrictNavigationAdapter();
 
   const { isOpen, closeFakePage, payload } = useFakePage();
   const open = isOpen('listSelector');
+  const { openDrawer } = useDrawer(DrawerIds.SIGNUP_DRAWER_ID);
 
   const { withAuth } = useAuthWrapper();
 
@@ -34,13 +43,28 @@ const ListSelectorFakePage: React.FC = () => {
       onClosePage();
       removeLocalStorage(LocalStorageKey.IDEA_DRAFT);
     },
-    // onError: (error) => {
-    //   toast({
-    //     title: error.message,
-    //     variant: MessageType.ERROR,
-    //   });
-    // },
   });
+
+  const { data } = useGetListsLimits({ enabled: isLoggedIn });
+
+  const lists = payload?.lists ?? [];
+
+  const ideaLimitResults = publishQuery.getIdeasLimits.useQueries({
+    queries: lists.map((list) => ({
+      queryKey: publishKeys.ideasLimits(list.id),
+      query: { listID: list.id },
+    })),
+  });
+
+  const canAddIdeaMap = new Map<string, boolean>(
+    lists.map((list, i) => {
+      const content = ideaLimitResults[i]?.data?.body.content;
+      const canAdd = content
+        ? content.isUnlimited || (content.remainingCount ?? 0) > 0
+        : true;
+      return [list.id, canAdd];
+    })
+  );
 
   const [selectedList, setSelectedList] = useState('');
 
@@ -103,9 +127,19 @@ const ListSelectorFakePage: React.FC = () => {
                 </div>
               ) : (
                 payload.lists?.map((list) => {
+                  const canAdd = canAddIdeaMap.get(list.id) ?? true;
                   return (
                     <div
-                      onClick={() => setSelectedList(list.id)}
+                      onClick={() => {
+                        if (canAdd) {
+                          setSelectedList(list.id);
+                        } else {
+                          openDrawer({
+                            isCloseable: true,
+                            variant: SignupDrawerVariant.IDEA_FULL,
+                          });
+                        }
+                      }}
                       className="flex max-h-14 w-full items-center justify-between border-b border-note-gray-06 bg-white p-4 font-semibold text-black-text-01"
                       key={list.id}
                     >
@@ -113,28 +147,43 @@ const ListSelectorFakePage: React.FC = () => {
                         className={cn(`line-clamp-1 max-h-14 overflow-hidden`, {
                           'text-black-tint-04':
                             selectedList !== list.id && selectedList !== '',
+                          // ||
+                          // !canAdd,
                         })}
                       >
                         {list.title}
                       </div>
-                      {selectedList === list.id ? (
-                        <div
-                          onClick={() => onCreateIdea()}
-                          className="flex min-w-16 items-center gap-0.5 rounded-lg bg-black-text-01 px-2 py-1.5 font-semibold leading-snug text-white"
-                        >
-                          <Trans>Save</Trans>
-                          <IconRightArrowSave
-                            width={14}
-                            height={12}
-                            className="min-w-3.5"
+                      {canAdd ? (
+                        selectedList === list.id ? (
+                          <div
+                            onClick={() => {
+                              if (canAdd) {
+                                onCreateIdea();
+                              } else {
+                                openDrawer({
+                                  isCloseable: true,
+                                  variant: SignupDrawerVariant.IDEA_FULL,
+                                });
+                              }
+                            }}
+                            className="flex min-w-16 items-center gap-0.5 rounded-lg bg-black-text-01 px-2 py-1.5 font-semibold leading-snug text-white"
+                          >
+                            <Trans>Save</Trans>
+                            <IconRightArrowSave
+                              width={14}
+                              height={12}
+                              className="min-w-3.5"
+                            />
+                          </div>
+                        ) : (
+                          <IconAddCircle
+                            width={18}
+                            height={18}
+                            className="min-w-[18px]"
                           />
-                        </div>
+                        )
                       ) : (
-                        <IconAddCircle
-                          width={18}
-                          height={18}
-                          className="min-w-[18px]"
-                        />
+                        <></>
                       )}
                     </div>
                   );
@@ -145,6 +194,13 @@ const ListSelectorFakePage: React.FC = () => {
                   <Button
                     disabled={selectedList !== ''}
                     onClick={() => {
+                      if ((data?.remainingCount ?? 0) <= 0) {
+                        openDrawer({
+                          isCloseable: true,
+                          variant: SignupDrawerVariant.LIST_FULL,
+                        });
+                        return;
+                      }
                       if (payload?.ideaForm) {
                         closeFakePage();
                         navigateTo.temporaryCreateList(payload.ideaForm);

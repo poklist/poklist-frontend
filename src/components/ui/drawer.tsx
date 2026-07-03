@@ -44,7 +44,7 @@ const DrawerContent = React.forwardRef<
       // For console warning
       aria-describedby={undefined}
       className={cn(
-        'fixed inset-x-0 bottom-0 z-50 flex h-auto flex-col border bg-background px-4 py-6',
+        'fixed inset-x-0 bottom-0 z-50 flex h-auto flex-col border bg-background px-4 py-6 after:absolute after:inset-x-0 after:top-full after:h-24 after:bg-inherit',
         className
       )}
       {...props}
@@ -114,6 +114,5 @@ export {
   DrawerOverlay,
   DrawerPortal,
   DrawerTitle,
-  DrawerTrigger
+  DrawerTrigger,
 };
-

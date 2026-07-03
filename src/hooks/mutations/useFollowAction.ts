@@ -7,21 +7,21 @@ import { TanStackCache } from '@/api/fetcher';
 import { GetFollowersResponse } from '@/api/query/followers';
 import { GetUserInfoResponse } from '@/api/query/users';
 import QueryKeys from '@/constants/queryKeys';
+import { usePostFollowUser } from '@/hooks/api/follow/usePostFollowUser';
 import followersKeys from '@/hooks/api/followers/keys';
 import followingsKeys from '@/hooks/api/followings/keys';
+import { usePostUnfollowUser } from '@/hooks/api/unfollow/usePostUnfollowUser';
 import usersKeys from '@/hooks/api/users/keys';
+import {
+  FollowActionOptions,
+  FollowActionReturn,
+} from '@/hooks/mutations/followUnfollow/schema';
+import { createOptimisticUpdateHandler } from '@/hooks/mutations/optimistic/optimisticUpdateHandler';
 import useFollowingStore from '@/stores/useFollowingStore';
 import useUserStore from '@/stores/useUserStore';
 import { useQueryClient } from '@tanstack/react-query';
 import { ClientInferResponseBody } from '@ts-rest/core';
 import { useRef } from 'react';
-import { usePostFollowUser } from '../api/follow/usePostFollowUser';
-import { usePostUnfollowUser } from '../api/unfollow/usePostUnfollowUser';
-import {
-  FollowActionOptions,
-  FollowActionReturn,
-} from './followUnfollow/schema';
-import { createOptimisticUpdateHandler } from './optimisticUpdateHandler';
 
 // interface FollowTarget {
 //   userID: number;

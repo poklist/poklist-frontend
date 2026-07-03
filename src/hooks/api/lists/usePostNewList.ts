@@ -1,6 +1,11 @@
-import { listsContract, usersContract } from '@/api/contracts';
+import {
+  listsContract,
+  publishContracts,
+  usersContract,
+} from '@/api/contracts';
 import { listsQuery, PostListsResponse } from '@/api/query/lists';
 import listsKeys from '@/hooks/api/lists/keys';
+import publishKeys from '@/hooks/api/publish/keys';
 import usersKeys from '@/hooks/api/users/keys';
 import { updateEntryCaches } from '@/hooks/api/utils';
 import { useQueryClient } from '@tanstack/react-query';
@@ -42,6 +47,21 @@ export const usePostNewList = (options: UsePostNewListOptions) => {
               content: {
                 ...previousBody.content,
                 listCount: previousBody.content.listCount + 1,
+              },
+            };
+          }
+        );
+        updateEntryCaches<typeof publishContracts.getListsLimitsContract>(
+          queryClient,
+          publishKeys.listsLimits(),
+          (previousBody) => {
+            if (previousBody.content.isUnlimited) return previousBody;
+            return {
+              ...previousBody,
+              content: {
+                ...previousBody.content,
+                usedCount: previousBody.content.usedCount + 1,
+                remainingCount: (previousBody.content.remainingCount ?? 0) - 1,
               },
             };
           }

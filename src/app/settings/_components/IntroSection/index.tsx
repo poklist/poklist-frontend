@@ -7,10 +7,7 @@ const IntroSection: React.FC = () => {
   const { isLoggedIn } = useAuthStore();
 
   return (
-    <div
-      id="intro-to-relist"
-      className="flex flex-col gap-6 px-4 pt-6 text-[15px]"
-    >
+    <div id="intro-to-relist" className="flex flex-col gap-6 px-4 pt-6 text-t1">
       <p>
         <strong>
           <Trans>Welcome to the Relist community!</Trans>

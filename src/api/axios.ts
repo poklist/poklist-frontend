@@ -76,13 +76,16 @@ instance.interceptors.response.use(
 
     const status = error.response?.status;
     if (status === 401) {
-      const { logout } = useAuthStore.getState();
-      toast({
-        title: i18n._(StatusErrorMessageI18n[401]),
-        variant: MessageType.SUCCESS,
-      });
-      logout();
-      window.location.href = '/';
+      const { isLoggedIn, logout } = useAuthStore.getState();
+      if (isLoggedIn) {
+        toast({
+          title: i18n._(StatusErrorMessageI18n[401]),
+          variant: MessageType.SUCCESS,
+        });
+        logout();
+        window.location.href = '/';
+      }
+
       return Promise.reject(error);
     }
 

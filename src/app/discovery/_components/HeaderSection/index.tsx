@@ -58,7 +58,7 @@ export const HeaderSection = () => {
             width={buttonWidth.toString()}
           />
         </div>
-        <div className="bg-yellow-bright-01 px-6 text-center text-[13px] text-black-text-01">
+        <div className="bg-yellow-bright-01 px-6 text-center text-t2 text-black-text-01">
           <Trans>
             By continuing, you agree to our{' '}
             <span

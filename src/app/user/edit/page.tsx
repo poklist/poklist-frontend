@@ -271,12 +271,12 @@ const EditUserPage: React.FC = () => {
       </div>
       <div id="info-section" className="px-4 pt-10">
         <div className="py-2">
-          <h2 className="text-[15px] font-semibold">
+          <h2 className="text-t1 font-semibold">
             <Trans>Profile</Trans>
           </h2>
         </div>
         <div
-          className="flex h-16 cursor-pointer items-center justify-between border-t border-gray-note-05 px-2 text-[13px]"
+          className="flex h-16 cursor-pointer items-center justify-between border-t border-gray-note-05 px-2 text-t2"
           onClick={() => onOpenFakePage(FieldType.DISPLAY_NAME)}
         >
           <p>
@@ -295,7 +295,7 @@ const EditUserPage: React.FC = () => {
           </>
         </div>
         <div
-          className="flex h-16 cursor-pointer items-center justify-between border-t border-gray-note-05 px-2 text-[13px]"
+          className="flex h-16 cursor-pointer items-center justify-between border-t border-gray-note-05 px-2 text-t2"
           onClick={() => onOpenFakePage(FieldType.USER_CODE)}
         >
           <p>
@@ -314,7 +314,7 @@ const EditUserPage: React.FC = () => {
           </>
         </div>
         <div
-          className="flex h-16 cursor-pointer items-center justify-between border-t border-gray-note-05 px-2 text-[13px]"
+          className="flex h-16 cursor-pointer items-center justify-between border-t border-gray-note-05 px-2 text-t2"
           onClick={() => onOpenFakePage(FieldType.BIO)}
         >
           <p>
@@ -335,7 +335,7 @@ const EditUserPage: React.FC = () => {
       </div>
       <div id="links-section" className="px-4 pb-20 pt-10">
         <div className="py-2">
-          <h2 className="text-[15px] font-semibold">
+          <h2 className="text-t1 font-semibold">
             <Trans context="title">Links</Trans>
           </h2>
         </div>
@@ -343,7 +343,7 @@ const EditUserPage: React.FC = () => {
           return (
             <div
               key={linkType}
-              className="flex h-16 cursor-pointer items-center gap-2 border-t border-gray-note-05 px-2 text-[13px]"
+              className="flex h-16 cursor-pointer items-center gap-2 border-t border-gray-note-05 px-2 text-t2"
               onClick={() => onOpenFakePage(linkType)}
             >
               <LinkIconWrapper variant={linkType} />

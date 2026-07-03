@@ -71,10 +71,10 @@ const BlocksSection: React.FC = () => {
     };
     setDrawerContent(
       <>
-        <h3 className="text-[17px] font-bold">
+        <h3 className="text-h2 font-bold">
           <Trans>Select your language!</Trans>
         </h3>
-        <p className="mt-1 text-[15px]">
+        <p className="mt-1 text-t1">
           <Trans>Your preferred language for a better experience.</Trans>
         </p>
         <div className="mb-10 mt-6">
@@ -112,10 +112,10 @@ const BlocksSection: React.FC = () => {
     };
     setDrawerContent(
       <>
-        <h3 className="text-[17px] font-bold">
+        <h3 className="text-h2 font-bold">
           <Trans>Select your location!</Trans>
         </h3>
-        <p className="mt-1 text-[15px]">
+        <p className="mt-1 text-t1">
           <Trans>Your location for a personalized experience.</Trans>
         </p>
         <div className="mb-10 mt-6">
@@ -221,7 +221,7 @@ const BlocksSection: React.FC = () => {
     <>
       <div
         id="blocks"
-        className="mb-16 flex flex-col gap-10 px-4 py-4 text-[15px] sm:mb-0"
+        className="mb-16 flex flex-col gap-10 px-4 py-4 text-t1 sm:mb-0"
       >
         {blocks.map((block) => {
           return (

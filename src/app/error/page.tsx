@@ -23,7 +23,7 @@ export default function ErrorPage() {
               width={101}
               height={125}
             />
-            <h2 className="text-center text-[17px] font-bold text-black-text-01">
+            <h2 className="text-center text-h2 font-bold text-black-text-01">
               <Trans>Oops something is wrong!</Trans>
             </h2>
           </div>

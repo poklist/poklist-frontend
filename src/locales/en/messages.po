@@ -370,25 +370,25 @@ msgstr "Delete draft"
 msgid "Keep editing"
 msgstr "Keep editing"
 
-#: src/app/idea/_components/ListSelectorFakePage.tsx/index.tsx
+#: src/app/idea/_components/ListSelectorFakePage/index.tsx
 msgid "Save Idea"
 msgstr "Save Idea"
 
-#: src/app/idea/_components/ListSelectorFakePage.tsx/index.tsx
+#: src/app/idea/_components/ListSelectorFakePage/index.tsx
 msgid "Select a list to save this idea"
 msgstr "Select a list to save this idea"
 
-#: src/app/idea/_components/ListSelectorFakePage.tsx/index.tsx
+#: src/app/idea/_components/ListSelectorFakePage/index.tsx
 msgid "Looks like you haven’t made a list yet. Let’s create one now!"
 msgstr "Looks like you haven’t made a list yet. Let’s create one now!"
 
-#: src/app/idea/_components/ListSelectorFakePage.tsx/index.tsx
+#: src/app/idea/_components/ListSelectorFakePage/index.tsx
 #: src/components/Footer/EditModeFooter.tsx
 #: src/components/Header/EditModeHeader.tsx
 msgid "Save"
 msgstr "Save"
 
-#: src/app/idea/_components/ListSelectorFakePage.tsx/index.tsx
+#: src/app/idea/_components/ListSelectorFakePage/index.tsx
 msgid "Create a new list"
 msgstr "Create a new list"
 
@@ -696,6 +696,46 @@ msgstr "A list groups your ideas. Start wherever you vibe."
 #: src/components/Drawer/CreateListOrIdeaDrawer.tsx
 msgid "Create List"
 msgstr "Create List"
+
+#: src/components/Drawer/SignupDrawer.tsx
+msgid "You’re good at this"
+msgstr "You’re good at this"
+
+#: src/components/Drawer/SignupDrawer.tsx
+msgid "Sign up to unlock more"
+msgstr "Sign up to unlock more"
+
+#: src/components/Drawer/SignupDrawer.tsx
+msgid "You’ve reached the list limit…"
+msgstr "You’ve reached the list limit…"
+
+#: src/components/Drawer/SignupDrawer.tsx
+msgid "Sign up free to unlock more"
+msgstr "Sign up free to unlock more"
+
+#: src/components/Drawer/SignupDrawer.tsx
+msgid "This list is full…"
+msgstr "This list is full…"
+
+#: src/components/Drawer/SignupDrawer.tsx
+msgid "Choose another list, or sign up free to unlock more access."
+msgstr "Choose another list, or sign up free to unlock more access."
+
+#: src/components/Drawer/SignupDrawer.tsx
+msgid "Trial limit reached…"
+msgstr "Trial limit reached…"
+
+#: src/components/Drawer/SignupDrawer.tsx
+msgid ""
+"Good taste deserves space. \n"
+"Sign up free to unlock it."
+msgstr ""
+"Good taste deserves space. \n"
+"Sign up free to unlock it."
+
+#: src/components/Drawer/SignupDrawer.tsx
+msgid "Sign Up"
+msgstr "Sign Up"
 
 #: src/components/FakePage/EditFieldFakePage.tsx
 msgid "Enter your text here"

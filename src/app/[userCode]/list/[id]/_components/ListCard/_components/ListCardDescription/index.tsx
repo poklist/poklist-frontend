@@ -52,7 +52,7 @@ export const ListCardDescription: React.FC<ListCardDescriptionProps> = ({
     }
 
     onExpandDescription(
-      <div className="flex h-8 cursor-pointer items-start gap-2 break-all px-2 text-[13px]">
+      <div className="flex h-8 cursor-pointer items-start gap-2 break-all px-2 text-t2">
         <LinkIconWrapper variant={SocialLinkType.CUSTOMIZED} />
         <a
           className="text-black-text-01"
@@ -70,7 +70,7 @@ export const ListCardDescription: React.FC<ListCardDescriptionProps> = ({
     <>
       {description && (
         <div
-          className="mt-6 line-clamp-1 block w-full truncate text-[15px] -tracking-1.1%"
+          className="mt-6 line-clamp-1 block w-full truncate text-t1 -tracking-1.1%"
           onClick={atClickDescription}
         >
           {description}
@@ -78,7 +78,7 @@ export const ListCardDescription: React.FC<ListCardDescriptionProps> = ({
       )}
       {externalLink && (
         <div
-          className="mt-4 flex h-8 cursor-pointer items-center gap-2 self-start text-[13px]"
+          className="mt-4 flex h-8 cursor-pointer items-center gap-2 self-start text-t2"
           onClick={handleClickExternalLink}
         >
           <LinkIconWrapper variant={SocialLinkType.CUSTOMIZED} />

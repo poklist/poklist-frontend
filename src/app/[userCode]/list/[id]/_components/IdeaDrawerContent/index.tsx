@@ -129,17 +129,17 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({
             className="mb-6 mr-6 self-center rounded-2xl border border-black"
           />
         )}
-        <div className="-tracking-2% break-normal pr-6 text-[17px] font-bold leading-[1.45] [overflow-wrap:anywhere]">
+        <div className="-tracking-2% break-normal pr-6 text-h2 font-bold leading-[1.45] [overflow-wrap:anywhere]">
           {data?.title}
         </div>
         {data?.description && (
-          <div className="mt-1 w-full whitespace-pre-line break-normal pr-5 text-[15px] leading-[1.45] -tracking-1.1% [overflow-wrap:anywhere]">
+          <div className="mt-1 w-full whitespace-pre-line break-normal pr-5 text-t1 leading-[1.45] -tracking-1.1% [overflow-wrap:anywhere]">
             {data.description}
           </div>
         )}
         {data?.externalLink && (
           <div
-            className="mt-4 flex h-8 cursor-pointer items-center gap-2 self-start pr-6 text-[13px]"
+            className="mt-4 flex h-8 cursor-pointer items-center gap-2 self-start pr-6 text-t2"
             onClick={() => {
               openWindow(data.externalLink);
             }}
@@ -152,7 +152,7 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({
         )}
         <div className="mb-20 flex w-full items-center justify-between pr-6">
           {data?.createdAt && (
-            <p className="mt-4 text-[13px] text-black-text-01">
+            <p className="mt-4 text-t2 text-black-text-01">
               {getFormattedTime(data.createdAt, i18n.locale)}
             </p>
           )}
@@ -163,7 +163,7 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({
           variant={ButtonVariant.GRAY}
           shape={ButtonShape.ROUNDED_FULL}
           size={ButtonSize.H40}
-          className="flex gap-1 border border-note-gray-06 text-[13px] text-black-gray-03"
+          className="flex gap-1 border border-note-gray-06 text-t2 text-black-gray-03"
           onClick={handleCopyHref}
         >
           <IconLink width={13} height={13} />

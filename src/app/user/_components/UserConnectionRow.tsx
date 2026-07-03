@@ -24,10 +24,19 @@ const UserConnectionRow = ({ follower, callback }: UserConnectionRowProps) => {
     shouldAllow: () => true,
   });
 
-  const { setConfirmedIsFollowing } = useFollowingStore();
+  const {
+    getIsFollowing,
+    hasFollowingState,
+    setConfirmedIsFollowing,
+    setIsFollowing,
+  } = useFollowingStore();
+
+  const isFollowing = hasFollowingState(follower.userCode)
+    ? getIsFollowing(follower.userCode)
+    : (follower.isFollowing ?? false);
 
   const onClick = () => {
-    if (follower.isFollowing) {
+    if (isFollowing) {
       unfollow();
     } else {
       follow();
@@ -35,7 +44,10 @@ const UserConnectionRow = ({ follower, callback }: UserConnectionRowProps) => {
   };
 
   useEffect(() => {
-    setConfirmedIsFollowing(follower.userCode, follower.isFollowing ?? false);
+    const initial = follower.isFollowing ?? false;
+    if (!hasFollowingState(follower.userCode))
+      setIsFollowing(follower.userCode, initial);
+    setConfirmedIsFollowing(follower.userCode, initial);
   }, [follower.userCode, follower.isFollowing]);
 
   return (
@@ -64,16 +76,10 @@ const UserConnectionRow = ({ follower, callback }: UserConnectionRowProps) => {
         <Button
           disabled={isLoading}
           onClick={() => onClick()}
-          variant={
-            follower.isFollowing ? ButtonVariant.GRAY : ButtonVariant.BLACK
-          }
+          variant={isFollowing ? ButtonVariant.GRAY : ButtonVariant.BLACK}
           className="font-normal"
         >
-          {follower.isFollowing ? (
-            <Trans>Followings</Trans>
-          ) : (
-            <Trans>Follow</Trans>
-          )}
+          {isFollowing ? <Trans>Followings</Trans> : <Trans>Follow</Trans>}
         </Button>
       )}
     </div>

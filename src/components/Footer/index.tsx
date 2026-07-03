@@ -18,7 +18,7 @@ const Footer: React.FC<IFooterProps> = ({ onClose, title }: IFooterProps) => {
         >
           <IconClose />
         </Button>
-        <p className="text-[17px] font-bold">{title}</p>
+        <p className="text-h2 font-bold">{title}</p>
       </div>
     </div>
   );

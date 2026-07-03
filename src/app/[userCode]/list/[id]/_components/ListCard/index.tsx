@@ -175,7 +175,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
         {data.ideaTotalCount > 0 ? (
           <IdeaList listID={data.id.toString()} onClickIdea={onClickIdea} />
         ) : (
-          <div className="mt-4 w-full whitespace-pre-line px-4 text-[15px] text-black-gray-03">
+          <div className="mt-4 w-full whitespace-pre-line px-4 text-t1 text-black-gray-03">
             {isOwner ? (
               <Trans>This list has no ideas yet.\nAdd your first idea.</Trans>
             ) : (

@@ -16,7 +16,7 @@ export type LikeStoreState = {
   // 設定上一次 API 確認的 like 狀態 API onSuccess & initial
   setConfirmedIsLiked: (listID: string, isLiked: boolean) => void;
   // // 檢查是否已有 confirmed 狀態
-  // hasConfirmedLikeState: (listID: string) => boolean;
+  hasConfirmedLikeState: (listID: string) => boolean;
   // 清除特定列表的點讚狀態
   clearLikeStatus: (listID: string) => void;
   // 清除所有點讚狀態
@@ -58,10 +58,10 @@ const useLikeStore = create<LikeStoreState>((set, get) => ({
       return { confirmedLikeMap: newMap };
     }),
 
-  // hasConfirmedLikeState: (listID: string) => {
-  //   const { confirmedLikeMap } = get();
-  //   return confirmedLikeMap.has(listID);
-  // },
+  hasConfirmedLikeState: (listID: string) => {
+    const { confirmedLikeMap } = get();
+    return confirmedLikeMap.has(listID);
+  },
 
   clearLikeStatus: (listID: string) =>
     set((state) => {

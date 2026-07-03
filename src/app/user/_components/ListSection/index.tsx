@@ -67,7 +67,7 @@ const ListSection: React.FC = () => {
                 navigateTo.viewList(userCode, listPreview.id.toString());
               }}
             >
-              <p className="break-normal text-[15px] font-semibold text-black-text-01 [overflow-wrap:anywhere]">
+              <p className="break-normal text-t1 font-semibold text-black-text-01 [overflow-wrap:anywhere]">
                 {listPreview.title}
               </p>
               {listPreview.coverImage && (
@@ -96,7 +96,7 @@ const ListSection: React.FC = () => {
                   navigateTo.viewList(userCode, list.id.toString());
                 }}
               >
-                <p className="text-[15px] font-semibold text-black-text-01 break-words [line-break:anywhere]">
+                <p className="text-t1 font-semibold text-black-text-01 break-words [line-break:anywhere]">
                   {list.title}
                 </p>
                 {list.coverImage && (
@@ -117,7 +117,7 @@ const ListSection: React.FC = () => {
         {listPreviews.length === 0 && (
           <div
             id="list-data-placeholder"
-            className="mt-4 flex flex-col items-center text-[15px] font-semibold text-black-text-01"
+            className="mt-4 flex flex-col items-center text-t1 font-semibold text-black-text-01"
           >
             <p>
               <Trans>Looks like this page is a bit empty.</Trans>

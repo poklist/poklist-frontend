@@ -25,6 +25,7 @@ export const createResponseSchema = <T extends z.ZodTypeAny>(
     offset: z.number().optional(),
     limit: z.number().optional(),
     totalElements: z.number().optional(),
+    error: z.unknown().nullish(),
   });
 
 export const createInfiniteResponseSchema = <T extends z.ZodTypeAny>(

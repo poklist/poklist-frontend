@@ -1,4 +1,4 @@
-import { DrawerContext } from '@/components/Drawer/context';
+import { DrawerContext, DrawerOpenOptions } from '@/components/Drawer/context';
 import { useDrawer } from '@/components/Drawer/useDrawer';
 import {
   Drawer,
@@ -10,27 +10,34 @@ import {
   DrawerTitle,
 } from '@/components/ui/drawer';
 import { cn } from '@/lib/utils';
-import React, { useCallback, useState } from 'react';
+import { usePathname } from 'next/navigation';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 export const DrawerProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [openDrawers, setOpenDrawers] = useState<Set<string>>(new Set());
+  const [openDrawers, setOpenDrawers] = useState<
+    Map<string, DrawerOpenOptions>
+  >(new Map());
 
-  const openDrawer = useCallback((drawerId: string) => {
-    setOpenDrawers((prev) => {
-      if (prev.has(drawerId)) return prev;
-      const newSet = new Set(prev);
-      newSet.add(drawerId);
-      return newSet;
-    });
-  }, []);
+  const openDrawer = useCallback(
+    (drawerId: string, options: DrawerOpenOptions = {}) => {
+      setOpenDrawers((prev) => {
+        if (prev.has(drawerId)) return prev;
+        const newMap = new Map(prev);
+        newMap.set(drawerId, options);
+        return newMap;
+      });
+    },
+    []
+  );
 
   const closeDrawer = useCallback((drawerId: string) => {
     setOpenDrawers((prev) => {
-      const newSet = new Set(prev);
-      newSet.delete(drawerId);
-      return newSet;
+      if (!prev.has(drawerId)) return prev;
+      const newMap = new Map(prev);
+      newMap.delete(drawerId);
+      return newMap;
     });
   }, []);
 
@@ -41,11 +48,17 @@ export const DrawerProvider: React.FC<{ children: React.ReactNode }> = ({
     [openDrawers]
   );
 
+  const getDrawerOptions = useCallback(
+    (drawerId: string) => openDrawers.get(drawerId),
+    [openDrawers]
+  );
+
   const value = {
     openDrawers,
     openDrawer,
     closeDrawer,
     isDrawerOpen,
+    getDrawerOptions,
   };
 
   return (
@@ -62,6 +75,7 @@ interface IDrawerProps {
   startFooter?: React.ReactNode;
   endFooter?: React.ReactNode;
   isShowClose: boolean;
+  isCloseable?: boolean;
   className?: string;
   onClose?: () => void;
 }
@@ -73,10 +87,16 @@ export const DrawerComponent: React.FC<IDrawerProps> = ({
   startFooter,
   endFooter,
   isShowClose,
+  isCloseable = true,
   className,
   onClose,
 }) => {
-  const { isOpen, closeDrawer } = useDrawer(drawerId);
+  const { isOpen, closeDrawer, options } = useDrawer(drawerId);
+
+  const closeable = options?.isCloseable ?? isCloseable;
+
+  const pathname = usePathname();
+  const isFirstRender = useRef(true);
 
   // 處理關閉事件
   const handleClose = useCallback(() => {
@@ -86,14 +106,40 @@ export const DrawerComponent: React.FC<IDrawerProps> = ({
     }
   }, [closeDrawer, onClose]);
 
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    if (isOpen) handleClose();
+  }, [pathname]);
+
   return (
     <Drawer
       open={isOpen}
+      dismissible={closeable}
       onOpenChange={(open) => {
-        if (!open && isOpen) handleClose();
+        if (open) return;
+        if (!closeable) return;
+        if (isOpen) handleClose();
       }}
     >
       <DrawerContent
+        onInteractOutside={(e) => {
+          if (!closeable) {
+            e.preventDefault();
+          }
+        }}
+        onEscapeKeyDown={(e) => {
+          if (!closeable) {
+            e.preventDefault();
+          }
+        }}
+        onPointerDownOutside={(e) => {
+          if (!closeable) {
+            e.preventDefault();
+          }
+        }}
         className={cn(
           'bottom-0 flex w-full max-w-full flex-col bg-white shadow',
           className

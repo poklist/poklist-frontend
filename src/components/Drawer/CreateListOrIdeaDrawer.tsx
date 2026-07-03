@@ -1,4 +1,5 @@
 import { DrawerComponent } from '@/components/Drawer';
+import { SignupDrawerVariant } from '@/components/Drawer/SignupDrawer';
 import { useDrawer } from '@/components/Drawer/useDrawer';
 import {
   Button,
@@ -7,8 +8,10 @@ import {
   ButtonVariant,
 } from '@/components/ui/button';
 import { DrawerIds } from '@/constants/Drawer';
+import { useGetListsLimits } from '@/hooks/api/publish/useGetListsLimits';
 import { useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
+import useAuthStore from '@/stores/useAuthStore';
 import { i18n } from '@lingui/core';
 import { Trans } from '@lingui/macro';
 import Image from 'next/image';
@@ -16,12 +19,19 @@ import React from 'react';
 
 const CreateListOrIdeaDrawer: React.FC = () => {
   const { withAuth } = useAuthWrapper();
+  const { isLoggedIn } = useAuthStore();
   const navigateTo = useStrictNavigateNext();
   const { closeDrawer } = useDrawer(DrawerIds.CREATE_LIST_OR_IDEA_DRAWER_ID);
+  const { openDrawer } = useDrawer(DrawerIds.SIGNUP_DRAWER_ID);
+  const { data } = useGetListsLimits({ enabled: isLoggedIn });
 
   const handleCreateList = withAuth(() => {
-    closeDrawer();
-    navigateTo.createList();
+    if ((data?.remainingCount ?? 0) > 0) {
+      closeDrawer();
+      navigateTo.createList();
+    } else {
+      openDrawer({ isCloseable: true, variant: SignupDrawerVariant.LIST_FULL });
+    }
   });
 
   const handleCreateIdea = withAuth(() => {

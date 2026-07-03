@@ -370,25 +370,25 @@ msgstr "刪除草稿"
 msgid "Keep editing"
 msgstr "繼續編輯"
 
-#: src/app/idea/_components/ListSelectorFakePage.tsx/index.tsx
+#: src/app/idea/_components/ListSelectorFakePage/index.tsx
 msgid "Save Idea"
 msgstr "儲存靈感"
 
-#: src/app/idea/_components/ListSelectorFakePage.tsx/index.tsx
+#: src/app/idea/_components/ListSelectorFakePage/index.tsx
 msgid "Select a list to save this idea"
 msgstr "選擇一個名單存入靈感"
 
-#: src/app/idea/_components/ListSelectorFakePage.tsx/index.tsx
+#: src/app/idea/_components/ListSelectorFakePage/index.tsx
 msgid "Looks like you haven’t made a list yet. Let’s create one now!"
 msgstr "目前沒有任何名單。立即建立一個新名單吧！"
 
-#: src/app/idea/_components/ListSelectorFakePage.tsx/index.tsx
+#: src/app/idea/_components/ListSelectorFakePage/index.tsx
 #: src/components/Footer/EditModeFooter.tsx
 #: src/components/Header/EditModeHeader.tsx
 msgid "Save"
 msgstr "儲存"
 
-#: src/app/idea/_components/ListSelectorFakePage.tsx/index.tsx
+#: src/app/idea/_components/ListSelectorFakePage/index.tsx
 msgid "Create a new list"
 msgstr "建立新名單"
 
@@ -696,6 +696,46 @@ msgstr "名單裝著每一筆靈感，從哪裡開寫，隨心所欲。"
 #: src/components/Drawer/CreateListOrIdeaDrawer.tsx
 msgid "Create List"
 msgstr "建立新名單"
+
+#: src/components/Drawer/SignupDrawer.tsx
+msgid "You’re good at this"
+msgstr "哇，你很會開單耶！"
+
+#: src/components/Drawer/SignupDrawer.tsx
+msgid "Sign up to unlock more"
+msgstr "完成註冊，有機會獲得更多創作權限"
+
+#: src/components/Drawer/SignupDrawer.tsx
+msgid "You’ve reached the list limit…"
+msgstr "建立名單額度已滿…"
+
+#: src/components/Drawer/SignupDrawer.tsx
+msgid "Sign up free to unlock more"
+msgstr "免費註冊，建立更多名單！"
+
+#: src/components/Drawer/SignupDrawer.tsx
+msgid "This list is full…"
+msgstr "此名單已滿了…"
+
+#: src/components/Drawer/SignupDrawer.tsx
+msgid "Choose another list, or sign up free to unlock more access."
+msgstr "完成註冊，有機會獲得更多創作權限"
+
+#: src/components/Drawer/SignupDrawer.tsx
+msgid "Trial limit reached…"
+msgstr "哇！體驗額度已用完…"
+
+#: src/components/Drawer/SignupDrawer.tsx
+msgid ""
+"Good taste deserves space. \n"
+"Sign up free to unlock it."
+msgstr ""
+"你的好名單，值得有更多空間。\n"
+"免費註冊，享受更多創作！"
+
+#: src/components/Drawer/SignupDrawer.tsx
+msgid "Sign Up"
+msgstr "立即註冊"
 
 #: src/components/FakePage/EditFieldFakePage.tsx
 msgid "Enter your text here"

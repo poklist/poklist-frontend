@@ -10,6 +10,8 @@ import {
   PostFollowResponse,
 } from '@/api/query/follow';
 import followKeys from '@/hooks/api/follow/keys';
+import followersKeys from '@/hooks/api/followers/keys';
+import followingsKeys from '@/hooks/api/followings/keys';
 import usersKeys from '@/hooks/api/users/keys';
 import { updateEntryCaches } from '@/hooks/api/utils';
 import useFollowingStore from '@/stores/useFollowingStore';
@@ -17,8 +19,6 @@ import useUserStore from '@/stores/useUserStore';
 import { useQueryClient } from '@tanstack/react-query';
 import { ErrorResponse } from '@ts-rest/react-query';
 import z from 'zod';
-import followersKeys from '../followers/keys';
-import followingsKeys from '../followings/keys';
 
 type UsePostFollowUserOptions = {
   targetUserCode: z.input<z.ZodString>;

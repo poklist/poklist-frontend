@@ -12,15 +12,15 @@ export const HeroSectionSkeleton: React.FC = () => {
         <Skeleton>
           <Avatar className="h-16 w-16"></Avatar>
         </Skeleton>
-        <Text className="text-[17px] font-bold" as="p">
+        <Text className="text-h2 font-bold" as="p">
           {/* Just for skeleton, no need to translate */}
           <Skeleton>Baddie’s Struggles</Skeleton>
         </Text>
-        <Text className="text-[13px] font-semibold" as="p">
+        <Text className="text-t2 font-semibold" as="p">
           {/* Just for skeleton, no need to translate */}
           <Skeleton>@tview</Skeleton>
         </Text>
-        <Text className="text-[13px] font-normal" as="p">
+        <Text className="text-t2 font-normal" as="p">
           {/* Just for skeleton, no need to translate */}
           <Skeleton>
             Baddie&apos;s Struggle” dives into life&apos;s highs and lows-fro...

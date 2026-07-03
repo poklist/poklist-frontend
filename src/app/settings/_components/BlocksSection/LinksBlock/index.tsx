@@ -26,7 +26,7 @@ const LinksBlock: React.FC<ILinksBlockProps> = ({
   return (
     <div role="links-block">
       <div className="py-2">
-        <h2 className="text-[15px] font-semibold">{title}</h2>
+        <h2 className="text-t1 font-semibold">{title}</h2>
       </div>
       {actionItems.map((item) => {
         return (
