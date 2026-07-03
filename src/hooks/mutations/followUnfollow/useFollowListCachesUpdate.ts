@@ -1,5 +1,5 @@
 import { followersContract, followingsContract } from '@/api/contracts';
-import { TanStackCache } from '@/api/fetcher';
+import { TsRestCacheEntry } from '@/api/fetcher';
 import { GetFollowersResponse } from '@/api/query/followers';
 import { GetFollowingsResponse } from '@/api/query/followings';
 import followersKeys from '@/hooks/api/followers/keys';
@@ -8,7 +8,6 @@ import { updateEntryCaches } from '@/hooks/api/utils';
 import { FollowTarget } from '@/hooks/mutations/followUnfollow/schema';
 import useUserStore from '@/stores/useUserStore';
 import { useQueryClient } from '@tanstack/react-query';
-import { ClientInferResponseBody } from '@ts-rest/core';
 import { useRef } from 'react';
 
 type SocialLinkEntry = GetFollowersResponse['content'][number];
@@ -25,72 +24,53 @@ export const useFollowListCacheUpdater = ({
 
   const latestSocialLinkRef = useRef<SocialLinkEntry | null>(null);
 
-  const ensureLatestSocialLink = (
-    targetUserID: FollowTarget['userID'],
-    isFollowing: boolean
-  ) => {
+  const ensureLatestSocialLink = (targetUserID: FollowTarget['userID']) => {
     if (latestSocialLinkRef.current?.id === targetUserID) return;
+
     if (targetUserID === listOwnerUserID) {
       latestSocialLinkRef.current = {
         id: me.id,
         displayName: me.displayName,
         profileImage: me.profileImage,
         userCode: me.userCode,
-        isFollowing,
+        isFollowing: false,
       };
       return;
     }
 
-    const followersResponse = queryClient.getQueryData<GetFollowersResponse>(
-      followersKeys.user(listOwnerUserID)
+    const followersResponse = queryClient.getQueryData<
+      TsRestCacheEntry<GetFollowersResponse>
+    >(followersKeys.user(listOwnerUserID));
+    const followingsResponse = queryClient.getQueryData<
+      TsRestCacheEntry<GetFollowingsResponse>
+    >(followingsKeys.user(listOwnerUserID));
+
+    const foundInFollowers = followersResponse?.body.content.find(
+      (follower) => follower.id === targetUserID
+    );
+    const foundInFollowings = followingsResponse?.body.content.find(
+      (following) => following.id === targetUserID
     );
 
-    const followingsResponse = queryClient.getQueryData<GetFollowingsResponse>(
-      followingsKeys.user(listOwnerUserID)
-    );
-
-    const foundInFollowers = Array.isArray(followersResponse?.content)
-      ? followersResponse.content.find(
-          (follower) => follower.id === targetUserID
-        )
-      : undefined;
-    const foundInFollowing = Array.isArray(followingsResponse?.content)
-      ? followingsResponse.content.find(
-          (followings) => followings.id === targetUserID
-        )
-      : undefined;
-
-    latestSocialLinkRef.current = foundInFollowers || foundInFollowing || null;
+    latestSocialLinkRef.current =
+      foundInFollowers ?? foundInFollowings ?? null;
   };
 
-  // FIXME 未考慮到在別人的Followers/Followings中Follow/Unfollow的更新
   const updateListCaches = (
     targetUserID: FollowTarget['userID'],
     isFollowing: boolean
   ) => {
-    ensureLatestSocialLink(targetUserID, isFollowing);
+    ensureLatestSocialLink(targetUserID);
 
+    // listOwner 的 Followers start
     updateEntryCaches<typeof followersContract.getFollowersContract>(
       queryClient,
       followersKeys.user(listOwnerUserID),
       (previousBody) => {
-        const exists = Array.isArray(previousBody.content)
-          ? previousBody.content.some(
-              (follower) => follower.id === latestSocialLinkRef.current?.id
-            )
-          : false;
+        if (!Array.isArray(previousBody.content)) return previousBody;
 
-        // 在看別人的Profile & unfollow
-        if (exists && targetUserID === listOwnerUserID) {
-          return {
-            ...previousBody,
-            content: previousBody.content.filter(
-              (follower) => follower.id !== latestSocialLinkRef.current?.id
-            ),
-          };
-        }
-        // 只要改follow/unfollow
-        if (exists) {
+        // Case A: target 非頁面主人 -> follow/unfollow -> 只切 isFollowing flag
+        if (targetUserID !== listOwnerUserID) {
           return {
             ...previousBody,
             content: previousBody.content.map((follower) =>
@@ -101,94 +81,64 @@ export const useFollowListCacheUpdater = ({
           };
         }
 
-        // 在看別人的Profile & follow
-        if (latestSocialLinkRef.current && targetUserID === listOwnerUserID) {
+        // Case B: target 是頁面主人 -> 在別人 profile Follow/Unfollow -> 自己看著 target 的 list
+        if (!isFollowing) {
           return {
             ...previousBody,
-            content: [
-              { ...latestSocialLinkRef.current, isFollowing },
-              ...previousBody.content,
-            ],
+            content: previousBody.content.filter(
+              (follower) => follower.id !== me.id
+            ),
           };
         }
-
-        return previousBody;
+        const alreadyExists = previousBody.content.some(
+          (follower) => follower.id === me.id
+        );
+        if (alreadyExists || !latestSocialLinkRef.current) return previousBody;
+        return {
+          ...previousBody,
+          content: [
+            { ...latestSocialLinkRef.current, isFollowing },
+            ...previousBody.content,
+          ],
+        };
       }
     );
 
-    // updateEntryCaches<typeof followingsContract.getFollowingsContract>(queryClient, followingsKeys.user(listOwnerUserID), (previousBody) => {
-    //   const exists = previousBody.content.some(
-    //     (following) => following.id === latestSocialLinkRef.current?.id
-    //   );
+    // listOwner 的 Followings start
+    updateEntryCaches<typeof followingsContract.getFollowingsContract>(
+      queryClient,
+      followingsKeys.user(listOwnerUserID),
+      (previousBody) => {
+        if (!Array.isArray(previousBody.content)) return previousBody;
 
-    //   // 在看別人的Profile & follow
-    //   if (targetUserID !== listOwnerUserID && !exists) {
-    //     return {
-    //       ...previousBody,
-    //       content: [
-    //         { ...latestSocialLinkRef.current, isFollowing },
-    //         ...previousBody.content,
-    //       ],
-    //     };
-    //   }
+        // listOwner 不會出現在自己的 followings 且只有"我自己"的 followings 會因我 follow/unfollow 而變
+        if (targetUserID === listOwnerUserID) return previousBody;
+        if (listOwnerUserID !== me.id) return previousBody;
 
-    //   // 在看別人的Profile & unfollow
-    //   if (!isFollowing && targetUserID !== listOwnerUserID) {
-    //     return {
-    //       ...previousBody,
-    //       content: previousBody.content.filter(
-    //         (following) => following.id !== latestSocialLinkRef.current?.id
-    //       ),
-    //     };
-    //   }
-
-    //   return previousBody;
-    // });
-
-    queryClient.setQueryData<
-      TanStackCache<
-        ClientInferResponseBody<
-          typeof followingsContract.getFollowingsContract,
-          200
-        >
-      >
-    >(followingsKeys.user(listOwnerUserID), (followingsResponse) => {
-      if (!followingsResponse || !latestSocialLinkRef.current)
-        return followingsResponse;
-
-      const exists = followingsResponse.body.content.some(
-        (following) => following.id === latestSocialLinkRef.current?.id
-      );
-
-      // 在看別人的Profile & follow
-      if (targetUserID !== listOwnerUserID && !exists) {
-        return {
-          ...followingsResponse,
-          body: {
-            ...followingsResponse.body,
-            content: [
-              { ...latestSocialLinkRef.current, isFollowing },
-              ...followingsResponse.body.content,
-            ],
-          },
-        };
-      }
-
-      // 在看別人的Profile & unfollow
-      if (!isFollowing && targetUserID !== listOwnerUserID) {
-        return {
-          ...followingsResponse,
-          body: {
-            ...followingsResponse.body,
-            content: followingsResponse.body.content.filter(
-              (following) => following.id !== latestSocialLinkRef.current?.id
+        // 我 unfollow target -> 從我的 followings remove
+        if (!isFollowing) {
+          return {
+            ...previousBody,
+            content: previousBody.content.filter(
+              (following) => following.id !== targetUserID
             ),
-          },
+          };
+        }
+
+        // 我 follow target -> 加進我的 followings
+        const alreadyExists = previousBody.content.some(
+          (following) => following.id === targetUserID
+        );
+        if (alreadyExists || !latestSocialLinkRef.current) return previousBody;
+        return {
+          ...previousBody,
+          content: [
+            { ...latestSocialLinkRef.current, isFollowing },
+            ...previousBody.content,
+          ],
         };
       }
-
-      return followingsResponse;
-    });
+    );
   };
 
   return { updateListCaches };

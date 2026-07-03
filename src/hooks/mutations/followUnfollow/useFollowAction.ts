@@ -1,18 +1,17 @@
 import { usePostFollowUser } from '@/hooks/api/follow/usePostFollowUser';
 import { usePostUnfollowUser } from '@/hooks/api/unfollow/usePostUnfollowUser';
 import {
-  cancelFollowAction,
-  scheduleFollowAction,
-} from '@/hooks/mutations/followUnfollow/followDebounce';
-import {
   FollowActionOptions,
   FollowActionReturn,
   FollowTarget,
 } from '@/hooks/mutations/followUnfollow/schema';
 import { useFollowCountCacheUpdater } from '@/hooks/mutations/followUnfollow/useFollowCountCachesUpdate';
 import { useFollowListCacheUpdater } from '@/hooks/mutations/followUnfollow/useFollowListCachesUpdate';
+import { createDebouncedRegistry } from '@/hooks/mutations/optimistic/debounceRegistry';
 import { createOptimisticUpdateHandler } from '@/hooks/mutations/optimistic/optimisticUpdateHandler';
 import useFollowingStore from '@/stores/useFollowingStore';
+
+const followDebounce = createDebouncedRegistry("follow")
 
 export const useFollowAction = ({
   target,
@@ -87,7 +86,7 @@ export const useFollowAction = ({
         updateFollowCache
       ).optimisticUpdate();
 
-      scheduleFollowAction(target.userCode, debounceMs, () => {
+      followDebounce.schedule(target.userCode, debounceMs, () => {
         // 僅在「確實有 confirmed 紀錄且與 optimistic 一致」時才略過 API。
         // 沒有紀錄（例如列表 row 未 seed）一律送出，避免 unfollow 靜默失敗。
         if (
@@ -108,7 +107,7 @@ export const useFollowAction = ({
   const follow = createDebouncedAction(true);
   const unfollow = createDebouncedAction(false);
 
-  const cancelPending = () => cancelFollowAction(target.userCode);
+  const cancelPending = () => followDebounce.cancel(target.userCode);
 
   const activeMutation = followMutation.isPending
     ? followMutation

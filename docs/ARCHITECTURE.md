@@ -218,7 +218,10 @@ src/api/schemas/<name>.ts     # zod schema（createResponseSchema 包 response�
 3. `setTimeout` 到期時先比對 confirmed 基準：**僅在「`hasConfirmedFollowingState` 確實有紀錄且 `optimisticValue === confirmedValue`」時才跳過 API**；沒有紀錄一律送出（防 unfollow 靜默失敗）。confirmed 值由 mutation `onSuccess` 寫入（`setConfirmedIsLiked` / `setConfirmedIsFollowing`）。
 4. `shouldAllow` / `onNotAllowed` 由呼叫端注入；常見組合：`shouldAllow: () => isLoggedIn`、`onNotAllowed: handleAuthRequired`（[useAuthRequired](src/hooks/useAuthRequired.ts) 會打開 LoginDrawer + toast）。
 5. `useFollowAction` 為 **per-target instance**：`target: { userID, userCode }` 於 hook init 綁定，`follow()` / `unfollow()` 無參數；API call 委派給 `usePostFollowUser` / `usePostUnfollowUser`（ts-rest），編排層只負責樂觀更新 + 防抖 + rollback 接線。
-6. 模組化重構計劃見 [`docs/superpowers/plans/2026-06-11-refactor-use-follow-action.md`](superpowers/plans/2026-06-11-refactor-use-follow-action.md)。
+6. **模組化已完成（2026-06 執行）**，目錄結構：
+   - `mutations/optimistic/`：共用基礎設施 — `optimisticUpdateHandler.ts`（delta + rollback 工廠）、`debounceRegistry.ts`（`createDebounceRegistry(prefix)` factory，per-動作類型隔離 Map）
+   - `mutations/followUnfollow/`：`schema.ts`（zod 型別）/ `followDebounce.ts` / `useFollowListCachesUpdate.ts` / `useFollowCountCachesUpdate.ts` / `useFollowAction.ts`（組裝層，~128 行）— 3 個 consumer 已接線
+   - `mutations/optimistic/likeUnlike/`：`schema.ts` / `useLikeAction.ts` — **已建但未接線**（`client.tsx` 仍用舊檔，見 §13）
 
 未來新增「點擊型社交動作」時請沿用此模式而非重寫 mutation。
 
@@ -259,6 +262,14 @@ export const useXxx = (options: UseXxxOptions) => {
 - **快取型別**：單筆 `TsRestCacheEntry<TBody>`、無限捲 `InfiniteCache<TBody>`（= `InfiniteData<TsRestCacheEntry<TBody>, number>`），皆從 `@/api/fetcher` 導入。有 contract route 可用時優先 `ClientInferResponseBody` / `ErrorResponse`，只有 body 型別時才用 `TsRestCacheEntry`。
 - **onError 不要 toast**：axios 攔截器已按 §4.3 流程彈過；hook 內只做 rollback / 呼叫端 callback。
 - **無限捲快取與順序變更不相容**：offset 分頁下若 mutation 改變了整體排序（如 reorder），手動 cache surgery 救不了未 fetch 的部分 — 改用 `invalidateQueries`（可先把 pages 砍到第一頁再 invalidate，refetch 從 N 支降為 1 支）。`usePostIdeasReorder` 為範例。
+
+### 4.6 發佈額度（publish limits）與命令式查詢模式
+
+免註冊體驗的額度牆：List / Idea 建立數有上限，用罄時彈 `SignupDrawer`。三個關鍵模式：
+
+- **`src/hooks/queries/useCheckCreateQuota.ts`**：條件式序列查詢 — List 額度 →（滿了才）userLists →（再）逐 List 的 Idea 額度。因為流程是「條件 + 序列 + 動態 N 支」，**不能用 reactive custom hooks**（Rules of Hooks），改用 ts-rest client 的 **`.fetchQuery(queryClient, queryKey, args)`** 命令式取值 — 與 `useQuery` 共用同一 cache/staleTime/去重。`checkCanCreate(targetListID?)`：帶 listID 走單 List 精準分支；不帶走通用分支（內含 `me.userCode` 空值守衛 — **`fetchQuery` 不受 hook 的 `enabled` 保護**，守衛必須自帶）。
+- **動態 N 筆 reactive 查詢用 `useQueries`**：`ListSelectorFakePage` 對 payload.lists 逐一查 Idea 額度 → `publishQuery.getIdeasLimits.useQueries({ queries: lists.map(...) })`，頂層一次呼叫，內部展開 N 筆，與 fetchQuery 共用 cache。載入中 fallback 放行避免閃鎖。
+- **Drawer 鎖定 + open-time 控制**：`DrawerComponent` 支援 `isCloseable`（擋 esc / 點外 / 下拉手勢 / onOpenChange 總閘門）；`openDrawer(options?: DrawerOpenOptions)` 可於**開啟時**決定該次鎖不鎖（provider 以 `Map<drawerId, options>` 存 per-open 設定，優先於元件 prop）。route 變更（`usePathname`）強制關閉所有 drawer — 鎖定 drawer 的合法逃生口是「回上一頁」。
 
 ---
 
@@ -418,15 +429,18 @@ export const useXxx = (options: UseXxxOptions) => {
 
 從 commits 與 TODO 註解觀察到的尚未完成項目：
 
-- **legacy API hooks 死碼待刪（2026-06-11 盤點）**：consumer 層遷移已完成 — 以下檔案**零引用**，確認後可整批刪除：
-  - `src/hooks/queries/`：全部 12 支（`useCategories` / `useFollowers` / `useFollowings` / `useIdea` / `useLatestListGroups` / `useList` / `useLists` / `useOfficialCollections` / `useOrderIdeas` / `useUser` / `infinite/useInfiniteIdea` / `infinite/useInfiniteLists`）
-  - `src/hooks/mutations/`：`useCreateIdea` / `useCreateList` / `useDeleteIdea` / `useDeleteList` / `useEditIdea` / `useEditList` / `useEditProfile` / `useReorderIdeas`（仍在用的只有 `useLikeAction` / `useFollowAction` / `optimisticUpdateHandler`）
-  - 刪除後連動清理：`constants/queryKeys.ts`、`constants/apiPath.ts` 中只剩死碼引用的項目；`useFollowAction` 內寫 `[QueryKeys.USER, ...]` 的 legacy cache 雙寫段（讀者 `useUser.ts` 已無人用，雙寫已無意義）。
-- **axios request error handler 非法 hook 呼叫（🔴）**：[src/api/axios.ts](src/api/axios.ts) 的 request 攔截器 error 分支內呼叫 `useStrictNavigationAdapter()` — 攔截器不是 React 環境，違反 Rules of Hooks，真正觸發時會 throw。修法：改 `window.location.href = '/'` 或移除導航（request 建構失敗極罕見）。
-- **useFollowAction 已知債**（重構計劃：[`docs/superpowers/plans/2026-06-11-refactor-use-follow-action.md`](superpowers/plans/2026-06-11-refactor-use-follow-action.md)）：
-  - count 語義債：`followingCount` 更新對象在 HeroSection 場景（follow 頁面主人）語義上應為主人的 `followerCount`；目前無 UI 顯示故無症狀。
+- **legacy API hooks 死碼待刪（2026-07-03 更新盤點）**：`hooks/queries/` 已大致清完（剩 `infinite/useInfiniteLists.ts`，零引用待刪）。仍待刪的零引用檔：
+  - `src/hooks/mutations/`：`useCreateIdea` / `useCreateList` / `useDeleteIdea` / `useDeleteList` / `useEditIdea` / `useEditList` / `useEditProfile` / `useReorderIdeas`（8 支）
+  - `src/hooks/mutations/useFollowAction.ts`：**orphan** — followUnfollow/ 模組化後零引用，勿再維護（曾被順手改 import path，白做工），直接 `git rm`
+  - `src/hooks/mutations/useLikeAction.ts`：**接線完成後刪**（likeUnlike 模組已建，`client.tsx` 尚未切換）
+  - 刪除後連動清理：`constants/queryKeys.ts`、`constants/apiPath.ts` 中只剩死碼引用的項目；followUnfollow 內 legacy `[QueryKeys.USER, ...]` cache 雙寫段（讀者已刪，雙寫無意義）。
+- **like/unlike 接線（🚨 最後一哩）**：ts-rest 全鏈（schemas/contracts/query/`hooks/api/like|unlike`）與 `mutations/optimistic/likeUnlike/useLikeAction.ts` 皆已完成，但 `client.tsx` 仍 import 舊 `mutations/useLikeAction` — 切換 + 刪兩支舊檔即收尾。計劃：[`docs/superpowers/plans/2026-06-12-refactor-use-like-action.md`](superpowers/plans/2026-06-12-refactor-use-like-action.md)。
+- **`followUnfollow/schema.ts` 的 `||` 死碼 bug**：`onSuccess.args(followSchema...content || unfollowSchema...content)`、`onError.args(..., postFollowRequest || postUnfollowRequest)` — `||` 左操作數恆 truthy，右側永遠不參與（恰巧同型未爆）。應改 `z.union([...])` 或拆兩組型別。
+- **axios request error handler 非法 hook 呼叫**：**【✅ 已修】** 改為 `window.location.href = '/'`。
+- **useFollowAction 剩餘債**：
+  - count 語義債：`followingCount` 更新對象在 HeroSection 場景（follow 頁面主人）語義上應為主人的 `followerCount`；`schema.ts` 已預留 `listOwner` optional 欄位但 `useFollowAction` 尚未消費（仍用 `currentUserID/currentUserCode`）— 半套，接完或先移除欄位。
   - rollback 在 unmount 後不保證執行：rollback 掛 hook-level onError，RQ v5 observer 隨元件 unmount 銷毀後可能不觸發；debounce 5 秒內離頁即可能命中。完整修法為 QueryClient `MutationCache` 全域 callback。
-  - 列表 row 的 confirmed seed：`UserConnectionRow` 未 seed `confirmedIsFollowing`，依賴 hook 端 `hasConfirmedFollowingState` guard 兜底（見 §4.4 第 3 點）。
+- **SignupDrawer dead prop**：`React.FC`（無 props 泛型）卻 destructure `{ isCloseable = false }`，`<SignupDrawer />` 從不傳值 — 現由 open-time `DrawerOpenOptions` 控制（§4.6），此 prop 僅剩 fallback 作用，宜改為 `React.FC<SignupDrawerProps>` 或移除 prop 收斂到單一控制點。
 - **route migration**：目前路由以 bare `<userCode>`（無 `@`）為主，`migrateUserRoute` 做向後兼容。**【未來規劃】** 將回歸使用 `@<userCode>` 前綴（例如 `/@john/list/1`），屆時需更新 `useStrictNavigateNext`、`migrateUserRoute`、`StaticRoutes`、`systemRoutes`，以及後端所有相關連結。
 - **legacy components**：未對齊 `components/README.md` 規範者被視為 legacy（README 已標註「由 Sail 處理但尚未重組」）。具體清單如下：
   - `src/app/user/_components/FollowRelationsDrawer.tsx`：扁平 .tsx 檔，應改為 `FollowRelationsDrawer/index.tsx`
@@ -497,5 +511,6 @@ export const useXxx = (options: UseXxxOptions) => {
 
 - 2026-05：以 `dev` 分支（HEAD `4fbe01b`）為快照初版。
 - 2026-06-11：深度盤點更新 — ts-rest 遷移 consumer 層完成（§4.2）、axios 狀態碼管理實作落地（§4.3）、新增 §4.5 mutation 標準模式（fetcher 錯誤轉換 / cache utils / 快取型別）、STORAGE_VERSION 自動同步完成（§5）、§13 重整（legacy 死碼盤點清單、axios 非法 hook 呼叫、useFollowAction 債務與重構計劃連結）。
+- 2026-07-03：`feature/free-demo` 期間更新 — §4.4 標記 followUnfollow 模組化完成（optimistic/ 共用 infra + likeUnlike 待接線）、新增 §4.6 發佈額度模式（fetchQuery 命令式查詢 / useQueries 動態 N 筆 / Drawer open-time 鎖定）、§13 更新盤點（queries/ 死碼已清、axios hook bug 已修、schema `||` bug、like 接線最後一哩、SignupDrawer dead prop）。工作交接紀錄見 `docs/handoff/`。
 
 若日後架構大幅變動，請以 PR 更新本文件對應段落，避免被當作可信來源誤導後續工程師或 AI。
