@@ -1,17 +1,20 @@
+import { publishContracts } from '@/api/contracts';
 import { publishQuery } from '@/api/query/publish';
 import { publishSchema } from '@/api/schemas';
+import publishKeys from '@/hooks/api/publish/keys';
+import { ErrorResponse } from '@ts-rest/react-query';
 import z from 'zod';
-import publishKeys from './keys';
 
 const getIdeasLimitsOptionsSchema = publishSchema.getIdeasLimitsRequest.extend({
   staleTime: z.number().int().nonnegative().default(60000),
   gcTime: z.number().int().nonnegative().default(300000),
 });
 
-type GetIdeasLimitsOptions = z.input<typeof getIdeasLimitsOptionsSchema>;
-// & {
-//   onError?: (error: ErrorResponse<typeof publishContracts.getIdeasLimitsContract>) => void
-// };
+type GetIdeasLimitsOptions = z.input<typeof getIdeasLimitsOptionsSchema> & {
+  onError?: (
+    error: ErrorResponse<typeof publishContracts.getIdeasLimitsContract>
+  ) => void;
+};
 
 export const useGetIdeasLimits = (options: GetIdeasLimitsOptions) => {
   const { listID, staleTime, gcTime } =

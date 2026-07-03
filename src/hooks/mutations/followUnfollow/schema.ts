@@ -1,7 +1,7 @@
 import { followSchema, unfollowSchema } from '@/api/schemas';
 import z from 'zod';
 
-export const followTargetSchema = z.object({
+const followTargetSchema = z.object({
   userCode: z.string(),
   userID: z.number().int().nonnegative(),
 });

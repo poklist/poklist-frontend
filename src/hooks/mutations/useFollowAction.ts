@@ -21,7 +21,7 @@ import {
   FollowActionOptions,
   FollowActionReturn,
 } from './followUnfollow/schema';
-import { createOptimisticUpdateHandler } from './optimisticUpdateHandler';
+import { createOptimisticUpdateHandler } from './optimistic/optimisticUpdateHandler';
 
 // interface FollowTarget {
 //   userID: number;

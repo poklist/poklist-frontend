@@ -11,7 +11,7 @@ import {
 } from '@/hooks/mutations/followUnfollow/schema';
 import { useFollowCountCacheUpdater } from '@/hooks/mutations/followUnfollow/useFollowCountCachesUpdate';
 import { useFollowListCacheUpdater } from '@/hooks/mutations/followUnfollow/useFollowListCachesUpdate';
-import { createOptimisticUpdateHandler } from '@/hooks/mutations/optimisticUpdateHandler';
+import { createOptimisticUpdateHandler } from '@/hooks/mutations/optimistic/optimisticUpdateHandler';
 import useFollowingStore from '@/stores/useFollowingStore';
 
 export const useFollowAction = ({
