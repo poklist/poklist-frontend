@@ -2,6 +2,7 @@ import { createContext } from 'react';
 
 export interface DrawerOpenOptions {
   isCloseable?: boolean;
+  variant?: string;
 }
 
 export interface IDrawerContext {

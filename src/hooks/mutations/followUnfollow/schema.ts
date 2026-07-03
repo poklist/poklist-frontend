@@ -19,8 +19,10 @@ export const followActionOptionsSchema = z.object({
   onSuccess: z
     .function()
     .args(
-      followSchema.postFollowResponse.shape.content ||
-        unfollowSchema.postUnfollowResponse.shape.content
+      z.union([
+        followSchema.postFollowResponse.shape.content,
+        unfollowSchema.postUnfollowResponse.shape.content,
+      ])
     )
     .returns(z.void())
     .optional(),
@@ -28,7 +30,10 @@ export const followActionOptionsSchema = z.object({
     .function()
     .args(
       z.unknown(),
-      followSchema.postFollowRequest || unfollowSchema.postUnfollowRequest
+      z.union([
+        followSchema.postFollowRequest,
+        unfollowSchema.postUnfollowRequest,
+      ])
     )
     .returns(z.void())
     .optional(),

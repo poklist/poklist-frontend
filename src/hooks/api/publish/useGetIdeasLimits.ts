@@ -8,6 +8,7 @@ import z from 'zod';
 const getIdeasLimitsOptionsSchema = publishSchema.getIdeasLimitsRequest.extend({
   staleTime: z.number().int().nonnegative().default(60000),
   gcTime: z.number().int().nonnegative().default(300000),
+  enabled: z.boolean(),
 });
 
 type GetIdeasLimitsOptions = z.input<typeof getIdeasLimitsOptionsSchema> & {
@@ -17,7 +18,7 @@ type GetIdeasLimitsOptions = z.input<typeof getIdeasLimitsOptionsSchema> & {
 };
 
 export const useGetIdeasLimits = (options: GetIdeasLimitsOptions) => {
-  const { listID, staleTime, gcTime } =
+  const { listID, staleTime, gcTime, enabled } =
     getIdeasLimitsOptionsSchema.parse(options);
   // const { onError } = options;
 
@@ -28,6 +29,7 @@ export const useGetIdeasLimits = (options: GetIdeasLimitsOptions) => {
       queryKey: publishKeys.ideasLimits(listID),
       staleTime,
       gcTime,
+      enabled,
     }
   );
 

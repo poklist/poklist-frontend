@@ -7,6 +7,7 @@ import z from 'zod';
 const getListsLimitsOptionsSchema = z.object({
   staleTime: z.number().int().nonnegative().default(60000),
   gcTime: z.number().int().nonnegative().default(300000),
+  enabled: z.boolean(),
 });
 
 type GetListsLimitsOptions = z.input<typeof getListsLimitsOptionsSchema> & {
@@ -16,7 +17,8 @@ type GetListsLimitsOptions = z.input<typeof getListsLimitsOptionsSchema> & {
 };
 
 export const useGetListsLimits = (options: GetListsLimitsOptions) => {
-  const { staleTime, gcTime } = getListsLimitsOptionsSchema.parse(options);
+  const { staleTime, gcTime, enabled } =
+    getListsLimitsOptionsSchema.parse(options);
   // const { onError } = options;
 
   const query = publishQuery.getListsLimits.useQuery(
@@ -26,6 +28,7 @@ export const useGetListsLimits = (options: GetListsLimitsOptions) => {
       queryKey: publishKeys.listsLimits(),
       staleTime,
       gcTime,
+      enabled,
     }
   );
 

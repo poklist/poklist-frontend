@@ -5,6 +5,7 @@ import { TsRestCacheEntry } from '@/api/fetcher';
 import { PostIdeasRequest } from '@/api/query/ideas';
 import IdeaForm from '@/app/idea/_components/Form';
 import ListSelectorFakePage from '@/app/idea/_components/ListSelectorFakePage';
+import { SignupDrawerVariant } from '@/components/Drawer/SignupDrawer';
 import { useDrawer } from '@/components/Drawer/useDrawer';
 import { useFakePage } from '@/components/FakePage/useFakePage';
 import { DrawerIds } from '@/constants/Drawer';
@@ -85,7 +86,11 @@ const IdeaCreatePage: React.FC = () => {
     let active = true;
     void (async () => {
       const canCreate = await checkCanCreate(listID ?? undefined);
-      if (active && !canCreate) openDrawer();
+      if (active && !canCreate)
+        openDrawer({
+          isCloseable: false,
+          variant: SignupDrawerVariant.IDEA_FULL,
+        });
     })();
     return () => {
       active = false;

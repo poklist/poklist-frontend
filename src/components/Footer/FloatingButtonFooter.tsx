@@ -1,3 +1,4 @@
+import { SignupDrawerVariant } from '@/components/Drawer/SignupDrawer';
 import { useDrawer } from '@/components/Drawer/useDrawer';
 import {
   Button,
@@ -55,7 +56,10 @@ const FloatingButtonFooter: React.FC<IFooterProps> = ({
     if (canCreate) {
       openDrawer();
     } else {
-      openSignupDrawer({ isCloseable: true });
+      openSignupDrawer({
+        isCloseable: true,
+        variant: SignupDrawerVariant.ALL_FULL,
+      });
     }
   });
 

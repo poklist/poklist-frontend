@@ -2,10 +2,10 @@ import { listsContract, publishContracts } from '@/api/contracts';
 import { ideasQuery } from '@/api/query/ideas';
 import ideasKeys from '@/hooks/api/ideas/keys';
 import listsKeys from '@/hooks/api/lists/keys';
+import publishKeys from '@/hooks/api/publish/keys';
 import { updateEntryCaches, updateInfiniteCaches } from '@/hooks/api/utils';
 import { useQueryClient } from '@tanstack/react-query';
 import z from 'zod';
-import publishKeys from '../publish/keys';
 
 type UseDeleteIdeaOptions = z.infer<z.ZodObject<{ listID: z.ZodString }>>;
 

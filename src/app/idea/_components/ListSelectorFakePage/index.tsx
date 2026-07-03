@@ -1,4 +1,5 @@
 import { publishQuery } from '@/api/query/publish';
+import { SignupDrawerVariant } from '@/components/Drawer/SignupDrawer';
 import { useDrawer } from '@/components/Drawer/useDrawer';
 import { useFakePage } from '@/components/FakePage/useFakePage';
 import {
@@ -20,12 +21,14 @@ import { useGetListsLimits } from '@/hooks/api/publish/useGetListsLimits';
 import { useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { cn, removeLocalStorage } from '@/lib/utils';
+import useAuthStore from '@/stores/useAuthStore';
 import useUserStore from '@/stores/useUserStore';
 import { Trans } from '@lingui/macro';
 import { useState } from 'react';
 
 const ListSelectorFakePage: React.FC = () => {
   const { me } = useUserStore();
+  const { isLoggedIn } = useAuthStore();
   const navigateTo = useStrictNavigationAdapter();
 
   const { isOpen, closeFakePage, payload } = useFakePage();
@@ -42,7 +45,7 @@ const ListSelectorFakePage: React.FC = () => {
     },
   });
 
-  const { data } = useGetListsLimits({});
+  const { data } = useGetListsLimits({ enabled: isLoggedIn });
 
   const lists = payload?.lists ?? [];
 
@@ -131,7 +134,10 @@ const ListSelectorFakePage: React.FC = () => {
                         if (canAdd) {
                           setSelectedList(list.id);
                         } else {
-                          openDrawer({ isCloseable: true });
+                          openDrawer({
+                            isCloseable: true,
+                            variant: SignupDrawerVariant.IDEA_FULL,
+                          });
                         }
                       }}
                       className="flex max-h-14 w-full items-center justify-between border-b border-note-gray-06 bg-white p-4 font-semibold text-black-text-01"
@@ -140,8 +146,9 @@ const ListSelectorFakePage: React.FC = () => {
                       <div
                         className={cn(`line-clamp-1 max-h-14 overflow-hidden`, {
                           'text-black-tint-04':
-                            (selectedList !== list.id && selectedList !== '') ||
-                            !canAdd,
+                            selectedList !== list.id && selectedList !== '',
+                          // ||
+                          // !canAdd,
                         })}
                       >
                         {list.title}
@@ -153,7 +160,10 @@ const ListSelectorFakePage: React.FC = () => {
                               if (canAdd) {
                                 onCreateIdea();
                               } else {
-                                openDrawer({ isCloseable: true });
+                                openDrawer({
+                                  isCloseable: true,
+                                  variant: SignupDrawerVariant.IDEA_FULL,
+                                });
                               }
                             }}
                             className="flex min-w-16 items-center gap-0.5 rounded-lg bg-black-text-01 px-2 py-1.5 font-semibold leading-snug text-white"
@@ -185,7 +195,10 @@ const ListSelectorFakePage: React.FC = () => {
                     disabled={selectedList !== ''}
                     onClick={() => {
                       if ((data?.remainingCount ?? 0) <= 0) {
-                        openDrawer({ isCloseable: true });
+                        openDrawer({
+                          isCloseable: true,
+                          variant: SignupDrawerVariant.LIST_FULL,
+                        });
                         return;
                       }
                       if (payload?.ideaForm) {

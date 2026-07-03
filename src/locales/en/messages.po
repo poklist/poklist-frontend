@@ -706,6 +706,34 @@ msgid "Sign up to unlock more"
 msgstr "Sign up to unlock more"
 
 #: src/components/Drawer/SignupDrawer.tsx
+msgid "You’ve reached the list limit…"
+msgstr "You’ve reached the list limit…"
+
+#: src/components/Drawer/SignupDrawer.tsx
+msgid "Sign up free to unlock more"
+msgstr "Sign up free to unlock more"
+
+#: src/components/Drawer/SignupDrawer.tsx
+msgid "This list is full…"
+msgstr "This list is full…"
+
+#: src/components/Drawer/SignupDrawer.tsx
+msgid "Choose another list, or sign up free to unlock more access."
+msgstr "Choose another list, or sign up free to unlock more access."
+
+#: src/components/Drawer/SignupDrawer.tsx
+msgid "Trial limit reached…"
+msgstr "Trial limit reached…"
+
+#: src/components/Drawer/SignupDrawer.tsx
+msgid ""
+"Good taste deserves space. \n"
+"Sign up free to unlock it."
+msgstr ""
+"Good taste deserves space. \n"
+"Sign up free to unlock it."
+
+#: src/components/Drawer/SignupDrawer.tsx
 msgid "Sign Up"
 msgstr "Sign Up"
 

@@ -1,4 +1,5 @@
 import axios from '@/api/axios';
+import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
 import useAuthStore from '@/stores/useAuthStore';
 import useCommonStore from '@/stores/useCommonStore';
 import useUserStore from '@/stores/useUserStore';
@@ -6,7 +7,6 @@ import { IResponse } from '@/types/response';
 import { User } from '@/types/User';
 import { t } from '@lingui/macro';
 import { CredentialResponse } from '@react-oauth/google';
-import useStrictNavigateNext from './useStrictNavigateNext';
 
 export interface LoginInfo {
   accessToken: string;

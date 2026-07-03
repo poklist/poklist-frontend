@@ -1,32 +1,19 @@
 'use client';
 
-import { publishContracts } from '@/api/contracts';
-import { TsRestCacheEntry } from '@/api/fetcher';
 import { ListSectionSkeleton } from '@/app/user/_components/ListSection/ListSectionSkeleton';
 import { useGetUserLists } from '@/hooks/api/lists/useGetUserLists';
-import publishKeys from '@/hooks/api/publish/keys';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { useUserRouteContext } from '@/hooks/useUserRouteContext';
 import { Trans } from '@lingui/macro';
-import { useQueryClient } from '@tanstack/react-query';
-import { ClientInferResponseBody } from '@ts-rest/core';
 import Image from 'next/image';
 
 const ListSection: React.FC = () => {
   const { userCode } = useUserRouteContext();
   const navigateTo = useStrictNavigationAdapter();
-  const listsLimits = useQueryClient().getQueryData<
-    TsRestCacheEntry<
-      ClientInferResponseBody<
-        typeof publishContracts.getListsLimitsContract,
-        200
-      >
-    >
-  >(publishKeys.listsLimits());
 
   const { data: listPreviews, isLoading } = useGetUserLists({
     userCode,
-    limit: listsLimits?.body.content.usedCount ?? 99,
+    limit: 99,
   });
 
   // const {

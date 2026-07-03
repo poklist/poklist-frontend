@@ -9,8 +9,10 @@ export const likeActionOptionsSchema = z.object({
   onSuccess: z
     .function()
     .args(
-      likeSchema.postLikeResponse.shape.content ||
-        unlikeSchema.postUnlikeResponse.shape.content
+      z.union([
+        likeSchema.postLikeResponse.shape.content,
+        unlikeSchema.postUnlikeResponse.shape.content,
+      ])
     )
     .returns(z.void())
     .optional(),
@@ -18,7 +20,7 @@ export const likeActionOptionsSchema = z.object({
     .function()
     .args(
       z.unknown(),
-      likeSchema.postLikeRequest || unlikeSchema.postUnlikeRequest
+      z.union([likeSchema.postLikeRequest, unlikeSchema.postUnlikeRequest])
     )
     .returns(z.void())
     .optional(),

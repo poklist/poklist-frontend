@@ -5,11 +5,11 @@ import {
 } from '@/api/contracts';
 import { ideasQuery, PostIdeasResponse } from '@/api/query/ideas';
 import listsKeys from '@/hooks/api/lists/keys';
+import publishKeys from '@/hooks/api/publish/keys';
 import { updateEntryCaches, updateInfiniteCaches } from '@/hooks/api/utils';
 import { toBackendTimestamp } from '@/lib/time';
 import { useQueryClient } from '@tanstack/react-query';
 import { ErrorResponse } from '@ts-rest/react-query';
-import publishKeys from '../publish/keys';
 
 interface UsePostNewIdeaOptions {
   onSuccess?: (data: PostIdeasResponse['content']) => void;
