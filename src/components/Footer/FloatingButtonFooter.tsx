@@ -11,7 +11,7 @@ import IconLike from '@/components/ui/icons/LikeIcon';
 import IconLink from '@/components/ui/icons/LinkIcon';
 import { DrawerIds } from '@/constants/Drawer';
 import { MessageType } from '@/enums/Style/index.enum';
-import { useCheckCreateQuota } from '@/hooks/queries/useCheckCreateQuota';
+import { useCheckCreateQuota } from '@/hooks/queries/publish/useCheckCreateQuota';
 import { useAuthWrapper } from '@/hooks/useAuth';
 import useClipboard from '@/hooks/useClipboard';
 import { useToast } from '@/hooks/useToast';

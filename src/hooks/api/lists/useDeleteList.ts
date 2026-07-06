@@ -1,13 +1,10 @@
-import {
-  listsContract,
-  publishContracts,
-  usersContract,
-} from '@/api/contracts';
+import { listsContract, usersContract } from '@/api/contracts';
 import { listsQuery } from '@/api/query/lists';
 import listsKeys from '@/hooks/api/lists/keys';
 import publishKeys from '@/hooks/api/publish/keys';
 import usersKeys from '@/hooks/api/users/keys';
 import { updateEntryCaches } from '@/hooks/api/utils';
+import { adjustPublishLimitsCache } from '@/hooks/queries/publish/cachesUpdater';
 import { useQueryClient } from '@tanstack/react-query';
 import { ErrorResponse } from '@ts-rest/react-query';
 import z from 'zod';
@@ -57,21 +54,7 @@ export const useDeleteList = (options: UseDeleteListOptions) => {
             };
           }
         );
-        updateEntryCaches<typeof publishContracts.getListsLimitsContract>(
-          queryClient,
-          publishKeys.listsLimits(),
-          (previousBody) => {
-            if (previousBody.content.isUnlimited) return previousBody;
-            return {
-              ...previousBody,
-              content: {
-                ...previousBody.content,
-                usedCount: previousBody.content.usedCount - 1,
-                remainingCount: (previousBody.content.remainingCount ?? 0) + 1,
-              },
-            };
-          }
-        );
+        adjustPublishLimitsCache(queryClient, publishKeys.listsLimits(), -1);
       } catch (error) {
         console.warn('Refetch failed, but list was deleted:', error);
       } finally {

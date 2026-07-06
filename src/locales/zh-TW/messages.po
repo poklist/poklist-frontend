@@ -1155,8 +1155,8 @@ msgid "The server took too long. Try again later."
 msgstr "伺服器等太久了，請稍後再試"
 
 #: src/hooks/mutations/useEditProfile.ts
-msgid "Please login again"
-msgstr "請重新登入"
+#~ msgid "Please login again"
+#~ msgstr "請重新登入"
 
 #: src/hooks/useAuthRequired.ts
 msgid "Please login to do this action"

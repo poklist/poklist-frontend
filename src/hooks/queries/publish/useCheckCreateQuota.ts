@@ -5,12 +5,14 @@ import {
 } from '@/api/query/publish';
 import listsKeys from '@/hooks/api/lists/keys';
 import publishKeys from '@/hooks/api/publish/keys';
+import useAuthStore from '@/stores/useAuthStore';
 import useUserStore from '@/stores/useUserStore';
 import { useQueryClient } from '@tanstack/react-query';
 
 export const useCheckCreateQuota = () => {
   const queryClient = useQueryClient();
   const { me } = useUserStore();
+  const { isLoggedIn } = useAuthStore();
   const canStillCreate = (limits: {
     isUnlimited: boolean;
     remainingCount: number | null;
@@ -19,6 +21,7 @@ export const useCheckCreateQuota = () => {
   const checkCanCreate = async (
     targetListID?: GetPublishIdeasLimitsRequest['listID']
   ): Promise<boolean> => {
+    if (!isLoggedIn) return false;
     if (targetListID) {
       const ideaLimit = (
         await publishQuery.getIdeasLimits.fetchQuery(
@@ -50,19 +53,17 @@ export const useCheckCreateQuota = () => {
       )
     ).body.content;
 
-    const ideaLimits = await Promise.all(
-      userLists.map((list) =>
-        publishQuery.getIdeasLimits.fetchQuery(
+    for (const list of userLists) {
+      const ideaLimit = (
+        await publishQuery.getIdeasLimits.fetchQuery(
           queryClient,
           publishKeys.ideasLimits(list.id),
           { query: { listID: list.id } }
         )
-      )
-    );
-
-    return ideaLimits.some((response) => canStillCreate(response.body.content))
-      ? true
-      : false;
+      ).body.content;
+      if (canStillCreate(ideaLimit)) return true;
+    }
+    return false;
   };
   return {
     checkCanCreate,

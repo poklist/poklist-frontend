@@ -8,17 +8,16 @@ import { ErrorDrawer } from '@/components/ErrorDrawer';
 import { FakePageProvider } from '@/components/FakePage';
 import LoadingSpinner from '@/components/Loading';
 import { Toaster } from '@/components/ui/toaster';
+import { getQueryClient } from '@/lib/queryClient';
 import useCommonStore from '@/stores/useCommonStore';
 import { Theme } from '@radix-ui/themes';
 import {
-  QueryClient,
   QueryClientProvider,
   useIsFetching,
   useIsMutating,
 } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { AxiosError } from 'axios';
-import { ReactNode, useState } from 'react';
+import { ReactNode } from 'react';
 
 interface ClientProvidersProps {
   children: ReactNode;
@@ -56,35 +55,7 @@ const GlobalLoading = () => {
  * - ReactQueryDevtools: 開發工具
  */
 export const ClientProviders = ({ children }: ClientProvidersProps) => {
-  const [queryClient] = useState(
-    () =>
-      new QueryClient({
-        defaultOptions: {
-          queries: {
-            retry: (failureCount, error) => {
-              const axiosError = error as AxiosError;
-              const statusCode = axiosError.response?.status;
-
-              if (
-                statusCode === 401 ||
-                statusCode === 403 ||
-                statusCode === 404
-              ) {
-                return false;
-              }
-
-              if (failureCount >= 1) {
-                return false;
-              }
-
-              return true;
-            },
-            staleTime: 60000,
-            gcTime: 300000,
-          },
-        },
-      })
-  );
+  const queryClient = getQueryClient();
   return (
     <QueryClientProvider client={queryClient}>
       <Theme>

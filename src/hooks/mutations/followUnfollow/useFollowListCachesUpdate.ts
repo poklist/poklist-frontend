@@ -52,8 +52,7 @@ export const useFollowListCacheUpdater = ({
       (following) => following.id === targetUserID
     );
 
-    latestSocialLinkRef.current =
-      foundInFollowers ?? foundInFollowings ?? null;
+    latestSocialLinkRef.current = foundInFollowers ?? foundInFollowings ?? null;
   };
 
   const updateListCaches = (
