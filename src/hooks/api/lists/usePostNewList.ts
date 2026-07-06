@@ -35,6 +35,10 @@ export const usePostNewList = (options: UsePostNewListOptions) => {
             };
           }
         );
+        // await queryClient.invalidateQueries({
+        //   queryKey: listsKeys.userInfiniteLists(options.userCode),
+        //   refetchType: 'all',
+        // });
         updateEntryCaches<typeof usersContract.getInfoContract>(
           queryClient,
           usersKeys.userInfo(options.userCode),

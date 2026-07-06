@@ -27,16 +27,43 @@ export const usePutList = (options: UsePutListOptions) => {
               content: previousBody.content.map((list) =>
                 list.id === newData.id
                   ? {
-                      ...list,
-                      title: newData.title,
-                      description: newData.description,
-                      coverImage: request.body.coverImage ?? list.coverImage,
-                      externalLink: newData.externalLink,
-                      categoryID: newData.categoryID,
-                    }
+                    ...list,
+                    title: newData.title,
+                    description: newData.description,
+                    coverImage: request.body.coverImage ?? list.coverImage,
+                    externalLink: newData.externalLink,
+                    categoryID: newData.categoryID,
+                  }
                   : list
               ),
             };
+          }
+        );
+        updateInfiniteCaches<typeof listsContract.getUserListsContract>(
+          queryClient,
+          listsKeys.userInfiniteLists(options.userCode),
+          (previousPages) => {
+            return previousPages.map((page) => {
+              return {
+                ...page,
+                body: {
+                  ...page.body,
+                  content: page.body.content.map((list) =>
+                    list.id === newData.id
+                      ? {
+                        ...list,
+                        title: newData.title,
+                        description: newData.description,
+                        coverImage:
+                          request.body.coverImage ?? list.coverImage,
+                        externalLink: newData.externalLink,
+                        categoryID: newData.categoryID,
+                      }
+                      : list
+                  ),
+                },
+              };
+            });
           }
         );
         updateInfiniteCaches<typeof listsContract.getListsContract>(
