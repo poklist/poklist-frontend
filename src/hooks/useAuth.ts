@@ -144,17 +144,19 @@ export const useConditionalExecution = () => {
  *   // 安全操作
  * });
  */
-export interface AuthWrapperOptions<R> {
+export interface AuthWrapperOptions {
   onNotAuthorized?: () => void;
   beforeExecution?: () => void;
-  afterExecution?: (result: R) => void;
+  afterExecution?: (result: unknown) => void;
 }
 
-export const useAuthWrapper = <R>(options?: AuthWrapperOptions<R>) => {
+export const useAuthWrapper = (options?: AuthWrapperOptions) => {
   const { isLoggedIn } = useAuthStore();
   const { setIsLoginDrawerOpen } = useCommonStore();
 
-  const withAuth = <T extends unknown[]>(fn: (...args: T) => R) => {
+  const withAuth = <T extends unknown[], R>(
+    fn: (...args: T) => R
+  ): ((...args: T) => R | undefined) => {
     return (...args: T): R | undefined => {
       // 未登入處理
       if (!isLoggedIn) {
@@ -166,15 +168,15 @@ export const useAuthWrapper = <R>(options?: AuthWrapperOptions<R>) => {
         return undefined;
       }
 
-      // 執行前鉤子
+      // 執行 Before hooks
       if (options?.beforeExecution) {
         options.beforeExecution();
       }
 
-      // 執行函數
+      // 執行
       const result = fn(...args);
 
-      // 執行後鉤子
+      // 執行 After hooks
       if (options?.afterExecution) {
         options.afterExecution(result);
       }

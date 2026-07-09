@@ -65,7 +65,25 @@ export const useCheckCreateQuota = () => {
     }
     return false;
   };
+
+  const checkCanCreateList = async (): Promise<boolean> => {
+    if (!isLoggedIn) return false;
+    try {
+      const listsLimits = (
+        await publishQuery.getListsLimits.fetchQuery(
+          queryClient,
+          publishKeys.listsLimits()
+        )
+      ).body.content;
+      return canStillCreate(listsLimits);
+    } catch {
+      return true;
+    }
+  };
+
   return {
+    canStillCreate,
     checkCanCreate,
+    checkCanCreateList,
   };
 };

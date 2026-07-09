@@ -22,9 +22,13 @@ export const usePostNewList = (options: UsePostNewListOptions) => {
   const queryClient = useQueryClient();
 
   return listsQuery.post.useMutation({
-    onSuccess: (response) => {
+    onSuccess: async (response) => {
       const data = response.body.content;
       try {
+        await queryClient.invalidateQueries({
+          queryKey: listsKeys.userInfiniteLists(options.userCode),
+          refetchType: 'all',
+        });
         updateEntryCaches<typeof listsContract.getUserListsContract>(
           queryClient,
           listsKeys.userLists(options.userCode),
@@ -35,10 +39,6 @@ export const usePostNewList = (options: UsePostNewListOptions) => {
             };
           }
         );
-        // await queryClient.invalidateQueries({
-        //   queryKey: listsKeys.userInfiniteLists(options.userCode),
-        //   refetchType: 'all',
-        // });
         updateEntryCaches<typeof usersContract.getInfoContract>(
           queryClient,
           usersKeys.userInfo(options.userCode),

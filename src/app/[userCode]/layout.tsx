@@ -1,29 +1,13 @@
 import { UserRouteProvider } from '@/app/[userCode]/UserRouteProvider';
-import { isUserRoute, migrateUserRoute } from '@/lib/routeMigration';
-import { notFound } from 'next/navigation';
 import { ReactNode } from 'react';
 
 interface UserLayoutProps {
   children: ReactNode;
-  params: Promise<{ userCode: string }>;
 }
 
-export default async function UserLayout({
-  children,
-  params,
-}: UserLayoutProps) {
-  const { userCode: rawUserCode } = await params;
-
-  // 驗證是否為有效的用戶路由
-  if (!isUserRoute(`/${rawUserCode}`)) {
-    notFound();
-  }
-
-  // 清理userCode（移除@前綴如果存在）
-  const cleanUserCode = migrateUserRoute(rawUserCode);
-
+export default function UserLayout({ children }: UserLayoutProps) {
   return (
-    <UserRouteProvider userCode={cleanUserCode}>
+    <UserRouteProvider>
       <div>
         {/* 可以放置用戶profile layout */}
         {children}

@@ -131,11 +131,11 @@ msgstr "新增的靈感會在這裡，丟個靈感進來吧！"
 msgid "Drag the lines on the left to reorder."
 msgstr "拖曳左側三條線可排序"
 
-#: src/app/[userCode]/list/[id]/reorder/page.tsx
+#: src/app/[userCode]/list/[id]/reorder/client.tsx
 msgid "Reorder Ideas"
 msgstr "排序靈感"
 
-#: src/app/[userCode]/list/[id]/reorder/page.tsx
+#: src/app/[userCode]/list/[id]/reorder/client.tsx
 #: src/app/[userCode]/list/_components/Header/index.tsx
 #: src/app/idea/_components/Form/index.tsx
 #: src/app/idea/create/list/page.tsx

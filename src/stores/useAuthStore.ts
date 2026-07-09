@@ -1,5 +1,7 @@
 import { getQueryClient } from '@/lib/queryClient';
 import useEditProfileStore from '@/stores/useEditProfileStore';
+import useFollowingStore from '@/stores/useFollowingStore';
+import useLikeStore from '@/stores/useLikeStore';
 import useUserStore from '@/stores/useUserStore';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
@@ -31,6 +33,8 @@ const useAuthStore = create<UserStoreState>()(
         useUserStore.getState().resetMe();
         useEditProfileStore.getState().resetNewUserInfo();
         getQueryClient().clear();
+        useFollowingStore.getState().resetFollowingStore();
+        useLikeStore.getState().clearAllLikeStatus();
       },
     }),
     { name: 'auth-storage' }

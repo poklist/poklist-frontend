@@ -1,3 +1,13 @@
 User-Agent: *
 Allow: /
 Disallow: /private/
+Disallow: /settings
+Disallow: /user/edit
+Disallow: /idea/create
+Disallow: /list/create
+Disallow: /goToMobile
+Disallow: /error
+Disallow: /*/list/*/edit
+Disallow: /*/list/*/reorder
+Disallow: /idea/*/edit
+Sitemap: https://relist.cc/sitemap.xml

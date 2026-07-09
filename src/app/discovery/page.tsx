@@ -1,37 +1,40 @@
-'use client';
+import DiscoveryPageClient from '@/app/discovery/client';
+import categoriesKeys from '@/hooks/api/categories/keys';
+import discoveryKeys from '@/hooks/api/discovery/keys';
+import { fetchJSONForSEO } from '@/lib/seo/fetchers';
+import { toTsRestEntry } from '@/lib/seo/prefetch';
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from '@tanstack/react-query';
 
-import FooterSection from '@/app/discovery/_components/FooterSection';
-import { HeaderSection } from '@/app/discovery/_components/HeaderSection';
-import ListSection from '@/app/discovery/_components/ListSection';
-import TileSection from '@/app/discovery/_components/TileSection';
-import FloatingButtonFooter from '@/components/Footer/FloatingButtonFooter';
-import Header from '@/components/Header';
-import useAuthStore from '@/stores/useAuthStore';
-import { GoogleOAuthProvider } from '@react-oauth/google';
-
-const DiscoveryContent = () => {
-  const { isLoggedIn } = useAuthStore();
-  return (
-    <>
-      <Header
-        bgColor="transparent"
-        fakeBlockColor={isLoggedIn ? 'white' : 'primary'}
-      />
-      {isLoggedIn ? <></> : <HeaderSection />}
-      <TileSection />
-      <ListSection />
-      <FooterSection />
-      <FloatingButtonFooter />
-    </>
+export default async function DiscoveryPage() {
+  const [categories, latestListGroups, officialCollections] = await Promise.all(
+    [
+      fetchJSONForSEO('/categories'),
+      fetchJSONForSEO('/discovery/latest-list-groups'),
+      fetchJSONForSEO('/discovery/official-collections'),
+    ]
   );
-};
 
-export default function DiscoveryPage() {
-  const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID as string;
+  const queryClient = new QueryClient();
+  if (categories)
+    queryClient.setQueryData(categoriesKeys.list(), toTsRestEntry(categories));
+  if (latestListGroups)
+    queryClient.setQueryData(
+      discoveryKeys.latestListGroups(),
+      toTsRestEntry(latestListGroups)
+    );
+  if (officialCollections)
+    queryClient.setQueryData(
+      discoveryKeys.officialCollections(),
+      toTsRestEntry(officialCollections)
+    );
 
   return (
-    <GoogleOAuthProvider clientId={clientId}>
-      <DiscoveryContent />
-    </GoogleOAuthProvider>
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <DiscoveryPageClient />
+    </HydrationBoundary>
   );
 }

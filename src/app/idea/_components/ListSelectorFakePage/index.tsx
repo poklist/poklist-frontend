@@ -17,7 +17,8 @@ import { DrawerIds } from '@/constants/Drawer';
 import { LocalStorageKey } from '@/enums/index.enum';
 import { usePostNewIdea } from '@/hooks/api/ideas/usePostNewIdea';
 import publishKeys from '@/hooks/api/publish/keys';
-import { useGetListsLimits } from '@/hooks/api/publish/useGetListsLimits';
+import { useCheckCreateQuota } from '@/hooks/queries/publish/useCheckCreateQuota';
+import { useAsyncAction } from '@/hooks/useAsyncAction';
 import { useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { cn, removeLocalStorage } from '@/lib/utils';
@@ -45,38 +46,59 @@ const ListSelectorFakePage: React.FC = () => {
     },
   });
 
-  const { data } = useGetListsLimits({ enabled: isLoggedIn });
-
   const lists = payload?.lists ?? [];
+
+  const { canStillCreate, checkCanCreate, checkCanCreateList } =
+    useCheckCreateQuota();
 
   const ideaLimitResults = publishQuery.getIdeasLimits.useQueries({
     queries: lists.map((list) => ({
       queryKey: publishKeys.ideasLimits(list.id),
       query: { listID: list.id },
+      enabled: isLoggedIn,
     })),
   });
 
   const canAddIdeaMap = new Map<string, boolean>(
     lists.map((list, i) => {
       const content = ideaLimitResults[i]?.data?.body.content;
-      const canAdd = content
-        ? content.isUnlimited || (content.remainingCount ?? 0) > 0
-        : true;
+      const canAdd = content ? canStillCreate(content) : true;
       return [list.id, canAdd];
     })
   );
 
   const [selectedList, setSelectedList] = useState('');
 
-  const onCreateIdea = withAuth(() => {
-    if (payload) {
-      createIdea({
-        body: {
-          ...payload?.ideaForm,
-          listID: selectedList,
-          externalLink: payload.ideaForm.externalLink ?? '',
-        },
-      });
+  const onCreateIdea = useAsyncAction(
+    withAuth(async () => {
+      if (!(await checkCanCreate(selectedList))) {
+        openDrawer({
+          isCloseable: true,
+          variant: SignupDrawerVariant.IDEA_FULL,
+        });
+        return;
+      }
+
+      if (payload) {
+        createIdea({
+          body: {
+            ...payload?.ideaForm,
+            listID: selectedList,
+            externalLink: payload.ideaForm.externalLink ?? '',
+          },
+        });
+      }
+    })
+  );
+
+  const onCreateNewList = useAsyncAction(async () => {
+    if (!(await checkCanCreateList())) {
+      openDrawer({ isCloseable: true, variant: SignupDrawerVariant.LIST_FULL });
+      return;
+    }
+    if (payload?.ideaForm) {
+      closeFakePage();
+      navigateTo.temporaryCreateList(payload.ideaForm);
     }
   });
 
@@ -193,19 +215,7 @@ const ListSelectorFakePage: React.FC = () => {
                 <div className="" onClick={() => setSelectedList('')}>
                   <Button
                     disabled={selectedList !== ''}
-                    onClick={() => {
-                      if ((data?.remainingCount ?? 0) <= 0) {
-                        openDrawer({
-                          isCloseable: true,
-                          variant: SignupDrawerVariant.LIST_FULL,
-                        });
-                        return;
-                      }
-                      if (payload?.ideaForm) {
-                        closeFakePage();
-                        navigateTo.temporaryCreateList(payload.ideaForm);
-                      }
-                    }}
+                    onClick={() => onCreateNewList()}
                     variant={ButtonVariant.BLACK}
                     size={ButtonSize.H40}
                     shape={ButtonShape.ROUNDED_8PX}

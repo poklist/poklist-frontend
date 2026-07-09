@@ -1,5 +1,5 @@
-import { Metadata } from 'next';
 import { User } from '@/types/User';
+import { Metadata } from 'next';
 import { z } from 'zod';
 
 // 截斷標題的共用函數
@@ -11,8 +11,7 @@ export const truncateTitle = (
 };
 
 export function getPreviewImage(image: string | null | undefined): string[] {
-  const defaultImage =
-    'https://lh3.googleusercontent.com/d/1vqY55zHJQ1Yj0sWrRhtWB6ogFpJz7hoo';
+  const defaultImage = '/images/og/share-default.jpg';
 
   // 優先使用名單的封面圖片
   if (image) {
@@ -96,3 +95,10 @@ export const createTwitterMetadata = (
   })),
   site: '@relist',
 });
+
+export const truncateDescription = (
+  text: string,
+  maxLength: number = 160
+): string => {
+  return text.length > maxLength ? `${text.slice(0, maxLength - 1)}…` : text;
+};

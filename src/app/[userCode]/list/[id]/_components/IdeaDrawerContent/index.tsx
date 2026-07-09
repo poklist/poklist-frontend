@@ -18,6 +18,7 @@ import { SocialLinkType } from '@/enums/index.enum';
 import { DropdownItemType, MessageType } from '@/enums/Style/index.enum';
 import { useDeleteIdea } from '@/hooks/api/ideas/useDeleteIdea';
 import { useGetIdea } from '@/hooks/api/ideas/useGetIdea';
+import { useAsyncAction } from '@/hooks/useAsyncAction';
 import { useAuthWrapper } from '@/hooks/useAuth';
 import useClipboard from '@/hooks/useClipboard';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
@@ -58,14 +59,14 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({
 
   const { closeDrawer: closeSelf } = useDrawer(DrawerIds.LIST_CARD_DRAWER_ID);
 
-  const handleCopyHref = () => {
+  const handleCopyHref = useAsyncAction(async () => {
     if (!data) return;
-    void copy(`${window.location.href}/idea/${data.id}`);
+    await copy(`${window.location.href}/idea/${data.id}`);
     toast({
       title: t`Copied to clipboard`,
       variant: MessageType.SUCCESS,
     });
-  };
+  });
 
   const dropdownItems: DropdownItem[] = [
     {

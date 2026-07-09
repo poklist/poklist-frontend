@@ -27,13 +27,13 @@ export const usePutList = (options: UsePutListOptions) => {
               content: previousBody.content.map((list) =>
                 list.id === newData.id
                   ? {
-                    ...list,
-                    title: newData.title,
-                    description: newData.description,
-                    coverImage: request.body.coverImage ?? list.coverImage,
-                    externalLink: newData.externalLink,
-                    categoryID: newData.categoryID,
-                  }
+                      ...list,
+                      title: newData.title,
+                      description: newData.description,
+                      coverImage: request.body.coverImage ?? list.coverImage,
+                      externalLink: newData.externalLink,
+                      categoryID: newData.categoryID,
+                    }
                   : list
               ),
             };
@@ -51,14 +51,14 @@ export const usePutList = (options: UsePutListOptions) => {
                   content: page.body.content.map((list) =>
                     list.id === newData.id
                       ? {
-                        ...list,
-                        title: newData.title,
-                        description: newData.description,
-                        coverImage:
-                          request.body.coverImage ?? list.coverImage,
-                        externalLink: newData.externalLink,
-                        categoryID: newData.categoryID,
-                      }
+                          ...list,
+                          title: newData.title,
+                          description: newData.description,
+                          coverImage:
+                            request.body.coverImage ?? list.coverImage,
+                          externalLink: newData.externalLink,
+                          categoryID: newData.categoryID,
+                        }
                       : list
                   ),
                 },

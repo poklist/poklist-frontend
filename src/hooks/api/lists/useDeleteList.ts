@@ -22,8 +22,12 @@ export const useDeleteList = (options: UseDeleteListOptions) => {
   const queryClient = useQueryClient();
 
   return listsQuery.delete.useMutation({
-    onSuccess: (_, request) => {
+    onSuccess: async (_, request) => {
       try {
+        await queryClient.invalidateQueries({
+          queryKey: listsKeys.userInfiniteLists(options.userCode),
+          refetchType: 'all',
+        });
         // 將單筆列表資料清空，而非刪除快取，為免因尚有 Component 仍在使用相關資料而重新 fetch
         queryClient.setQueryData(
           listsKeys.infiniteIdeas(request.params.listID),
@@ -41,10 +45,6 @@ export const useDeleteList = (options: UseDeleteListOptions) => {
             };
           }
         );
-        // await queryClient.invalidateQueries({
-        //   queryKey: listsKeys.userInfiniteLists(options.userCode),
-        //   refetchType: 'all',
-        // });
         updateEntryCaches<typeof usersContract.getInfoContract>(
           queryClient,
           usersKeys.userInfo(options.userCode),

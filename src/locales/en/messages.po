@@ -131,11 +131,11 @@ msgstr "Your ideas live here. Create one!"
 msgid "Drag the lines on the left to reorder."
 msgstr "Drag the lines on the left to reorder."
 
-#: src/app/[userCode]/list/[id]/reorder/page.tsx
+#: src/app/[userCode]/list/[id]/reorder/client.tsx
 msgid "Reorder Ideas"
 msgstr "Reorder Ideas"
 
-#: src/app/[userCode]/list/[id]/reorder/page.tsx
+#: src/app/[userCode]/list/[id]/reorder/client.tsx
 #: src/app/[userCode]/list/_components/Header/index.tsx
 #: src/app/idea/_components/Form/index.tsx
 #: src/app/idea/create/list/page.tsx
