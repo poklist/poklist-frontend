@@ -131,11 +131,11 @@ msgstr "Your ideas live here. Create one!"
 msgid "Drag the lines on the left to reorder."
 msgstr "Drag the lines on the left to reorder."
 
-#: src/app/[userCode]/list/[id]/reorder/page.tsx
+#: src/app/[userCode]/list/[id]/reorder/client.tsx
 msgid "Reorder Ideas"
 msgstr "Reorder Ideas"
 
-#: src/app/[userCode]/list/[id]/reorder/page.tsx
+#: src/app/[userCode]/list/[id]/reorder/client.tsx
 #: src/app/[userCode]/list/_components/Header/index.tsx
 #: src/app/idea/_components/Form/index.tsx
 #: src/app/idea/create/list/page.tsx
@@ -1155,8 +1155,8 @@ msgid "The server took too long. Try again later."
 msgstr "The server took too long. Try again later."
 
 #: src/hooks/mutations/useEditProfile.ts
-msgid "Please login again"
-msgstr "Please login again"
+#~ msgid "Please login again"
+#~ msgstr "Please login again"
 
 #: src/hooks/useAuthRequired.ts
 msgid "Please login to do this action"

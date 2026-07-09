@@ -78,10 +78,10 @@ export const isValidInstagramUsername = (username: string) => {
   return regex.test(username);
 };
 
-export const copyHref = (appendedPath: string = '') => {
-  const url = window.location.href;
-  void navigator.clipboard.writeText(url + appendedPath);
-};
+// export const copyHref = (appendedPath: string = '') => {
+//   const url = window.location.href;
+//   void navigator.clipboard.writeText(url + appendedPath);
+// };
 
 export const extractUsernameFromUrl = (
   linkType: SocialLinkType,

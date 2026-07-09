@@ -1,56 +1,50 @@
 'use client';
 
 import { ListSectionSkeleton } from '@/app/user/_components/ListSection/ListSectionSkeleton';
-import { useGetUserLists } from '@/hooks/api/lists/useGetUserLists';
+import { useGetInfiniteLists } from '@/hooks/api/lists/useGetUserInfiniteLists';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { useUserRouteContext } from '@/hooks/useUserRouteContext';
 import { Trans } from '@lingui/macro';
 import Image from 'next/image';
+import { useCallback, useEffect, useRef } from 'react';
 
 const ListSection: React.FC = () => {
   const { userCode } = useUserRouteContext();
   const navigateTo = useStrictNavigationAdapter();
 
-  const { data: listPreviews, isLoading } = useGetUserLists({
-    userCode,
-    limit: 99,
-  });
+  const sentinelRef = useRef<HTMLDivElement>(null);
 
-  // const {
-  //   data,
-  //   fetchNextPage,
-  //   hasNextPage,
-  //   isLoading: isListsLoading,
-  //   isFetchingNextPage,
-  // } = useInfiniteLists({ userCode, limit: 5 });
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
+    useGetInfiniteLists({ userCode, limit: 10 });
 
-  // const [lists, setLists] = useState<ListPreview[]>();
+  const onBottomReached = useCallback(() => {
+    if (hasNextPage && !isFetchingNextPage) {
+      void fetchNextPage();
+    }
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  useEffect(() => {
+    const sentinel = sentinelRef.current;
+    if (!sentinel) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          onBottomReached();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [onBottomReached, hasNextPage, isFetchingNextPage]);
+
+  const listPreviews = data?.pages.flatMap((page) => page.lists);
 
   if (isLoading || !listPreviews) {
     return <ListSectionSkeleton />;
   }
-
-  // useEffect(() => {
-  //   if (!data?.pages) return;
-
-  //   const newLists = data.pages
-  //     .flatMap((page) => page.list)
-  //     .filter((list): list is ListPreview => Boolean(list));
-
-  //   setLists((prevLists) => {
-  //     if (!prevLists) return newLists;
-
-  //     const existingIds = new Set(prevLists.map((list) => list.id));
-  //     const newIdeaList = newLists.filter((list) => !existingIds.has(list.id));
-  //     return newIdeaList.length === 0
-  //       ? prevLists
-  //       : [...prevLists, ...newIdeaList];
-  //   });
-  // }, [data]);
-
-  // const onBottomReached = () => {
-  //   if (hasNextPage && !isFetchingNextPage) void fetchNextPage();
-  // };
 
   return (
     <div role="list-preview" className="mb-10 flex-1 bg-transparent sm:mb-0">
@@ -82,36 +76,8 @@ const ListSection: React.FC = () => {
             </div>
           );
         })}
-        {/* {lists && (
-          <VirtualList
-            dataKey="id"
-            dataSource={lists}
-            onBottom={() => onBottomReached()}
-          >
-            {(list, _index, dataKey) => (
-              <div
-                key={dataKey}
-                className={`flex min-h-[72px] items-center justify-between border-black-text-01 p-4 -tracking-1.1%`}
-                onClick={() => {
-                  navigateTo.viewList(userCode, list.id.toString());
-                }}
-              >
-                <p className="text-t1 font-semibold text-black-text-01 break-words [line-break:anywhere]">
-                  {list.title}
-                </p>
-                {list.coverImage && (
-                  <Image
-                    src={list.coverImage || ''}
-                    alt={list.title}
-                    width={40}
-                    height={40}
-                    className="rounded-[3px] border border-black-text-01"
-                  />
-                )}
-              </div>
-            )}
-          </VirtualList>
-        )} */}
+        <div ref={sentinelRef} />
+        {isFetchingNextPage && <ListSectionSkeleton />}
       </div>
       <div className="flex flex-col items-center">
         {listPreviews.length === 0 && (

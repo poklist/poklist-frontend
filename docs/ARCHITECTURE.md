@@ -466,6 +466,7 @@ export const useXxx = (options: UseXxxOptions) => {
   - **快取更新 helper 抽離**：✅ 完成 — `hooks/api/utils.ts` 的 `updateEntryCaches` / `updateInfiniteCaches`（§4.5）。後續強化選項：泛型補 `TStatus extends keyof T['responses'] = 200`，防未來 contract 增加錯誤 response 定義時 updater 參數變 union。
   - **ts-rest mutation `onError` 型別對齊**：✅ 完成 — 全部統一 `ErrorResponse<typeof contract>`；且 `axiosFetcher` 的 try/catch 錯誤轉換讓此型別 runtime 真實（§4.5）。
   - **`updatedAt` 由後端值取代**：`usePostNewIdea` / `usePutIdea` 仍以 `toBackendTimestamp(new Date())` 前端手拼塞快取，格式脆弱。應改用 response 回傳的 `updatedAt`，或於 schema 標註此欄非必須。
+  - **GET `/{userCode}/lists` response 缺 `totalElements`**：`getUserLists` 回應未含 `totalElements`，導致前端無法實作 `getNextPageParam` 判斷最後一頁，infinite scroll 方案（`useGetUserInfiniteLists`）暫時擱置，ListSection 維持 `limit: 99` 一次抓完。待後端補 `totalElements` 後，前端 `useGetInfiniteLists` + ListSection sentinel 捲動已有完整實作稿（2026-07-06 session），`usePostNewList`/`useDeleteList` 兩段 invalidate 也已備好（目前註解封存）。
   - **POST `/lists` response 缺 `coverImage`**：`listsSchema.postResponse` 由 `ListFormSchema.omit({ coverImage }).extend({ id })` 定義，但 `getUserLists` 的 content item（`listPreviewSchema`）含 `coverImage`。導致 `usePostNewList` prepend 進 `userLists` 快取時缺封面圖。需後端於 POST 回應補 `coverImage`，或前端 prepend 時補 fallback，待定案。
 - **id 型別分岔**：`src/api/schemas/**` 所有 id 已統一 `z.string()`，但 `src/types/User/index.ts` 等 legacy type 仍是 `id: number`，邊界處散落 `String(...)` 轉換。legacy hooks 刪除後一併收斂 legacy types。
 

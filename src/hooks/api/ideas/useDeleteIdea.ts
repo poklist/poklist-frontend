@@ -1,9 +1,10 @@
-import { listsContract, publishContracts } from '@/api/contracts';
+import { listsContract } from '@/api/contracts';
 import { ideasQuery } from '@/api/query/ideas';
 import ideasKeys from '@/hooks/api/ideas/keys';
 import listsKeys from '@/hooks/api/lists/keys';
 import publishKeys from '@/hooks/api/publish/keys';
-import { updateEntryCaches, updateInfiniteCaches } from '@/hooks/api/utils';
+import { updateInfiniteCaches } from '@/hooks/api/utils';
+import { adjustPublishLimitsCache } from '@/hooks/queries/publish/cachesUpdater';
 import { useQueryClient } from '@tanstack/react-query';
 import z from 'zod';
 
@@ -40,20 +41,10 @@ export const useDeleteIdea = (options: UseDeleteIdeaOptions) => {
           });
         }
       );
-      updateEntryCaches<typeof publishContracts.getIdeasLimitsContract>(
+      adjustPublishLimitsCache(
         queryClient,
         publishKeys.ideasLimits(options.listID),
-        (previousBody) => {
-          if (previousBody.content.isUnlimited) return previousBody;
-          return {
-            ...previousBody,
-            content: {
-              ...previousBody.content,
-              usedCount: previousBody.content.usedCount - 1,
-              remainingCount: (previousBody.content.remainingCount ?? 0) + 1,
-            },
-          };
-        }
+        -1
       );
     },
   });

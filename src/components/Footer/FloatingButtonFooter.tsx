@@ -11,7 +11,8 @@ import IconLike from '@/components/ui/icons/LikeIcon';
 import IconLink from '@/components/ui/icons/LinkIcon';
 import { DrawerIds } from '@/constants/Drawer';
 import { MessageType } from '@/enums/Style/index.enum';
-import { useCheckCreateQuota } from '@/hooks/queries/useCheckCreateQuota';
+import { useCheckCreateQuota } from '@/hooks/queries/publish/useCheckCreateQuota';
+import { useAsyncAction } from '@/hooks/useAsyncAction';
 import { useAuthWrapper } from '@/hooks/useAuth';
 import useClipboard from '@/hooks/useClipboard';
 import { useToast } from '@/hooks/useToast';
@@ -43,25 +44,27 @@ const FloatingButtonFooter: React.FC<IFooterProps> = ({
 
   const { checkCanCreate } = useCheckCreateQuota();
 
-  const handleCopyHref = () => {
-    void copy(`${window.location.href}`);
+  const handleCopyHref = useAsyncAction(async () => {
+    await copy(`${window.location.href}`);
     toast({
       title: t`Copied to clipboard`,
       variant: MessageType.SUCCESS,
     });
-  };
-
-  const handleCreateClick = withAuth(async () => {
-    const canCreate = await checkCanCreate();
-    if (canCreate) {
-      openDrawer();
-    } else {
-      openSignupDrawer({
-        isCloseable: true,
-        variant: SignupDrawerVariant.ALL_FULL,
-      });
-    }
   });
+
+  const handleCreateClick = useAsyncAction(
+    withAuth(async () => {
+      const canCreate = await checkCanCreate();
+      if (canCreate) {
+        openDrawer();
+      } else {
+        openSignupDrawer({
+          isCloseable: true,
+          variant: SignupDrawerVariant.ALL_FULL,
+        });
+      }
+    })
+  );
 
   const handleLike = withAuth(() => {
     if (isLiked) {

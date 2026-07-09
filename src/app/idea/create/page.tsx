@@ -1,7 +1,5 @@
 'use client';
 
-import { publishContracts } from '@/api/contracts';
-import { TsRestCacheEntry } from '@/api/fetcher';
 import { PostIdeasRequest } from '@/api/query/ideas';
 import IdeaForm from '@/app/idea/_components/Form';
 import ListSelectorFakePage from '@/app/idea/_components/ListSelectorFakePage';
@@ -12,14 +10,13 @@ import { DrawerIds } from '@/constants/Drawer';
 import { LocalStorageKey } from '@/enums/index.enum';
 import { usePostNewIdea } from '@/hooks/api/ideas/usePostNewIdea';
 import { useGetUserLists } from '@/hooks/api/lists/useGetUserLists';
-import publishKeys from '@/hooks/api/publish/keys';
-import { useCheckCreateQuota } from '@/hooks/queries/useCheckCreateQuota';
+import { useGetListsLimits } from '@/hooks/api/publish/useGetListsLimits';
+import { useCheckCreateQuota } from '@/hooks/queries/publish/useCheckCreateQuota';
 import { useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { removeLocalStorage } from '@/lib/utils';
+import useAuthStore from '@/stores/useAuthStore';
 import useUserStore from '@/stores/useUserStore';
-import { useQueryClient } from '@tanstack/react-query';
-import { ClientInferResponseBody } from '@ts-rest/core';
 import { useSearchParams } from 'next/navigation';
 import React, { useEffect } from 'react';
 
@@ -32,14 +29,14 @@ const IdeaCreatePage: React.FC = () => {
 
   const { me } = useUserStore();
 
-  const listsLimits = useQueryClient().getQueryData<
-    TsRestCacheEntry<
-      ClientInferResponseBody<
-        typeof publishContracts.getListsLimitsContract,
-        200
-      >
-    >
-  >(publishKeys.listsLimits());
+  const { isLoggedIn } = useAuthStore();
+
+  const { data: listsLimits } = useGetListsLimits({ enabled: isLoggedIn });
+
+  const { data: lists } = useGetUserLists({
+    userCode: me.userCode,
+    limit: listsLimits?.usedCount ?? 99,
+  });
 
   const { openDrawer } = useDrawer(DrawerIds.SIGNUP_DRAWER_ID);
 
@@ -54,15 +51,6 @@ const IdeaCreatePage: React.FC = () => {
       navigateTo.viewList(me.userCode, data.listID);
       removeLocalStorage(LocalStorageKey.IDEA_DRAFT);
     },
-    // toast({
-    //   title: error.message,
-    //   variant: MessageType.ERROR,
-    // });
-  });
-
-  const { data: lists } = useGetUserLists({
-    userCode: me.userCode,
-    limit: listsLimits?.body.content.usedCount ?? 99,
   });
 
   const onDismissCreate = (isFormEmpty: boolean) => {

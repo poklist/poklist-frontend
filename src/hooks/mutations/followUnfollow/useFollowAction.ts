@@ -11,7 +11,7 @@ import { createDebouncedRegistry } from '@/hooks/mutations/optimistic/debounceRe
 import { createOptimisticUpdateHandler } from '@/hooks/mutations/optimistic/optimisticUpdateHandler';
 import useFollowingStore from '@/stores/useFollowingStore';
 
-const followDebounce = createDebouncedRegistry("follow")
+const followDebounce = createDebouncedRegistry('follow');
 
 export const useFollowAction = ({
   target,

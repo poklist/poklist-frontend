@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 /** @type {import('next').NextConfig} */
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -42,6 +42,7 @@ const nextConfig = {
         pathname: '/**',
       },
     ],
+    minimumCacheTTL: 2678400,
   },
 };
 export default nextConfig;

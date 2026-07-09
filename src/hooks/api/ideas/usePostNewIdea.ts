@@ -1,12 +1,9 @@
-import {
-  ideasContract,
-  listsContract,
-  publishContracts,
-} from '@/api/contracts';
+import { ideasContract, listsContract } from '@/api/contracts';
 import { ideasQuery, PostIdeasResponse } from '@/api/query/ideas';
 import listsKeys from '@/hooks/api/lists/keys';
 import publishKeys from '@/hooks/api/publish/keys';
-import { updateEntryCaches, updateInfiniteCaches } from '@/hooks/api/utils';
+import { updateInfiniteCaches } from '@/hooks/api/utils';
+import { adjustPublishLimitsCache } from '@/hooks/queries/publish/cachesUpdater';
 import { toBackendTimestamp } from '@/lib/time';
 import { useQueryClient } from '@tanstack/react-query';
 import { ErrorResponse } from '@ts-rest/react-query';
@@ -56,20 +53,10 @@ export const usePostNewIdea = (options: UsePostNewIdeaOptions) => {
             });
           }
         );
-        updateEntryCaches<typeof publishContracts.getIdeasLimitsContract>(
+        adjustPublishLimitsCache(
           queryClient,
           publishKeys.ideasLimits(data.listID),
-          (previousBody) => {
-            if (previousBody.content.isUnlimited) return previousBody;
-            return {
-              ...previousBody,
-              content: {
-                ...previousBody.content,
-                usedCount: previousBody.content.usedCount + 1,
-                remainingCount: (previousBody.content.remainingCount ?? 0) - 1,
-              },
-            };
-          }
+          1
         );
       } catch (error) {
         console.warn('Refetch failed, but idea was created: ', error);

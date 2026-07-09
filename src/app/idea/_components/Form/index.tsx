@@ -16,6 +16,7 @@ import { EditFieldVariant } from '@/enums/EditField/index.enum';
 import { LocalStorageKey } from '@/enums/index.enum';
 import useAutoResizeTextarea from '@/hooks/ui/useAutoResizeTextarea';
 import useFormErrorHandler from '@/hooks/ui/useFormErrorHandler';
+import { useAsyncAction } from '@/hooks/useAsyncAction';
 import useIdle from '@/hooks/useIdle';
 import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
 import {
@@ -135,7 +136,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
     stop();
   };
 
-  const onRestoreDraft = async () => {
+  const onRestoreDraft = useAsyncAction(async () => {
     const ideaDraft = getLocalStorage(
       LocalStorageKey.IDEA_DRAFT,
       IdeaFormSchema
@@ -154,7 +155,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
       descriptionTextarea.bind.onChange();
       ideaForm.setFocus('title');
     }, 0);
-  };
+  });
 
   useEffect(() => {
     if (
@@ -365,7 +366,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
         }
         endFooter={
           <Button
-            onClick={() => void onRestoreDraft()}
+            onClick={() => onRestoreDraft()}
             variant={ButtonVariant.BLACK}
             shape={ButtonShape.ROUNDED_5PX}
           >

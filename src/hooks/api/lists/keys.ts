@@ -16,6 +16,11 @@ const listsKeys = {
     'userLists',
     userCode,
   ],
+  userInfiniteLists: (userCode: GetUserListsRequest['userCode']) => [
+    ...listsKeys.all,
+    'userInfiniteLists',
+    userCode,
+  ],
   ideasOrder: (listID: GetIdeasOrderRequest['listID']) => [
     ...listsKeys.all,
     'ideasOrder',

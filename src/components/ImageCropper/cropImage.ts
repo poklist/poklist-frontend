@@ -1,5 +1,8 @@
 import { Area } from 'react-easy-crop';
 
+export const MAX_OUTPUT_DIMENSION = 1600;
+export const JPEG_QUALITY = 0.82;
+
 export const createImage = (url: string) =>
   new Promise<HTMLImageElement>((resolve, reject) => {
     const image = new Image();
@@ -90,8 +93,34 @@ export default async function getCroppedImg(
     pixelCrop.height
   );
 
+  // // 長邊超過上限時等比縮小後再輸出
+  // const scale = Math.min(
+  //   1,
+  //   MAX_OUTPUT_DIMENSION / Math.max(pixelCrop.width, pixelCrop.height)
+  // );
+
+  // if (scale < 1) {
+  //   const outputCanvas = document.createElement('canvas');
+  //   outputCanvas.width = Math.round(pixelCrop.width * scale);
+  //   outputCanvas.height = Math.round(pixelCrop.height * scale);
+  //   const outputCtx = outputCanvas.getContext('2d');
+
+  //   if (!outputCtx) {
+  //     throw new Error('Failed to create canvas context for resize');
+  //   }
+
+  //   outputCtx.drawImage(
+  //     croppedCanvas,
+  //     0,
+  //     0,
+  //     outputCanvas.width,
+  //     outputCanvas.height
+  //   );
+  //   return outputCanvas.toDataURL('image/jpeg', JPEG_QUALITY);
+  // }
+
   // As Base64 string
-  return croppedCanvas.toDataURL('image/jpeg');
+  return croppedCanvas.toDataURL('image/jpeg', JPEG_QUALITY);
 
   // As a blob
   // return new Promise((resolve, reject) => {
