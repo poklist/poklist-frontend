@@ -1,4 +1,3 @@
-import { publishQuery } from '@/api/query/publish';
 import { SignupDrawerVariant } from '@/components/Drawer/SignupDrawer';
 import { useDrawer } from '@/components/Drawer/useDrawer';
 import { useFakePage } from '@/components/FakePage/useFakePage';
@@ -16,20 +15,18 @@ import IconRightArrowSave from '@/components/ui/icons/RightArrowSaveIcon';
 import { DrawerIds } from '@/constants/Drawer';
 import { LocalStorageKey } from '@/enums/index.enum';
 import { usePostNewIdea } from '@/hooks/api/ideas/usePostNewIdea';
-import publishKeys from '@/hooks/api/publish/keys';
 import { useCheckCreateQuota } from '@/hooks/queries/publish/useCheckCreateQuota';
 import { useAsyncAction } from '@/hooks/useAsyncAction';
 import { useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { cn, removeLocalStorage } from '@/lib/utils';
-import useAuthStore from '@/stores/useAuthStore';
 import useUserStore from '@/stores/useUserStore';
 import { Trans } from '@lingui/macro';
 import { useState } from 'react';
 
 const ListSelectorFakePage: React.FC = () => {
   const { me } = useUserStore();
-  const { isLoggedIn } = useAuthStore();
+  // const { isLoggedIn } = useAuthStore();
   const navigateTo = useStrictNavigationAdapter();
 
   const { isOpen, closeFakePage, payload } = useFakePage();
@@ -46,28 +43,47 @@ const ListSelectorFakePage: React.FC = () => {
     },
   });
 
-  const lists = payload?.lists ?? [];
+  // const lists = payload?.lists ?? [];
 
-  const { canStillCreate, checkCanCreate, checkCanCreateList } =
+  const {
+    // canStillCreate,
+    checkCanCreate, checkCanCreateList } =
     useCheckCreateQuota();
 
-  const ideaLimitResults = publishQuery.getIdeasLimits.useQueries({
-    queries: lists.map((list) => ({
-      queryKey: publishKeys.ideasLimits(list.id),
-      query: { listID: list.id },
-      enabled: isLoggedIn,
-    })),
-  });
+  // const ideaLimitResults = publishQuery.getIdeasLimits.useQueries({
+  //   queries: lists.map((list) => ({
+  //     queryKey: publishKeys.ideasLimits(list.id),
+  //     query: { listID: list.id },
+  //     enabled: isLoggedIn,
+  //   })),
+  // });
 
-  const canAddIdeaMap = new Map<string, boolean>(
-    lists.map((list, i) => {
-      const content = ideaLimitResults[i]?.data?.body.content;
-      const canAdd = content ? canStillCreate(content) : true;
-      return [list.id, canAdd];
-    })
-  );
+  // const canAddIdeaMap = new Map<string, boolean>(
+  //   lists.map((list, i) => {
+  //     const content = ideaLimitResults[i]?.data?.body.content;
+  //     const canAdd = content ? canStillCreate(content) : true;
+  //     return [list.id, canAdd];
+  //   })
+  // );
 
   const [selectedList, setSelectedList] = useState('');
+
+  const onSelectList = useAsyncAction(async (listID: string) => {
+    if ((await checkCanCreateList())) {
+      setSelectedList(listID)
+      return
+    }
+
+    if (!(await checkCanCreate(listID))) {
+      openDrawer({
+        isCloseable: true,
+        variant: SignupDrawerVariant.IDEA_FULL,
+      });
+      return;
+    }
+
+    setSelectedList(listID)
+  })
 
   const onCreateIdea = useAsyncAction(
     withAuth(async () => {
@@ -149,18 +165,19 @@ const ListSelectorFakePage: React.FC = () => {
                 </div>
               ) : (
                 payload.lists?.map((list) => {
-                  const canAdd = canAddIdeaMap.get(list.id) ?? true;
+                  // const canAdd = canAddIdeaMap.get(list.id) ?? true;
                   return (
                     <div
                       onClick={() => {
-                        if (canAdd) {
-                          setSelectedList(list.id);
-                        } else {
-                          openDrawer({
-                            isCloseable: true,
-                            variant: SignupDrawerVariant.IDEA_FULL,
-                          });
-                        }
+                        onSelectList(list.id)
+                        // if (canAdd) {
+                        // setSelectedList(list.id);
+                        // } else {
+                        //   openDrawer({
+                        //     isCloseable: true,
+                        //     variant: SignupDrawerVariant.IDEA_FULL,
+                        //   });
+                        // }
                       }}
                       className="flex max-h-14 w-full items-center justify-between border-b border-note-gray-06 bg-white p-4 font-semibold text-black-text-01"
                       key={list.id}
@@ -175,18 +192,19 @@ const ListSelectorFakePage: React.FC = () => {
                       >
                         {list.title}
                       </div>
-                      {canAdd ? (
+                      {
+                        // canAdd ? (
                         selectedList === list.id ? (
                           <div
                             onClick={() => {
-                              if (canAdd) {
-                                onCreateIdea();
-                              } else {
-                                openDrawer({
-                                  isCloseable: true,
-                                  variant: SignupDrawerVariant.IDEA_FULL,
-                                });
-                              }
+                              // if (canAdd) {
+                              onCreateIdea();
+                              // } else {
+                              //   openDrawer({
+                              //     isCloseable: true,
+                              //     variant: SignupDrawerVariant.IDEA_FULL,
+                              //   });
+                              // }
                             }}
                             className="flex min-w-16 items-center gap-0.5 rounded-lg bg-black-text-01 px-2 py-1.5 font-semibold leading-snug text-white"
                           >
@@ -203,10 +221,10 @@ const ListSelectorFakePage: React.FC = () => {
                             height={18}
                             className="min-w-[18px]"
                           />
-                        )
-                      ) : (
-                        <></>
-                      )}
+                          //   )
+                          // ) : (
+                          //   <></>
+                        )}
                     </div>
                   );
                 })

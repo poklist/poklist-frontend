@@ -9,7 +9,7 @@ import { Metadata } from 'next';
 const TITLE = 'Discover curated lists';
 const DESCRIPTION =
   'Your lists say more than posts ever could. Explore curated lists and ideas on Relist.';
-const OG_IMAGES = ['/images/og/relist-default.png'];
+const OG_IMAGES = ['/images/og/relist-default.jpg'];
 
 export const metadata: Metadata = {
   ...createBaseMetadata(),
