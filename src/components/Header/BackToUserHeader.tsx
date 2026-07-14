@@ -42,14 +42,18 @@ const BackToUserHeader: React.FC<IBackToUserHeaderProps> = ({
   const isFollowing = owner ? getIsFollowing(owner.userCode) : false;
 
   useEffect(() => {
-    if (owner && 'isFollowing' in owner) {
-      const apiFollowingState = owner.isFollowing ?? false;
-      if (!hasFollowingState(owner.userCode)) {
-        setIsFollowing(owner.userCode, apiFollowingState);
-      }
-      setConfirmedIsFollowing(owner.userCode, apiFollowingState);
+    if (!(owner && 'isFollowing' in owner)) {
+      return;
     }
-  }, [owner, hasFollowingState, setIsFollowing, setConfirmedIsFollowing]);
+    if (!owner) return;
+    if (!isLoggedIn) return;
+    if ('isFollowing' in owner && owner.isFollowing === undefined) return;
+    const apiFollowingState = owner.isFollowing ?? false;
+    if (!hasFollowingState(owner.userCode)) {
+      setIsFollowing(owner.userCode, apiFollowingState);
+    }
+    setConfirmedIsFollowing(owner.userCode, apiFollowingState);
+  }, [owner, isLoggedIn, hasFollowingState, setConfirmedIsFollowing]);
 
   const { follow, unfollow } = useFollowAction({
     target: {
@@ -132,7 +136,7 @@ const BackToUserHeader: React.FC<IBackToUserHeaderProps> = ({
         className="flex w-[90px] min-w-[90px] items-center justify-end"
       >
         {hasFollowButton &&
-          (hasConfirmedFollowingState(owner?.userCode ?? '') ? (
+          (!isLoggedIn || hasConfirmedFollowingState(owner?.userCode ?? '') ? (
             <Button
               variant={
                 isFollowing ? ButtonVariant.SUB_ACTIVE : ButtonVariant.BLACK

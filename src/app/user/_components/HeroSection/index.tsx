@@ -114,18 +114,16 @@ const HeroSection: React.FC = () => {
   }, [isMyPage, currentPageUser, setMe]);
 
   useLayoutEffect(() => {
-    if (userCode && currentPageUser) {
-      const apiFollowingState =
-        isLoggedIn && currentPageUser.isFollowing === true;
-      const hasExistingState = hasFollowingState(userCode);
+    if (!(userCode && currentPageUser)) return;
+    if (!isLoggedIn) return;
+    if (currentPageUser.isFollowing === undefined) return;
 
-      if (!hasExistingState) {
-        // 只有當 store 中沒有該用戶的狀態時，才使用 API 資料初始化
-        setIsFollowing(userCode, apiFollowingState);
-      }
-
-      setConfirmedIsFollowing(userCode, apiFollowingState);
+    const apiFollowingState = currentPageUser.isFollowing;
+    if (!hasFollowingState(userCode)) {
+      // 只有當 store 中沒有該用戶的狀態時，才使用 API 資料初始化
+      setIsFollowing(userCode, apiFollowingState);
     }
+    setConfirmedIsFollowing(userCode, apiFollowingState);
   }, [
     isLoggedIn,
     currentPageUser,
@@ -135,7 +133,6 @@ const HeroSection: React.FC = () => {
     setConfirmedIsFollowing,
   ]);
 
-  // FUTURE: refactor the drawer content because we may have more than one drawer
   const onOpenBioDrawer = () => {
     // FUTURE: extract this logic to a separate hook/utility function
     if (

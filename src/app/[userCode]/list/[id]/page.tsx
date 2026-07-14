@@ -1,7 +1,6 @@
 import ViewListPageClient from '@/app/[userCode]/list/[id]/client';
 import JsonLd from '@/components/JsonLd';
 import listsKeys from '@/hooks/api/lists/keys';
-import usersKeys from '@/hooks/api/users/keys';
 import {
   createBaseMetadata,
   createOpenGraphMetadata,
@@ -26,45 +25,6 @@ interface PageProps {
     id: string;
   }>;
 }
-
-// // Server-side 資料獲取 - 主要用於 SEO 和 generateMetadata
-// async function fetchListForSEO(listID: string): Promise<List | null> {
-//   try {
-//     const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
-//     const response = await fetch(`${baseURL}/lists/${listID}`, {
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//       next: { revalidate: 300 }, // 5 分鐘快取
-//     });
-
-//     if (!response.ok) return null;
-//     const data = (await response.json()) as IResponse<List>;
-//     return data.content || null;
-//   } catch (error) {
-//     console.error('Failed to fetch list for SEO:', error);
-//     return null;
-//   }
-// }
-
-// async function fetchUserForSEO(userCode: string): Promise<User | null> {
-//   try {
-//     const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
-//     const response = await fetch(`${baseURL}/${userCode}/info`, {
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//       next: { revalidate: 300 }, // 5 分鐘快取
-//     });
-
-//     if (!response.ok) return null;
-//     const data = (await response.json()) as IResponse<User>;
-//     return data.content || null;
-//   } catch (error) {
-//     console.error('Failed to fetch user for SEO:', error);
-//     return null;
-//   }
-// }
 
 // generateMetadata 使用共用邏輯
 export async function generateMetadata({
@@ -151,10 +111,6 @@ export default async function ViewListPage({ params }: PageProps) {
     pages: [toTsRestEntry(listResponse)],
     pageParams: [0],
   });
-  queryClient.setQueryData(
-    usersKeys.userInfo(userCode),
-    toTsRestEntry(userResponse)
-  );
 
   const siteURL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://relist.cc';
   const listJsonLd: Record<string, unknown> = {
@@ -170,12 +126,12 @@ export default async function ViewListPage({ params }: PageProps) {
     ...(list.description ? { description: list.description } : {}),
     ...(Array.isArray(list.ideas) && list.ideas.length > 0
       ? {
-          itemListElement: list.ideas.map((idea, index) => ({
-            '@type': 'ListItem',
-            position: index + 1,
-            name: idea.title,
-          })),
-        }
+        itemListElement: list.ideas.map((idea, index) => ({
+          '@type': 'ListItem',
+          position: index + 1,
+          name: idea.title,
+        })),
+      }
       : {}),
   };
 

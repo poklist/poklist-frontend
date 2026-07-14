@@ -77,7 +77,11 @@ const ViewListPageClient: React.FC<ViewListPageClientProps> = ({
   }, [listInfo, listID]);
 
   useEffect(() => {
-    if (!(listOwnerUserCode && listOwner)) {
+    if (
+      !(listOwnerUserCode && listOwner) ||
+      !isLoggedIn ||
+      listOwner.isFollowing === undefined
+    ) {
       return;
     }
     const followingState = listOwner.isFollowing ?? false;
