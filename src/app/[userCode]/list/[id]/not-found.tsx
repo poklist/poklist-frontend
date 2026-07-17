@@ -25,7 +25,7 @@ export default function ErrorPage() {
               priority
             />
             <h2 className="text-center text-h2 font-bold text-black-text-01">
-              <Trans>Oops something is wrong!</Trans>
+              <Trans>We couldn’t find this page.</Trans>
             </h2>
           </div>
         </div>

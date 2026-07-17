@@ -1,4 +1,5 @@
 import { DESC_MAX_LENGTH, TITLE_MAX_LENGTH } from '@/constants/form';
+import { ListType } from '@/enums/Lists/index.enum';
 import { MessageType } from '@/enums/Style/index.enum';
 import z from 'zod';
 
@@ -47,4 +48,5 @@ export const IdeaFormSchema = z.object({
 
 export const ListFormSchema = IdeaFormSchema.extend({
   categoryID: z.number().nonnegative(),
+  type: z.nativeEnum(ListType),
 });

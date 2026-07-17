@@ -3,7 +3,7 @@ import { listsQuery } from '@/api/query/lists';
 import listsKeys from '@/hooks/api/lists/keys';
 import publishKeys from '@/hooks/api/publish/keys';
 import usersKeys from '@/hooks/api/users/keys';
-import { updateEntryCaches } from '@/hooks/api/utils';
+import { updateEntryCaches, updateInfiniteCaches } from '@/hooks/api/utils';
 import { adjustPublishLimitsCache } from '@/hooks/queries/publish/cachesUpdater';
 import { useQueryClient } from '@tanstack/react-query';
 import { ErrorResponse } from '@ts-rest/react-query';
@@ -22,12 +22,25 @@ export const useDeleteList = (options: UseDeleteListOptions) => {
   const queryClient = useQueryClient();
 
   return listsQuery.delete.useMutation({
-    onSuccess: async (_, request) => {
+    onSuccess: (_, request) => {
       try {
-        await queryClient.invalidateQueries({
-          queryKey: listsKeys.userInfiniteLists(options.userCode),
-          refetchType: 'all',
-        });
+        updateInfiniteCaches<typeof listsContract.getUserListsContract>(
+          queryClient,
+          listsKeys.userInfiniteLists(options.userCode),
+          (previousPages) => {
+            return previousPages.map((page) => {
+              return {
+                ...page,
+                body: {
+                  ...page.body,
+                  content: page.body.content.filter(
+                    (list) => list.id !== request.params.listID
+                  ),
+                },
+              };
+            });
+          }
+        );
         // 將單筆列表資料清空，而非刪除快取，為免因尚有 Component 仍在使用相關資料而重新 fetch
         queryClient.setQueryData(
           listsKeys.infiniteIdeas(request.params.listID),

@@ -71,6 +71,14 @@ msgstr "靈感"
 msgid "Likes"
 msgstr "喜歡"
 
+#: src/app/[userCode]/list/[id]/_components/ListCard/_components/ListCardHeader/index.tsx
+msgid "Public"
+msgstr "公開"
+
+#: src/app/[userCode]/list/[id]/_components/ListCard/_components/ListCardHeader/index.tsx
+msgid "Secret"
+msgstr "隱藏"
+
 #: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
 msgid "Edit List Info"
 msgstr "編輯名單資訊"
@@ -122,6 +130,11 @@ msgstr "永久刪除整個名單及所有靈感，這將無法復原！"
 #: src/app/_shared/_components/List/DeleteButton/index.tsx
 msgid "Delete List and All Ideas"
 msgstr "刪除名單與所有靈感"
+
+#: src/app/[userCode]/list/[id]/not-found.tsx
+#: src/constants/i18n.ts
+msgid "We couldn’t find this page."
+msgstr "哇～找不到這個內容了！"
 
 #: src/app/[userCode]/list/[id]/reorder/_components/IdeasList/index.tsx
 msgid "Your ideas live here. Create one!"
@@ -393,6 +406,10 @@ msgid "Create a new list"
 msgstr "建立新名單"
 
 #: src/app/idea/create/list/page.tsx
+#~ msgid "Don’t worry, you can edit more details later!"
+#~ msgstr "放心，稍後可以為名單編輯更多資訊！"
+
+#: src/app/idea/create/list/page.tsx
 #: src/app/list/_components/Form/index.tsx
 msgid "Create Idea List"
 msgstr "建立靈感名單"
@@ -407,8 +424,14 @@ msgid "This is the title of your list"
 msgstr "在這輸入名單標題"
 
 #: src/app/idea/create/list/page.tsx
-msgid "Don’t worry, you can edit more details later!"
-msgstr "放心，稍後可以為名單編輯更多資訊！"
+#: src/app/list/_components/Form/index.tsx
+msgid "Make this list secret"
+msgstr "隱藏這份名單"
+
+#: src/app/idea/create/list/page.tsx
+#: src/app/list/_components/Form/index.tsx
+msgid "Only you will see this list"
+msgstr "只有你能看見這份名單"
 
 #: src/app/idea/create/list/page.tsx
 #: src/app/list/_components/Form/index.tsx
@@ -1128,10 +1151,6 @@ msgstr "你目前沒有權限查看"
 #: src/constants/i18n.ts
 msgid "Oops, something’s missing. Check your info and try again."
 msgstr "資料可能有缺誤，請再確認"
-
-#: src/constants/i18n.ts
-msgid "We couldn’t find this page."
-msgstr "哇～找不到這個內容了！"
 
 #: src/constants/i18n.ts
 msgid "Connection took too long. Try again."

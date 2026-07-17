@@ -1,5 +1,6 @@
 import axios from '@/api/axios';
 import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
+import { resetIdentityCaches } from '@/lib/identity';
 import useAuthStore from '@/stores/useAuthStore';
 import useCommonStore from '@/stores/useCommonStore';
 import useUserStore from '@/stores/useUserStore';
@@ -28,6 +29,7 @@ export const useLogin = () => {
       }
       localStorage.clear();
       login(res.data.content?.accessToken);
+      resetIdentityCaches();
       const userData = {
         ...res.data.content?.user,
         profileImage: res.data.content.user.profileImage?.startsWith('data:')

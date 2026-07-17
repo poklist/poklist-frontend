@@ -3,6 +3,7 @@ import { List } from '@/types/List';
 import { IResponse } from '@/types/response';
 import { User } from '@/types/User';
 
+// Server-side 資料獲取 - 主要用於 SEO 和 generateMetadata
 const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export async function fetchJSONForSEO<T>(path: string): Promise<T | null> {

@@ -36,7 +36,7 @@ const LinksBlock: React.FC<ILinksBlockProps> = ({
             onClick={handleClick(item)}
           >
             <p>{item.decription}</p>
-            <IconRightArrow />
+            <IconRightArrow className="text-black-tint-04" />
           </div>
         );
       })}

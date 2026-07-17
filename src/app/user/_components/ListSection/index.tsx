@@ -1,6 +1,8 @@
 'use client';
 
 import { ListSectionSkeleton } from '@/app/user/_components/ListSection/ListSectionSkeleton';
+import IconPrivateEye from '@/components/ui/icons/PrivateEyeIcon';
+import { ListType } from '@/enums/Lists/index.enum';
 import { useGetInfiniteLists } from '@/hooks/api/lists/useGetUserInfiniteLists';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { useUserRouteContext } from '@/hooks/useUserRouteContext';
@@ -61,9 +63,14 @@ const ListSection: React.FC = () => {
                 navigateTo.viewList(userCode, listPreview.id.toString());
               }}
             >
-              <p className="break-normal text-t1 font-semibold text-black-text-01 [overflow-wrap:anywhere]">
-                {listPreview.title}
-              </p>
+              <div className="flex items-center gap-4">
+                {listPreview.type === ListType.PRIVATE && (
+                  <IconPrivateEye className="min-w-5" />
+                )}
+                <p className="break-normal text-t1 font-semibold text-black-text-01 [overflow-wrap:anywhere]">
+                  {listPreview.title}
+                </p>
+              </div>
               {listPreview.coverImage && (
                 <Image
                   src={listPreview.coverImage || ''}

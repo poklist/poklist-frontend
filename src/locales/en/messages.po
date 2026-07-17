@@ -71,6 +71,14 @@ msgstr "Ideas"
 msgid "Likes"
 msgstr "Likes"
 
+#: src/app/[userCode]/list/[id]/_components/ListCard/_components/ListCardHeader/index.tsx
+msgid "Public"
+msgstr "Public"
+
+#: src/app/[userCode]/list/[id]/_components/ListCard/_components/ListCardHeader/index.tsx
+msgid "Secret"
+msgstr "Secret"
+
 #: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
 msgid "Edit List Info"
 msgstr "Edit List Info"
@@ -122,6 +130,11 @@ msgstr "Permanently delete the entire list and all its ideas. This action cannot
 #: src/app/_shared/_components/List/DeleteButton/index.tsx
 msgid "Delete List and All Ideas"
 msgstr "Delete List and All Ideas"
+
+#: src/app/[userCode]/list/[id]/not-found.tsx
+#: src/constants/i18n.ts
+msgid "We couldn’t find this page."
+msgstr "We couldn’t find this page."
 
 #: src/app/[userCode]/list/[id]/reorder/_components/IdeasList/index.tsx
 msgid "Your ideas live here. Create one!"
@@ -393,6 +406,10 @@ msgid "Create a new list"
 msgstr "Create a new list"
 
 #: src/app/idea/create/list/page.tsx
+#~ msgid "Don’t worry, you can edit more details later!"
+#~ msgstr "Don’t worry, you can edit more details later!"
+
+#: src/app/idea/create/list/page.tsx
 #: src/app/list/_components/Form/index.tsx
 msgid "Create Idea List"
 msgstr "Create Idea List"
@@ -407,8 +424,14 @@ msgid "This is the title of your list"
 msgstr "This is the title of your list"
 
 #: src/app/idea/create/list/page.tsx
-msgid "Don’t worry, you can edit more details later!"
-msgstr "Don’t worry, you can edit more details later!"
+#: src/app/list/_components/Form/index.tsx
+msgid "Make this list secret"
+msgstr "Make this list secret"
+
+#: src/app/idea/create/list/page.tsx
+#: src/app/list/_components/Form/index.tsx
+msgid "Only you will see this list"
+msgstr "Only you will see this list"
 
 #: src/app/idea/create/list/page.tsx
 #: src/app/list/_components/Form/index.tsx
@@ -1128,10 +1151,6 @@ msgstr "You don’t have access to this."
 #: src/constants/i18n.ts
 msgid "Oops, something’s missing. Check your info and try again."
 msgstr "Oops, something’s missing. Check your info and try again."
-
-#: src/constants/i18n.ts
-msgid "We couldn’t find this page."
-msgstr "We couldn’t find this page."
 
 #: src/constants/i18n.ts
 msgid "Connection took too long. Try again."

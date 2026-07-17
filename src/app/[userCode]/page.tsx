@@ -1,6 +1,5 @@
 import UserPageClient from '@/app/[userCode]/client';
 import JsonLd from '@/components/JsonLd';
-import usersKeys from '@/hooks/api/users/keys';
 import {
   createBaseMetadata,
   createOpenGraphMetadata,
@@ -9,12 +8,6 @@ import {
   truncateDescription,
 } from '@/lib/metadata';
 import { fetchUserForSEO } from '@/lib/seo/fetchers';
-import { toTsRestEntry } from '@/lib/seo/prefetch';
-import {
-  dehydrate,
-  HydrationBoundary,
-  QueryClient,
-} from '@tanstack/react-query';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
@@ -36,7 +29,7 @@ export async function generateMetadata({
     };
   }
 
-  const title = `${user.displayName || user.userCode} (@${user.userCode})`;
+  const title = `${user.displayName || user.userCode}・@${user.userCode}`;
   const description = user.bio
     ? truncateDescription(user.bio)
     : `Lists and ideas by ${user.displayName || user.userCode} on Relist`;
@@ -65,14 +58,9 @@ export default async function UserPage({ params }: PageProps) {
   if (!user) notFound();
 
   const siteURL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://relist.cc';
-  const queryClient = new QueryClient();
-  queryClient.setQueryData(
-    usersKeys.userInfo(userCode),
-    toTsRestEntry(userResponse)
-  );
 
   return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
+    <>
       <JsonLd
         data={{
           '@context': 'https://schema.org',
@@ -86,6 +74,6 @@ export default async function UserPage({ params }: PageProps) {
         }}
       />
       <UserPageClient />
-    </HydrationBoundary>
+    </>
   );
 }

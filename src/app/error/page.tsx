@@ -22,6 +22,7 @@ export default function ErrorPage() {
               alt="Error Mascot"
               width={101}
               height={125}
+              priority
             />
             <h2 className="text-center text-h2 font-bold text-black-text-01">
               <Trans>Oops something is wrong!</Trans>

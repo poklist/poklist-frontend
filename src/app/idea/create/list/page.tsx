@@ -4,12 +4,16 @@ import { DrawerComponent } from '@/components/Drawer';
 import { useDrawer } from '@/components/Drawer/useDrawer';
 import EditModeHeader from '@/components/Header/EditModeHeader';
 import { IChoice, RadioComponent } from '@/components/Radio';
+import SwitchWithIcons from '@/components/SwitchWithIcon';
 import { Button, ButtonShape, ButtonVariant } from '@/components/ui/button';
+import IconPrivateEye from '@/components/ui/icons/PrivateEyeIcon';
+import IconPublicEye from '@/components/ui/icons/PublicEyeIcon';
 import { Textarea } from '@/components/ui/textarea';
 import { DrawerIds } from '@/constants/Drawer';
 import { TITLE_MAX_LENGTH } from '@/constants/form';
 import { CategoriesI18n } from '@/constants/Lists/i18n';
 import { LocalStorageKey } from '@/enums/index.enum';
+import { ListType } from '@/enums/Lists/index.enum';
 import { RadioType } from '@/enums/Style/index.enum';
 import { useGetCategories } from '@/hooks/api/categories/useGetCategories';
 import { usePostNewIdea } from '@/hooks/api/ideas/usePostNewIdea';
@@ -34,6 +38,7 @@ const defaultListInfo: z.infer<typeof ListFormSchema> = {
   title: '',
   externalLink: '',
   categoryID: 0,
+  type: ListType.PUBLIC,
 };
 
 const TemporaryCreateListPage: React.FC = () => {
@@ -92,6 +97,7 @@ const TemporaryCreateListPage: React.FC = () => {
       title: defaultListInfo.title,
       externalLink: defaultListInfo.externalLink,
       categoryID: defaultListInfo.categoryID,
+      type: defaultListInfo.type,
     },
   });
 
@@ -99,6 +105,16 @@ const TemporaryCreateListPage: React.FC = () => {
     minHeight: 56,
     focusMinHeight: 83,
   });
+
+  const onListTypeChange = (checkedValue: boolean) => {
+    listForm.setValue(
+      'type',
+      checkedValue ? ListType.PRIVATE : ListType.PUBLIC,
+      {
+        shouldDirty: true,
+      }
+    );
+  };
 
   const onDismiss = () => {
     if (listForm.formState.isDirty) {
@@ -204,13 +220,33 @@ const TemporaryCreateListPage: React.FC = () => {
                     </div>
                   )}
                 </div>
-                <div className="mt-2 w-11/12 text-xs text-black-gray-03">
+                {/* <div className="mt-2 w-11/12 text-xs text-black-gray-03">
                   <Trans>Don’t worry, you can edit more details later!</Trans>
-                </div>
+                </div> */}
               </div>
             );
           }}
         />
+        <div className="mt-8 flex items-center justify-between">
+          <div className="text-t1 font-semibold text-black-text-01">
+            <Trans>Make this list secret</Trans>
+            <div className="text-t2 text-black-gray-03">
+              <Trans>Only you will see this list</Trans>
+            </div>
+          </div>
+          <Controller
+            name="type"
+            control={listForm.control}
+            render={({ field }) => (
+              <SwitchWithIcons
+                checked={field.value === ListType.PRIVATE}
+                onCheckedChange={onListTypeChange}
+                checkedIcon={<IconPrivateEye />}
+                uncheckedIcon={<IconPublicEye />}
+              />
+            )}
+          />
+        </div>
       </form>
       <DrawerComponent
         drawerId={DrawerIds.CATEGORY_DRAWER_ID}

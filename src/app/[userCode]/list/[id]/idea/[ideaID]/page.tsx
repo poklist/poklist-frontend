@@ -47,9 +47,9 @@ export async function generateMetadata({
 
   if (!idea) {
     return {
-      title: 'Idea not found | Relist',
-      description: 'This idea could not be found.',
+      title: 'Not found | Relist',
       ...createBaseMetadata(),
+      robots: { index: false, follow: false },
     };
   }
 
@@ -93,13 +93,9 @@ export async function generateMetadata({
 // 頁面組件 - 只負責重定向，不渲染任何 UI
 export default async function IdeaSEOPage({ params }: PageProps) {
   const { userCode, id, ideaID } = await params;
-  const idea = await fetchIdeaForSEO(ideaID);
 
-  if (!idea) {
-    // 如果找不到 idea，重定向到 list 頁面
-    redirect(`/${userCode}/list/${id}`);
-  }
-
+  // Private list 內的 idea 對匿名拒回
+  // 導向 list 頁，授權判斷交給 list 頁的 client fetch
   // 重定向到 list 頁面並自動觸發 idea 視窗
   redirect(`/${userCode}/list/${id}?ideaID=${ideaID}`);
 }

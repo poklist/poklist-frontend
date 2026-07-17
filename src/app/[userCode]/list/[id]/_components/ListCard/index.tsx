@@ -140,6 +140,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
           ideaCount={ideaCount}
           likeCount={likeCount}
           createdAtString={createdAtString}
+          listType={data.type}
           isUpdatedRecently={isUpdatedRecently()}
         />
 

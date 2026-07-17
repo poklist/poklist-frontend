@@ -1,3 +1,4 @@
+import { GetUserListsResponse, PutListsRequest } from '@/api/query/lists';
 import { TileBackground } from '@/app/user/_components/TileBackground';
 import { DrawerComponent } from '@/components/Drawer';
 import { useDrawer } from '@/components/Drawer/useDrawer';
@@ -6,8 +7,12 @@ import { useFakePage } from '@/components/FakePage/useFakePage';
 import EditModeHeader from '@/components/Header/EditModeHeader';
 import ImageUploader from '@/components/ImageUploader';
 import { IChoice, RadioComponent } from '@/components/Radio';
+import SwitchWithIcons from '@/components/SwitchWithIcon';
 import { Button, ButtonShape, ButtonVariant } from '@/components/ui/button';
 import IconExteriorLink from '@/components/ui/icons/ExteriorLinkIcon';
+import IconPrivateEye from '@/components/ui/icons/PrivateEyeIcon';
+import IconPublicEye from '@/components/ui/icons/PublicEyeIcon';
+import IconRightArrow from '@/components/ui/icons/RightArrowIcon';
 import IconTextarea from '@/components/ui/icons/TextareaIcon';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -16,6 +21,7 @@ import { DESC_MAX_LENGTH, TITLE_MAX_LENGTH } from '@/constants/form';
 import { CategoriesI18n } from '@/constants/Lists/i18n';
 import { EditFieldVariant } from '@/enums/EditField/index.enum';
 import { LocalStorageKey } from '@/enums/index.enum';
+import { ListType } from '@/enums/Lists/index.enum';
 import { RadioType } from '@/enums/Style/index.enum';
 import { useGetCategories } from '@/hooks/api/categories/useGetCategories';
 import useAutoResizeTextarea from '@/hooks/ui/useAutoResizeTextarea';
@@ -31,7 +37,6 @@ import {
 import { resolveListFormError } from '@/lib/validator';
 import { ListFormSchema } from '@/types/common';
 import { IEditFieldConfig } from '@/types/EditField/index.d';
-import { ListBody } from '@/types/List';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { i18n } from '@lingui/core';
 import { t, Trans } from '@lingui/macro';
@@ -40,9 +45,9 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 interface IListFormProps {
-  defaultListInfo?: ListBody;
+  defaultListInfo?: GetUserListsResponse['content'][number];
   dismissCallback: (isFormEmpty: boolean) => void;
-  completedCallback: (listData: ListBody) => void;
+  completedCallback: (listData: Omit<PutListsRequest, 'listID'>) => void;
 }
 
 const ListForm: React.FC<IListFormProps> = ({
@@ -52,6 +57,7 @@ const ListForm: React.FC<IListFormProps> = ({
     externalLink: '',
     coverImage: '',
     categoryID: 0,
+    type: ListType.PUBLIC,
   },
   dismissCallback,
   completedCallback,
@@ -76,6 +82,7 @@ const ListForm: React.FC<IListFormProps> = ({
       externalLink: defaultListInfo.externalLink,
       coverImage: defaultListInfo.coverImage,
       categoryID: defaultListInfo.categoryID,
+      type: defaultListInfo.type,
     },
   });
 
@@ -148,6 +155,16 @@ const ListForm: React.FC<IListFormProps> = ({
     } else {
       listForm.setValue('coverImage', base64, { shouldDirty: true });
     }
+  };
+
+  const onListTypeChange = (checkedValue: boolean) => {
+    listForm.setValue(
+      'type',
+      checkedValue ? ListType.PRIVATE : ListType.PUBLIC,
+      {
+        shouldDirty: true,
+      }
+    );
   };
 
   const [radioChoice, setRadioChoice] = useState<IChoice[]>([]);
@@ -271,7 +288,7 @@ const ListForm: React.FC<IListFormProps> = ({
         onSubmit={() => {
           void listForm.handleSubmit(onSubmit, onSubmitFailed)();
         }}
-        className="relative mx-4 mt-[4.5rem] flex flex-1 flex-col gap-6 rounded-2xl border border-black-tint-04 bg-white px-4 py-6 md:max-w-mobile-max"
+        className="relative mx-4 mt-[4.5rem] flex flex-1 flex-col gap-4 rounded-3xl border border-black-tint-04 bg-white px-4 py-6 md:max-w-mobile-max"
       >
         <Controller
           name="title"
@@ -371,11 +388,34 @@ const ListForm: React.FC<IListFormProps> = ({
       {defaultListInfo.title !== '' && (
         <div
           onClick={() => openCategoryDrawer()}
-          className="relative mx-4 inline-flex items-center justify-center whitespace-nowrap rounded-lg border border-black-tint-04 bg-white py-2 font-bold text-black-text-01 ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
+          className="relative mx-4 inline-flex items-center justify-between whitespace-nowrap rounded-full border border-black-tint-04 bg-white py-2 pl-4 pr-3 text-t1 font-semibold text-black-text-01 ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
         >
           <Trans>Edit List Topic</Trans>
+          <IconRightArrow className="size-7 text-black-gray-03" />
         </div>
       )}
+      <div className="relative mt-2 h-44 border-y border-y-gray-note-05 bg-white p-4">
+        <div className="flex items-center justify-between">
+          <div className="text-t1 font-semibold text-black-text-01">
+            <Trans>Make this list secret</Trans>
+            <div className="text-t2 text-black-gray-03">
+              <Trans>Only you will see this list</Trans>
+            </div>
+          </div>
+          <Controller
+            name="type"
+            control={listForm.control}
+            render={({ field }) => (
+              <SwitchWithIcons
+                checked={field.value === ListType.PRIVATE}
+                onCheckedChange={onListTypeChange}
+                checkedIcon={<IconPrivateEye />}
+                uncheckedIcon={<IconPublicEye />}
+              />
+            )}
+          />
+        </div>
+      </div>
 
       <DrawerComponent
         drawerId={DrawerIds.CATEGORY_DRAWER_ID}

@@ -1,4 +1,7 @@
+import IconPrivateEye from '@/components/ui/icons/PrivateEyeIcon';
+import IconPublicEye from '@/components/ui/icons/PublicEyeIcon';
 import { CategoriesI18n } from '@/constants/Lists/i18n';
+import { ListType } from '@/enums/Lists/index.enum';
 import { Trans } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 interface ListCardHeaderProps {
@@ -6,6 +9,7 @@ interface ListCardHeaderProps {
   categoryID: number;
   ideaCount: number;
   likeCount: number;
+  listType: ListType;
   createdAtString: string;
   isUpdatedRecently: boolean;
 }
@@ -15,6 +19,7 @@ const ListCardHeader: React.FC<ListCardHeaderProps> = ({
   categoryID,
   ideaCount,
   likeCount,
+  listType,
   createdAtString,
   isUpdatedRecently,
 }: ListCardHeaderProps) => {
@@ -33,7 +38,7 @@ const ListCardHeader: React.FC<ListCardHeaderProps> = ({
       <div className="-tracking-2% mt-4 break-normal text-center text-h1 font-extrabold [overflow-wrap:anywhere]">
         {title}
       </div>
-      <div className="tracking-0.8% mt-4 flex gap-2 text-t2">
+      <div className="tracking-0.8% mt-4 flex items-center gap-2 text-t2">
         <p>{i18n._(CategoriesI18n[categoryID])}</p>
         <p>•</p>
         <p>
@@ -42,6 +47,16 @@ const ListCardHeader: React.FC<ListCardHeaderProps> = ({
         <p>•</p>
         <p>
           {likeCount} <Trans>Likes</Trans>
+        </p>
+        <p>•</p>
+        <p className="flex items-center justify-center gap-1">
+          {listType === ListType.PUBLIC ? (
+            <IconPublicEye />
+          ) : (
+            <IconPrivateEye />
+          )}
+          {listType === ListType.PUBLIC && <Trans>Public</Trans>}
+          {listType === ListType.PRIVATE && <Trans>Secret</Trans>}
         </p>
       </div>
     </div>
