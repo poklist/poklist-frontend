@@ -24,17 +24,23 @@ export const useDeleteList = (options: UseDeleteListOptions) => {
   return listsQuery.delete.useMutation({
     onSuccess: (_, request) => {
       try {
-        updateInfiniteCaches<typeof listsContract.getUserListsContract>(queryClient, listsKeys.userInfiniteLists(options.userCode), (previousPages) => {
-          return previousPages.map((page) => {
-            return {
-              ...page,
-              body: {
-                ...page.body,
-                content: page.body.content.filter((list) => list.id !== request.params.listID)
-              }
-            }
-          })
-        })
+        updateInfiniteCaches<typeof listsContract.getUserListsContract>(
+          queryClient,
+          listsKeys.userInfiniteLists(options.userCode),
+          (previousPages) => {
+            return previousPages.map((page) => {
+              return {
+                ...page,
+                body: {
+                  ...page.body,
+                  content: page.body.content.filter(
+                    (list) => list.id !== request.params.listID
+                  ),
+                },
+              };
+            });
+          }
+        );
         // 將單筆列表資料清空，而非刪除快取，為免因尚有 Component 仍在使用相關資料而重新 fetch
         queryClient.setQueryData(
           listsKeys.infiniteIdeas(request.params.listID),

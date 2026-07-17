@@ -10,22 +10,24 @@ import {
 } from '@tanstack/react-query';
 
 export default async function DiscoveryPage() {
-  const [categories, latestListGroups, officialCollections] = await Promise.all(
-    [
-      fetchJSONForSEO('/categories'),
-      fetchJSONForSEO('/discovery/latest-list-groups'),
-      fetchJSONForSEO('/discovery/official-collections'),
-    ]
-  );
+  const [
+    categories,
+    //  latestListGroups,
+    officialCollections,
+  ] = await Promise.all([
+    fetchJSONForSEO('/categories'),
+    // fetchJSONForSEO('/discovery/latest-list-groups'),
+    fetchJSONForSEO('/discovery/official-collections'),
+  ]);
 
   const queryClient = new QueryClient();
   if (categories)
     queryClient.setQueryData(categoriesKeys.list(), toTsRestEntry(categories));
-  if (latestListGroups)
-    queryClient.setQueryData(
-      discoveryKeys.latestListGroups(),
-      toTsRestEntry(latestListGroups)
-    );
+  // if (latestListGroups)
+  //   queryClient.setQueryData(
+  //     discoveryKeys.latestListGroups(),
+  //     toTsRestEntry(latestListGroups)
+  //   );
   if (officialCollections)
     queryClient.setQueryData(
       discoveryKeys.officialCollections(),

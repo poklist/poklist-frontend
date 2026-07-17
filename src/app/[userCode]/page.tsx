@@ -29,7 +29,7 @@ export async function generateMetadata({
     };
   }
 
-  const title = `${user.displayName || user.userCode} (@${user.userCode})`;
+  const title = `${user.displayName || user.userCode}・@${user.userCode}`;
   const description = user.bio
     ? truncateDescription(user.bio)
     : `Lists and ideas by ${user.displayName || user.userCode} on Relist`;
