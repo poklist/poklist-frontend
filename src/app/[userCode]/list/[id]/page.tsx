@@ -42,9 +42,9 @@ export async function generateMetadata({
 
   if (!list || !user) {
     return {
-      title: 'List not found | Relist',
-      description: 'This list could not be found.',
+      title: 'Not found | Relist',
       ...createBaseMetadata(),
+      robots: { index: false, follow: false },
     };
   }
 
@@ -96,49 +96,50 @@ export default async function ViewListPage({ params }: PageProps) {
   const list = listResponse?.content ?? null;
   const user = userResponse?.content ?? null;
 
-  // 如果資料完全不存在，返回 404
-  if (!list || !user) {
-    notFound();
-  }
-
-  // 檢查 list 的 owner 是否與 URL 中的 userCode 一致
-  if (list.owner.userCode !== userCode) {
+  // 匿名 Server fetch 抓不到 !== 不存在：可能是 Private list
+  // Private list 本就不該有 OG preview / JsonLd / hydration
+  if (list && list.owner.userCode !== userCode) {
     notFound();
   }
 
   const queryClient = new QueryClient();
-  queryClient.setQueryData(listsKeys.infiniteIdeas(id), {
-    pages: [toTsRestEntry(listResponse)],
-    pageParams: [0],
-  });
+  if (listResponse) {
+    queryClient.setQueryData(listsKeys.infiniteIdeas(id), {
+      pages: [toTsRestEntry(listResponse)],
+      pageParams: [0],
+    });
+  }
 
   const siteURL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://relist.cc';
-  const listJsonLd: Record<string, unknown> = {
-    '@context': 'https://schema.org',
-    '@type': 'ItemList',
-    name: list.title,
-    url: `${siteURL}/${userCode}/list/${id}`,
-    author: {
-      '@type': 'Person',
-      name: user.displayName || user.userCode,
-      url: `${siteURL}/${userCode}`,
-    },
-    ...(list.description ? { description: list.description } : {}),
-    ...(Array.isArray(list.ideas) && list.ideas.length > 0
+  const listJsonLd: Record<string, unknown> | null =
+    list && user
       ? {
-        itemListElement: list.ideas.map((idea, index) => ({
-          '@type': 'ListItem',
-          position: index + 1,
-          name: idea.title,
-        })),
-      }
-      : {}),
-  };
+          '@context': 'https://schema.org',
+          '@type': 'ItemList',
+          name: list.title,
+          url: `${siteURL}/${userCode}/list/${id}`,
+          author: {
+            '@type': 'Person',
+            name: user.displayName || user.userCode,
+            url: `${siteURL}/${userCode}`,
+          },
+          ...(list.description ? { description: list.description } : {}),
+          ...(Array.isArray(list.ideas) && list.ideas.length > 0
+            ? {
+                itemListElement: list.ideas.map((idea, index) => ({
+                  '@type': 'ListItem',
+                  position: index + 1,
+                  name: idea.title,
+                })),
+              }
+            : {}),
+        }
+      : null;
 
   // 只傳遞 listID，讓 Client Component 自己使用 TanStack Query 獲取資料
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <JsonLd data={listJsonLd} />
+      {listJsonLd && <JsonLd data={listJsonLd} />}
       <ViewListPageClient listID={id} />
     </HydrationBoundary>
   );

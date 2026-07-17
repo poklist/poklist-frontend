@@ -33,6 +33,7 @@ export const usePutList = (options: UsePutListOptions) => {
                       coverImage: request.body.coverImage ?? list.coverImage,
                       externalLink: newData.externalLink,
                       categoryID: newData.categoryID,
+                      type: newData.type,
                     }
                   : list
               ),
@@ -58,6 +59,7 @@ export const usePutList = (options: UsePutListOptions) => {
                             request.body.coverImage ?? list.coverImage,
                           externalLink: newData.externalLink,
                           categoryID: newData.categoryID,
+                          type: newData.type,
                         }
                       : list
                   ),
@@ -83,6 +85,7 @@ export const usePutList = (options: UsePutListOptions) => {
                       request.body.coverImage ?? page.body.content.coverImage,
                     externalLink: newData.externalLink,
                     categoryID: newData.categoryID,
+                    type: newData.type,
                     updatedAt,
                   },
                 },

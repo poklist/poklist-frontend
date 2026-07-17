@@ -11,6 +11,7 @@ import { useLikeAction } from '@/hooks/mutations/optimistic/likeUnlike/useLikeAc
 import { useAuthRequired } from '@/hooks/useAuthRequired';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { useUserRouteContext } from '@/hooks/useUserRouteContext';
+import { notFound } from 'next/navigation';
 import useAuthStore from '@/stores/useAuthStore';
 import useFollowingStore from '@/stores/useFollowingStore';
 import useLikeStore from '@/stores/useLikeStore';
@@ -58,10 +59,8 @@ const ViewListPageClient: React.FC<ViewListPageClientProps> = ({
   useEffect(() => {
     if (isListOwnerError) {
       navigateTo.home();
-    } else if (isListError) {
-      navigateTo.user(listOwnerUserCode);
     }
-  }, [isListOwnerError, isListError, listOwnerUserCode]);
+  }, [isListOwnerError]);
 
   const { like, unlike } = useLikeAction({
     listID,
@@ -108,6 +107,13 @@ const ViewListPageClient: React.FC<ViewListPageClientProps> = ({
       navigateTo.viewList(listOwnerOfData.userCode, listID);
     }
   }, [listOwnerOfData, listID, listOwnerUserCode]);
+
+  // 帶 token 的 client fetch 失敗 = 無權限（private list）或不存在 —
+  // 兩者一律顯示 Not Found，不洩漏 list 存在性。
+  // 必須放在所有 hooks 之後：條件 throw 在 hooks 之前會打破 hooks 順序
+  if (isListError) {
+    notFound();
+  }
 
   return (
     <>

@@ -1,6 +1,6 @@
 'use client';
 
-import { GetUserListsResponse } from '@/api/query/lists';
+import { GetUserListsResponse, PutListsRequest } from '@/api/query/lists';
 import ListForm from '@/app/list/_components/Form';
 import { useGetListInfiniteIdeas } from '@/hooks/api/lists/useGetListInfiniteIdeas';
 import { usePutList } from '@/hooks/api/lists/usePutList';
@@ -8,7 +8,6 @@ import { useAuthCheck, useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { useUserRouteContext } from '@/hooks/useUserRouteContext';
 import useUserStore from '@/stores/useUserStore';
-import { ListBody } from '@/types/List';
 import { useParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
@@ -44,23 +43,26 @@ const EditListPage: React.FC = () => {
     }
   };
 
-  const onEditList = withAuth((listFormData: ListBody) => {
-    if (!list) {
-      return;
+  const onEditList = withAuth(
+    (listFormData: Omit<PutListsRequest, 'listID'>) => {
+      if (!list) {
+        return;
+      }
+      setListCoverDraft({
+        ...list.pages[0].listInfo,
+        title: listFormData.title,
+        description: listFormData.description,
+        externalLink: listFormData.externalLink,
+        coverImage: listFormData.coverImage,
+        categoryID: listFormData.categoryID,
+        type: listFormData.type,
+      });
+      editList({
+        params: { listID },
+        body: listFormData,
+      });
     }
-    setListCoverDraft({
-      ...list.pages[0].listInfo,
-      title: listFormData.title,
-      description: listFormData.description,
-      externalLink: listFormData.externalLink,
-      coverImage: listFormData.coverImage,
-      categoryID: listFormData.categoryID,
-    });
-    editList({
-      params: { listID },
-      body: listFormData,
-    });
-  });
+  );
 
   useEffect(() => {
     if (list) {
@@ -84,7 +86,7 @@ const EditListPage: React.FC = () => {
   }, [listID, me.userCode, userCode]);
 
   return (
-    <div className="flex h-full flex-col gap-4">
+    <div className="flex h-full flex-col gap-2">
       <ListForm
         defaultListInfo={listCoverDraft}
         dismissCallback={onDismissEdit}
