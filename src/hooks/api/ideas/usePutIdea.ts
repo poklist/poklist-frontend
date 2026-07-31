@@ -62,6 +62,33 @@ export const usePutIdea = (options: UsePutIdeaOptions) => {
             });
           }
         );
+        updateInfiniteCaches<typeof ideasContract.getIdeasUnderListContract>(
+          queryClient,
+          ideasKeys.infiniteIdeasUnderList(newData.listID),
+          (previousPages) => {
+            return previousPages.map((page) => {
+              const body = page.body;
+              const updatedIdeas = body.ideas.map((idea) =>
+                idea.id === newData.id
+                  ? {
+                      ...idea,
+                      title: newData.title,
+                      description: newData.description ?? '',
+                      coverImage: request.body.coverImage ?? idea.coverImage,
+                      externalLink: newData.externalLink,
+                    }
+                  : idea
+              );
+              return {
+                ...page,
+                body: {
+                  ...page.body,
+                  ideas: updatedIdeas,
+                },
+              };
+            });
+          }
+        );
       } catch (error) {
         console.warn('Refetch failed, but idea was edited: ', error);
       } finally {

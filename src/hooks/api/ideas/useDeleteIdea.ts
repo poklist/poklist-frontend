@@ -1,4 +1,4 @@
-import { listsContract } from '@/api/contracts';
+import { ideasContract, listsContract } from '@/api/contracts';
 import { ideasQuery } from '@/api/query/ideas';
 import ideasKeys from '@/hooks/api/ideas/keys';
 import listsKeys from '@/hooks/api/lists/keys';
@@ -36,6 +36,26 @@ export const useDeleteIdea = (options: UseDeleteIdeaOptions) => {
                   ideaTotalCount: content.ideaTotalCount - 1,
                   ideas: filteredIdeas,
                 },
+              },
+            };
+          });
+        }
+      );
+      updateInfiniteCaches<typeof ideasContract.getIdeasUnderListContract>(
+        queryClient,
+        ideasKeys.infiniteIdeasUnderList(options.listID),
+        (previousPages) => {
+          return previousPages.map((page) => {
+            const body = page.body;
+            const filteredIdeas = body.ideas.filter(
+              (idea) => idea.id !== request.params.ideaID
+            );
+            return {
+              ...page,
+              body: {
+                ...page.body,
+                ideas: filteredIdeas,
+                ideaTotalCount: body.ideaTotalCount - 1,
               },
             };
           });

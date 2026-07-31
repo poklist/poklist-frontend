@@ -1,5 +1,5 @@
 import { GetListsResponse } from '@/api/query/lists';
-import { useGetListInfiniteIdeas } from '@/hooks/api/lists/useGetListInfiniteIdeas';
+import { useGetInfiniteIdeasUnderList } from '@/hooks/api/ideas/useGetInfiniteIdeasUnderList';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -25,7 +25,7 @@ export const IdeaList: React.FC<IdeaListProps> = ({
     isFetchingNextPage,
     isLoading,
     isError,
-  } = useGetListInfiniteIdeas({ listID, limit: 20 });
+  } = useGetInfiniteIdeasUnderList({ listID, limit: 20 });
 
   const onBottomReached = useCallback(() => {
     if (hasNextPage && !isFetchingNextPage) {

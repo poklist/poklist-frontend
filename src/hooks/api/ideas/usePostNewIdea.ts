@@ -7,6 +7,7 @@ import { adjustPublishLimitsCache } from '@/hooks/queries/publish/cachesUpdater'
 import { toBackendTimestamp } from '@/lib/time';
 import { useQueryClient } from '@tanstack/react-query';
 import { ErrorResponse } from '@ts-rest/react-query';
+import ideasKeys from './keys';
 
 interface UsePostNewIdeaOptions {
   onSuccess?: (data: PostIdeasResponse['content']) => void;
@@ -21,18 +22,18 @@ export const usePostNewIdea = (options: UsePostNewIdeaOptions) => {
   return ideasQuery.post.useMutation({
     onSuccess: (response) => {
       const data = response.body.content;
+      const newIdea = {
+        id: data.id,
+        title: data.title,
+        description: data.description,
+        coverImage: data.coverImage,
+        externalLink: data.externalLink,
+      };
       try {
         updateInfiniteCaches<typeof listsContract.getListsContract>(
           queryClient,
           listsKeys.infiniteIdeas(data.listID),
           (previousPages) => {
-            const newIdea = {
-              id: data.id,
-              title: data.title,
-              description: data.description,
-              coverImage: data.coverImage,
-              externalLink: data.externalLink,
-            };
             const updatedAt = toBackendTimestamp(new Date());
             return previousPages.map((page, index) => {
               const content = page.body.content;
@@ -48,6 +49,25 @@ export const usePostNewIdea = (options: UsePostNewIdeaOptions) => {
                     ideas:
                       index === 0 ? [newIdea, ...content.ideas] : content.ideas,
                   },
+                },
+              };
+            });
+          }
+        );
+        updateInfiniteCaches<typeof ideasContract.getIdeasUnderListContract>(
+          queryClient,
+          ideasKeys.infiniteIdeasUnderList(data.listID),
+          (previousPages) => {
+            return previousPages.map((page, index) => {
+              return {
+                ...page,
+                body: {
+                  ...page.body,
+                  ideas:
+                    index === 0
+                      ? [newIdea, ...page.body.ideas]
+                      : page.body.ideas,
+                  ideaTotalCount: page.body.ideaTotalCount + 1,
                 },
               };
             });
