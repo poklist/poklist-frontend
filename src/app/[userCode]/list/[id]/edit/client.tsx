@@ -22,7 +22,9 @@ const EditListPage: React.FC = () => {
 
   const { data: list } = useGetListInfiniteIdeas({
     listID,
-    limit: 0,
+    // 編輯頁只要 list meta，不需 ideas。
+    // limit 不可設 0 —— 後端視為未指定並回傳整批 ideas。
+    limit: 1,
   });
   const { mutate: editList } = usePutList({
     userCode: me.userCode,
