@@ -4,7 +4,7 @@ import { List } from '@/constants/list';
 import listsKeys from '@/hooks/api/lists/keys';
 import z from 'zod';
 
-const getUserInfiniteListsSchema = listsSchema.getUserListsRequest
+const getInfiniteListsUnderUserSchema = listsSchema.getUserListsRequest
   .omit({ offset: true })
   .extend({
     limit: z
@@ -17,15 +17,15 @@ const getUserInfiniteListsSchema = listsSchema.getUserListsRequest
     enabled: z.boolean().default(true),
   });
 
-type UseGetUserInfiniteListsOptions = z.input<
-  typeof getUserInfiniteListsSchema
+type UseGetInfiniteListsUnderUserOptions = z.input<
+  typeof getInfiniteListsUnderUserSchema
 >;
 
 export const useGetInfiniteLists = (
-  options: UseGetUserInfiniteListsOptions
+  options: UseGetInfiniteListsUnderUserOptions
 ) => {
   const { userCode, limit, staleTime, gcTime, enabled } =
-    getUserInfiniteListsSchema.parse(options);
+    getInfiniteListsUnderUserSchema.parse(options);
 
   return listsQuery.getUserLists.useInfiniteQuery(
     listsKeys.userInfiniteLists(userCode),

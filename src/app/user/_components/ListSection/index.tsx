@@ -3,7 +3,7 @@
 import { ListSectionSkeleton } from '@/app/user/_components/ListSection/ListSectionSkeleton';
 import IconPrivateEye from '@/components/ui/icons/PrivateEyeIcon';
 import { ListType } from '@/enums/Lists/index.enum';
-import { useGetInfiniteLists } from '@/hooks/api/lists/useGetUserInfiniteLists';
+import { useGetInfiniteLists } from '@/hooks/api/lists/useGetInfiniteListsUnderUser';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { useUserRouteContext } from '@/hooks/useUserRouteContext';
 import { Trans } from '@lingui/macro';
