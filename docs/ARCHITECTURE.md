@@ -429,13 +429,10 @@ export const useXxx = (options: UseXxxOptions) => {
 
 從 commits 與 TODO 註解觀察到的尚未完成項目：
 
-- **legacy API hooks 死碼待刪（2026-07-03 更新盤點）**：`hooks/queries/` 已大致清完（剩 `infinite/useInfiniteLists.ts`，零引用待刪）。仍待刪的零引用檔：
-  - `src/hooks/mutations/`：`useCreateIdea` / `useCreateList` / `useDeleteIdea` / `useDeleteList` / `useEditIdea` / `useEditList` / `useEditProfile` / `useReorderIdeas`（8 支）
-  - `src/hooks/mutations/useFollowAction.ts`：**orphan** — followUnfollow/ 模組化後零引用，勿再維護（曾被順手改 import path，白做工），直接 `git rm`
-  - `src/hooks/mutations/useLikeAction.ts`：**接線完成後刪**（likeUnlike 模組已建，`client.tsx` 尚未切換）
-  - 刪除後連動清理：`constants/queryKeys.ts`、`constants/apiPath.ts` 中只剩死碼引用的項目；followUnfollow 內 legacy `[QueryKeys.USER, ...]` cache 雙寫段（讀者已刪，雙寫無意義）。
-- **like/unlike 接線（🚨 最後一哩）**：ts-rest 全鏈（schemas/contracts/query/`hooks/api/like|unlike`）與 `mutations/optimistic/likeUnlike/useLikeAction.ts` 皆已完成，但 `client.tsx` 仍 import 舊 `mutations/useLikeAction` — 切換 + 刪兩支舊檔即收尾。計劃：[`docs/superpowers/plans/2026-06-12-refactor-use-like-action.md`](superpowers/plans/2026-06-12-refactor-use-like-action.md)。
-- **`followUnfollow/schema.ts` 的 `||` 死碼 bug**：`onSuccess.args(followSchema...content || unfollowSchema...content)`、`onError.args(..., postFollowRequest || postUnfollowRequest)` — `||` 左操作數恆 truthy，右側永遠不參與（恰巧同型未爆）。應改 `z.union([...])` 或拆兩組型別。
+- **legacy API hooks 死碼清除**：**【✅ 已完成 — 2026-07-31 驗證】** `src/hooks/mutations/` 8 支 legacy mutation、`mutations/useFollowAction.ts`、`mutations/useLikeAction.ts`、`hooks/queries/infinite/useInfiniteLists.ts` 皆已刪除；`src/constants/queryKeys.ts` 亦已移除。現存結構：`hooks/mutations/` 只剩 `followUnfollow/` + `optimistic/`，`hooks/queries/` 只剩 `publish/`。
+  - **殘留**：`src/constants/apiPath.ts` 全專案零引用（legacy hooks 刪光後成孤兒檔），可直接 `git rm`。
+- **like/unlike 接線**：**【✅ 已完成】** `list/[id]/client.tsx` 已切至 `mutations/optimistic/likeUnlike/useLikeAction`，舊檔已刪。計劃稿：[`docs/superpowers/plans/2026-06-12-refactor-use-like-action.md`](superpowers/plans/2026-06-12-refactor-use-like-action.md)。
+- **`followUnfollow/schema.ts` 的 `||` 死碼 bug**：**【✅ 已修】** 該檔已無 `||` 用法。
 - **axios request error handler 非法 hook 呼叫**：**【✅ 已修】** 改為 `window.location.href = '/'`。
 - **useFollowAction 剩餘債**：
   - count 語義債：`followingCount` 更新對象在 HeroSection 場景（follow 頁面主人）語義上應為主人的 `followerCount`；`schema.ts` 已預留 `listOwner` optional 欄位但 `useFollowAction` 尚未消費（仍用 `currentUserID/currentUserCode`）— 半套，接完或先移除欄位。
@@ -466,9 +463,77 @@ export const useXxx = (options: UseXxxOptions) => {
   - **快取更新 helper 抽離**：✅ 完成 — `hooks/api/utils.ts` 的 `updateEntryCaches` / `updateInfiniteCaches`（§4.5）。後續強化選項：泛型補 `TStatus extends keyof T['responses'] = 200`，防未來 contract 增加錯誤 response 定義時 updater 參數變 union。
   - **ts-rest mutation `onError` 型別對齊**：✅ 完成 — 全部統一 `ErrorResponse<typeof contract>`；且 `axiosFetcher` 的 try/catch 錯誤轉換讓此型別 runtime 真實（§4.5）。
   - **`updatedAt` 由後端值取代**：`usePostNewIdea` / `usePutIdea` 仍以 `toBackendTimestamp(new Date())` 前端手拼塞快取，格式脆弱。應改用 response 回傳的 `updatedAt`，或於 schema 標註此欄非必須。
-  - **GET `/{userCode}/lists` response 缺 `totalElements`**：`getUserLists` 回應未含 `totalElements`，導致前端無法實作 `getNextPageParam` 判斷最後一頁，infinite scroll 方案（`useGetUserInfiniteLists`）暫時擱置，ListSection 維持 `limit: 99` 一次抓完。待後端補 `totalElements` 後，前端 `useGetInfiniteLists` + ListSection sentinel 捲動已有完整實作稿（2026-07-06 session），`usePostNewList`/`useDeleteList` 兩段 invalidate 也已備好（目前註解封存）。
+  - **GET `/{userCode}/lists` response 缺 `totalElements`**：**【✅ 已解除 — 2026-07-30】** 後端已補 `totalElements`。前端 `useGetInfiniteListsUnderUser.ts`（原 `useGetUserInfiniteLists.ts` 改名）+ ListSection sentinel `IntersectionObserver` 捲動已上線，`usePostNewList` / `useDeleteList` 的 `invalidateQueries` 也已啟用。
   - **POST `/lists` response 缺 `coverImage`**：`listsSchema.postResponse` 由 `ListFormSchema.omit({ coverImage }).extend({ id })` 定義，但 `getUserLists` 的 content item（`listPreviewSchema`）含 `coverImage`。導致 `usePostNewList` prepend 進 `userLists` 快取時缺封面圖。需後端於 POST 回應補 `coverImage`，或前端 prepend 時補 fallback，待定案。
 - **id 型別分岔**：`src/api/schemas/**` 所有 id 已統一 `z.string()`，但 `src/types/User/index.ts` 等 legacy type 仍是 `id: number`，邊界處散落 `String(...)` 轉換。legacy hooks 刪除後一併收斂 legacy types。
+- **`useCheckCreateQuota` 的 N+1 序列 await**：[`useCheckCreateQuota.ts`](../src/hooks/queries/publish/useCheckCreateQuota.ts) 的 `checkCanCreate` 在 list 額度用罄時，會 `for` 迴圈**逐一序列 `await`** 每個 list 的 ideas 額度。list 數量多時延遲線性放大。應改 `Promise.all` 並行，或由後端提供單一「是否還能建立」聚合端點。搬遷至 `hooks/api/publish/` 時一併處理。
+- **`isLiked` / `isFollowing` 的型別謊言**：schema 宣告為 `z.boolean()`，但 §13.1 的 hydration strip 會在 runtime 塞入 `undefined`，tsc 抓不到，只能靠 seed effect 的 runtime 守衛擋。同時 `useLikeStore.getIsLiked` 是 `likeMap.get(listID) ?? false`，**把「未知」塌縮成 `false`**，未知態傳不到 UI（可接受的取捨：refetch 回來前短暫顯示未讚）。日後若要做「未知 → 顯示骨架」，須先改 store 簽名為 `boolean | undefined`。另可考慮抽 `stripIdentityFields()` helper，把「hydrate 前移除 per-user 欄位」從人工遵守收斂到單一入口。
+
+### 13.1 SSR Hydration 身分汙染（2026-07-30 新增）
+
+**成因**：Server Component 內的 `fetchXxxForSEO` 走原生 `fetch`，**不帶 Authorization token** → 後端回匿名視角資料（`isFollowing: false`、`isLiked: false`）。這份匿名回應經 `HydrationBoundary` / `setQueryData` 灌進 client React Query cache 後，因所有 GET hook 皆設 `refetchOnMount: false`，**永遠不會被帶 token 的請求覆寫**；下游 store 的 seed-once 邏輯（`if (!hasXxxState) setXxx(...)`）於是把匿名值鎖死，已登入用戶看到錯誤的 Follow / Like 狀態。
+
+**已處理**：
+
+| 欄位 | 汙染源 | 修法 | 狀態 |
+|---|---|---|---|
+| `isFollowing` | `[userCode]/page.tsx` + `list/[id]/page.tsx` 的 `userInfo` hydration | 兩處 hydration 整段移除；`HeroSection` / `BackToUserHeader` / `list/[id]/client.tsx` 三個 seed effect 補 `!isLoggedIn` + `=== undefined` 雙守衛 | ✅ `3144d71` |
+| `isLiked` | `list/[id]/page.tsx` 的 `infiniteIdeas` hydration | hydration 前 strip `isLiked` 設 `undefined`（內容欄位保留，FCP 不損失）；like seeder 補同款雙守衛；已登入且 `isLiked === undefined` 時觸發一次帶 token `refetch()` | ✅ 2026-07-30 |
+
+**後續衍生 bug — 依附 per-user 欄位的計數（2026-07-31）**：
+
+修完 `isLiked` 污染後，`likeCount` 出現「有時多一個」。成因是 [`useListCard`](../src/app/[userCode]/list/[id]/_components/ListCard/_hooks/useListCard.tsx) 用 `prevIsLikedRef` **偵測 `isLiked` 的 false→true 轉換再 `+1`**，而該寫法分不清兩種來源：
+
+| transition 來源 | server `likeCount` 是否已含這一讚 | 該不該 +1 |
+|---|---|---|
+| 用戶點讚（optimistic） | ❌ 尚未含 | ✅ 要 |
+| **seed 伺服器真相**（本節的帶 token refetch） | ✅ 早已含 | ❌ **不可** |
+
+修正前只有「冷啟動 + 已讚過的用戶」會炸：hydration 給 `undefined` → 顯示 `false` → refetch 回 `true` 造成偽轉換 → `+1`；且此時 `data.likeCount` 前後同值（5→5），`useEffect([data.likeCount])` 不會 rerun，救不回來。
+
+**修法**：把計數改為**衍生值**，不用 state 累加 —— 以 server 的 `(isLiked, likeCount)` 為基準，只補上 optimistic 與它的差值：
+
+```ts
+const likeCount = useMemo(() => {
+  const serverIsLiked: boolean | undefined = data.isLiked;
+  if (serverIsLiked === undefined) return data.likeCount; // server 未表態 → 信 server
+  if (isLiked === serverIsLiked) return data.likeCount;
+  return isLiked ? data.likeCount + 1 : data.likeCount - 1;
+}, [isLiked, data.isLiked, data.likeCount]);
+```
+
+天然冪等，不受 effect 執行順序影響；且 `usePostLikeList.onSuccess` 同時寫 `isLiked: true` 與 `likeCount + 1` 時，公式一次消化兩者，不會重複加。
+
+**通用規則（新增功能務必遵守）**：
+
+1. Server Component 的 SEO fetch **只可 hydrate 與身分無關的內容欄位**（title / description / ideas / coverImage）。
+2. 任何 per-user 欄位（`isLiked` / `isFollowing` / 額度 / 權限）在 hydrate 前一律 strip 為 `undefined`。
+3. 消費端 seed effect 一律三守衛：`!isLoggedIn` return、`=== undefined` return、`hasXxxState` 才 seed。
+4. `undefined` 語義是「未知」，**不是** `false`；UI 需自行決定未知狀態的呈現（骨架 or 預設值）。
+5. **依附 per-user 欄位的計數一律用衍生值，禁止用 `useRef` 偵測轉換來累加。** 轉換偵測無法分辨「用戶操作」與「seed 伺服器真相」，在 hydration strip 之後必然出錯。
+   - `followerCount` / `followingCount` **已驗證不受影響**（2026-07-31）：它們由 mutation `onSuccess` 的 cache 手術更新（[`useFollowCountCachesUpdate`](../src/hooks/mutations/followUnfollow/useFollowCountCachesUpdate.ts)、[`usePostFollowUser`](../src/hooks/api/follow/usePostFollowUser.ts)），只在真實用戶操作時觸發，seed 路徑不會走到，元件端也無 ref 累加。
+   - 判斷準則：計數若由 **mutation cache 手術**驅動 → 安全；若由**元件觀察狀態變化**驅動 → 危險。
+
+### 13.2 ideas 資料源雙軌（2026-07-30 新增）
+
+`GET /ideas`（`useGetInfiniteIdeasUnderList`）已上線，與既有 `GET /lists/:listID`（`useGetListInfiniteIdeas`）形成雙軌：
+
+| Hook | Endpoint | 回傳 | 現有消費端 |
+|---|---|---|---|
+| `useGetListInfiniteIdeas` | `GET /lists/:listID` | list meta（title / isLiked / likeCount / owner）**+ 第一批 ideas** | `list/[id]/client.tsx`（`limit: 1`）、`list/[id]/edit/client.tsx`（`limit: 1`） |
+| `useGetInfiniteIdeasUnderList` | `GET /ideas` | 純 ideas + `ideaTotalCount` | `ListCard/_components/IdeaList`、`list/[id]/reorder/client.tsx` |
+
+- 兩者已**分離 query key**（`listsKeys.infiniteIdeas` vs `ideasKeys.infiniteIdeasUnderList`），互不干擾。
+- 職責切乾淨後 list 頁只需 `limit: 1` 拿 meta（無法設 0，後端會回空 ideas 陣列但仍計費一次查詢）。
+- **債務**：`usePostNewIdea` / `usePutIdea` / `useDeleteIdea` 三支 mutation 現在要**同時對兩份 infinite cache 做手術**（各兩段 `updateInfiniteCaches`），重複度高。未來若 `useGetListInfiniteIdeas` 能退化為單純 `useGetList`（不帶 ideas），可砍掉一半 cache 手術。
+
+### 13.3 dev-only console 噪音（2026-07-30 新增）
+
+以下 dev 環境訊息**不影響 production**，勿誤判為 bug：
+
+- **`CancelledError` (retryer.js)**：React Strict Mode 的 mount → unmount → remount 讓第一次 `fetchQuery` 被 TanStack Query 內部 cancel。若該 promise 在 `useEffect` 內以 `void (async () => {...})()` 呼叫且未 catch，即成 unhandled rejection。**修法**：effect 內 async IIFE 一律包 try/catch（見 `idea/create/page.tsx`）。**不可**改用 `useAsyncAction` 替代 —— 該 hook 的 `inFlightRef` 是元件實例層級，Strict Mode 下兩個 instance 各自為 `false`，擋不住；且它缺 `active` cleanup flag，unmount 後仍會執行副作用。
+- **每個 API 打兩次**：同上，Strict Mode 雙 mount。`npm run build && npm run start` 驗證 production 只打一次即可收工。
+- **`Extra attributes from the server: data-new-gr-c-s-check-loaded, data-gr-ext-installed`**：Grammarly 瀏覽器擴充套件注入 DOM attribute 造成 hydration mismatch。與本專案程式碼無關。
 
 ---
 
@@ -513,5 +578,7 @@ export const useXxx = (options: UseXxxOptions) => {
 - 2026-05：以 `dev` 分支（HEAD `4fbe01b`）為快照初版。
 - 2026-06-11：深度盤點更新 — ts-rest 遷移 consumer 層完成（§4.2）、axios 狀態碼管理實作落地（§4.3）、新增 §4.5 mutation 標準模式（fetcher 錯誤轉換 / cache utils / 快取型別）、STORAGE_VERSION 自動同步完成（§5）、§13 重整（legacy 死碼盤點清單、axios 非法 hook 呼叫、useFollowAction 債務與重構計劃連結）。
 - 2026-07-03：`feature/free-demo` 期間更新 — §4.4 標記 followUnfollow 模組化完成（optimistic/ 共用 infra + likeUnlike 待接線）、新增 §4.6 發佈額度模式（fetchQuery 命令式查詢 / useQueries 動態 N 筆 / Drawer open-time 鎖定）、§13 更新盤點（queries/ 死碼已清、axios hook bug 已修、schema `||` bug、like 接線最後一哩、SignupDrawer dead prop）。工作交接紀錄見 `docs/handoff/`。
+- 2026-07-30：新增 §13.1 SSR hydration 身分汙染（follow / like 兩起同源 bug 的成因、修法與通用規則）、§13.2 ideas 資料源雙軌（`GET /ideas` 上線後的職責切分與 cache 手術重複債）、§13.3 dev-only console 噪音（Strict Mode 雙打 / CancelledError / Grammarly）；§13 內 `GET /{userCode}/lists` 缺 `totalElements` 一項標記已解除（後端已補，infinite scroll 上線）。
+- 2026-07-31：§13 對照現況重新校準 — legacy 死碼清除、like/unlike 接線、`followUnfollow/schema.ts` 的 `||` bug 三項經 grep 驗證**早已完成**，改標 ✅（原文件仍列為待辦，會誤導接手者）。新增三項債務：`constants/apiPath.ts` 零引用孤兒檔、`useCheckCreateQuota` 的 N+1 序列 await、`isLiked`/`isFollowing` 的型別謊言（schema 說 `boolean` 但 hydration 塞 `undefined`，且 store 把未知塌縮成 `false`）。§13.1 補「依附 per-user 欄位的計數」衍生 bug：`likeCount` 因 ref 轉換偵測誤把 seed 當用戶操作而多算，改為衍生值修正；並新增通用規則第 5 條（計數禁用 ref 累加）＋ 驗證 follow 計數走 mutation cache 手術路徑不受影響。
 
 若日後架構大幅變動，請以 PR 更新本文件對應段落，避免被當作可信來源誤導後續工程師或 AI。
