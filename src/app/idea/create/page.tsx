@@ -9,13 +9,10 @@ import { useFakePage } from '@/components/FakePage/useFakePage';
 import { DrawerIds } from '@/constants/Drawer';
 import { LocalStorageKey } from '@/enums/index.enum';
 import { usePostNewIdea } from '@/hooks/api/ideas/usePostNewIdea';
-import { useGetUserLists } from '@/hooks/api/lists/useGetUserLists';
-import { useGetListsLimits } from '@/hooks/api/publish/useGetListsLimits';
 import { useCheckCreateQuota } from '@/hooks/queries/publish/useCheckCreateQuota';
 import { useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { removeLocalStorage } from '@/lib/utils';
-import useAuthStore from '@/stores/useAuthStore';
 import useUserStore from '@/stores/useUserStore';
 import { useSearchParams } from 'next/navigation';
 import React, { useEffect } from 'react';
@@ -28,15 +25,6 @@ const IdeaCreatePage: React.FC = () => {
   const isNavigateFromList = listID !== null;
 
   const { me } = useUserStore();
-
-  const { isLoggedIn } = useAuthStore();
-
-  const { data: listsLimits } = useGetListsLimits({ enabled: isLoggedIn });
-
-  const { data: lists } = useGetUserLists({
-    userCode: me.userCode,
-    limit: listsLimits?.usedCount ?? 99,
-  });
 
   const { openDrawer } = useDrawer(DrawerIds.SIGNUP_DRAWER_ID);
 
@@ -64,7 +52,10 @@ const IdeaCreatePage: React.FC = () => {
       if (isNavigateFromList) {
         createIdea({ body: { ...ideaFormData, listID: listID.toString() } });
       } else {
-        openFakePage('listSelector', { lists, ideaForm: ideaFormData });
+        openFakePage('listSelector', {
+          // lists,
+          ideaForm: ideaFormData,
+        });
       }
     }
   );
@@ -73,12 +64,16 @@ const IdeaCreatePage: React.FC = () => {
     if (!me.userCode) return;
     let active = true;
     void (async () => {
-      const canCreate = await checkCanCreate(listID ?? undefined);
-      if (active && !canCreate)
-        openDrawer({
-          isCloseable: false,
-          variant: SignupDrawerVariant.IDEA_FULL,
-        });
+      try {
+        const canCreate = await checkCanCreate(listID ?? undefined);
+        if (active && !canCreate)
+          openDrawer({
+            isCloseable: false,
+            variant: SignupDrawerVariant.IDEA_FULL,
+          });
+      } catch {
+        // 這裡會被 TanStack Query 內部 cancel
+      }
     })();
     return () => {
       active = false;

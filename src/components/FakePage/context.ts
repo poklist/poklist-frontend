@@ -1,4 +1,3 @@
-import { GetUserListsResponse } from '@/api/query/lists';
 import { IdeaBody } from '@/types/Idea';
 import { createContext } from 'react';
 
@@ -11,7 +10,6 @@ export type FakePageType = 'editField' | 'listSelector';
 interface FakePagePayloadMap {
   editField: null;
   listSelector: {
-    lists: GetUserListsResponse['content'] | undefined;
     ideaForm: IdeaBody;
   };
 }
