@@ -36,9 +36,18 @@ const putIdeasContract = {
   summary: 'edit IDEA',
 } satisfies AppRoute;
 
+const getIdeasUnderListContract = {
+  method: 'GET',
+  path: '/ideas',
+  query: ideasSchema.getIdeasUnderListRequest,
+  responses: { 200: ideasSchema.getIdeasUnderListResponse },
+  summary: 'IDEA under list',
+} satisfies AppRoute;
+
 export const ideasContract = {
   getIdeasContract,
   postIdeasContract,
   deleteIdeasContract,
   putIdeasContract,
+  getIdeasUnderListContract,
 } satisfies Record<string, AppRoute>;
