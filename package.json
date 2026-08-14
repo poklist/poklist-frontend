@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "lingui extract && lingui compile && next dev -p 8080",
     "build": "lingui extract && lingui compile && next build",
+    "build:e2e": "SEO_FETCH_REVALIDATE=0 NEXT_PUBLIC_API_BASE_URL=http://localhost:4000 NEXT_PUBLIC_SITE_URL=http://localhost:8080 NEXT_PUBLIC_GOOGLE_CLIENT_ID=e2e-placeholder-client-id npm run build",
     "start": "next start -p 8080",
     "tsc": "tsc --noEmit",
     "format": "prettier --write ./src",

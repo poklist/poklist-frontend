@@ -919,10 +919,17 @@ export default defineConfig({
       stdout: 'pipe',
     },
     {
-      command: 'npm run start',
+      // Build here (via `build:e2e`), not just start: SEO_FETCH_REVALIDATE affects
+      // build-time prerendering, so building without it renders routes like
+      // /[userCode]/list/[id] as static, then runtime (which does set
+      // SEO_FETCH_REVALIDATE=0) forces dynamic rendering and Next throws
+      // "Page changed from static to dynamic at runtime". Do not "optimise" this
+      // back down to a separate pre-built `npm run start` — build and run must
+      // share the same env.
+      command: 'npm run build:e2e && npm run start',
       url: BASE_URL,
       reuseExistingServer: !process.env.CI,
-      timeout: 120_000,
+      timeout: 240_000,
       env: {
         NEXT_PUBLIC_API_BASE_URL: `http://localhost:${MOCK_PORT}`,
         NEXT_PUBLIC_SITE_URL: BASE_URL,
@@ -938,13 +945,16 @@ export default defineConfig({
 
 - [ ] **Step 7: 加 npm scripts**
 
-`package.json` 的 `scripts` 區塊追加三行：
+`package.json` 的 `scripts` 區塊追加四行：
 
 ```json
+    "build:e2e": "SEO_FETCH_REVALIDATE=0 NEXT_PUBLIC_API_BASE_URL=http://localhost:4000 NEXT_PUBLIC_SITE_URL=http://localhost:8080 NEXT_PUBLIC_GOOGLE_CLIENT_ID=e2e-placeholder-client-id npm run build",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "mock-api": "tsx e2e/mock-server/start.ts",
 ```
+
+`build:e2e` 會透過既有的 `build` script（保留 Lingui extract/compile 步驟），並內嵌與 `webServer` 的 `npm run start` 完全相同的四個環境變數 —— 詳見下方風險備忘。
 
 - [ ] **Step 8: 更新 .gitignore**
 
@@ -2639,3 +2649,4 @@ git push
 4. **Task 15 可能揭露真 bug**（`clearAllLikeStatus` 未清 `confirmedLikeMap`）—— 若成立，修復屬本計劃範圍內，已在該 task 的 ⚠️ 標註處理方式。
 5. **`webServer` 於 CI 使用 `npm run start`（production build）** —— 與 dev 模式行為不同（無 Strict Mode 雙 mount）。這是刻意選擇：production 行為才是要保護的對象，且避免 §13.3 記載的 Strict Mode 雙打干擾斷言。
 6. **Playwright 首次安裝瀏覽器約 400MB** —— CI 每次 `npx playwright install` 會耗時；若成為瓶頸，改用 `actions/cache` 快取 `~/.cache/ms-playwright`。
+7. **`build` 與 `webServer` 的 `npm run start` 曾各自持有不同的環境變數，導致 build-time 與 runtime 的 `SEO_FETCH_REVALIDATE` 不一致**（2026-08-13 實測發現）—— `next build` 在未設定 `SEO_FETCH_REVALIDATE` 時，會以預設的 `revalidate: 300` 將 `/[userCode]/list/[id]` 預渲染成 static 頁；但 runtime 的 `webServer.env` 設定 `SEO_FETCH_REVALIDATE=0`，迫使該路由變成 dynamic，Next 因此丟出 `Error: Page changed from static to dynamic at runtime /discovery`，導致頁面渲染失敗、E2E 斷言拿不到內容（4 個 spec fail）。修復方式：新增 `build:e2e` script，內嵌與 `webServer.env` 完全相同的四個環境變數並透過既有 `build` script 執行（保留 Lingui 步驟）；`webServer` 的 `command` 改為 `npm run build:e2e && npm run start`，讓 build 與 start 永遠共用同一組環境變數，並將 `timeout` 提高到 `240_000` 以涵蓋 build 時間。驗證：`rm -rf .next` 後重跑 `like-identity.spec.ts` + `follow-identity.spec.ts`（mobile-chrome）由 4 failed 轉為 9 passed，且 log 不再出現 static-to-dynamic 錯誤。
