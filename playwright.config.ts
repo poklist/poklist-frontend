@@ -6,10 +6,22 @@ const BASE_URL = `http://localhost:${APP_PORT}`;
 
 export default defineConfig({
   testDir: './e2e',
-  fullyParallel: true,
+  // Serialised on purpose: every worker shares ONE mock-server process on
+  // port 4000 whose fixture state is a single module-level object
+  // (e2e/mock-server/state.ts). Each test's beforeEach POSTs
+  // /__test__/reset, which reassigns that shared object — with more than
+  // one worker, a sibling test's in-flight requests can land against a
+  // state object that was just reset out from under them. Per-worker state
+  // isolation is not viable here: page navigations trigger Server
+  // Component fetches from the Next.js server process, which cannot carry
+  // a per-worker header, so browser-side and SSR-side requests could never
+  // agree on which worker's state to use. Do NOT raise `workers` back up —
+  // it will reintroduce intermittent failures once a spec performs a
+  // successful mutation (e.g. deleting an idea).
+  fullyParallel: false,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 2 : undefined,
+  workers: 1,
   reporter: process.env.CI
     ? [['github'], ['html', { open: 'never' }]]
     : [['list']],

@@ -43,11 +43,20 @@ test.describe('anonymous viewer', () => {
   });
 });
 
-// E3:登出後不得殘留前一位用戶的 like 狀態
-test.describe('after logout', () => {
+// E3:清除已儲存的登入狀態並重新整理後,應呈現未登入畫面且不帶有殘留的 like 狀態
+test.describe('after clearing stored auth', () => {
   test.use({ storageState: buildStorageState() });
 
-  test('E3 does not leak previous user liked state', async ({ page }) => {
+  // This does NOT exercise the seed-once path in client.tsx: after the
+  // localStorage clear + reload the app is anonymous, so the effect's
+  // `if (!isLoggedIn) return;` guard short-circuits before the
+  // `hasLikeState` seed-once branch ever runs. True identity-switch
+  // coverage is blocked by the mock server's single-viewer design
+  // (viewerOf() in e2e/mock-server/server.ts maps any Authorization
+  // header to `usera`).
+  test('E3 shows unauthenticated view with no liked state after clearing stored auth', async ({
+    page,
+  }) => {
     await page.goto('/usera/list/100');
     await expect(page.getByTestId('like-button')).toHaveAttribute(
       'data-liked',

@@ -882,10 +882,22 @@ const BASE_URL = `http://localhost:${APP_PORT}`;
 
 export default defineConfig({
   testDir: './e2e',
-  fullyParallel: true,
+  // Serialised on purpose: every worker shares ONE mock-server process on
+  // port 4000 whose fixture state is a single module-level object
+  // (e2e/mock-server/state.ts). Each test's beforeEach POSTs
+  // /__test__/reset, which reassigns that shared object — with more than
+  // one worker, a sibling test's in-flight requests can land against a
+  // state object that was just reset out from under them. Per-worker state
+  // isolation is not viable here: page navigations trigger Server
+  // Component fetches from the Next.js server process, which cannot carry
+  // a per-worker header, so browser-side and SSR-side requests could never
+  // agree on which worker's state to use. Do NOT raise `workers` back up —
+  // it will reintroduce intermittent failures once a spec performs a
+  // successful mutation (e.g. deleting an idea).
+  fullyParallel: false,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 2 : undefined,
+  workers: 1,
   reporter: process.env.CI ? [['github'], ['html', { open: 'never' }]] : [['list']],
   use: {
     baseURL: BASE_URL,
@@ -2650,3 +2662,4 @@ git push
 5. **`webServer` 於 CI 使用 `npm run start`（production build）** —— 與 dev 模式行為不同（無 Strict Mode 雙 mount）。這是刻意選擇：production 行為才是要保護的對象，且避免 §13.3 記載的 Strict Mode 雙打干擾斷言。
 6. **Playwright 首次安裝瀏覽器約 400MB** —— CI 每次 `npx playwright install` 會耗時；若成為瓶頸，改用 `actions/cache` 快取 `~/.cache/ms-playwright`。
 7. **`build` 與 `webServer` 的 `npm run start` 曾各自持有不同的環境變數，導致 build-time 與 runtime 的 `SEO_FETCH_REVALIDATE` 不一致**（2026-08-13 實測發現）—— `next build` 在未設定 `SEO_FETCH_REVALIDATE` 時，會以預設的 `revalidate: 300` 將 `/[userCode]/list/[id]` 預渲染成 static 頁；但 runtime 的 `webServer.env` 設定 `SEO_FETCH_REVALIDATE=0`，迫使該路由變成 dynamic，Next 因此丟出 `Error: Page changed from static to dynamic at runtime /discovery`，導致頁面渲染失敗、E2E 斷言拿不到內容（4 個 spec fail）。修復方式：新增 `build:e2e` script，內嵌與 `webServer.env` 完全相同的四個環境變數並透過既有 `build` script 執行（保留 Lingui 步驟）；`webServer` 的 `command` 改為 `npm run build:e2e && npm run start`，讓 build 與 start 永遠共用同一組環境變數，並將 `timeout` 提高到 `240_000` 以涵蓋 build 時間。驗證：`rm -rf .next` 後重跑 `like-identity.spec.ts` + `follow-identity.spec.ts`（mobile-chrome）由 4 failed 轉為 9 passed，且 log 不再出現 static-to-dynamic 錯誤。
+8. **`fullyParallel` 已改為 `false`、`workers` 固定為 `1`**（2026-08-14 review 發現）—— 所有 worker 共用同一個跑在 4000 埠的 mock-server process，其 fixture 狀態是 `e2e/mock-server/state.ts` 裡的單一 module-level 物件；每個測試的 `beforeEach` 都會 POST `/__test__/reset` 來重新賦值這個共享物件。目前尚未爆炸純屬僥倖：現有測試沒有任何一個「成功」的 mutation（匿名點讚會先收到 401，狀態根本沒被改到）。一旦之後加入會刪除 idea 並斷言結果的 spec，某個 worker 的 `beforeEach` reset 就可能插入另一個 worker 測試的執行過程中，產生間歇性失敗。Per-worker 狀態隔離在此不可行：頁面導覽會觸發 Next.js server process 發出的 Server Component fetch，這些請求無法帶上 per-worker header，導致瀏覽器端與 SSR 端永遠無法就「該用哪個 worker 的狀態」達成一致。因此將確定性 E2E 跑法序列化（`fullyParallel: false` + `workers: 1`），並在 `playwright.config.ts` 加上註解說明理由 —— 之後不要為了「優化」而把 worker 數調高，那會重新引入間歇性失敗。
