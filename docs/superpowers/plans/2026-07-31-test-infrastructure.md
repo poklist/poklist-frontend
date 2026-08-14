@@ -83,6 +83,7 @@ e2e/
 │   ├── auth.ts                   # buildStorageState()：組 auth-storage / user-storage
 │   └── users.ts                  # 測試用 user 常數
 ├── specs/
+│   ├── config-sanity.spec.ts     # Playwright/mock server 接線自檢
 │   ├── like-identity.spec.ts     # E1, E3, E4
 │   ├── follow-identity.spec.ts   # E2
 │   ├── private-list.spec.ts      # E7, E8
@@ -392,7 +393,7 @@ git commit -m "test: add data-testid hooks and replace invalid ARIA roles"
 | stage | e2e-infra |
 | status | pending |
 | summary | 建立依 `Authorization` header 分歧回應的本地 mock API server，並設定 Playwright（mobile 雙 project + webServer 同時起 app 與 mock）。**SSR fetch 走 Node 端，`page.route()` 攔不到**，因此必須用真 HTTP mock server 才能控制 hydration 情境 |
-| evidence | 待填：`npx playwright test e2e/specs/smoke-config.spec.ts` 通過輸出 |
+| evidence | 待填：`npx playwright test e2e/specs/config-sanity.spec.ts` 通過輸出 |
 | next_action | Task 5 |
 
 **Files:**
@@ -411,7 +412,7 @@ git commit -m "test: add data-testid hooks and replace invalid ARIA roles"
   - `getState(): MockState` — 讀取當前 mock DB
   - `buildStorageState(opts?: { token?: string }): StorageState` — Playwright storageState 物件
   - `TEST_USER_A` / `TEST_USER_B` — fixture user 常數
-  - mock server 控制端點 `POST /__test__/reset`、`POST /__test__/seed`
+  - mock server 控制端點 `POST /__test__/reset`（唯一；不實作 seed —— 全部 spec 皆以 reset 回到固定 fixture，無自訂 seed 需求）
 - Consumes: `src/api/schemas/**` 的回應形狀（手動對齊，不 import —— e2e 不納入 `tsconfig.app.json` 的 `include`）
 
 - [ ] **Step 1: 安裝相依**
@@ -933,7 +934,7 @@ export default defineConfig({
 });
 ```
 
-⚠️ `webServer.url` 對 mock server 用 `/__test__/reset`（POST 端點）—— Playwright 以 GET 探活會得到 404，仍代表 server 已起。若探活失敗，改用 `http://localhost:4000/usera/info`。
+📌 `webServer.url` 對 mock server 必須指向 **GET** 路由。原先指向 `/__test__/reset`（POST-only）會讓 Playwright 的 GET 探活每次得 404 並在 60s 後 timeout —— 2026-08 實測確認，故改用 `/usera/info`。
 
 - [ ] **Step 7: 加 npm scripts**
 
@@ -959,7 +960,7 @@ export default defineConfig({
 
 - [ ] **Step 9: 建立設定驗證測試**
 
-建立 `e2e/specs/smoke-config.spec.ts`：
+建立 `e2e/specs/config-sanity.spec.ts`：
 
 ```ts
 import { expect, test } from '@playwright/test';
@@ -994,7 +995,7 @@ test('mock api varies isLiked by Authorization header', async ({ request }) => {
 
 Run:
 ```bash
-export PATH="$HOME/.nvm/versions/node/v22.15.1/bin:$PATH" && npm run build && npx playwright test e2e/specs/smoke-config.spec.ts --project=mobile-chrome
+export PATH="$HOME/.nvm/versions/node/v22.15.1/bin:$PATH" && npm run build && npx playwright test e2e/specs/config-sanity.spec.ts --project=mobile-chrome
 ```
 Expected: 3 passed
 
