@@ -8,8 +8,11 @@ const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 // E2E 需要關閉 SSR fetch 快取才能隔離測試（否則第二個測試吃到第一個的快取回應）。
 // 未設定或格式不正確時維持 300 秒，prod 行為不變。
-const val = Number(process.env.SEO_FETCH_REVALIDATE === '' ? NaN : process.env.SEO_FETCH_REVALIDATE);
-const SEO_FETCH_REVALIDATE = Number.isFinite(val) && val >= 0 ? val : 300;
+const parsedRevalidate = Number(process.env.SEO_FETCH_REVALIDATE || NaN);
+const SEO_FETCH_REVALIDATE =
+  Number.isFinite(parsedRevalidate) && parsedRevalidate >= 0
+    ? parsedRevalidate
+    : 300;
 
 export async function fetchJSONForSEO<T>(path: string): Promise<T | null> {
   try {
