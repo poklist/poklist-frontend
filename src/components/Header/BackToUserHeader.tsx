@@ -138,6 +138,8 @@ const BackToUserHeader: React.FC<IBackToUserHeaderProps> = ({
         {hasFollowButton &&
           (!isLoggedIn || hasConfirmedFollowingState(owner?.userCode ?? '') ? (
             <Button
+              data-testid="follow-button"
+              data-following={isFollowing === true}
               variant={
                 isFollowing ? ButtonVariant.SUB_ACTIVE : ButtonVariant.BLACK
               }

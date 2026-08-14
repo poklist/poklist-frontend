@@ -11,7 +11,7 @@ export const ListSectionSkeleton: React.FC = () => {
   ];
 
   return (
-    <div role="list-preview">
+    <div data-testid="list-preview">
       {placeholderStringList.map((placeholder, index) => (
         <div
           key={index}

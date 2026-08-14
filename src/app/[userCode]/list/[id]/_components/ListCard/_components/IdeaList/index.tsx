@@ -82,6 +82,8 @@ export const IdeaList: React.FC<IdeaListProps> = ({
       {ideasDraft?.map((idea) => (
         <div
           key={idea.id}
+          data-testid="idea-row"
+          data-idea-id={idea.id}
           className="flex min-h-[65px] items-center justify-between gap-2 border-t border-gray-main-03 p-4 -tracking-1.1% first:border-t-0 last:pb-0"
           onClick={() => onClickIdea(idea.id)}
         >

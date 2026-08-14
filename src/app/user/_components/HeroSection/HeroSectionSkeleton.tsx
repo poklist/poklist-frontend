@@ -5,7 +5,7 @@ import { Skeleton, Text } from '@radix-ui/themes';
 export const HeroSectionSkeleton: React.FC = () => {
   return (
     <div
-      role="hero"
+      data-testid="hero"
       className="flex flex-col items-center gap-4 bg-white pb-4 pt-6"
     >
       <div id="hero-basic-info" className="flex flex-col items-center gap-2">
