@@ -911,7 +911,9 @@ export default defineConfig({
   webServer: [
     {
       command: 'npx tsx e2e/mock-server/start.ts',
-      url: `http://localhost:${MOCK_PORT}/__test__/reset`,
+      // 探活必須指向 GET 路由：Playwright 以 GET 輪詢，指向 POST-only 的
+      // /__test__/reset 會每次 404 並在 60s 後 timeout（2026-08 實測）
+      url: `http://localhost:${MOCK_PORT}/usera/info`,
       reuseExistingServer: !process.env.CI,
       stdout: 'pipe',
     },
