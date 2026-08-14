@@ -34,3 +34,11 @@ Dockerfile
 README.md
 .claude
 *.tsbuildinfo
+.superpowers
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
