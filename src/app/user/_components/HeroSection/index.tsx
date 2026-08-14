@@ -239,6 +239,8 @@ const HeroSection: React.FC = () => {
           ) : (
             <Button
               id={isFollowing ? 'unfollow-button' : 'follow-button'}
+              data-testid="follow-button"
+              data-following={isFollowing === true}
               variant={isFollowing ? ButtonVariant.GRAY : ButtonVariant.BLACK}
               size={ButtonSize.LG}
               disabled={isFollowPending}

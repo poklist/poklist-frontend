@@ -61,8 +61,22 @@ const listPayload = (list: MockList, viewer: string | null) => ({
   },
 });
 
+// 前端 axios 直接從瀏覽器打 NEXT_PUBLIC_API_BASE_URL(跨源到 :4000),
+// 需要 CORS header 才能通過瀏覽器的 preflight 檢查。
+const setCorsHeaders = (req: IncomingMessage, res: ServerResponse) => {
+  res.setHeader('Access-Control-Allow-Origin', req.headers.origin ?? '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+};
+
 export const createMockServer = () =>
   createServer((req, res) => {
+    setCorsHeaders(req, res);
+    if (req.method === 'OPTIONS') {
+      res.writeHead(204);
+      res.end();
+      return;
+    }
     void handle(req, res);
   });
 
