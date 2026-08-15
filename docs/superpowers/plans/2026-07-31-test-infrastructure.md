@@ -1397,14 +1397,22 @@ test('E5 loads all ideas across three pages without duplicates or gaps', async (
   await page.goto('/usera/list/100');
   await expect(page.locator('[data-testid="idea-row"]').first()).toBeVisible();
 
-  let previousCount = 0;
-  for (let attempt = 0; attempt < 12; attempt += 1) {
-    const ids = await collectIdeaIDs(page);
-    if (ids.length === 41) break;
-    if (ids.length === previousCount && attempt > 2) break;
-    previousCount = ids.length;
-    await page.mouse.wheel(0, 4000);
-    await page.waitForTimeout(400);
+  let previousCount = (await collectIdeaIDs(page)).length;
+  while (previousCount < 41) {
+    // mouse.wheel is unsupported on mobile WebKit, so scroll the last
+    // rendered row into view instead — this crosses the IntersectionObserver
+    // sentinel the same way a real scroll would, on every engine.
+    await page
+      .locator('[data-testid="idea-row"]')
+      .last()
+      .scrollIntoViewIfNeeded();
+    // Wait on the concrete condition (row count growing) instead of a fixed
+    // sleep: infinite-scroll timing varies, but a stalled count after a
+    // reasonable window means the next page genuinely never arrived.
+    await expect
+      .poll(async () => (await collectIdeaIDs(page)).length, { timeout: 5_000 })
+      .toBeGreaterThan(previousCount);
+    previousCount = (await collectIdeaIDs(page)).length;
   }
 
   const ids = await collectIdeaIDs(page);
@@ -2835,3 +2843,5 @@ git push
 7. **`build` 與 `webServer` 的 `npm run start` 曾各自持有不同的環境變數，導致 build-time 與 runtime 的 `SEO_FETCH_REVALIDATE` 不一致**（2026-08-13 實測發現）—— `next build` 在未設定 `SEO_FETCH_REVALIDATE` 時，會以預設的 `revalidate: 300` 將 `/[userCode]/list/[id]` 預渲染成 static 頁；但 runtime 的 `webServer.env` 設定 `SEO_FETCH_REVALIDATE=0`，迫使該路由變成 dynamic，Next 因此丟出 `Error: Page changed from static to dynamic at runtime /discovery`，導致頁面渲染失敗、E2E 斷言拿不到內容（4 個 spec fail）。修復方式：新增 `build:e2e` script，內嵌與 `webServer.env` 完全相同的四個環境變數並透過既有 `build` script 執行（保留 Lingui 步驟）；`webServer` 的 `command` 改為 `npm run build:e2e && npm run start`，讓 build 與 start 永遠共用同一組環境變數，並將 `timeout` 提高到 `240_000` 以涵蓋 build 時間。驗證：`rm -rf .next` 後重跑 `like-identity.spec.ts` + `follow-identity.spec.ts`（mobile-chrome）由 4 failed 轉為 9 passed，且 log 不再出現 static-to-dynamic 錯誤。
 8. **`fullyParallel` 已改為 `false`、`workers` 固定為 `1`**（2026-08-14 review 發現）—— 所有 worker 共用同一個跑在 4000 埠的 mock-server process，其 fixture 狀態是 `e2e/mock-server/state.ts` 裡的單一 module-level 物件；每個測試的 `beforeEach` 都會 POST `/__test__/reset` 來重新賦值這個共享物件。目前尚未爆炸純屬僥倖：現有測試沒有任何一個「成功」的 mutation（匿名點讚會先收到 401，狀態根本沒被改到）。一旦之後加入會刪除 idea 並斷言結果的 spec，某個 worker 的 `beforeEach` reset 就可能插入另一個 worker 測試的執行過程中，產生間歇性失敗。Per-worker 狀態隔離在此不可行：頁面導覽會觸發 Next.js server process 發出的 Server Component fetch，這些請求無法帶上 per-worker header，導致瀏覽器端與 SSR 端永遠無法就「該用哪個 worker 的狀態」達成一致。因此將確定性 E2E 跑法序列化（`fullyParallel: false` + `workers: 1`），並在 `playwright.config.ts` 加上註解說明理由 —— 之後不要為了「優化」而把 worker 數調高，那會重新引入間歇性失敗。
 9. **`notFound()` 在 `/[userCode]/list/[id]` 路由下解析到的是路由範圍的 `src/app/[userCode]/list/[id]/not-found.tsx`，而不是根層的 `src/app/not-found.tsx`**（2026-08-15 修 E7 時發現）—— 兩者文案不同（分別是「We couldn't find this page.」與「Oops something is wrong!」），且都包在 Lingui `<Trans>` macro 內、屬於會隨語系切換的翻譯文案（en / zh-TW 都要支援），不能拿來做斷言依據；`We couldn't find this page.` 裡的撇號還是全形 `'`（U+2019）不是 ASCII `'`，直接字串比對很容易誤植而永遠比不中。修法是在兩個 not-found 元件的最外層元素都加上 `data-testid="not-found"`，讓 E2E 斷言與語系、文案內容脫鉤；之後任何新增的路由範圍 not-found 元件都要記得補上同一個 testid。
+
+10. **`page.mouse.wheel` 在 mobile WebKit 不支援** —— Playwright 於 mobile-safari 會拋 `Mouse wheel is not supported in mobile WebKit`。無限捲動測試改用 `locator.last().scrollIntoViewIfNeeded()` 觸發 IntersectionObserver sentinel，並以 `expect.poll` 等待列數成長取代固定 `waitForTimeout`（2026-08 實測）。
