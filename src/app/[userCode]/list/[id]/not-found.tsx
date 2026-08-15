@@ -10,7 +10,10 @@ export default function ErrorPage() {
   return (
     <LanguageProvider>
       <TileBackground />
-      <div className="relative z-10 flex min-h-screen flex-col">
+      <div
+        className="relative z-10 flex min-h-screen flex-col"
+        data-testid="not-found"
+      >
         {/* Header */}
         <Header bgColor="transparent" />
 
