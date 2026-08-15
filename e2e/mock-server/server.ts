@@ -3,8 +3,16 @@ import { getState, MockList, resetState } from './state';
 
 // 「已登入」= 帶 Authorization header。不驗簽 —— E2E 的假 token 只需存在即可。
 // 這一分歧正是重現 SSR hydration 匿名汙染的關鍵：Server Component 不帶 token。
-const viewerOf = (req: IncomingMessage): string | null =>
-  req.headers.authorization ? 'usera' : null;
+// The real axios interceptor (src/api/axios.ts) sets `Authorization: Bearer ${accessToken}`
+// unconditionally, even when logged out and accessToken is ''. That means a logged-out
+// browser still sends a truthy `Authorization: Bearer ` header, so we can't treat mere
+// presence of the header as proof of auth — we must extract the bearer token itself and
+// treat an absent, empty, or whitespace-only token as unauthenticated.
+const viewerOf = (req: IncomingMessage): string | null => {
+  const header = req.headers.authorization ?? '';
+  const token = header.replace(/^Bearer\s*/i, '').trim();
+  return token ? 'usera' : null;
+};
 
 const ok = (res: ServerResponse, content: unknown, extra: object = {}) => {
   res.writeHead(200, {
