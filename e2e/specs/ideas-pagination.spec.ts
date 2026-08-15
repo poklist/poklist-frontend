@@ -7,6 +7,10 @@ test.beforeEach(async ({ request }) => {
   await request.post('http://localhost:4000/__test__/reset');
 });
 
+// 必須與 e2e/mock-server/state.ts 中 list "100" 的 makeIdeas('100', 41) 一致。
+// 兩處若不同步，本測試會以「捲動停滯」的形式失敗，看起來像分頁 regression。
+const TOTAL_IDEAS = 41;
+
 const collectIdeaIDs = async (page: import('@playwright/test').Page) =>
   page
     .locator('[data-testid="idea-row"]')
@@ -22,7 +26,7 @@ test('E5 loads all ideas across three pages without duplicates or gaps', async (
   await expect(page.locator('[data-testid="idea-row"]').first()).toBeVisible();
 
   let previousCount = (await collectIdeaIDs(page)).length;
-  while (previousCount < 41) {
+  while (previousCount < TOTAL_IDEAS) {
     // mouse.wheel is unsupported on mobile WebKit, so scroll the last
     // rendered row into view instead — this crosses the IntersectionObserver
     // sentinel the same way a real scroll would, on every engine.
@@ -40,7 +44,7 @@ test('E5 loads all ideas across three pages without duplicates or gaps', async (
   }
 
   const ids = await collectIdeaIDs(page);
-  expect(ids).toHaveLength(41);
-  expect(new Set(ids).size).toBe(41); // 無重複
-  expect(ids).toContain('100-idea-41'); // 無遺漏（最後一則）
+  expect(ids).toHaveLength(TOTAL_IDEAS);
+  expect(new Set(ids).size).toBe(TOTAL_IDEAS); // 無重複
+  expect(ids).toContain(`100-idea-${TOTAL_IDEAS}`); // 無遺漏（最後一則）
 });

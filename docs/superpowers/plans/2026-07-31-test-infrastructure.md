@@ -1441,9 +1441,9 @@ test.beforeEach(async ({ request }) => {
   await request.post('http://localhost:4000/__test__/reset');
 });
 
-// E6：刪除 idea 後，兩份 infinite cache（listsKeys.infiniteIdeas 與
-// ideasKeys.infiniteIdeasUnderList）必須同步，不需重整頁面
-test('E6 removes idea from list without reload', async ({ page, request }) => {
+// E6：驗證伺服器端刪除後，重新載入的畫面與伺服器狀態一致。
+// **不涵蓋** optimistic 雙 cache 同步 —— 刪除走原始 API + reload，繞過 client mutation 路徑。
+test('E6 idea deleted via API is reflected after reload', async ({ page, request }) => {
   await page.goto('/usera/list/101'); // private list，3 則 idea，屬於 usera
   await expect(page.locator('[data-testid="idea-row"]')).toHaveCount(3);
 
