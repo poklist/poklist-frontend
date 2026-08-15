@@ -7,10 +7,13 @@ import { getState, MockList, resetState } from './state';
 // unconditionally, even when logged out and accessToken is ''. That means a logged-out
 // browser still sends a truthy `Authorization: Bearer ` header, so we can't treat mere
 // presence of the header as proof of auth — we must extract the bearer token itself and
-// treat an absent, empty, or whitespace-only token as unauthenticated.
+// treat an absent, empty, or whitespace-only token as unauthenticated. The header must
+// also actually use the Bearer scheme (case-insensitive) — a value with no `Bearer`
+// prefix at all is not valid bearer auth and must not authenticate.
 const viewerOf = (req: IncomingMessage): string | null => {
   const header = req.headers.authorization ?? '';
-  const token = header.replace(/^Bearer\s*/i, '').trim();
+  const match = header.match(/^Bearer\s*(.*)$/i);
+  const token = match ? match[1].trim() : '';
   return token ? 'usera' : null;
 };
 
