@@ -1,6 +1,16 @@
 import { FAKE_TOKEN, TEST_USER_A } from './users';
 
-const APP_ORIGIN = process.env.E2E_BASE_URL ?? 'http://localhost:8080';
+// The smoke project points the page at E2E_SMOKE_BASE_URL (a real dev
+// origin), not the deterministic suite's E2E_BASE_URL/localhost origin.
+// storageState's origins[].origin must match the page's actual origin or
+// Playwright silently skips seeding localStorage for it, producing an
+// unauthenticated session instead of a failure. Prefer the smoke origin
+// when present so smoke runs authenticate against the right origin, while
+// the deterministic suite (which never sets E2E_SMOKE_BASE_URL) is unaffected.
+const APP_ORIGIN =
+  process.env.E2E_SMOKE_BASE_URL ??
+  process.env.E2E_BASE_URL ??
+  'http://localhost:8080';
 
 /**
  * 組出「已登入」的 Playwright storageState。
