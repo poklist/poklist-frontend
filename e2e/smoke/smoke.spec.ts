@@ -4,15 +4,16 @@ import { buildStorageState } from '../fixtures/auth';
 const TOKEN = process.env.E2E_ACCESS_TOKEN;
 const USER_CODE = process.env.E2E_SMOKE_USER_CODE ?? '';
 const LIST_ID = process.env.E2E_SMOKE_LIST_ID ?? '';
+const BASE_URL = process.env.E2E_SMOKE_BASE_URL;
 
 // token 過期或未設定時整組 skip —— 不讓煙霧層擋住 PR
 test.skip(
-  !TOKEN || !USER_CODE || !LIST_ID,
-  'E2E_ACCESS_TOKEN / E2E_SMOKE_USER_CODE / E2E_SMOKE_LIST_ID not configured'
+  !TOKEN || !USER_CODE || !LIST_ID || !BASE_URL,
+  'E2E_ACCESS_TOKEN / E2E_SMOKE_USER_CODE / E2E_SMOKE_LIST_ID / E2E_SMOKE_BASE_URL not configured'
 );
 
 test.use({
-  storageState: buildStorageState({ token: TOKEN }),
+  storageState: buildStorageState({ token: TOKEN, origin: BASE_URL }),
 });
 
 test('S1 discovery page renders', async ({ page }) => {
@@ -47,10 +48,17 @@ test('S5 real API contract has not drifted on list endpoint', async ({
   expect(res.status()).toBe(200);
 
   const body = await res.json();
-  // 契約關鍵欄位 —— 任一消失代表 BE 改了合約，前端 zod parse 會在 runtime 炸
-  expect(body.content).toHaveProperty('isLiked');
-  expect(body.content).toHaveProperty('likeCount');
-  expect(body.content).toHaveProperty('ideaTotalCount');
-  expect(body.content).toHaveProperty('owner');
-  expect(body).toHaveProperty('totalElements');
+  // 契約關鍵欄位與型別 —— 任一消失或型別漂移代表 BE 改了合約，
+  // 前端 zod parse 會在 runtime 炸（zod 對型別漂移也會 throw，
+  // 光用 toHaveProperty 抓不到，所以這裡要斷言型別）
+  expect(typeof body.content.likeCount).toBe('number');
+  expect(typeof body.content.isLiked).toBe('boolean');
+  expect(typeof body.content.ideaTotalCount).toBe('number');
+  expect(Array.isArray(body.content.ideas)).toBe(true);
+  expect(typeof body.content.owner).toBe('object');
+  expect(typeof body.content.owner.id).toBe('number');
+  expect(typeof body.content.owner.userCode).toBe('string');
+  expect(typeof body.totalElements).toBe('number');
+  expect(typeof body.offset).toBe('number');
+  expect(typeof body.limit).toBe('number');
 });

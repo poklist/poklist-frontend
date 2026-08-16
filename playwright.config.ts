@@ -47,6 +47,14 @@ export default defineConfig({
       use: {
         ...devices['Pixel 7'],
         baseURL: process.env.E2E_SMOKE_BASE_URL ?? BASE_URL,
+        // Smoke tests send a real `Authorization: Bearer <token>` against a
+        // real dev backend. Playwright trace/screenshot capture would embed
+        // that token (and possibly real account data) into files written
+        // under test-results/, which CI may upload as artifacts. Keep this
+        // off for the smoke project — do NOT re-enable it here even to
+        // debug a failure; use local runs with your own token instead.
+        trace: 'off',
+        screenshot: 'off',
       },
     },
   ],
