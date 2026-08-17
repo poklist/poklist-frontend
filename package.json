@@ -17,6 +17,9 @@
     "cleanup-lang": "lingui extract --clean",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
+    "test:unit": "vitest run",
+    "test:unit:watch": "vitest",
+    "test:unit:coverage": "vitest run --coverage",
     "mock-api": "tsx e2e/mock-server/start.ts"
   },
   "dependencies": {
@@ -64,10 +67,14 @@
     "@lingui/swc-plugin": "4.0.9",
     "@next/eslint-plugin-next": "14.2.35",
     "@playwright/test": "^1.62.1",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.2",
     "@types/node": "^22.5.0",
     "@types/prop-types": "^15.7.15",
     "@types/react": "^18.3.1",
     "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^6.0.5",
+    "@vitest/coverage-v8": "^4.1.10",
     "autoprefixer": "^10.4.20",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
@@ -76,12 +83,14 @@
     "eslint-plugin-react-hooks": "^5.1.0-rc.0",
     "eslint-plugin-react-refresh": "^0.4.9",
     "globals": "^15.9.0",
+    "jsdom": "^29.1.1",
     "postcss": "^8.4.41",
     "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.6",
     "tailwindcss": "^3.4.10",
     "tsx": "^4.23.12",
     "typescript": "^5.5.3",
-    "typescript-eslint": "^8.0.1"
+    "typescript-eslint": "^8.0.1",
+    "vitest": "^4.1.10"
   }
 }
