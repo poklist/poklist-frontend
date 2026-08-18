@@ -112,9 +112,9 @@ src/
 | 欄位        | 值                                                                                                                |
 | ----------- | ----------------------------------------------------------------------------------------------------------------- |
 | stage       | ci-baseline                                                                                                       |
-| status      | pending                                                                                                           |
+| status      | done                                                                                                              |
 | summary     | 專案目前 `.github/` 只有 PR template、零自動化。先把現有品質底線（tsc / lint / build）鎖進 CI，後續測試才有掛載點 |
-| evidence    | 待填：workflow 檔內容 + 首次 PR 的 Actions 執行結果連結                                                           |
+| evidence    | 完成（commits `fe3849b`..`9098730`）。建立 `.github/workflows/ci.yml`：tsc / lint（`--max-warnings=27`，對齊既有 27 條 pre-existing react-hooks/exhaustive-deps warning，只可調低不可調高）/ build 三步驟，`permissions: contents:read`，`timeout-minutes: 15`。Review 過程無殘留問題。 |
 | next_action | Task 2                                                                                                            |
 
 **Files:**
@@ -205,9 +205,9 @@ git commit -m "ci: add type check, lint and build workflow"
 | 欄位        | 值                                                                                                                                                                        |
 | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | stage       | testability                                                                                                                                                               |
-| status      | pending                                                                                                                                                                   |
+| status      | done                                                                                                                                                                      |
 | summary     | `fetchJSONForSEO` 硬編 `revalidate: 300`，會讓 E2E 的第二個測試吃到第一個測試的 SSR 快取回應，hydration 測試因此無法隔離。改為環境變數驅動，預設值不變（prod 行為零改動） |
-| evidence    | 待填：diff + `SEO_FETCH_REVALIDATE=0` 下連續兩次請求得到不同回應的實測                                                                                                    |
+| evidence    | 完成（commits `3641e32`..`6e4b4d3`）。`fetchJSONForSEO` 改讀 `process.env.SEO_FETCH_REVALIDATE`；未設定或格式錯誤 fallback 300，`'0'` 可正確關閉快取。實作用 `\|\|` 而非 `??`（空字串需先落為 NaN 才會 fallback），並於 commit 補充註解說明理由，避免被誤「優化」成 `??`。 |
 | next_action | Task 3                                                                                                                                                                    |
 
 **Files:**
@@ -268,9 +268,9 @@ git commit -m "refactor: make SEO fetch revalidate configurable for tests"
 | 欄位        | 值                                                                                                                                                                                                                                                           |
 | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | stage       | testability                                                                                                                                                                                                                                                  |
-| status      | pending                                                                                                                                                                                                                                                      |
+| status      | done                                                                                                                                                                                                                                                        |
 | summary     | 全專案 `data-testid` 為 0；現有 `role="hero"` / `role="list-preview"` / `role="links-block"` 皆非合法 ARIA role（被當 testid 濫用，傷 a11y）。補上首波 spec 需要的 testid，並以 `data-liked` / `data-following` 暴露狀態，讓斷言不依賴 i18n 文案或 CSS class |
-| evidence    | 待填：diff + `grep -rn 'role="hero"\|role="list-preview"\|role="links-block"' src/` 為空                                                                                                                                                                     |
+| evidence    | 完成（commit `da0f05c`，review clean，無修正輪）。新增 `like-button`/`data-liked`、`follow-button`/`data-following`、`idea-row`/`data-idea-id`、`list-row`/`data-list-id`、`hero`/`list-preview`/`links-block` 共 7 個 testid；移除 4 處非法 ARIA role。`grep -rn 'role="hero"\|role="list-preview"\|role="links-block"' src/` 已確認為空。 |
 | next_action | Task 4                                                                                                                                                                                                                                                       |
 
 **Files:**
@@ -405,9 +405,9 @@ git commit -m "test: add data-testid hooks and replace invalid ARIA roles"
 | 欄位        | 值                                                                                                                                                                                                                                          |
 | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | stage       | e2e-infra                                                                                                                                                                                                                                   |
-| status      | pending                                                                                                                                                                                                                                     |
+| status      | done                                                                                                                                                                                                                                        |
 | summary     | 建立依 `Authorization` header 分歧回應的本地 mock API server，並設定 Playwright（mobile 雙 project + webServer 同時起 app 與 mock）。**SSR fetch 走 Node 端，`page.route()` 攔不到**，因此必須用真 HTTP mock server 才能控制 hydration 情境 |
-| evidence    | 待填：`npx playwright test e2e/specs/config-sanity.spec.ts` 通過輸出                                                                                                                                                                        |
+| evidence    | 完成（commits `f68f398`, `a38ed02`）。建立 `e2e/mock-server/`（state / server / start 三檔分離）+ `playwright.config.ts`（mobile-chrome / mobile-safari / smoke 三 project）。config-sanity.spec.ts 3 條通過。過程修正：`webServer.url` 探活端點須指向 GET 路由（原指向 POST-only `/__test__/reset` 會每次 404 並 60s timeout），改指向 `/usera/info`。mock server 的 auth-branching 與 `buildStorageState()` 的 zustand persist envelope 皆經獨立驗證；`POST /__test__/seed` 依 YAGNI 原則捨棄（全部 spec 以 reset 回固定 fixture）。 |
 | next_action | Task 5                                                                                                                                                                                                                                      |
 
 **Files:**
@@ -1082,9 +1082,9 @@ git commit -m "test: add playwright config and mock api server"
 | 欄位        | 值                                                                                                                                                                                                                |
 | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | stage       | e2e-specs                                                                                                                                                                                                         |
-| status      | pending                                                                                                                                                                                                           |
+| status      | done                                                                                                                                                                                                              |
 | summary     | E1 like 汙染、E2 follow 汙染、E3 登出不殘留、E4 匿名 gating。這四條對應 `3144d71` 與 `5d88b72` 兩起跨多 session 除錯的 bug，是 unit test 結構上抓不到的類型（需真 SSR + 真瀏覽器 + 真 localStorage 三者同時在場） |
-| evidence    | 待填：`npx playwright test e2e/specs/like-identity.spec.ts e2e/specs/follow-identity.spec.ts` 全綠輸出                                                                                                            |
+| evidence    | 完成（commits `fc92172`..`b6e8147`，2 修正輪）。`like-identity.spec.ts` + `follow-identity.spec.ts` 共 8 條（E1/E1b/E3/E4、E2/E2b/E2c/E2d），雙引擎 18/18 通過。Mutation test：移除 hydration sanitized strip 使 E1/E1b/E3 fail，E4（匿名）正確不受影響，證明測試抓得住真實回歸。過程中發現並修正：mock server 缺 CORS（瀏覽器從 :8080 呼叫 :4000）；`SEO_FETCH_REVALIDATE` 須在 build-time 生效（新增 `build:e2e` script）。E3 更名以避免 overclaim（未涵蓋 seed-once path，受限於 mock `viewerOf()` 單一 viewer 設計）；改 `fullyParallel:false` + `workers:1` 以避免共享 mock state 造成 flake。 |
 | next_action | Task 6                                                                                                                                                                                                            |
 
 **Files:**
@@ -1274,9 +1274,9 @@ git commit -m "test: add e2e specs for like and follow identity contamination"
 | 欄位        | 值                                                                                                                                                            |
 | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | stage       | e2e-specs                                                                                                                                                     |
-| status      | pending                                                                                                                                                       |
+| status      | done                                                                                                                                                          |
 | summary     | E7 無權用戶開他人 private list → Not Found（不洩漏存在性）；E8 擁有者開自己的 private list → 正常顯示。對應 `2e2ae82` 的 private list 功能與後續 SSR 403 修正 |
-| evidence    | 待填：`npx playwright test e2e/specs/private-list.spec.ts` 全綠輸出                                                                                           |
+| evidence    | 完成（commits `3c58928`..`d6747eb`，3 修正輪，30/30 綠）。`private-list.spec.ts`：E7 匿名存取他人 private list 斷言 `data-testid="not-found"`（該路由解析到路由範圍的 `not-found.tsx`，非根層；文案含全形撇號、又隨語系變化，不可靠，故改用 testid）；E8 擁有者可正常瀏覽。過程中修正真實安全缺陷：mock `viewerOf()` 原本把任何非空 `Authorization` header 都視為已登入，但登出瀏覽器送出的是空 token 的 `Bearer `，需求非空 bearer 後 curl 驗證 403/403/200/200/403（none/empty/valid/lowercase-scheme/no-scheme）。E7 最終以 `waitForResponse` 斷言網路層 403，不再只靠 DOM 推論。 |
 | next_action | Task 7                                                                                                                                                        |
 
 **Files:**
@@ -1354,9 +1354,9 @@ git commit -m "test: add e2e spec for private list access control"
 | 欄位        | 值                                                                                                                                                                       |
 | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | stage       | e2e-specs                                                                                                                                                                |
-| status      | pending                                                                                                                                                                  |
+| status      | done                                                                                                                                                                     |
 | summary     | E5 ideas 無限捲動跨 3 頁以上不重複不漏（對應 `getNextPageParam` offset 不累加的 bug，第 3 頁才是觸發點）；E6 新增/刪除 idea 後兩份 infinite cache 同步（§13.2 雙軌手術） |
-| evidence    | 待填：`npx playwright test e2e/specs/ideas-pagination.spec.ts e2e/specs/ideas-crud.spec.ts` 全綠輸出                                                                     |
+| evidence    | 完成（commits `3da7892`..`52fc8b5`，34/34 綠）。`ideas-pagination.spec.ts`（E5）+ `ideas-crud.spec.ts`（E6）。Mutation test：把 `getNextPageParam` 還原成 `lastPage.ideas.length` 使 E5 在 40/41 列處卡住 fail，證明測試抓得住真實 offset bug（Task 11 重構前先釘住行為）。發現 `page.mouse.wheel` 在 mobile WebKit 不支援，改用 `scrollIntoViewIfNeeded()` + `expect.poll` 等待列數成長。E6 更名為「idea deleted via API is reflected after reload」（原名宣稱「不用 reload」但程式碼呼叫了 `page.reload()`）：3-dot 選單／刪除確認按鈕在 `IdeaDrawerContent` 內都沒有 `data-testid`（只有 `<Trans>` 文案或 Radix role），UI 端刪除流程無法自動化，改用 API 刪除 + reload 驗證；樂觀更新的雙軌快取同步因此**未被 E2E 涵蓋**，僅靠 Task 12 單元測試。 |
 | next_action | Task 8                                                                                                                                                                   |
 
 **Files:**
@@ -1484,9 +1484,9 @@ git commit -m "test: add e2e specs for ideas pagination and cache sync"
 | 欄位        | 值                                                                                                                                             |
 | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
 | stage       | e2e-smoke                                                                                                                                      |
-| status      | pending                                                                                                                                        |
+| status      | done                                                                                                                                           |
 | summary     | 5 條打真 dev BE 的煙霧測試，驗證契約未漂移。以 `E2E_ACCESS_TOKEN` secret 提供真 token；secret 缺席時整組 skip 而非 red，避免 token 過期擋住 PR |
-| evidence    | 待填：本機帶 token 執行的通過輸出 + 無 token 時的 skip 輸出                                                                                    |
+| evidence    | 完成（commits `7083281`, `0e7c410`，1 修正輪）。5 條 smoke spec（S1-S5），靠 `E2E_ACCESS_TOKEN`（+ `E2E_SMOKE_BASE_URL`/`E2E_SMOKE_USER_CODE`/`E2E_SMOKE_LIST_ID`/`NEXT_PUBLIC_API_BASE_URL`）啟用；無 secret 時驗證為 5 skipped、exit 0。安全修正：smoke project 關閉 `trace`/`screenshot`，避免真 bearer token 被寫進 trace zip 並上傳為 CI artifact（確定性 project 因用假 token + mock server 維持開啟）。S5 斷言型別 + ideas array + offset/limit，非僅欄位存在。**尚未配置真後端憑證，故迄今未曾針對真實 BE 實際跑過這 5 條**，見下方「後續建議」。 |
 | next_action | Task 9                                                                                                                                         |
 
 **Files:**
@@ -1613,9 +1613,9 @@ git commit -m "test: add real-backend smoke specs with skip-when-unconfigured gu
 | 欄位        | 值                                                                                                                                             |
 | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
 | stage       | ci-integration                                                                                                                                 |
-| status      | pending                                                                                                                                        |
+| status      | done                                                                                                                                           |
 | summary     | 在 Task 1 的 workflow 追加 `e2e` job：跑確定性層（mock server，無外部依賴）；煙霧層僅在 secret 存在時執行。失敗時上傳 Playwright report 供除錯 |
-| evidence    | 待填：PR 上 e2e job 綠燈的 Actions 連結 + 一次故意失敗時的 report artifact                                                                     |
+| evidence    | 完成（commit `df7191c`）。`ci.yml` 新增 `e2e` job（`needs: verify`），跑確定性層雙引擎（mobile-chrome + mobile-safari）；煙霧層改用 job-level `env.E2E_ACCESS_TOKEN != ''` 作為 `if` 閘門（brief 原案的 step-level env 引用不會 resolve，已修正）；失敗時以 `if: failure()`（非 `!cancelled()`）上傳 Playwright report。Fork PR 因 secrets 解析為空字串，煙霧層自動 skip 但 job 仍綠燈。**Actions 上的實際綠燈連結需等本次 push 後才會產生**，見 Task 17 V6。 |
 | next_action | Task 10                                                                                                                                        |
 
 **Files:**
@@ -1698,9 +1698,9 @@ git push -u origin feature/test-infrastructure
 | 欄位        | 值                                                                                                                               |
 | ----------- | -------------------------------------------------------------------------------------------------------------------------------- |
 | stage       | unit-infra                                                                                                                       |
-| status      | pending                                                                                                                          |
+| status      | done                                                                                                                             |
 | summary     | 安裝並設定 Vitest。選 Vitest 而非 Jest：專案 `"type": "module"`，Vitest 原生 ESM 零 transform 設定，且與既有 Vite/SWC 工具鏈一致 |
-| evidence    | 待填：`npx vitest run` 首個 sanity test 通過輸出                                                                                 |
+| evidence    | 完成（commits `5bbb54c`, `e6f4a81`）。建立 `vitest.config.ts`（jsdom + `@/` alias），3 個 sanity test 通過。tsconfig `types` 明確列 `["vitest/globals","node","react","react-dom"]`（不依賴 transitive 三斜線參照）；測試檔**不**排除在 `tsc` 之外（以刻意注入的 TS2322 錯誤驗證會被抓到，抓到後復原乾淨）。移除 3 個未使用的元件測試相依套件（`@testing-library/react` / `jest-dom` / `@vitejs/plugin-react`；`jest-dom` 原本未接 `setupFiles`，本來就是死碼）。 |
 | next_action | Task 11                                                                                                                          |
 
 **Files:**
@@ -1827,9 +1827,9 @@ git commit -m "test: add vitest setup with jsdom and path alias"
 | 欄位        | 值                                                                                                                                                                          |
 | ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | stage       | unit-specs                                                                                                                                                                  |
-| status      | pending                                                                                                                                                                     |
+| status      | done                                                                                                                                                                        |
 | summary     | `getNextPageParam` 目前內嵌於 hook 無法單測。抽成純函式後補測 —— 這正是 `84d1d29` 修掉的「第 3 頁起 offset 不累加、抓重複資料」bug，抽出後同時收斂 §13.2 記載的雙軌重複邏輯 |
-| evidence    | 待填：`npx vitest run src/hooks/api/ideas/offset.test.ts` 通過輸出 + hook 改用新函式的 diff                                                                                 |
+| evidence    | 完成（commits `f0da49a`, `b6b7cfd`）。抽出 `hooks/api/ideas/offset.ts`（`sumFetched` / `computeNextOffset`），8 個單元測試，套件 11/11。Mutation test：回傳 `lastPageSize` 取代 `totalFetched` 恰好使「第三頁持續前進」一條 fail，其餘 7 條為邊界文件測試，證明該案例才是真正有鑑別力的。修正一個填充測試 `(0,0,0)` 同時滿足兩個停止條件、未鑑別任何邏輯的問題，改為 `(0,5,0)` 隔離空頁分支；再驗證移除 `lastPageSize===0` guard 後會使 2 條 fail（原本只有 1 條）。**已知但非本次引入的既有問題**：`useGetInfiniteIdeasUnderList.ts` 呼叫 `computeNextOffset` 時 `ideaTotalCount` 未加 `?? 0`，若該值為 `undefined` 停止條件會靜默失效——見下方「後續建議」第 5 項。 |
 | next_action | Task 12                                                                                                                                                                     |
 
 **Files:**
@@ -1982,9 +1982,9 @@ git commit -m "refactor: extract infinite offset computation and add unit tests"
 | 欄位        | 值                                                                                                                                                                  |
 | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | stage       | unit-specs                                                                                                                                                          |
-| status      | pending                                                                                                                                                             |
+| status      | done                                                                                                                                                                |
 | summary     | `updateEntryCaches` / `updateInfiniteCaches` 被 3 支 mutation 共用，錯了整批快取髒；`contractPathToRegExp` 的動態 path 與正則跳脫邊界多。兩者皆為純函式，測起來便宜 |
-| evidence    | 待填：`npx vitest run src/hooks/api/utils.test.ts src/api/whitelist.test.ts` 通過輸出                                                                               |
+| evidence    | 完成（commits `f830d53`, `10053b3`）。`hooks/api/utils.test.ts` + `api/whitelist.test.ts` 共 14 個新測試，套件累計 25/25。Mutation test（implementer 執行）：正則不錨定 3/9 fail、meta 字元未跳脫 1/9 fail。改用合成 `AppRoute` fixture 而非真實 `listsContract`（reviewer 確認：helper 對泛型 T 結構通用、T 在 runtime 已擦除，真實 contract 型別解析已由 tsc 在 3 個 mutation hook call site 把關，非空心化）。修正一則測試名稱「multiple dynamic segments」實際只涵蓋一動態一靜態 segment 的落差。 |
 | next_action | Task 13                                                                                                                                                             |
 
 **Files:**
@@ -2185,9 +2185,9 @@ git commit -m "test: add unit tests for cache helpers and path matcher"
 | 欄位        | 值                                                                                                                                                                                                                                  |
 | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | stage       | unit-specs                                                                                                                                                                                                                          |
-| status      | pending                                                                                                                                                                                                                             |
+| status      | done                                                                                                                                                                                                                                |
 | summary     | 專案完全以 zod schema 定義 BE 契約，卻無任何測試驗證 schema 與真實回應相符 —— BE 改欄位時只會在 runtime 炸。以固定樣本鎖住關鍵 schema 的 parse 行為，並明確標記已知的型別謊言（`isLiked` 宣告為 boolean，hydration 會塞 undefined） |
-| evidence    | 待填：`npx vitest run src/api/schemas/contract.test.ts` 通過輸出                                                                                                                                                                    |
+| evidence    | 完成（commits `a21fd86`, `6bcbdde`）。`api/schemas/contract.test.ts` 11 個測試，套件累計 36/36。Mutation test：`isLiked` → `.optional()` 與 `listCount` → `.optional()` 各自恰好破壞一條測試，皆已復原。過程由 fixture 檢查揭露真實 bug：mock server 原用本地 `0=PUBLIC/1=PRIVATE` 慣例，但 `src/enums/Lists` 的 `ListType` 實際為 `PUBLIC=1/PRIVATE=2`，導致 mock 的 private list 在前端看起來像 PUBLIC（`ListSection` 私人小眼睛圖示永遠不會渲染；因 mock 內部自洽、既有存取控制 E2E 仍全綠而未被發現）。已修正 `state.ts`/`server.ts` 並補註解警告，34/34 E2E 仍綠。`isLiked` 保留一則「文件化缺口」測試，明確標記型別謊言且不宣稱涵蓋 hydration 情境。 |
 | next_action | Task 14                                                                                                                                                                                                                             |
 
 **Files:**
@@ -2389,9 +2389,9 @@ git commit -m "test: add zod contract tests for core API schemas"
 | 欄位        | 值                                                                                                                                                                             |
 | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | stage       | unit-specs                                                                                                                                                                     |
-| status      | pending                                                                                                                                                                        |
+| status      | done                                                                                                                                                                           |
 | summary     | `canStillCreate` 內嵌於 `useCheckCreateQuota` 無法單測，而 ARCHITECTURE.md §13（TODO-27）記載 `isUnlimited` / `null` 分支對 unlimited 用戶有髒寫風險。抽成純函式並補齊分支測試 |
-| evidence    | 待填：`npx vitest run src/hooks/queries/publish/quota.test.ts` 通過輸出                                                                                                        |
+| evidence    | 完成（commit `b669743`，review 零發現）。抽出 `hooks/queries/publish/quota.ts` 的 `canStillCreate`，6 個測試，套件累計 42/42；確認為位元組相同的純抽取表達式。Mutation test：移除 `isUnlimited` 短路 2 fail；把 null-safe 的 `> 0` 換成 `!== 0` 2 fail。**Delivery 階段複核**：ledger 記錄的「4 支 mutation hook 對 `remainingCount` 做 `?? 0` 加減、會弄髒 unlimited 用戶快取」一項，經重新對照 `src/hooks/queries/publish/cachesUpdater.ts` 現況並非如此——該檔已用 `previousBody.content.remainingCount === null ? null : ... - delta` 明確保護 null 分支，4 個呼叫端（`usePostNewList`/`useDeleteList`/`usePostNewIdea`/`useDeleteIdea`）皆透過此共用 helper，目前不存在髒寫風險。細節與後續維護提醒見下方「後續建議」第 4 項。 |
 | next_action | Task 15                                                                                                                                                                        |
 
 **Files:**
@@ -2513,9 +2513,9 @@ git commit -m "refactor: extract publish quota predicate and add unit tests"
 | 欄位        | 值                                                                                                                                                                                                                          |
 | ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | stage       | unit-specs                                                                                                                                                                                                                  |
-| status      | pending                                                                                                                                                                                                                     |
+| status      | done                                                                                                                                                                                                                        |
 | summary     | `useLikeStore` 的 `confirmed` 機制是 `4bc46a9` 修掉 like/follow 連點 race condition 的核心（debounce flush 前比對 optimistic 與 confirmed）。以 store 層測試鎖住此行為，並固化「getIsLiked 把未知塌縮為 false」這個已知取捨 |
-| evidence    | 待填：`npx vitest run src/stores/useLikeStore.test.ts` 通過輸出                                                                                                                                                             |
+| evidence    | 完成（commits `8b6f7b9`, `8c77a6a`，1 修正輪）。`stores/useLikeStore.test.ts` 9 個測試，套件累計 51/51。實測確認 `clearAllLikeStatus`/`clearLikeStatus` 皆已清除 `confirmedLikeMap`（原先懷疑的 store bug 不成立，store 本體未改動）。Review 修正 2 項：原「optimistic 等於 confirmed 時無需送出」測試為套套邏輯（兩者設同值後斷言相等，未觸及決定是否 flush 的 `hasConfirmedLikeState`），已替換為真正鑑別的案例；`clearLikeStatus` 測試原僅查 `likeMap`，已擴充涵蓋 `confirmedLikeMap`。兩輪 mutation test（移除 `newConfirmed.delete`、`hasConfirmedLikeState` 恆真）皆如預期各自命中對應測試，復原乾淨。 |
 | next_action | Task 16                                                                                                                                                                                                                     |
 
 **Files:**
@@ -2632,9 +2632,9 @@ git commit -m "test: add unit tests for like store optimistic and confirmed stat
 | 欄位        | 值                                                                                                |
 | ----------- | ------------------------------------------------------------------------------------------------- |
 | stage       | ci-integration                                                                                    |
-| status      | pending                                                                                           |
+| status      | done                                                                                              |
 | summary     | 在 `verify` job 追加單元測試步驟。放在 build 之前 —— 單元測試失敗應在最快的階段擋下，不必等 build |
-| evidence    | 待填：PR 上 verify job 含 unit test 步驟的綠燈 Actions 連結                                       |
+| evidence    | 完成（commit `131abc3`，controller 直接改 2 行 YAML，無需 subagent 往返）。`verify` job 於 Lint 與 Build 之間插入「Unit tests」步驟（`npm run test:unit` = `vitest run`），51/51 通過。**Actions 上實際綠燈連結需等本次 push 後才會產生**，見 Task 17 V6。 |
 | next_action | Task 17 Verification                                                                              |
 
 **Files:**
@@ -2674,9 +2674,9 @@ git commit -m "ci: run vitest unit tests in verify job"
 | 欄位        | 值                                                                    |
 | ----------- | --------------------------------------------------------------------- |
 | stage       | verification                                                          |
-| status      | pending                                                               |
+| status      | done                                                                  |
 | summary     | 端到端驗證整套測試基礎建設：全綠、可偵測真實回歸、CI 正常運作、不誤擋 |
-| evidence    | 待填：各項實測輸出                                                    |
+| evidence    | 完成（controller 執行 V1-V5、V7；V6 待 push 後於 CI 上驗證）。**V1** 全鏈路：tsc 乾淨、lint exit=0、unit 51/51（7 檔）、prettier 乾淨、build 成功、e2e 34 passed + 5 skipped（雙引擎，清潔工作樹）。**V2** hydration mutation（Task 5 完成）：移除 sanitized strip 使 E1/E1b/E3 fail，E4 正確不受影響，復原乾淨。**V3** offset mutation（Task 7 E2E + Task 11 unit 各驗證一次）：E2E 卡在 40/41 列、unit 恰 1 條 fail，皆已復原。**V4** 煙霧層 skip：5 skipped、exit 0、無需任何 env var。**V5** 穩定性：`--repeat-each=3`（mobile-chrome）51/51、零 flake。**V6** CI 實跑：**待本次 push 後才能驗證**——本 task（Task 18）依指示不 push、不開 PR。**V7** 覆蓋率盤點：已自動化（like 汙染 E1/E1b/E3/E4、follow 汙染 E2/E2b/E2c/E2d、offset 分頁 E5+unit、private list E7/E8）；部分涵蓋（ideas CRUD 僅 E6 API+reload、樂觀雙軌快取同步僅單元層 Task 12，非端到端）；未自動化（reorder 頁、ListSelector 流程、profile 無限捲動、profileImage 渲染、settings、official、idea-create、list-create）。詳見下方「後續建議」。 |
 | next_action | Task 18                                                               |
 
 **Files:** 無
@@ -2743,9 +2743,9 @@ Expected: 全綠。任何間歇失敗必須在此修掉 —— flaky 測試比�
 | 欄位        | 值                                                    |
 | ----------- | ----------------------------------------------------- |
 | stage       | delivery                                              |
-| status      | pending                                               |
+| status      | done                                                  |
 | summary     | 合流、文件更新、後續維護節點交代                      |
-| evidence    | 待填：PR 連結 + ARCHITECTURE.md diff + 回填後的本計劃 |
+| evidence    | 完成（本次）。更新 `docs/ARCHITECTURE.md` §13 測試項（含 2026-08-18 現況：34 條確定性 E2E + 5 條煙霧 + 51 個單元測試）、§3 目錄結構（`hooks/queries/`/`hooks/mutations/` 對齊現況、新增 `e2e/`/`playwright.config.ts`/`vitest.config.ts`）、維護紀錄；回填本計劃全部 18 個 task 的 status/evidence；新增「後續建議」章節記錄 6 項待辦。依本 task 指示**不** push、不開 PR——原 Step 5/6（`git push` + 開 PR + 合併後確認 CI 綠燈）留待下一步驟執行，故無 PR 連結可附。 |
 | next_action | 無（計劃終點；後續節點見下方「維護節點」）            |
 
 **Files:**
@@ -2848,3 +2848,56 @@ git push
 9. **`notFound()` 在 `/[userCode]/list/[id]` 路由下解析到的是路由範圍的 `src/app/[userCode]/list/[id]/not-found.tsx`，而不是根層的 `src/app/not-found.tsx`**（2026-08-15 修 E7 時發現）—— 兩者文案不同（分別是「We couldn't find this page.」與「Oops something is wrong!」），且都包在 Lingui `<Trans>` macro 內、屬於會隨語系切換的翻譯文案（en / zh-TW 都要支援），不能拿來做斷言依據；`We couldn't find this page.` 裡的撇號還是全形 `'`（U+2019）不是 ASCII `'`，直接字串比對很容易誤植而永遠比不中。修法是在兩個 not-found 元件的最外層元素都加上 `data-testid="not-found"`，讓 E2E 斷言與語系、文案內容脫鉤；之後任何新增的路由範圍 not-found 元件都要記得補上同一個 testid。
 
 10. **`page.mouse.wheel` 在 mobile WebKit 不支援** —— Playwright 於 mobile-safari 會拋 `Mouse wheel is not supported in mobile WebKit`。無限捲動測試改用 `locator.last().scrollIntoViewIfNeeded()` 觸發 IntersectionObserver sentinel，並以 `expect.poll` 等待列數成長取代固定 `waitForTimeout`（2026-08 實測）。
+
+---
+
+## 後續建議
+
+Delivery（Task 18）盤點過程中，從 ledger（`.superpowers/sdd/progress.md`）與現況程式碼交叉核對後留下的待辦。以下項目均**未**在本計劃範圍內動手修復（除非另有註明），僅記錄供後續排入其他計劃。
+
+### 1. 產品面發現：登出時送出空 Bearer token（未修，待 owner 決定）
+
+[`src/api/axios.ts`](../../src/api/axios.ts) 的 request 攔截器無條件設定 `Authorization: Bearer ${accessToken}`，而 `accessToken` 未登入時預設為空字串 `''`。也就是說，**登出狀態下瀏覽器仍會對真後端送出字面上的 `Authorization: Bearer `**（有 header、token 為空）。
+
+這不是測試產物 —— Task 6 建置 mock server 時，`viewerOf()` 原本把「header 存在即視為已登入」，因而把這個空 Bearer 誤判成已登入 usera，造成 private list 對匿名洩漏（見 Task 6 evidence）。我們已把 mock server 修正為「要求非空 bearer 才算已登入」，但**真實後端是否也做了同樣的防護是未知數，尚未驗證**。建議：
+
+- 向 BE 確認 `Authorization: Bearer `（空 token）是否會被正確視為匿名請求，而非誤判或報錯。
+- 前端層面可考慮：未登入時乾脆不帶 `Authorization` header，而非帶一個空值的 header——更貼近語意，也讓「有無此 header」本身就能表達登入狀態。
+
+### 2. E2E 缺口：ideas 樂觀更新的雙軌快取同步未被端到端涵蓋
+
+Task 7 的 E6（新增/刪除 idea）原計劃透過 UI 操作驗證，但 `IdeaDrawerContent`（[`src/app/[userCode]/list/[id]/_components/IdeaDrawerContent/index.tsx`](../../src/app/[userCode]/list/[id]/_components/IdeaDrawerContent/index.tsx)）內的 3-dot 選單、「Delete Idea」項目、確認/取消按鈕**全部沒有 `data-testid`**，只有 Lingui `<Trans>` 文案或 Radix ARIA role 可選取，兩者都不適合作 E2E 斷言依據（i18n 易變、role 語意不精準）。因此 E6 改用 API 直接刪除 + `page.reload()` 驗證「刪除後重整可見」，樂觀更新當下的雙軌 infinite cache 手術（§13.2）只在 Task 12 的單元測試層被覆蓋，**沒有端到端驗證整條「點擊刪除 → 樂觀移除 → API 成功 → 兩份 cache 一致」的路徑**。
+
+建議：比照 Task 3 的模式，替 `IdeaDrawerContent` 的 3-dot 選單、刪除項目、確認/取消按鈕補上 `data-testid`（例如 `idea-menu-trigger` / `idea-delete-item` / `idea-delete-confirm` / `idea-delete-cancel`），即可解鎖真正的 UI 驅動刪除 E2E。
+
+### 3. 新解鎖的 E2E 機會：ListSection 私人小眼睛圖示尚無任何 spec 覆蓋
+
+Task 13 修正 mock server 的 list type 慣例後（`0/1` 本地慣例 → 真實 `ListType.PUBLIC=1 / PRIVATE=2`），`ListSection`（[`src/app/user/_components/ListSection/index.tsx`](../../src/app/user/_components/ListSection/index.tsx)）依 `listPreview.type === ListType.PRIVATE` 渲染 `IconPrivateEye` 的邏輯**第一次真正可被斷言**——修正前 mock 內部自洽，這個比對永遠不會為真。
+
+但目前沒有任何 spec 造訪會渲染 `ListSection` 的頁面（例如 `/usera` 個人頁的清單列表）。建議新增一條 spec：以 usera 身分造訪自己的個人頁，斷言 list `101`（private）顯示私人小眼睛圖示，`100`/`102`（public）不顯示。
+
+### 4. 額度快取寫入端的既有疑慮 —— 複核後判定現況安全，僅留意勿回歸
+
+Task 14 的 ledger 記錄了一項「Delivery 時應提出」的疑慮：「4 支 mutation hook 對 `remainingCount` 做 `(remainingCount ?? 0) ± 1` 運算，會弄髒 unlimited 用戶（`remainingCount: null`）的快取，變成 `1` 或 `-1`」。
+
+**本次撰寫文件前重新核對了 [`src/hooks/queries/publish/cachesUpdater.ts`](../../src/hooks/queries/publish/cachesUpdater.ts) 的現況程式碼，結論是這個疑慮目前不成立**：`adjustPublishLimitsCache` 明確以三元運算子保護 —— `remainingCount === null ? null : remainingCount - delta`，null 分支永遠回傳 `null`，不會被減成 `-1` 或加成 `1`。`usePostNewList` / `useDeleteList` / `usePostNewIdea` / `useDeleteIdea` 四個呼叫端都共用這個 helper，沒有各自手刻運算式。
+
+Task 14 本身確實只釘住了**讀取端**（`quota.ts` 的 `canStillCreate`，其中 `(limits.remainingCount ?? 0) > 0` 是判斷「能否建立」的謂詞，null 由 `isUnlimited` 短路處理，也是安全的），寫入端 `cachesUpdater.ts` 沒有對應的單元測試鎖住行為。建議：即使目前程式碼安全，仍值得替 `adjustPublishLimitsCache` 補一個「`remainingCount: null` 經過 `delta: 1` 或 `-1` 後仍為 `null`」的單元測試，把這個現況正式釘住，避免未來重構時不小心弄丟這個保護。
+
+### 5. `useGetInfiniteIdeasUnderList.ts` 的 `?? 0` 缺漏（含建議修法）
+
+[`src/hooks/api/ideas/useGetInfiniteIdeasUnderList.ts`](../../src/hooks/api/ideas/useGetInfiniteIdeasUnderList.ts) 的 `getNextPageParam` 呼叫 `computeNextOffset(totalFetched, ideaTotalCount, ideas.length)` 時，`ideaTotalCount` 直接取自 `lastPage.body.ideaTotalCount`，**沒有加上同檔案 `select` 那裡用的 `?? 0` fallback**（`select` 內是 `total: page.body.ideaTotalCount ?? 0`）。
+
+若 `ideaTotalCount` 曾經是 `undefined`（例如某次 BE 回應漏帶欄位），`computeNextOffset` 內部以 `totalFetched >= ideaTotalCount` 判斷是否停止分頁，`totalFetched >= undefined` 恆為 `false`，**停止條件會靜默失效，查詢會無限持續嘗試抓下一頁**，而不是在型別層或 runtime 就報錯。Task 11 抽出 `offset.ts` 時原樣保留了這個既有行為（非本次引入的迴歸）。
+
+建議一行修法：
+
+```ts
+return computeNextOffset(totalFetched, ideaTotalCount ?? 0, ideas.length);
+```
+
+### 6. 尚未自動化的區域（依 Task 17 V7 覆蓋率盤點）
+
+- **未自動化**：reorder 頁（拖曳排序）、ListSelector 流程、profile 頁的清單無限捲動、profileImage 渲染、settings 頁、official 介紹頁、idea-create 流程、list-create 流程。
+- **部分涵蓋**：ideas CRUD 僅驗證「API 刪除 + reload 後可見」，UI 驅動的刪除流程未覆蓋（見上方第 2 項）；樂觀更新的雙軌快取同步僅有單元測試（Task 12），無端到端驗證。
+- **煙霧層現況**：本專案目前**沒有配置任何真實後端測試憑證**，5 條煙霧 spec（`e2e/smoke/smoke.spec.ts`）在本機與 CI 上都會因缺少 `E2E_ACCESS_TOKEN` 而恆為 skip、從未針對真實 dev 後端執行過。要啟用需準備以下環境變數（僅列名稱，不涉及任何實際值）：`E2E_ACCESS_TOKEN`、`E2E_SMOKE_BASE_URL`、`E2E_SMOKE_USER_CODE`、`E2E_SMOKE_LIST_ID`、`NEXT_PUBLIC_API_BASE_URL`（作為 `E2E_SMOKE_API_BASE_URL` secret 注入）。煙霧層長期 skip 會讓「mock 與真 BE 契約漂移」這個風險（見上方風險備忘第 2 條）完全沒有防線，建議排入「合併後 +30 天」維護節點時一併檢查。

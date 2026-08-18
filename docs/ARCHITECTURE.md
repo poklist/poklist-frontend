@@ -82,11 +82,10 @@ src/
 │   ├── api/              # **標準** API hooks（query + mutation 皆在此）：包 `xxxQuery.method.useQuery/useMutation`
 │   │   │                  # categories / discovery / follow / followers / followings / ideas / lists / unfollow / users
 │   │   └── utils.ts      # updateEntryCaches / updateInfiniteCaches：mutation onSuccess 快取更新共用 helper（見 §4.5）
-│   ├── queries/          # 【死碼】舊版 axios query hooks，已**零引用**，待刪（見 §13）
-│   │   └── infinite/     # 同上，零引用
-│   ├── mutations/        # 大多為死碼（零引用待刪，見 §13）；仍在使用的只有：
-│   │   ├── useLikeAction.ts / useFollowAction.ts   # 點擊型社交動作編排（樂觀更新 + 防抖，見 §4.4）
-│   │   └── optimisticUpdateHandler.ts              # 共用工廠：delta + rollback
+│   ├── queries/publish/  # useCheckCreateQuota（命令式額度查詢，見 §4.6）+ cachesUpdater + quota.ts
+│   ├── mutations/        # 點擊型社交動作編排（樂觀更新 + 防抖，見 §4.4）
+│   │   ├── followUnfollow/    # useFollowAction + cache updaters + schema
+│   │   └── optimistic/        # 共用 infra（debounceRegistry / optimisticUpdateHandler）+ likeUnlike/
 │   ├── ui/               # useAutoResizeTextarea、useFormErrorHandler
 │   ├── useAuth.ts        # FP 風格 hook：useAuthCheck / useAuthProtect / useAuthPipe / useAuthWrapper / useConditionalExecution
 │   ├── useAuthRequired.ts# 「未登入時打開 LoginDrawer + toast」的單一入口
@@ -129,6 +128,10 @@ src/
 ├── locales/              # lingui 編譯產物（en / zh-TW）
 ├── assets/               # 靜態圖片、SVG
 └── index.css             # Tailwind layer 與 CSS variable
+
+e2e/                      # Playwright E2E：mock-server / fixtures / specs / smoke
+playwright.config.ts
+vitest.config.ts
 ```
 
 ### Component Folder Rules（強制）
@@ -397,7 +400,7 @@ export const useXxx = (options: UseXxxOptions) => {
 - **TypeScript**：`strict`、`allowImportingTsExtensions`、`noUnusedLocals/Parameters`、別名 `@/* → ./src/*`。
 - **Prettier**：semi + singleQuote + trailingComma es5 + tailwindcss plugin。
 - **Commit 風格**（git log 觀察）：`feat:`、`fix:`、`chore:`、`style:` 前綴 + 中英文混合；feature PR 多由 `feature/*` 分支合進 `dev`。`main / uat / dev` 三軌存在。
-- **沒有自動化測試套件**（package.json 無 test script、無 `*.test.*` 檔）；改動需要靠 type check (`npm run tsc`) + 手動驗證。
+- **自動化測試**：**【✅ 2026-08-18 更新】** 已有 Playwright E2E + Vitest 單元測試套件，詳見 §13「測試」項；`package.json` 含 `test:e2e` / `test:unit` 等 script。改動除 type check (`npm run tsc`) 外，應同步跑 `npm run test:unit` 與相關 E2E spec。
 - **函式式工具**：`lib/functional.ts` 提供 `pipe / compose / throttle / debounce / memoize` 等，已用於 ImageCropper zoom 節流、`useAuthPipe`。`docs/functional-programming.md` 內列出建議寫法 — **新增複雜行為時優先組合既有工具，不要再寫一個版本**。
 
 ---
@@ -457,7 +460,13 @@ export const useXxx = (options: UseXxxOptions) => {
   - **保留紀錄供未來類似 optimistic + debounce 場景參考**。
 - **`prop-types`**：依然在 dependencies，但 TS 接管後僅留作 transitive — 可考慮移除。
 - **Storybook**：尚未引入，元件文件靠 README + 程式碼。
-- **測試**：完全缺失（沒有 unit / e2e 套件設定）。
+- **測試**：**【✅ 已建立 — 2026-08-18】** Playwright E2E（`e2e/`，mobile-chrome + mobile-safari + smoke 三 project；17 條確定性 spec × 雙引擎 = 34 條，雙引擎皆綠）+ 5 條煙霧 spec + Vitest 單元測試（`src/**/*.test.ts`，7 檔 51 個測試）。CI（`.github/workflows/ci.yml`）的 `verify` job 跑 tsc / lint / unit / build，另有 `e2e` job 跑確定性層（PR 與 push to dev 皆觸發）。
+  - **E2E 架構**：本地 mock API server（`e2e/mock-server/`）依 `Authorization` header 分歧回應，因為 **Server Component 的 SSR fetch 走 Node 端，Playwright 的 `page.route()` 攔不到**——這是重現 §13.1 hydration 汙染的唯一方法。
+  - **繞過 Google OAuth**：storageState 直接注入 `auth-storage` / `user-storage`（見 `e2e/fixtures/auth.ts`），**絕不自動化 Google 登入 UI**。
+  - **煙霧層現況**：5 條打真 dev BE 的契約回歸測試，靠 `E2E_ACCESS_TOKEN`（另需 `E2E_SMOKE_BASE_URL` / `E2E_SMOKE_USER_CODE` / `E2E_SMOKE_LIST_ID` / `NEXT_PUBLIC_API_BASE_URL` 等 CI secret）啟用；secret 缺席時自動 skip 而非 red。**目前尚未配置真後端憑證，煙霧層恆為 skip，尚未針對真實後端執行過**。
+  - **可測性改動**：`src/lib/seo/fetchers.ts` 的 revalidate 改為 `SEO_FETCH_REVALIDATE` 環境變數驅動（預設仍 300，prod 行為不變）。
+  - **選擇器契約**：`data-testid`（`like-button` / `follow-button` / `idea-row` / `list-row` / `hero` / `list-preview` / `links-block` / `not-found` 等）+ `data-liked` / `data-following` / `data-idea-id` / `data-list-id`。**新增 UI 時請一併補**，否則 E2E 無法斷言。
+  - **已知缺口**：ideas 樂觀更新的雙軌快取同步（optimistic dual-cache sync）只在單元層（Task 12）覆蓋，未被 E2E 涵蓋（`IdeaDrawerContent` 的刪除入口沒有 `data-testid`，只有 `<Trans>` 文案與 Radix ARIA role）；reorder 頁、ListSelector 流程、profile 無限捲動、settings、official、idea-create、list-create 等頁面尚無自動化測試。細節見 `docs/superpowers/plans/2026-07-31-test-infrastructure.md` 的「後續建議」章節。
 - **ts-rest mutation 遷移收尾紀錄**（細項狀態）：
   - **POST/PUT/DELETE contract**：✅ 全數完成，含 reorder（`usePostIdeasReorder`，快取策略 = `invalidateQueries`，理由見 §4.5「無限捲與順序變更不相容」）與 follow/unfollow（query param 形式 `POST /follow?userID=`）。
   - **快取更新 helper 抽離**：✅ 完成 — `hooks/api/utils.ts` 的 `updateEntryCaches` / `updateInfiniteCaches`（§4.5）。後續強化選項：泛型補 `TStatus extends keyof T['responses'] = 200`，防未來 contract 增加錯誤 response 定義時 updater 參數變 union。
@@ -580,5 +589,6 @@ const likeCount = useMemo(() => {
 - 2026-07-03：`feature/free-demo` 期間更新 — §4.4 標記 followUnfollow 模組化完成（optimistic/ 共用 infra + likeUnlike 待接線）、新增 §4.6 發佈額度模式（fetchQuery 命令式查詢 / useQueries 動態 N 筆 / Drawer open-time 鎖定）、§13 更新盤點（queries/ 死碼已清、axios hook bug 已修、schema `||` bug、like 接線最後一哩、SignupDrawer dead prop）。工作交接紀錄見 `docs/handoff/`。
 - 2026-07-30：新增 §13.1 SSR hydration 身分汙染（follow / like 兩起同源 bug 的成因、修法與通用規則）、§13.2 ideas 資料源雙軌（`GET /ideas` 上線後的職責切分與 cache 手術重複債）、§13.3 dev-only console 噪音（Strict Mode 雙打 / CancelledError / Grammarly）；§13 內 `GET /{userCode}/lists` 缺 `totalElements` 一項標記已解除（後端已補，infinite scroll 上線）。
 - 2026-07-31：§13 對照現況重新校準 — legacy 死碼清除、like/unlike 接線、`followUnfollow/schema.ts` 的 `||` bug 三項經 grep 驗證**早已完成**，改標 ✅（原文件仍列為待辦，會誤導接手者）。新增三項債務：`constants/apiPath.ts` 零引用孤兒檔、`useCheckCreateQuota` 的 N+1 序列 await、`isLiked`/`isFollowing` 的型別謊言（schema 說 `boolean` 但 hydration 塞 `undefined`，且 store 把未知塌縮成 `false`）。§13.1 補「依附 per-user 欄位的計數」衍生 bug：`likeCount` 因 ref 轉換偵測誤把 seed 當用戶操作而多算，改為衍生值修正；並新增通用規則第 5 條（計數禁用 ref 累加）＋ 驗證 follow 計數走 mutation cache 手術路徑不受影響。
+- 2026-08-18：建立測試基礎建設 —— Playwright E2E（mock API server 依 Authorization 分歧、storageState 繞過 Google OAuth、mobile-chrome/mobile-safari 雙 project + smoke project）+ Vitest 單元測試（offset / cache helper / path matcher / zod 契約 / 額度 / like store，7 檔 51 個測試）+ GitHub Actions CI（tsc / lint / unit / build / e2e）。過程中連帶修正兩個真實安全與正確性問題：mock server 曾把登出用戶的空 `Bearer` header 誤判為已登入、造成 private list 對匿名洩漏；mock 的 list type 慣例與真實 `ListType` enum（PUBLIC=1/PRIVATE=2）不符，導致私人小眼睛圖示永遠測不到。§13 測試項與 §3 目錄結構同步更新。計劃稿見 `docs/superpowers/plans/2026-07-31-test-infrastructure.md`（含「後續建議」章節，記錄尚未涵蓋的頁面與待辦項）。
 
 若日後架構大幅變動，請以 PR 更新本文件對應段落，避免被當作可信來源誤導後續工程師或 AI。
