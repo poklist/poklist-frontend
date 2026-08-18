@@ -2,6 +2,7 @@ import { ideasQuery } from '@/api/query/ideas';
 import { ideasSchema } from '@/api/schemas';
 import { Idea } from '@/constants/list';
 import z from 'zod';
+import { computeNextOffset, sumFetched } from '@/hooks/api/ideas/offset';
 import ideasKeys from './keys';
 
 const getInfiniteIdeasUnderListSchema = ideasSchema.getIdeasUnderListRequest
@@ -37,29 +38,21 @@ export const useGetInfiniteIdeasUnderList = (
       initialPageParam: 0,
       getNextPageParam: (lastPage, allPages) => {
         const { ideas, ideaTotalCount } = lastPage.body;
-
-        if (ideas.length === 0) return undefined;
-
-        const totalFetched = allPages.reduce(
-          (sum, page) => sum + page.body.ideas.length,
-          0
+        const totalFetched = sumFetched(
+          allPages,
+          (page) => page.body.ideas.length
         );
-        if (totalFetched >= ideaTotalCount) return undefined;
-
-        return totalFetched;
+        return computeNextOffset(totalFetched, ideaTotalCount, ideas.length);
       },
       select: (data) => ({
-        pages: data.pages.map((page, index) => {
-          const body = page.body;
-          const prevTotal = data.pages
-            .slice(0, index)
-            .reduce((sum, p) => sum + p.body.ideas.length, 0);
-          return {
-            ideas: body.ideas,
-            nextOffset: prevTotal + body.ideas.length,
-            total: body.ideaTotalCount ?? 0,
-          };
-        }),
+        pages: data.pages.map((page, index) => ({
+          ideas: page.body.ideas,
+          nextOffset: sumFetched(
+            data.pages.slice(0, index + 1),
+            (p) => p.body.ideas.length
+          ),
+          total: page.body.ideaTotalCount ?? 0,
+        })),
       }),
       staleTime,
       gcTime,
