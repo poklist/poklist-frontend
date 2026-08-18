@@ -33,7 +33,10 @@ describe('computeNextOffset', () => {
     expect(computeNextOffset(20, 41, 0)).toBeUndefined();
   });
 
-  it('returns undefined when total is zero', () => {
-    expect(computeNextOffset(0, 0, 0)).toBeUndefined();
+  // (0, 0, 0) would satisfy BOTH stop conditions at once, so it pins nothing.
+  // Using a non-zero total isolates the empty-page branch: totalFetched (0)
+  // is still below total (5), so only `lastPageSize === 0` can stop it.
+  it('returns undefined for an empty first page even when items remain', () => {
+    expect(computeNextOffset(0, 5, 0)).toBeUndefined();
   });
 });
