@@ -13,7 +13,10 @@ export interface MockList {
   coverImage: string;
   externalLink: string;
   categoryID: number;
-  type: number; // 0 = PUBLIC, 1 = PRIVATE
+  // Must match src/enums/Lists/index.enum.ts ListType: PUBLIC = 1, PRIVATE = 2.
+  // Do NOT invent a local 0/1 convention — the frontend compares against that enum,
+  // so a mismatched value silently disables private-list UI (e.g. the private icon).
+  type: number;
   likeCount: number;
   likedBy: Set<string>;
   createdAt: string;
@@ -78,7 +81,7 @@ const buildInitialState = (): MockState => {
     coverImage: '',
     externalLink: '',
     categoryID: 1,
-    type: 0,
+    type: 1,
     likeCount: 1,
     likedBy: new Set<string>(['usera']),
     createdAt: '2026-07-01T00:00:00.000Z',
@@ -93,7 +96,7 @@ const buildInitialState = (): MockState => {
     coverImage: '',
     externalLink: '',
     categoryID: 1,
-    type: 1,
+    type: 2,
     likeCount: 0,
     likedBy: new Set<string>(),
     createdAt: '2026-07-01T00:00:00.000Z',
@@ -110,7 +113,7 @@ const buildInitialState = (): MockState => {
     coverImage: '',
     externalLink: '',
     categoryID: 1,
-    type: 0,
+    type: 1,
     likeCount: 0,
     likedBy: new Set<string>(),
     createdAt: '2026-07-01T00:00:00.000Z',

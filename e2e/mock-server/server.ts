@@ -110,7 +110,7 @@ const handle = async (req: IncomingMessage, res: ServerResponse) => {
     const list = state.lists.get(listMatch[1]);
     if (!list) return fail(res, 404);
     // private list 對非擁有者回 403（匿名 SSR 也會拿到 403）
-    if (list.type === 1 && viewer !== list.ownerUserCode) return fail(res, 403);
+    if (list.type === 2 && viewer !== list.ownerUserCode) return fail(res, 403);
 
     const offset = Number(url.searchParams.get('offset') ?? 0);
     const limit = Number(url.searchParams.get('limit') ?? 3);
@@ -128,7 +128,7 @@ const handle = async (req: IncomingMessage, res: ServerResponse) => {
   if (path === '/ideas' && method === 'GET') {
     const list = state.lists.get(url.searchParams.get('listID') ?? '');
     if (!list) return fail(res, 404);
-    if (list.type === 1 && viewer !== list.ownerUserCode) return fail(res, 403);
+    if (list.type === 2 && viewer !== list.ownerUserCode) return fail(res, 403);
     const offset = Number(url.searchParams.get('offset') ?? 0);
     const limit = Number(url.searchParams.get('limit') ?? 20);
     res.writeHead(200, {
@@ -221,7 +221,7 @@ const handle = async (req: IncomingMessage, res: ServerResponse) => {
   if (userListsMatch && method === 'GET') {
     const owner = userListsMatch[1];
     const all = [...state.lists.values()].filter(
-      (l) => l.ownerUserCode === owner && (l.type === 0 || viewer === owner)
+      (l) => l.ownerUserCode === owner && (l.type === 1 || viewer === owner)
     );
     const offset = Number(url.searchParams.get('offset') ?? 0);
     const limit = Number(url.searchParams.get('limit') ?? 10);
