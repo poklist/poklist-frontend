@@ -1,9 +1,15 @@
-import react from '@vitejs/plugin-react';
 import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vitest/config';
 
+// Component-rendering deps (@testing-library/react, @testing-library/jest-dom,
+// @vitejs/plugin-react) are deliberately not installed — current and planned
+// unit tests are all non-rendering (pure functions, zod schemas, zustand
+// stores). Whoever first needs to render a component should add those three
+// packages together with a `test.setupFiles` entry importing
+// '@testing-library/jest-dom' — without setupFiles its matchers
+// (toBeInTheDocument, etc.) will not be registered and will fail as
+// "not a function".
 export default defineConfig({
-  plugins: [react()],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),

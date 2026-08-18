@@ -27,7 +27,11 @@
     "noFallthroughCasesInSwitch": true,
 
     "composite": true,
-    "types": ["vitest/globals"]
+    // Listing "types" disables TS's automatic @types/* discovery — only the
+    // packages named here are pulled in. node/react are required explicitly
+    // because process.env (Node) and JSX (React) are used throughout src/;
+    // do not rely on vitest/@testing-library transitively re-exporting them.
+    "types": ["vitest/globals", "node", "react", "react-dom"]
   },
   "include": ["src"]
 }

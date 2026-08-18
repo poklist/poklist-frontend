@@ -1720,22 +1720,23 @@ git push -u origin feature/test-infrastructure
 Run:
 
 ```bash
-export PATH="$HOME/.nvm/versions/node/v22.15.1/bin:$PATH" && npm i -D vitest @vitest/coverage-v8 jsdom @testing-library/react @testing-library/jest-dom @vitejs/plugin-react
+export PATH="$HOME/.nvm/versions/node/v22.15.1/bin:$PATH" && npm i -D vitest @vitest/coverage-v8 jsdom
 ```
 
 Expected: 安裝成功
+
+`@testing-library/react`、`@testing-library/jest-dom`、`@vitejs/plugin-react` 不安裝 —— 目前及規劃中的單元測試皆非 component-rendering（純函式、zod schema、zustand store）。日後若首次需要 render 元件，應同時安裝這三個套件並在 `test.setupFiles` 加入 `@testing-library/jest-dom` 的 import，否則其 matcher（`toBeInTheDocument` 等）不會被註冊。
 
 - [ ] **Step 2: 建立 vitest 設定**
 
 建立 `vitest.config.ts`：
 
 ```ts
-import react from '@vitejs/plugin-react';
 import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vitest/config';
 
+// Component-rendering deps deliberately not installed — see Step 1 note.
 export default defineConfig({
-  plugins: [react()],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
@@ -1771,7 +1772,9 @@ export default defineConfig({
 
 ```json
     "composite": true,
-    "types": ["vitest/globals"]
+    // "types" 會關閉 TS 自動 @types/* 探索，故 node/react 需明列 ——
+    // process.env（Node）與 JSX（React）在 src/ 全域使用
+    "types": ["vitest/globals", "node", "react", "react-dom"]
   },
   "include": ["src"]
 }
