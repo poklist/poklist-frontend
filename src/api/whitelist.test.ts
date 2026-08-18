@@ -23,7 +23,7 @@ describe('contractPathToRegExp', () => {
     expect(re.test('/usera/lists/100')).toBe(false);
   });
 
-  it('matches multiple dynamic segments', () => {
+  it('matches a dynamic segment followed by a static segment', () => {
     const re = contractPathToRegExp('/lists/:listID/order');
     expect(re.test('/lists/100/order')).toBe(true);
     expect(re.test('/lists/100/reorder')).toBe(false);
