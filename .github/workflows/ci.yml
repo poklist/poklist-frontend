@@ -35,6 +35,10 @@ jobs:
       - name: Lint
         run: npm run lint -- --max-warnings=27
 
+      # Before build: unit tests are the fastest real failure signal in this job.
+      - name: Unit tests
+        run: npm run test:unit
+
       - name: Build
         run: npm run build
         env:
