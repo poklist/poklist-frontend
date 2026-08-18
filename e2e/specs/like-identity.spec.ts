@@ -34,7 +34,11 @@ test.describe('anonymous viewer', () => {
   test.use({ storageState: anonymousStorageState });
 
   // E4:匿名點讚應跳登入引導,且不得寫入 like 狀態
-  test('E4 prompts signup instead of liking', async ({ page }) => {
+  // NOTE: this only asserts that the like state stays unset after an
+  // anonymous click. It does NOT assert that a signup/login prompt is
+  // shown — the login drawer has no data-testid today, so that behavior
+  // is not observable from this spec.
+  test('E4 anonymous like click does not set liked state', async ({ page }) => {
     await page.goto('/usera/list/100');
     const likeButton = page.getByTestId('like-button');
     await expect(likeButton).toHaveAttribute('data-liked', 'false');

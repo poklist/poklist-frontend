@@ -76,7 +76,7 @@ export default defineConfig({
       command: 'npm run build:e2e && npm run start',
       url: BASE_URL,
       reuseExistingServer: !process.env.CI,
-      timeout: 240_000,
+      timeout: 480_000,
       env: {
         NEXT_PUBLIC_API_BASE_URL: `http://localhost:${MOCK_PORT}`,
         NEXT_PUBLIC_SITE_URL: BASE_URL,

@@ -23,7 +23,13 @@ test('S1 discovery page renders', async ({ page }) => {
 
 test('S2 user profile page renders list section', async ({ page }) => {
   await page.goto(`/${USER_CODE}`);
-  await expect(page.getByTestId('hero')).toBeVisible();
+  // Assert on `list-row`, not `hero`/`list-preview`: those testids also
+  // appear on the loading skeletons (HeroSectionSkeleton /
+  // ListSectionSkeleton), so asserting their visibility would pass even if
+  // the page were stuck in a permanently-loading skeleton state. `list-row`
+  // is only rendered by ListSection once real list data has loaded, so it
+  // is the anchor that actually proves the list section rendered.
+  await expect(page.locator('[data-testid="list-row"]').first()).toBeVisible();
 });
 
 test('S3 list page renders with like button', async ({ page }) => {
