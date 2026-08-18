@@ -39,13 +39,22 @@ describe('useLikeStore confirmed state (race-condition guard)', () => {
     expect(useLikeStore.getState().getIsLiked('100')).toBe(true);
   });
 
-  // debounce flush 的判斷依據：兩值相同代表無需送 API
-  it('signals no-op when optimistic matches confirmed', () => {
-    useLikeStore.getState().setConfirmedIsLiked('100', true);
-    useLikeStore.getState().setIsLiked('100', true);
+  // useLikeAction 的 flush 守衛是 AND：
+  //   hasConfirmedLikeState(id) && optimistic === getConfirmedIsLiked(id)
+  // 因為 getConfirmedIsLiked 對未確認的 list 回傳 fallback false，
+  // 「從未確認」與「確認為 false」的回傳值完全相同 —— 只有 hasConfirmedLikeState
+  // 能區分。少了那個 clause，使用者載入頁面後的第一次 unlike（optimistic false）
+  // 會被誤判為 no-op 而不送出 API。本測試釘住那個歧義。
+  it('distinguishes never-confirmed from confirmed-false via hasConfirmedLikeState', () => {
+    const before = useLikeStore.getState();
+    expect(before.hasConfirmedLikeState('100')).toBe(false);
+    expect(before.getConfirmedIsLiked('100')).toBe(false); // fallback，不代表已確認
 
-    const state = useLikeStore.getState();
-    expect(state.getIsLiked('100')).toBe(state.getConfirmedIsLiked('100'));
+    useLikeStore.getState().setConfirmedIsLiked('100', false);
+
+    const after = useLikeStore.getState();
+    expect(after.hasConfirmedLikeState('100')).toBe(true);
+    expect(after.getConfirmedIsLiked('100')).toBe(false); // 同值，語意不同
   });
 
   it('reports whether a confirmed state exists', () => {
@@ -56,12 +65,16 @@ describe('useLikeStore confirmed state (race-condition guard)', () => {
 });
 
 describe('useLikeStore clearing', () => {
-  it('clears a single list', () => {
+  // clearLikeStatus 同時刪 likeMap 與 confirmedLikeMap —— 只驗前者會讓
+  // 「confirmed 殘留」的 regression 溜過去（與登出測試守的是同一個性質）
+  it('clears a single list from both optimistic and confirmed maps', () => {
     useLikeStore.getState().setIsLiked('100', true);
+    useLikeStore.getState().setConfirmedIsLiked('100', true);
     useLikeStore.getState().setIsLiked('101', true);
     useLikeStore.getState().clearLikeStatus('100');
 
     expect(useLikeStore.getState().hasLikeState('100')).toBe(false);
+    expect(useLikeStore.getState().hasConfirmedLikeState('100')).toBe(false);
     expect(useLikeStore.getState().hasLikeState('101')).toBe(true);
   });
 
