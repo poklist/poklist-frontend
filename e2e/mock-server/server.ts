@@ -76,7 +76,7 @@ const listPayload = (list: MockList, viewer: string | null) => ({
 // 需要 CORS header 才能通過瀏覽器的 preflight 檢查。
 const setCorsHeaders = (req: IncomingMessage, res: ServerResponse) => {
   res.setHeader('Access-Control-Allow-Origin', req.headers.origin ?? '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 };
 
@@ -102,6 +102,57 @@ const handle = async (req: IncomingMessage, res: ServerResponse) => {
   if (path === '/__test__/reset' && method === 'POST') {
     resetState();
     return ok(res, null);
+  }
+
+  // --- GET /categories ---
+  if (path === '/categories' && method === 'GET') {
+    return ok(res, [
+      { id: 1, name: 'others' },
+      { id: 2, name: 'lifestyle' },
+      { id: 3, name: 'food' },
+    ]);
+  }
+
+  // --- POST /lists（建立）---
+  if (path === '/lists' && method === 'POST') {
+    if (!viewer) return fail(res, 401);
+    const body = await readBody(req);
+    if (body.title === '__FAIL__') return fail(res, 500); // 錯誤注入
+    const id = `new-${state.lists.size + 1}`;
+    const now = '2026-09-12T00:00:00.000Z';
+    state.lists.set(id, {
+      id,
+      title: String(body.title ?? ''),
+      description: String(body.description ?? ''),
+      coverImage: String(body.coverImage ?? ''),
+      externalLink: String(body.externalLink ?? ''),
+      categoryID: Number(body.categoryID ?? 0),
+      type: Number(body.type ?? 1),
+      likeCount: 0,
+      likedBy: new Set<string>(),
+      createdAt: now,
+      updatedAt: now,
+      ownerUserCode: viewer,
+      ideas: [],
+    });
+    return ok(res, { id });
+  }
+
+  // --- PUT /lists/:listID（編輯）---
+  const listPutMatch = /^\/lists\/([^/]+)$/.exec(path);
+  if (listPutMatch && method === 'PUT') {
+    if (!viewer) return fail(res, 401);
+    const list = state.lists.get(listPutMatch[1]);
+    if (!list) return fail(res, 404);
+    const body = await readBody(req);
+    if (body.title === '__FAIL__') return fail(res, 500); // 錯誤注入
+    list.title = String(body.title ?? list.title);
+    list.description = String(body.description ?? list.description);
+    list.coverImage = String(body.coverImage ?? list.coverImage);
+    list.externalLink = String(body.externalLink ?? list.externalLink);
+    list.categoryID = Number(body.categoryID ?? list.categoryID);
+    list.type = Number(body.type ?? list.type);
+    return ok(res, { id: list.id });
   }
 
   // --- GET /lists/:listID ---
