@@ -290,6 +290,21 @@ const ListForm: React.FC<IListFormProps> = ({
         }}
         className="relative mx-4 mt-[4.5rem] flex flex-1 flex-col gap-4 rounded-3xl border border-black-tint-04 bg-white px-4 py-6 md:max-w-mobile-max"
       >
+        <div className="flex items-center justify-center">
+          <Controller
+            name="coverImage"
+            control={listForm.control}
+            render={({ field }) => (
+              <ImageUploader
+                file={field.value}
+                callback={onOpenFakePage}
+                onRemove={() => {
+                  listForm.setValue('coverImage', '');
+                }}
+              />
+            )}
+          />
+        </div>
         <Controller
           name="title"
           control={listForm.control}
@@ -299,6 +314,7 @@ const ListForm: React.FC<IListFormProps> = ({
                 <div className="relative flex w-11/12 items-center justify-center font-extrabold">
                   <Textarea
                     placeholder={t`This is the title of your list`}
+                    data-testid="list-title-input"
                     className="relative min-h-20 w-full resize-none overflow-hidden rounded-lg border border-black-tint-04 px-3 py-4 text-center text-h1 placeholder:text-h1 focus:border-black focus:pb-10 focus:ring-1 focus:ring-black"
                     rows={1}
                     {...field}
@@ -336,6 +352,7 @@ const ListForm: React.FC<IListFormProps> = ({
                 <>
                   <Textarea
                     placeholder={t`Describe what this title is about`}
+                    data-testid="list-desc-input"
                     className="relative min-h-14 w-full resize-none overflow-hidden rounded-lg border border-black-tint-04 py-4 pl-10 pr-3 focus:border-black focus:pb-10 focus:ring-1 focus:ring-black"
                     rows={1}
                     {...field}
@@ -366,22 +383,8 @@ const ListForm: React.FC<IListFormProps> = ({
           <Input
             {...listForm.register('externalLink')}
             placeholder={t`Link a page`}
+            data-testid="list-link-input"
             className="line-clamp-1 block min-h-14 w-full truncate border-black-tint-04 py-4 pl-10 pr-3 focus:border-black focus:ring-1 focus:ring-black"
-          />
-        </div>
-        <div className="flex items-center justify-center">
-          <Controller
-            name="coverImage"
-            control={listForm.control}
-            render={({ field }) => (
-              <ImageUploader
-                file={field.value}
-                callback={onOpenFakePage}
-                onRemove={() => {
-                  listForm.setValue('coverImage', '');
-                }}
-              />
-            )}
           />
         </div>
       </form>
@@ -408,6 +411,7 @@ const ListForm: React.FC<IListFormProps> = ({
             render={({ field }) => (
               <SwitchWithIcons
                 checked={field.value === ListType.PRIVATE}
+                data-testid="list-visibility-switch"
                 onCheckedChange={onListTypeChange}
                 checkedIcon={<IconPrivateEye />}
                 uncheckedIcon={<IconPublicEye />}
@@ -453,6 +457,7 @@ const ListForm: React.FC<IListFormProps> = ({
               type="submit"
               variant={ButtonVariant.BLACK}
               shape={ButtonShape.ROUNDED_5PX}
+              data-testid="category-submit"
             >
               <Trans>Next</Trans>
             </Button>
@@ -461,6 +466,7 @@ const ListForm: React.FC<IListFormProps> = ({
               onClick={() => closeCategoryDrawer()}
               variant={ButtonVariant.BLACK}
               shape={ButtonShape.ROUNDED_5PX}
+              data-testid="category-submit"
             >
               <Trans>Done</Trans>
             </Button>
@@ -486,6 +492,7 @@ const ListForm: React.FC<IListFormProps> = ({
             }}
             variant={ButtonVariant.WARNING}
             shape={ButtonShape.ROUNDED_5PX}
+            data-testid="cancel-confirm"
           >
             <Trans>Cancel Editing</Trans>
           </Button>
@@ -495,6 +502,7 @@ const ListForm: React.FC<IListFormProps> = ({
             onClick={() => closeCancelDrawer()}
             variant={ButtonVariant.BLACK}
             shape={ButtonShape.ROUNDED_5PX}
+            data-testid="cancel-continue"
           >
             <Trans>Continue Editing</Trans>
           </Button>
@@ -515,6 +523,7 @@ const ListForm: React.FC<IListFormProps> = ({
             }}
             variant={ButtonVariant.WARNING}
             shape={ButtonShape.ROUNDED_5PX}
+            data-testid="draft-delete"
           >
             <Trans>Delete draft</Trans>
           </Button>
@@ -524,6 +533,7 @@ const ListForm: React.FC<IListFormProps> = ({
             onClick={() => onRestoreDraft()}
             variant={ButtonVariant.BLACK}
             shape={ButtonShape.ROUNDED_5PX}
+            data-testid="draft-keep"
           >
             <Trans>Keep editing</Trans>
           </Button>
