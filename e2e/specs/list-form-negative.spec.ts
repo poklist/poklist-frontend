@@ -43,6 +43,8 @@ test.describe('list form negative paths (logged-in)', () => {
   // N4 驗證失敗（toast）：external link 無效 → toast、不導頁。
   // 用 'http://'（空 host）：WHATWG URL 解析在 V8 與 WebKit 皆丟錯，故兩引擎一致失敗。
   // 註：'has space' 之類在 V8 會被接受、WebKit 會拒絕，跨引擎不穩，勿用。
+  // 斷言用 exact 文案鎖定「可見的 toast div」：react-hot-toast 另會渲染一個
+  // aria-live announcer <span>Notification …</span>，用 regex 會同時命中兩者 → strict-mode violation。
   test('N4 invalid external link surfaces toast, no navigation', async ({
     page,
   }) => {
@@ -51,7 +53,9 @@ test.describe('list form negative paths (logged-in)', () => {
     await page.getByTestId('list-link-input').fill('http://');
     await page.getByTestId('edit-mode-save').click();
     await page.getByTestId('category-submit').click();
-    await expect(page.getByText(/Link must start with/i)).toBeVisible();
+    await expect(
+      page.getByText('Error - Link must start with https://', { exact: true })
+    ).toBeVisible();
     await expect(page).toHaveURL(/\/list\/create/);
   });
 
