@@ -69,7 +69,7 @@ describe('applyCreatedIdeaToCaches', () => {
     expect(invalidateSpy).toHaveBeenCalledWith(
       expect.objectContaining({
         queryKey: ideasKeys.infiniteIdeasUnderList('100'),
-        refetchType: 'all',
+        refetchType: 'inactive',
       })
     );
   });

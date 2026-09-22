@@ -95,11 +95,12 @@ export const usePutList = (options: UsePutListOptions) => {
           }
         );
         // 保底重抓：cache 被 gcTime 回收後上面的手術會 no-op（見 helper）。
-        // feed（使用者 List 列表）+ 該 List 詳細頁 meta。
+        // feed（使用者 List 列表）+ 該 List 詳細頁 meta。detail meta 上面已手術，
+        // 故用 'inactive'（active 靠手術、只背景刷 inactive）。
         invalidateUserListsCaches(queryClient, options.userCode);
         void queryClient.invalidateQueries({
           queryKey: listsKeys.infiniteIdeas(newData.id),
-          refetchType: 'all',
+          refetchType: 'inactive',
         });
       } catch (error) {
         console.warn('Refetch failed, but list was edited: ', error);
