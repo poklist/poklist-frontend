@@ -7,6 +7,7 @@ import { updateInfiniteCaches } from '@/hooks/api/utils';
 import { adjustPublishLimitsCache } from '@/hooks/queries/publish/cachesUpdater';
 import { useQueryClient } from '@tanstack/react-query';
 import z from 'zod';
+import { invalidateListIdeaCaches } from './invalidateListIdeaCaches';
 
 type UseDeleteIdeaOptions = z.infer<z.ZodObject<{ listID: z.ZodString }>>;
 
@@ -66,6 +67,8 @@ export const useDeleteIdea = (options: UseDeleteIdeaOptions) => {
         publishKeys.ideasLimits(options.listID),
         -1
       );
+      // 保底重抓：cache 被 gcTime 回收後上面的手術會 no-op（見 helper）。
+      invalidateListIdeaCaches(queryClient, options.listID);
     },
   });
 };

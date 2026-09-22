@@ -6,6 +6,7 @@ import { updateInfiniteCaches } from '@/hooks/api/utils';
 import { adjustPublishLimitsCache } from '@/hooks/queries/publish/cachesUpdater';
 import { toBackendTimestamp } from '@/lib/time';
 import { QueryClient } from '@tanstack/react-query';
+import { invalidateListIdeaCaches } from './invalidateListIdeaCaches';
 import ideasKeys from './keys';
 
 /**
@@ -76,15 +77,6 @@ export const applyCreatedIdeaToCaches = (
     1
   );
 
-  // 保底：手術只在 cache 仍在時有效。cache 被 gcTime 回收後手術 no-op，
-  // 且 ideas query 關掉 refetchOnMount，故必須主動 invalidate 觸發重抓，
-  // 新 Idea 才會顯示。refetchType 'all' 連 inactive query 一併刷新。
-  void queryClient.invalidateQueries({
-    queryKey: ideasKeys.infiniteIdeasUnderList(data.listID),
-    refetchType: 'all',
-  });
-  void queryClient.invalidateQueries({
-    queryKey: listsKeys.infiniteIdeas(data.listID),
-    refetchType: 'all',
-  });
+  // 保底重抓：手術只在 cache 仍在時有效，cache 被回收後會 no-op（見 helper 說明）。
+  invalidateListIdeaCaches(queryClient, data.listID);
 };

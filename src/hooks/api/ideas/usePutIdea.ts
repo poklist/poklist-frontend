@@ -5,6 +5,7 @@ import listsKeys from '@/hooks/api/lists/keys';
 import { updateEntryCaches, updateInfiniteCaches } from '@/hooks/api/utils';
 import { toBackendTimestamp } from '@/lib/time';
 import { useQueryClient } from '@tanstack/react-query';
+import { invalidateListIdeaCaches } from './invalidateListIdeaCaches';
 
 interface UsePutIdeaOptions {
   onSuccess?: (data: PutIdeasResponse['content']) => void;
@@ -89,6 +90,8 @@ export const usePutIdea = (options: UsePutIdeaOptions) => {
             });
           }
         );
+        // 保底重抓：cache 被 gcTime 回收後上面的手術會 no-op（見 helper）。
+        invalidateListIdeaCaches(queryClient, newData.listID);
       } catch (error) {
         console.warn('Refetch failed, but idea was edited: ', error);
       } finally {
