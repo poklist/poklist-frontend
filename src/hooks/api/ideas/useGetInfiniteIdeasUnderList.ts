@@ -57,9 +57,9 @@ export const useGetInfiniteIdeasUnderList = (
       staleTime,
       gcTime,
       enabled: enabled && !!listID,
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
+      // refetchOnMount: false,
+      // refetchOnWindowFocus: false,
+      // refetchOnReconnect: false,
     }
   );
 };

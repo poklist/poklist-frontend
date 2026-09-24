@@ -1,7 +1,7 @@
 import { ideasQuery } from '@/api/query/ideas';
 import { ideasSchema } from '@/api/schemas/ideas';
-import z from 'zod';
 import ideasKeys from '@/hooks/api/ideas/keys';
+import z from 'zod';
 
 const getIdeaSchema = ideasSchema.getRequest.extend({
   staleTime: z.number().int().nonnegative().default(60000),
@@ -22,9 +22,9 @@ export const useGetIdea = (options: UseGetIdeaOptions) => {
       staleTime,
       gcTime,
       enabled: enabled && !!ideaID,
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
+      // refetchOnMount: false,
+      // refetchOnWindowFocus: false,
+      // refetchOnReconnect: false,
       initialData: undefined,
       refetchInterval: false,
     }

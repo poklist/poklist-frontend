@@ -62,9 +62,9 @@ export const useGetInfiniteLists = (
       staleTime,
       gcTime,
       enabled: enabled && !!userCode,
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
+      // refetchOnMount: false,
+      // refetchOnWindowFocus: false,
+      // refetchOnReconnect: false,
     }
   );
 };

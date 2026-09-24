@@ -1,8 +1,8 @@
 import { listsQuery } from '@/api/query/lists';
 import { listsSchema } from '@/api/schemas';
 import { List } from '@/constants/list';
-import z from 'zod';
 import listsKeys from '@/hooks/api/lists/keys';
+import z from 'zod';
 
 export const getListSchema = listsSchema.getRequest.extend({
   offset: z
@@ -31,9 +31,9 @@ export const useGetList = (options: UseGetListOptions) => {
       staleTime,
       gcTime,
       enabled: enabled && !!listID,
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
+      // refetchOnMount: false,
+      // refetchOnWindowFocus: false,
+      // refetchOnReconnect: false,
       initialData: undefined,
       refetchInterval: false,
     }
