@@ -28,6 +28,7 @@ const EditModeHeader: React.FC<EditModeHeaderProps> = ({
         <div
           onClick={onClose}
           aria-label="Previous"
+          data-testid="edit-mode-close"
           className="flex h-10 w-10 items-center justify-center"
         >
           <IconLeftArrowThin width={7.5} height={15} color="black" />
@@ -38,6 +39,7 @@ const EditModeHeader: React.FC<EditModeHeaderProps> = ({
         variant={ButtonVariant.BLACK}
         shape={ButtonShape.ROUNDED_5PX}
         disabled={disabled}
+        data-testid="edit-mode-save"
         onClick={() => onSave(value)}
       >
         <p className="text-base font-bold">{saveButtonText}</p>

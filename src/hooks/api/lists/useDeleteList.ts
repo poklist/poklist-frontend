@@ -8,6 +8,7 @@ import { adjustPublishLimitsCache } from '@/hooks/queries/publish/cachesUpdater'
 import { useQueryClient } from '@tanstack/react-query';
 import { ErrorResponse } from '@ts-rest/react-query';
 import z from 'zod';
+import { invalidateUserListsCaches } from './invalidateUserListsCaches';
 
 type UseDeleteListSchema = z.input<z.ZodObject<{ userCode: z.ZodString }>>;
 
@@ -72,6 +73,8 @@ export const useDeleteList = (options: UseDeleteListOptions) => {
           }
         );
         adjustPublishLimitsCache(queryClient, publishKeys.listsLimits(), -1);
+        // 保底重抓：cache 被 gcTime 回收後上面的手術會 no-op（見 helper）。
+        invalidateUserListsCaches(queryClient, options.userCode);
       } catch (error) {
         console.warn('Refetch failed, but list was deleted:', error);
       } finally {

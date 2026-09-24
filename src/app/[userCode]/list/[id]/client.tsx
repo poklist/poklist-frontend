@@ -11,11 +11,11 @@ import { useLikeAction } from '@/hooks/mutations/optimistic/likeUnlike/useLikeAc
 import { useAuthRequired } from '@/hooks/useAuthRequired';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { useUserRouteContext } from '@/hooks/useUserRouteContext';
-import { notFound } from 'next/navigation';
 import useAuthStore from '@/stores/useAuthStore';
 import useFollowingStore from '@/stores/useFollowingStore';
 import useLikeStore from '@/stores/useLikeStore';
 import useUserStore from '@/stores/useUserStore';
+import { notFound } from 'next/navigation';
 import { useEffect } from 'react';
 
 interface ViewListPageClientProps {
@@ -38,7 +38,7 @@ const ViewListPageClient: React.FC<ViewListPageClientProps> = ({
     useFollowingStore();
   const { handleAuthRequired } = useAuthRequired();
 
-  const isLiked = listID ? getIsLiked(listID) : false;
+  const isLiked = listID ? getIsLiked(listID) : undefined;
 
   const { data: listOwner, isError: isListOwnerError } = useGetUserInfo({
     userCode: listOwnerUserCode,
@@ -48,9 +48,12 @@ const ViewListPageClient: React.FC<ViewListPageClientProps> = ({
     data: list,
     isLoading: isListLoading,
     isError: isListError,
+    refetch: refetchList,
   } = useGetListInfiniteIdeas({
     listID,
-    limit: 0,
+    // ideas 已由 IdeaList 的 useGetInfiniteIdeasUnderList 負責（§13.2 雙軌）；
+    // 此處只要 list meta。limit 不可設 0 —— 後端視為未指定並回傳整批 ideas。
+    limit: 1,
   });
 
   const listInfo = list?.pages[0]?.listInfo;
@@ -70,7 +73,9 @@ const ViewListPageClient: React.FC<ViewListPageClientProps> = ({
 
   useEffect(() => {
     if (!listID || !listInfo) return;
-    const likeState = listInfo.isLiked ?? false;
+    if (!isLoggedIn) return;
+    if (listInfo.isLiked === undefined) return;
+    const likeState = listInfo.isLiked;
     if (!hasLikeState(listID)) setIsLiked(listID, likeState);
     setConfirmedIsLiked(listID, likeState);
   }, [listInfo, listID]);
@@ -83,7 +88,7 @@ const ViewListPageClient: React.FC<ViewListPageClientProps> = ({
     ) {
       return;
     }
-    const followingState = listOwner.isFollowing ?? false;
+    const followingState = listOwner.isFollowing;
     const hasExistingState = hasFollowingState(listOwnerUserCode);
 
     if (!hasExistingState) {
@@ -107,6 +112,13 @@ const ViewListPageClient: React.FC<ViewListPageClientProps> = ({
       navigateTo.viewList(listOwnerOfData.userCode, listID);
     }
   }, [listOwnerOfData, listID, listOwnerUserCode]);
+
+  useEffect(() => {
+    if (!listID || !isLoggedIn || !listInfo) return;
+    if (listInfo.isLiked === undefined) {
+      void refetchList();
+    }
+  }, [listID, isLoggedIn, listInfo?.isLiked]);
 
   // 帶 token 的 client fetch 失敗 = 無權限（private list）或不存在 —
   // 兩者一律顯示 Not Found，不洩漏 list 存在性。

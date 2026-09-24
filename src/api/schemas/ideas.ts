@@ -46,6 +46,17 @@ const putResponseSchema = createResponseSchema(
   })
 );
 
+const getIdeasUnderListRequestSchema = z.object({
+  listID: z.string(),
+  offset: z.number().int().nonnegative(),
+  limit: z.number().int().nonnegative(),
+});
+
+const getIdeasUnderListResponseSchema = z.object({
+  ideas: ideaPreviewSchema.array(),
+  ideaTotalCount: z.number().int().nonnegative(),
+});
+
 export const ideasSchema = {
   getRequest: getRequestSchema,
   getResponse: getResponseSchema,
@@ -55,4 +66,6 @@ export const ideasSchema = {
   deleteResponse: deleteResponseSchema,
   putRequest: putRequestSchema,
   putResponse: putResponseSchema,
+  getIdeasUnderListRequest: getIdeasUnderListRequestSchema,
+  getIdeasUnderListResponse: getIdeasUnderListResponseSchema,
 };

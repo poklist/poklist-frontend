@@ -5,8 +5,8 @@ import IdeaList, {
   DropEvent,
 } from '@/app/[userCode]/list/[id]/reorder/_components/IdeasList';
 import EditModeHeader from '@/components/Header/EditModeHeader';
+import { useGetInfiniteIdeasUnderList } from '@/hooks/api/ideas/useGetInfiniteIdeasUnderList';
 import { useGetIdeasOrder } from '@/hooks/api/lists/useGetIdeasOrder';
-import { useGetListInfiniteIdeas } from '@/hooks/api/lists/useGetListInfiniteIdeas';
 import { usePostIdeasReorder } from '@/hooks/api/lists/usePostIdeasReorder';
 import { useAuthCheck, useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
@@ -31,7 +31,7 @@ const ReorderIdeaPage: React.FC = () => {
   const [isOrderModified, setIsOrderModified] = useState(false);
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useGetListInfiniteIdeas({
+    useGetInfiniteIdeasUnderList({
       listID,
       // enabled: !isDeleting,
       limit: 20,

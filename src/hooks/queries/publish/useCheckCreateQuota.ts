@@ -5,6 +5,7 @@ import {
 } from '@/api/query/publish';
 import listsKeys from '@/hooks/api/lists/keys';
 import publishKeys from '@/hooks/api/publish/keys';
+import { canStillCreate } from '@/hooks/queries/publish/quota';
 import useAuthStore from '@/stores/useAuthStore';
 import useUserStore from '@/stores/useUserStore';
 import { useQueryClient } from '@tanstack/react-query';
@@ -13,10 +14,6 @@ export const useCheckCreateQuota = () => {
   const queryClient = useQueryClient();
   const { me } = useUserStore();
   const { isLoggedIn } = useAuthStore();
-  const canStillCreate = (limits: {
-    isUnlimited: boolean;
-    remainingCount: number | null;
-  }) => limits.isUnlimited || (limits.remainingCount ?? 0) > 0;
 
   const checkCanCreate = async (
     targetListID?: GetPublishIdeasLimitsRequest['listID']

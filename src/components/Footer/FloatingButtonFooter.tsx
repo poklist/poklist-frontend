@@ -82,6 +82,8 @@ const FloatingButtonFooter: React.FC<IFooterProps> = ({
       <div className="flex flex-row gap-2">
         {hasLikeButton && (
           <Button
+            data-testid="like-button"
+            data-liked={isLiked === true}
             onClick={handleLike}
             variant={ButtonVariant.WHITE}
             className="flex items-center gap-1.5 text-sm"

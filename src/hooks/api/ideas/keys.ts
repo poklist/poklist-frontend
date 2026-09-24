@@ -1,4 +1,4 @@
-import { GetIdeasRequest } from '@/api/query/ideas';
+import { GetIdeasRequest, GetIdeasUnderListRequest } from '@/api/query/ideas';
 
 const ideasKeys = {
   all: ['ideas'],
@@ -6,6 +6,11 @@ const ideasKeys = {
     ...ideasKeys.all,
     'idea',
     String(ideaID),
+  ],
+  infiniteIdeasUnderList: (listID: GetIdeasUnderListRequest['listID']) => [
+    ...ideasKeys.all,
+    'infiniteIdeasUnderList',
+    listID,
   ],
 };
 

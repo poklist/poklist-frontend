@@ -10,6 +10,7 @@ const ideasApi = initContract().router({
   post: ideasContract.postIdeasContract,
   delete: ideasContract.deleteIdeasContract,
   put: ideasContract.putIdeasContract,
+  getIdeasUnderList: ideasContract.getIdeasUnderListContract,
 });
 
 export type GetIdeasRequest = z.input<typeof ideasSchema.getRequest>;
@@ -24,6 +25,14 @@ export type DeleteIdeasRequest = z.input<typeof ideasSchema.deleteRequest>;
 export type PutIdeasRequest = z.input<typeof ideasSchema.putRequest>;
 
 export type PutIdeasResponse = z.infer<typeof ideasSchema.putResponse>;
+
+export type GetIdeasUnderListRequest = z.input<
+  typeof ideasSchema.getIdeasUnderListRequest
+>;
+
+export type GetIdeasUnderListResponse = z.infer<
+  typeof ideasSchema.getIdeasUnderListResponse
+>;
 
 export const ideasQuery = initQueryClient(ideasApi, {
   baseUrl: '',

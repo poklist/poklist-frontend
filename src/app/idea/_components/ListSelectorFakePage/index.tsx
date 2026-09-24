@@ -17,18 +17,21 @@ import { DrawerIds } from '@/constants/Drawer';
 import { LocalStorageKey } from '@/enums/index.enum';
 import { ListType } from '@/enums/Lists/index.enum';
 import { usePostNewIdea } from '@/hooks/api/ideas/usePostNewIdea';
+import { useGetUserLists } from '@/hooks/api/lists/useGetUserLists';
+import { useGetListsLimits } from '@/hooks/api/publish/useGetListsLimits';
 import { useCheckCreateQuota } from '@/hooks/queries/publish/useCheckCreateQuota';
 import { useAsyncAction } from '@/hooks/useAsyncAction';
 import { useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { cn, removeLocalStorage } from '@/lib/utils';
+import useAuthStore from '@/stores/useAuthStore';
 import useUserStore from '@/stores/useUserStore';
 import { Trans } from '@lingui/macro';
 import { useState } from 'react';
 
 const ListSelectorFakePage: React.FC = () => {
   const { me } = useUserStore();
-  // const { isLoggedIn } = useAuthStore();
+
   const navigateTo = useStrictNavigationAdapter();
 
   const { isOpen, closeFakePage, payload } = useFakePage();
@@ -36,6 +39,19 @@ const ListSelectorFakePage: React.FC = () => {
   const { openDrawer } = useDrawer(DrawerIds.SIGNUP_DRAWER_ID);
 
   const { withAuth } = useAuthWrapper();
+
+  const { isLoggedIn } = useAuthStore();
+
+  // Dialog 未開時不發請求：避免 in-flight request 在關閉/換頁時被 abort（CancelledError）
+  const { data: listsLimits } = useGetListsLimits({
+    enabled: isLoggedIn && open,
+  });
+
+  const { data: lists } = useGetUserLists({
+    userCode: me.userCode,
+    limit: listsLimits?.usedCount,
+    enabled: isLoggedIn && open,
+  });
 
   const { mutate: createIdea } = usePostNewIdea({
     onSuccess: () => {
@@ -137,7 +153,7 @@ const ListSelectorFakePage: React.FC = () => {
               <Trans>Select a list to save this idea</Trans>
             </div>
             <div className="max-h-[calc(100dvh-113px)] overflow-y-auto">
-              {!payload?.lists || payload.lists?.length <= 0 ? (
+              {!lists || lists?.length <= 0 ? (
                 <div className="p-4">
                   <Trans>
                     Looks like you haven’t made a list yet. Let’s create one
@@ -145,7 +161,7 @@ const ListSelectorFakePage: React.FC = () => {
                   </Trans>
                 </div>
               ) : (
-                payload.lists?.map((list) => {
+                lists?.map((list) => {
                   return (
                     <div
                       onClick={() => {

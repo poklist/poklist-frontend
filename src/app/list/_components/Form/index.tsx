@@ -26,14 +26,8 @@ import { RadioType } from '@/enums/Style/index.enum';
 import { useGetCategories } from '@/hooks/api/categories/useGetCategories';
 import useAutoResizeTextarea from '@/hooks/ui/useAutoResizeTextarea';
 import useFormErrorHandler from '@/hooks/ui/useFormErrorHandler';
-import useIdle from '@/hooks/useIdle';
 import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
-import {
-  formatInput,
-  getLocalStorage,
-  removeLocalStorage,
-  setLocalStorage,
-} from '@/lib/utils';
+import { formatInput, removeLocalStorage, setLocalStorage } from '@/lib/utils';
 import { resolveListFormError } from '@/lib/validator';
 import { ListFormSchema } from '@/types/common';
 import { IEditFieldConfig } from '@/types/EditField/index.d';
@@ -43,6 +37,7 @@ import { t, Trans } from '@lingui/macro';
 import React, { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { useListDraft } from '../../_hooks/useListDraft';
 
 interface IListFormProps {
   defaultListInfo?: GetUserListsResponse['content'][number];
@@ -69,8 +64,6 @@ const ListForm: React.FC<IListFormProps> = ({
     useDrawer(DrawerIds.CATEGORY_DRAWER_ID);
   const { openDrawer: openCancelDrawer, closeDrawer: closeCancelDrawer } =
     useDrawer(DrawerIds.CANCEL_LIST_FORM_CONFIRM_DRAWER_ID);
-  const { openDrawer: openDraftDrawer, closeDrawer: closeDraftDrawer } =
-    useDrawer(DrawerIds.LIST_DRAFT_DRAWER_ID);
   const { data: categories, isLoading: categoriesLoading } = useGetCategories();
   const [mounted, setMounted] = useState(false);
 
@@ -86,9 +79,23 @@ const ListForm: React.FC<IListFormProps> = ({
     },
   });
 
-  const { isIdle, stop, reset } = useIdle({
-    timeout: 2000,
-    watch: listForm.watch,
+  const titleTextarea = useAutoResizeTextarea({
+    minHeight: 56,
+    focusMinHeight: 83,
+  });
+
+  const descriptionTextarea = useAutoResizeTextarea({
+    minHeight: 56,
+    focusMinHeight: 83,
+  });
+
+  const isCreate = defaultListInfo.title === '';
+  const { onRestoreDraft, closeDraftDrawer, stop } = useListDraft({
+    listForm,
+    isCreate,
+    mounted,
+    titleTextarea,
+    descriptionTextarea,
   });
 
   const onOpenFakePage = () => {
@@ -105,16 +112,6 @@ const ListForm: React.FC<IListFormProps> = ({
     });
     openFakePage('editField');
   };
-
-  const titleTextarea = useAutoResizeTextarea({
-    minHeight: 56,
-    focusMinHeight: 83,
-  });
-
-  const descriptionTextarea = useAutoResizeTextarea({
-    minHeight: 56,
-    focusMinHeight: 83,
-  });
 
   const onDismiss = () => {
     let isFormEmpty = true;
@@ -173,27 +170,6 @@ const ListForm: React.FC<IListFormProps> = ({
     listForm.setValue('categoryID', Number(category), { shouldDirty: true });
   };
 
-  const onRestoreDraft = () => {
-    const listDraft = getLocalStorage(
-      LocalStorageKey.LIST_DRAFT,
-      ListFormSchema
-    );
-    if (!listDraft) return;
-    listForm.setValue('title', listDraft.title || '', {
-      shouldDirty: listDraft.title !== '',
-    });
-    listForm.setValue('description', listDraft.description || '');
-    listForm.setValue('coverImage', listDraft.coverImage || '');
-    listForm.setValue('externalLink', listDraft.externalLink || '');
-    listForm.setValue('categoryID', listDraft.categoryID || 0);
-    closeDraftDrawer();
-    setTimeout(() => {
-      titleTextarea.bind.onChange();
-      descriptionTextarea.bind.onChange();
-      listForm.setFocus('title');
-    }, 0);
-  };
-
   useEffect(() => {
     document.body.style.pointerEvents = '';
     document.body.removeAttribute('data-scroll-locked');
@@ -201,34 +177,6 @@ const ListForm: React.FC<IListFormProps> = ({
     listForm.setFocus('title');
     setMounted(true);
   }, []);
-
-  useEffect(() => {
-    if (!mounted) return;
-    if (defaultListInfo.title !== '') return;
-
-    const draft = getLocalStorage(LocalStorageKey.LIST_DRAFT, ListFormSchema);
-    if (draft) openDraftDrawer();
-  }, [mounted, defaultListInfo.title]);
-
-  useEffect(() => {
-    if (
-      !(isIdle && listForm.formState.isDirty) ||
-      defaultListInfo.title !== ''
-    ) {
-      return;
-    }
-    setLocalStorage(
-      LocalStorageKey.LIST_DRAFT,
-      listForm.getValues(),
-      ListFormSchema
-    );
-    // // 這裡有時候會引致 onSubmit 的 Button 變回 disabled 和 isDirty 狀態被重置有關
-    // listForm.reset(getLocalStorage(LocalStorageKey.LIST_DRAFT, ListFormSchema), {
-    //   keepValues: true,
-    //   keepDirty: true,
-    // });
-    reset();
-  }, [isIdle, listForm.formState.isDirty, defaultListInfo.title]);
 
   useEffect(() => {
     if (defaultListInfo.title === '') {
@@ -299,6 +247,7 @@ const ListForm: React.FC<IListFormProps> = ({
                 <div className="relative flex w-11/12 items-center justify-center font-extrabold">
                   <Textarea
                     placeholder={t`This is the title of your list`}
+                    data-testid="list-title-input"
                     className="relative min-h-20 w-full resize-none overflow-hidden rounded-lg border border-black-tint-04 px-3 py-4 text-center text-h1 placeholder:text-h1 focus:border-black focus:pb-10 focus:ring-1 focus:ring-black"
                     rows={1}
                     {...field}
@@ -336,6 +285,7 @@ const ListForm: React.FC<IListFormProps> = ({
                 <>
                   <Textarea
                     placeholder={t`Describe what this title is about`}
+                    data-testid="list-desc-input"
                     className="relative min-h-14 w-full resize-none overflow-hidden rounded-lg border border-black-tint-04 py-4 pl-10 pr-3 focus:border-black focus:pb-10 focus:ring-1 focus:ring-black"
                     rows={1}
                     {...field}
@@ -366,6 +316,7 @@ const ListForm: React.FC<IListFormProps> = ({
           <Input
             {...listForm.register('externalLink')}
             placeholder={t`Link a page`}
+            data-testid="list-link-input"
             className="line-clamp-1 block min-h-14 w-full truncate border-black-tint-04 py-4 pl-10 pr-3 focus:border-black focus:ring-1 focus:ring-black"
           />
         </div>
@@ -408,6 +359,7 @@ const ListForm: React.FC<IListFormProps> = ({
             render={({ field }) => (
               <SwitchWithIcons
                 checked={field.value === ListType.PRIVATE}
+                data-testid="list-visibility-switch"
                 onCheckedChange={onListTypeChange}
                 checkedIcon={<IconPrivateEye />}
                 uncheckedIcon={<IconPublicEye />}
@@ -453,6 +405,7 @@ const ListForm: React.FC<IListFormProps> = ({
               type="submit"
               variant={ButtonVariant.BLACK}
               shape={ButtonShape.ROUNDED_5PX}
+              data-testid="category-submit"
             >
               <Trans>Next</Trans>
             </Button>
@@ -461,6 +414,7 @@ const ListForm: React.FC<IListFormProps> = ({
               onClick={() => closeCategoryDrawer()}
               variant={ButtonVariant.BLACK}
               shape={ButtonShape.ROUNDED_5PX}
+              data-testid="category-submit"
             >
               <Trans>Done</Trans>
             </Button>
@@ -486,6 +440,7 @@ const ListForm: React.FC<IListFormProps> = ({
             }}
             variant={ButtonVariant.WARNING}
             shape={ButtonShape.ROUNDED_5PX}
+            data-testid="cancel-confirm"
           >
             <Trans>Cancel Editing</Trans>
           </Button>
@@ -495,6 +450,7 @@ const ListForm: React.FC<IListFormProps> = ({
             onClick={() => closeCancelDrawer()}
             variant={ButtonVariant.BLACK}
             shape={ButtonShape.ROUNDED_5PX}
+            data-testid="cancel-continue"
           >
             <Trans>Continue Editing</Trans>
           </Button>
@@ -515,6 +471,7 @@ const ListForm: React.FC<IListFormProps> = ({
             }}
             variant={ButtonVariant.WARNING}
             shape={ButtonShape.ROUNDED_5PX}
+            data-testid="draft-delete"
           >
             <Trans>Delete draft</Trans>
           </Button>
@@ -524,6 +481,7 @@ const ListForm: React.FC<IListFormProps> = ({
             onClick={() => onRestoreDraft()}
             variant={ButtonVariant.BLACK}
             shape={ButtonShape.ROUNDED_5PX}
+            data-testid="draft-keep"
           >
             <Trans>Keep editing</Trans>
           </Button>

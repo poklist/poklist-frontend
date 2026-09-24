@@ -5,7 +5,7 @@ import { listsContract } from '@/api/contracts';
  * 攔截器比對前已 split('?')[0]，query string 不需處理
  * 適用 src/api/contracts 下全部 path
  */
-const contractPathToRegExp = (path: string): RegExp => {
+export const contractPathToRegExp = (path: string): RegExp => {
   const pattern = path
     .split('/')
     .map((segment) =>

@@ -32,9 +32,7 @@ export const useLogin = () => {
       resetIdentityCaches();
       const userData = {
         ...res.data.content?.user,
-        profileImage: res.data.content.user.profileImage?.startsWith('data:')
-          ? res.data.content.user.profileImage
-          : '',
+        profileImage: res.data.content.user.profileImage,
         listCount: res.data.content.user.listCount || 0,
       };
       setMe(userData);

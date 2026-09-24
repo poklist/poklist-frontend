@@ -3,7 +3,7 @@
 import { ListSectionSkeleton } from '@/app/user/_components/ListSection/ListSectionSkeleton';
 import IconPrivateEye from '@/components/ui/icons/PrivateEyeIcon';
 import { ListType } from '@/enums/Lists/index.enum';
-import { useGetInfiniteLists } from '@/hooks/api/lists/useGetUserInfiniteLists';
+import { useGetInfiniteLists } from '@/hooks/api/lists/useGetInfiniteListsUnderUser';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { useUserRouteContext } from '@/hooks/useUserRouteContext';
 import { Trans } from '@lingui/macro';
@@ -49,13 +49,18 @@ const ListSection: React.FC = () => {
   }
 
   return (
-    <div role="list-preview" className="mb-10 flex-1 bg-transparent sm:mb-0">
+    <div
+      data-testid="list-preview"
+      className="mb-10 flex-1 bg-transparent sm:mb-0"
+    >
       <div className="flex flex-col bg-white">
         {listPreviews.map((listPreview, index) => {
           const isLastItem = index === listPreviews.length - 1;
           return (
             <div
               key={listPreview.id}
+              data-testid="list-row"
+              data-list-id={listPreview.id}
               className={`flex min-h-[72px] items-center justify-between ${
                 isLastItem ? 'border-b-[3px]' : 'border-b'
               } border-black-text-01 p-4 -tracking-1.1%`}

@@ -5,6 +5,7 @@ import { updateEntryCaches, updateInfiniteCaches } from '@/hooks/api/utils';
 import { toBackendTimestamp } from '@/lib/time';
 import { useQueryClient } from '@tanstack/react-query';
 import z from 'zod';
+import { invalidateUserListsCaches } from './invalidateUserListsCaches';
 
 type UsePutIdeaSchema = z.infer<z.ZodObject<{ userCode: z.ZodString }>>;
 type UsePutListOptions = UsePutIdeaSchema & {
@@ -93,6 +94,14 @@ export const usePutList = (options: UsePutListOptions) => {
             });
           }
         );
+        // 保底重抓：cache 被 gcTime 回收後上面的手術會 no-op（見 helper）。
+        // feed（使用者 List 列表）+ 該 List 詳細頁 meta。detail meta 上面已手術，
+        // 故用 'inactive'（active 靠手術、只背景刷 inactive）。
+        invalidateUserListsCaches(queryClient, options.userCode);
+        void queryClient.invalidateQueries({
+          queryKey: listsKeys.infiniteIdeas(newData.id),
+          refetchType: 'inactive',
+        });
       } catch (error) {
         console.warn('Refetch failed, but list was edited: ', error);
       } finally {

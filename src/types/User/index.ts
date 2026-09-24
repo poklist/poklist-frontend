@@ -7,7 +7,7 @@ export interface User {
   userCode: string;
   email?: string;
   bio?: string;
-  profileImage?: string;
+  profileImage: string;
   socialLinks?: SocialLinks;
   listCount?: number;
   followerCount?: number;

@@ -6,11 +6,21 @@ import { User } from '@/types/User';
 // Server-side 資料獲取 - 主要用於 SEO 和 generateMetadata
 const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
+// E2E 需要關閉 SSR fetch 快取才能隔離測試（否則第二個測試吃到第一個的快取回應）。
+// 未設定或格式不正確時維持 300 秒，prod 行為不變。
+// 用 `||` 而非 `??` 是刻意的：空字串也要落回預設值，而 `??` 只認 null/undefined，
+// 會讓 Number('') 得 0（等同關閉快取）。'0' 為 truthy，E2E 設 '0' 的意圖仍保留。
+const parsedRevalidate = Number(process.env.SEO_FETCH_REVALIDATE || NaN);
+const SEO_FETCH_REVALIDATE =
+  Number.isFinite(parsedRevalidate) && parsedRevalidate >= 0
+    ? parsedRevalidate
+    : 300;
+
 export async function fetchJSONForSEO<T>(path: string): Promise<T | null> {
   try {
     const response = await fetch(`${baseURL}${path}`, {
       headers: { 'Content-Type': 'application/json' },
-      next: { revalidate: 300 },
+      next: { revalidate: SEO_FETCH_REVALIDATE },
     });
     if (!response.ok) return null;
     return (await response.json()) as T;

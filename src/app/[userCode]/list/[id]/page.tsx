@@ -104,8 +104,14 @@ export default async function ViewListPage({ params }: PageProps) {
 
   const queryClient = new QueryClient();
   if (listResponse) {
+    const sanitized = {
+      ...listResponse,
+      content: listResponse.content
+        ? { ...listResponse.content, isLiked: undefined }
+        : listResponse.content,
+    };
     queryClient.setQueryData(listsKeys.infiniteIdeas(id), {
-      pages: [toTsRestEntry(listResponse)],
+      pages: [toTsRestEntry(sanitized)],
       pageParams: [0],
     });
   }

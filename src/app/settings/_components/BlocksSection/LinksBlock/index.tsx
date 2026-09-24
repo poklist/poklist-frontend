@@ -24,7 +24,7 @@ const LinksBlock: React.FC<ILinksBlockProps> = ({
   };
 
   return (
-    <div role="links-block">
+    <div data-testid="links-block">
       <div className="py-2">
         <h2 className="text-t1 font-semibold">{title}</h2>
       </div>
