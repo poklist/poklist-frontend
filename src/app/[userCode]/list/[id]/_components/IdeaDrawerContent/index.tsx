@@ -63,7 +63,7 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({
     if (!data) return;
     await copy(`${window.location.href}/idea/${data.id}`);
     toast({
-      title: t`Copied to clipboard`,
+      title: t`已複製到剪貼簿`,
       variant: MessageType.SUCCESS,
     });
   });
@@ -71,7 +71,7 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({
   const dropdownItems: DropdownItem[] = [
     {
       type: DropdownItemType.ITEM,
-      label: t`Edit Idea`,
+      label: t`編輯靈感`,
       onClick: () => {
         if (!data) return;
         closeSelf();
@@ -82,7 +82,7 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({
     { type: DropdownItemType.SEPARATOR },
     {
       type: DropdownItemType.ITEM,
-      label: t`Delete Idea`,
+      label: t`刪除靈感`,
       onClick: () => openDrawer(),
       icon: <TrashIcon />,
       danger: true,
@@ -168,14 +168,14 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({
           onClick={handleCopyHref}
         >
           <IconLink width={13} height={13} />
-          <Trans>Copy</Trans>
+          <Trans>複製</Trans>
         </Button>
       </div>
       <DrawerComponent
         drawerId={DrawerIds.DELETE_IDEA_DRAWER_ID}
         isShowClose={true}
-        header={<Trans>Are you sure you want to delete this idea?</Trans>}
-        subHeader={<Trans>Once deleted, this idea cannot be recovered!</Trans>}
+        header={<Trans>確定要刪除此靈感嗎？</Trans>}
+        subHeader={<Trans>刪除靈感後將無法復原！</Trans>}
         startFooter={
           <Button
             onClick={() => {
@@ -185,7 +185,7 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({
             variant={ButtonVariant.WARNING}
             shape={ButtonShape.ROUNDED_5PX}
           >
-            <Trans>Confirm Delete</Trans>
+            <Trans>確定刪除</Trans>
           </Button>
         }
         endFooter={
@@ -194,7 +194,7 @@ const IdeaDrawerContent: React.FC<IIdeaDrawerContentProps> = ({
             variant={ButtonVariant.BLACK}
             shape={ButtonShape.ROUNDED_5PX}
           >
-            <Trans>Cancel</Trans>
+            <Trans>取消</Trans>
           </Button>
         }
       />

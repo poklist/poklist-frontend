@@ -1,7 +1,7 @@
 import { formatter } from '@lingui/format-po';
 module.exports = {
   locales: ['en', 'zh-TW'],
-  sourceLocale: 'en',
+  sourceLocale: 'zh-TW',
   catalogs: [
     {
       path: 'src/locales/{locale}/messages',

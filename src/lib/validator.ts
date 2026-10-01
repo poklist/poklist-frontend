@@ -49,16 +49,16 @@ export const resolveFormError = (
       if (value.type === 'too_small') {
         return {
           drawer: {
-            title: t`Hey, the title can't be left empty!`,
-            content: t`Every ${entityName} needs a title, so fill it in!`,
+            title: t`欸，標題不能留空喔！`,
+            content: t`${entityName}都需要有個標題，快填上去吧！`,
           },
         };
       }
       if (value.type === 'too_big') {
         return {
           drawer: {
-            title: t`${entityName} title is too long!`,
-            content: t`Please keep it under ${titleMaxLength} characters.`,
+            title: t`${entityName}標題字數太長啦！`,
+            content: t`標題過長，請將字數縮短至 ${titleMaxLength} 個字元以內。`,
           },
         };
       }
@@ -69,8 +69,8 @@ export const resolveFormError = (
       if (value.type === 'too_big') {
         return {
           drawer: {
-            title: t`Description is too long!`,
-            content: t`Please keep it under ${descMaxLength} characters.`,
+            title: t`標題描述內容超出限制了！`,
+            content: t`字數有點爆表，請減到 ${descMaxLength} 個字元以內。`,
           },
         };
       }
@@ -80,7 +80,7 @@ export const resolveFormError = (
     case 'externalLink': {
       return {
         toast: {
-          title: t`Error - Link must start with https:// `,
+          title: t`網址有誤 - 需以 https:// 開頭`,
           variant: MessageType.ERROR,
         },
       };

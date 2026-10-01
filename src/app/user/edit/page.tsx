@@ -44,9 +44,9 @@ const EditUserPage: React.FC = () => {
 
   const fieldConfigMap: Record<FieldType | SocialLinkType, IEditFieldConfig> = {
     [FieldType.DISPLAY_NAME]: {
-      fieldName: t`Name`,
+      fieldName: t`姓名`,
       variant: EditFieldVariant.TEXT,
-      placeholder: t`Enter your name here`,
+      placeholder: t`輸入你的姓名`,
       characterLimit: 20,
       editingFieldValue: newUserInfo.displayName,
       allowEmpty: false,
@@ -59,9 +59,9 @@ const EditUserPage: React.FC = () => {
       },
     },
     [FieldType.USER_CODE]: {
-      fieldName: t`Username`,
+      fieldName: t`用戶帳號`,
       variant: EditFieldVariant.TEXT,
-      placeholder: t`Enter your username here`,
+      placeholder: t`輸入你的用戶帳號`,
       characterLimit: 30,
       editingFieldValue: newUserInfo.userCode,
       allowEmpty: false,
@@ -75,9 +75,9 @@ const EditUserPage: React.FC = () => {
       },
     },
     [FieldType.BIO]: {
-      fieldName: t`Bio`,
+      fieldName: t`個人自介`,
       variant: EditFieldVariant.TEXT,
-      placeholder: t`Enter your bio here`,
+      placeholder: t`輸入你的個人自介`,
       characterLimit: 250,
       editingFieldValue: newUserInfo.bio,
       onFieldValueSet: (value: string | undefined) => {
@@ -89,7 +89,7 @@ const EditUserPage: React.FC = () => {
       },
     },
     [FieldType.PROFILE_IMAGE]: {
-      fieldName: t`Profile Image`,
+      fieldName: t`個人檔案頭貼`,
       variant: EditFieldVariant.IMAGE,
       onFieldValueSet: (value: string | undefined) => {
         if (value !== undefined) {
@@ -100,9 +100,9 @@ const EditUserPage: React.FC = () => {
       },
     },
     [SocialLinkType.CUSTOMIZED]: {
-      fieldName: t`Customized Link`,
+      fieldName: t`自訂連結`,
       variant: EditFieldVariant.TEXT,
-      placeholder: t`Add URL`,
+      placeholder: t`輸入網址`,
       editingFieldValue: newUserInfo.socialLinks?.[SocialLinkType.CUSTOMIZED],
       onFieldValueSet: (value: string | undefined) => {
         if (value !== undefined) {
@@ -115,7 +115,7 @@ const EditUserPage: React.FC = () => {
     [SocialLinkType.INSTAGRAM]: {
       fieldName: 'Instagram',
       variant: EditFieldVariant.TEXT,
-      placeholder: t`Add account`,
+      placeholder: t`輸入帳號`,
       editingFieldValue: extractUsernameFromUrl(
         SocialLinkType.INSTAGRAM,
         newUserInfo.socialLinks?.[SocialLinkType.INSTAGRAM]
@@ -139,7 +139,7 @@ const EditUserPage: React.FC = () => {
     [SocialLinkType.YOUTUBE]: {
       fieldName: 'YouTube',
       variant: EditFieldVariant.TEXT,
-      placeholder: t`Add account`,
+      placeholder: t`輸入帳號`,
       editingFieldValue: extractUsernameFromUrl(
         SocialLinkType.YOUTUBE,
         newUserInfo.socialLinks?.[SocialLinkType.YOUTUBE]
@@ -163,7 +163,7 @@ const EditUserPage: React.FC = () => {
     [SocialLinkType.TIKTOK]: {
       fieldName: 'TikTok',
       variant: EditFieldVariant.TEXT,
-      placeholder: t`Add account`,
+      placeholder: t`輸入帳號`,
       editingFieldValue: extractUsernameFromUrl(
         SocialLinkType.TIKTOK,
         newUserInfo.socialLinks?.[SocialLinkType.TIKTOK]
@@ -187,7 +187,7 @@ const EditUserPage: React.FC = () => {
     [SocialLinkType.THREADS]: {
       fieldName: 'Threads',
       variant: EditFieldVariant.TEXT,
-      placeholder: t`Add account`,
+      placeholder: t`輸入帳號`,
       editingFieldValue: extractUsernameFromUrl(
         SocialLinkType.THREADS,
         newUserInfo.socialLinks?.[SocialLinkType.THREADS]
@@ -211,7 +211,7 @@ const EditUserPage: React.FC = () => {
     [SocialLinkType.LINKEDIN]: {
       fieldName: 'LinkedIn',
       variant: EditFieldVariant.TEXT,
-      placeholder: t`Add account`,
+      placeholder: t`輸入帳號`,
       editingFieldValue: extractUsernameFromUrl(
         SocialLinkType.LINKEDIN,
         newUserInfo.socialLinks?.[SocialLinkType.LINKEDIN]
@@ -272,7 +272,7 @@ const EditUserPage: React.FC = () => {
       <div id="info-section" className="px-4 pt-10">
         <div className="py-2">
           <h2 className="text-t1 font-semibold">
-            <Trans>Profile</Trans>
+            <Trans>個人檔案</Trans>
           </h2>
         </div>
         <div
@@ -280,7 +280,7 @@ const EditUserPage: React.FC = () => {
           onClick={() => onOpenFakePage(FieldType.DISPLAY_NAME)}
         >
           <p>
-            <Trans>Name</Trans>
+            <Trans>姓名</Trans>
           </p>
           <>
             {newUserInfo.displayName ? (
@@ -299,7 +299,7 @@ const EditUserPage: React.FC = () => {
           onClick={() => onOpenFakePage(FieldType.USER_CODE)}
         >
           <p>
-            <Trans>Username</Trans>
+            <Trans>用戶帳號</Trans>
           </p>
           <>
             {newUserInfo.userCode ? (
@@ -318,7 +318,7 @@ const EditUserPage: React.FC = () => {
           onClick={() => onOpenFakePage(FieldType.BIO)}
         >
           <p>
-            <Trans>Bio</Trans>
+            <Trans>個人自介</Trans>
           </p>
           <>
             {newUserInfo.bio ? (
@@ -336,7 +336,7 @@ const EditUserPage: React.FC = () => {
       <div id="links-section" className="px-4 pb-20 pt-10">
         <div className="py-2">
           <h2 className="text-t1 font-semibold">
-            <Trans context="title">Links</Trans>
+            <Trans context="title">連結</Trans>
           </h2>
         </div>
         {socialLinkTypeList.map((linkType: SocialLinkType) => {
@@ -368,7 +368,7 @@ const EditUserPage: React.FC = () => {
       <EditModeFooter
         disabled={!isModified()}
         onClose={() => navigateTo.user(me.userCode)}
-        title={t`Edit profile and account`}
+        title={t`編輯個人檔案與帳號`}
         onSave={onSubmit}
       />
       {fieldConfig && (

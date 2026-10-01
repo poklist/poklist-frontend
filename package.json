@@ -1,7 +1,7 @@
 {
   "name": "relist",
   "private": true,
-  "version": "0.5.2",
+  "version": "0.5.3",
   "type": "module",
   "scripts": {
     "dev": "lingui extract && lingui compile && next dev -p 8080",
@@ -15,6 +15,7 @@
     "compile": "lingui compile",
     "build-lang": "lingui extract && lingui compile",
     "cleanup-lang": "lingui extract --clean",
+    "test": "vitest run && playwright test",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:headed": "playwright test --headed --project=mobile-chrome",

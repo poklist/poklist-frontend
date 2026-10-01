@@ -29,7 +29,7 @@ const SettingsPage: React.FC = () => {
       <BackToUserHeader owner={me.id !== 0 ? me : undefined} />
       <IntroSection />
       <BlocksSection />
-      <Footer onClose={handleOnClose} title={t`Setting Center`} />
+      <Footer onClose={handleOnClose} title={t`設定中心`} />
     </>
   );
 };

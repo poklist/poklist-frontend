@@ -75,7 +75,7 @@ const HeroSection: React.FC = () => {
         logout();
         navigateTo.discovery();
         toast({
-          title: t`The login session is expired, please login again`,
+          title: t`登入已過期，請重新登入`,
           variant: MessageType.ERROR,
         });
       } else {
@@ -234,7 +234,7 @@ const HeroSection: React.FC = () => {
               shape={ButtonShape.ROUNDED_5PX}
               onClick={() => navigateTo.editUser()}
             >
-              <Trans>Edit profile and account</Trans>
+              <Trans>編輯個人檔案與帳號</Trans>
             </Button>
           ) : (
             <Button
@@ -246,13 +246,13 @@ const HeroSection: React.FC = () => {
               disabled={isFollowPending}
               onClick={isFollowing ? handleUnfollow : handleFollow}
             >
-              {isFollowing ? <Trans>Following</Trans> : <Trans>Follow</Trans>}
+              {isFollowing ? <Trans>正追蹤</Trans> : <Trans>追蹤</Trans>}
             </Button>
           )}
         </div>
         <div id="hero-stats" className="flex gap-2">
           <p>
-            {currentPageUser.listCount} <Trans>Lists</Trans>
+            {currentPageUser.listCount} <Trans>名單</Trans>
           </p>
           {currentPageUser && (
             <UserConnectionStats userID={currentPageUser.id} />
@@ -261,7 +261,7 @@ const HeroSection: React.FC = () => {
             className="cursor-pointer font-semibold"
             onClick={onOpenLinkDrawer}
           >
-            {linkCount} <Trans context="count">Links</Trans>
+            {linkCount} <Trans context="count">個連結</Trans>
           </p>
         </div>
       </div>

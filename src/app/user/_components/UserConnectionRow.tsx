@@ -79,7 +79,7 @@ const UserConnectionRow = ({ follower, callback }: UserConnectionRowProps) => {
           variant={isFollowing ? ButtonVariant.GRAY : ButtonVariant.BLACK}
           className="font-normal"
         >
-          {isFollowing ? <Trans>Followings</Trans> : <Trans>Follow</Trans>}
+          {isFollowing ? <Trans>正追蹤</Trans> : <Trans>追蹤</Trans>}
         </Button>
       )}
     </div>

@@ -18,6 +18,7 @@ export enum ButtonVariant {
   GRAY = 'gray',
   SUB_ACTIVE = 'subActive',
   BRIGHT_GREEN = 'brightGreen',
+  SMART_PURPLE = 'smartPurple',
 }
 
 export enum ButtonSize {
@@ -55,6 +56,8 @@ const buttonVariants = cva(
           'border border-gray-main-03 bg-gray-note-05 text-black-text-01 disabled:opacity-50',
         [ButtonVariant.BRIGHT_GREEN]:
           'border border-black bg-green-bright-01 text-black-text-01 disabled:opacity-50',
+        [ButtonVariant.SMART_PURPLE]:
+          'border border-smart-purple bg-smart-purple text-white disabled:bg-note-gray-06 disabled:border-note-gray-06',
       },
       size: {
         [ButtonSize.SM]: 'h-8 text-[13px] px-3',

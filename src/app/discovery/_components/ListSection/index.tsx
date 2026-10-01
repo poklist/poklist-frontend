@@ -24,26 +24,26 @@ const SESSION_VISITED_KEY = 'discovery_list_section_visited';
 
 const ListSection = () => {
   const CATEGORY_NAMES: Record<string, string> = {
-    lifestyle: t`Lifestyle`,
-    food: t`Food & Drink`,
-    culture: t`Culture`,
-    traveling: t`Travel`,
-    entertainment: t`Entertainment`,
-    technology: t`Tech & Digital`,
-    growth: t`Personal Growth`,
-    health: t`Health & Fitness`,
-    others: t`Others`,
+    lifestyle: t`生活風格`,
+    food: t`美食`,
+    culture: t`文化`,
+    traveling: t`旅遊`,
+    entertainment: t`娛樂`,
+    technology: t`數位科技`,
+    growth: t`個人成長`,
+    health: t`健康與健身`,
+    others: t`其他`,
   };
   const CATEGORY_TITLES: Record<string, string> = {
-    lifestyle: t`Lists that vibe right`,
-    food: t`Lists that taste like wow`,
-    culture: t`Lists that show your colors`,
-    traveling: t`Lists that go to places`,
-    entertainment: t`Lists that stream good times`,
-    technology: t`Lists that tap into the future`,
-    growth: t`Lists that build better you`,
-    health: t`Lists that make you sweat`,
-    others: t`Lists that just get it`,
+    lifestyle: t`這 vibe 我可以`,
+    food: t`好想吃吃喝喝`,
+    culture: t`有點溫度的東西`,
+    traveling: t`出去玩耍的私筆記`,
+    entertainment: t`耳機一戴，世界走開`,
+    technology: t`正在生成的浪潮`,
+    growth: t`慢慢懂的一些事`,
+    health: t`練出好狀態`,
+    others: t`喜歡的都在這`,
   };
 
   // 從 UIStore 獲取展開類別的狀態與方法
@@ -156,7 +156,7 @@ const ListSection = () => {
             />
             <Trans>
               <h2 className="p-4 text-h2 font-bold text-black-text-01">
-                Recently updated
+                最近更新
               </h2>
             </Trans>
             <div className="flex flex-col">
@@ -174,7 +174,7 @@ const ListSection = () => {
                   shape={ButtonShape.ROUNDED_FULL}
                   onClick={() => expandCategory(category.id)}
                 >
-                  <Trans>See more</Trans>
+                  <Trans>展開更多</Trans>
                 </Button>
               </div>
             )}

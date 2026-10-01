@@ -16,8 +16,7 @@ const PromptText = () => {
       <Image src={phoneMobile} alt="Device Phone Mobile" className="h-5" />
       <p className="text-start text-t1 font-bold text-black-text-01">
         <Trans>
-          Relist works best on mobile. Use a mobile device for the best
-          experience.
+          Relist 在手機畫面運作更順暢，使用行動裝置以取得更好的使用體驗。
         </Trans>
       </p>
     </div>

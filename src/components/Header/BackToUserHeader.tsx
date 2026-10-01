@@ -147,7 +147,7 @@ const BackToUserHeader: React.FC<IBackToUserHeaderProps> = ({
               size={ButtonSize.SM}
               onClick={handleFollowOrUnfollow}
             >
-              {isFollowing ? <Trans>Following</Trans> : <Trans>Follow</Trans>}
+              {isFollowing ? <Trans>正追蹤</Trans> : <Trans>追蹤</Trans>}
             </Button>
           ) : (
             <Skeleton className="h-8 w-20 rounded-full" />

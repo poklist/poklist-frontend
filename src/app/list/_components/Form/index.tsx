@@ -1,62 +1,73 @@
 import { GetUserListsResponse, PutListsRequest } from '@/api/query/lists';
-import { TileBackground } from '@/app/user/_components/TileBackground';
-import { DrawerComponent } from '@/components/Drawer';
+import { useListDraft } from '@/app/list/_hooks/useListDraft';
 import { useDrawer } from '@/components/Drawer/useDrawer';
 import { EditFieldFakePageComponent } from '@/components/FakePage/EditFieldFakePage';
 import { useFakePage } from '@/components/FakePage/useFakePage';
-import EditModeHeader from '@/components/Header/EditModeHeader';
-import ImageUploader from '@/components/ImageUploader';
-import { IChoice, RadioComponent } from '@/components/Radio';
-import SwitchWithIcons from '@/components/SwitchWithIcon';
-import { Button, ButtonShape, ButtonVariant } from '@/components/ui/button';
+import { IChoice } from '@/components/Radio';
+import {
+  Button,
+  ButtonShape,
+  ButtonSize,
+  ButtonVariant,
+} from '@/components/ui/button';
 import IconExteriorLink from '@/components/ui/icons/ExteriorLinkIcon';
-import IconPrivateEye from '@/components/ui/icons/PrivateEyeIcon';
-import IconPublicEye from '@/components/ui/icons/PublicEyeIcon';
 import IconRightArrow from '@/components/ui/icons/RightArrowIcon';
 import IconTextarea from '@/components/ui/icons/TextareaIcon';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import { DrawerIds } from '@/constants/Drawer';
 import { DESC_MAX_LENGTH, TITLE_MAX_LENGTH } from '@/constants/form';
 import { CategoriesI18n } from '@/constants/Lists/i18n';
 import { EditFieldVariant } from '@/enums/EditField/index.enum';
 import { LocalStorageKey } from '@/enums/index.enum';
 import { ListType } from '@/enums/Lists/index.enum';
-import { RadioType } from '@/enums/Style/index.enum';
 import { useGetCategories } from '@/hooks/api/categories/useGetCategories';
 import useAutoResizeTextarea from '@/hooks/ui/useAutoResizeTextarea';
 import useFormErrorHandler from '@/hooks/ui/useFormErrorHandler';
 import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
-import { formatInput, removeLocalStorage, setLocalStorage } from '@/lib/utils';
+import { removeLocalStorage, setLocalStorage } from '@/lib/utils';
 import { resolveListFormError } from '@/lib/validator';
 import { ListFormSchema } from '@/types/common';
 import { IEditFieldConfig } from '@/types/EditField/index.d';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { i18n } from '@lingui/core';
 import { t, Trans } from '@lingui/macro';
-import React, { useEffect, useState } from 'react';
-import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { useListDraft } from '../../_hooks/useListDraft';
+import AutoResizeFields from './_components/AutoResizeFields';
+import CancelConfirmDrawer from './_components/CancelConfirmDrawer';
+import CategoryDrawer from './_components/CategoryDrawer';
+import CoverImageFields from './_components/CoverImageFields';
+import DraftDrawer from './_components/DraftDrawer';
+import VisibilityFields from './_components/VisibilityFields';
+
+export interface ListFormHandle {
+  requestClose: () => void;
+}
 
 interface IListFormProps {
   defaultListInfo?: GetUserListsResponse['content'][number];
+  isEdit: boolean;
   dismissCallback: (isFormEmpty: boolean) => void;
   completedCallback: (listData: Omit<PutListsRequest, 'listID'>) => void;
 }
 
-const ListForm: React.FC<IListFormProps> = ({
-  defaultListInfo = {
-    title: '',
-    description: '',
-    externalLink: '',
-    coverImage: '',
-    categoryID: 0,
-    type: ListType.PUBLIC,
+const ListForm = forwardRef<ListFormHandle, IListFormProps>(function ListForm(
+  {
+    defaultListInfo = {
+      title: '',
+      description: '',
+      externalLink: '',
+      coverImage: '',
+      categoryID: 0,
+      type: ListType.PUBLIC,
+    },
+    isEdit,
+    dismissCallback,
+    completedCallback,
   },
-  dismissCallback,
-  completedCallback,
-}) => {
+  ref
+) {
   const navigateTo = useStrictNavigateNext();
   const { openFakePage } = useFakePage();
   const [fieldConfig, setFieldConfig] = useState<IEditFieldConfig>();
@@ -100,7 +111,7 @@ const ListForm: React.FC<IListFormProps> = ({
 
   const onOpenFakePage = () => {
     setFieldConfig({
-      fieldName: t`Cover Image`,
+      fieldName: t`封面圖片`,
       variant: EditFieldVariant.IMAGE,
       onFieldValueSet: (value: string | undefined) => {
         if (value !== undefined && value !== null) {
@@ -208,288 +219,121 @@ const ListForm: React.FC<IListFormProps> = ({
     };
   }, []);
 
+  useImperativeHandle(ref, () => ({ requestClose: onDismiss }));
+
   return (
     <>
-      <EditModeHeader
-        onClose={() => onDismiss()}
-        title={
-          !mounted || defaultListInfo.title !== ''
-            ? t`Edit List`
-            : t`Create Idea List`
-        }
-        disabled={!listForm.formState.isDirty || listForm.watch('title') === ''}
-        onSave={() => {
-          if (defaultListInfo.title === '') {
-            openCategoryDrawer();
-          } else {
-            void listForm.handleSubmit(onSubmit, (errors) => {
-              onSubmitFailed(errors);
-            })();
-          }
-        }}
-        saveButtonText={
-          !mounted || defaultListInfo.title !== '' ? t`Done` : t`Next`
-        }
-      />
-      <TileBackground />
       <form
-        onSubmit={() => {
-          void listForm.handleSubmit(onSubmit, onSubmitFailed)();
-        }}
-        className="relative mx-4 mt-[4.5rem] flex flex-1 flex-col gap-4 rounded-3xl border border-black-tint-04 bg-white px-4 py-6 md:max-w-mobile-max"
+        onSubmit={(event) => event.preventDefault()}
+        className="relative flex flex-1 flex-col gap-4 bg-gray-note-05 px-4 py-6 pt-20 md:max-w-mobile-max"
       >
-        <Controller
-          name="title"
-          control={listForm.control}
-          render={({ field }) => {
-            return (
-              <div className="flex items-center justify-center">
-                <div className="relative flex w-11/12 items-center justify-center font-extrabold">
-                  <Textarea
-                    placeholder={t`This is the title of your list`}
-                    data-testid="list-title-input"
-                    className="relative min-h-20 w-full resize-none overflow-hidden rounded-lg border border-black-tint-04 px-3 py-4 text-center text-h1 placeholder:text-h1 focus:border-black focus:pb-10 focus:ring-1 focus:ring-black"
-                    rows={1}
-                    {...field}
-                    ref={(el) => {
-                      field.ref(el);
-                      titleTextarea.ref.current = el;
-                    }}
-                    onBlur={() => {
-                      field.onBlur();
-                      titleTextarea.bind.onBlur();
-                    }}
-                    onFocus={() => titleTextarea.bind.onFocus()}
-                    onChange={(event) => {
-                      titleTextarea.bind.onChange();
-                      field.onChange(formatInput(event.target.value));
-                    }}
-                  />
-                  {titleTextarea.isFocus && (
-                    <div className="absolute bottom-4 right-3 text-sm font-normal text-black-tint-04">
-                      {listForm.watch('title').length ?? 0}/{TITLE_MAX_LENGTH}
-                    </div>
-                  )}
-                </div>
-              </div>
-            );
-          }}
-        />
-        <Controller
+        <div className="flex items-center justify-center">
+          <AutoResizeFields
+            name="title"
+            control={listForm.control}
+            placeholder={t`在這輸入名單標題`}
+            maxLength={TITLE_MAX_LENGTH}
+            textareaControl={titleTextarea}
+            wrapperClassName="relative flex w-11/12 items-center justify-center font-extrabold"
+            className="relative min-h-20 w-full resize-none overflow-hidden rounded-lg border border-black-tint-04 px-3 py-4 text-center text-h1 placeholder:text-h1 focus:border-black focus:pb-10 focus:ring-1 focus:ring-black"
+            data-testid="list-title-input"
+          />
+        </div>
+        <AutoResizeFields
           name="description"
           control={listForm.control}
-          render={({ field }) => {
-            return (
-              <div className="relative flex items-center justify-center">
-                <IconTextarea className="absolute left-3 top-4 z-10" />
-                <>
-                  <Textarea
-                    placeholder={t`Describe what this title is about`}
-                    data-testid="list-desc-input"
-                    className="relative min-h-14 w-full resize-none overflow-hidden rounded-lg border border-black-tint-04 py-4 pl-10 pr-3 focus:border-black focus:pb-10 focus:ring-1 focus:ring-black"
-                    rows={1}
-                    {...field}
-                    ref={descriptionTextarea.ref}
-                    onBlur={() => {
-                      field.onBlur();
-                      descriptionTextarea.bind.onBlur();
-                    }}
-                    onFocus={() => descriptionTextarea.bind.onFocus()}
-                    onChange={(event) => {
-                      descriptionTextarea.bind.onChange();
-                      field.onChange(event.target.value.replace(/^\s+/, ''));
-                    }}
-                  />
-                  {descriptionTextarea.isFocus && (
-                    <div className="absolute bottom-4 right-3 text-sm font-normal text-black-tint-04">
-                      {listForm.watch('description')?.length ?? 0}/
-                      {DESC_MAX_LENGTH}
-                    </div>
-                  )}
-                </>
-              </div>
-            );
-          }}
+          placeholder={t`描述標題`}
+          maxLength={DESC_MAX_LENGTH}
+          textareaControl={descriptionTextarea}
+          wrapperClassName="relative flex items-center justify-center"
+          prefix={<IconTextarea className="absolute left-3 top-4 z-10" />}
+          className="relative min-h-14 w-full resize-none overflow-hidden rounded-lg border border-black-tint-04 py-4 pl-10 pr-3 focus:border-black focus:pb-10 focus:ring-1 focus:ring-black"
+          data-testid="list-desc-input"
         />
         <div className="relative flex items-center gap-2">
           <IconExteriorLink className="absolute left-3 top-4 z-10" />
           <Input
             {...listForm.register('externalLink')}
-            placeholder={t`Link a page`}
+            placeholder={t`連結網頁`}
             data-testid="list-link-input"
             className="line-clamp-1 block min-h-14 w-full truncate border-black-tint-04 py-4 pl-10 pr-3 focus:border-black focus:ring-1 focus:ring-black"
           />
         </div>
-        <div className="flex items-center justify-center">
-          <Controller
-            name="coverImage"
-            control={listForm.control}
-            render={({ field }) => (
-              <ImageUploader
-                file={field.value}
-                callback={onOpenFakePage}
-                onRemove={() => {
-                  listForm.setValue('coverImage', '');
-                }}
-              />
-            )}
-          />
-        </div>
+        <CoverImageFields
+          control={listForm.control}
+          onOpenImage={onOpenFakePage}
+          onRemove={() => listForm.setValue('coverImage', '')}
+        />
+        <Button
+          type="button"
+          disabled={
+            !listForm.formState.isDirty || listForm.watch('title') === ''
+          }
+          onMouseDown={(event) => event.preventDefault()}
+          onClick={(event) => {
+            event.preventDefault();
+            if (isEdit) {
+              void listForm.handleSubmit(onSubmit, (errors) =>
+                onSubmitFailed(errors)
+              )();
+            } else {
+              openCategoryDrawer();
+            }
+          }}
+          variant={ButtonVariant.SMART_PURPLE}
+          shape={ButtonShape.ROUNDED_8PX}
+          size={ButtonSize.H40}
+          data-testid="edit-mode-save"
+        >
+          {isEdit ? <Trans>完成</Trans> : <Trans>下一步</Trans>}
+        </Button>
       </form>
       {defaultListInfo.title !== '' && (
         <div
           onClick={() => openCategoryDrawer()}
           className="relative mx-4 inline-flex items-center justify-between whitespace-nowrap rounded-full border border-black-tint-04 bg-white py-2 pl-4 pr-3 text-t1 font-semibold text-black-text-01 ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
         >
-          <Trans>Edit List Topic</Trans>
+          <Trans>編輯名單分類</Trans>
           <IconRightArrow className="size-7 text-black-gray-03" />
         </div>
       )}
-      <div className="relative mt-2 h-44 border-y border-y-gray-note-05 bg-white p-4">
-        <div className="flex items-center justify-between">
-          <div className="text-t1 font-semibold text-black-text-01">
-            <Trans>Make this list secret</Trans>
-            <div className="text-t2 text-black-gray-03">
-              <Trans>Only you will see this list</Trans>
-            </div>
-          </div>
-          <Controller
-            name="type"
-            control={listForm.control}
-            render={({ field }) => (
-              <SwitchWithIcons
-                checked={field.value === ListType.PRIVATE}
-                data-testid="list-visibility-switch"
-                onCheckedChange={onListTypeChange}
-                checkedIcon={<IconPrivateEye />}
-                uncheckedIcon={<IconPublicEye />}
-              />
-            )}
-          />
-        </div>
-      </div>
 
-      <DrawerComponent
-        drawerId={DrawerIds.CATEGORY_DRAWER_ID}
-        isShowClose={false}
-        header={<Trans>List Topic</Trans>}
-        subHeader={<Trans>Choose a topic that vibes with your List.</Trans>}
-        content={
-          !categoriesLoading && (
-            <div className="mb-10 mt-6">
-              <Controller
-                name="categoryID"
-                control={listForm.control}
-                render={({ field }) => (
-                  <RadioComponent
-                    defaultValue={String(field.value)}
-                    choices={radioChoice}
-                    onChange={onCategoryChange}
-                    type={RadioType.BUTTON}
-                    className="flex flex-wrap gap-2"
-                  />
-                )}
-              />
-            </div>
-          )
-        }
-        endFooter={
-          defaultListInfo.title === '' ? (
-            <Button
-              disabled={
-                !listForm.formState.isDirty || listForm.watch('title') === ''
-              }
-              onClick={() =>
-                void listForm.handleSubmit(onSubmit, onSubmitFailed)()
-              }
-              type="submit"
-              variant={ButtonVariant.BLACK}
-              shape={ButtonShape.ROUNDED_5PX}
-              data-testid="category-submit"
-            >
-              <Trans>Next</Trans>
-            </Button>
-          ) : (
-            <Button
-              onClick={() => closeCategoryDrawer()}
-              variant={ButtonVariant.BLACK}
-              shape={ButtonShape.ROUNDED_5PX}
-              data-testid="category-submit"
-            >
-              <Trans>Done</Trans>
-            </Button>
-          )
-        }
+      <VisibilityFields
+        control={listForm.control}
+        onChange={onListTypeChange}
       />
 
-      <DrawerComponent
-        drawerId={DrawerIds.CANCEL_LIST_FORM_CONFIRM_DRAWER_ID}
-        isShowClose={false}
-        header={<Trans>Your edits will be lost if you cancel!</Trans>}
-        subHeader={
-          <Trans>
-            If you cancel, everything you&apos;ve entered will be lost.
-          </Trans>
+      <CategoryDrawer
+        isCategoryLoading={categoriesLoading}
+        categories={radioChoice}
+        control={listForm.control}
+        onCategoryChange={onCategoryChange}
+        isCreate={isCreate}
+        disabledNext={
+          !listForm.formState.isDirty || listForm.watch('title') === ''
         }
-        content={<></>}
-        startFooter={
-          <Button
-            onClick={() => {
-              closeCancelDrawer();
-              navigateTo.backward();
-            }}
-            variant={ButtonVariant.WARNING}
-            shape={ButtonShape.ROUNDED_5PX}
-            data-testid="cancel-confirm"
-          >
-            <Trans>Cancel Editing</Trans>
-          </Button>
-        }
-        endFooter={
-          <Button
-            onClick={() => closeCancelDrawer()}
-            variant={ButtonVariant.BLACK}
-            shape={ButtonShape.ROUNDED_5PX}
-            data-testid="cancel-continue"
-          >
-            <Trans>Continue Editing</Trans>
-          </Button>
-        }
+        onNext={() => void listForm.handleSubmit(onSubmit, onSubmitFailed)()}
+        onDone={() => closeCategoryDrawer()}
       />
 
-      <DrawerComponent
-        drawerId={DrawerIds.LIST_DRAFT_DRAWER_ID}
-        isShowClose={true}
-        header={<Trans>Still got an draft waiting for you</Trans>}
-        subHeader={<Trans>Would you like to delete it or keep editing?</Trans>}
-        content={<></>}
-        startFooter={
-          <Button
-            onClick={() => {
-              removeLocalStorage(LocalStorageKey.LIST_DRAFT);
-              closeDraftDrawer();
-            }}
-            variant={ButtonVariant.WARNING}
-            shape={ButtonShape.ROUNDED_5PX}
-            data-testid="draft-delete"
-          >
-            <Trans>Delete draft</Trans>
-          </Button>
-        }
-        endFooter={
-          <Button
-            onClick={() => onRestoreDraft()}
-            variant={ButtonVariant.BLACK}
-            shape={ButtonShape.ROUNDED_5PX}
-            data-testid="draft-keep"
-          >
-            <Trans>Keep editing</Trans>
-          </Button>
-        }
+      <CancelConfirmDrawer
+        onCancelEditing={() => {
+          closeCancelDrawer();
+          navigateTo.backward();
+        }}
+        onContinue={() => closeCancelDrawer()}
+      />
+
+      <DraftDrawer
+        onDelete={() => {
+          removeLocalStorage(LocalStorageKey.LIST_DRAFT);
+          closeDraftDrawer();
+        }}
+        onKeep={() => onRestoreDraft()}
       />
 
       {fieldConfig && <EditFieldFakePageComponent {...fieldConfig} />}
     </>
   );
-};
+});
 export default ListForm;

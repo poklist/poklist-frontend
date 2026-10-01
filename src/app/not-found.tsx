@@ -28,7 +28,7 @@ export default function ErrorPage() {
               priority
             />
             <h2 className="text-center text-h2 font-bold text-black-text-01">
-              <Trans>Oops something is wrong!</Trans>
+              <Trans>哎呀！網頁又在耍脾氣啦！</Trans>
             </h2>
           </div>
         </div>

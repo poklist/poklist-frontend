@@ -141,7 +141,7 @@ const ListSelectorFakePage: React.FC = () => {
                 onClick={() => setSelectedList('')}
                 className="w-full flex-1"
               >
-                <Trans>Save Idea</Trans>
+                <Trans>儲存靈感</Trans>
               </div>
             </div>
           </div>
@@ -150,15 +150,12 @@ const ListSelectorFakePage: React.FC = () => {
               onClick={() => setSelectedList('')}
               className="w-full border-b border-note-gray-06 bg-gray-note-05 p-4"
             >
-              <Trans>Select a list to save this idea</Trans>
+              <Trans>選擇一個名單存入靈感</Trans>
             </div>
             <div className="max-h-[calc(100dvh-113px)] overflow-y-auto">
               {!lists || lists?.length <= 0 ? (
                 <div className="p-4">
-                  <Trans>
-                    Looks like you haven’t made a list yet. Let’s create one
-                    now!
-                  </Trans>
+                  <Trans>目前沒有任何名單。立即建立一個新名單吧！</Trans>
                 </div>
               ) : (
                 lists?.map((list) => {
@@ -191,7 +188,7 @@ const ListSelectorFakePage: React.FC = () => {
                           onClick={() => onCreateIdea()}
                           className="flex min-w-16 items-center gap-0.5 rounded-lg bg-black-text-01 px-2 py-1.5 font-semibold leading-snug text-white"
                         >
-                          <Trans>Save</Trans>
+                          <Trans>儲存</Trans>
                           <IconRightArrowSave
                             width={14}
                             height={12}
@@ -220,7 +217,7 @@ const ListSelectorFakePage: React.FC = () => {
                     className="flex justify-start gap-2 px-5"
                   >
                     <IconAdd width={12} height={12} className="text-white" />
-                    <Trans>Create a new list</Trans>
+                    <Trans>建立新名單</Trans>
                   </Button>
                 </div>
               </div>

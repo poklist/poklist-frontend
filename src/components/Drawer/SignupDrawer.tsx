@@ -36,8 +36,8 @@ const DEFAULT_CONFIG: SignupVariantConfig = {
   height: 179,
   className: 'rotate-[-8deg]',
   alt: 'Mascot with Relist',
-  title: msg`You’re good at this`,
-  subtitle: msg`Sign up to unlock more`,
+  title: msg`哇，你很會開單耶！`,
+  subtitle: msg`完成註冊，有機會獲得更多創作權限`,
 };
 
 const VARIANT_CONFIG: Record<SignupDrawerVariant, SignupVariantConfig> = {
@@ -46,25 +46,25 @@ const VARIANT_CONFIG: Record<SignupDrawerVariant, SignupVariantConfig> = {
     width: 116,
     height: 144,
     alt: 'Mascot for list quota reached',
-    title: msg`You’ve reached the list limit…`,
-    subtitle: msg`Sign up free to unlock more`,
+    title: msg`建立名單額度已滿…`,
+    subtitle: msg`免費註冊，建立更多名單！`,
   },
   [SignupDrawerVariant.IDEA_FULL]: {
     src: '/images/mascot/mascot-fly.svg',
     width: 180,
     height: 144,
     alt: 'Mascot for idea quota reached',
-    title: msg`This list is full…`,
-    subtitle: msg`Choose another list, or sign up free to unlock more access. `,
+    title: msg`此名單已滿了…`,
+    subtitle: msg`完成註冊，有機會獲得更多創作權限`,
   },
   [SignupDrawerVariant.ALL_FULL]: {
     src: '/images/mascot/mascot-love-eyes.svg',
     width: 127,
     height: 144,
     alt: 'Mascot for all quota reached',
-    title: msg`Trial limit reached…`,
-    subtitle: msg`Good taste deserves space. 
-    Sign up free to unlock it. `,
+    title: msg`哇！體驗額度已用完…`,
+    subtitle: msg`你的好名單，值得有更多空間。
+免費註冊，享受更多創作！`,
   },
 };
 
@@ -104,7 +104,7 @@ const SignupDrawer: React.FC = () => {
         size={ButtonSize.LG}
         shape={ButtonShape.ROUNDED_FULL}
       >
-        <Trans>Sign Up</Trans>
+        <Trans>立即註冊</Trans>
       </Button>
     </div>
   );

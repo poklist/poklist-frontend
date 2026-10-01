@@ -59,7 +59,7 @@ export const LanguageProvider = ({
     ) {
       void activateI18n(userSelectedLanguage);
     } else {
-      void activateI18n(Language.EN);
+      void activateI18n(Language.ZH_TW);
     }
     // Activate the default locale on page load
   }, []);
@@ -72,7 +72,7 @@ export const LanguageProvider = ({
 
 // Available language options for the selectors
 const i18nOptions = [
-  { label: 'English', value: Language.EN },
+  // { label: 'English', value: Language.EN },
   { label: '繁體中文', value: Language.ZH_TW },
 ];
 
@@ -99,7 +99,7 @@ const atSelectedLanguage = (value: Language) => {
  * ```
  */
 export const LanguageSelector: React.FC = () => {
-  const [language, setLanguage] = useState(Language.EN);
+  const [language, setLanguage] = useState(Language.ZH_TW);
 
   useEffect(() => {
     const userSelectedLanguage = getLocalStorage(
@@ -136,7 +136,7 @@ export const LanguageSelector: React.FC = () => {
  * ```
  */
 export const LanguageToggleButton: React.FC = () => {
-  const [language, setLanguage] = useState(Language.EN);
+  const [language, setLanguage] = useState(Language.ZH_TW);
 
   useEffect(() => {
     const userSelectedLanguage = getLocalStorage(

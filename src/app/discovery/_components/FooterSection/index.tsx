@@ -16,7 +16,7 @@ const FooterSection = () => {
     <section className="flex flex-col bg-yellow-bright-01">
       <div className="flex flex-col gap-6 border-y border-black-text-01 px-6 py-10">
         <h1 className="text-h1 font-bold text-black-text-01">
-          <Trans>Your lists say more than posts ever could.</Trans>
+          <Trans>你的生活精選，比誰都有料</Trans>
         </h1>
 
         <div
@@ -24,7 +24,7 @@ const FooterSection = () => {
           onClick={() => navigateTo.official()}
         >
           <p className="text-h1 font-bold text-black-text-01">
-            <Trans>Next wave of content</Trans>
+            <Trans>下個內容浪潮</Trans>
           </p>
           <ChevronRight className="h-5 w-5" />
         </div>

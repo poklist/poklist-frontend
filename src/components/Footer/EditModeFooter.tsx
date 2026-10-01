@@ -16,7 +16,7 @@ const EditModeFooter: React.FC<IEditModeFooterProps> = ({
   onClose,
   title,
   onSave,
-  onSaveText = t`Save`,
+  onSaveText = t`儲存`,
   value,
   disabled = true,
 }: IEditModeFooterProps) => {

@@ -12,10 +12,10 @@ const FollowingListDrawer = ({ followingList }: FollowingListDrawerProps) => {
     <FollowRelationsDrawer
       drawerTrigger={
         <>
-          {followingList?.length || '0'} <Trans>Following</Trans>
+          {followingList?.length || '0'} <Trans>正追蹤</Trans>
         </>
       }
-      headerTitle={`${followingList?.length || '0'} ${t`Following`}`}
+      headerTitle={`${followingList?.length || '0'} ${t`正追蹤`}`}
       content={(onClose) => (
         <>
           {followingList && followingList.length > 0 ? (
@@ -28,9 +28,7 @@ const FollowingListDrawer = ({ followingList }: FollowingListDrawerProps) => {
             ))
           ) : (
             <div className="px-4">
-              <Trans>
-                Empty for now, but followings will appear here soon.
-              </Trans>
+              <Trans>這裡現在還是空的，追蹤朋友以後就會顯示在這。</Trans>
             </div>
           )}
         </>

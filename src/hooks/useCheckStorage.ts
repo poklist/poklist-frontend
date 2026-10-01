@@ -17,7 +17,7 @@ const useCheckStorage = () => {
     logout();
     navigateTo.discovery();
     toast({
-      title: t`The app is outdated, please login again`,
+      title: t`網頁更新，請重新登入`,
       variant: MessageType.ERROR,
     });
   }, [isLoggedIn, navigateTo]);

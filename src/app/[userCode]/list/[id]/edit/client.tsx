@@ -1,15 +1,17 @@
 'use client';
 
 import { GetUserListsResponse, PutListsRequest } from '@/api/query/lists';
-import ListForm from '@/app/list/_components/Form';
+import ListForm, { ListFormHandle } from '@/app/list/_components/Form';
+import EditModeHeader from '@/components/Header/EditModeHeader';
 import { useGetListInfiniteIdeas } from '@/hooks/api/lists/useGetListInfiniteIdeas';
 import { usePutList } from '@/hooks/api/lists/usePutList';
 import { useAuthCheck, useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { useUserRouteContext } from '@/hooks/useUserRouteContext';
 import useUserStore from '@/stores/useUserStore';
+import { t } from '@lingui/macro';
 import { useParams } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 const EditListPage: React.FC = () => {
   const { userCode } = useUserRouteContext();
@@ -19,6 +21,8 @@ const EditListPage: React.FC = () => {
   const { checkAuthAndRedirect } = useAuthCheck();
   const { me } = useUserStore();
   const { withAuth } = useAuthWrapper();
+
+  const formRef = useRef<ListFormHandle>(null);
 
   const { data: list } = useGetListInfiniteIdeas({
     listID,
@@ -89,7 +93,13 @@ const EditListPage: React.FC = () => {
 
   return (
     <div className="flex h-full flex-col gap-2">
+      <EditModeHeader
+        title={t`編輯名單`}
+        onClose={() => formRef.current?.requestClose()}
+      />
       <ListForm
+        ref={formRef}
+        isEdit
         defaultListInfo={listCoverDraft}
         dismissCallback={onDismissEdit}
         completedCallback={onEditList}

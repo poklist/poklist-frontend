@@ -66,7 +66,10 @@ src/
 │   ├── discovery/        # 首頁 feed（lazy IntersectionObserver、scroll restore via sessionStorage）
 │   ├── official/         # 官方介紹頁
 │   ├── settings/         # 設定（語言切換、Block、Links）
-│   ├── idea/、list/      # 建立 / 編輯流程（Form 在這裡）
+│   ├── idea/、list/      # 建立 / 編輯流程。list Form 已模組化：
+│   │                      #   list/_components/Form/{index.tsx 容器, _components/* 欄位與 drawer, _hooks/useListDraft}
+│   │                      #   header 由頁面父層（list/create/page.tsx、[userCode]/list/[id]/edit/client.tsx）提供，
+│   │                      #   存檔鈕內聯於表單底部（ListForm 以 forwardRef 露 requestClose 給父層 header）
 │   ├── error/、goToMobile/、not-found.tsx
 │   └── _layout/_shared/  # 桌面包殼用的背景、BottomNav、PromptText…
 ├── api/                  # API 層：ts-rest contracts + zod schemas + react-query 整合

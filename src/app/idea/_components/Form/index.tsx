@@ -78,7 +78,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
 
   const onOpenFakePage = () => {
     setFieldConfig({
-      fieldName: t`Cover Image`,
+      fieldName: t`封面圖片`,
       variant: EditFieldVariant.IMAGE,
       onFieldValueSet: (value: string | undefined) => {
         if (value !== undefined && value !== null) {
@@ -209,12 +209,12 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
       <EditModeHeader
         onClose={() => onDismiss()}
         title={
-          !mounted || previousIdeaInfo.title !== '' ? t`Edit Idea` : t`Add Idea`
+          !mounted || previousIdeaInfo.title !== '' ? t`編輯靈感` : t`新增靈感`
         }
         disabled={!ideaForm.formState.isDirty || ideaForm.watch('title') === ''}
         onSave={() => void ideaForm.handleSubmit(onSubmit, onSubmitFailed)()}
         saveButtonText={
-          !mounted || previousIdeaInfo.title !== '' ? t`Done` : t`Next`
+          !mounted || previousIdeaInfo.title !== '' ? t`完成` : t`下一步`
         }
       />
       <form
@@ -243,7 +243,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
             return (
               <div className="relative flex items-center justify-center font-bold">
                 <Textarea
-                  placeholder={t`What’s your idea? (must-have)`}
+                  placeholder={t`在這輸入靈感 （必填）…`}
                   className="relative min-h-16 w-full resize-none overflow-hidden rounded-lg border border-black-tint-04 px-3 py-4 text-lg placeholder:text-base focus:border-black focus:pb-10 focus:ring-1 focus:ring-black"
                   rows={1}
                   {...field}
@@ -279,7 +279,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
                 <IconTextarea className="absolute left-3 top-4 z-10" />
                 <>
                   <Textarea
-                    placeholder={t`Description`}
+                    placeholder={t`描述`}
                     className="relative min-h-14 w-full resize-none overflow-hidden rounded-lg border border-black-tint-04 py-4 pl-10 pr-3 focus:border-black focus:pb-10 focus:ring-1 focus:ring-black"
                     rows={1}
                     {...field}
@@ -309,7 +309,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
           <IconExteriorLink className="absolute left-3 top-4 z-10" />
           <Input
             {...ideaForm.register('externalLink')}
-            placeholder={t`Link`}
+            placeholder={t`連結`}
             className="line-clamp-1 block min-h-14 w-full truncate border-black-tint-04 py-4 pl-10 pr-3 focus:border-black focus:ring-1 focus:ring-black"
           />
         </div>
@@ -318,10 +318,8 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
       <DrawerComponent
         drawerId={DrawerIds.CANCEL_IDEA_FORM_CONFIRM_DRAWER_ID}
         isShowClose={false}
-        header={<Trans>Discarding your edits?</Trans>}
-        subHeader={
-          <Trans>If you choose to discard, you’ll lose this edit.</Trans>
-        }
+        header={<Trans>要放棄編輯嗎？</Trans>}
+        subHeader={<Trans>若放棄，您編輯的內容將不會被保存。</Trans>}
         content={<></>}
         startFooter={
           <Button
@@ -332,7 +330,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
             variant={ButtonVariant.WARNING}
             shape={ButtonShape.ROUNDED_5PX}
           >
-            <Trans>Discard</Trans>
+            <Trans>放棄編輯</Trans>
           </Button>
         }
         endFooter={
@@ -341,7 +339,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
             variant={ButtonVariant.BLACK}
             shape={ButtonShape.ROUNDED_5PX}
           >
-            <Trans>Continue editing</Trans>
+            <Trans>繼續編輯</Trans>
           </Button>
         }
       />
@@ -349,8 +347,8 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
       <DrawerComponent
         drawerId={DrawerIds.IDEA_DRAFT_DRAWER_ID}
         isShowClose={true}
-        header={<Trans>Still got an draft waiting for you</Trans>}
-        subHeader={<Trans>Would you like to delete it or keep editing?</Trans>}
+        header={<Trans>你有一個未完成的靈感草稿</Trans>}
+        subHeader={<Trans>要刪除，還是繼續編輯？</Trans>}
         content={<></>}
         startFooter={
           <Button
@@ -361,7 +359,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
             variant={ButtonVariant.WARNING}
             shape={ButtonShape.ROUNDED_5PX}
           >
-            <Trans>Delete draft</Trans>
+            <Trans>刪除草稿</Trans>
           </Button>
         }
         endFooter={
@@ -370,7 +368,7 @@ const IdeaFormComponent: React.FC<IIdeaFormProps> = ({
             variant={ButtonVariant.BLACK}
             shape={ButtonShape.ROUNDED_5PX}
           >
-            <Trans>Keep editing</Trans>
+            <Trans>繼續編輯</Trans>
           </Button>
         }
       />

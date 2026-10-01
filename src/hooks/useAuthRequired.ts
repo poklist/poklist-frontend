@@ -16,7 +16,7 @@ export const useAuthRequired = () => {
   const handleAuthRequired = useCallback(() => {
     setIsLoginDrawerOpen(true);
     toast({
-      title: t`Please login to do this action`,
+      title: t`請先登入以進行此操作`,
       variant: MessageType.ERROR,
     });
   }, [setIsLoginDrawerOpen]);

@@ -36,7 +36,9 @@ export const ErrorDrawer: React.FC = () => {
     <DrawerComponent
       drawerId={DrawerIds.ERROR_DRAWER_ID}
       isShowClose={true}
-      header={errorDrawerMessage.title}
+      header={
+        <span data-testid="error-drawer">{errorDrawerMessage.title}</span>
+      }
       subHeader={errorDrawerMessage.content}
       // 提供自定義的關閉處理函數
       onClose={handleClose}

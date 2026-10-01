@@ -55,7 +55,7 @@ const ImageCropper: React.FC<IImageCropperProps> = ({
           e.currentTarget as HTMLImageElement;
         if (naturalWidth < MIN_DIMENSION || naturalHeight < MIN_DIMENSION) {
           // FUTURE: hint/warning design discussion
-          setError(t`Image must be at least 150x150px.`);
+          setError(t`圖片必須至少 150x150 像素`);
           return setImgSrc('');
         }
       });
@@ -92,7 +92,7 @@ const ImageCropper: React.FC<IImageCropperProps> = ({
       >
         <label className="flex w-fit flex-col">
           <div className="flex h-12 items-center justify-center gap-2 rounded-lg bg-black px-8 text-t1 text-white">
-            <Trans>Choose your image</Trans>
+            <Trans>選擇圖片</Trans>
           </div>
           <Input
             type="file"
@@ -102,7 +102,7 @@ const ImageCropper: React.FC<IImageCropperProps> = ({
           />
         </label>
         <div className="text-xs text-gray-storm-01">
-          <Trans>500x500px, JPG or PNG, max 4MB</Trans>
+          <Trans>500x500像素，限 JPG 或 PNG，最大4MB</Trans>
         </div>
       </div>
       {!!error && <p className="text-xs text-red-400">{error}</p>}

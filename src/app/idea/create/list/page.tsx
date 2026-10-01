@@ -174,13 +174,13 @@ const TemporaryCreateListPage: React.FC = () => {
     <div className="flex min-h-screen flex-col">
       <EditModeHeader
         onClose={() => onDismiss()}
-        title={t`Create Idea List`}
+        title={t`建立靈感名單`}
         disabled={listForm.watch('title') === ''}
         onSave={() => openCategoryDrawer()}
-        saveButtonText={t`Next`}
+        saveButtonText={t`下一步`}
       />
       <div className="mt-14 border-b border-note-gray-06 bg-gray-note-05 p-4 text-sm text-black-gray-03">
-        <Trans>Give it a fun title! Like: My weekend musts</Trans>
+        <Trans>取個響亮的名稱吧！像是：我最愛的週末小去處</Trans>
       </div>
       <form
         onSubmit={() => {
@@ -196,7 +196,7 @@ const TemporaryCreateListPage: React.FC = () => {
               <div className="flex flex-col items-center justify-center">
                 <div className="relative flex w-11/12 items-center justify-center font-extrabold">
                   <Textarea
-                    placeholder={t`This is the title of your list`}
+                    placeholder={t`在這輸入名單標題`}
                     className="relative min-h-20 w-full resize-none overflow-hidden rounded-lg border border-black-tint-04 px-3 py-4 text-center text-h1 placeholder:text-h1 focus:border-black focus:pb-10 focus:ring-1 focus:ring-black"
                     rows={1}
                     {...field}
@@ -221,7 +221,7 @@ const TemporaryCreateListPage: React.FC = () => {
                   )}
                 </div>
                 {/* <div className="mt-2 w-11/12 text-xs text-black-gray-03">
-                  <Trans>Don’t worry, you can edit more details later!</Trans>
+                  <Trans>放心，稍後可以為名單編輯更多資訊！</Trans>
                 </div> */}
               </div>
             );
@@ -229,9 +229,9 @@ const TemporaryCreateListPage: React.FC = () => {
         />
         <div className="mt-8 flex items-center justify-between">
           <div className="text-t1 font-semibold text-black-text-01">
-            <Trans>Make this list secret</Trans>
+            <Trans>隱藏這份名單</Trans>
             <div className="text-t2 text-black-gray-03">
-              <Trans>Only you will see this list</Trans>
+              <Trans>只有你能看見這份名單</Trans>
             </div>
           </div>
           <Controller
@@ -251,8 +251,8 @@ const TemporaryCreateListPage: React.FC = () => {
       <DrawerComponent
         drawerId={DrawerIds.CATEGORY_DRAWER_ID}
         isShowClose={false}
-        header={<Trans>List Topic</Trans>}
-        subHeader={<Trans>Choose a topic that vibes with your List.</Trans>}
+        header={<Trans>名單主題</Trans>}
+        subHeader={<Trans>選擇一項接近此份名單的分類</Trans>}
         content={
           !categoriesLoading && (
             <div className="mb-10 mt-6">
@@ -283,7 +283,7 @@ const TemporaryCreateListPage: React.FC = () => {
               variant={ButtonVariant.BLACK}
               shape={ButtonShape.ROUNDED_5PX}
             >
-              <Trans>Next</Trans>
+              <Trans>下一步</Trans>
             </Button>
           ) : (
             <Button
@@ -291,7 +291,7 @@ const TemporaryCreateListPage: React.FC = () => {
               variant={ButtonVariant.BLACK}
               shape={ButtonShape.ROUNDED_5PX}
             >
-              <Trans>Done</Trans>
+              <Trans>完成</Trans>
             </Button>
           )
         }
@@ -299,12 +299,8 @@ const TemporaryCreateListPage: React.FC = () => {
       <DrawerComponent
         drawerId={DrawerIds.CANCEL_LIST_FORM_CONFIRM_DRAWER_ID}
         isShowClose={false}
-        header={<Trans>Your edits will be lost if you cancel!</Trans>}
-        subHeader={
-          <Trans>
-            If you cancel, everything you&apos;ve entered will be lost.
-          </Trans>
-        }
+        header={<Trans>取消後，資料就飛走囉！</Trans>}
+        subHeader={<Trans>如果取消，所填的內容都會消失</Trans>}
         content={<></>}
         startFooter={
           <Button
@@ -315,7 +311,7 @@ const TemporaryCreateListPage: React.FC = () => {
             variant={ButtonVariant.WARNING}
             shape={ButtonShape.ROUNDED_5PX}
           >
-            <Trans>Cancel Editing</Trans>
+            <Trans>取消編輯</Trans>
           </Button>
         }
         endFooter={
@@ -324,7 +320,7 @@ const TemporaryCreateListPage: React.FC = () => {
             variant={ButtonVariant.BLACK}
             shape={ButtonShape.ROUNDED_5PX}
           >
-            <Trans>Continue Editing</Trans>
+            <Trans>繼續編輯</Trans>
           </Button>
         }
       />

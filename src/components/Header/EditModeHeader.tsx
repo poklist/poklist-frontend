@@ -4,7 +4,7 @@ import { t } from '@lingui/macro';
 interface EditModeHeaderProps {
   onClose: () => void;
   title: string;
-  onSave: (value?: string) => void;
+  onSave?: (value?: string) => void;
   saveButtonText?: string;
   value?: string;
   disabled?: boolean;
@@ -14,7 +14,7 @@ const EditModeHeader: React.FC<EditModeHeaderProps> = ({
   onClose,
   title,
   onSave,
-  saveButtonText = t`Save`,
+  saveButtonText = t`儲存`,
   value,
   disabled = true,
 }: EditModeHeaderProps) => {
@@ -35,15 +35,17 @@ const EditModeHeader: React.FC<EditModeHeaderProps> = ({
         </div>
         <p className="text-base font-bold">{title}</p>
       </div>
-      <Button
-        variant={ButtonVariant.BLACK}
-        shape={ButtonShape.ROUNDED_5PX}
-        disabled={disabled}
-        data-testid="edit-mode-save"
-        onClick={() => onSave(value)}
-      >
-        <p className="text-base font-bold">{saveButtonText}</p>
-      </Button>
+      {onSave && (
+        <Button
+          variant={ButtonVariant.BLACK}
+          shape={ButtonShape.ROUNDED_5PX}
+          disabled={disabled}
+          data-testid="edit-mode-save"
+          onClick={() => onSave(value)}
+        >
+          <p className="text-base font-bold">{saveButtonText}</p>
+        </Button>
+      )}
     </div>
   );
 };

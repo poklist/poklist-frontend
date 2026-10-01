@@ -78,26 +78,26 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
   const dropdownItems: DropdownItem[] = [
     {
       type: DropdownItemType.ITEM,
-      label: t`Edit List Info`,
+      label: t`編輯名單資訊`,
       onClick: () => navigateTo.editList(me.userCode, data.id.toString()),
       icon: <IconEdit />,
     },
     {
       type: DropdownItemType.ITEM,
-      label: t`Add Idea`,
+      label: t`新增靈感`,
       onClick: () => navigateTo.createIdea(buildIdeaCreateUrl()),
       icon: <IconAddCircle />,
     },
     {
       type: DropdownItemType.ITEM,
-      label: t`Reorder Idea`,
+      label: t`排序靈感`,
       onClick: () => navigateTo.reorderList(me.userCode, data.id.toString()),
       icon: <IconSort />,
     },
     { type: DropdownItemType.SEPARATOR },
     {
       type: DropdownItemType.ITEM,
-      label: t`Delete List`,
+      label: t`刪除名單`,
       onClick: () => openDeleteDrawer(),
       icon: <TrashIcon />,
       danger: true,
@@ -178,9 +178,9 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
         ) : (
           <div className="mt-4 w-full whitespace-pre-line px-4 text-t1 text-black-gray-03">
             {isOwner ? (
-              <Trans>This list has no ideas yet.\nAdd your first idea.</Trans>
+              <Trans>這份名單還空空的。\n先來新增第一個靈感吧。</Trans>
             ) : (
-              <Trans>Ideas will appear here soon.\nFollow for updates.</Trans>
+              <Trans>靈感將會出現在這裡。\n追蹤，掌握更新。</Trans>
             )}
           </div>
         )}
@@ -198,15 +198,8 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
       <DrawerComponent
         drawerId={DrawerIds.DELETE_LIST_DRAWER_ID}
         isShowClose={true}
-        header={
-          <Trans>Deleting the list title will also erase all ideas!</Trans>
-        }
-        subHeader={
-          <Trans>
-            Permanently delete the entire list and all its ideas. This action
-            cannot be undone!
-          </Trans>
-        }
+        header={<Trans>刪掉名單標題後，連所有靈感都會消失！</Trans>}
+        subHeader={<Trans>永久刪除整個名單及所有靈感，這將無法復原！</Trans>}
         startFooter={
           <Button
             onClick={() => {
@@ -216,7 +209,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
             variant={ButtonVariant.WARNING}
             shape={ButtonShape.ROUNDED_5PX}
           >
-            <Trans>Delete List and All Ideas</Trans>
+            <Trans>刪除名單與所有靈感</Trans>
           </Button>
         }
         endFooter={
@@ -225,7 +218,7 @@ const ListCard: React.FC<IListCardProps> = ({ data }: IListCardProps) => {
             variant={ButtonVariant.BLACK}
             shape={ButtonShape.ROUNDED_5PX}
           >
-            <Trans>Cancel</Trans>
+            <Trans>取消</Trans>
           </Button>
         }
       />

@@ -18,7 +18,7 @@ export const AddIdeaRow: React.FC<AddIdeaRowProps> = ({
         height={18}
         className="rounded-full bg-yellow-bright-01"
       />
-      <Trans>Add an idea</Trans>
+      <Trans>新增靈感</Trans>
     </div>
   </div>
 );

@@ -43,9 +43,9 @@ const IdeaListSection: React.FC<IdeaListProps> = ({
     <div className="flex max-h-dvh flex-col">
       <div className="mt-14 border-b border-note-gray-06 bg-gray-note-05 p-4 text-sm text-black-gray-03">
         {!ideaList || ideaList.length === 0 ? (
-          <Trans>Your ideas live here. Create one!</Trans>
+          <Trans>新增的靈感會在這裡，丟個靈感進來吧！</Trans>
         ) : (
-          <Trans>Drag the lines on the left to reorder.</Trans>
+          <Trans>拖曳左側三條線可排序</Trans>
         )}
       </div>
       {ideaList && (

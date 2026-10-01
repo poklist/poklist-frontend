@@ -15,7 +15,7 @@ export const EditFieldFakePageComponent: React.FC<IEditFieldConfig> = ({
   variant,
   onFieldValueSet,
   editingFieldValue,
-  placeholder = t`Enter your text here`,
+  placeholder = t`請輸入內容`,
   characterLimit,
   allowEmpty = true,
   cropShape = 'rect',
@@ -87,7 +87,7 @@ export const EditFieldFakePageComponent: React.FC<IEditFieldConfig> = ({
             disabled={isSaveDisabled}
             onClose={() => closeFakePage()}
             title={fieldName}
-            onSaveText={t`Done`}
+            onSaveText={t`完成`}
             onSave={() => onEditSave()}
             value={fieldValue}
           />

@@ -118,10 +118,10 @@ const ReorderIdeaPage: React.FC = () => {
     <>
       <EditModeHeader
         onClose={() => navigateTo.backward()}
-        title={t`Reorder Ideas`}
+        title={t`排序靈感`}
         disabled={!isOrderModified}
         onSave={() => onConfirmReorder()}
-        saveButtonText={t`Done`}
+        saveButtonText={t`完成`}
       />
       <div className="flex min-h-screen flex-col">
         <IdeaList

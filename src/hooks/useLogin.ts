@@ -47,8 +47,8 @@ export const useLogin = () => {
   const handleLoginError = () => {
     setIsLoginDrawerOpen(false);
     setErrorDrawerMessage({
-      title: t`Right now, only invited users can log in`,
-      content: t`Already got your invite? Jump in and apply now!`,
+      title: t`現在僅開放受邀請的用戶登入體驗`,
+      content: t`收到邀請了嗎？現在就去申請加入！`,
     });
   };
 

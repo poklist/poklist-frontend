@@ -56,10 +56,10 @@ const CreateListOrIdeaDrawer: React.FC = () => {
       </div>
       <div className="flex flex-col gap-2">
         <h2 className="text-2xl font-bold">
-          <Trans>What’s on your mind?</Trans>
+          <Trans>說說你的好點子</Trans>
         </h2>
         <p className="text-t1">
-          <Trans>A list groups your ideas. Start wherever you vibe.</Trans>
+          <Trans>名單裝著每一筆靈感，從哪裡開寫，隨心所欲。</Trans>
         </p>
       </div>
 
@@ -70,7 +70,7 @@ const CreateListOrIdeaDrawer: React.FC = () => {
           size={ButtonSize.H40}
           shape={ButtonShape.ROUNDED_8PX}
         >
-          <Trans>Create List</Trans>
+          <Trans>建立新名單</Trans>
         </Button>
 
         <Button
@@ -79,7 +79,7 @@ const CreateListOrIdeaDrawer: React.FC = () => {
           size={ButtonSize.H40}
           shape={ButtonShape.ROUNDED_8PX}
         >
-          <Trans>Add Idea</Trans>
+          <Trans>新增靈感</Trans>
         </Button>
       </div>
     </div>

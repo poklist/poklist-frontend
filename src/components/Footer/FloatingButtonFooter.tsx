@@ -47,7 +47,7 @@ const FloatingButtonFooter: React.FC<IFooterProps> = ({
   const handleCopyHref = useAsyncAction(async () => {
     await copy(`${window.location.href}`);
     toast({
-      title: t`Copied to clipboard`,
+      title: t`已複製到剪貼簿`,
       variant: MessageType.SUCCESS,
     });
   });
@@ -92,7 +92,7 @@ const FloatingButtonFooter: React.FC<IFooterProps> = ({
               className={cn(isLiked ? 'stroke-red-warning-01' : 'stroke-black')}
               fill={isLiked ? '#EB6052' : 'none'}
             />
-            <Trans>Like</Trans>
+            <Trans>喜歡</Trans>
           </Button>
         )}
         <Button
@@ -101,7 +101,7 @@ const FloatingButtonFooter: React.FC<IFooterProps> = ({
           className="flex items-center gap-1.5 text-sm"
         >
           <IconLink />
-          <Trans>Copy</Trans>
+          <Trans>複製</Trans>
         </Button>
       </div>
       {hasCreateListButton && (

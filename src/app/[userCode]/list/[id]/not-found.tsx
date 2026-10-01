@@ -28,7 +28,7 @@ export default function ErrorPage() {
               priority
             />
             <h2 className="text-center text-h2 font-bold text-black-text-01">
-              <Trans>We couldn’t find this page.</Trans>
+              <Trans>哇～找不到這個內容了！</Trans>
             </h2>
           </div>
         </div>

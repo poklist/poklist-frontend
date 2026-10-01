@@ -70,7 +70,7 @@ export const LoginDrawer = () => {
           </div>
           <div className="flex flex-col justify-center gap-6 border-t border-t-black bg-yellow-bright-01 pb-px pt-8">
             <div className="text-center text-xl font-bold text-black-text-01">
-              <Trans>Let’s jump in</Trans>
+              <Trans>免費登入 立即體驗</Trans>
             </div>
             <div className="mx-[4.5rem] mb-px rounded-full pb-0.5 ring-1 ring-black">
               <GoogleLogin
@@ -90,7 +90,7 @@ export const LoginDrawer = () => {
           </div>
           <div className="bg-yellow-bright-01 px-14 py-6 text-center text-t2 text-black-text-01">
             <Trans>
-              By continuing, you agree to our{' '}
+              登入或註冊即表示您已閱讀並同意我們的
               <span
                 className={
                   'cursor-pointer text-black-text-01' +
@@ -100,9 +100,9 @@ export const LoginDrawer = () => {
                 }
                 onClick={() => openWindow(ExternalLinks.TERMS)}
               >
-                Terms of Service
+                《使用者條款》
               </span>
-              ,{' '}
+              與
               <span
                 className={
                   'cursor-pointer text-black-text-01' +
@@ -112,9 +112,9 @@ export const LoginDrawer = () => {
                 }
                 onClick={() => openWindow(ExternalLinks.PRIVACY)}
               >
-                Privacy Policy
+                《隱私權保護政策》
               </span>
-              . You confirm you&apos;re 13+.
+              ，並確認您已年滿 13 歲。
             </Trans>
           </div>
         </DrawerContent>

@@ -35,7 +35,7 @@ const Header: React.FC<IHeaderProps> = ({ title, rightButtonCallback }) => {
         variant={ButtonVariant.BLACK}
         shape={ButtonShape.ROUNDED_5PX}
       >
-        <Trans>Done</Trans>
+        <Trans>完成</Trans>
       </Button>
     </header>
   );

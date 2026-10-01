@@ -48,15 +48,15 @@ export const FeatureSection = ({
   const descriptionRefs = useRef<(HTMLParagraphElement | null)[]>([]);
 
   const categories: Category[] = [
-    { key: 'lifeStyle', label: msg`Life Style` },
-    { key: 'foodAndDrink', label: msg`Food & Drink` },
-    { key: 'culture', label: msg`Culture` },
-    { key: 'travel', label: msg`Travel` },
-    { key: 'entertainment', label: msg`Entertainment` },
-    { key: 'techAndDigital', label: msg`Tech & Digital` },
-    { key: 'personalGrowth', label: msg`Personal Growth` },
-    { key: 'healthAndFitness', label: msg`Health & Fitness` },
-    { key: 'other', label: msg`Other` },
+    { key: 'lifeStyle', label: msg`生活風格` },
+    { key: 'foodAndDrink', label: msg`美食` },
+    { key: 'culture', label: msg`文化` },
+    { key: 'travel', label: msg`旅遊` },
+    { key: 'entertainment', label: msg`娛樂` },
+    { key: 'techAndDigital', label: msg`數位科技` },
+    { key: 'personalGrowth', label: msg`個人成長` },
+    { key: 'healthAndFitness', label: msg`健康與健身` },
+    { key: 'other', label: msg`其他` },
   ];
 
   // preload all images
@@ -132,7 +132,7 @@ export const FeatureSection = ({
             <div className="flex items-center gap-1">
               <p className="text-t2">{selectedList.account}</p>
               <p className="text-t2">
-                <strong>{selectedList.listCount}</strong> {t`Lists`}
+                <strong>{selectedList.listCount}</strong> {t`名單`}
               </p>
             </div>
           </div>

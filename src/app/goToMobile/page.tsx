@@ -21,10 +21,10 @@ export default function GoToMobilePage() {
         />
         <div className="mt-6 flex flex-col items-start">
           <p className="text-start text-h2 font-bold text-black-text-01">
-            <Trans>Relist works best on mobile.</Trans>
+            <Trans>Relist 在手機畫面運作更順暢</Trans>
           </p>
           <p className="text-start text-h2 font-bold text-black-text-01">
-            <Trans>Use a mobile device for the best experience.</Trans>
+            <Trans>使用行動裝置以取得更好的使用體驗</Trans>
           </p>
         </div>
       </div>

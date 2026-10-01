@@ -44,13 +44,10 @@ export const DeleteButton: React.FC<IDeleteButtonProps> = ({
           </div>
           <DrawerHeader className="relative w-full items-center">
             <DrawerTitle>
-              <Trans>Deleting the list title will also erase all ideas!</Trans>
+              <Trans>刪掉名單標題後，連所有靈感都會消失！</Trans>
             </DrawerTitle>
             <DrawerDescription>
-              <Trans>
-                Permanently delete the entire list and all its ideas. This
-                action cannot be undone!
-              </Trans>
+              <Trans>永久刪除整個名單及所有靈感，這將無法復原！</Trans>
             </DrawerDescription>
           </DrawerHeader>
           <div className="mt-4 flex items-center justify-between">
@@ -59,14 +56,14 @@ export const DeleteButton: React.FC<IDeleteButtonProps> = ({
               variant={ButtonVariant.WARNING}
               shape={ButtonShape.ROUNDED_5PX}
             >
-              <Trans>Delete List and All Ideas</Trans>
+              <Trans>刪除名單與所有靈感</Trans>
             </Button>
             <Button
               onClick={() => closeDrawer()}
               variant={ButtonVariant.BLACK}
               shape={ButtonShape.ROUNDED_5PX}
             >
-              <Trans>Cancel</Trans>
+              <Trans>取消</Trans>
             </Button>
           </div>
         </DrawerContent>

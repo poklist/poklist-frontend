@@ -98,10 +98,10 @@ const ListSection: React.FC = () => {
             className="mt-4 flex flex-col items-center text-t1 font-semibold text-black-text-01"
           >
             <p>
-              <Trans>Looks like this page is a bit empty.</Trans>
+              <Trans>看起來這個頁面有點空。</Trans>
             </p>
             <p>
-              <Trans>Follow and check back soon for surprise lists!</Trans>
+              <Trans>先追蹤起來，隨時回來看看吧！</Trans>
             </p>
           </div>
         )}

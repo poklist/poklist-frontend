@@ -16,15 +16,15 @@ const BottomNav = () => {
       )}
     >
       <a href={ExternalLinks.ABOUT} target="_blank" rel="noreferrer">
-        <Trans>About</Trans>
+        <Trans>關於我們</Trans>
       </a>
       <span>|</span>
       <a href={ExternalLinks.TERMS} target="_blank" rel="noreferrer">
-        <Trans>Terms</Trans>
+        <Trans>使用者條款</Trans>
       </a>
       <span>|</span>
       <a href={ExternalLinks.PRIVACY} target="_blank" rel="noreferrer">
-        <Trans>Privacy</Trans>
+        <Trans>隱私權保護政策</Trans>
       </a>
     </div>
   );

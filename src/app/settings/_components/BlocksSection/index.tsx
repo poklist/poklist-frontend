@@ -20,7 +20,7 @@ const BlocksSection: React.FC = () => {
   const { isLoggedIn, logout } = useAuthStore();
   const [drawerContent, setDrawerContent] = useState<React.ReactNode>(null);
 
-  const [language, setLanguage] = useState(Language.EN);
+  const [language, setLanguage] = useState(Language.ZH_TW);
   const [location, setLocation] = useState(Location.TW);
 
   useEffect(() => {
@@ -49,10 +49,10 @@ const BlocksSection: React.FC = () => {
   const openLanguageDrawer = () => {
     // FUTURE: extract to a 'constants' file
     const languageOptions = [
-      {
-        label: 'English',
-        value: Language.EN,
-      },
+      // {
+      //   label: 'English',
+      //   value: Language.EN,
+      // },
       {
         label: '中文',
         value: Language.ZH_TW,
@@ -72,10 +72,10 @@ const BlocksSection: React.FC = () => {
     setDrawerContent(
       <>
         <h3 className="text-h2 font-bold">
-          <Trans>Select your language!</Trans>
+          <Trans>選擇您的語言</Trans>
         </h3>
         <p className="mt-1 text-t1">
-          <Trans>Your preferred language for a better experience.</Trans>
+          <Trans>選擇您喜愛的語言，讓使用體驗更順暢。</Trans>
         </p>
         <div className="mb-10 mt-6">
           <ButtonRadioGroup
@@ -92,11 +92,11 @@ const BlocksSection: React.FC = () => {
   const openLocactionDrawer = () => {
     const locationOptions = [
       {
-        label: t`Taiwan`,
+        label: t`台灣`,
         value: Location.TW,
       },
       {
-        label: t`United States`,
+        label: t`美國`,
         value: Location.US,
       },
     ];
@@ -113,10 +113,10 @@ const BlocksSection: React.FC = () => {
     setDrawerContent(
       <>
         <h3 className="text-h2 font-bold">
-          <Trans>Select your location!</Trans>
+          <Trans>選擇您的所在地</Trans>
         </h3>
         <p className="mt-1 text-t1">
-          <Trans>Your location for a personalized experience.</Trans>
+          <Trans>選擇您的所在地，讓使用體驗更個人化。</Trans>
         </p>
         <div className="mb-10 mt-6">
           <ButtonRadioGroup
@@ -132,52 +132,52 @@ const BlocksSection: React.FC = () => {
 
   const blocks: ILinksBlock[] = [
     {
-      title: t`Preference`,
+      title: t`偏好設定`,
       actionItems: [
         {
-          decription: t`Select your preferred language`,
+          decription: t`選擇您的語言`,
           action: openLanguageDrawer,
         },
         {
-          decription: t`Select your location`,
+          decription: t`選擇您的所在地`,
           action: openLocactionDrawer,
         },
       ],
     },
     {
-      title: t`About Relist`,
+      title: t`關於 Relist`,
       actionItems: [
         {
-          decription: t`Quick start guide`,
+          decription: t`三分鐘上手教學`,
           link: ExternalLinks.TUTORIALS as UrlString,
         },
         {
-          decription: t`Check out Relist`,
+          decription: t`Relist 官網`,
           link: ExternalLinks.INSTAGRAM as UrlString,
         },
         {
-          decription: t`Follow Relist Threads`,
+          decription: t`追蹤 Relist Threads`,
           link: ExternalLinks.THREADS as UrlString,
         },
         {
-          decription: t`Join Relist Discord`,
+          decription: t`加入 Discord 與我們一起優化 Relist`,
           link: ExternalLinks.DISCORD as UrlString,
         },
         {
-          decription: t`Submit feedback or report content`,
+          decription: t`給予意見或內容檢舉`,
           link: ExternalLinks.FEEDBACK as UrlString,
         },
       ],
     },
     {
-      title: t`Others`,
+      title: t`其他`,
       actionItems: [
         {
-          decription: t`About Privacy Policy and Terms of Use`,
+          decription: t`關於隱私政策與使用條款`,
           link: ExternalLinks.PRIVACY as UrlString,
         },
         {
-          decription: t`Contact us`,
+          decription: t`聯繫我們`,
           link: ExternalLinks.CONTACT_US as UrlString,
         },
       ],
@@ -185,20 +185,20 @@ const BlocksSection: React.FC = () => {
   ];
 
   const signInBlock: ILinksBlock = {
-    title: t`Sign In`,
+    title: t`登入`,
     actionItems: [],
   };
 
   if (isLoggedIn) {
     signInBlock.actionItems = [
       {
-        decription: t`Delete Account`,
+        decription: t`刪除帳號`,
         action: () => {
           // TODO: open external link
         },
       },
       {
-        decription: t`Sign Out`,
+        decription: t`登出`,
         action: () => {
           logout();
           navigateTo.home();
@@ -208,7 +208,7 @@ const BlocksSection: React.FC = () => {
   } else {
     signInBlock.actionItems = [
       {
-        decription: t`Sign In`,
+        decription: t`登入`,
         action: () => {
           navigateTo.home();
         },

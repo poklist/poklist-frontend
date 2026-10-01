@@ -60,10 +60,7 @@ const TileSection = () => {
 
   return (
     <section className="flex flex-1 flex-col bg-white">
-      <SectionTitle
-        title={t`Fresh lists from our pocket`}
-        subtitle={t`Updated weekly`}
-      />
+      <SectionTitle title={t`這些靈感名單超有感`} subtitle={t`每週精選更新`} />
       <div ref={containerRef} className="flex gap-2.5 px-2 py-6">
         {columnArrays.map((columnItems, columnIndex) => (
           <div key={columnIndex} className="flex flex-1 flex-col gap-4">

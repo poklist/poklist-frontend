@@ -15,100 +15,100 @@ msgstr ""
 
 #: src/app/[userCode]/list/[id]/_components/IdeaDrawerContent/index.tsx
 #: src/components/Footer/FloatingButtonFooter.tsx
-msgid "Copied to clipboard"
+msgid "已複製到剪貼簿"
 msgstr "已複製到剪貼簿"
 
 #: src/app/[userCode]/list/[id]/_components/IdeaDrawerContent/index.tsx
 #: src/app/idea/_components/Form/index.tsx
-msgid "Edit Idea"
+msgid "編輯靈感"
 msgstr "編輯靈感"
 
 #: src/app/[userCode]/list/[id]/_components/IdeaDrawerContent/index.tsx
-msgid "Delete Idea"
+msgid "刪除靈感"
 msgstr "刪除靈感"
 
 #: src/app/[userCode]/list/[id]/_components/IdeaDrawerContent/index.tsx
 #: src/components/Footer/FloatingButtonFooter.tsx
-msgid "Copy"
+msgid "複製"
 msgstr "複製"
 
 #: src/app/[userCode]/list/[id]/_components/IdeaDrawerContent/index.tsx
-msgid "Are you sure you want to delete this idea?"
+msgid "確定要刪除此靈感嗎？"
 msgstr "確定要刪除此靈感嗎？"
 
 #: src/app/[userCode]/list/[id]/_components/IdeaDrawerContent/index.tsx
-msgid "Once deleted, this idea cannot be recovered!"
+msgid "刪除靈感後將無法復原！"
 msgstr "刪除靈感後將無法復原！"
 
 #: src/app/[userCode]/list/[id]/_components/IdeaDrawerContent/index.tsx
-msgid "Confirm Delete"
+msgid "確定刪除"
 msgstr "確定刪除"
 
 #: src/app/[userCode]/list/[id]/_components/IdeaDrawerContent/index.tsx
 #: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
 #: src/app/[userCode]/list/_components/DeleteButton/index.tsx
 #: src/app/_shared/_components/List/DeleteButton/index.tsx
-msgid "Cancel"
+msgid "取消"
 msgstr "取消"
 
 #: src/app/[userCode]/list/[id]/_components/ListCard/_components/AddIdeaRow/index.tsx
-msgid "Add an idea"
-msgstr "新增靈感"
-
-#: src/app/[userCode]/list/[id]/_components/ListCard/_components/ListCardHeader/index.tsx
-msgid "Recently Updated"
-msgstr "最近更新"
-
-#: src/app/[userCode]/list/[id]/_components/ListCard/_components/ListCardHeader/index.tsx
-msgid "Listing since"
-msgstr "創單自"
-
-#: src/app/[userCode]/list/[id]/_components/ListCard/_components/ListCardHeader/index.tsx
-msgid "Ideas"
-msgstr "靈感"
-
-#: src/app/[userCode]/list/[id]/_components/ListCard/_components/ListCardHeader/index.tsx
-msgid "Likes"
-msgstr "喜歡"
-
-#: src/app/[userCode]/list/[id]/_components/ListCard/_components/ListCardHeader/index.tsx
-msgid "Public"
-msgstr "公開"
-
-#: src/app/[userCode]/list/[id]/_components/ListCard/_components/ListCardHeader/index.tsx
-msgid "Secret"
-msgstr "隱藏"
-
-#: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
-msgid "Edit List Info"
-msgstr "編輯名單資訊"
-
 #: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
 #: src/app/idea/_components/Form/index.tsx
 #: src/components/Drawer/CreateListOrIdeaDrawer.tsx
-msgid "Add Idea"
+msgid "新增靈感"
 msgstr "新增靈感"
 
+#: src/app/[userCode]/list/[id]/_components/ListCard/_components/ListCardHeader/index.tsx
+msgid "最近更新"
+msgstr "最近更新"
+
+#: src/app/[userCode]/list/[id]/_components/ListCard/_components/ListCardHeader/index.tsx
+msgid "創單自"
+msgstr "創單自"
+
+#: src/app/[userCode]/list/[id]/_components/ListCard/_components/ListCardHeader/index.tsx
+#: src/constants/i18n.ts
+msgid "靈感"
+msgstr "靈感"
+
+#: src/app/[userCode]/list/[id]/_components/ListCard/_components/ListCardHeader/index.tsx
+#: src/components/Footer/FloatingButtonFooter.tsx
+msgid "喜歡"
+msgstr "喜歡"
+
+#: src/app/[userCode]/list/[id]/_components/ListCard/_components/ListCardHeader/index.tsx
+msgid "公開"
+msgstr "公開"
+
+#: src/app/[userCode]/list/[id]/_components/ListCard/_components/ListCardHeader/index.tsx
+msgid "隱藏"
+msgstr "隱藏"
+
 #: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
-msgid "Reorder Idea"
+msgid "編輯名單資訊"
+msgstr "編輯名單資訊"
+
+#: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
+#: src/app/[userCode]/list/[id]/reorder/client.tsx
+msgid "排序靈感"
 msgstr "排序靈感"
 
 #: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
-msgid "Delete List"
+msgid "刪除名單"
 msgstr "刪除名單"
 
 #: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
 msgid ""
-"This list has no ideas yet.\n"
-"Add your first idea."
+"這份名單還空空的。\n"
+"先來新增第一個靈感吧。"
 msgstr ""
 "這份名單還空空的。\n"
 "先來新增第一個靈感吧。"
 
 #: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
 msgid ""
-"Ideas will appear here soon.\n"
-"Follow for updates."
+"靈感將會出現在這裡。\n"
+"追蹤，掌握更新。"
 msgstr ""
 "靈感將會出現在這裡。\n"
 "追蹤，掌握更新。"
@@ -116,579 +116,549 @@ msgstr ""
 #: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
 #: src/app/[userCode]/list/_components/DeleteButton/index.tsx
 #: src/app/_shared/_components/List/DeleteButton/index.tsx
-msgid "Deleting the list title will also erase all ideas!"
+msgid "刪掉名單標題後，連所有靈感都會消失！"
 msgstr "刪掉名單標題後，連所有靈感都會消失！"
 
 #: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
 #: src/app/[userCode]/list/_components/DeleteButton/index.tsx
 #: src/app/_shared/_components/List/DeleteButton/index.tsx
-msgid "Permanently delete the entire list and all its ideas. This action cannot be undone!"
+msgid "永久刪除整個名單及所有靈感，這將無法復原！"
 msgstr "永久刪除整個名單及所有靈感，這將無法復原！"
 
 #: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
 #: src/app/[userCode]/list/_components/DeleteButton/index.tsx
 #: src/app/_shared/_components/List/DeleteButton/index.tsx
-msgid "Delete List and All Ideas"
+msgid "刪除名單與所有靈感"
 msgstr "刪除名單與所有靈感"
+
+#: src/app/[userCode]/list/[id]/edit/client.tsx
+msgid "編輯名單"
+msgstr "編輯名單"
 
 #: src/app/[userCode]/list/[id]/not-found.tsx
 #: src/constants/i18n.ts
-msgid "We couldn’t find this page."
+msgid "哇～找不到這個內容了！"
 msgstr "哇～找不到這個內容了！"
 
 #: src/app/[userCode]/list/[id]/reorder/_components/IdeasList/index.tsx
-msgid "Your ideas live here. Create one!"
+msgid "新增的靈感會在這裡，丟個靈感進來吧！"
 msgstr "新增的靈感會在這裡，丟個靈感進來吧！"
 
 #: src/app/[userCode]/list/[id]/reorder/_components/IdeasList/index.tsx
-msgid "Drag the lines on the left to reorder."
+msgid "拖曳左側三條線可排序"
 msgstr "拖曳左側三條線可排序"
-
-#: src/app/[userCode]/list/[id]/reorder/client.tsx
-msgid "Reorder Ideas"
-msgstr "排序靈感"
 
 #: src/app/[userCode]/list/[id]/reorder/client.tsx
 #: src/app/[userCode]/list/_components/Header/index.tsx
 #: src/app/idea/_components/Form/index.tsx
 #: src/app/idea/create/list/page.tsx
-#: src/app/list/_components/Form/index.tsx
+#: src/app/list/_components/Form/_components/CategoryDrawer/index.tsx
 #: src/app/list/_components/Form/index.tsx
 #: src/components/FakePage/EditFieldFakePage.tsx
-msgid "Done"
+msgid "完成"
 msgstr "完成"
 
 #: src/app/_layout/_components/BottomNav.tsx
 #: src/constants/Home/index.en.ts
-msgid "About"
+msgid "關於我們"
 msgstr "關於我們"
 
 #: src/app/_layout/_components/BottomNav.tsx
 #: src/constants/Home/index.en.ts
-msgid "Terms"
+msgid "使用者條款"
 msgstr "使用者條款"
 
 #: src/app/_layout/_components/BottomNav.tsx
 #: src/constants/Home/index.en.ts
-msgid "Privacy"
+msgid "隱私權保護政策"
 msgstr "隱私權保護政策"
 
 #: src/app/_layout/_components/PromptText.tsx
-msgid "Relist works best on mobile. Use a mobile device for the best experience."
+msgid "Relist 在手機畫面運作更順暢，使用行動裝置以取得更好的使用體驗。"
 msgstr "Relist 在手機畫面運作更順暢，使用行動裝置以取得更好的使用體驗。"
 
 #: src/app/discovery/_components/FooterSection/index.tsx
-msgid "Your lists say more than posts ever could."
+msgid "你的生活精選，比誰都有料"
 msgstr "你的生活精選，比誰都有料"
 
 #: src/app/discovery/_components/FooterSection/index.tsx
-msgid "Next wave of content"
+msgid "下個內容浪潮"
 msgstr "下個內容浪潮"
 
 #: src/app/discovery/_components/HeaderSection/index.tsx
-#~ msgid "Whoa, list-making pro!"
-#~ msgstr "好料都在我的口袋名單"
-
-#: src/app/discovery/_components/HeaderSection/index.tsx
-msgid "My life is my lists"
+msgid "好料都在我的口袋名單"
 msgstr "好料都在我的口袋名單"
 
 #: src/app/discovery/_components/HeaderSection/index.tsx
 #: src/components/Drawer/LoginDrawer.tsx
-msgid "Let’s jump in"
+msgid "免費登入 立即體驗"
 msgstr "免費登入 立即體驗"
 
 #: src/app/discovery/_components/HeaderSection/index.tsx
 #: src/components/Drawer/LoginDrawer.tsx
-msgid "By continuing, you agree to our <0>Terms of Service</0>, <1>Privacy Policy</1>. You confirm you're 13+."
+msgid "登入或註冊即表示您已閱讀並同意我們的<0>《使用者條款》</0>與<1>《隱私權保護政策》</1>，並確認您已年滿 13 歲。"
 msgstr "登入或註冊即表示您已閱讀並同意我們的<0>《使用者條款》</0>與<1>《隱私權保護政策》</1>，並確認您已年滿 13 歲。"
 
 #: src/app/discovery/_components/ListSection/index.tsx
+#: src/app/official/_components/FeatureSection/index.tsx
 #: src/constants/Lists/i18n.ts
-msgid "Lifestyle"
+msgid "生活風格"
 msgstr "生活風格"
 
 #: src/app/discovery/_components/ListSection/index.tsx
 #: src/app/official/_components/FeatureSection/index.tsx
 #: src/constants/Lists/i18n.ts
-msgid "Food & Drink"
+msgid "美食"
 msgstr "美食"
 
 #: src/app/discovery/_components/ListSection/index.tsx
 #: src/app/official/_components/FeatureSection/index.tsx
 #: src/constants/Lists/i18n.ts
-msgid "Culture"
+msgid "文化"
 msgstr "文化"
 
 #: src/app/discovery/_components/ListSection/index.tsx
 #: src/app/official/_components/FeatureSection/index.tsx
 #: src/constants/Lists/i18n.ts
-msgid "Travel"
+msgid "旅遊"
 msgstr "旅遊"
 
 #: src/app/discovery/_components/ListSection/index.tsx
 #: src/app/official/_components/FeatureSection/index.tsx
 #: src/constants/Lists/i18n.ts
-msgid "Entertainment"
+msgid "娛樂"
 msgstr "娛樂"
 
 #: src/app/discovery/_components/ListSection/index.tsx
 #: src/app/official/_components/FeatureSection/index.tsx
 #: src/constants/Lists/i18n.ts
-msgid "Tech & Digital"
+msgid "數位科技"
 msgstr "數位科技"
 
 #: src/app/discovery/_components/ListSection/index.tsx
 #: src/app/official/_components/FeatureSection/index.tsx
 #: src/constants/Lists/i18n.ts
-msgid "Personal Growth"
+msgid "個人成長"
 msgstr "個人成長"
 
 #: src/app/discovery/_components/ListSection/index.tsx
 #: src/app/official/_components/FeatureSection/index.tsx
 #: src/constants/Lists/i18n.ts
-msgid "Health & Fitness"
+msgid "健康與健身"
 msgstr "健康與健身"
 
 #: src/app/discovery/_components/ListSection/index.tsx
+#: src/app/official/_components/FeatureSection/index.tsx
 #: src/app/settings/_components/BlocksSection/index.tsx
-msgid "Others"
+#: src/constants/Lists/i18n.ts
+msgid "其他"
 msgstr "其他"
 
 #: src/app/discovery/_components/ListSection/index.tsx
-msgid "Lists that vibe right"
+msgid "這 vibe 我可以"
 msgstr "這 vibe 我可以"
 
 #: src/app/discovery/_components/ListSection/index.tsx
-msgid "Lists that taste like wow"
+msgid "好想吃吃喝喝"
 msgstr "好想吃吃喝喝"
 
 #: src/app/discovery/_components/ListSection/index.tsx
-msgid "Lists that show your colors"
+msgid "有點溫度的東西"
 msgstr "有點溫度的東西"
 
 #: src/app/discovery/_components/ListSection/index.tsx
-msgid "Lists that go to places"
+msgid "出去玩耍的私筆記"
 msgstr "出去玩耍的私筆記"
 
 #: src/app/discovery/_components/ListSection/index.tsx
-msgid "Lists that stream good times"
+msgid "耳機一戴，世界走開"
 msgstr "耳機一戴，世界走開"
 
 #: src/app/discovery/_components/ListSection/index.tsx
-msgid "Lists that tap into the future"
+msgid "正在生成的浪潮"
 msgstr "正在生成的浪潮"
 
 #: src/app/discovery/_components/ListSection/index.tsx
-msgid "Lists that build better you"
+msgid "慢慢懂的一些事"
 msgstr "慢慢懂的一些事"
 
 #: src/app/discovery/_components/ListSection/index.tsx
-msgid "Lists that make you sweat"
+msgid "練出好狀態"
 msgstr "練出好狀態"
 
 #: src/app/discovery/_components/ListSection/index.tsx
-msgid "Lists that just get it"
+msgid "喜歡的都在這"
 msgstr "喜歡的都在這"
 
 #: src/app/discovery/_components/ListSection/index.tsx
-msgid "<0>Recently updated</0>"
+msgid "<0>最近更新</0>"
 msgstr "<0>最近更新</0>"
 
 #: src/app/discovery/_components/ListSection/index.tsx
-msgid "See more"
+msgid "展開更多"
 msgstr "展開更多"
 
 #: src/app/discovery/_components/TileSection/index.tsx
-msgid "Fresh lists from our pocket"
+msgid "這些靈感名單超有感"
 msgstr "這些靈感名單超有感"
 
 #: src/app/discovery/_components/TileSection/index.tsx
-msgid "Updated weekly"
+msgid "每週精選更新"
 msgstr "每週精選更新"
 
 #: src/app/error/page.tsx
 #: src/app/not-found.tsx
-msgid "Oops something is wrong!"
+msgid "哎呀！網頁又在耍脾氣啦！"
 msgstr "哎呀！網頁又在耍脾氣啦！"
 
 #: src/app/goToMobile/_components/index.tsx
 #: src/app/goToMobile/page.tsx
-msgid "Relist works best on mobile."
+msgid "Relist 在手機畫面運作更順暢"
 msgstr "Relist 在手機畫面運作更順暢"
 
 #: src/app/goToMobile/_components/index.tsx
 #: src/app/goToMobile/page.tsx
-msgid "Use a mobile device for the best experience."
+msgid "使用行動裝置以取得更好的使用體驗"
 msgstr "使用行動裝置以取得更好的使用體驗"
 
 #: src/app/idea/_components/Form/index.tsx
 #: src/app/list/_components/Form/index.tsx
-msgid "Cover Image"
+msgid "封面圖片"
 msgstr "封面圖片"
 
 #: src/app/idea/_components/Form/index.tsx
 #: src/app/idea/create/list/page.tsx
 #: src/app/idea/create/list/page.tsx
+#: src/app/list/_components/Form/_components/CategoryDrawer/index.tsx
 #: src/app/list/_components/Form/index.tsx
-#: src/app/list/_components/Form/index.tsx
-msgid "Next"
+msgid "下一步"
 msgstr "下一步"
 
 #: src/app/idea/_components/Form/index.tsx
-msgid "What’s your idea? (must-have)"
+msgid "在這輸入靈感 （必填）…"
 msgstr "在這輸入靈感 （必填）…"
 
 #: src/app/idea/_components/Form/index.tsx
-msgid "Description"
+msgid "描述"
 msgstr "描述"
 
 #: src/app/idea/_components/Form/index.tsx
-msgid "Link"
+msgid "連結"
 msgstr "連結"
 
 #: src/app/idea/_components/Form/index.tsx
-msgid "Discarding your edits?"
+msgid "要放棄編輯嗎？"
 msgstr "要放棄編輯嗎？"
 
 #: src/app/idea/_components/Form/index.tsx
-msgid "If you choose to discard, you’ll lose this edit."
+msgid "若放棄，您編輯的內容將不會被保存。"
 msgstr "若放棄，您編輯的內容將不會被保存。"
 
 #: src/app/idea/_components/Form/index.tsx
-msgid "Discard"
+msgid "放棄編輯"
 msgstr "放棄編輯"
 
 #: src/app/idea/_components/Form/index.tsx
-msgid "Continue editing"
+#: src/app/idea/_components/Form/index.tsx
+#: src/app/idea/create/list/page.tsx
+#: src/app/list/_components/Form/_components/CancelConfirmDrawer/index.tsx
+#: src/app/list/_components/Form/_components/DraftDrawer/index.tsx
+msgid "繼續編輯"
 msgstr "繼續編輯"
 
 #: src/app/idea/_components/Form/index.tsx
-#: src/app/list/_components/Form/index.tsx
-msgid "Still got an draft waiting for you"
+#: src/app/list/_components/Form/_components/DraftDrawer/index.tsx
+msgid "你有一個未完成的靈感草稿"
 msgstr "你有一個未完成的靈感草稿"
 
 #: src/app/idea/_components/Form/index.tsx
-#: src/app/list/_components/Form/index.tsx
-msgid "Would you like to delete it or keep editing?"
+#: src/app/list/_components/Form/_components/DraftDrawer/index.tsx
+msgid "要刪除，還是繼續編輯？"
 msgstr "要刪除，還是繼續編輯？"
 
 #: src/app/idea/_components/Form/index.tsx
-#: src/app/list/_components/Form/index.tsx
-msgid "Delete draft"
+#: src/app/list/_components/Form/_components/DraftDrawer/index.tsx
+msgid "刪除草稿"
 msgstr "刪除草稿"
 
-#: src/app/idea/_components/Form/index.tsx
-#: src/app/list/_components/Form/index.tsx
-msgid "Keep editing"
-msgstr "繼續編輯"
-
 #: src/app/idea/_components/ListSelectorFakePage/index.tsx
-msgid "Save Idea"
+msgid "儲存靈感"
 msgstr "儲存靈感"
 
 #: src/app/idea/_components/ListSelectorFakePage/index.tsx
-msgid "Select a list to save this idea"
+msgid "選擇一個名單存入靈感"
 msgstr "選擇一個名單存入靈感"
 
 #: src/app/idea/_components/ListSelectorFakePage/index.tsx
-msgid "Looks like you haven’t made a list yet. Let’s create one now!"
+msgid "目前沒有任何名單。立即建立一個新名單吧！"
 msgstr "目前沒有任何名單。立即建立一個新名單吧！"
 
 #: src/app/idea/_components/ListSelectorFakePage/index.tsx
 #: src/components/Footer/EditModeFooter.tsx
 #: src/components/Header/EditModeHeader.tsx
-msgid "Save"
+msgid "儲存"
 msgstr "儲存"
 
 #: src/app/idea/_components/ListSelectorFakePage/index.tsx
-msgid "Create a new list"
+#: src/components/Drawer/CreateListOrIdeaDrawer.tsx
+msgid "建立新名單"
 msgstr "建立新名單"
 
 #: src/app/idea/create/list/page.tsx
-#~ msgid "Don’t worry, you can edit more details later!"
-#~ msgstr "放心，稍後可以為名單編輯更多資訊！"
-
-#: src/app/idea/create/list/page.tsx
-#: src/app/list/_components/Form/index.tsx
-msgid "Create Idea List"
+#: src/app/list/create/page.tsx
+msgid "建立靈感名單"
 msgstr "建立靈感名單"
 
 #: src/app/idea/create/list/page.tsx
-msgid "Give it a fun title! Like: My weekend musts"
+msgid "取個響亮的名稱吧！像是：我最愛的週末小去處"
 msgstr "取個響亮的名稱吧！像是：我最愛的週末小去處"
 
 #: src/app/idea/create/list/page.tsx
 #: src/app/list/_components/Form/index.tsx
-msgid "This is the title of your list"
+msgid "在這輸入名單標題"
 msgstr "在這輸入名單標題"
 
 #: src/app/idea/create/list/page.tsx
-#: src/app/list/_components/Form/index.tsx
-msgid "Make this list secret"
+#: src/app/list/_components/Form/_components/VisibilityFields/index.tsx
+msgid "隱藏這份名單"
 msgstr "隱藏這份名單"
 
 #: src/app/idea/create/list/page.tsx
-#: src/app/list/_components/Form/index.tsx
-msgid "Only you will see this list"
+#: src/app/list/_components/Form/_components/VisibilityFields/index.tsx
+msgid "只有你能看見這份名單"
 msgstr "只有你能看見這份名單"
 
 #: src/app/idea/create/list/page.tsx
-#: src/app/list/_components/Form/index.tsx
-msgid "List Topic"
+#: src/app/list/_components/Form/_components/CategoryDrawer/index.tsx
+msgid "名單主題"
 msgstr "名單主題"
 
 #: src/app/idea/create/list/page.tsx
-#: src/app/list/_components/Form/index.tsx
-msgid "Choose a topic that vibes with your List."
+#: src/app/list/_components/Form/_components/CategoryDrawer/index.tsx
+msgid "選擇一項接近此份名單的分類"
 msgstr "選擇一項接近此份名單的分類"
 
 #: src/app/idea/create/list/page.tsx
-#: src/app/list/_components/Form/index.tsx
-msgid "Your edits will be lost if you cancel!"
+#: src/app/list/_components/Form/_components/CancelConfirmDrawer/index.tsx
+msgid "取消後，資料就飛走囉！"
 msgstr "取消後，資料就飛走囉！"
 
 #: src/app/idea/create/list/page.tsx
-#: src/app/list/_components/Form/index.tsx
-msgid "If you cancel, everything you've entered will be lost."
+#: src/app/list/_components/Form/_components/CancelConfirmDrawer/index.tsx
+msgid "如果取消，所填的內容都會消失"
 msgstr "如果取消，所填的內容都會消失"
 
 #: src/app/idea/create/list/page.tsx
-#: src/app/list/_components/Form/index.tsx
-msgid "Cancel Editing"
+#: src/app/list/_components/Form/_components/CancelConfirmDrawer/index.tsx
+msgid "取消編輯"
 msgstr "取消編輯"
 
-#: src/app/idea/create/list/page.tsx
 #: src/app/list/_components/Form/index.tsx
-msgid "Continue Editing"
-msgstr "繼續編輯"
-
-#: src/app/list/_components/Form/index.tsx
-msgid "Edit List"
-msgstr "編輯名單"
-
-#: src/app/list/_components/Form/index.tsx
-msgid "Describe what this title is about"
+msgid "描述標題"
 msgstr "描述標題"
 
 #: src/app/list/_components/Form/index.tsx
-msgid "Link a page"
+msgid "連結網頁"
 msgstr "連結網頁"
 
 #: src/app/list/_components/Form/index.tsx
-msgid "Edit List Topic"
+msgid "編輯名單分類"
 msgstr "編輯名單分類"
 
 #: src/app/official/_components/FeatureSection/index.tsx
-msgid "Life Style"
-msgstr "生活風格"
-
-#: src/app/official/_components/FeatureSection/index.tsx
-#: src/constants/Lists/i18n.ts
-msgid "Other"
-msgstr "其他"
-
-#: src/app/official/_components/FeatureSection/index.tsx
 #: src/app/user/_components/HeroSection/index.tsx
-msgid "Lists"
+#: src/constants/i18n.ts
+msgid "名單"
 msgstr "名單"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
-msgid "Select your language!"
+#: src/app/settings/_components/BlocksSection/index.tsx
+msgid "選擇您的語言"
 msgstr "選擇您的語言"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
-msgid "Your preferred language for a better experience."
+msgid "選擇您喜愛的語言，讓使用體驗更順暢。"
 msgstr "選擇您喜愛的語言，讓使用體驗更順暢。"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
-msgid "Taiwan"
+msgid "台灣"
 msgstr "台灣"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
-msgid "United States"
+msgid "美國"
 msgstr "美國"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
-msgid "Select your location!"
+#: src/app/settings/_components/BlocksSection/index.tsx
+msgid "選擇您的所在地"
 msgstr "選擇您的所在地"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
-msgid "Your location for a personalized experience."
+msgid "選擇您的所在地，讓使用體驗更個人化。"
 msgstr "選擇您的所在地，讓使用體驗更個人化。"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
-msgid "Preference"
+msgid "偏好設定"
 msgstr "偏好設定"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
-msgid "Select your preferred language"
-msgstr "選擇您的語言"
-
-#: src/app/settings/_components/BlocksSection/index.tsx
-msgid "Select your location"
-msgstr "選擇您的所在地"
-
-#: src/app/settings/_components/BlocksSection/index.tsx
-msgid "About Relist"
+msgid "關於 Relist"
 msgstr "關於 Relist"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
-msgid "Quick start guide"
+msgid "三分鐘上手教學"
 msgstr "三分鐘上手教學"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
-msgid "Check out Relist"
+msgid "Relist 官網"
 msgstr "Relist 官網"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
-msgid "Follow Relist Threads"
+msgid "追蹤 Relist Threads"
 msgstr "追蹤 Relist Threads"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
-msgid "Join Relist Discord"
+msgid "加入 Discord 與我們一起優化 Relist"
 msgstr "加入 Discord 與我們一起優化 Relist"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
-msgid "Submit feedback or report content"
+msgid "給予意見或內容檢舉"
 msgstr "給予意見或內容檢舉"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
-msgid "About Privacy Policy and Terms of Use"
+msgid "關於隱私政策與使用條款"
 msgstr "關於隱私政策與使用條款"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
 #: src/constants/Home/index.en.ts
-msgid "Contact us"
+#: src/constants/Home/index.en.ts
+msgid "聯繫我們"
 msgstr "聯繫我們"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
 #: src/app/settings/_components/BlocksSection/index.tsx
-msgid "Sign In"
+msgid "登入"
 msgstr "登入"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
-msgid "Delete Account"
+msgid "刪除帳號"
 msgstr "刪除帳號"
 
 #: src/app/settings/_components/BlocksSection/index.tsx
-msgid "Sign Out"
+msgid "登出"
 msgstr "登出"
 
 #: src/app/settings/_components/IntroSection/index.tsx
-msgid "Welcome to the Relist community!"
+msgid "歡迎來到 Relist！"
 msgstr "歡迎來到 Relist！"
 
 #: src/app/settings/_components/IntroSection/index.tsx
-msgid "This is your space to drop ideas and build your pocket list. Tell us what you think and how it feels. Your voice helps shape what comes next."
+msgid "這裡是你分享想法、建立口袋名單的地方。歡迎與我們分享你的使用經驗，讓我們一起把 Relist 做得更棒！"
 msgstr "這裡是你分享想法、建立口袋名單的地方。歡迎與我們分享你的使用經驗，讓我們一起把 Relist 做得更棒！"
 
 #: src/app/settings/_components/IntroSection/index.tsx
-msgid "Tell us what you think"
+msgid "分享你的意見"
 msgstr "分享你的意見"
 
 #: src/app/settings/_components/IntroSection/index.tsx
-msgid "This is your space to drop ideas and build your pocket list. Our Beta is now open! If you’re a creator, we’d love for you to try it out. Create your account now!"
+msgid "這裡是你分享想法、建立口袋名單的地方。目前我們正開放 Beta 測試，誠摯邀請創作者來試用，歡迎申請！"
 msgstr "這裡是你分享想法、建立口袋名單的地方。目前我們正開放 Beta 測試，誠摯邀請創作者來試用，歡迎申請！"
 
 #: src/app/settings/_components/IntroSection/index.tsx
-msgid "Get Started"
+msgid "立即申請"
 msgstr "立即申請"
 
 #: src/app/settings/_components/index.tsx
 #: src/app/settings/page.tsx
-msgid "Setting Center"
+msgid "設定中心"
 msgstr "設定中心"
 
 #: src/app/user/_components/HeroSection/FollowersListDrawer.tsx
 #: src/app/user/_components/HeroSection/FollowersListDrawer.tsx
-msgid "Followers"
+msgid "粉絲"
 msgstr "粉絲"
 
 #: src/app/user/_components/HeroSection/FollowersListDrawer.tsx
-msgid "Empty for now, but followers will appear here soon."
+msgid "這裡現在還是空的，粉絲以後就會顯示在這。"
 msgstr "這裡現在還是空的，粉絲以後就會顯示在這。"
 
 #: src/app/user/_components/HeroSection/FollowingListDrawer.tsx
 #: src/app/user/_components/HeroSection/FollowingListDrawer.tsx
 #: src/app/user/_components/HeroSection/index.tsx
+#: src/app/user/_components/UserConnectionRow.tsx
 #: src/components/Header/BackToUserHeader.tsx
-msgid "Following"
+msgid "正追蹤"
 msgstr "正追蹤"
 
 #: src/app/user/_components/HeroSection/FollowingListDrawer.tsx
-msgid "Empty for now, but followings will appear here soon."
+msgid "這裡現在還是空的，追蹤朋友以後就會顯示在這。"
 msgstr "這裡現在還是空的，追蹤朋友以後就會顯示在這。"
 
 #: src/app/user/_components/HeroSection/index.tsx
-msgid "The login session is expired, please login again"
+msgid "登入已過期，請重新登入"
 msgstr "登入已過期，請重新登入"
 
 #: src/app/user/_components/HeroSection/index.tsx
 #: src/app/user/edit/page.tsx
-msgid "Edit profile and account"
+msgid "編輯個人檔案與帳號"
 msgstr "編輯個人檔案與帳號"
 
 #: src/app/user/_components/HeroSection/index.tsx
 #: src/app/user/_components/UserConnectionRow.tsx
 #: src/components/Header/BackToUserHeader.tsx
-msgid "Follow"
+msgid "追蹤"
 msgstr "追蹤"
 
 #: src/app/user/_components/HeroSection/index.tsx
 msgctxt "count"
-msgid "Links"
+msgid "個連結"
 msgstr "個連結"
 
 #: src/app/user/_components/ListSection/index.tsx
-msgid "Looks like this page is a bit empty."
+msgid "看起來這個頁面有點空。"
 msgstr "看起來這個頁面有點空。"
 
 #: src/app/user/_components/ListSection/index.tsx
-msgid "Follow and check back soon for surprise lists!"
+msgid "先追蹤起來，隨時回來看看吧！"
 msgstr "先追蹤起來，隨時回來看看吧！"
 
-#: src/app/user/_components/UserConnectionRow.tsx
-msgid "Followings"
-msgstr "正追蹤"
-
 #: src/app/user/edit/page.tsx
 #: src/app/user/edit/page.tsx
-msgid "Name"
+msgid "姓名"
 msgstr "姓名"
 
 #: src/app/user/edit/page.tsx
-msgid "Enter your name here"
+msgid "輸入你的姓名"
 msgstr "輸入你的姓名"
 
 #: src/app/user/edit/page.tsx
 #: src/app/user/edit/page.tsx
-msgid "Username"
+msgid "用戶帳號"
 msgstr "用戶帳號"
 
 #: src/app/user/edit/page.tsx
-msgid "Enter your username here"
+msgid "輸入你的用戶帳號"
 msgstr "輸入你的用戶帳號"
 
 #: src/app/user/edit/page.tsx
 #: src/app/user/edit/page.tsx
-msgid "Bio"
+msgid "個人自介"
 msgstr "個人自介"
 
 #: src/app/user/edit/page.tsx
-msgid "Enter your bio here"
+msgid "輸入你的個人自介"
 msgstr "輸入你的個人自介"
 
 #: src/app/user/edit/page.tsx
-msgid "Profile Image"
+msgid "個人檔案頭貼"
 msgstr "個人檔案頭貼"
 
 #: src/app/user/edit/page.tsx
-msgid "Customized Link"
+msgid "自訂連結"
 msgstr "自訂連結"
 
 #: src/app/user/edit/page.tsx
-msgid "Add URL"
+msgid "輸入網址"
 msgstr "輸入網址"
 
 #: src/app/user/edit/page.tsx
@@ -696,88 +666,77 @@ msgstr "輸入網址"
 #: src/app/user/edit/page.tsx
 #: src/app/user/edit/page.tsx
 #: src/app/user/edit/page.tsx
-msgid "Add account"
+msgid "輸入帳號"
 msgstr "輸入帳號"
 
 #: src/app/user/edit/page.tsx
-msgid "Profile"
+msgid "個人檔案"
 msgstr "個人檔案"
 
 #: src/app/user/edit/page.tsx
 msgctxt "title"
-msgid "Links"
+msgid "連結"
 msgstr "連結"
 
 #: src/components/Drawer/CreateListOrIdeaDrawer.tsx
-msgid "What’s on your mind?"
+msgid "說說你的好點子"
 msgstr "說說你的好點子"
 
 #: src/components/Drawer/CreateListOrIdeaDrawer.tsx
-msgid "A list groups your ideas. Start wherever you vibe."
+msgid "名單裝著每一筆靈感，從哪裡開寫，隨心所欲。"
 msgstr "名單裝著每一筆靈感，從哪裡開寫，隨心所欲。"
 
-#: src/components/Drawer/CreateListOrIdeaDrawer.tsx
-msgid "Create List"
-msgstr "建立新名單"
-
 #: src/components/Drawer/SignupDrawer.tsx
-msgid "You’re good at this"
+msgid "哇，你很會開單耶！"
 msgstr "哇，你很會開單耶！"
 
 #: src/components/Drawer/SignupDrawer.tsx
-msgid "Sign up to unlock more"
+#: src/components/Drawer/SignupDrawer.tsx
+msgid "完成註冊，有機會獲得更多創作權限"
 msgstr "完成註冊，有機會獲得更多創作權限"
 
 #: src/components/Drawer/SignupDrawer.tsx
-msgid "You’ve reached the list limit…"
+msgid "建立名單額度已滿…"
 msgstr "建立名單額度已滿…"
 
 #: src/components/Drawer/SignupDrawer.tsx
-msgid "Sign up free to unlock more"
+msgid "免費註冊，建立更多名單！"
 msgstr "免費註冊，建立更多名單！"
 
 #: src/components/Drawer/SignupDrawer.tsx
-msgid "This list is full…"
+msgid "此名單已滿了…"
 msgstr "此名單已滿了…"
 
 #: src/components/Drawer/SignupDrawer.tsx
-msgid "Choose another list, or sign up free to unlock more access."
-msgstr "完成註冊，有機會獲得更多創作權限"
-
-#: src/components/Drawer/SignupDrawer.tsx
-msgid "Trial limit reached…"
+msgid "哇！體驗額度已用完…"
 msgstr "哇！體驗額度已用完…"
 
 #: src/components/Drawer/SignupDrawer.tsx
 msgid ""
-"Good taste deserves space. \n"
-"Sign up free to unlock it."
+"你的好名單，值得有更多空間。\n"
+"免費註冊，享受更多創作！"
 msgstr ""
 "你的好名單，值得有更多空間。\n"
 "免費註冊，享受更多創作！"
 
 #: src/components/Drawer/SignupDrawer.tsx
-msgid "Sign Up"
+msgid "立即註冊"
 msgstr "立即註冊"
 
 #: src/components/FakePage/EditFieldFakePage.tsx
-msgid "Enter your text here"
+msgid "請輸入內容"
 msgstr "請輸入內容"
 
-#: src/components/Footer/FloatingButtonFooter.tsx
-msgid "Like"
-msgstr "喜歡"
-
 #: src/components/ImageCropper/index.tsx
-msgid "Image must be at least 150x150px."
+msgid "圖片必須至少 150x150 像素"
 msgstr "圖片必須至少 150x150 像素"
 
 #: src/components/ImageCropper/index.tsx
-msgid "Choose your image"
+msgid "選擇圖片"
 msgstr "選擇圖片"
 
 #: src/components/ImageCropper/index.tsx
-msgid "500x500px, JPG or PNG, max 4MB"
+msgid "500x500像素，限 JPG 或 PNG，最大4MB"
 msgstr "500x500像素，限 JPG 或 PNG，最大4MB"
 
 #: src/components/Radio/index.tsx
@@ -785,63 +744,63 @@ msgid "<0>{0}</0>"
 msgstr "<0>{0}</0>"
 
 #: src/constants/Home/index.en.ts
-msgid "Join Relist and share your lists."
+msgid "加入 Relist，分享靈感！"
 msgstr "加入 Relist，分享靈感！"
 
 #: src/constants/Home/index.en.ts
-msgid "Currently open only to creator account applications."
+msgid "目前僅開放創作者申請帳號"
 msgstr "目前僅開放創作者申請帳號"
 
 #: src/constants/Home/index.en.ts
-msgid "Sign up"
+msgid "快速申請"
 msgstr "快速申請"
 
 #: src/constants/Home/index.en.ts
-msgid "Creator Account Login"
+msgid "創作者帳號登入"
 msgstr "創作者帳號登入"
 
 #: src/constants/Home/index.en.ts
-msgid "Can non-creators use Relist?"
+msgid "非創作者也能加入嗎？"
 msgstr "非創作者也能加入嗎？"
 
 #: src/constants/Home/index.en.ts
-msgid "Real impact is simple"
+msgid "簡單打造影響力"
 msgstr "簡單打造影響力"
 
 #: src/constants/Home/index.en.ts
-msgid "Turn your picks into a following"
+msgid "你的精選就能吸引懂你的人"
 msgstr "你的精選就能吸引懂你的人"
 
 #: src/constants/Home/index.en.ts
-msgid "Inspogirlie"
+msgid "小資妹"
 msgstr "小資妹"
 
 #: src/constants/Home/index.en.ts
-msgid "Must-Haves for dorm life"
+msgid "大學宿舍日常必備清單"
 msgstr "大學宿舍日常必備清單"
 
 #: src/constants/Home/index.en.ts
-msgid "Cozy Bedding:"
+msgid "舒服的海綿床"
 msgstr "舒服的海綿床"
 
 #: src/constants/Home/index.en.ts
-msgid "A plush comforter and extra pillows for a comfy night's sleep."
+msgid "我發現好在床上的時間比想像的多，有一個舒服的床真的舒適許多。"
 msgstr "我發現好在床上的時間比想像的多，有一個舒服的床真的舒適許多。"
 
 #: src/constants/Home/index.en.ts
-msgid "Desk Essentials"
+msgid "桌上收納盒"
 msgstr "桌上收納盒"
 
 #: src/constants/Home/index.en.ts
-msgid "Target is probably your bf."
+msgid "桌上的收納盒超重要，讓桌上乾淨又一目暸然。"
 msgstr "桌上的收納盒超重要，讓桌上乾淨又一目暸然。"
 
 #: src/constants/Home/index.en.ts
-msgid "Portable Speaker"
+msgid "無線隨身音響"
 msgstr "無線隨身音響"
 
 #: src/constants/Home/index.en.ts
-msgid "For study breaks or casual dorm hangouts"
+msgid "耳機是必備，但無線音響讓聽音樂更自由舒適，超愛的！"
 msgstr "耳機是必備，但無線音響讓聽音樂更自由舒適，超愛的！"
 
 #: src/constants/Home/index.en.ts
@@ -849,135 +808,135 @@ msgid "List Lab"
 msgstr "List Lab"
 
 #: src/constants/Home/index.en.ts
-msgid "Stop-by-Stop Café Journey"
+msgid "我的週末咖啡日記"
 msgstr "我的週末咖啡日記"
 
 #: src/constants/Home/index.en.ts
-msgid "8:00 AM at Sunrise Café"
+msgid "早上 8:00 小香咖啡"
 msgstr "早上 8:00 小香咖啡"
 
 #: src/constants/Home/index.en.ts
-msgid "Start your day with a creamy latte and a freshly baked croissant"
+msgid "我家附近開最早的咖啡！"
 msgstr "我家附近開最早的咖啡！"
 
 #: src/constants/Home/index.en.ts
-msgid "12:30 PM at Artisan Coffee House"
+msgid "中午 12:30 爵士咖啡館"
 msgstr "中午 12:30 爵士咖啡館"
 
 #: src/constants/Home/index.en.ts
-msgid "Enjoy a flat white with a hearty avocado toast."
+msgid "最近週末迷上爵士音樂，這裡真的超放鬆的！"
 msgstr "最近週末迷上爵士音樂，這裡真的超放鬆的！"
 
 #: src/constants/Home/index.en.ts
-msgid "3:00 PM at Brew & Bloom"
+msgid "下午 3:00 Brew & Bloom"
 msgstr "下午 3:00 Brew & Bloom"
 
 #: src/constants/Home/index.en.ts
-msgid "Sip on a cold brew while indulging in a lavender scone"
+msgid "完全是衝著他們的點心而來！"
 msgstr "完全是衝著他們的點心而來！"
 
 #: src/constants/Home/index.en.ts
-msgid "Campus People"
+msgid "大學生秘技"
 msgstr "大學生秘技"
 
 #: src/constants/Home/index.en.ts
-msgid "Notes for Campus Fest"
+msgid "筆記：去音樂祭前一定要看"
 msgstr "筆記：去音樂祭前一定要看"
 
 #: src/constants/Home/index.en.ts
-msgid "Essentials"
+msgid "超基本配備"
 msgstr "超基本配備"
 
 #: src/constants/Home/index.en.ts
-msgid "Sunscreen, water bottle, and comfy shoes."
+msgid "水壺與輕便的鞋子非常重要！防曬乳千萬不要忘了！"
 msgstr "水壺與輕便的鞋子非常重要！防曬乳千萬不要忘了！"
 
 #: src/constants/Home/index.en.ts
-msgid "Extras"
+msgid "多帶一件"
 msgstr "多帶一件"
 
 #: src/constants/Home/index.en.ts
-msgid "A light jacket for when it gets chilly."
+msgid "Tshirt 最好多帶一件，薄外套絕對不能少！"
 msgstr "Tshirt 最好多帶一件，薄外套絕對不能少！"
 
 #: src/constants/Home/index.en.ts
-msgid "Pro tip:"
+msgid "超重要秘技"
 msgstr "超重要秘技"
 
 #: src/constants/Home/index.en.ts
-msgid "Bring a blanket to claim your spot early."
+msgid "一定要帶地墊與手提袋，佔地的好武器！"
 msgstr "一定要帶地墊與手提袋，佔地的好武器！"
 
 #: src/constants/Home/index.en.ts
-msgid "Travel Lover"
+msgid "無聊就輸了"
 msgstr "無聊就輸了"
 
 #: src/constants/Home/index.en.ts
-msgid "Travel budgeting checklist"
+msgid "小資旅遊的好方法"
 msgstr "小資旅遊的好方法"
 
 #: src/constants/Home/index.en.ts
-msgid "Set your total budget"
+msgid "決定好可花的總金額"
 msgstr "決定好可花的總金額"
 
 #: src/constants/Home/index.en.ts
-msgid "Break it down into categories: flights, accommodation, food, activities, and extras."
+msgid "車票、機票與飯店幾乎是固定的費用，抓好總金額就對了！"
 msgstr "車票、機票與飯店幾乎是固定的費用，抓好總金額就對了！"
 
 #: src/constants/Home/index.en.ts
-msgid "Hunt for Deals"
+msgid "只搜特惠"
 msgstr "只搜特惠"
 
 #: src/constants/Home/index.en.ts
-msgid "Use flight comparison tools like Skyscanner or Google Flights"
+msgid "使用訂票時，打開篩選特惠，先專注特惠價格。"
 msgstr "使用訂票時，打開篩選特惠，先專注特惠價格。"
 
 #: src/constants/Home/index.en.ts
-msgid "Transportation Hacks"
+msgid "訂票快狠準"
 msgstr "訂票快狠準"
 
 #: src/constants/Home/index.en.ts
-msgid "Book accommodations early through budget-friendly platforms like Hostelworld or Airbnb."
+msgid "不是越早訂越便宜，有時反而是越晚訂越優惠！"
 msgstr "不是越早訂越便宜，有時反而是越晚訂越優惠！"
 
 #: src/constants/Home/index.en.ts
-msgid "Gossip Pie"
+msgid "八卦生活"
 msgstr "八卦生活"
 
 #: src/constants/Home/index.en.ts
-msgid "Binge based on your mood"
+msgid "按心情的追劇法"
 msgstr "按心情的追劇法"
 
 #: src/constants/Home/index.en.ts
-msgid "Relaxing: Moana"
+msgid "放鬆: 海洋奇緣"
 msgstr "放鬆: 海洋奇緣"
 
 #: src/constants/Home/index.en.ts
-msgid "Moana / A heartwarming and adventurous animated film with stunning visuals and beautiful music that will soothe your soul."
+msgid "一部充滿溫暖與冒險的動畫電影，畫面美麗，音樂動人，帶來滿滿的療癒感。"
 msgstr "一部充滿溫暖與冒險的動畫電影，畫面美麗，音樂動人，帶來滿滿的療癒感。"
 
 #: src/constants/Home/index.en.ts
-msgid "Tense: Tenet"
-msgstr "緊張: 天能 "
+msgid "緊張: 天能"
+msgstr "緊張: 天能"
 
 #: src/constants/Home/index.en.ts
-msgid "Directed by Christopher Nolan, this mind-bending action film with time inversion will keep you on the edge of your seat."
+msgid "克里斯多福諾蘭執導的燒腦動作片，充滿時間逆轉的緊湊劇情，讓你全程屏息。"
 msgstr "克里斯多福諾蘭執導的燒腦動作片，充滿時間逆轉的緊湊劇情，讓你全程屏息。"
 
 #: src/constants/Home/index.en.ts
-msgid "Fun: Dumb and Dumber"
+msgid "有趣: 阿呆與阿瓜"
 msgstr "有趣: 阿呆與阿瓜"
 
 #: src/constants/Home/index.en.ts
-msgid "A classic comedy about two clueless friends on a road trip full of ridiculous and laugh-out-loud situations."
+msgid "兩位完全笨到極致的好朋友，展開一場荒唐的公路旅行，充滿令人哭笑不得的鬧劇！這部經典絕對讓你笑到停不下來。"
 msgstr "兩位完全笨到極致的好朋友，展開一場荒唐的公路旅行，充滿令人哭笑不得的鬧劇！這部經典絕對讓你笑到停不下來。"
 
 #: src/constants/Home/index.en.ts
-msgid "iTech"
+msgid "讀讀科技"
 msgstr "讀讀科技"
 
 #: src/constants/Home/index.en.ts
-msgid "How I curate my digital space"
+msgid "懶人提升效率的APP"
 msgstr "懶人提升效率的APP"
 
 #: src/constants/Home/index.en.ts
@@ -985,7 +944,7 @@ msgid "Notion"
 msgstr "Notion"
 
 #: src/constants/Home/index.en.ts
-msgid "Manage your thoughts and ideas in one single place."
+msgid "整合筆記與項目管理，效率爆表。一定要去下載!"
 msgstr "整合筆記與項目管理，效率爆表。一定要去下載!"
 
 #: src/constants/Home/index.en.ts
@@ -993,7 +952,7 @@ msgid "Google Drive"
 msgstr "Google Drive"
 
 #: src/constants/Home/index.en.ts
-msgid "The OG and it's so essential."
+msgid "最近我連健身運動都用GD! 有興趣的可以跟我說"
 msgstr "最近我連健身運動都用GD! 有興趣的可以跟我說"
 
 #: src/constants/Home/index.en.ts
@@ -1001,39 +960,39 @@ msgid "ChatGPT"
 msgstr "ChatGPT"
 
 #: src/constants/Home/index.en.ts
-msgid "Greatly improved my work!"
+msgid "AI真的省去我50%的工作時間，而且效率還超越"
 msgstr "AI真的省去我50%的工作時間，而且效率還超越"
 
 #: src/constants/Home/index.en.ts
-msgid "Good Habbits"
+msgid "上班中的妞"
 msgstr "上班中的妞"
 
 #: src/constants/Home/index.en.ts
-msgid "Atomic Habits - My thoughts"
+msgid "《原子習慣》讀到的智慧…"
 msgstr "《原子習慣》讀到的智慧…"
 
 #: src/constants/Home/index.en.ts
-msgid "Start Small to Achieve Big"
+msgid "從小開始"
 msgstr "從小開始"
 
 #: src/constants/Home/index.en.ts
-msgid "Pressure is the biggest enemy. Don't let it control your momentum."
+msgid "一口氣想做大事，往往最後一事無成啊！"
 msgstr "一口氣想做大事，往往最後一事無成啊！"
 
 #: src/constants/Home/index.en.ts
-msgid "Build Systems, Not Just Goals."
+msgid "打造一個系統，而非結果！"
 msgstr "打造一個系統，而非結果！"
 
 #: src/constants/Home/index.en.ts
-msgid "This reminds me that building team is more important than the actual product."
+msgid "這個超有感的！過去我總是想要有一個厲害的結果。"
 msgstr "這個超有感的！過去我總是想要有一個厲害的結果。"
 
 #: src/constants/Home/index.en.ts
-msgid "Embrace Your New Identity"
+msgid "接受新的身份"
 msgstr "接受新的身份"
 
 #: src/constants/Home/index.en.ts
-msgid "I need to work on this 100%"
+msgid "這思考非常特別，有時候自己對自己的價值任何能夠改變事情的開始與結果。"
 msgstr "這思考非常特別，有時候自己對自己的價值任何能夠改變事情的開始與結果。"
 
 #: src/constants/Home/index.en.ts
@@ -1041,182 +1000,166 @@ msgid "Pica Pica"
 msgstr "Pica Pica"
 
 #: src/constants/Home/index.en.ts
-msgid "My best protein shake recipe"
+msgid "高蛋白飲料~原來超簡單做的"
 msgstr "高蛋白飲料~原來超簡單做的"
 
 #: src/constants/Home/index.en.ts
-msgid "Step 1: Gather Your Ingredients"
+msgid "步驟一 ：把所有材料準備好"
 msgstr "步驟一 ：把所有材料準備好"
 
 #: src/constants/Home/index.en.ts
-msgid "1 scoop of your favorite protein powder (vanilla or chocolate works great!)"
+msgid "先把東西都放在一起準備好，因為超簡單的！"
 msgstr "先把東西都放在一起準備好，因為超簡單的！"
 
 #: src/constants/Home/index.en.ts
-msgid "Step 2: Blend the Base"
+msgid "步驟二: 先把基礎的倒進來"
 msgstr "步驟二: 先把基礎的倒進來"
 
 #: src/constants/Home/index.en.ts
-msgid "Add the almond milk, protein powder, and banana to your blender."
+msgid "把牛奶與高蛋白先倒在一起，如此就已經做對一半！"
 msgstr "把牛奶與高蛋白先倒在一起，如此就已經做對一半！"
 
 #: src/constants/Home/index.en.ts
-msgid "Step 3: Add the Extras"
+msgid "步驟三：加入增肌配方"
 msgstr "步驟三：加入增肌配方"
 
 #: src/constants/Home/index.en.ts
-msgid "Drop in the peanut butter, chia seeds, or flaxseeds for added nutrients."
+msgid "堅果是超棒的配方，馬上讓你有飽足感又很可口好喝！"
 msgstr "堅果是超棒的配方，馬上讓你有飽足感又很可口好喝！"
 
 #: src/constants/Home/index.en.ts
-msgid "Jacob PHD"
+msgid "末日研究生"
 msgstr "末日研究生"
 
 #: src/constants/Home/index.en.ts
-msgid "Reasons I swipe left"
+msgid "絕對左甩的交友檔案"
 msgstr "絕對左甩的交友檔案"
 
 #: src/constants/Home/index.en.ts
-msgid "The Fish Pic"
+msgid "太詐騙的照片"
 msgstr "太詐騙的照片"
 
 #: src/constants/Home/index.en.ts
-msgid "Congrats on catching that trout, but it's not winning you dates."
+msgid "老實說...我每次都覺得這麼假的照片也敢放上來，當作大家是瞎子嗎？"
 msgstr "老實說...我每次都覺得這麼假的照片也敢放上來，當作大家是瞎子嗎？"
 
 #: src/constants/Home/index.en.ts
-msgid "No Bio, No Effort"
+msgid "沒有編輯的自介文字"
 msgstr "沒有編輯的自介文字"
 
 #: src/constants/Home/index.en.ts
-msgid "If you can't write a sentence, how are you going to hold a conversation?"
+msgid "有些人的自介人格分裂，然後又錯字連篇，我真心無法違背自己良心右甩。"
 msgstr "有些人的自介人格分裂，然後又錯字連篇，我真心無法違背自己良心右甩。"
 
 #: src/constants/Home/index.en.ts
-msgid "Mirror Selfies with a Dirty Room"
+msgid "自拍照裡的房間亂到像核爆"
 msgstr "自拍照裡的房間亂到像核爆"
 
 #: src/constants/Home/index.en.ts
-msgid "If you can't clean your room, what's your life looking like?"
+msgid "這是我的問題，但我眼睛真的很利！哈！"
 msgstr "這是我的問題，但我眼睛真的很利！哈！"
 
 #: src/constants/Home/index.en.ts
-msgid "Tutorials"
+msgid "快速教學"
 msgstr "快速教學"
 
 #: src/constants/Home/index.en.ts
-msgid "FAQ"
+msgid "問與答"
 msgstr "問與答"
 
 #: src/constants/Home/index.en.ts
-msgid "Join the Team"
+msgid "加入團隊"
 msgstr "加入團隊"
 
 #: src/constants/Home/index.en.ts
-msgid "Press kit"
+msgid "媒體報導"
 msgstr "媒體報導"
 
 #: src/constants/Home/index.en.ts
-msgid "Contact Us"
-msgstr "聯繫我們"
-
-#: src/constants/Home/index.en.ts
-msgid "Collection Notice"
+msgid "額外公告"
 msgstr "額外公告"
 
 #: src/constants/Home/index.en.ts
-msgid "Login Error - Creator Account Not Found"
+msgid "登入錯誤 - 查無此創作者"
 msgstr "登入錯誤 - 查無此創作者"
 
 #: src/constants/Home/index.en.ts
-msgid "Only approved and verified “Creator Accounts” can log in and create lists. If you have any questions, please contact us."
+msgid "目前僅限已申請並被認證的「創作者帳號」登入並創作名單。如有疑問，請聯繫我們。"
 msgstr "目前僅限已申請並被認證的「創作者帳號」登入並創作名單。如有疑問，請聯繫我們。"
 
 #: src/constants/i18n.ts
-msgid "List"
-msgstr "名單"
-
-#: src/constants/i18n.ts
-msgid "Idea"
-msgstr "靈感"
-
-#: src/constants/i18n.ts
-msgid "You’re logged out. Please log in again."
+msgid "登入已失效了，請重新登入"
 msgstr "登入已失效了，請重新登入"
 
 #: src/constants/i18n.ts
-msgid "You don’t have access to this."
+msgid "你目前沒有權限查看"
 msgstr "你目前沒有權限查看"
 
 #: src/constants/i18n.ts
-msgid "Oops, something’s missing. Check your info and try again."
+msgid "資料可能有缺誤，請再確認"
 msgstr "資料可能有缺誤，請再確認"
 
 #: src/constants/i18n.ts
-msgid "Connection took too long. Try again."
+msgid "連線逾時了，請再試一次"
 msgstr "連線逾時了，請再試一次"
 
 #: src/constants/i18n.ts
-msgid "Slow down a little. Try again in a moment."
+msgid "操作太快了，請稍後再試"
 msgstr "操作太快了，請稍後再試"
 
 #: src/constants/i18n.ts
 #: src/constants/i18n.ts
-msgid "Our bad. Something went wrong."
+msgid "系統出了狀況，請稍後再試"
 msgstr "系統出了狀況，請稍後再試"
 
 #: src/constants/i18n.ts
-msgid "We’re doing a quick tune-up. Try again soon."
+msgid "系統維護中，請稍後再試"
 msgstr "系統維護中，請稍後再試"
 
 #: src/constants/i18n.ts
-msgid "The server took too long. Try again later."
+msgid "伺服器等太久了，請稍後再試"
 msgstr "伺服器等太久了，請稍後再試"
 
-#: src/hooks/mutations/useEditProfile.ts
-#~ msgid "Please login again"
-#~ msgstr "請重新登入"
-
 #: src/hooks/useAuthRequired.ts
-msgid "Please login to do this action"
+msgid "請先登入以進行此操作"
 msgstr "請先登入以進行此操作"
 
 #: src/hooks/useCheckStorage.ts
-msgid "The app is outdated, please login again"
+msgid "網頁更新，請重新登入"
 msgstr "網頁更新，請重新登入"
 
 #: src/hooks/useLogin.ts
-msgid "Right now, only invited users can log in"
+msgid "現在僅開放受邀請的用戶登入體驗"
 msgstr "現在僅開放受邀請的用戶登入體驗"
 
 #: src/hooks/useLogin.ts
-msgid "Already got your invite? Jump in and apply now!"
+msgid "收到邀請了嗎？現在就去申請加入！"
 msgstr "收到邀請了嗎？現在就去申請加入！"
 
 #: src/lib/validator.ts
-msgid "Hey, the title can't be left empty!"
+msgid "欸，標題不能留空喔！"
 msgstr "欸，標題不能留空喔！"
 
 #: src/lib/validator.ts
-msgid "Every {entityName} needs a title, so fill it in!"
+msgid "{entityName}都需要有個標題，快填上去吧！"
 msgstr "{entityName}都需要有個標題，快填上去吧！"
 
 #: src/lib/validator.ts
-msgid "{entityName} title is too long!"
+msgid "{entityName}標題字數太長啦！"
 msgstr "{entityName}標題字數太長啦！"
 
 #: src/lib/validator.ts
-msgid "Please keep it under {titleMaxLength} characters."
+msgid "標題過長，請將字數縮短至 {titleMaxLength} 個字元以內。"
 msgstr "標題過長，請將字數縮短至 {titleMaxLength} 個字元以內。"
 
 #: src/lib/validator.ts
-msgid "Description is too long!"
+msgid "標題描述內容超出限制了！"
 msgstr "標題描述內容超出限制了！"
 
 #: src/lib/validator.ts
-msgid "Please keep it under {descMaxLength} characters."
+msgid "字數有點爆表，請減到 {descMaxLength} 個字元以內。"
 msgstr "字數有點爆表，請減到 {descMaxLength} 個字元以內。"
 
 #: src/lib/validator.ts
-msgid "Error - Link must start with https://"
+msgid "網址有誤 - 需以 https:// 開頭"
 msgstr "網址有誤 - 需以 https:// 開頭"
