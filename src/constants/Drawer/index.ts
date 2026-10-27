@@ -12,4 +12,5 @@ export const DrawerIds: Record<string, string> = {
   IDEA_DRAFT_DRAWER_ID: 'idea-draft-drawer',
   LIST_DRAFT_DRAWER_ID: 'list-draft-drawer',
   SIGNUP_DRAWER_ID: 'signup-drawer',
+  LOCK_TYPE_DRAWER_ID: 'lock-type-drawer',
 };

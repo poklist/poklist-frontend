@@ -14,3 +14,9 @@ export enum ListType {
   PUBLIC = 1,
   PRIVATE = 2,
 }
+
+export enum ListLockMethod {
+  NONE = 'none',
+  PASSWORD = 'password',
+  QUESTION = 'question',
+}

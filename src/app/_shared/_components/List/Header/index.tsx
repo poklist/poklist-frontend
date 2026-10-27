@@ -25,7 +25,7 @@ const Header: React.FC<IHeaderProps> = ({
             className="absolute left-4 flex h-5 w-5 items-center justify-center"
             onClick={() => navigateTo.backward()}
           >
-            <IconLeftArrow height={10} />
+            <IconLeftArrow className="text-black-text-01" height={10} />
           </div>
         )}
         <div className="text-center">{title}</div>

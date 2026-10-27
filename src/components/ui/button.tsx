@@ -19,6 +19,7 @@ export enum ButtonVariant {
   SUB_ACTIVE = 'subActive',
   BRIGHT_GREEN = 'brightGreen',
   SMART_PURPLE = 'smartPurple',
+  GRAY_NOTE = 'grayNote',
 }
 
 export enum ButtonSize {
@@ -33,6 +34,7 @@ export enum ButtonSize {
 
 export enum ButtonShape {
   ROUNDED_FULL = 'roundedFull',
+  ROUNDED_12PX = 'rounded12px',
   ROUNDED_8PX = 'rounded8px',
   ROUNDED_5PX = 'rounded5px',
 }
@@ -51,13 +53,15 @@ const buttonVariants = cva(
         [ButtonVariant.WHITE]:
           'border border-black bg-white text-black-text-01 disabled:opacity-50',
         [ButtonVariant.GRAY]:
-          ' bg-gray-main-03 text-black-text-01 disabled:opacity-50',
+          'bg-gray-main-03 text-black-text-01 disabled:opacity-50',
         [ButtonVariant.SUB_ACTIVE]:
           'border border-gray-main-03 bg-gray-note-05 text-black-text-01 disabled:opacity-50',
         [ButtonVariant.BRIGHT_GREEN]:
           'border border-black bg-green-bright-01 text-black-text-01 disabled:opacity-50',
         [ButtonVariant.SMART_PURPLE]:
           'border border-smart-purple bg-smart-purple text-white disabled:bg-note-gray-06 disabled:border-note-gray-06',
+        [ButtonVariant.GRAY_NOTE]:
+          'border border-note-gray-06 bg-white text-black-text-01 disabled:opacity-50',
       },
       size: {
         [ButtonSize.SM]: 'h-8 text-[13px] px-3',
@@ -70,6 +74,7 @@ const buttonVariants = cva(
       },
       shape: {
         [ButtonShape.ROUNDED_FULL]: 'rounded-full',
+        [ButtonShape.ROUNDED_12PX]: 'rounded-xl',
         [ButtonShape.ROUNDED_8PX]: 'rounded-lg',
         [ButtonShape.ROUNDED_5PX]: 'rounded-[5px]',
       },
