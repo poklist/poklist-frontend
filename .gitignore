@@ -42,3 +42,8 @@ README.md
 /blob-report/
 /playwright/.cache/
 
+
+# Local AI / tool configs
+.codex
+.codegpt
+.fallow
