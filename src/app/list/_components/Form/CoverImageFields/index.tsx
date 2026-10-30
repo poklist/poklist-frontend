@@ -23,6 +23,7 @@ const CoverImageFields = ({
           file={field.value}
           callback={onOpenImage}
           onRemove={onRemove}
+          className="bg-white"
         />
       )}
     />

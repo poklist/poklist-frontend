@@ -1,6 +1,16 @@
-import { FakePageContext, FakePageType } from '@/components/FakePage/context';
-import { IdeaBody } from '@/types/Idea';
+import {
+  FakePageContext,
+  FakePagePayloadMap,
+  FakePagePayloads,
+  FakePageType,
+} from '@/components/FakePage/context';
 import { useState } from 'react';
+
+const emptyPayloads: FakePagePayloads = {
+  editField: null,
+  listSelector: null,
+  lockConfig: null,
+};
 
 export const FakePageProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -8,18 +18,22 @@ export const FakePageProvider: React.FC<{ children: React.ReactNode }> = ({
   children: React.ReactNode;
 }) => {
   const [openedPage, setOpenedPage] = useState<FakePageType | null>(null);
-  const [payload, setPayload] = useState<{
-    ideaForm: IdeaBody;
-  } | null>(null);
-  const openFakePage = (
-    pageType: FakePageType,
-    data?: {
-      ideaForm: IdeaBody;
-    } | null
+  const [payloads, setPayloads] = useState<FakePagePayloads>(emptyPayloads);
+
+  const openFakePage = <T extends FakePageType>(
+    pageType: T,
+    data?: FakePagePayloadMap[T]
   ) => {
     setOpenedPage(pageType);
-    if (data) setPayload(data);
+    // 沒帶 payload 就清空該頁，避免沿用上一次開啟時的資料
+    setPayloads(
+      (prev) =>
+        ({ ...prev, [pageType]: data ?? null }) satisfies FakePagePayloads
+    );
   };
+
+  const getPayload = <T extends FakePageType>(pageType: T) =>
+    payloads[pageType];
 
   const closeFakePage = () => {
     setOpenedPage(null);
@@ -31,7 +45,7 @@ export const FakePageProvider: React.FC<{ children: React.ReactNode }> = ({
       value={{
         isOpen,
         openedPage,
-        payload,
+        getPayload,
         openFakePage,
         closeFakePage,
       }}

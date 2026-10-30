@@ -10,9 +10,8 @@ import {
   ButtonSize,
   ButtonVariant,
 } from '@/components/ui/button';
-import IconExteriorLink from '@/components/ui/icons/ExteriorLinkIcon';
+import IconAdd from '@/components/ui/icons/AddIcon';
 import IconRightArrow from '@/components/ui/icons/RightArrowIcon';
-import IconTextarea from '@/components/ui/icons/TextareaIcon';
 import { Input } from '@/components/ui/input';
 import { DrawerIds } from '@/constants/Drawer';
 import { DESC_MAX_LENGTH, TITLE_MAX_LENGTH } from '@/constants/form';
@@ -24,7 +23,7 @@ import { useGetCategories } from '@/hooks/api/categories/useGetCategories';
 import useAutoResizeTextarea from '@/hooks/ui/useAutoResizeTextarea';
 import useFormErrorHandler from '@/hooks/ui/useFormErrorHandler';
 import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
-import { removeLocalStorage, setLocalStorage } from '@/lib/utils';
+import { cn, removeLocalStorage, setLocalStorage } from '@/lib/utils';
 import { resolveListFormError } from '@/lib/validator';
 import { ListFormSchema } from '@/types/common';
 import { IEditFieldConfig } from '@/types/EditField/index.d';
@@ -34,12 +33,19 @@ import { t, Trans } from '@lingui/macro';
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
-import AutoResizeFields from './_components/AutoResizeFields';
-import CancelConfirmDrawer from './_components/CancelConfirmDrawer';
-import CategoryDrawer from './_components/CategoryDrawer';
-import CoverImageFields from './_components/CoverImageFields';
-import DraftDrawer from './_components/DraftDrawer';
-import VisibilityFields from './_components/VisibilityFields';
+import AutoResizeFields from '@/app/list/_components/Form/AutoResizeFields';
+import CancelConfirmDrawer from '@/app/list/_components/Form/CancelConfirmDrawer';
+import CategoryDrawer from '@/app/list/_components/Form/CategoryDrawer';
+import CategoryDropdown, {
+  CategoryOption,
+} from '@/app/list/_components/Form/CategoryDropdown';
+import CoverImageFields from '@/app/list/_components/Form/CoverImageFields';
+import DraftDrawer from '@/app/list/_components/Form/DraftDrawer';
+import VisibilityFields from '@/app/list/_components/Form/VisibilityFields';
+
+// 展開「更多內容」時新出現欄位的進場動畫；僅在使用者未要求減少動態時播放
+const EXPAND_ANIMATION =
+  'motion-safe:animate-in motion-safe:fade-in-0 motion-safe:slide-in-from-top-2 motion-safe:duration-300';
 
 export interface ListFormHandle {
   requestClose: () => void;
@@ -109,6 +115,17 @@ const ListForm = forwardRef<ListFormHandle, IListFormProps>(function ListForm(
     descriptionTextarea,
   });
 
+  const onSelectCategory = (option: CategoryOption) => {
+    listForm.setValue('title', option.title, { shouldDirty: true });
+    if (option.categoryID !== undefined) {
+      listForm.setValue('categoryID', option.categoryID, { shouldDirty: true });
+    }
+    setTimeout(() => {
+      titleTextarea.bind.onChange();
+      descriptionTextarea.bind.onChange();
+    }, 1);
+  };
+
   const onOpenFakePage = () => {
     setFieldConfig({
       fieldName: t`封面圖片`,
@@ -123,6 +140,8 @@ const ListForm = forwardRef<ListFormHandle, IListFormProps>(function ListForm(
     });
     openFakePage('editField');
   };
+
+  const [isExpand, setIsExpand] = useState(false);
 
   const onDismiss = () => {
     let isFormEmpty = true;
@@ -225,68 +244,123 @@ const ListForm = forwardRef<ListFormHandle, IListFormProps>(function ListForm(
     <>
       <form
         onSubmit={(event) => event.preventDefault()}
-        className="relative flex flex-1 flex-col gap-4 bg-gray-note-05 px-4 py-6 pt-20 md:max-w-mobile-max"
+        className="relative flex flex-1 flex-col gap-6 bg-gray-note-05 px-4 py-6 pt-20 md:max-w-mobile-max"
       >
-        <div className="flex items-center justify-center">
+        <CategoryDropdown onSelect={onSelectCategory} />
+        {isExpand && (
+          <div className={EXPAND_ANIMATION}>
+            <CoverImageFields
+              control={listForm.control}
+              onOpenImage={onOpenFakePage}
+              onRemove={() => listForm.setValue('coverImage', '')}
+            />
+          </div>
+        )}
+        <label className="flex flex-col gap-2">
+          {isExpand && (
+            <div
+              className={cn(
+                'text-t1 font-semibold text-black-text-01',
+                EXPAND_ANIMATION
+              )}
+            >
+              <Trans>名單主題</Trans>
+            </div>
+          )}
           <AutoResizeFields
             name="title"
             control={listForm.control}
-            placeholder={t`在這輸入名單標題`}
+            placeholder={t`為這份名單取個主題`}
             maxLength={TITLE_MAX_LENGTH}
             textareaControl={titleTextarea}
-            wrapperClassName="relative flex w-11/12 items-center justify-center font-extrabold"
-            className="relative min-h-20 w-full resize-none overflow-hidden rounded-lg border border-black-tint-04 px-3 py-4 text-center text-h1 placeholder:text-h1 focus:border-black focus:pb-10 focus:ring-1 focus:ring-black"
+            wrapperClassName="relative flex items-center justify-center font-extrabold"
+            className="relative min-h-20 resize-none overflow-hidden rounded-2xl border border-note-gray-06 px-3 py-4 text-center text-h1 font-black placeholder:text-h1 placeholder:font-black placeholder:text-black-tint-04 focus:border-smart-purple focus:pb-10 focus:ring-1 focus:ring-smart-purple"
             data-testid="list-title-input"
           />
-        </div>
-        <AutoResizeFields
-          name="description"
-          control={listForm.control}
-          placeholder={t`描述標題`}
-          maxLength={DESC_MAX_LENGTH}
-          textareaControl={descriptionTextarea}
-          wrapperClassName="relative flex items-center justify-center"
-          prefix={<IconTextarea className="absolute left-3 top-4 z-10" />}
-          className="relative min-h-14 w-full resize-none overflow-hidden rounded-lg border border-black-tint-04 py-4 pl-10 pr-3 focus:border-black focus:pb-10 focus:ring-1 focus:ring-black"
-          data-testid="list-desc-input"
-        />
-        <div className="relative flex items-center gap-2">
-          <IconExteriorLink className="absolute left-3 top-4 z-10" />
-          <Input
-            {...listForm.register('externalLink')}
-            placeholder={t`連結網頁`}
-            data-testid="list-link-input"
-            className="line-clamp-1 block min-h-14 w-full truncate border-black-tint-04 py-4 pl-10 pr-3 focus:border-black focus:ring-1 focus:ring-black"
+        </label>
+        {!isExpand && (
+          <Button
+            type="button"
+            onClick={() => {
+              setIsExpand(true);
+              setTimeout(() => {
+                descriptionTextarea.bind.onChange();
+                // 按鈕展開後即 unmount，把焦點移到新出現的描述欄，避免焦點掉回 body
+                listForm.setFocus('description');
+              }, 1);
+            }}
+            variant={ButtonVariant.GRAY_NOTE}
+            shape={ButtonShape.ROUNDED_12PX}
+            size={ButtonSize.H40}
+            data-testid="list-form-expand"
+          >
+            <div className="flex items-center gap-1 text-t1 font-semibold text-black-text-01">
+              <IconAdd className="h-3 w-3" />
+              <Trans>更多內容</Trans>
+            </div>
+          </Button>
+        )}
+        {isExpand && (
+          <label className={cn('flex flex-col gap-2', EXPAND_ANIMATION)}>
+            <div className="text-t1 font-semibold text-black-text-01">
+              <Trans>描述</Trans>
+            </div>
+            <AutoResizeFields
+              name="description"
+              control={listForm.control}
+              placeholder={t`描述標題`}
+              maxLength={DESC_MAX_LENGTH}
+              textareaControl={descriptionTextarea}
+              wrapperClassName="relative flex items-center justify-center"
+              className="relative min-h-14 w-full resize-none overflow-hidden rounded-2xl border border-note-gray-06 p-4 focus:border-smart-purple focus:pb-10 focus:ring-1 focus:ring-smart-purple"
+              data-testid="list-desc-input"
+            />
+          </label>
+        )}
+        {isExpand && (
+          <label className={cn('flex flex-col gap-2', EXPAND_ANIMATION)}>
+            <div className="text-t1 font-semibold text-black-text-01">
+              <Trans>網址</Trans>
+            </div>
+            <div className="relative flex items-center gap-2">
+              <Input
+                {...listForm.register('externalLink')}
+                placeholder={t`連結網頁`}
+                data-testid="list-link-input"
+                className="line-clamp-1 block min-h-14 w-full truncate rounded-2xl border-note-gray-06 p-4 focus:border-smart-purple focus:ring-1 focus:ring-smart-purple"
+              />
+            </div>
+          </label>
+        )}
+        <div className="flex flex-col gap-4">
+          <VisibilityFields
+            control={listForm.control}
+            onChange={onListTypeChange}
           />
-        </div>
-        <CoverImageFields
-          control={listForm.control}
-          onOpenImage={onOpenFakePage}
-          onRemove={() => listForm.setValue('coverImage', '')}
-        />
-        <Button
-          type="button"
-          disabled={
-            !listForm.formState.isDirty || listForm.watch('title') === ''
-          }
-          onMouseDown={(event) => event.preventDefault()}
-          onClick={(event) => {
-            event.preventDefault();
-            if (isEdit) {
-              void listForm.handleSubmit(onSubmit, (errors) =>
-                onSubmitFailed(errors)
-              )();
-            } else {
-              openCategoryDrawer();
+          <Button
+            type="button"
+            disabled={
+              !listForm.formState.isDirty || listForm.watch('title') === ''
             }
-          }}
-          variant={ButtonVariant.SMART_PURPLE}
-          shape={ButtonShape.ROUNDED_8PX}
-          size={ButtonSize.H40}
-          data-testid="edit-mode-save"
-        >
-          {isEdit ? <Trans>完成</Trans> : <Trans>下一步</Trans>}
-        </Button>
+            onMouseDown={(event) => event.preventDefault()}
+            onClick={(event) => {
+              event.preventDefault();
+              if (isEdit) {
+                void listForm.handleSubmit(onSubmit, (errors) =>
+                  onSubmitFailed(errors)
+                )();
+              } else {
+                openCategoryDrawer();
+              }
+            }}
+            variant={ButtonVariant.SMART_PURPLE}
+            shape={ButtonShape.ROUNDED_8PX}
+            size={ButtonSize.H40}
+            data-testid="edit-mode-save"
+          >
+            {isEdit ? <Trans>完成</Trans> : <Trans>下一步</Trans>}
+          </Button>
+        </div>
       </form>
       {defaultListInfo.title !== '' && (
         <div
@@ -297,11 +371,6 @@ const ListForm = forwardRef<ListFormHandle, IListFormProps>(function ListForm(
           <IconRightArrow className="size-7 text-black-gray-03" />
         </div>
       )}
-
-      <VisibilityFields
-        control={listForm.control}
-        onChange={onListTypeChange}
-      />
 
       <CategoryDrawer
         isCategoryLoading={categoriesLoading}

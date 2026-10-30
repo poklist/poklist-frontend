@@ -27,12 +27,12 @@ const ImageUploader: React.FC<IImageUploaderProps> = ({
       ) : (
         <div
           className={cn(
-            `flex h-48 w-48 items-center justify-center rounded-2xl border border-black-tint-04`,
+            `flex h-48 w-48 items-center justify-center rounded-2xl border border-note-gray-06`,
             className
           )}
         >
           <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-note-05">
-            <IconPhoto className="w-6" />
+            <IconPhoto className="w-6 text-black-gray-03" />
           </div>
         </div>
       )}

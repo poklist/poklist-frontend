@@ -34,7 +34,8 @@ const ListSelectorFakePage: React.FC = () => {
 
   const navigateTo = useStrictNavigationAdapter();
 
-  const { isOpen, closeFakePage, payload } = useFakePage();
+  const { isOpen, closeFakePage, getPayload } = useFakePage();
+  const payload = getPayload('listSelector');
   const open = isOpen('listSelector');
   const { openDrawer } = useDrawer(DrawerIds.SIGNUP_DRAWER_ID);
 

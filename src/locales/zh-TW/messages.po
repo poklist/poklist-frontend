@@ -14,6 +14,7 @@ msgstr ""
 "Plural-Forms: \n"
 
 #: src/app/[userCode]/list/[id]/_components/IdeaDrawerContent/index.tsx
+#: src/app/list/_components/Form/VisibilityFields/LockConfigFakePage/PasswordConfigSection/index.tsx
 #: src/components/Footer/FloatingButtonFooter.tsx
 msgid "已複製到剪貼簿"
 msgstr "已複製到剪貼簿"
@@ -48,39 +49,43 @@ msgstr "確定刪除"
 #: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
 #: src/app/[userCode]/list/_components/DeleteButton/index.tsx
 #: src/app/_shared/_components/List/DeleteButton/index.tsx
+#: src/app/list/_components/Form/VisibilityFields/LockConfigFakePage/index.tsx
+#: src/app/list/_components/Form/VisibilityFields/LockTypeDrawer/index.tsx
 msgid "取消"
 msgstr "取消"
 
-#: src/app/[userCode]/list/[id]/_components/ListCard/_components/AddIdeaRow/index.tsx
+#: src/app/[userCode]/list/[id]/_components/ListCard/AddIdeaRow/index.tsx
 #: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
 #: src/app/idea/_components/Form/index.tsx
 #: src/components/Drawer/CreateListOrIdeaDrawer.tsx
 msgid "新增靈感"
 msgstr "新增靈感"
 
-#: src/app/[userCode]/list/[id]/_components/ListCard/_components/ListCardHeader/index.tsx
+#: src/app/[userCode]/list/[id]/_components/ListCard/ListCardHeader/index.tsx
 msgid "最近更新"
 msgstr "最近更新"
 
-#: src/app/[userCode]/list/[id]/_components/ListCard/_components/ListCardHeader/index.tsx
+#: src/app/[userCode]/list/[id]/_components/ListCard/ListCardHeader/index.tsx
 msgid "創單自"
 msgstr "創單自"
 
-#: src/app/[userCode]/list/[id]/_components/ListCard/_components/ListCardHeader/index.tsx
+#: src/app/[userCode]/list/[id]/_components/ListCard/ListCardHeader/index.tsx
 #: src/constants/i18n.ts
 msgid "靈感"
 msgstr "靈感"
 
-#: src/app/[userCode]/list/[id]/_components/ListCard/_components/ListCardHeader/index.tsx
+#: src/app/[userCode]/list/[id]/_components/ListCard/ListCardHeader/index.tsx
 #: src/components/Footer/FloatingButtonFooter.tsx
 msgid "喜歡"
 msgstr "喜歡"
 
-#: src/app/[userCode]/list/[id]/_components/ListCard/_components/ListCardHeader/index.tsx
+#: src/app/[userCode]/list/[id]/_components/ListCard/ListCardHeader/index.tsx
+#: src/app/list/_components/Form/VisibilityFields/index.tsx
 msgid "公開"
 msgstr "公開"
 
-#: src/app/[userCode]/list/[id]/_components/ListCard/_components/ListCardHeader/index.tsx
+#: src/app/[userCode]/list/[id]/_components/ListCard/ListCardHeader/index.tsx
+#: src/app/list/_components/Form/VisibilityFields/index.tsx
 msgid "隱藏"
 msgstr "隱藏"
 
@@ -152,7 +157,8 @@ msgstr "拖曳左側三條線可排序"
 #: src/app/[userCode]/list/_components/Header/index.tsx
 #: src/app/idea/_components/Form/index.tsx
 #: src/app/idea/create/list/page.tsx
-#: src/app/list/_components/Form/_components/CategoryDrawer/index.tsx
+#: src/app/list/_components/Form/CategoryDrawer/index.tsx
+#: src/app/list/_components/Form/VisibilityFields/LockConfigFakePage/index.tsx
 #: src/app/list/_components/Form/index.tsx
 #: src/components/FakePage/EditFieldFakePage.tsx
 msgid "完成"
@@ -329,7 +335,7 @@ msgstr "封面圖片"
 #: src/app/idea/_components/Form/index.tsx
 #: src/app/idea/create/list/page.tsx
 #: src/app/idea/create/list/page.tsx
-#: src/app/list/_components/Form/_components/CategoryDrawer/index.tsx
+#: src/app/list/_components/Form/CategoryDrawer/index.tsx
 #: src/app/list/_components/Form/index.tsx
 msgid "下一步"
 msgstr "下一步"
@@ -339,6 +345,7 @@ msgid "在這輸入靈感 （必填）…"
 msgstr "在這輸入靈感 （必填）…"
 
 #: src/app/idea/_components/Form/index.tsx
+#: src/app/list/_components/Form/index.tsx
 msgid "描述"
 msgstr "描述"
 
@@ -361,23 +368,23 @@ msgstr "放棄編輯"
 #: src/app/idea/_components/Form/index.tsx
 #: src/app/idea/_components/Form/index.tsx
 #: src/app/idea/create/list/page.tsx
-#: src/app/list/_components/Form/_components/CancelConfirmDrawer/index.tsx
-#: src/app/list/_components/Form/_components/DraftDrawer/index.tsx
+#: src/app/list/_components/Form/CancelConfirmDrawer/index.tsx
+#: src/app/list/_components/Form/DraftDrawer/index.tsx
 msgid "繼續編輯"
 msgstr "繼續編輯"
 
 #: src/app/idea/_components/Form/index.tsx
-#: src/app/list/_components/Form/_components/DraftDrawer/index.tsx
+#: src/app/list/_components/Form/DraftDrawer/index.tsx
 msgid "你有一個未完成的靈感草稿"
 msgstr "你有一個未完成的靈感草稿"
 
 #: src/app/idea/_components/Form/index.tsx
-#: src/app/list/_components/Form/_components/DraftDrawer/index.tsx
+#: src/app/list/_components/Form/DraftDrawer/index.tsx
 msgid "要刪除，還是繼續編輯？"
 msgstr "要刪除，還是繼續編輯？"
 
 #: src/app/idea/_components/Form/index.tsx
-#: src/app/list/_components/Form/_components/DraftDrawer/index.tsx
+#: src/app/list/_components/Form/DraftDrawer/index.tsx
 msgid "刪除草稿"
 msgstr "刪除草稿"
 
@@ -405,7 +412,6 @@ msgid "建立新名單"
 msgstr "建立新名單"
 
 #: src/app/idea/create/list/page.tsx
-#: src/app/list/create/page.tsx
 msgid "建立靈感名單"
 msgstr "建立靈感名單"
 
@@ -414,48 +420,266 @@ msgid "取個響亮的名稱吧！像是：我最愛的週末小去處"
 msgstr "取個響亮的名稱吧！像是：我最愛的週末小去處"
 
 #: src/app/idea/create/list/page.tsx
-#: src/app/list/_components/Form/index.tsx
 msgid "在這輸入名單標題"
 msgstr "在這輸入名單標題"
 
 #: src/app/idea/create/list/page.tsx
-#: src/app/list/_components/Form/_components/VisibilityFields/index.tsx
 msgid "隱藏這份名單"
 msgstr "隱藏這份名單"
 
 #: src/app/idea/create/list/page.tsx
-#: src/app/list/_components/Form/_components/VisibilityFields/index.tsx
 msgid "只有你能看見這份名單"
 msgstr "只有你能看見這份名單"
 
 #: src/app/idea/create/list/page.tsx
-#: src/app/list/_components/Form/_components/CategoryDrawer/index.tsx
+#: src/app/list/_components/Form/CategoryDrawer/index.tsx
+#: src/app/list/_components/Form/index.tsx
 msgid "名單主題"
 msgstr "名單主題"
 
 #: src/app/idea/create/list/page.tsx
-#: src/app/list/_components/Form/_components/CategoryDrawer/index.tsx
+#: src/app/list/_components/Form/CategoryDrawer/index.tsx
 msgid "選擇一項接近此份名單的分類"
 msgstr "選擇一項接近此份名單的分類"
 
 #: src/app/idea/create/list/page.tsx
-#: src/app/list/_components/Form/_components/CancelConfirmDrawer/index.tsx
+#: src/app/list/_components/Form/CancelConfirmDrawer/index.tsx
 msgid "取消後，資料就飛走囉！"
 msgstr "取消後，資料就飛走囉！"
 
 #: src/app/idea/create/list/page.tsx
-#: src/app/list/_components/Form/_components/CancelConfirmDrawer/index.tsx
+#: src/app/list/_components/Form/CancelConfirmDrawer/index.tsx
 msgid "如果取消，所填的內容都會消失"
 msgstr "如果取消，所填的內容都會消失"
 
 #: src/app/idea/create/list/page.tsx
-#: src/app/list/_components/Form/_components/CancelConfirmDrawer/index.tsx
+#: src/app/list/_components/Form/CancelConfirmDrawer/index.tsx
 msgid "取消編輯"
 msgstr "取消編輯"
+
+#: src/app/list/_components/Form/CategoryDropdown/index.tsx
+msgid "讓我工作快一點的小技巧"
+msgstr "讓我工作快一點的小技巧"
+
+#: src/app/list/_components/Form/CategoryDropdown/index.tsx
+msgid "從快捷鍵、工作流到 AI 工具，分享每天省下一點時間的小攻略..."
+msgstr "從快捷鍵、工作流到 AI 工具，分享每天省下一點時間的小攻略..."
+
+#: src/app/list/_components/Form/CategoryDropdown/index.tsx
+msgid "那些沒人教我的職場生存術"
+msgstr "那些沒人教我的職場生存術"
+
+#: src/app/list/_components/Form/CategoryDropdown/index.tsx
+msgid "從開會、回訊息到跟主管溝通，分享工作幾年後才慢慢學會的事..."
+msgstr "從開會、回訊息到跟主管溝通，分享工作幾年後才慢慢學會的事..."
+
+#: src/app/list/_components/Form/CategoryDropdown/index.tsx
+msgid "我的懶人省錢理財術"
+msgstr "我的懶人省錢理財術"
+
+#: src/app/list/_components/Form/CategoryDropdown/index.tsx
+msgid "從訂閱服務、3C 到生活用品，分享省錢方法、理財小小心法..."
+msgstr "從訂閱服務、3C 到生活用品，分享省錢方法、理財小小心法..."
+
+#: src/app/list/_components/Form/CategoryDropdown/index.tsx
+msgid "下班後讓我回血的運動儀式"
+msgstr "下班後讓我回血的運動儀式"
+
+#: src/app/list/_components/Form/CategoryDropdown/index.tsx
+msgid "從散步、伸展、排舞到重訓，分享我從工作模式切回自己的流程..."
+msgstr "從散步、伸展、排舞到重訓，分享我從工作模式切回自己的流程..."
+
+#: src/app/list/_components/Form/CategoryDropdown/index.tsx
+msgid "最近讓我重新有動力的內容"
+msgstr "最近讓我重新有動力的內容"
+
+#: src/app/list/_components/Form/CategoryDropdown/index.tsx
+msgid "這裡收集所有配飯的好劇、當背景播的 Podcast、有感的好文章..."
+msgstr "這裡收集所有配飯的好劇、當背景播的 Podcast、有感的好文章..."
+
+#: src/app/list/_components/Form/CategoryDropdown/index.tsx
+msgid "那些讓我深刻的好書"
+msgstr "那些讓我深刻的好書"
+
+#: src/app/list/_components/Form/CategoryDropdown/index.tsx
+msgid "從工作效率、職涯成長到自我探索，分享最近讀完有感的幾本..."
+msgstr "從工作效率、職涯成長到自我探索，分享最近讀完有感的幾本..."
+
+#: src/app/list/_components/Form/CategoryDropdown/index.tsx
+msgid "長大後不再勉強自己的事"
+msgstr "長大後不再勉強自己的事"
+
+#: src/app/list/_components/Form/CategoryDropdown/index.tsx
+msgid "從不想去的聚會到不必要的迎合，記錄開始更忠於自己的人生選擇..."
+msgstr "從不想去的聚會到不必要的迎合，記錄開始更忠於自己的人生選擇..."
+
+#: src/app/list/_components/Form/CategoryDropdown/index.tsx
+msgid "這個月的心情筆記本"
+msgstr "這個月的心情筆記本"
+
+#: src/app/list/_components/Form/CategoryDropdown/index.tsx
+msgid "從焦慮、好笑又想哭的瞬間，留下每天腦袋裡正在發生的事..."
+msgstr "從焦慮、好笑又想哭的瞬間，留下每天腦袋裡正在發生的事..."
+
+#: src/app/list/_components/Form/CategoryDropdown/index.tsx
+msgid "無限回訪！一個人也要去的地方"
+msgstr "無限回訪！一個人也要去的地方"
+
+#: src/app/list/_components/Form/CategoryDropdown/index.tsx
+msgid "從咖啡廳到個性小店，分享一個人也會無限回訪的口袋名單..."
+msgstr "從咖啡廳到個性小店，分享一個人也會無限回訪的口袋名單..."
+
+#: src/app/list/_components/Form/CategoryDropdown/index.tsx
+msgid "想分享什麼名單主題？"
+msgstr "想分享什麼名單主題？"
+
+#: src/app/list/_components/Form/CategoryDropdown/index.tsx
+msgid "看看大家在寫什麼"
+msgstr "看看大家在寫什麼"
+
+#: src/app/list/_components/Form/VisibilityFields/LockConfigFakePage/PasswordConfigSection/index.tsx
+msgid "密碼上鎖"
+msgstr "密碼上鎖"
+
+#: src/app/list/_components/Form/VisibilityFields/LockConfigFakePage/PasswordConfigSection/index.tsx
+msgid "讀者輸入密碼，解鎖完整名單。"
+msgstr "讀者輸入密碼，解鎖完整名單。"
+
+#: src/app/list/_components/Form/VisibilityFields/LockConfigFakePage/PasswordConfigSection/index.tsx
+msgid "創造朋友圈或粉絲製作專屬內容"
+msgstr "創造朋友圈或粉絲製作專屬內容"
+
+#: src/app/list/_components/Form/VisibilityFields/LockConfigFakePage/PasswordConfigSection/index.tsx
+msgid "密碼"
+msgstr "密碼"
+
+#: src/app/list/_components/Form/VisibilityFields/LockConfigFakePage/PasswordConfigSection/index.tsx
+msgid "解鎖名額"
+msgstr "解鎖名額"
+
+#: src/app/list/_components/Form/VisibilityFields/LockConfigFakePage/PasswordConfigSection/index.tsx
+msgid "最多 10 位使用者可使用此密碼解鎖完整名單；額滿後可再增加名額。"
+msgstr "最多 10 位使用者可使用此密碼解鎖完整名單；額滿後可再增加名額。"
+
+#: src/app/list/_components/Form/VisibilityFields/LockConfigFakePage/PasswordConfigSection/index.tsx
+msgid "{unlocked}/{limit} 人已解鎖"
+msgstr "{unlocked}/{limit} 人已解鎖"
+
+#: src/app/list/_components/Form/VisibilityFields/LockConfigFakePage/PasswordConfigSection/index.tsx
+msgid "剩餘 {0} 個名額"
+msgstr "剩餘 {0} 個名額"
+
+#: src/app/list/_components/Form/VisibilityFields/LockConfigFakePage/PasswordConfigSection/index.tsx
+msgid "新增 10 個名額"
+msgstr "新增 10 個名額"
+
+#: src/app/list/_components/Form/VisibilityFields/LockConfigFakePage/QuestionConfigSection/index.tsx
+msgid "問題上鎖"
+msgstr "問題上鎖"
+
+#: src/app/list/_components/Form/VisibilityFields/LockConfigFakePage/QuestionConfigSection/index.tsx
+msgid "讀者回答問題，解鎖完整名單"
+msgstr "讀者回答問題，解鎖完整名單"
+
+#: src/app/list/_components/Form/VisibilityFields/LockConfigFakePage/QuestionConfigSection/index.tsx
+msgid "獲得讀者想法或 Email"
+msgstr "獲得讀者想法或 Email"
+
+#: src/app/list/_components/Form/VisibilityFields/LockConfigFakePage/QuestionConfigSection/index.tsx
+msgid "問題設定可隨時修改"
+msgstr "問題設定可隨時修改"
+
+#: src/app/list/_components/Form/VisibilityFields/LockConfigFakePage/QuestionConfigSection/index.tsx
+msgid "問題設定："
+msgstr "問題設定："
+
+#: src/app/list/_components/Form/VisibilityFields/LockConfigFakePage/QuestionConfigSection/index.tsx
+msgid "例如：分享一件最近讓你煩惱的小事"
+msgstr "例如：分享一件最近讓你煩惱的小事"
+
+#: src/app/list/_components/Form/VisibilityFields/LockConfigFakePage/QuestionConfigSection/index.tsx
+msgid "共 {count} 則回覆"
+msgstr "共 {count} 則回覆"
+
+#: src/app/list/_components/Form/VisibilityFields/LockConfigFakePage/QuestionConfigSection/index.tsx
+msgid "{unread} 則未讀"
+msgstr "{unread} 則未讀"
+
+#: src/app/list/_components/Form/VisibilityFields/LockConfigFakePage/QuestionConfigSection/index.tsx
+msgid "回覆列表"
+msgstr "回覆列表"
+
+#: src/app/list/_components/Form/VisibilityFields/LockConfigFakePage/index.tsx
+msgid "儲存設定"
+msgstr "儲存設定"
+
+#: src/app/list/_components/Form/VisibilityFields/LockConfigFakePage/index.tsx
+msgid "更換上鎖方式"
+msgstr "更換上鎖方式"
+
+#: src/app/list/_components/Form/VisibilityFields/LockConfigFakePage/index.tsx
+msgid "解除上鎖"
+msgstr "解除上鎖"
+
+#: src/app/list/_components/Form/VisibilityFields/LockTypeDrawer/index.tsx
+msgid "好東西，值得藏一手。"
+msgstr "好東西，值得藏一手。"
+
+#: src/app/list/_components/Form/VisibilityFields/LockTypeDrawer/index.tsx
+msgid "讓讀者解鎖你的私藏好料！"
+msgstr "讓讀者解鎖你的私藏好料！"
+
+#: src/app/list/_components/Form/VisibilityFields/index.tsx
+msgid "名單瀏覽設定"
+msgstr "名單瀏覽設定"
+
+#: src/app/list/_components/Form/VisibilityFields/index.tsx
+msgid "可以隨時更改"
+msgstr "可以隨時更改"
+
+#: src/app/list/_components/Form/VisibilityFields/index.tsx
+msgid "所有人都能看到"
+msgstr "所有人都能看到"
+
+#: src/app/list/_components/Form/VisibilityFields/index.tsx
+msgid "設定上鎖"
+msgstr "設定上鎖"
+
+#: src/app/list/_components/Form/VisibilityFields/index.tsx
+msgid "讀者必須解鎖，才能查看完整名單"
+msgstr "讀者必須解鎖，才能查看完整名單"
+
+#: src/app/list/_components/Form/VisibilityFields/index.tsx
+msgid "只有你能看到此名單"
+msgstr "只有你能看到此名單"
+
+#: src/app/list/_components/Form/VisibilityFields/index.tsx
+msgid "不會公開在個人檔案、首頁或任何搜尋中"
+msgstr "不會公開在個人檔案、首頁或任何搜尋中"
+
+#: src/app/list/_components/Form/VisibilityFields/index.tsx
+msgid "隱藏名單 只有你能瀏覽"
+msgstr "隱藏名單 只有你能瀏覽"
+
+#: src/app/list/_components/Form/VisibilityFields/index.tsx
+msgid "公開名單 所有人都可瀏覽"
+msgstr "公開名單 所有人都可瀏覽"
+
+#: src/app/list/_components/Form/index.tsx
+msgid "為這份名單取個主題"
+msgstr "為這份名單取個主題"
+
+#: src/app/list/_components/Form/index.tsx
+msgid "更多內容"
+msgstr "更多內容"
 
 #: src/app/list/_components/Form/index.tsx
 msgid "描述標題"
 msgstr "描述標題"
+
+#: src/app/list/_components/Form/index.tsx
+msgid "網址"
+msgstr "網址"
 
 #: src/app/list/_components/Form/index.tsx
 msgid "連結網頁"
@@ -464,6 +688,10 @@ msgstr "連結網頁"
 #: src/app/list/_components/Form/index.tsx
 msgid "編輯名單分類"
 msgstr "編輯名單分類"
+
+#: src/app/list/create/page.tsx
+msgid "建立名單"
+msgstr "建立名單"
 
 #: src/app/official/_components/FeatureSection/index.tsx
 #: src/app/user/_components/HeroSection/index.tsx

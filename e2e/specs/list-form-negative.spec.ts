@@ -51,6 +51,8 @@ test.describe('list form negative paths (logged-in)', () => {
   }) => {
     await page.goto('/list/create');
     await page.getByTestId('list-title-input').fill('Valid title');
+    // 網址欄位收在「更多內容」後，需先展開
+    await page.getByTestId('list-form-expand').click();
     await page.getByTestId('list-link-input').fill('http://');
     await page.getByTestId('edit-mode-save').click();
     await page.getByTestId('category-submit').click();
@@ -73,6 +75,7 @@ test.describe('list form negative paths (logged-in)', () => {
   test('N6 pressing Enter in link input does not submit', async ({ page }) => {
     await page.goto('/list/create');
     await page.getByTestId('list-title-input').fill('Valid title');
+    await page.getByTestId('list-form-expand').click();
     const link = page.getByTestId('list-link-input');
     await link.fill('https://example.com');
     await link.press('Enter');

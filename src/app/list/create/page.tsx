@@ -48,7 +48,7 @@ const CreatePage: React.FC = () => {
   return (
     <div className="flex min-h-screen flex-col gap-4">
       <EditModeHeader
-        title={t`建立靈感名單`}
+        title={t`建立名單`}
         onClose={() => formRef.current?.requestClose()}
       />
       <ListForm
