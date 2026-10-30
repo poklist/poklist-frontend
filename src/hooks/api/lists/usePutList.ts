@@ -5,7 +5,7 @@ import { updateEntryCaches, updateInfiniteCaches } from '@/hooks/api/utils';
 import { toBackendTimestamp } from '@/lib/time';
 import { useQueryClient } from '@tanstack/react-query';
 import z from 'zod';
-import { invalidateUserListsCaches } from './invalidateUserListsCaches';
+import { invalidateUserListsCaches } from '@/hooks/api/lists/invalidateUserListsCaches';
 
 type UsePutIdeaSchema = z.infer<z.ZodObject<{ userCode: z.ZodString }>>;
 type UsePutListOptions = UsePutIdeaSchema & {

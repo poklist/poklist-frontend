@@ -7,7 +7,7 @@ import { updateInfiniteCaches } from '@/hooks/api/utils';
 import { adjustPublishLimitsCache } from '@/hooks/queries/publish/cachesUpdater';
 import { useQueryClient } from '@tanstack/react-query';
 import z from 'zod';
-import { invalidateListIdeaCaches } from './invalidateListIdeaCaches';
+import { invalidateListIdeaCaches } from '@/hooks/api/ideas/invalidateListIdeaCaches';
 
 type UseDeleteIdeaOptions = z.infer<z.ZodObject<{ listID: z.ZodString }>>;
 

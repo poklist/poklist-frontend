@@ -1,8 +1,8 @@
 import { InfiniteCache } from '@/api/fetcher';
 import { QueryClient } from '@tanstack/react-query';
 import { describe, expect, it, vi } from 'vitest';
-import { applyCreatedIdeaToCaches } from './applyCreatedIdeaToCaches';
-import ideasKeys from './keys';
+import { applyCreatedIdeaToCaches } from '@/hooks/api/ideas/applyCreatedIdeaToCaches';
+import ideasKeys from '@/hooks/api/ideas/keys';
 
 type IdeasUnderListBody = { ideas: { id: string }[]; ideaTotalCount: number };
 

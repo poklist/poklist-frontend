@@ -8,7 +8,7 @@ import { adjustPublishLimitsCache } from '@/hooks/queries/publish/cachesUpdater'
 import { useQueryClient } from '@tanstack/react-query';
 import { ErrorResponse } from '@ts-rest/react-query';
 import z from 'zod';
-import { invalidateUserListsCaches } from './invalidateUserListsCaches';
+import { invalidateUserListsCaches } from '@/hooks/api/lists/invalidateUserListsCaches';
 
 type UseDeleteListSchema = z.input<z.ZodObject<{ userCode: z.ZodString }>>;
 

@@ -6,8 +6,8 @@ import { updateInfiniteCaches } from '@/hooks/api/utils';
 import { adjustPublishLimitsCache } from '@/hooks/queries/publish/cachesUpdater';
 import { toBackendTimestamp } from '@/lib/time';
 import { QueryClient } from '@tanstack/react-query';
-import { invalidateListIdeaCaches } from './invalidateListIdeaCaches';
-import ideasKeys from './keys';
+import { invalidateListIdeaCaches } from '@/hooks/api/ideas/invalidateListIdeaCaches';
+import ideasKeys from '@/hooks/api/ideas/keys';
 
 /**
  * 建立 Idea 成功後更新快取。

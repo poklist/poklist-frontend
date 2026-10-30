@@ -2,7 +2,7 @@ import { ideasContract } from '@/api/contracts';
 import { ideasQuery, PostIdeasResponse } from '@/api/query/ideas';
 import { useQueryClient } from '@tanstack/react-query';
 import { ErrorResponse } from '@ts-rest/react-query';
-import { applyCreatedIdeaToCaches } from './applyCreatedIdeaToCaches';
+import { applyCreatedIdeaToCaches } from '@/hooks/api/ideas/applyCreatedIdeaToCaches';
 
 interface UsePostNewIdeaOptions {
   onSuccess?: (data: PostIdeasResponse['content']) => void;

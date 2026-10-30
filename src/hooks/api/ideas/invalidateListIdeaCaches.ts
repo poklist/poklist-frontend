@@ -1,6 +1,6 @@
 import listsKeys from '@/hooks/api/lists/keys';
 import { QueryClient } from '@tanstack/react-query';
-import ideasKeys from './keys';
+import ideasKeys from '@/hooks/api/ideas/keys';
 
 /**
  * 建立 / 編輯 / 刪除 Idea 後，保底重抓該 List 的兩支 ideas cache。

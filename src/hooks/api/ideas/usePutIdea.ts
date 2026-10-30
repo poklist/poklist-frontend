@@ -5,7 +5,7 @@ import listsKeys from '@/hooks/api/lists/keys';
 import { updateEntryCaches, updateInfiniteCaches } from '@/hooks/api/utils';
 import { toBackendTimestamp } from '@/lib/time';
 import { useQueryClient } from '@tanstack/react-query';
-import { invalidateListIdeaCaches } from './invalidateListIdeaCaches';
+import { invalidateListIdeaCaches } from '@/hooks/api/ideas/invalidateListIdeaCaches';
 
 interface UsePutIdeaOptions {
   onSuccess?: (data: PutIdeasResponse['content']) => void;

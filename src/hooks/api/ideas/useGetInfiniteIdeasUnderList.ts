@@ -3,7 +3,7 @@ import { ideasSchema } from '@/api/schemas';
 import { Idea } from '@/constants/list';
 import z from 'zod';
 import { computeNextOffset, sumFetched } from '@/hooks/api/ideas/offset';
-import ideasKeys from './keys';
+import ideasKeys from '@/hooks/api/ideas/keys';
 
 const getInfiniteIdeasUnderListSchema = ideasSchema.getIdeasUnderListRequest
   .omit({ offset: true })

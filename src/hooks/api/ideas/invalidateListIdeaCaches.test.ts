@@ -1,8 +1,8 @@
 import listsKeys from '@/hooks/api/lists/keys';
 import { QueryClient } from '@tanstack/react-query';
 import { describe, expect, it, vi } from 'vitest';
-import { invalidateListIdeaCaches } from './invalidateListIdeaCaches';
-import ideasKeys from './keys';
+import { invalidateListIdeaCaches } from '@/hooks/api/ideas/invalidateListIdeaCaches';
+import ideasKeys from '@/hooks/api/ideas/keys';
 
 describe('invalidateListIdeaCaches', () => {
   // 保底重抓兩支 ideas cache —— 修的是「cache 被 gcTime 回收後，變更不顯示」。

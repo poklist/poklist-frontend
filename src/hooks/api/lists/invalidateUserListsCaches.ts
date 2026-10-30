@@ -1,5 +1,5 @@
 import { QueryClient } from '@tanstack/react-query';
-import listsKeys from './keys';
+import listsKeys from '@/hooks/api/lists/keys';
 
 /**
  * 編輯 / 刪除 List 後，保底重抓使用者的 List 列表 feed。

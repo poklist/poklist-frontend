@@ -1,7 +1,7 @@
 import { QueryClient } from '@tanstack/react-query';
 import { describe, expect, it, vi } from 'vitest';
-import { invalidateUserListsCaches } from './invalidateUserListsCaches';
-import listsKeys from './keys';
+import { invalidateUserListsCaches } from '@/hooks/api/lists/invalidateUserListsCaches';
+import listsKeys from '@/hooks/api/lists/keys';
 
 describe('invalidateUserListsCaches', () => {
   // 保底重抓使用者 List feed —— 修的是「cache 被 gcTime 回收後，編輯/刪除不反映」。

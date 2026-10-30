@@ -2,11 +2,11 @@ import { GetListsResponse } from '@/api/query/lists';
 import DropdownMenuComponent, {
   DropdownItem,
 } from '@/app/[userCode]/list/[id]/_components/DropdownMenu';
-import { AddIdeaRow } from '@/app/[userCode]/list/[id]/_components/ListCard/_components/AddIdeaRow';
-import { IdeaList } from '@/app/[userCode]/list/[id]/_components/ListCard/_components/IdeaList';
-import { ListCardDescription } from '@/app/[userCode]/list/[id]/_components/ListCard/_components/ListCardDescription';
-import ListCardHeader from '@/app/[userCode]/list/[id]/_components/ListCard/_components/ListCardHeader';
-import useListCard from '@/app/[userCode]/list/[id]/_components/ListCard/_hooks/useListCard';
+import { AddIdeaRow } from '@/app/[userCode]/list/[id]/_components/ListCard/AddIdeaRow';
+import { IdeaList } from '@/app/[userCode]/list/[id]/_components/ListCard/IdeaList';
+import { ListCardDescription } from '@/app/[userCode]/list/[id]/_components/ListCard/ListCardDescription';
+import ListCardHeader from '@/app/[userCode]/list/[id]/_components/ListCard/ListCardHeader';
+import useListCard from '@/app/[userCode]/list/[id]/_components/ListCard/useListCard';
 import { DrawerComponent } from '@/components/Drawer';
 import { Button, ButtonShape, ButtonVariant } from '@/components/ui/button';
 import IconAddCircle from '@/components/ui/icons/AddCircleIcon';
