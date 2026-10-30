@@ -8,6 +8,7 @@
 > - `src/components/README.md`、`src/components/ui/README.md`：元件層級規約
 > - `src/components/Drawer/README.md`、`src/providers/README.md`：Provider 規範
 > - `docs/superpowers/specs/`：設計定案（axios 狀態碼管理等）；`docs/superpowers/plans/`：可執行重構計劃
+> - `docs/api/`：BE 提供的 API 串接文件（目前為名單上鎖 Mock API，見 §13「名單上鎖 API 串接」）
 
 ---
 
@@ -16,7 +17,7 @@
 - **品牌**：Relist（網域 `relist.cc`）。早期內部稱 *Poklist*，repo 名與部分 mock data 仍保留此命名。
 - **產品形態**：行動裝置優先（max width 430 px）的「清單社群」。使用者建立 `List → Idea`，並可被 Like、Follow、Discovery、Official Collections 等社交流瀏覽。
 - **package.json `name`**：`relist`，private。
-- **Node 版本**：22.15.1（npm 10.9.2）。Docker 內亦使用 `node:22-alpine`。
+- **Node 版本**：22.23.4（npm 10.9.9，以 `.nvmrc` 為準）。Docker 內亦使用 `node:22-alpine`。⚠️ shell 若停在舊版 Node（如 v10），`npx tsc` 會直接報 `Unexpected token ?`，而 `npm run tsc` 可能無輸出且 exit 0、看似通過 — 先 `nvm use`。
 - **預設 dev port**：8080（`next dev -p 8080`）。Docker container 內為 5173。
 - **入口流程**：`/` → `useEffect` redirect 到 `/discovery`（[src/app/page.tsx](src/app/page.tsx)）。
 
@@ -33,7 +34,7 @@
 | State | `zustand@^5` + `zustand/middleware` (persist) | 客戶端全域狀態 |
 | Server State | `@tanstack/react-query@^5.72`、`react-query-devtools` | 快取 / 失效 / Mutation |
 | HTTP | `axios@^1.15` + 自訂攔截器 [src/api/axios.ts](src/api/axios.ts) | 所有對後端的請求 |
-| Contract / 驗證 | `@ts-rest/core`、`@ts-rest/react-query`、`zod@^3.23` | 新版 contract-first API 層（與舊 axios hooks 共存中） |
+| Contract / 驗證 | `@ts-rest/core`、`@ts-rest/react-query`、`zod@^3.23` | contract-first API 層（遷移已完成，見 §4.2） |
 | Form | `react-hook-form@^7.53` + `@hookform/resolvers/zod` | Form 與驗證 |
 | i18n | `@lingui/core`、`@lingui/react`、`@lingui/macro`、`@lingui/swc-plugin`（Next experimental swcPlugins） | 多語系 `en` / `zh-TW` |
 | Auth | `@react-oauth/google`（Google One-Tap / 標準按鈕） | 第三方登入 |
@@ -60,18 +61,25 @@ src/
 │   ├── page.tsx          # `/` → redirect /discovery
 │   ├── [userCode]/       # 動態 user 路由（去除 @ 前綴後的 userCode）
 │   │   ├── layout.tsx        # 驗證 userRoute、提供 UserRouteProvider
-│   │   ├── page.tsx          # 個人頁 (TileBackground + HeroSection + ListSection)
-│   │   ├── edit/             # 自身 profile 編輯
-│   │   └── list/[id]/        # 名單檢視 / edit / reorder / idea drawer
+│   │   ├── page.tsx + client.tsx # 個人頁 (TileBackground + HeroSection + ListSection，元件來自 app/user/_components)
+│   │   ├── UserRouteProvider.tsx
+│   │   └── list/             # _components/{Header, DeleteButton}（⚠️ 與 _shared 重複，見 §13）
+│   │       └── [id]/         # 名單檢視 / edit / reorder / idea/[ideaID]
+│   ├── user/             # ⚠️ 非一般頁面：沒有 page.tsx。`_components/` 放個人頁元件（HeroSection / ListSection / TileBackground / FollowRelationsDrawer…，
+│   │                      #   供 [userCode]/client.tsx 跨路由 import）；`edit/page.tsx` = 自身 profile 編輯，路由為 **`/user/edit`**
+│   │                      #   （`'user'` 已列入 systemRoutes，不會被 [userCode] 吃掉）
 │   ├── discovery/        # 首頁 feed（lazy IntersectionObserver、scroll restore via sessionStorage）
 │   ├── official/         # 官方介紹頁
 │   ├── settings/         # 設定（語言切換、Block、Links）
 │   ├── idea/、list/      # 建立 / 編輯流程。list Form 已模組化：
-│   │                      #   list/_components/Form/{index.tsx 容器, _components/* 欄位與 drawer, _hooks/useListDraft}
+│   │                      #   list/_components/Form/{index.tsx 容器, <PascalCase>/ 欄位與 drawer}；草稿 hook 在 list/_hooks/useListDraft
 │   │                      #   header 由頁面父層（list/create/page.tsx、[userCode]/list/[id]/edit/client.tsx）提供，
 │   │                      #   存檔鈕內聯於表單底部（ListForm 以 forwardRef 露 requestClose 給父層 header）
-│   ├── error/、goToMobile/、not-found.tsx
-│   └── _layout/_shared/  # 桌面包殼用的背景、BottomNav、PromptText…
+│   │                      #   描述／網址／封面收在「更多內容」(isExpand) 後；CategoryDropdown 提供範例主題一鍵帶入
+│   │                      #   VisibilityFields：公開／隱藏 radio 綁 `type`，「設定上鎖」switch 目前為 local state（上鎖功能進行中，見 §13）
+│   ├── error/、goToMobile/、not-found.tsx、sitemap.ts、robots.txt
+│   ├── _layout/_components/  # 桌面包殼用的 Background、BottomNav、PromptText（扁平 .tsx）
+│   └── _shared/_components/List/  # 跨路由共用的 List Header、DeleteButton
 ├── api/                  # API 層：ts-rest contracts + zod schemas + react-query 整合
 │   ├── axios.ts          # axios 實例 + interceptors（auth 注入 / abort 追蹤 / 狀態碼 toast 決策，見 §4.3）
 │   ├── fetcher.ts        # ts-rest 用 axiosFetcher：非 2xx 轉 ts-rest error result + buildHeaders
@@ -96,6 +104,8 @@ src/
 │   ├── useToast.ts       # react-hot-toast 風格 reducer，TOAST_LIMIT=1
 │   ├── useUserRouteContext.ts   # 取得 [userCode] 路由 context
 │   ├── useCheckStorage.ts# 啟動時做 localStorage 版本遷移
+│   ├── useAsyncAction.ts # async handler 包成同步 onClick：in-flight 防連點 + rejection 統一走 onError（⚠️ 不適用於 Strict Mode effect，見 §13.3）
+│   ├── useLogin.ts       # Google credential → POST /auth/google（直接 axios，非 ts-rest）→ login + resetIdentityCaches + setMe
 │   ├── useIsMobile.ts、useIdle.ts、useTimeout.ts、useClipboard.ts、useScrollPosition.ts、useAutosizeTextArea.ts
 ├── stores/               # Zustand stores（皆 default export）
 │   ├── useAuthStore.ts        # isLoggedIn / accessToken；persist=auth-storage；logout 連動 user/editProfile
@@ -114,10 +124,13 @@ src/
 │   ├── ui/               # shadcn 風格基礎元件，**檔名小寫**；button.tsx 內定義 Variant/Size/Shape enum
 │   ├── Drawer/、FakePage/、Language/  # Context Provider 套件（含 README）
 │   ├── Header/、Footer/、ImageUploader/、ImageCropper/、ImagePreview/、Dropdown/、Radio/、Loading/、ErrorDrawer/、ConditionalLayout/
+│   ├── SwitchWithIcon/   # cva 主題化 switch（見 §8）
+│   ├── JsonLd/           # SEO 結構化資料 <script type="application/ld+json">（已 escape `<`）
 │   └── README.md         # 元件分層規約（**必讀**）
-├── constants/            # apiPath / queryKeys / routes / form / list / i18n / DragAndDrop / Drawer (DrawerIds) / Home / Lists / User / externalLink
+├── constants/            # routes / form / list / i18n / DragAndDrop / Drawer (DrawerIds) / Home / Lists / User / externalLink
 ├── enums/                # 全域 Enums（index.enum.ts 為入口），分子目錄 Style / Lists / EditField
-├── types/                # 各領域型別：User / List / Idea / Discovery / Relation / Settings / Home / EditField；common.ts 內含 zod schema (IdeaFormSchema/ListFormSchema)
+├── types/                # 各領域型別：User / List / Idea / Discovery / Relation / Settings / Home / EditField；common.ts 內含 zod schema (IdeaFormSchema/ListFormSchema)；
+│                          #   response.ts（舊 `IResponse<T>`，仍有 3 處引用）、global.ts、images.d.ts
 ├── lib/                  # 純函式工具，不含 hook
 │   ├── utils.ts          # cn、localStorage helpers、to (Promise tuple)、檔案 / Base64 / URL 處理
 │   ├── functional.ts     # compose / pipe / when / curry / partial / memoize / throttle / debounce / enhancedDebounce / sortObjectKeys
@@ -127,7 +140,10 @@ src/
 │   ├── metadata.ts       # createBaseMetadata / OpenGraph / Twitter 工廠
 │   ├── time.ts           # 解析 PG datetime + locale 格式化
 │   ├── validator.ts      # validateUserCode + resolveListFormError / resolveIdeaFormError
-│   └── openLink.ts       # window.open noopener noreferrer
+│   ├── openLink.ts       # window.open noopener noreferrer
+│   ├── queryClient.ts    # getQueryClient()：server 每次新建、browser 端單例
+│   ├── identity.ts       # resetIdentityCaches()：登入身分變更時清 query cache + following / like store
+│   └── seo/              # fetchers.ts（Server Component 的 SEO fetch，revalidate 由 SEO_FETCH_REVALIDATE 控制）、prefetch.ts（toTsRestEntry 轉 hydration 格式）
 ├── locales/              # lingui 編譯產物（en / zh-TW）
 ├── assets/               # 靜態圖片、SVG
 └── index.css             # Tailwind layer 與 CSS variable
@@ -145,6 +161,7 @@ vitest.config.ts
 2. 全站共用元件 → `@/components/<PascalCase>/index.tsx`
 3. 頁面專屬元件 → `@/app/<route>/_components/<PascalCase>/index.tsx`
 4. 頁面專屬 hook → `_hooks/`；頁面 client component → `client.tsx`（如 `app/[userCode]/list/[id]/client.tsx`）
+5. `_components/` / `_hooks/` 只放在**路由層**。元件的子元件直接用 PascalCase 資料夾放在該元件資料夾內（如 `Form/VisibilityFields/LockTypeDrawer/`），元件私有 hook 直接放在元件資料夾（如 `ListCard/useListCard.tsx`）。不要再建巢狀 `_components/`（見 §13 #8）。
 
 ---
 
@@ -161,7 +178,7 @@ vitest.config.ts
            └─ QueryClientProvider (retry: 401/403/404 不重試 + 一次失敗止損；staleTime 60s, gcTime 5min)
                └─ Radix <Theme>
                    └─ DrawerProvider   # Set<drawerId> 管理多抽屜
-                       └─ FakePageProvider  # 'editField' | 'listSelector' 兩種 pageType + payload
+                       └─ FakePageProvider  # 'editField' | 'listSelector' | 'lockConfig' 三種 pageType；payload 每頁各存一份，以 `getPayload(pageType)` 取得對應型別
                            ├─ children
                            ├─ GlobalLoading (聽 useCommonStore + useIsFetching/Mutating)
                            ├─ LoginDrawer
@@ -312,7 +329,7 @@ export const useXxx = (options: UseXxxOptions) => {
 | `/settings` | `app/settings/page.tsx` | |
 | `/error`、`/goToMobile`、`/not-found` | 系統頁 | `/goToMobile` 屬 desktop redirect 白名單 |
 | `/[userCode]` | profile，layout 驗證 isUserRoute | 同時是 `/<userCode>/list/<id>` 的 layout 根 |
-| `/[userCode]/edit` | profile 編輯 | |
+| `/user/edit` | profile 編輯（`app/user/edit/page.tsx`） | `/user` 本身沒有頁面，只放個人頁元件 |
 | `/[userCode]/list/[id]` | server component（generateMetadata + 404 校驗）→ `client.tsx` | |
 | `/[userCode]/list/[id]/edit` / `/reorder` / `/idea/[ideaID]` | list 子流程 | |
 | `/idea/create`、`/idea/create/list`、`/idea/[ideaID]/edit` | Idea 建立/編輯 | |
@@ -356,7 +373,15 @@ export const useXxx = (options: UseXxxOptions) => {
 - **字體**：`Inter`（latin）與 `Noto Sans` 透過 `next/font/google` 注入為 CSS variable，自訂 fontSize token：`h1 / h2 / t1 / t2 / t3`。
 - **Button**（[src/components/ui/button.tsx](src/components/ui/button.tsx)）：使用 enum (`ButtonVariant / Size / Shape`)，請優先使用 enum 而非字串字面值，預設 `WHITE / MD / ROUNDED_FULL`。
 - **Drawer 樣式**：底部 vaul drawer 包了一層 `DrawerComponent`（含 header / subHeader / content / startFooter / endFooter / close）。任何「下拉抽屜」UI 請走 `DrawerComponent` + `DrawerIds` 註冊，不要直接動 vaul。
-- **FakePage**：模仿全頁 modal 的 dialog，目前兩種 type：`editField`（編輯單一欄位，textarea 或圖片裁切）、`listSelector`（建立 idea 時挑 list）。要新增「假頁」請在 `FakePageType` union 加入並更新 `FakePagePayloadMap`。
+- **FakePage**：模仿全頁 modal 的 dialog，目前三種 type：`editField`（編輯單一欄位，textarea 或圖片裁切）、`listSelector`（建立 idea 時挑 list）、`lockConfig`（設定名單上鎖方式，進行中）。要新增「假頁」請在 `FakePageType` union 加入、更新 `FakePagePayloadMap`，並在 `FakePageProvider` 的 `emptyPayloads` 補上該頁的 `null`。開啟用 `openFakePage('xxx', payload)`（payload 型別依 pageType 檢查），讀取用 `getPayload('xxx')`（回傳 `FakePagePayloadMap['xxx'] | null`）。開啟時沒帶 payload 會清空該頁的 payload。
+- **SwitchWithIcon**（[src/components/SwitchWithIcon](src/components/SwitchWithIcon/index.tsx)）：以 cva 定義 `SwitchVariant`（`DARK` / `LIGHT`）與 `SwitchSize`（`SM` / `MD`），Root 與 Thumb 各一組 cva、共用同一組 variant；預設 `DARK / MD`。
+- **Collapsible**（[src/components/ui/collapsible.tsx](src/components/ui/collapsible.tsx)）：`CollapsibleContent` 內建展開／收合高度動畫（`--radix-collapsible-content-height`）。**間距（padding / margin / gap）請放在 Content 內層 wrapper**，不要放在 Content 本身或父層 gap，否則收合結束時會多跳一下。
+- **動畫 a11y 規約**：
+  - 一律用 `motion-safe:` 前綴套動畫 / transition，**不要**用 `motion-reduce:animate-none` 去關。後者權重 (0,1,0) 蓋不過 `data-[state=...]:animate-*` (0,2,0)，reduced motion 會失效。
+  - 動畫短（150～200ms）、位移小（≤ 8px），以淡入、縮放為主；focus ring（box-shadow）不做 transition，用 `transition-colors` 即可。
+  - 元素被移除（如點了就消失的按鈕）時，要把焦點移到新出現的內容，避免焦點掉回 `<body>`。
+  - 內容切換要重播進場動畫時，用 `key` 讓元素 remount（例：`VisibilityFields` 的說明文字）。
+  - E2E 可用 `page.emulateMedia({ reducedMotion: 'reduce' })` 加 `getComputedStyle(el).animationName` 驗證（見 `e2e/specs/list-form-expand.spec.ts`）。
 
 ---
 
@@ -399,8 +424,14 @@ export const useXxx = (options: UseXxxOptions) => {
 
 ## 11. 工程實踐 / Style
 
-- **ESLint**：`no-console: ['error', { allow: ['warn', 'error'] }]`，但 `next.config.mjs` 的 `eslint.ignoreDuringBuilds: true` 表示 build 不擋 — 仍需手動 `npm run lint`。
+- **ESLint**：**【2026-10-28 統一】** 唯一設定為 **`eslint.config.mjs`**（flat config；`.eslintrc.json` 已刪除）。`npm run lint` = `eslint src`，CI 跑 `npm run lint -- --max-warnings=27`。
+  - 內容：`next/core-web-vitals` + `next/typescript`（經 FlatCompat）+ `@eslint/js` recommended + `typescript-eslint` recommendedTypeChecked + react / react-hooks recommended，另加 `no-console: ['error', { allow: ['warn', 'error'] }]`，以及 `no-restricted-imports`（禁止 `./`、`../` 開頭的 import，強制 `@/` 絕對路徑；`src/api/{contracts,schemas}/index.ts` 的 `export * from './x'` barrel 例外）。
+  - 範圍限定 `src`：`parserOptions.project` 只指向 `tsconfig.app.json`（include `src`），對 `e2e/` 或根目錄設定檔跑會出現 parsing error，**不要**改成 `eslint .`。
+  - `next.config.mjs` 的 `eslint.ignoreDuringBuilds: true` 表示 build 不跑 lint — 仍需 `npm run lint`。
+  - ⚠️ 已知問題：設定中 `prettier: eslintPluginPrettierRecommended` 把「config 物件」當成 plugin 註冊，因此 `prettier/prettier` 規則**實際上沒有啟用**，格式只靠 `npm run format` / 編輯器。要啟用需改成把 `eslintPluginPrettierRecommended` 放進 config 陣列，並先確認現有程式碼格式。
 - **TypeScript**：`strict`、`allowImportingTsExtensions`、`noUnusedLocals/Parameters`、別名 `@/* → ./src/*`。
+  - ⚠️ **型別檢查一律用 `npm run tsc`**（= `tsc --noEmit -p tsconfig.app.json`，CI 相同）。**不要**直接跑 `npx tsc --noEmit` 或 `-p .`：根目錄 `tsconfig.json` 只有 `files: []` + `references`，結果只會出現數百個 TS6305，**完全沒有檢查型別**，容易誤以為「沒有錯誤」。
+  - `tsconfig.app.json` 的 include 不含 `e2e/`，所以直接對 `e2e/**/*.ts` 跑 `npx eslint` 會出現 `parserOptions.project` parsing error。這是既有設定，不是程式錯誤；`npm run lint`（`eslint src`）不掃 `e2e/`。
 - **Prettier**：semi + singleQuote + trailingComma es5 + tailwindcss plugin。
 - **Commit 風格**（git log 觀察）：`feat:`、`fix:`、`chore:`、`style:` 前綴 + 中英文混合；feature PR 多由 `feature/*` 分支合進 `dev`。`main / uat / dev` 三軌存在。
 - **自動化測試**：**【✅ 2026-08-18 更新】** 已有 Playwright E2E + Vitest 單元測試套件，詳見 §13「測試」項；`package.json` 含 `test:e2e` / `test:unit` 等 script。改動除 type check (`npm run tsc`) 外，應同步跑 `npm run test:unit` 與相關 E2E spec。
@@ -420,7 +451,8 @@ export const useXxx = (options: UseXxxOptions) => {
 | 新增 mutation 帶樂觀更新 | 參考 `useLikeAction` / `useFollowAction` + `optimisticUpdateHandler` | 共享 `debounceMap`（key 含 target）、`shouldAllow` 注入 auth、confirmed 比對防重複送（§4.4） |
 | 特定 API 的特定狀態碼不彈 toast | `src/api/whitelist.ts` 的 `STATUS_WHITELIST` 加 `{ method, pattern, status }` | 401 不可白名單（攔截器獨立優先處理） |
 | 新 Drawer | 在 `constants/Drawer/index.ts` 加 `DrawerIds`、在頁面或 `ClientProviders` 使用 `<DrawerComponent drawerId=...>`，透過 `useDrawer(id)` 控制 | 全域 drawer（跨頁需保留）放 `ClientProviders` |
-| 全螢幕「Fake Page」 | `FakePageType` 加 union、`FakePagePayloadMap` 加對應 payload、`openFakePage('xxx', payload)` | 別在頁面用 `useState` 自己刻 |
+| 全螢幕「Fake Page」 | `FakePageType` 加 union、`FakePagePayloadMap` 加對應 payload、`openFakePage('xxx', payload)` | 別在頁面用 `useState` 自己刻；讀取用 `getPayload('xxx')`，`FakePageProvider` 的 `emptyPayloads` 要補新頁 |
+| 串接名單上鎖 API | 先讀 `docs/api/2026-10-17-list-lock-mock.md`（含前端備註），再照「新 API endpoint」流程新增 `/creator/*` | 需 `Idempotency-Key`（每次操作一把、重試沿用）；request 不可有 `null` 或未定義欄位；上鎖方式用 `ListLockMethod`（字串），**不要**擴充 `ListType`（BE `type` 只有 1／2） |
 | 新 Form | 用 `react-hook-form` + zod schema（放 `types/common.ts`）+ `useFormErrorHandler` | Draft 用 `useIdle({ watch })` + LocalStorage |
 | 切換 / 新增語言 | `Language` enum、`lingui.config.js` `locales`、`src/locales/<locale>/messages.po` | `WatchLocale` 已處理 key reset |
 | 改變 LocalStorage 結構 | 更新 `STORAGE_VERSION`（= package.json 版本）+ 必要時在 `checkAndMigrateStorage` 加遷移程式 | 版本不符會直接 `localStorage.clear()` |
@@ -436,7 +468,7 @@ export const useXxx = (options: UseXxxOptions) => {
 從 commits 與 TODO 註解觀察到的尚未完成項目：
 
 - **legacy API hooks 死碼清除**：**【✅ 已完成 — 2026-07-31 驗證】** `src/hooks/mutations/` 8 支 legacy mutation、`mutations/useFollowAction.ts`、`mutations/useLikeAction.ts`、`hooks/queries/infinite/useInfiniteLists.ts` 皆已刪除；`src/constants/queryKeys.ts` 亦已移除。現存結構：`hooks/mutations/` 只剩 `followUnfollow/` + `optimistic/`，`hooks/queries/` 只剩 `publish/`。
-  - **殘留**：`src/constants/apiPath.ts` 全專案零引用（legacy hooks 刪光後成孤兒檔），可直接 `git rm`。
+  - **殘留**：**【✅ 已刪除 — 2026-10-28】** `src/constants/apiPath.ts`（零引用孤兒檔），同批刪除零引用的 `components/ui/form.tsx`、`components/ui/switch.tsx`（switch 已由 `SwitchWithIcon` 取代）與空資料夾 `components/NavigationEvents/`。
 - **like/unlike 接線**：**【✅ 已完成】** `list/[id]/client.tsx` 已切至 `mutations/optimistic/likeUnlike/useLikeAction`，舊檔已刪。計劃稿：[`docs/superpowers/plans/2026-06-12-refactor-use-like-action.md`](superpowers/plans/2026-06-12-refactor-use-like-action.md)。
 - **`followUnfollow/schema.ts` 的 `||` 死碼 bug**：**【✅ 已修】** 該檔已無 `||` 用法。
 - **axios request error handler 非法 hook 呼叫**：**【✅ 已修】** 改為 `window.location.href = '/'`。
@@ -449,10 +481,19 @@ export const useXxx = (options: UseXxxOptions) => {
   - `src/app/user/_components/FollowRelationsDrawer.tsx`：扁平 .tsx 檔，應改為 `FollowRelationsDrawer/index.tsx`
   - `src/app/user/_components/UserConnectionRow.tsx`：同上，應改為 `UserConnectionRow/index.tsx`
   - `src/app/settings/_components/ButtonRadioGroup.tsx`：同上，應改為 `ButtonRadioGroup/index.tsx`
+  - `src/app/settings/_components/index.tsx`、`src/app/goToMobile/_components/index.tsx`：`_components/` 根目錄直接放 index.tsx，應改為具名的 `<Name>/index.tsx`
+  - `src/app/_layout/_components/{Background, BottomNav, PromptText}.tsx`：扁平 .tsx，應改為各自的 `<Name>/index.tsx`
   - `src/app/_shared/_components/List/Header/` 與 `src/app/[userCode]/list/_components/Header/`：兩個功能類似的 Header 元件，應合併
   - `src/components/Drawer/LoginDrawer.tsx`、`CreateListOrIdeaDrawer.tsx`、`HeaderDrawer.tsx`：全域 Drawer 的子元件以扁平 .tsx 命名，可考慮改為各自的 `<Name>/index.tsx` 子資料夾（低優先）
   - `src/components/Drawer/`、`src/components/FakePage/`、`src/components/Language/`：Provider 性質元件，README 已標註未來應遷移至 `src/providers/` 或 `src/contexts/`
-- **Provider 位置**：`Drawer / FakePage / Language` 目前在 `components/`，README 註記未來會搬到 `providers/` 或 `contexts/`。
+- **Provider 位置**（2026-10-28 盤點 #9）：`Drawer / FakePage / Language` 目前在 `components/`，README 註記未來會搬到 `providers/` 或 `contexts/`。優先度低。
+- **ESLint 雙設定（2026-10-28 盤點 #1）**：**【✅ 已統一 — 2026-10-28】** 原本 `next lint`（CI）讀 `.eslintrc.json`（71 條規則），直接跑 `eslint` / 編輯器讀 `eslint.config.mjs`（139 條），`no-console`、`no-floating-promises`、`no-misused-promises`、`no-unsafe-*` 等 69 條規則 CI 從未檢查。已改為只用 `eslint.config.mjs`、`lint` script 改 `eslint src`、刪除 `.eslintrc.json`；切換前後皆為 0 error / 27 warning。同時移除 Vite 遺留、未啟用任何規則的 `eslint-plugin-react-refresh`。剩餘：`prettier/prettier` 未生效（見 §11）。
+- **圖片放置規則（2026-10-28 盤點 #7）**：圖片分散在 `src/assets/images`（58 檔，import 使用）與 `public/images`（URL 使用）；`mascot` 兩邊各 5 檔且 `mascot-error.svg` 同名重複。建議規則：需 import（bundler 處理、帶 hash）→ `src/assets`；以 URL 字串引用（OG 圖、favicon、`next/image` 的 src 字串、manifest）→ `public`。整理時逐一確認引用方式再搬，避免破圖。
+- **元件結構整理（2026-10-28 盤點 #8）**：
+  - 重複元件：`[userCode]/list/_components/{Header, DeleteButton}` 與 `_shared/_components/List/{Header, DeleteButton}`（見上方 legacy components）。
+  - 扁平 .tsx：見上方 legacy components 清單（共 8 處）。
+  - **巢狀 `_components` 過深**：原本 `list/_components/Form/_components/VisibilityFields/_components/LockConfigFakePage/_components/PasswordConfigSection` 位於 app 下第 9 層。底線前綴只在**路由資料夾層**有意義（讓 Next 不把它當路由）；`_components/` 底下整棵子樹本來就不會被當成路由，元件資料夾內再建 `_components/` 純屬慣例、沒有技術作用。建議規則：**`_components/` 只放在路由層**；元件自己的子元件直接以 PascalCase 資料夾放在該元件資料夾內（如 `Form/VisibilityFields/`、`ListCard/IdeaList/`），元件私有 hook 用 `hooks/`。**【✅ 已完成 — 2026-10-29】** 所有巢狀 `_components` 已攤平：`list/_components/Form/{AutoResizeFields, CancelConfirmDrawer, CategoryDrawer, CategoryDropdown, CoverImageFields, DraftDrawer, VisibilityFields/{LockTypeDrawer, LockConfigFakePage/{PasswordConfigSection, QuestionConfigSection}}}`、`[userCode]/list/[id]/_components/ListCard/{AddIdeaRow, IdeaList, ListCardDescription, ListCardHeader, useListCard.tsx}`。規則已寫入 §3 Component Folder Rules 第 5 條。同日把剩餘的相對路徑 import 改成 `@/`，並加上 ESLint `no-restricted-imports`（§11）。完整 e2e 72 passed。
+  - `src/components/README.md` 的範例仍是 Pages Router 時期的 `src/pages/Home/Components/...`，整理時一併更新。
 - **Pages Router 殘骸**：README 仍提到 Pages Router 遷移；目前 `src/` 已純 App Router，可清理舊文檔。
 - **`useScrollPosition` 與 sessionStorage 滾動還原**：`useScrollPosition` hook（`src/hooks/useScrollPosition.ts`）已提供完整的 save / restore / clear 機制，以 `keyPrefix_pathname` 作為 key。**現況問題**：`src/components/Header/index.tsx` 與 `BackToUserHeader.tsx` 直接呼叫 `sessionStorage.removeItem('scroll_pos_/discovery')`（硬編字串），而非透過 hook 的 `clearScrollPosition`，導致若 keyPrefix 日後變更將造成遺留 key。**架構不需大改**，僅需把 Header 元件改用 hook 回傳的 `clearScrollPosition`，或將 key 建構邏輯匯出為共用 util，即可解決。Discovery ListSection 的 `SESSION_VISITED_KEY`（是否曾訪問的 flag）是獨立用途，不在此問題範圍內。
 - **HTTP 狀態碼提示文案**：**【✅ 已實作 — commit `3d3db3e`】** 設計稿見 [`docs/superpowers/specs/2026-06-02-axios-status-code-management-design.md`](superpowers/specs/2026-06-02-axios-status-code-management-design.md)。狀態碼相關的「是否彈 toast / 彈什麼文案」已收斂到 axios response 攔截器：per-(API + 狀態碼) 靜默白名單（中央 registry + regex matcher）+ 狀態碼文案表 + fallback 三段決策；401 獨立優先處理不可被白名單繞過；2xx 一律不彈 toast。
@@ -463,9 +504,10 @@ export const useXxx = (options: UseXxxOptions) => {
   - **保留紀錄供未來類似 optimistic + debounce 場景參考**。
 - **`prop-types`**：依然在 dependencies，但 TS 接管後僅留作 transitive — 可考慮移除。
 - **Storybook**：尚未引入，元件文件靠 README + 程式碼。
-- **測試**：**【✅ 已建立 — 2026-08-18】** Playwright E2E（`e2e/`，mobile-chrome + mobile-safari + smoke 三 project；17 條確定性 spec × 雙引擎 = 34 條，雙引擎皆綠）+ 5 條煙霧 spec + Vitest 單元測試（`src/**/*.test.ts`，7 檔 51 個測試）。CI（`.github/workflows/ci.yml`）的 `verify` job 跑 tsc / lint / unit / build，另有 `e2e` job 跑確定性層（PR 與 push to dev 皆觸發）。
+- **測試**：**【✅ 已建立 — 2026-08-18；2026-10-22 更新數量】** Playwright E2E（`e2e/`，mobile-chrome + mobile-safari + smoke 三 project；12 個 spec 檔、36 條確定性測試 × 雙引擎 = 72 條）+ 5 條煙霧 spec + Vitest 單元測試（`src/**/*.test.ts`，10 檔 55 個測試）。2026-10 新增 `list-form-expand`（含 reduced-motion 驗證）/ `list-visibility` 兩個 spec。2026-10-27：開啟上鎖改為會打開 `LockTypeDrawer` 後，`list-visibility` 的 V3 / V4 已依新流程改寫（V3 驗證關閉 drawer 時上鎖自動關回去；V4 驗證選了上鎖方式並按「完成」後再選隱藏會關閉上鎖）。2026-10-29 新增 V6：在 `LockConfigFakePage` 取消（Esc /「取消」）時上鎖自動關回去；按「完成」才維持開啟。testid：drawer 卡片 `lock-type-password` / `lock-type-question`，設定頁完成鈕 `lock-config-done`。CI（`.github/workflows/ci.yml`）的 `verify` job 跑 tsc / lint / unit / build，另有 `e2e` job 跑確定性層（PR 與 push to dev 皆觸發）。
   - **E2E 架構**：本地 mock API server（`e2e/mock-server/`）依 `Authorization` header 分歧回應，因為 **Server Component 的 SSR fetch 走 Node 端，Playwright 的 `page.route()` 攔不到**——這是重現 §13.1 hydration 汙染的唯一方法。
   - **繞過 Google OAuth**：storageState 直接注入 `auth-storage` / `user-storage`（見 `e2e/fixtures/auth.ts`），**絕不自動化 Google 登入 UI**。
+  - ⚠️ **本機跑 E2E 前先關掉 `npm run dev`**：`playwright.config.ts` 本機設 `reuseExistingServer: true`，若 8080 已有 dev server，Playwright 會直接沿用它（連的是真實後端、不是 mock API 4000），依賴 mock 資料的 spec（`list-create` / `list-edit` / `private-list` 等）會大量失敗，看起來像程式壞掉。CI 不受影響（CI 不 reuse）。
   - **煙霧層現況**：5 條打真 dev BE 的契約回歸測試，靠 `E2E_ACCESS_TOKEN`（另需 `E2E_SMOKE_BASE_URL` / `E2E_SMOKE_USER_CODE` / `E2E_SMOKE_LIST_ID` / `NEXT_PUBLIC_API_BASE_URL` 等 CI secret）啟用；secret 缺席時自動 skip 而非 red。**目前尚未配置真後端憑證，煙霧層恆為 skip，尚未針對真實後端執行過**。
   - **可測性改動**：`src/lib/seo/fetchers.ts` 的 revalidate 改為 `SEO_FETCH_REVALIDATE` 環境變數驅動（預設仍 300，prod 行為不變）。
   - **選擇器契約**：`data-testid`（`like-button` / `follow-button` / `idea-row` / `list-row` / `hero` / `list-preview` / `links-block` / `not-found` 等）+ `data-liked` / `data-following` / `data-idea-id` / `data-list-id`。**新增 UI 時請一併補**，否則 E2E 無法斷言。
@@ -477,6 +519,12 @@ export const useXxx = (options: UseXxxOptions) => {
   - **`updatedAt` 由後端值取代**：`usePostNewIdea` / `usePutIdea` 仍以 `toBackendTimestamp(new Date())` 前端手拼塞快取，格式脆弱。應改用 response 回傳的 `updatedAt`，或於 schema 標註此欄非必須。
   - **GET `/{userCode}/lists` response 缺 `totalElements`**：**【✅ 已解除 — 2026-07-30】** 後端已補 `totalElements`。前端 `useGetInfiniteListsUnderUser.ts`（原 `useGetUserInfiniteLists.ts` 改名）+ ListSection sentinel `IntersectionObserver` 捲動已上線，`usePostNewList` / `useDeleteList` 的 `invalidateQueries` 也已啟用。
   - **POST `/lists` response 缺 `coverImage`**：`listsSchema.postResponse` 由 `ListFormSchema.omit({ coverImage }).extend({ id })` 定義，但 `getUserLists` 的 content item（`listPreviewSchema`）含 `coverImage`。導致 `usePostNewList` prepend 進 `userLists` 快取時缺封面圖。需後端於 POST 回應補 `coverImage`，或前端 prepend 時補 fallback，待定案。
+- **名單上鎖 API 串接（2026-10 進行中）**：BE 已提供 8 支 Mock API（`/creator/lists*`、`/lists/:id/unlock`），文件與前端備註見 [`docs/api/2026-10-17-list-lock-mock.md`](api/2026-10-17-list-lock-mock.md)。現況：
+  - **已確定**：上鎖與隱藏互斥（`VisibilityFields` 已實作：開上鎖 → 改公開；選隱藏 → 關上鎖）。enum 已拆開：`ListType` 維持 `PUBLIC=1 / PRIVATE=2`，上鎖方式用字串 enum `ListLockMethod`（`none` / `password` / `question`）。
+  - **UI 進行中**：開啟上鎖 → `LockTypeDrawer`（選密碼／問答，經 `openFakePage('lockConfig', { lockMethod })` 帶入）→ `LockConfigFakePage`（設定內容）。未選方式就關閉 drawer（取消鈕、Esc、點遮罩、下滑、換頁）時，上鎖開關自動關回去（`LockTypeDrawer` 的 `onCancel`，接在 `DrawerComponent` 的 `onClose` 上；程式呼叫 `closeDrawer()` 不會觸發）。`LockConfigFakePage` 同理：取消（Esc /「取消」）→ `onCancel` 關閉上鎖；「完成」→ `onDone` 維持開啟（`onConfigDone` 直接 `closeFakePage()`，**不可**經過 `onClosePage`，否則會連帶觸發 `onCancel`）。上鎖狀態尚未接進 `ListFormSchema`，不會送出。
+  - **尚未串接**：新 endpoint 的 schema / contract / hook、`Idempotency-Key`、PATCH contract、送出前處理 `coverImage: null` 與 `categoryID: 0`、問答字數以 code point 計算、標已讀 POST 不帶 body（`c.noBody()`）、e2e mock 的 `/creator/*` 路由。
+  - **待 BE 回覆**：新舊 API（`/lists` ↔ `/creator/lists`）的切換時程。Mock 資料由 BE API 直接提供，文件 §15 的 `.http` / `.json` 不會放進 repo。
+- **FakePage payload 型別**：**【✅ 已修 — 2026-10-27】** 原本 context 的 `payload` 是所有頁面 payload 的聯集，讀取端拿不到正確型別（`npm run tsc` 9 個錯誤）。改為 `FakePagePayloads`（每個 pageType 各存一份 payload）+ `getPayload(pageType)`，以 key 取值直接得到對應型別，全程沒有 `as`。Provider 用 `satisfies FakePagePayloads` 檢查更新後的結構；注意泛型 computed key（`[pageType]`）會被視為 index signature，`satisfies` 擋不住錯誤的值，型別安全來自 `openFakePage` 參數 `data?: FakePagePayloadMap[T]`。（曾考慮把「頁面 + payload」放進單一聯集 state，但泛型 `{ page: T; data }` 無法指定給聯集型別，一定得用 `as`，故不採用。）
 - **id 型別分岔**：`src/api/schemas/**` 所有 id 已統一 `z.string()`，但 `src/types/User/index.ts` 等 legacy type 仍是 `id: number`，邊界處散落 `String(...)` 轉換。legacy hooks 刪除後一併收斂 legacy types。
 - **`useCheckCreateQuota` 的 N+1 序列 await**：[`useCheckCreateQuota.ts`](../src/hooks/queries/publish/useCheckCreateQuota.ts) 的 `checkCanCreate` 在 list 額度用罄時，會 `for` 迴圈**逐一序列 `await`** 每個 list 的 ideas 額度。list 數量多時延遲線性放大。應改 `Promise.all` 並行，或由後端提供單一「是否還能建立」聚合端點。搬遷至 `hooks/api/publish/` 時一併處理。
 - **`isLiked` / `isFollowing` 的型別謊言**：schema 宣告為 `z.boolean()`，但 §13.1 的 hydration strip 會在 runtime 塞入 `undefined`，tsc 抓不到，只能靠 seed effect 的 runtime 守衛擋。同時 `useLikeStore.getIsLiked` 是 `likeMap.get(listID) ?? false`，**把「未知」塌縮成 `false`**，未知態傳不到 UI（可接受的取捨：refetch 回來前短暫顯示未讚）。日後若要做「未知 → 顯示骨架」，須先改 store 簽名為 `boolean | undefined`。另可考慮抽 `stripIdentityFields()` helper，把「hydrate 前移除 per-user 欄位」從人工遵守收斂到單一入口。
@@ -494,7 +542,7 @@ export const useXxx = (options: UseXxxOptions) => {
 
 **後續衍生 bug — 依附 per-user 欄位的計數（2026-07-31）**：
 
-修完 `isLiked` 污染後，`likeCount` 出現「有時多一個」。成因是 [`useListCard`](../src/app/[userCode]/list/[id]/_components/ListCard/_hooks/useListCard.tsx) 用 `prevIsLikedRef` **偵測 `isLiked` 的 false→true 轉換再 `+1`**，而該寫法分不清兩種來源：
+修完 `isLiked` 污染後，`likeCount` 出現「有時多一個」。成因是 [`useListCard`](../src/app/[userCode]/list/[id]/_components/ListCard/useListCard.tsx) 用 `prevIsLikedRef` **偵測 `isLiked` 的 false→true 轉換再 `+1`**，而該寫法分不清兩種來源：
 
 | transition 來源 | server `likeCount` 是否已含這一讚 | 該不該 +1 |
 |---|---|---|
@@ -533,7 +581,7 @@ const likeCount = useMemo(() => {
 | Hook | Endpoint | 回傳 | 現有消費端 |
 |---|---|---|---|
 | `useGetListInfiniteIdeas` | `GET /lists/:listID` | list meta（title / isLiked / likeCount / owner）**+ 第一批 ideas** | `list/[id]/client.tsx`（`limit: 1`）、`list/[id]/edit/client.tsx`（`limit: 1`） |
-| `useGetInfiniteIdeasUnderList` | `GET /ideas` | 純 ideas + `ideaTotalCount` | `ListCard/_components/IdeaList`、`list/[id]/reorder/client.tsx` |
+| `useGetInfiniteIdeasUnderList` | `GET /ideas` | 純 ideas + `ideaTotalCount` | `ListCard/IdeaList`、`list/[id]/reorder/client.tsx` |
 
 - 兩者已**分離 query key**（`listsKeys.infiniteIdeas` vs `ideasKeys.infiniteIdeasUnderList`），互不干擾。
 - 職責切乾淨後 list 頁只需 `limit: 1` 拿 meta（無法設 0，後端會回空 ideas 陣列但仍計費一次查詢）。
@@ -551,7 +599,7 @@ const likeCount = useMemo(() => {
 
 ## 14. 開發者 Onboarding 清單
 
-1. 安裝 Node v22.15.1（建議 `nvm install 22.15.1 && nvm use`）。
+1. 安裝 Node v22.23.4（建議 `nvm install && nvm use`，版本讀自 `.nvmrc`）。
 2. 建立 `.env.local`，至少填 `NEXT_PUBLIC_API_BASE_URL`、`NEXT_PUBLIC_GOOGLE_CLIENT_ID`、`NEXT_PUBLIC_SITE_URL`。
 3. `npm i`。
 4. `npm run dev`（=`lingui extract && lingui compile && next dev -p 8080`）。
@@ -566,7 +614,7 @@ const likeCount = useMemo(() => {
 
 當你被要求「在此 repo 加功能 / 改 bug」時，請預設遵守下列規約，能大幅減少 review 摩擦：
 
-- **永遠**使用 `@/` 絕對路徑 import，**不要**用相對路徑進出資料夾。
+- **永遠**使用 `@/` 絕對路徑 import，**不要**用相對路徑，包含同資料夾的 `./x`（ESLint `no-restricted-imports` 會報 error；只有 `src/api/{contracts,schemas}/index.ts` barrel 例外）。
 - **永遠**透過 `useStrictNavigateNext` 導航，不要 `router.push` / `<Link>` 直連動態路由（`<Link>` 可用於純 static href）。
 - **永遠**使用 `t` / `<Trans>` 包覆使用者可見字串，**不要**留中英硬編字串在 JSX/錯誤訊息。
 - **永遠**先檢查 `constants/queryKeys.ts` 或 `hooks/api/<resource>/keys.ts` 是否已有對應 key 再新增。
@@ -593,5 +641,9 @@ const likeCount = useMemo(() => {
 - 2026-07-30：新增 §13.1 SSR hydration 身分汙染（follow / like 兩起同源 bug 的成因、修法與通用規則）、§13.2 ideas 資料源雙軌（`GET /ideas` 上線後的職責切分與 cache 手術重複債）、§13.3 dev-only console 噪音（Strict Mode 雙打 / CancelledError / Grammarly）；§13 內 `GET /{userCode}/lists` 缺 `totalElements` 一項標記已解除（後端已補，infinite scroll 上線）。
 - 2026-07-31：§13 對照現況重新校準 — legacy 死碼清除、like/unlike 接線、`followUnfollow/schema.ts` 的 `||` bug 三項經 grep 驗證**早已完成**，改標 ✅（原文件仍列為待辦，會誤導接手者）。新增三項債務：`constants/apiPath.ts` 零引用孤兒檔、`useCheckCreateQuota` 的 N+1 序列 await、`isLiked`/`isFollowing` 的型別謊言（schema 說 `boolean` 但 hydration 塞 `undefined`，且 store 把未知塌縮成 `false`）。§13.1 補「依附 per-user 欄位的計數」衍生 bug：`likeCount` 因 ref 轉換偵測誤把 seed 當用戶操作而多算，改為衍生值修正；並新增通用規則第 5 條（計數禁用 ref 累加）＋ 驗證 follow 計數走 mutation cache 手術路徑不受影響。
 - 2026-08-18：建立測試基礎建設 —— Playwright E2E（mock API server 依 Authorization 分歧、storageState 繞過 Google OAuth、mobile-chrome/mobile-safari 雙 project + smoke project）+ Vitest 單元測試（offset / cache helper / path matcher / zod 契約 / 額度 / like store，7 檔 51 個測試）+ GitHub Actions CI（tsc / lint / unit / build / e2e）。過程中連帶修正兩個真實安全與正確性問題：mock server 曾把登出用戶的空 `Bearer` header 誤判為已登入、造成 private list 對匿名洩漏；mock 的 list type 慣例與真實 `ListType` enum（PUBLIC=1/PRIVATE=2）不符，導致私人小眼睛圖示永遠測不到。§13 測試項與 §3 目錄結構同步更新。計劃稿見 `docs/superpowers/plans/2026-07-31-test-infrastructure.md`（含「後續建議」章節，記錄尚未涵蓋的頁面與待辦項）。
+- 2026-10-22：`feature/new-list-type` 期間更新 — 新增 `docs/api/`（名單上鎖 Mock API 文件）與 §13「名單上鎖 API 串接」現況；`ListType` / `ListLockMethod` 拆分原則寫入 §12；§4.1 / §8 FakePage 改為三種 type，§13 記錄 payload 型別債；§8 新增 SwitchWithIcon variants、Collapsible 間距規則、動畫 a11y 規約（`motion-safe:` 優先、焦點管理、`key` 重播）；§11 標註型別檢查必須用 `npm run tsc`（`tsc -p .` 只會出現 TS6305、不檢查型別）及 e2e 檔的 ESLint parsing error；§13 測試數量更新，並補「本機跑 E2E 前先關 dev server」陷阱；§2 Contract 列移除過時的「共存中」。
+- 2026-10-27：FakePage payload 型別修正（`getPayload` + 每頁一份 payload，§4.1 / §8 / §12 / §13 同步）；Node 版本改為 `.nvmrc` 的 22.23.4，並記錄舊版 Node 下 `npm run tsc` 假通過的陷阱（§1 / §14）。
 
+- 2026-10-28：資料夾結構盤點 — §3 修正 `[userCode]` 與 `/user` 的實際結構（profile 編輯路由為 `/user/edit`，§6.1 同步）、補上 `_layout` / `_shared` 分開、`JsonLd`、`SwitchWithIcon`、`useAsyncAction`、`useLogin`、`lib/{queryClient, identity, seo}`、`types/response.ts`；constants 移除已不存在的 queryKeys / apiPath。§11 記錄 ESLint 雙設定（CI 只跑 `.eslintrc.json`，69 條規則未被 CI 檢查）。§13：apiPath / ui/form / ui/switch / NavigationEvents 刪除標 ✅；扁平 .tsx 清單補齊為 8 處；新增 ESLint 雙設定（#1）、圖片放置規則（#7）、元件結構整理含巢狀 `_components` 規則（#8）、Provider 位置（#9）待辦。同日將 ESLint 統一為 `eslint.config.mjs`（§11 改寫、§13 標 ✅）。
+- 2026-10-29：#8 巢狀 `_components` 全部攤平（§3 目錄樹與 Component Folder Rules 第 5 條、§13 #8 標 ✅、§13.1 / §13.2 連結路徑同步）；相對路徑 import 改為 `@/`，並以 ESLint `no-restricted-imports` 強制（§11、§15）；Lingui catalog 重新 extract。§13 測試補 V6。名單上鎖串接計劃見 `docs/superpowers/plans/2026-10-29-list-lock-integration.md`。
 若日後架構大幅變動，請以 PR 更新本文件對應段落，避免被當作可信來源誤導後續工程師或 AI。
