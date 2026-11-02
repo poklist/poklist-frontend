@@ -36,7 +36,7 @@ export default tseslint.config(
     },
     rules: {
       'no-console': ['error', { allow: ['warn', 'error'] }],
-      // import 一律用 @/ 絕對路徑（ARCHITECTURE §15）
+      // import 一律用 @/ 絕對路徑（AGENTS §15）
       'no-restricted-imports': [
         'error',
         {

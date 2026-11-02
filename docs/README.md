@@ -14,11 +14,12 @@
 
 ### 架構設計
 
-- [專案接管手冊 (Architecture & Handover)](./ARCHITECTURE.md) - 技術棧、目錄分層、跨切核心、慣例與已知債務（接手者 / AI 必讀）
+- [專案接管手冊 (Architecture & Handover)](./AGENTS.md) - 技術棧、目錄分層、跨切核心、慣例與已知債務（接手者 / AI 必讀）
 
 ### API 文檔
 
 - [名單上鎖 API（Mock，2026-10-17）](./api/2026-10-17-list-lock-mock.md) - BE 提供的 8 支上鎖相關 Mock API 串接文件，附前端備註
+  - 串接計劃：[名單上鎖串接 Implementation Plan](./superpowers/plans/2026-10-29-list-lock-integration.md) - 分階段的工作計劃與待確認事項
 
 ### 組件庫
 

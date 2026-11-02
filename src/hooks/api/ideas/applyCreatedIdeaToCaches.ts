@@ -19,7 +19,7 @@ import ideasKeys from '@/hooks/api/ideas/keys';
  *    useGetInfiniteIdeasUnderList / useGetListInfiniteIdeas），若只靠手術，
  *    cache 不存在時 updateInfiniteCaches 會 no-op，新 Idea 就不會顯示直到
  *    某次不相關的重抓。refetchType 'all' 連 inactive（使用者稍後才返回的 List
- *    頁）的 query 也一併刷新。詳見 ARCHITECTURE.md §4.5 / §13.2。
+ *    頁）的 query 也一併刷新。詳見 AGENTS.md §4.5 / §13.2。
  */
 export const applyCreatedIdeaToCaches = (
   queryClient: QueryClient,

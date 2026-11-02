@@ -13,7 +13,7 @@ import listsKeys from '@/hooks/api/lists/keys';
  * 更新、不重抓；只有 inactive feed 背景刷新；absent 靠掛載初次 fetch 兜底。
  * 注意：usePostNewList 對 feed 只 invalidate、沒有手術，故它仍用 'all'（active
  * feed 沒有手術可退回）；此處呼叫端（usePutList/useDeleteList）都有手術，故 'inactive'
- * 安全。詳見 ARCHITECTURE.md §4.5 / §13.2。
+ * 安全。詳見 AGENTS.md §4.5 / §13.2。
  */
 export const invalidateUserListsCaches = (
   queryClient: QueryClient,

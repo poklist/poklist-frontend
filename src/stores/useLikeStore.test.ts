@@ -11,7 +11,7 @@ describe('useLikeStore optimistic state', () => {
   });
 
   // 已知取捨：未知態被塌縮為 false，本測試只記錄這個行為，不代表這是理想設計。
-  // 若日後改為 boolean | undefined，本測試會提醒同步更新 ARCHITECTURE.md §13。
+  // 若日後改為 boolean | undefined，本測試會提醒同步更新 AGENTS.md §13。
   it('documents that an unknown list collapses to false (not asserting this is ideal)', () => {
     expect(useLikeStore.getState().getIsLiked('100')).toBe(false);
   });

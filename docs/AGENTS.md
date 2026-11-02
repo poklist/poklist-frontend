@@ -76,7 +76,9 @@ src/
 │   │                      #   header 由頁面父層（list/create/page.tsx、[userCode]/list/[id]/edit/client.tsx）提供，
 │   │                      #   存檔鈕內聯於表單底部（ListForm 以 forwardRef 露 requestClose 給父層 header）
 │   │                      #   描述／網址／封面收在「更多內容」(isExpand) 後；CategoryDropdown 提供範例主題一鍵帶入
-│   │                      #   VisibilityFields：公開／隱藏 radio 綁 `type`，「設定上鎖」switch 目前為 local state（上鎖功能進行中，見 §13）
+│   │                      #     （title 已有內容時先開 ResetTitleWarnDrawer 確認取代；分類 pill 只在編輯模式 `isEdit` 顯示）
+│   │                      #   VisibilityFields：公開／隱藏 radio 綁 `type`，「設定上鎖」switch 目前為 local state；
+│   │                      #     收 `isEdit`，編輯模式才顯示 EditLockTypeDrawer 與「更換上鎖方式／解除上鎖」（上鎖功能進行中，見 §13）
 │   ├── error/、goToMobile/、not-found.tsx、sitemap.ts、robots.txt
 │   ├── _layout/_components/  # 桌面包殼用的 Background、BottomNav、PromptText（扁平 .tsx）
 │   └── _shared/_components/List/  # 跨路由共用的 List Header、DeleteButton
@@ -129,7 +131,7 @@ src/
 │   └── README.md         # 元件分層規約（**必讀**）
 ├── constants/            # routes / form / list / i18n / DragAndDrop / Drawer (DrawerIds) / Home / Lists / User / externalLink
 ├── enums/                # 全域 Enums（index.enum.ts 為入口），分子目錄 Style / Lists / EditField
-├── types/                # 各領域型別：User / List / Idea / Discovery / Relation / Settings / Home / EditField；common.ts 內含 zod schema (IdeaFormSchema/ListFormSchema)；
+├── types/                # 各領域型別：User / List / Idea / Discovery / Relation / Settings / Home / EditField；common.ts 內含 zod schema (IdeaFormSchema / ListBaseSchema / ListLockSchema / ListFormSchema)；
 │                          #   response.ts（舊 `IResponse<T>`，仍有 3 處引用）、global.ts、images.d.ts
 ├── lib/                  # 純函式工具，不含 hook
 │   ├── utils.ts          # cn、localStorage helpers、to (Promise tuple)、檔案 / Base64 / URL 處理
@@ -353,7 +355,11 @@ export const useXxx = (options: UseXxxOptions) => {
 
 ## 7. 表單與驗證模式
 
-- Schema 一律放 `src/types/common.ts`（`IdeaFormSchema` / `ListFormSchema`），透過 `zodResolver` 套入 react-hook-form。
+- Schema 一律放 `src/types/common.ts`（`IdeaFormSchema` / `ListBaseSchema` / `ListFormSchema`），透過 `zodResolver` 套入 react-hook-form。
+  - **`ListBaseSchema` 與 `ListFormSchema` 要分清楚**（2026-11-02）：
+    - `ListBaseSchema` 給舊 `/lists` API 的 schema（`api/schemas/lists.ts`）與 `idea/create/list` 用，**不含 `lock`**。
+    - `ListFormSchema = ListBaseSchema.extend({ lock })` 只給 list Form 和草稿用。`lock` 的 `.default({ method: 'none' })` 讓舊草稿仍可讀取。
+    - 送舊 API 前要用 `ListBaseSchema.parse(data)` 去掉 `lock`。**不要**讓舊 API 的 schema 改回 extend `ListFormSchema`。
 - 共用 helpers：
   - `formatInput`：合併多空白、移除換行。
   - `validateUserCode`、`resolveListFormError`、`resolveIdeaFormError`（lingui macro 內含 dynamic 字串）。
@@ -492,7 +498,7 @@ export const useXxx = (options: UseXxxOptions) => {
 - **元件結構整理（2026-10-28 盤點 #8）**：
   - 重複元件：`[userCode]/list/_components/{Header, DeleteButton}` 與 `_shared/_components/List/{Header, DeleteButton}`（見上方 legacy components）。
   - 扁平 .tsx：見上方 legacy components 清單（共 8 處）。
-  - **巢狀 `_components` 過深**：原本 `list/_components/Form/_components/VisibilityFields/_components/LockConfigFakePage/_components/PasswordConfigSection` 位於 app 下第 9 層。底線前綴只在**路由資料夾層**有意義（讓 Next 不把它當路由）；`_components/` 底下整棵子樹本來就不會被當成路由，元件資料夾內再建 `_components/` 純屬慣例、沒有技術作用。建議規則：**`_components/` 只放在路由層**；元件自己的子元件直接以 PascalCase 資料夾放在該元件資料夾內（如 `Form/VisibilityFields/`、`ListCard/IdeaList/`），元件私有 hook 用 `hooks/`。**【✅ 已完成 — 2026-10-29】** 所有巢狀 `_components` 已攤平：`list/_components/Form/{AutoResizeFields, CancelConfirmDrawer, CategoryDrawer, CategoryDropdown, CoverImageFields, DraftDrawer, VisibilityFields/{LockTypeDrawer, LockConfigFakePage/{PasswordConfigSection, QuestionConfigSection}}}`、`[userCode]/list/[id]/_components/ListCard/{AddIdeaRow, IdeaList, ListCardDescription, ListCardHeader, useListCard.tsx}`。規則已寫入 §3 Component Folder Rules 第 5 條。同日把剩餘的相對路徑 import 改成 `@/`，並加上 ESLint `no-restricted-imports`（§11）。完整 e2e 72 passed。
+  - **巢狀 `_components` 過深**：原本 `list/_components/Form/_components/VisibilityFields/_components/LockConfigFakePage/_components/PasswordConfigSection` 位於 app 下第 9 層。底線前綴只在**路由資料夾層**有意義（讓 Next 不把它當路由）；`_components/` 底下整棵子樹本來就不會被當成路由，元件資料夾內再建 `_components/` 純屬慣例、沒有技術作用。建議規則：**`_components/` 只放在路由層**；元件自己的子元件直接以 PascalCase 資料夾放在該元件資料夾內（如 `Form/VisibilityFields/`、`ListCard/IdeaList/`），元件私有 hook 直接放在元件資料夾。**【✅ 已完成 — 2026-10-29】** 所有巢狀 `_components` 已攤平：`list/_components/Form/{AutoResizeFields, CancelConfirmDrawer, CategoryDrawer, CategoryDropdown, CoverImageFields, DraftDrawer, ResetTitleWarnDrawer, VisibilityFields/{LockTypeDrawer, LockConfigFakePage/{EditLockTypeDrawer, PasswordConfigSection, QuestionConfigSection}}}`（`ResetTitleWarnDrawer`、`EditLockTypeDrawer` 為 2026-10-30 新增）、`[userCode]/list/[id]/_components/ListCard/{AddIdeaRow, IdeaList, ListCardDescription, ListCardHeader, useListCard.tsx}`。規則已寫入 §3 Component Folder Rules 第 5 條。同日把剩餘的相對路徑 import 改成 `@/`，並加上 ESLint `no-restricted-imports`（§11）。完整 e2e 72 passed。
   - `src/components/README.md` 的範例仍是 Pages Router 時期的 `src/pages/Home/Components/...`，整理時一併更新。
 - **Pages Router 殘骸**：README 仍提到 Pages Router 遷移；目前 `src/` 已純 App Router，可清理舊文檔。
 - **`useScrollPosition` 與 sessionStorage 滾動還原**：`useScrollPosition` hook（`src/hooks/useScrollPosition.ts`）已提供完整的 save / restore / clear 機制，以 `keyPrefix_pathname` 作為 key。**現況問題**：`src/components/Header/index.tsx` 與 `BackToUserHeader.tsx` 直接呼叫 `sessionStorage.removeItem('scroll_pos_/discovery')`（硬編字串），而非透過 hook 的 `clearScrollPosition`，導致若 keyPrefix 日後變更將造成遺留 key。**架構不需大改**，僅需把 Header 元件改用 hook 回傳的 `clearScrollPosition`，或將 key 建構邏輯匯出為共用 util，即可解決。Discovery ListSection 的 `SESSION_VISITED_KEY`（是否曾訪問的 flag）是獨立用途，不在此問題範圍內。
@@ -504,7 +510,7 @@ export const useXxx = (options: UseXxxOptions) => {
   - **保留紀錄供未來類似 optimistic + debounce 場景參考**。
 - **`prop-types`**：依然在 dependencies，但 TS 接管後僅留作 transitive — 可考慮移除。
 - **Storybook**：尚未引入，元件文件靠 README + 程式碼。
-- **測試**：**【✅ 已建立 — 2026-08-18；2026-10-22 更新數量】** Playwright E2E（`e2e/`，mobile-chrome + mobile-safari + smoke 三 project；12 個 spec 檔、36 條確定性測試 × 雙引擎 = 72 條）+ 5 條煙霧 spec + Vitest 單元測試（`src/**/*.test.ts`，10 檔 55 個測試）。2026-10 新增 `list-form-expand`（含 reduced-motion 驗證）/ `list-visibility` 兩個 spec。2026-10-27：開啟上鎖改為會打開 `LockTypeDrawer` 後，`list-visibility` 的 V3 / V4 已依新流程改寫（V3 驗證關閉 drawer 時上鎖自動關回去；V4 驗證選了上鎖方式並按「完成」後再選隱藏會關閉上鎖）。2026-10-29 新增 V6：在 `LockConfigFakePage` 取消（Esc /「取消」）時上鎖自動關回去；按「完成」才維持開啟。testid：drawer 卡片 `lock-type-password` / `lock-type-question`，設定頁完成鈕 `lock-config-done`。CI（`.github/workflows/ci.yml`）的 `verify` job 跑 tsc / lint / unit / build，另有 `e2e` job 跑確定性層（PR 與 push to dev 皆觸發）。
+- **測試**：**【✅ 已建立 — 2026-08-18；2026-10-22 更新數量】** Playwright E2E（`e2e/`，mobile-chrome + mobile-safari + smoke 三 project；12 個 spec 檔、36 條確定性測試 × 雙引擎 = 72 條）+ 5 條煙霧 spec + Vitest 單元測試（`src/**/*.test.ts`，11 檔 62 個測試（2026-11-02 新增 `types/common.test.ts`））。2026-10 新增 `list-form-expand`（含 reduced-motion 驗證）/ `list-visibility` 兩個 spec。2026-10-27：開啟上鎖改為會打開 `LockTypeDrawer` 後，`list-visibility` 的 V3 / V4 已依新流程改寫（V3 驗證關閉 drawer 時上鎖自動關回去；V4 驗證選了上鎖方式並按「完成」後再選隱藏會關閉上鎖）。2026-10-29 新增 V6：在 `LockConfigFakePage` 取消（Esc /「取消」）時上鎖自動關回去；按「完成」才維持開啟。testid：drawer 卡片 `lock-type-password` / `lock-type-question`，設定頁完成鈕 `lock-config-done`。2026-10-30 新增的 `ResetTitleWarnDrawer`（testid `title-reset` / `title-keep`）、`EditLockTypeDrawer` 與編輯模式的上鎖選項**尚無 e2e 覆蓋**。2026-11-02：`list-create` / `list-edit` 加上 request body 斷言，確認送舊 `/lists` API 時沒有 `lock`（mock server 不檢查多餘欄位，所以要在 spec 內斷言）。CI（`.github/workflows/ci.yml`）的 `verify` job 跑 tsc / lint / unit / build，另有 `e2e` job 跑確定性層（PR 與 push to dev 皆觸發）。
   - **E2E 架構**：本地 mock API server（`e2e/mock-server/`）依 `Authorization` header 分歧回應，因為 **Server Component 的 SSR fetch 走 Node 端，Playwright 的 `page.route()` 攔不到**——這是重現 §13.1 hydration 汙染的唯一方法。
   - **繞過 Google OAuth**：storageState 直接注入 `auth-storage` / `user-storage`（見 `e2e/fixtures/auth.ts`），**絕不自動化 Google 登入 UI**。
   - ⚠️ **本機跑 E2E 前先關掉 `npm run dev`**：`playwright.config.ts` 本機設 `reuseExistingServer: true`，若 8080 已有 dev server，Playwright 會直接沿用它（連的是真實後端、不是 mock API 4000），依賴 mock 資料的 spec（`list-create` / `list-edit` / `private-list` 等）會大量失敗，看起來像程式壞掉。CI 不受影響（CI 不 reuse）。
@@ -518,11 +524,16 @@ export const useXxx = (options: UseXxxOptions) => {
   - **ts-rest mutation `onError` 型別對齊**：✅ 完成 — 全部統一 `ErrorResponse<typeof contract>`；且 `axiosFetcher` 的 try/catch 錯誤轉換讓此型別 runtime 真實（§4.5）。
   - **`updatedAt` 由後端值取代**：`usePostNewIdea` / `usePutIdea` 仍以 `toBackendTimestamp(new Date())` 前端手拼塞快取，格式脆弱。應改用 response 回傳的 `updatedAt`，或於 schema 標註此欄非必須。
   - **GET `/{userCode}/lists` response 缺 `totalElements`**：**【✅ 已解除 — 2026-07-30】** 後端已補 `totalElements`。前端 `useGetInfiniteListsUnderUser.ts`（原 `useGetUserInfiniteLists.ts` 改名）+ ListSection sentinel `IntersectionObserver` 捲動已上線，`usePostNewList` / `useDeleteList` 的 `invalidateQueries` 也已啟用。
-  - **POST `/lists` response 缺 `coverImage`**：`listsSchema.postResponse` 由 `ListFormSchema.omit({ coverImage }).extend({ id })` 定義，但 `getUserLists` 的 content item（`listPreviewSchema`）含 `coverImage`。導致 `usePostNewList` prepend 進 `userLists` 快取時缺封面圖。需後端於 POST 回應補 `coverImage`，或前端 prepend 時補 fallback，待定案。
+  - **POST `/lists` response 缺 `coverImage`**：`listsSchema.postResponse` 由 `ListBaseSchema.omit({ coverImage }).extend({ id })` 定義，但 `getUserLists` 的 content item（`listPreviewSchema`）含 `coverImage`。導致 `usePostNewList` prepend 進 `userLists` 快取時缺封面圖。需後端於 POST 回應補 `coverImage`，或前端 prepend 時補 fallback，待定案。
 - **名單上鎖 API 串接（2026-10 進行中）**：BE 已提供 8 支 Mock API（`/creator/lists*`、`/lists/:id/unlock`），文件與前端備註見 [`docs/api/2026-10-17-list-lock-mock.md`](api/2026-10-17-list-lock-mock.md)。現況：
   - **已確定**：上鎖與隱藏互斥（`VisibilityFields` 已實作：開上鎖 → 改公開；選隱藏 → 關上鎖）。enum 已拆開：`ListType` 維持 `PUBLIC=1 / PRIVATE=2`，上鎖方式用字串 enum `ListLockMethod`（`none` / `password` / `question`）。
-  - **UI 進行中**：開啟上鎖 → `LockTypeDrawer`（選密碼／問答，經 `openFakePage('lockConfig', { lockMethod })` 帶入）→ `LockConfigFakePage`（設定內容）。未選方式就關閉 drawer（取消鈕、Esc、點遮罩、下滑、換頁）時，上鎖開關自動關回去（`LockTypeDrawer` 的 `onCancel`，接在 `DrawerComponent` 的 `onClose` 上；程式呼叫 `closeDrawer()` 不會觸發）。`LockConfigFakePage` 同理：取消（Esc /「取消」）→ `onCancel` 關閉上鎖；「完成」→ `onDone` 維持開啟（`onConfigDone` 直接 `closeFakePage()`，**不可**經過 `onClosePage`，否則會連帶觸發 `onCancel`）。上鎖狀態尚未接進 `ListFormSchema`，不會送出。
-  - **尚未串接**：新 endpoint 的 schema / contract / hook、`Idempotency-Key`、PATCH contract、送出前處理 `coverImage: null` 與 `categoryID: 0`、問答字數以 code point 計算、標已讀 POST 不帶 body（`c.noBody()`）、e2e mock 的 `/creator/*` 路由。
+  - **UI 進行中**：開啟上鎖 → `LockTypeDrawer`（選密碼／問答，經 `openFakePage('lockConfig', { lockMethod })` 帶入）→ `LockConfigFakePage`（設定內容）。未選方式就關閉 drawer（取消鈕、Esc、點遮罩、下滑、換頁）時，上鎖開關自動關回去（`LockTypeDrawer` 的 `onCancel`，接在 `DrawerComponent` 的 `onClose` 上；程式呼叫 `closeDrawer()` 不會觸發）。`LockConfigFakePage` 同理：取消（Esc /「取消」）→ `onCancel` 關閉上鎖；「完成」→ `onDone` 維持開啟（`onConfigDone` 直接 `closeFakePage()`，**不可**經過 `onClosePage`，否則會連帶觸發 `onCancel`）。
+  - **schema 已完成（2026-11-02）**：
+    - `ListFormSchema` 已有 `lock`（`ListLockSchema`，question 以 code point 計算 1～60）。
+    - UI 還沒寫入 `lock`：`isLocked` 仍是 local state，設定頁沒有 state，所以目前 `lock` 永遠是 none。
+    - 送出時 `ListBaseSchema.parse` 會去掉 `lock`，所以舊 API 不會收到。
+  - **編輯模式（2026-10-30 開始，骨架）**：`ListForm` → `VisibilityFields` → `LockConfigFakePage` 往下傳 `isEdit`。編輯模式下設定頁才顯示「更換上鎖方式」（開 `EditLockTypeDrawer`，`DrawerIds.LOCK_TYPE_EDIT_DRAWER_ID`）與「解除上鎖」（尚未接 onClick）。`EditLockTypeDrawer` 目前只有標題文案，`resetReadPermissions` 的 RadioGroup 仍是註解，尚未接 form（BE §7：PATCH 帶 `lock` 時必填）。
+  - **尚未串接**：新 endpoint 的 schema / contract / hook、`Idempotency-Key`、PATCH contract、送出前處理 `coverImage: null` 與 `categoryID: 0`、標已讀 POST 不帶 body（`c.noBody()`）、e2e mock 的 `/creator/*` 路由。
   - **待 BE 回覆**：新舊 API（`/lists` ↔ `/creator/lists`）的切換時程。Mock 資料由 BE API 直接提供，文件 §15 的 `.http` / `.json` 不會放進 repo。
 - **FakePage payload 型別**：**【✅ 已修 — 2026-10-27】** 原本 context 的 `payload` 是所有頁面 payload 的聯集，讀取端拿不到正確型別（`npm run tsc` 9 個錯誤）。改為 `FakePagePayloads`（每個 pageType 各存一份 payload）+ `getPayload(pageType)`，以 key 取值直接得到對應型別，全程沒有 `as`。Provider 用 `satisfies FakePagePayloads` 檢查更新後的結構；注意泛型 computed key（`[pageType]`）會被視為 index signature，`satisfies` 擋不住錯誤的值，型別安全來自 `openFakePage` 參數 `data?: FakePagePayloadMap[T]`。（曾考慮把「頁面 + payload」放進單一聯集 state，但泛型 `{ page: T; data }` 無法指定給聯集型別，一定得用 `as`，故不採用。）
 - **id 型別分岔**：`src/api/schemas/**` 所有 id 已統一 `z.string()`，但 `src/types/User/index.ts` 等 legacy type 仍是 `id: number`，邊界處散落 `String(...)` 轉換。legacy hooks 刪除後一併收斂 legacy types。
@@ -646,4 +657,7 @@ const likeCount = useMemo(() => {
 
 - 2026-10-28：資料夾結構盤點 — §3 修正 `[userCode]` 與 `/user` 的實際結構（profile 編輯路由為 `/user/edit`，§6.1 同步）、補上 `_layout` / `_shared` 分開、`JsonLd`、`SwitchWithIcon`、`useAsyncAction`、`useLogin`、`lib/{queryClient, identity, seo}`、`types/response.ts`；constants 移除已不存在的 queryKeys / apiPath。§11 記錄 ESLint 雙設定（CI 只跑 `.eslintrc.json`，69 條規則未被 CI 檢查）。§13：apiPath / ui/form / ui/switch / NavigationEvents 刪除標 ✅；扁平 .tsx 清單補齊為 8 處；新增 ESLint 雙設定（#1）、圖片放置規則（#7）、元件結構整理含巢狀 `_components` 規則（#8）、Provider 位置（#9）待辦。同日將 ESLint 統一為 `eslint.config.mjs`（§11 改寫、§13 標 ✅）。
 - 2026-10-29：#8 巢狀 `_components` 全部攤平（§3 目錄樹與 Component Folder Rules 第 5 條、§13 #8 標 ✅、§13.1 / §13.2 連結路徑同步）；相對路徑 import 改為 `@/`，並以 ESLint `no-restricted-imports` 強制（§11、§15）；Lingui catalog 重新 extract。§13 測試補 V6。名單上鎖串接計劃見 `docs/superpowers/plans/2026-10-29-list-lock-integration.md`。
+- 2026-10-30：§3 / §13 補上 `ResetTitleWarnDrawer`（套用範例主題前確認取代已輸入的 title）、分類 pill 改為只在 `isEdit` 顯示、上鎖編輯模式骨架（`isEdit` 傳遞、`EditLockTypeDrawer`、`LOCK_TYPE_EDIT_DRAWER_ID` / `RESET_TITLE_WARN_DRAWER_ID`）；`DrawerComponent` 關閉鈕改用 `IconClose`。§13 #8 修正「元件私有 hook」與 §3 第 5 條一致；測試項標註新 UI 尚無 e2e。
+- 2026-11-02：上鎖階段 2：`ListFormSchema` 拆出 `ListBaseSchema`（舊 API／`idea/create/list` 用，不含 lock），新增 `ListLockSchema`（discriminatedUnion，question code point 1～60）與 `LOCK_QUESTION_MAX_LENGTH`；list Form 送舊 API 前以 `ListBaseSchema.parse` 去掉 lock（§3、§7、§13 同步）；`list-create` / `list-edit` e2e 加上「body 不含 lock」的斷言。
+- 2026-11-02：本文件由 `docs/ARCHITECTURE.md` 改名為 `docs/AGENTS.md`。仍在使用的引用（README、API 文件、上鎖串接計劃、`eslint.config.mjs` 與 `src` 內的註解）已一併更新。歷史紀錄（`docs/superpowers/plans/2026-07-31-test-infrastructure.md`、`docs/handoff/`）保留舊名，不另外修改。
 若日後架構大幅變動，請以 PR 更新本文件對應段落，避免被當作可信來源誤導後續工程師或 AI。
