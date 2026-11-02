@@ -1,4 +1,14 @@
 import { GetUserListsResponse, PutListsRequest } from '@/api/query/lists';
+import AutoResizeFields from '@/app/list/_components/Form/AutoResizeFields';
+import CancelConfirmDrawer from '@/app/list/_components/Form/CancelConfirmDrawer';
+import CategoryDrawer from '@/app/list/_components/Form/CategoryDrawer';
+import CategoryDropdown, {
+  CategoryOption,
+} from '@/app/list/_components/Form/CategoryDropdown';
+import CoverImageFields from '@/app/list/_components/Form/CoverImageFields';
+import DraftDrawer from '@/app/list/_components/Form/DraftDrawer';
+import ResetTitleWarnDrawer from '@/app/list/_components/Form/ResetTitleWarnDrawer';
+import VisibilityFields from '@/app/list/_components/Form/VisibilityFields';
 import { useListDraft } from '@/app/list/_hooks/useListDraft';
 import { useDrawer } from '@/components/Drawer/useDrawer';
 import { EditFieldFakePageComponent } from '@/components/FakePage/EditFieldFakePage';
@@ -33,15 +43,6 @@ import { t, Trans } from '@lingui/macro';
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
-import AutoResizeFields from '@/app/list/_components/Form/AutoResizeFields';
-import CancelConfirmDrawer from '@/app/list/_components/Form/CancelConfirmDrawer';
-import CategoryDrawer from '@/app/list/_components/Form/CategoryDrawer';
-import CategoryDropdown, {
-  CategoryOption,
-} from '@/app/list/_components/Form/CategoryDropdown';
-import CoverImageFields from '@/app/list/_components/Form/CoverImageFields';
-import DraftDrawer from '@/app/list/_components/Form/DraftDrawer';
-import VisibilityFields from '@/app/list/_components/Form/VisibilityFields';
 
 // 展開「更多內容」時新出現欄位的進場動畫；僅在使用者未要求減少動態時播放
 const EXPAND_ANIMATION =
@@ -77,11 +78,19 @@ const ListForm = forwardRef<ListFormHandle, IListFormProps>(function ListForm(
   const navigateTo = useStrictNavigateNext();
   const { openFakePage } = useFakePage();
   const [fieldConfig, setFieldConfig] = useState<IEditFieldConfig>();
+
   const { openDrawer: openCategoryDrawer, closeDrawer: closeCategoryDrawer } =
     useDrawer(DrawerIds.CATEGORY_DRAWER_ID);
   const { openDrawer: openCancelDrawer, closeDrawer: closeCancelDrawer } =
     useDrawer(DrawerIds.CANCEL_LIST_FORM_CONFIRM_DRAWER_ID);
+  const {
+    openDrawer: openResetTitleDrawer,
+    closeDrawer: closeResetTitleDrawer,
+  } = useDrawer(DrawerIds.RESET_TITLE_WARN_DRAWER_ID);
+
   const { data: categories, isLoading: categoriesLoading } = useGetCategories();
+
+  const [selectedOption, setSelectedOption] = useState<CategoryOption>();
   const [mounted, setMounted] = useState(false);
 
   const listForm = useForm<z.infer<typeof ListFormSchema>>({
@@ -115,11 +124,21 @@ const ListForm = forwardRef<ListFormHandle, IListFormProps>(function ListForm(
     descriptionTextarea,
   });
 
+  const onCheckTitle = (option: CategoryOption) => {
+    if (listForm.getValues('title') === '') {
+      onSelectCategory(option);
+    } else {
+      setSelectedOption(option);
+      openResetTitleDrawer();
+    }
+  };
+
   const onSelectCategory = (option: CategoryOption) => {
     listForm.setValue('title', option.title, { shouldDirty: true });
     if (option.categoryID !== undefined) {
       listForm.setValue('categoryID', option.categoryID, { shouldDirty: true });
     }
+    closeResetTitleDrawer();
     setTimeout(() => {
       titleTextarea.bind.onChange();
       descriptionTextarea.bind.onChange();
@@ -246,7 +265,7 @@ const ListForm = forwardRef<ListFormHandle, IListFormProps>(function ListForm(
         onSubmit={(event) => event.preventDefault()}
         className="relative flex flex-1 flex-col gap-6 bg-gray-note-05 px-4 py-6 pt-20 md:max-w-mobile-max"
       >
-        <CategoryDropdown onSelect={onSelectCategory} />
+        <CategoryDropdown onSelect={onCheckTitle} />
         {isExpand && (
           <div className={EXPAND_ANIMATION}>
             <CoverImageFields
@@ -334,6 +353,7 @@ const ListForm = forwardRef<ListFormHandle, IListFormProps>(function ListForm(
         )}
         <div className="flex flex-col gap-4">
           <VisibilityFields
+            isEdit={isEdit}
             control={listForm.control}
             onChange={onListTypeChange}
           />
@@ -362,7 +382,7 @@ const ListForm = forwardRef<ListFormHandle, IListFormProps>(function ListForm(
           </Button>
         </div>
       </form>
-      {defaultListInfo.title !== '' && (
+      {isEdit && (
         <div
           onClick={() => openCategoryDrawer()}
           className="relative mx-4 inline-flex items-center justify-between whitespace-nowrap rounded-full border border-black-tint-04 bg-white py-2 pl-4 pr-3 text-t1 font-semibold text-black-text-01 ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
@@ -399,6 +419,11 @@ const ListForm = forwardRef<ListFormHandle, IListFormProps>(function ListForm(
           closeDraftDrawer();
         }}
         onKeep={() => onRestoreDraft()}
+      />
+
+      <ResetTitleWarnDrawer
+        onReset={() => onSelectCategory(selectedOption!)}
+        onKeep={() => closeResetTitleDrawer()}
       />
 
       {fieldConfig && <EditFieldFakePageComponent {...fieldConfig} />}

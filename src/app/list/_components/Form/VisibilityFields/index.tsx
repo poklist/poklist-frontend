@@ -1,3 +1,6 @@
+import LockConfigFakePage from '@/app/list/_components/Form/VisibilityFields/LockConfigFakePage';
+import EditLockTypeDrawer from '@/app/list/_components/Form/VisibilityFields/LockConfigFakePage/EditLockTypeDrawer';
+import LockTypeDrawer from '@/app/list/_components/Form/VisibilityFields/LockTypeDrawer';
 import { useDrawer } from '@/components/Drawer/useDrawer';
 import SwitchWithIcons, {
   SwitchSize,
@@ -12,15 +15,15 @@ import { Trans } from '@lingui/macro';
 import { useId, useState } from 'react';
 import { Control, Controller, useWatch } from 'react-hook-form';
 import z from 'zod';
-import LockConfigFakePage from '@/app/list/_components/Form/VisibilityFields/LockConfigFakePage';
-import LockTypeDrawer from '@/app/list/_components/Form/VisibilityFields/LockTypeDrawer';
 
 interface VisibilityFieldProps {
+  isEdit: boolean;
   control: Control<z.infer<typeof ListFormSchema>>;
   onChange: (checked: boolean) => void;
 }
 
 const VisibilityFields: React.FC<VisibilityFieldProps> = ({
+  isEdit,
   control,
   onChange,
 }: VisibilityFieldProps) => {
@@ -149,7 +152,9 @@ const VisibilityFields: React.FC<VisibilityFieldProps> = ({
         )}
       </div>
       <LockTypeDrawer onCancel={() => setIsLocked(false)} />
+      {isEdit && <EditLockTypeDrawer />}
       <LockConfigFakePage
+        isEdit={isEdit}
         onCancel={() => setIsLocked(false)}
         onDone={() => setIsLocked(true)}
       />

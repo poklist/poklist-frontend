@@ -13,4 +13,6 @@ export const DrawerIds: Record<string, string> = {
   LIST_DRAFT_DRAWER_ID: 'list-draft-drawer',
   SIGNUP_DRAWER_ID: 'signup-drawer',
   LOCK_TYPE_DRAWER_ID: 'lock-type-drawer',
+  LOCK_TYPE_EDIT_DRAWER_ID: 'lock-type-edit-drawer',
+  RESET_TITLE_WARN_DRAWER_ID: 'reset-title-warn-drawer',
 };

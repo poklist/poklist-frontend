@@ -1,3 +1,6 @@
+import PasswordConfigSection from '@/app/list/_components/Form/VisibilityFields/LockConfigFakePage/PasswordConfigSection';
+import QuestionConfigSection from '@/app/list/_components/Form/VisibilityFields/LockConfigFakePage/QuestionConfigSection';
+import { useDrawer } from '@/components/Drawer/useDrawer';
 import { useFakePage } from '@/components/FakePage/useFakePage';
 import {
   Button,
@@ -7,23 +10,26 @@ import {
 } from '@/components/ui/button';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import IconLeftArrowThin from '@/components/ui/icons/LeftArrowThinIcon';
+import { DrawerIds } from '@/constants/Drawer';
 import { ListLockMethod } from '@/enums/Lists/index.enum';
 import { Trans } from '@lingui/macro';
-import PasswordConfigSection from '@/app/list/_components/Form/VisibilityFields/LockConfigFakePage/PasswordConfigSection';
-import QuestionConfigSection from '@/app/list/_components/Form/VisibilityFields/LockConfigFakePage/QuestionConfigSection';
 
 interface LockConfigPageProps {
+  isEdit: boolean;
   onCancel: () => void;
   onDone: () => void;
 }
 
 const LockConfigFakePage: React.FC<LockConfigPageProps> = ({
+  isEdit,
   onCancel,
   onDone,
 }: LockConfigPageProps) => {
   const { isOpen, closeFakePage, getPayload } = useFakePage();
   const open = isOpen('lockConfig');
   const lockMethod = getPayload('lockConfig')?.lockMethod;
+
+  const { openDrawer } = useDrawer(DrawerIds.LOCK_TYPE_EDIT_DRAWER_ID);
 
   const onConfigDone = () => {
     onDone();
@@ -74,18 +80,33 @@ const LockConfigFakePage: React.FC<LockConfigPageProps> = ({
             {lockMethod === ListLockMethod.QUESTION && (
               <QuestionConfigSection />
             )}
-            <div className="flex items-center justify-between text-black-text-01">
-              <div className="text-t1 font-semibold">
-                <Trans>更換上鎖方式</Trans>
-              </div>
-              <IconLeftArrowThin width={6} height={10} className="rotate-180" />
-            </div>
-            <div className="flex items-center justify-between text-black-text-01">
-              <div className="text-t1 font-semibold">
-                <Trans>解除上鎖</Trans>
-              </div>
-              <IconLeftArrowThin width={6} height={10} className="rotate-180" />
-            </div>
+            {isEdit && (
+              <>
+                <div
+                  onClick={() => openDrawer()}
+                  className="flex items-center justify-between text-black-text-01"
+                >
+                  <div className="text-t1 font-semibold">
+                    <Trans>更換上鎖方式</Trans>
+                  </div>
+                  <IconLeftArrowThin
+                    width={6}
+                    height={10}
+                    className="rotate-180"
+                  />
+                </div>
+                <div className="flex items-center justify-between text-black-text-01">
+                  <div className="text-t1 font-semibold">
+                    <Trans>解除上鎖</Trans>
+                  </div>
+                  <IconLeftArrowThin
+                    width={6}
+                    height={10}
+                    className="rotate-180"
+                  />
+                </div>
+              </>
+            )}
           </div>
         </div>
       </DialogContent>

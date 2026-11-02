@@ -9,6 +9,7 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from '@/components/ui/drawer';
+import IconClose from '@/components/ui/icons/CloseIcon';
 import { cn } from '@/lib/utils';
 import { usePathname } from 'next/navigation';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
@@ -149,10 +150,10 @@ export const DrawerComponent: React.FC<IDrawerProps> = ({
           <div className="flex justify-end">
             <DrawerClose
               aria-label="Close"
-              className="mb-3 h-6 w-6 rounded-full bg-black-text-01 text-center leading-6 text-white focus-visible:outline-none"
+              className="mb-3 focus-visible:outline-none"
               onClick={() => handleClose()}
             >
-              <span aria-hidden>×</span>
+              <IconClose width={24} height={24} />
             </DrawerClose>
           </div>
         )}

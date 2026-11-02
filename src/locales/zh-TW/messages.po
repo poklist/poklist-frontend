@@ -49,6 +49,7 @@ msgstr "確定刪除"
 #: src/app/[userCode]/list/[id]/_components/ListCard/index.tsx
 #: src/app/[userCode]/list/_components/DeleteButton/index.tsx
 #: src/app/_shared/_components/List/DeleteButton/index.tsx
+#: src/app/list/_components/Form/ResetTitleWarnDrawer/index.tsx
 #: src/app/list/_components/Form/VisibilityFields/LockConfigFakePage/index.tsx
 #: src/app/list/_components/Form/VisibilityFields/LockTypeDrawer/index.tsx
 msgid "取消"
@@ -536,6 +537,26 @@ msgstr "想分享什麼名單主題？"
 #: src/app/list/_components/Form/CategoryDropdown/index.tsx
 msgid "看看大家在寫什麼"
 msgstr "看看大家在寫什麼"
+
+#: src/app/list/_components/Form/ResetTitleWarnDrawer/index.tsx
+msgid "已輸入的名單主題將被取代"
+msgstr "已輸入的名單主題將被取代"
+
+#: src/app/list/_components/Form/ResetTitleWarnDrawer/index.tsx
+msgid "套用所選主題後，你已填寫的名單主題將被取代，且無法復原。確定要繼續嗎？"
+msgstr "套用所選主題後，你已填寫的名單主題將被取代，且無法復原。確定要繼續嗎？"
+
+#: src/app/list/_components/Form/ResetTitleWarnDrawer/index.tsx
+msgid "確認取代"
+msgstr "確認取代"
+
+#: src/app/list/_components/Form/VisibilityFields/LockConfigFakePage/EditLockTypeDrawer/index.tsx
+msgid "過去已解鎖的使用者怎麼辦？"
+msgstr "過去已解鎖的使用者怎麼辦？"
+
+#: src/app/list/_components/Form/VisibilityFields/LockConfigFakePage/EditLockTypeDrawer/index.tsx
+msgid "更新後，是否保留他們的解鎖資格..."
+msgstr "更新後，是否保留他們的解鎖資格..."
 
 #: src/app/list/_components/Form/VisibilityFields/LockConfigFakePage/PasswordConfigSection/index.tsx
 msgid "密碼上鎖"
