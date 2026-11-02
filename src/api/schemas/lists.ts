@@ -4,7 +4,7 @@ import {
   userBriefSchema,
 } from '@/api/schemas/common';
 import { ideaPreviewSchema } from '@/api/schemas/ideas';
-import { ListFormSchema } from '@/types/common';
+import { ListBaseSchema } from '@/types/common';
 import z from 'zod';
 
 const getUserListsRequestSchema = z.object({
@@ -12,7 +12,7 @@ const getUserListsRequestSchema = z.object({
   offset: z.number().int().nonnegative(),
   limit: z.number().int().nonnegative(),
 });
-export const listPreviewSchema = ListFormSchema.extend({
+export const listPreviewSchema = ListBaseSchema.extend({
   id: z.string(),
 });
 
@@ -42,17 +42,17 @@ const getIdeasOrderRequestSchema = z.object({ listID: z.string() });
 
 const getIdeasOrderResponseSchema = createResponseSchema(z.array(z.string()));
 
-const postRequestSchema = ListFormSchema;
+const postRequestSchema = ListBaseSchema;
 
 const postResponseSchema = createResponseSchema(
-  ListFormSchema.omit({ coverImage: true }).extend({ id: z.string() })
+  ListBaseSchema.omit({ coverImage: true }).extend({ id: z.string() })
 );
 
 const deleteRequestSchema = z.object({ listID: z.string() });
 
 const deleteResponseSchema = createResponseSchema(z.unknown());
 
-const putRequestSchema = ListFormSchema.extend({ listID: z.string() });
+const putRequestSchema = ListBaseSchema.extend({ listID: z.string() });
 
 const putResponseSchema = createResponseSchema(
   listPreviewSchema.extend({

@@ -1,5 +1,9 @@
-import { DESC_MAX_LENGTH, TITLE_MAX_LENGTH } from '@/constants/form';
-import { ListType } from '@/enums/Lists/index.enum';
+import {
+  DESC_MAX_LENGTH,
+  LOCK_QUESTION_MAX_LENGTH,
+  TITLE_MAX_LENGTH,
+} from '@/constants/form';
+import { ListLockMethod, ListType } from '@/enums/Lists/index.enum';
 import { MessageType } from '@/enums/Style/index.enum';
 import z from 'zod';
 
@@ -46,7 +50,29 @@ export const IdeaFormSchema = z.object({
   // .transform((val) => (val === '' ? null : val));
 });
 
-export const ListFormSchema = IdeaFormSchema.extend({
+// 舊 /lists API 與 idea/create/list 使用；不含 lock
+export const ListBaseSchema = IdeaFormSchema.extend({
   categoryID: z.number().nonnegative(),
   type: z.nativeEnum(ListType),
+});
+
+// 規則依 docs/api/2026-10-17-list-lock-mock.md §5
+export const ListLockSchema = z.discriminatedUnion('method', [
+  z.object({ method: z.literal(ListLockMethod.NONE) }),
+  z.object({ method: z.literal(ListLockMethod.PASSWORD) }),
+  z.object({
+    method: z.literal(ListLockMethod.QUESTION),
+    question: z
+      .string()
+      .trim()
+      .refine((question) => {
+        const length = [...question].length;
+        return length >= 1 && length <= LOCK_QUESTION_MAX_LENGTH;
+      }),
+  }),
+]);
+
+// list Form 使用；default 讓沒有 lock 的舊草稿仍可讀取
+export const ListFormSchema = ListBaseSchema.extend({
+  lock: ListLockSchema.default({ method: ListLockMethod.NONE }),
 });

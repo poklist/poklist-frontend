@@ -28,14 +28,14 @@ import { DESC_MAX_LENGTH, TITLE_MAX_LENGTH } from '@/constants/form';
 import { CategoriesI18n } from '@/constants/Lists/i18n';
 import { EditFieldVariant } from '@/enums/EditField/index.enum';
 import { LocalStorageKey } from '@/enums/index.enum';
-import { ListType } from '@/enums/Lists/index.enum';
+import { ListLockMethod, ListType } from '@/enums/Lists/index.enum';
 import { useGetCategories } from '@/hooks/api/categories/useGetCategories';
 import useAutoResizeTextarea from '@/hooks/ui/useAutoResizeTextarea';
 import useFormErrorHandler from '@/hooks/ui/useFormErrorHandler';
 import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
 import { cn, removeLocalStorage, setLocalStorage } from '@/lib/utils';
 import { resolveListFormError } from '@/lib/validator';
-import { ListFormSchema } from '@/types/common';
+import { ListBaseSchema, ListFormSchema } from '@/types/common';
 import { IEditFieldConfig } from '@/types/EditField/index.d';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { i18n } from '@lingui/core';
@@ -102,6 +102,8 @@ const ListForm = forwardRef<ListFormHandle, IListFormProps>(function ListForm(
       coverImage: defaultListInfo.coverImage,
       categoryID: defaultListInfo.categoryID,
       type: defaultListInfo.type,
+      // 舊 /lists API 沒有 lock，編輯時一律從 none 開始
+      lock: { method: ListLockMethod.NONE },
     },
   });
 
@@ -175,7 +177,9 @@ const ListForm = forwardRef<ListFormHandle, IListFormProps>(function ListForm(
   const onSubmit: SubmitHandler<z.infer<typeof ListFormSchema>> = (data) => {
     closeCategoryDrawer();
     try {
-      completedCallback(data);
+      // 舊 /lists API 不接受 lock：以 ListBaseSchema 重新 parse 去掉 lock（zod 會移除未定義的 key）
+      // FUTURE: 切到 /creator/lists 後改送 lock（plan Q3）
+      completedCallback(ListBaseSchema.parse(data));
       if (defaultListInfo.title !== '') {
         return;
       }

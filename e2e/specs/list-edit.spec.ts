@@ -15,8 +15,16 @@ test.describe('list edit (owner)', () => {
     const title = page.getByTestId('list-title-input');
     await expect(title).toHaveValue('Public List');
     await title.fill('Public List Edited');
+    const editRequest = page.waitForRequest(
+      (req) =>
+        req.method() === 'PUT' && new URL(req.url()).pathname === '/lists/100'
+    );
     // edit = Done，直接送出
     await page.getByTestId('edit-mode-save').click();
+    // 舊 /lists API 不接受 lock（mock server 不檢查多餘欄位，需在此斷言）
+    const body = (await editRequest).postDataJSON() as Record<string, unknown>;
+    expect(body.title).toBe('Public List Edited');
+    expect(body).not.toHaveProperty('lock');
     await page.waitForURL(/\/usera\/list\/100(\/|$|\?)/);
     await expect(
       page.getByText('Public List Edited', { exact: true })

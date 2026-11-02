@@ -13,8 +13,15 @@ test.describe('list create (logged-in)', () => {
     await page.getByTestId('list-title-input').fill('My New List');
     // 底部主鈕（create = Next）→ 打開分類 drawer
     await page.getByTestId('edit-mode-save').click();
+    const createRequest = page.waitForRequest(
+      (req) => req.method() === 'POST' && new URL(req.url()).pathname === '/lists'
+    );
     // drawer 內送出（categoryID 預設 0 合法）
     await page.getByTestId('category-submit').click();
+    // 舊 /lists API 不接受 lock（mock server 不檢查多餘欄位，需在此斷言）
+    const body = (await createRequest).postDataJSON() as Record<string, unknown>;
+    expect(body.title).toBe('My New List');
+    expect(body).not.toHaveProperty('lock');
     await page.waitForURL(/\/usera\/list\/new-/);
     await expect(
       page.getByText('My New List', { exact: true })

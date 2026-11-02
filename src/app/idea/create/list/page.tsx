@@ -26,7 +26,7 @@ import { formatInput, removeLocalStorage } from '@/lib/utils';
 import { resolveListFormError } from '@/lib/validator';
 import { useTemporaryIdeaStore } from '@/stores/useTemporaryIdeaStore';
 import useUserStore from '@/stores/useUserStore';
-import { ListFormSchema } from '@/types/common';
+import { ListBaseSchema } from '@/types/common';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { i18n } from '@lingui/core';
 import { t, Trans } from '@lingui/macro';
@@ -34,7 +34,7 @@ import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import z from 'zod';
 
-const defaultListInfo: z.infer<typeof ListFormSchema> = {
+const defaultListInfo: z.infer<typeof ListBaseSchema> = {
   title: '',
   externalLink: '',
   categoryID: 0,
@@ -91,8 +91,8 @@ const TemporaryCreateListPage: React.FC = () => {
   const { openDrawer: openCancelDrawer, closeDrawer: closeCancelDrawer } =
     useDrawer(DrawerIds.CANCEL_LIST_FORM_CONFIRM_DRAWER_ID);
 
-  const listForm = useForm<z.infer<typeof ListFormSchema>>({
-    resolver: zodResolver(ListFormSchema),
+  const listForm = useForm<z.infer<typeof ListBaseSchema>>({
+    resolver: zodResolver(ListBaseSchema),
     defaultValues: {
       title: defaultListInfo.title,
       externalLink: defaultListInfo.externalLink,
@@ -124,11 +124,11 @@ const TemporaryCreateListPage: React.FC = () => {
     }
   };
 
-  const onSubmit = (data: z.infer<typeof ListFormSchema>) => {
+  const onSubmit = (data: z.infer<typeof ListBaseSchema>) => {
     onCreateNewList(data);
   };
 
-  const onSubmitFailed = useFormErrorHandler<z.infer<typeof ListFormSchema>>({
+  const onSubmitFailed = useFormErrorHandler<z.infer<typeof ListBaseSchema>>({
     resolver: resolveListFormError,
   });
 
