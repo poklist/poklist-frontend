@@ -76,8 +76,14 @@ const listPayload = (list: MockList, viewer: string | null) => ({
 // 需要 CORS header 才能通過瀏覽器的 preflight 檢查。
 const setCorsHeaders = (req: IncomingMessage, res: ServerResponse) => {
   res.setHeader('Access-Control-Allow-Origin', req.headers.origin ?? '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader(
+    'Access-Control-Allow-Methods',
+    'GET, POST, PUT, PATCH, DELETE, OPTIONS'
+  );
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'Content-Type, Authorization, Idempotency-Key'
+  );
 };
 
 export const createMockServer = () =>
@@ -136,6 +142,58 @@ const handle = async (req: IncomingMessage, res: ServerResponse) => {
       ideas: [],
     });
     return ok(res, { id });
+  }
+
+  // --- POST /creator/lists（新 API；FEATURES.listLock 開啟時使用）---
+  // 依 docs/api/2026-10-17-list-lock-mock.md §1、§3、§5：缺 Idempotency-Key、null 或未定義欄位回 400。
+  // 與 BE mock 不同，這裡真的把名單存進 state，讓建立後導向的名單頁可以顯示。
+  if (path === '/creator/lists' && method === 'POST') {
+    if (!viewer) return fail(res, 401);
+    const idempotencyKey = req.headers['idempotency-key'];
+    if (typeof idempotencyKey !== 'string' || idempotencyKey === '') {
+      return fail(res, 400);
+    }
+    const body = await readBody(req);
+    const allowed = [
+      'title',
+      'description',
+      'coverImage',
+      'externalLink',
+      'categoryID',
+      'type',
+      'lock',
+    ];
+    const invalid = Object.entries(body).some(
+      ([key, value]) => !allowed.includes(key) || value === null
+    );
+    if (invalid || String(body.title ?? '').trim() === '')
+      return fail(res, 400);
+    const id = `new-${state.lists.size + 1}`;
+    const now = '2026-09-12T00:00:00.000Z';
+    const list = {
+      id,
+      title: String(body.title).trim(),
+      description: String(body.description ?? ''),
+      coverImage: String(body.coverImage ?? ''),
+      externalLink: String(body.externalLink ?? ''),
+      categoryID: Number(body.categoryID ?? 1),
+      type: Number(body.type ?? 1),
+    };
+    state.lists.set(id, {
+      ...list,
+      likeCount: 0,
+      likedBy: new Set<string>(),
+      createdAt: now,
+      updatedAt: now,
+      ownerUserCode: viewer,
+      ideas: [],
+    });
+    const lock = body.lock as { method?: string } | undefined;
+    return ok(res, {
+      ...list,
+      editToken: 'mock-edit-token',
+      lock: { method: lock?.method ?? 'none' },
+    });
   }
 
   // --- PUT /lists/:listID（編輯）---

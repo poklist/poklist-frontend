@@ -1,4 +1,4 @@
-import { GetUserListsResponse, PutListsRequest } from '@/api/query/lists';
+import { GetUserListsResponse } from '@/api/query/lists';
 import AutoResizeFields from '@/app/list/_components/Form/AutoResizeFields';
 import CancelConfirmDrawer from '@/app/list/_components/Form/CancelConfirmDrawer';
 import CategoryDrawer from '@/app/list/_components/Form/CategoryDrawer';
@@ -35,7 +35,7 @@ import useFormErrorHandler from '@/hooks/ui/useFormErrorHandler';
 import useStrictNavigateNext from '@/hooks/useStrictNavigateNext';
 import { cn, removeLocalStorage, setLocalStorage } from '@/lib/utils';
 import { resolveListFormError } from '@/lib/validator';
-import { ListBaseSchema, ListFormSchema } from '@/types/common';
+import { ListFormSchema } from '@/types/common';
 import { IEditFieldConfig } from '@/types/EditField/index.d';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { i18n } from '@lingui/core';
@@ -56,7 +56,8 @@ interface IListFormProps {
   defaultListInfo?: GetUserListsResponse['content'][number];
   isEdit: boolean;
   dismissCallback: (isFormEmpty: boolean) => void;
-  completedCallback: (listData: Omit<PutListsRequest, 'listID'>) => void;
+  // 傳完整表單值（含 lock），由呼叫端依新舊 API 轉成 request（plan Q26）
+  completedCallback: (listData: z.infer<typeof ListFormSchema>) => void;
 }
 
 const ListForm = forwardRef<ListFormHandle, IListFormProps>(function ListForm(
@@ -177,9 +178,7 @@ const ListForm = forwardRef<ListFormHandle, IListFormProps>(function ListForm(
   const onSubmit: SubmitHandler<z.infer<typeof ListFormSchema>> = (data) => {
     closeCategoryDrawer();
     try {
-      // 舊 /lists API 不接受 lock：以 ListBaseSchema 重新 parse 去掉 lock（zod 會移除未定義的 key）
-      // FUTURE: 切到 /creator/lists 後改送 lock（plan Q3）
-      completedCallback(ListBaseSchema.parse(data));
+      completedCallback(data);
       if (defaultListInfo.title !== '') {
         return;
       }

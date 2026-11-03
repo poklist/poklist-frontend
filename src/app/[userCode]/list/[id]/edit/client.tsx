@@ -1,6 +1,6 @@
 'use client';
 
-import { GetUserListsResponse, PutListsRequest } from '@/api/query/lists';
+import { GetUserListsResponse } from '@/api/query/lists';
 import ListForm, { ListFormHandle } from '@/app/list/_components/Form';
 import EditModeHeader from '@/components/Header/EditModeHeader';
 import { useGetListInfiniteIdeas } from '@/hooks/api/lists/useGetListInfiniteIdeas';
@@ -9,9 +9,11 @@ import { useAuthCheck, useAuthWrapper } from '@/hooks/useAuth';
 import useStrictNavigationAdapter from '@/hooks/useStrictNavigateNext';
 import { useUserRouteContext } from '@/hooks/useUserRouteContext';
 import useUserStore from '@/stores/useUserStore';
+import { ListBaseSchema, ListFormSchema } from '@/types/common';
 import { t } from '@lingui/macro';
 import { useParams } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
+import z from 'zod';
 
 const EditListPage: React.FC = () => {
   const { userCode } = useUserRouteContext();
@@ -49,26 +51,26 @@ const EditListPage: React.FC = () => {
     }
   };
 
-  const onEditList = withAuth(
-    (listFormData: Omit<PutListsRequest, 'listID'>) => {
-      if (!list) {
-        return;
-      }
-      setListCoverDraft({
-        ...list.pages[0].listInfo,
-        title: listFormData.title,
-        description: listFormData.description,
-        externalLink: listFormData.externalLink,
-        coverImage: listFormData.coverImage,
-        categoryID: listFormData.categoryID,
-        type: listFormData.type,
-      });
-      editList({
-        params: { listID },
-        body: listFormData,
-      });
+  const onEditList = withAuth((formValues: z.infer<typeof ListFormSchema>) => {
+    if (!list) {
+      return;
     }
-  );
+    // 編輯在階段 5 前一律走舊 PUT /lists：舊 API 不接受 lock，以 ListBaseSchema 去掉（zod 會移除未定義的 key）
+    const listFormData = ListBaseSchema.parse(formValues);
+    setListCoverDraft({
+      ...list.pages[0].listInfo,
+      title: listFormData.title,
+      description: listFormData.description,
+      externalLink: listFormData.externalLink,
+      coverImage: listFormData.coverImage,
+      categoryID: listFormData.categoryID,
+      type: listFormData.type,
+    });
+    editList({
+      params: { listID },
+      body: listFormData,
+    });
+  });
 
   useEffect(() => {
     if (list) {
