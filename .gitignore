@@ -26,6 +26,8 @@ dist-ssr
 *.sw?
 .cursor
 .next
+# e2e 的 feature toggle 關閉版本（playwright.config.ts）
+.next-flags-off
 
 .git
 out

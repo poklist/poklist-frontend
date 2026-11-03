@@ -68,7 +68,7 @@ jobs:
 
       - name: Run deterministic E2E
         id: deterministic-e2e
-        run: npx playwright test --project=mobile-chrome --project=mobile-safari
+        run: npx playwright test --project=mobile-chrome --project=mobile-safari --project=flags-off
 
       - name: Run smoke E2E
         if: ${{ env.E2E_ACCESS_TOKEN != '' }}

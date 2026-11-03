@@ -3,6 +3,12 @@ import { defineConfig, devices } from '@playwright/test';
 const APP_PORT = 8080;
 const MOCK_PORT = 4000;
 const BASE_URL = `http://localhost:${APP_PORT}`;
+// feature toggle 全部關閉的第二份 build（NEXT_PUBLIC_* 在 build 時寫死，無法同一份 build 切換）
+const FLAGS_OFF_PORT = 8081;
+const FLAGS_OFF_BASE_URL = `http://localhost:${FLAGS_OFF_PORT}`;
+// 主 build 開啟的 feature toggle（src/constants/features.ts）
+const FEATURES_ON = { NEXT_PUBLIC_FEATURE_LIST_LOCK: 'true' };
+const FEATURES_OFF = { NEXT_PUBLIC_FEATURE_LIST_LOCK: 'false' };
 
 export default defineConfig({
   testDir: './e2e',
@@ -33,13 +39,19 @@ export default defineConfig({
   projects: [
     {
       name: 'mobile-chrome',
-      testIgnore: /smoke\//,
+      testIgnore: [/smoke\//, /flags-off\//],
       use: { ...devices['Pixel 7'] },
     },
     {
       name: 'mobile-safari',
-      testIgnore: /smoke\//,
+      testIgnore: [/smoke\//, /flags-off\//],
       use: { ...devices['iPhone 13'] },
+    },
+    {
+      // 只跑 e2e/flags-off/：驗證 feature toggle 關閉時（等同正式環境預設）的行為
+      name: 'flags-off',
+      testMatch: /flags-off\//,
+      use: { ...devices['Pixel 7'], baseURL: FLAGS_OFF_BASE_URL },
     },
     {
       name: 'smoke',
@@ -82,6 +94,23 @@ export default defineConfig({
         NEXT_PUBLIC_SITE_URL: BASE_URL,
         NEXT_PUBLIC_GOOGLE_CLIENT_ID: 'e2e-placeholder-client-id',
         SEO_FETCH_REVALIDATE: '0',
+        ...FEATURES_ON,
+      },
+    },
+    {
+      // feature toggle 關閉的第二份 build：輸出到另一個 distDir、跑在另一個 port。
+      // webServer 依序啟動，上一個 ready 後才 build 這份，所以 lingui extract 不會同時寫檔。
+      command: `npm run build:e2e && npx next start -p ${FLAGS_OFF_PORT}`,
+      url: FLAGS_OFF_BASE_URL,
+      reuseExistingServer: !process.env.CI,
+      timeout: 480_000,
+      env: {
+        NEXT_PUBLIC_API_BASE_URL: `http://localhost:${MOCK_PORT}`,
+        NEXT_PUBLIC_SITE_URL: FLAGS_OFF_BASE_URL,
+        NEXT_PUBLIC_GOOGLE_CLIENT_ID: 'e2e-placeholder-client-id',
+        SEO_FETCH_REVALIDATE: '0',
+        NEXT_DIST_DIR: '.next-flags-off',
+        ...FEATURES_OFF,
       },
     },
   ],

@@ -8,6 +8,8 @@ const pkg = JSON.parse(
   readFileSync(resolve(__dirname, 'package.json'), 'utf-8')
 );
 const nextConfig = {
+  // e2e 會另外 build 一份 feature toggle 關閉的版本，需要不同的輸出目錄（見 playwright.config.ts）
+  distDir: process.env.NEXT_DIST_DIR || '.next',
   env: {
     NEXT_PUBLIC_APP_VERSION: pkg.version,
   },
