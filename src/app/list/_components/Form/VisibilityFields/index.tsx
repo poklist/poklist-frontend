@@ -9,11 +9,11 @@ import SwitchWithIcons, {
 import IconPrivateEye from '@/components/ui/icons/PrivateEyeIcon';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { DrawerIds } from '@/constants/Drawer';
-import { ListType } from '@/enums/Lists/index.enum';
+import { ListLockMethod, ListType } from '@/enums/Lists/index.enum';
 import { ListFormSchema } from '@/types/common';
 import { Trans } from '@lingui/macro';
-import { useId, useState } from 'react';
-import { Control, Controller, useWatch } from 'react-hook-form';
+import { useId } from 'react';
+import { Control, Controller, useController, useWatch } from 'react-hook-form';
 import z from 'zod';
 
 interface VisibilityFieldProps {
@@ -33,22 +33,25 @@ const VisibilityFields: React.FC<VisibilityFieldProps> = ({
   const publicId = `${id}-public`;
   const privateId = `${id}-private`;
   const lockId = `${id}-lock`;
-  // FUTURE: BE 補上鎖欄位後改接 listForm
-  const [isLocked, setIsLocked] = useState(false);
   const type = useWatch({ control, name: 'type' });
+  const { field: lockField } = useController({ control, name: 'lock' });
+  // 開關只反映 form 的 lock：設定頁按「完成」才會變「開」
+  const isLocked = lockField.value.method !== ListLockMethod.NONE;
 
   const onTypeChange = (isPrivate: boolean) => {
     closeDrawer();
     onChange(isPrivate);
-    if (isPrivate) setIsLocked(false);
+    // 上鎖與隱藏互斥
+    if (isPrivate) lockField.onChange({ method: ListLockMethod.NONE });
   };
 
-  const onLockChange = (isLocked: boolean) => {
+  const onLockChange = (checked: boolean) => {
     closeDrawer();
-    setIsLocked(isLocked);
-    if (isLocked) {
+    if (checked) {
       onTypeChange(false);
       openDrawer();
+    } else {
+      lockField.onChange({ method: ListLockMethod.NONE });
     }
   };
 
@@ -151,12 +154,12 @@ const VisibilityFields: React.FC<VisibilityFieldProps> = ({
           <Trans>公開名單 所有人都可瀏覽</Trans>
         )}
       </div>
-      <LockTypeDrawer onCancel={() => setIsLocked(false)} />
+      <LockTypeDrawer />
       {isEdit && <EditLockTypeDrawer />}
       <LockConfigFakePage
         isEdit={isEdit}
-        onCancel={() => setIsLocked(false)}
-        onDone={() => setIsLocked(true)}
+        lock={lockField.value}
+        onDone={lockField.onChange}
       />
     </div>
   );

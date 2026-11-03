@@ -561,6 +561,7 @@ msgid "更新後，是否保留他們的解鎖資格..."
 msgstr ""
 
 #: src/app/list/_components/Form/VisibilityFields/LockConfigFakePage/PasswordConfigSection/index.tsx
+#: src/app/list/_components/Form/VisibilityFields/LockTypeDrawer/index.tsx
 msgid "密碼上鎖"
 msgstr ""
 
@@ -605,6 +606,7 @@ msgid "讀者回答問題，解鎖完整名單"
 msgstr ""
 
 #: src/app/list/_components/Form/VisibilityFields/LockConfigFakePage/QuestionConfigSection/index.tsx
+#: src/app/list/_components/Form/VisibilityFields/LockTypeDrawer/index.tsx
 msgid "獲得讀者想法或 Email"
 msgstr ""
 
@@ -650,6 +652,18 @@ msgstr ""
 
 #: src/app/list/_components/Form/VisibilityFields/LockTypeDrawer/index.tsx
 msgid "讓讀者解鎖你的私藏好料！"
+msgstr ""
+
+#: src/app/list/_components/Form/VisibilityFields/LockTypeDrawer/index.tsx
+msgid "選擇一個上鎖方式"
+msgstr ""
+
+#: src/app/list/_components/Form/VisibilityFields/LockTypeDrawer/index.tsx
+msgid "創造朋友圈或粉絲製作的專屬內容"
+msgstr ""
+
+#: src/app/list/_components/Form/VisibilityFields/LockTypeDrawer/index.tsx
+msgid "問答上鎖"
 msgstr ""
 
 #: src/app/list/_components/Form/VisibilityFields/index.tsx

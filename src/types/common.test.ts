@@ -14,14 +14,17 @@ describe('ListLockSchema', () => {
     expect(ListLockSchema.parse({ method: ListLockMethod.NONE })).toEqual({
       method: ListLockMethod.NONE,
     });
-    expect(ListLockSchema.parse({ method: ListLockMethod.PASSWORD })).toEqual(
-      { method: ListLockMethod.PASSWORD }
-    );
+    expect(ListLockSchema.parse({ method: ListLockMethod.PASSWORD })).toEqual({
+      method: ListLockMethod.PASSWORD,
+    });
   });
 
   it('trims the question', () => {
     expect(
-      ListLockSchema.parse({ method: ListLockMethod.QUESTION, question: '  q ' })
+      ListLockSchema.parse({
+        method: ListLockMethod.QUESTION,
+        question: '  q ',
+      })
     ).toEqual({ method: ListLockMethod.QUESTION, question: 'q' });
   });
 

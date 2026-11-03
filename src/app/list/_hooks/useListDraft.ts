@@ -1,6 +1,7 @@
 import { useDrawer } from '@/components/Drawer/useDrawer';
 import { DrawerIds } from '@/constants/Drawer';
 import { LocalStorageKey } from '@/enums/index.enum';
+import { ListLockMethod } from '@/enums/Lists/index.enum';
 import useAutoResizeTextarea from '@/hooks/ui/useAutoResizeTextarea';
 import useIdle from '@/hooks/useIdle';
 import { getLocalStorage, setLocalStorage } from '@/lib/utils';
@@ -44,6 +45,12 @@ export const useListDraft = ({
     listForm.setValue('coverImage', listDraft.coverImage || '');
     listForm.setValue('externalLink', listDraft.externalLink || '');
     listForm.setValue('categoryID', listDraft.categoryID || 0);
+    listForm.setValue('type', listDraft.type);
+    // getLocalStorage 的型別推論把 lock 視為可省略；實際上 schema 的 default 一定會補上
+    listForm.setValue(
+      'lock',
+      listDraft.lock ?? { method: ListLockMethod.NONE }
+    );
     closeDraftDrawer();
     setTimeout(() => {
       titleTextarea.bind.onChange();

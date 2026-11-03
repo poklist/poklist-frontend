@@ -5,12 +5,26 @@ import {
   ButtonVariant,
 } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { LOCK_QUESTION_MAX_LENGTH } from '@/constants/form';
 import { t, Trans } from '@lingui/macro';
 import Image from 'next/image';
 
-const QuestionConfigSection = () => {
-  const count = 23;
-  const unread = 2;
+interface QuestionConfigSectionProps {
+  isEdit: boolean;
+  value: string;
+  onChange: (value: string) => void;
+}
+
+const QuestionConfigSection = ({
+  isEdit,
+  value,
+  onChange,
+}: QuestionConfigSectionProps) => {
+  // FUTURE: 編輯時改用 API 的回覆數（階段 5）；建立時尚無回覆
+  const count = isEdit ? 23 : 0;
+  const unread = isEdit ? 2 : 0;
+  // 與驗證一致：去掉首尾空白後以 code point 計算
+  const length = [...value.trim()].length;
   return (
     <div className="flex flex-col gap-6 rounded-3xl border border-black-text-01 bg-yellow-bright-01 px-4 py-8">
       <div className="flex justify-between">
@@ -39,9 +53,18 @@ const QuestionConfigSection = () => {
       <div className="flex flex-col gap-2">
         <Trans>問題設定：</Trans>
         <Input
+          value={value}
+          onChange={(event) => onChange(event.target.value)}
           placeholder={t`例如：分享一件最近讓你煩惱的小事`}
+          data-testid="lock-question-input"
           className="h-[3.375rem] rounded-xl border border-black-text-01 text-t1"
         />
+        <div
+          data-testid="lock-question-count"
+          className="self-end text-t2 text-black-gray-03"
+        >
+          {length}/{LOCK_QUESTION_MAX_LENGTH}
+        </div>
       </div>
       <div className="flex flex-col gap-2">
         <div className="flex justify-between text-t1 font-semibold text-black-text-01">
@@ -51,6 +74,7 @@ const QuestionConfigSection = () => {
           </div>
         </div>
         <Button
+          disabled={!isEdit}
           variant={ButtonVariant.BLACK}
           size={ButtonSize.H40}
           shape={ButtonShape.ROUNDED_8PX}

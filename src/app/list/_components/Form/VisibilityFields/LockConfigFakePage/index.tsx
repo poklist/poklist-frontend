@@ -12,17 +12,22 @@ import { Dialog, DialogContent } from '@/components/ui/dialog';
 import IconLeftArrowThin from '@/components/ui/icons/LeftArrowThinIcon';
 import { DrawerIds } from '@/constants/Drawer';
 import { ListLockMethod } from '@/enums/Lists/index.enum';
+import { ListLockSchema } from '@/types/common';
 import { Trans } from '@lingui/macro';
+import { useState } from 'react';
+import z from 'zod';
+
+type ListLock = z.infer<typeof ListLockSchema>;
 
 interface LockConfigPageProps {
   isEdit: boolean;
-  onCancel: () => void;
-  onDone: () => void;
+  lock: ListLock;
+  onDone: (lock: ListLock) => void;
 }
 
 const LockConfigFakePage: React.FC<LockConfigPageProps> = ({
   isEdit,
-  onCancel,
+  lock,
   onDone,
 }: LockConfigPageProps) => {
   const { isOpen, closeFakePage, getPayload } = useFakePage();
@@ -31,14 +36,26 @@ const LockConfigFakePage: React.FC<LockConfigPageProps> = ({
 
   const { openDrawer } = useDrawer(DrawerIds.LOCK_TYPE_EDIT_DRAWER_ID);
 
-  const onConfigDone = () => {
-    onDone();
+  // 題目暫存：null 表示尚未編輯，顯示 form 目前的題目；按「完成」才寫回 form，取消則丟掉
+  const [draftQuestion, setDraftQuestion] = useState<string | null>(null);
+  const question =
+    draftQuestion ??
+    (lock.method === ListLockMethod.QUESTION ? lock.question : '');
+  const nextLock = ListLockSchema.safeParse(
+    lockMethod === ListLockMethod.QUESTION
+      ? { method: ListLockMethod.QUESTION, question }
+      : { method: ListLockMethod.PASSWORD }
+  );
+
+  const onClosePage = () => {
+    setDraftQuestion(null);
     closeFakePage();
   };
 
-  const onClosePage = () => {
-    onCancel();
-    closeFakePage();
+  const onConfigDone = () => {
+    if (!nextLock.success) return;
+    onDone(nextLock.data);
+    onClosePage();
   };
   return (
     <Dialog open={open} onOpenChange={onClosePage}>
@@ -60,6 +77,7 @@ const LockConfigFakePage: React.FC<LockConfigPageProps> = ({
               </div>
               <Button
                 onClick={() => onConfigDone()}
+                disabled={!nextLock.success}
                 data-testid="lock-config-done"
                 variant={ButtonVariant.BLACK}
                 size={ButtonSize.H40}
@@ -78,7 +96,11 @@ const LockConfigFakePage: React.FC<LockConfigPageProps> = ({
               <PasswordConfigSection />
             )}
             {lockMethod === ListLockMethod.QUESTION && (
-              <QuestionConfigSection />
+              <QuestionConfigSection
+                isEdit={isEdit}
+                value={question}
+                onChange={setDraftQuestion}
+              />
             )}
             {isEdit && (
               <>

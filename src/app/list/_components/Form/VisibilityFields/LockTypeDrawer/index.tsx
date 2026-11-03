@@ -9,13 +9,8 @@ import { ListLockMethod } from '@/enums/Lists/index.enum';
 import { Trans } from '@lingui/macro';
 import Image from 'next/image';
 
-interface LockTypeDrawerProps {
-  onCancel: () => void;
-}
-
-const LockTypeDrawer: React.FC<LockTypeDrawerProps> = ({
-  onCancel,
-}: LockTypeDrawerProps) => {
+// 只選擇上鎖方式；選完由 LockConfigFakePage 按「完成」才寫入 form 的 lock
+const LockTypeDrawer: React.FC = () => {
   const { closeDrawer } = useDrawer(DrawerIds.LOCK_TYPE_DRAWER_ID);
   const { openFakePage } = useFakePage();
 
@@ -30,10 +25,7 @@ const LockTypeDrawer: React.FC<LockTypeDrawerProps> = ({
     <div className="flex flex-col gap-6 pb-14">
       <div className="-mx-4 flex items-center gap-1 border-b pb-2 text-h2 font-bold text-black-text-01">
         <div
-          onClick={() => {
-            closeDrawer();
-            onCancel();
-          }}
+          onClick={() => closeDrawer()}
           className="flex h-10 w-10 items-center justify-center"
         >
           <IconLeftArrowThin width={7.5} height={15} />
@@ -64,7 +56,7 @@ const LockTypeDrawer: React.FC<LockTypeDrawerProps> = ({
       </div>
       <div className="flex flex-col gap-4">
         <div className="text-t1 font-semibold text-black-text-01">
-          選擇一個上鎖方式
+          <Trans>選擇一個上鎖方式</Trans>
         </div>
         <div
           onClick={() => onOpenLockConfig(ListLockMethod.PASSWORD)}
@@ -74,8 +66,12 @@ const LockTypeDrawer: React.FC<LockTypeDrawerProps> = ({
           <div className="flex w-full items-center gap-3 p-4">
             <IconKey />
             <div className="flex grow flex-col gap-1 text-t1 text-black-text-01">
-              <div className="font-semibold">密碼上鎖</div>
-              <div className="">創造朋友圈或粉絲製作的專屬內容</div>
+              <div className="font-semibold">
+                <Trans>密碼上鎖</Trans>
+              </div>
+              <div className="">
+                <Trans>創造朋友圈或粉絲製作的專屬內容</Trans>
+              </div>
             </div>
             <IconLeftArrowThin className="rotate-180" width={7.5} height={15} />
           </div>
@@ -88,8 +84,12 @@ const LockTypeDrawer: React.FC<LockTypeDrawerProps> = ({
           <div className="flex w-full items-center gap-3 p-4">
             <IconCoin />
             <div className="flex grow flex-col gap-1 text-t1 text-black-text-01">
-              <div className="font-semibold">問答上鎖</div>
-              <div className="">獲得讀者想法或 Email</div>
+              <div className="font-semibold">
+                <Trans>問答上鎖</Trans>
+              </div>
+              <div className="">
+                <Trans>獲得讀者想法或 Email</Trans>
+              </div>
             </div>
             <IconLeftArrowThin className="rotate-180" width={7.5} height={15} />
           </div>
@@ -102,7 +102,6 @@ const LockTypeDrawer: React.FC<LockTypeDrawerProps> = ({
       drawerId={DrawerIds.LOCK_TYPE_DRAWER_ID}
       content={drawerContent}
       isShowClose={false}
-      onClose={onCancel}
     />
   );
 };
