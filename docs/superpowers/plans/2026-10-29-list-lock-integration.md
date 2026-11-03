@@ -25,8 +25,13 @@
 - 2026-11-02 的 commit（皆未 push）：
   - `053c156` feat：用戶 10/30 的 UI 改動。依用戶要求，不加 Claude 署名。
   - `569e3cc` feat：階段 2，lock schema。
-  - docs commit：文件更新，並把 `docs/ARCHITECTURE.md` 改名為 `docs/AGENTS.md`。
+  - docs commit：文件更新，並把 `docs/ARCHITECTURE.md` 改名為 `docs/AGENTS.md`。；之後用戶再把它搬到 repo 根目錄 `AGENTS.md`（2026-11-02）
   - C1、C2 都在暫時的 worktree 單獨驗證過 tsc、lint、unit。
+- 2026-11-03 的 commit（皆未 push）：
+  - `53d5a00` feat：階段 3，上鎖設定寫進表單。依用戶要求，`common.test.ts` 的 prettier 格式併在這個 commit。
+  - `84e191a` feat：階段 3.5，feature toggle 和 flags-off e2e build。
+  - docs commit：`AGENTS.md` 搬到根目錄，記錄階段 3、3.5。
+  - 每個 commit 都在暫時的 worktree 單獨驗證過 tsc、lint、unit。e2e 在 commit 前的同一份內容上跑過：81 passed。
 - 階段 1 已完成：5 個 commit（`559603a`..docs commit）。這些 commit 只在本機，尚未 push。
 - `npm run tsc` 沒有錯誤；`npm run lint` 為 0 error / 27 warning（2026-10-30 在下列未 commit 改動上跑過）。
 - 用戶在 commit 之後又有改動，目前尚未 commit：
@@ -59,6 +64,17 @@
 | Q10 | `ListFormSchema` 同時被舊 API 的 schema 使用，包括 `listPreviewSchema`、`postRequestSchema`、`putRequestSchema`，以及 `idea/create/list`。直接加 `lock` 會影響舊 API，要怎麼加？ | 拆成兩個：現有內容改名 `ListBaseSchema`，給舊 API 和 `idea/create/list` 用；`ListFormSchema = ListBaseSchema.extend({ lock })` 只給 list Form 用。送出舊 API 前去掉 `lock`。 | ✅ 2026-11-02 採預設 |
 | Q11 | 草稿（localStorage `LIST_DRAFT`）會用 `ListFormSchema` parse，舊草稿沒有 `lock`。要怎麼相容？ | `lock` 加 `.default({ method: 'none' })`，舊草稿照常讀取，不 bump `STORAGE_VERSION`（bump 會清掉全部 localStorage）。 | ✅ 2026-11-02 採預設 |
 | Q12 | 問答題目不合格（空白或超過 60 字）時，按「儲存設定」要怎麼反應？ | **按鈕 disabled**，只顯示 `n/60` 字數，不顯示錯誤文字。 | ✅ 2026-11-02 |
+| Q13 | `isLocked` 改由 form 推算後，在選上鎖方式和設定的過程中，form 的 `lock` 還是 none，開關會顯示「關」。要維持現在「一打開就顯示開」的行為嗎？ | **按完成後才顯示開**：開關只看 `lock ≠ none`，設定過程中顯示「關」。V1 / V3 要改寫。 | ✅ 2026-11-02 |
+| Q14 | 還原草稿時要不要還原 `lock`？目前連 `type` 也沒還原。 | **還原 `lock` 和 `type`**。 | ✅ 2026-11-02 |
+| Q15 | 問答字數 `n/60` 要怎麼算？ | **和驗證一致**：去掉首尾空白後，以 code point 計算。 | ✅ 2026-11-02 |
+| Q16 | `QuestionConfigSection` 的示意資料（「共 23 則回覆」「2 則未讀」「回覆列表」按鈕）在建立名單時也會顯示。要怎麼處理？ | **建立名單時顯示「共 0 則回覆」「0 則未讀」，「回覆列表」按鈕 disabled**；編輯時維持現有示意值，等階段 5 接 API。 | ✅ 2026-11-02 |
+| Q17 | Feature toggle 要控制哪些東西？ | **通用 toggle 機制**（例如 `FEATURES = { listLock }`，之後可加更多開關）。目前主要用途：用 `listLock` 切換新舊 API，開發和測試上鎖功能。 | ✅ 2026-11-02 |
+| Q18 | toggle 用什麼方式切換？ | **只用環境變數**（build 時決定）。 | ✅ 2026-11-02 |
+| Q19 | e2e 和 CI 要怎麼處理 toggle？ | **e2e 開啟 toggle，另加關閉時的測試**。 | ✅ 2026-11-02 |
+| Q20 | toggle 要在 commit C4～C6 之前還是之後做？ | **先做 toggle，再和 C4～C6 一起重新安排 commit**。 | ✅ 2026-11-02 |
+| Q21 | `listLock` 關閉時，上鎖 UI 要不要顯示？（關閉時用舊 API，存不了 `lock`） | **顯示**：toggle 只切換 API，上鎖 UI 一律顯示。 | ✅ 2026-11-02 |
+| Q22 | 環境變數在 build 時就寫死，要測「關閉」狀態需要第二次 build。關閉時的測試要怎麼做？ | **第二份 build + 另一個 port**：`distDir` 可用環境變數指定；Playwright 加一個 toggle 關閉的 webServer（port 8081）和專屬 project。 | ✅ 2026-11-02 |
+| Q23 | 新 API 要到階段 4 才做，所以 toggle 目前沒有可切換的行為（開或關都送舊 `/lists`）。這個階段要做到哪裡？ | **只做機制和基礎設施**。開啟時走 `/creator/lists` 的部分在階段 4 接上。 | ✅ 2026-11-02 |
 
 ---
 
@@ -137,18 +153,55 @@
 ## 階段 3：建立名單的上鎖 UI 與 form
 
 - **stage**：3 UI
-- **status**：⬜ 等階段 2
+- **status**：✅ 完成（2026-11-02；commit `53d5a00`）
 - **summary**：
-  - `QuestionConfigSection`：輸入框、字數計數、錯誤訊息。
+  - `QuestionConfigSection`：輸入框和字數計數。不顯示錯誤文字，題目不合格時「儲存設定」disabled（Q12）。
   - `PasswordConfigSection`：維持現狀，等設計稿（Q1）。按「完成」時寫入 `{ method: 'password' }`。
+  - `QuestionConfigSection`：建立時回覆數為 0、「回覆列表」disabled（Q16）；字數以去掉首尾空白後的 code point 計算（Q15）。
+  - 開關只看 form 的 `lock`（Q13）：打開開關只會改成公開並開 drawer，不改 `lock`；按「完成」才寫入 `lock`；關掉開關或選隱藏，`lock` 改成 none。`LockTypeDrawer` / `LockConfigFakePage` 的 `onCancel` 不再需要，移除。
+  - 還原草稿時一併還原 `type` 和 `lock`（Q14）。
   - `VisibilityFields`：`isLocked` 改由 form 推算（Q2）。
   - 摘要文字維持現狀，等設計稿（Q6）。
   - `LockTypeDrawer` 的寫死中文改成 `<Trans>`。
   - 新元件補上 testid。
-- **evidence**：API 文件 FE 備註「UI 待補」第 1、2 點。
-- **next_action**：新增 e2e：
-  - V7：問答題目超過 60 字或空白時，無法完成。
-  - V8：按「完成」後 form 值正確；取消後 form 值不變。
+  - 已知缺口（等設計稿）：建立名單時，設定完成後沒有入口可以回到設定頁修改題目，只能把開關關掉再打開。
+- **evidence**：
+  - 先寫 e2e（V1 / V3 改寫、新增 V7～V10），在 mobile-chrome 跑：6 個 failed，原因都符合預期（開關仍為開、按鈕沒有 disabled、沒有字數、草稿沒有還原 `lock` / `type`）。
+  - 實作後：`list-visibility` 在 chrome + safari 共 20 passed；完整 e2e 80 passed、5 skipped（smoke）。
+  - `npm run tsc` exit 0；`npm run lint` 0 error / 27 warning；`npm run test:unit` 62 passed。
+  - `npm run extract`：新增 `LockTypeDrawer` 的 `<Trans>` 文案。en 未翻譯 64 筆（原本 56 筆）。
+  - 截圖（mobile-chrome，用暫時的 spec 拍攝，拍完已刪除）：
+    - 設定頁：輸入題目後顯示 `7/60`、「儲存設定」可按；建立時顯示「共 0 則回覆」「0 則未讀」，「回覆列表」disabled。
+    - 回到表單：開關為開、公開被選取。
+    - 第一次截圖時「儲存設定」看起來是灰的，底部也還有 drawer。重拍確認是動畫還沒結束：按鈕 `isDisabled()` 為 false，drawer 在 DOM 中的數量為 0。
+  - 實作時的判斷：
+    - `getLocalStorage` 的型別推論把 `lock` 視為可省略，`useListDraft` 加上 `?? { method: none }` fallback。執行時 schema 的 default 一定會補上，這只是為了型別。
+    - `onConfigDone` 現在經過 `onClosePage`。`onClosePage` 已不再呼叫 `onCancel`，只清掉暫存並關閉頁面，所以 `AGENTS.md` 舊的「不可經過 `onClosePage`」限制已不適用，已一併更新。
+- **next_action**：階段 4（等用戶指示）。
+
+## 階段 3.5：Feature Toggle（2026-11-02 用戶追加）
+
+- **stage**：3.5 Feature Toggle
+- **status**：✅ 完成（2026-11-02；commit `84e191a`）
+- **summary**：
+  - `src/constants/features.ts`：`FEATURES = { listLock }`，由 `NEXT_PUBLIC_FEATURE_LIST_LOCK` 控制，只有 `'true'` 算開啟（Q17、Q18）。目前沒有程式使用；階段 4 用它切換 `/lists` 和 `/creator/lists`。上鎖 UI 一律顯示（Q21）。
+  - `.env.example` 新增這個變數（預設 `false`）。Dockerfile 和 Netlify 沒有設定，所以正式環境預設關閉。
+  - `next.config.mjs`：`distDir: process.env.NEXT_DIST_DIR || '.next'`；`.gitignore` 加入 `.next-flags-off`。
+  - `playwright.config.ts`：
+    - 主 build（port 8080）開啟全部 toggle（`FEATURES_ON`）。
+    - 新增第二個 webServer：toggle 全部關閉（`FEATURES_OFF`），`NEXT_DIST_DIR=.next-flags-off`，port 8081。
+    - 新增 `flags-off` project（只跑 `e2e/flags-off/`）；`mobile-chrome` / `mobile-safari` 改成忽略 `e2e/flags-off/`。
+  - `e2e/flags-off/list-lock-off.spec.ts`：F1，toggle 關閉時上鎖 UI 照常顯示，建立名單送舊 `/lists`，body 沒有 `lock`（Q19、Q22）。
+  - CI 的 deterministic e2e 加上 `--project=flags-off`。
+- **evidence**：
+  - `src/constants/features.test.ts`，2 個測試：先跑確認失敗（模組不存在），實作後通過。
+  - `npm run tsc` exit 0；`npm run lint` 0 error / 27 warning；`npm run test:unit` 64 passed。
+  - 讀 Playwright 1.62.1 原始碼確認 plugin（webServer）setup 依序執行，所以兩份 build 不會同時跑 lingui extract。
+  - 完整 e2e（用戶停掉 dev server 後，確認 8080、8081、4000 都空著才執行）：81 passed，其中 mobile-chrome 40、mobile-safari 40、flags-off 1（F1）。`.next/BUILD_ID` 和 `.next-flags-off/BUILD_ID` 都有產生，所以兩份 build 都跑過。
+  - 第二份 build 的副作用：`next build` 會自動把 `.next-flags-off/types/**/*.ts` 加進 `tsconfig.json` 的 `include`，而且每次 build 都會加回去，所以把這行一起 commit。
+  - `next start` 會印出「does not work with output: standalone」警告。原本的 8080 server 也有同樣的警告，測試結果不受影響。
+  - 已知限制：`FEATURES.listLock` 目前沒有被使用，會被 tree-shake 掉（兩份 build 的 `static/` 都找不到 `listLock`），所以這個階段無法證明兩份 build 的 toggle 值不同。要到階段 4 才看得出來；F1 目前驗證的是「toggle 關閉的 build 能正常跑，而且走舊 API」。
+- **next_action**：階段 4 接上新 API 時，用 `FEATURES.listLock` 切換，並讓開啟的 build 的 list-create / list-edit 改為斷言 `/creator/lists`。
 
 ## 階段 4：建立名單 API 串接
 

@@ -665,7 +665,7 @@ Mock 不保存狀態：同一方法每次建立回相同 ID，PATCH 只回顯此
 
 ## 前端備註（FE 補充，非 BE 原文）
 
-以上為 BE 原文，未修改。以下由前端補充，記錄日期 2026-10-22，最後更新 2026-10-30。串接計劃見 [`docs/superpowers/plans/2026-10-29-list-lock-integration.md`](../superpowers/plans/2026-10-29-list-lock-integration.md)。
+以上為 BE 原文，未修改。以下由前端補充，記錄日期 2026-10-22，最後更新 2026-11-02。串接計劃見 [`docs/superpowers/plans/2026-10-29-list-lock-integration.md`](../superpowers/plans/2026-10-29-list-lock-integration.md)。
 
 ### 已確認
 
@@ -677,8 +677,8 @@ Mock 不保存狀態：同一方法每次建立回相同 ID，PATCH 只回顯此
 
 ### UI 現況與待補
 
-- ✅ 上鎖方式的選擇（密碼或問答）：`LockTypeDrawer` → `LockConfigFakePage`。選擇結果尚未寫進 form。
-- ⬜ 問答題目的輸入框：1～60 個 Unicode code point。`QuestionConfigSection` 目前沒有 state。
+- ✅ 上鎖方式的選擇（密碼或問答）：`LockTypeDrawer` → `LockConfigFakePage`，按「完成」寫進 form 的 `lock`（2026-11-02）。
+- ✅ 問答題目的輸入框：1～60 個 Unicode code point，顯示 `n/60`，不合格時「儲存設定」disabled（2026-11-02）。
 - 🟡 編輯時 `lock.resetReadPermissions` 的選項（保留或重置已解鎖的讀者，PATCH 帶 `lock` 時必填）：`EditLockTypeDrawer` 只有骨架，RadioGroup 仍是註解。
 
 ### 待問 BE
@@ -692,7 +692,7 @@ Mock 不保存狀態：同一方法每次建立回相同 ID，PATCH 只回顯此
 ### 串接前要處理的差異
 
 - 專案沒有 `Idempotency-Key`。key 要在每次 mutation 開始時產生，網路重試時沿用同一把，不能在 axios interceptor 裡每個 request 自動產生。
-- 專案沒有 PATCH 的 contract，要照 `docs/AGENTS.md` §4.2 的流程新增（schema → contract → query → hook）。
+- 專案沒有 PATCH 的 contract，要照 根目錄 `AGENTS.md` §4.2 的流程新增（schema → contract → query → hook）。
 - BE 不接受 request 裡有 `null`：
   - 表單的 `coverImage` 可能是 `null`，送出前要轉成空字串或不送。
   - 表單的 `categoryID` 預設是 `0`，BE 要求大於 0。沒選分類時不送，BE 會預設為 1。
