@@ -418,7 +418,7 @@ export const useXxx = (options: UseXxxOptions) => {
   - 只有字串 `'true'` 算開啟；未設定或其他值一律關閉。Dockerfile 和 Netlify 都沒有設定，所以正式環境預設關閉。
   - 讀取時必須寫成 `process.env.NEXT_PUBLIC_XXX` 的完整字面，Next 才會 inline；不要用動態 key。
   - 新增開關：在 `.env.example` 加 `NEXT_PUBLIC_FEATURE_*`，再登記到 `FEATURES`；e2e 要在 `playwright.config.ts` 的 `FEATURES_ON` / `FEATURES_OFF` 加上對應值。
-  - `listLock`：開啟時建立／編輯名單走新的 `/creator/lists` API，關閉時走舊的 `/lists`（階段 4 接上；目前開關兩邊行為相同）。上鎖 UI 不受影響，一律顯示。
+  - `listLock`：開啟時建立／編輯名單走新的 `/creator/lists` API，關閉時走舊的 `/lists`（建立名單已接上，2026-11-03；編輯在階段 5 前一律走舊 API）。上鎖 UI 不受影響，一律顯示。
 
 ### 安全重點（必讀）
 
@@ -517,7 +517,7 @@ export const useXxx = (options: UseXxxOptions) => {
   - **保留紀錄供未來類似 optimistic + debounce 場景參考**。
 - **`prop-types`**：依然在 dependencies，但 TS 接管後僅留作 transitive — 可考慮移除。
 - **Storybook**：尚未引入，元件文件靠 README + 程式碼。
-- **測試**：**【✅ 已建立 — 2026-08-18；2026-10-22 更新數量】** Playwright E2E（`e2e/`，mobile-chrome + mobile-safari + smoke 三 project；12 個 spec 檔、40 條確定性測試 × 雙引擎 = 80 條（2026-11-02））+ 5 條煙霧 spec + Vitest 單元測試（`src/**/*.test.ts`，11 檔 62 個測試（2026-11-02 新增 `types/common.test.ts`））。2026-10 新增 `list-form-expand`（含 reduced-motion 驗證）/ `list-visibility` 兩個 spec。2026-10-27：開啟上鎖改為會打開 `LockTypeDrawer` 後，`list-visibility` 的 V3 / V4 已依新流程改寫（V3 驗證關閉 drawer 時上鎖自動關回去；V4 驗證選了上鎖方式並按「完成」後再選隱藏會關閉上鎖）。2026-10-29 新增 V6：在 `LockConfigFakePage` 取消（Esc /「取消」）時上鎖維持「關」；按「完成」才變開。2026-11-02（階段 3）：V1 / V3 改為「設定過程中開關仍為關」；新增 V7（題目 1～60 code point 才能儲存、字數顯示）、V8（儲存後草稿的 `lock` 為去空白後的題目）、V9 / V10（還原草稿會還原 `lock` / `type`）。testid：drawer 卡片 `lock-type-password` / `lock-type-question`，設定頁完成鈕 `lock-config-done`，題目 `lock-question-input` / `lock-question-count`。2026-10-30 新增的 `ResetTitleWarnDrawer`（testid `title-reset` / `title-keep`）、`EditLockTypeDrawer` 與編輯模式的上鎖選項**尚無 e2e 覆蓋**。2026-11-02：`list-create` / `list-edit` 加上 request body 斷言，確認送舊 `/lists` API 時沒有 `lock`（mock server 不檢查多餘欄位，所以要在 spec 內斷言）。**Feature toggle 關閉版本（2026-11-02）**：環境變數在 build 時寫死，所以 e2e 另外 build 一份 toggle 全部關閉的版本（`NEXT_DIST_DIR=.next-flags-off`，port 8081），由 `flags-off` project 跑 `e2e/flags-off/`（F1：toggle 關閉時，建立名單送舊 `/lists` 且沒有 `lock`，上鎖 UI 照常顯示）。主 build（port 8080）開啟全部 toggle。webServer 依序啟動，所以兩份 build 不會同時寫 Lingui 檔；完整 e2e 因此多一次 build。本機跑 e2e 前要確認 8080 **和 8081** 都沒有其他服務。`next build` 會自動把 `.next-flags-off/types/**/*.ts` 加進 `tsconfig.json` 的 `include`，這行已經 commit，不要刪掉，否則每次跑 e2e 都會再出現 diff。CI（`.github/workflows/ci.yml`）的 `verify` job 跑 tsc / lint / unit / build，另有 `e2e` job 跑確定性層（PR 與 push to dev 皆觸發）。
+- **測試**：**【✅ 已建立 — 2026-08-18；2026-10-22 更新數量】** Playwright E2E（`e2e/`，mobile-chrome + mobile-safari + smoke 三 project；12 個 spec 檔、41 條確定性測試 × 雙引擎 = 82 條，加上 `flags-off` 1 條，共 83 條（2026-11-03））+ 5 條煙霧 spec + Vitest 單元測試（`src/**/*.test.ts`，11 檔 62 個測試（2026-11-02 新增 `types/common.test.ts`））。2026-10 新增 `list-form-expand`（含 reduced-motion 驗證）/ `list-visibility` 兩個 spec。2026-10-27：開啟上鎖改為會打開 `LockTypeDrawer` 後，`list-visibility` 的 V3 / V4 已依新流程改寫（V3 驗證關閉 drawer 時上鎖自動關回去；V4 驗證選了上鎖方式並按「完成」後再選隱藏會關閉上鎖）。2026-10-29 新增 V6：在 `LockConfigFakePage` 取消（Esc /「取消」）時上鎖維持「關」；按「完成」才變開。2026-11-02（階段 3）：V1 / V3 改為「設定過程中開關仍為關」；新增 V7（題目 1～60 code point 才能儲存、字數顯示）、V8（儲存後草稿的 `lock` 為去空白後的題目）、V9 / V10（還原草稿會還原 `lock` / `type`）。testid：drawer 卡片 `lock-type-password` / `lock-type-question`，設定頁完成鈕 `lock-config-done`，題目 `lock-question-input` / `lock-question-count`。2026-10-30 新增的 `ResetTitleWarnDrawer`（testid `title-reset` / `title-keep`）、`EditLockTypeDrawer` 與編輯模式的上鎖選項**尚無 e2e 覆蓋**。2026-11-02：`list-create` / `list-edit` 加上 request body 斷言，確認送舊 `/lists` API 時沒有 `lock`（mock server 不檢查多餘欄位，所以要在 spec 內斷言）。**Feature toggle 關閉版本（2026-11-02）**：環境變數在 build 時寫死，所以 e2e 另外 build 一份 toggle 全部關閉的版本（`NEXT_DIST_DIR=.next-flags-off`，port 8081），由 `flags-off` project 跑 `e2e/flags-off/`（F1：toggle 關閉時，建立名單送舊 `/lists` 且沒有 `lock`，上鎖 UI 照常顯示）。主 build 的 `list-create` 則斷言送 `/creator/lists`，兩者合起來驗證兩份 build 的 toggle 值不同。主 build（port 8080）開啟全部 toggle。webServer 依序啟動，所以兩份 build 不會同時寫 Lingui 檔；完整 e2e 因此多一次 build。本機跑 e2e 前要確認 8080 **和 8081** 都沒有其他服務。`next build` 會自動把 `.next-flags-off/types/**/*.ts` 加進 `tsconfig.json` 的 `include`，這行已經 commit，不要刪掉，否則每次跑 e2e 都會再出現 diff。CI（`.github/workflows/ci.yml`）的 `verify` job 跑 tsc / lint / unit / build，另有 `e2e` job 跑確定性層（PR 與 push to dev 皆觸發）。
   - **E2E 架構**：本地 mock API server（`e2e/mock-server/`）依 `Authorization` header 分歧回應，因為 **Server Component 的 SSR fetch 走 Node 端，Playwright 的 `page.route()` 攔不到**——這是重現 §13.1 hydration 汙染的唯一方法。
   - **繞過 Google OAuth**：storageState 直接注入 `auth-storage` / `user-storage`（見 `e2e/fixtures/auth.ts`），**絕不自動化 Google 登入 UI**。
   - ⚠️ **本機跑 E2E 前先關掉 `npm run dev`**：`playwright.config.ts` 本機設 `reuseExistingServer: true`，若 8080 已有 dev server，Playwright 會直接沿用它（連的是真實後端、不是 mock API 4000），依賴 mock 資料的 spec（`list-create` / `list-edit` / `private-list` 等）會大量失敗，看起來像程式壞掉。CI 不受影響（CI 不 reuse）。
@@ -544,9 +544,18 @@ export const useXxx = (options: UseXxxOptions) => {
     - 還原草稿時一併還原 `type` 與 `lock`（`useListDraft`）。
     - 送出時 `ListBaseSchema.parse` 會去掉 `lock`，所以舊 API 不會收到。
     - 已知缺口（等設計稿）：建立名單時，設定完成後沒有入口回到設定頁修改題目，只能關掉再打開開關。
-    - Feature toggle `FEATURES.listLock`（§10）：用來切換新舊 API，開發與測試上鎖功能。目前新 API 還沒做，所以尚未被程式使用。
+    - Feature toggle `FEATURES.listLock`（§10）：用來切換新舊 API，開發與測試上鎖功能。
+  - **建立名單已接新 API（2026-11-03，階段 4）**：
+    - `POST /creator/lists`：schema 在 `src/api/schemas/creatorLists.ts`。request 是 strict，因為 BE 不接受 null 和未定義欄位。contract 在 `src/api/contracts/creatorLists.ts`，query client 在 `src/api/query/creatorLists.ts`。
+    - `toCreatorListPostRequest`（`hooks/api/lists/`）：把表單值轉成 request。title 去掉首尾空白；`coverImage: null`、`categoryID: 0`、`lock` 為 none 時都不送。
+    - `usePostCreatorList`：送出時自動帶 `Idempotency-Key`（`src/lib/idempotency.ts`）。重送同一份內容沿用原 key，內容改變或成功後才換新 key。
+    - 建立後的快取更新抽成 `applyCreatedListToCaches`，新舊 hook 共用。
+    - Form 的 `completedCallback` 傳完整表單值（含 `lock`），由呼叫端決定送哪個 API：
+      - 建立頁：`FEATURES.listLock` 開啟走新 API，關閉用 `ListBaseSchema.parse` 去掉 `lock` 後走舊 API。
+      - 編輯頁：一律去掉 `lock` 後走舊 PUT（PATCH 在階段 5）。
+    - BE mock 的 `content.id` 固定回 fixture ID，舊的 `GET /lists/:id` 找不到它，所以接 dev BE 建立後導向名單頁會是 not-found；e2e 的 mock server 會真的存名單，所以不受影響。
   - **編輯模式（2026-10-30 開始，骨架）**：`ListForm` → `VisibilityFields` → `LockConfigFakePage` 往下傳 `isEdit`。編輯模式下設定頁才顯示「更換上鎖方式」（開 `EditLockTypeDrawer`，`DrawerIds.LOCK_TYPE_EDIT_DRAWER_ID`）與「解除上鎖」（尚未接 onClick）。`EditLockTypeDrawer` 目前只有標題文案，`resetReadPermissions` 的 RadioGroup 仍是註解，尚未接 form（BE §7：PATCH 帶 `lock` 時必填）。
-  - **尚未串接**：新 endpoint 的 schema / contract / hook、`Idempotency-Key`、PATCH contract、送出前處理 `coverImage: null` 與 `categoryID: 0`、標已讀 POST 不帶 body（`c.noBody()`）、e2e mock 的 `/creator/*` 路由。
+  - **尚未串接**：`GET /creator/lists/:listId` 和 PATCH contract（階段 5）、名額 +10、題目歷史與回答、標已讀 POST 不帶 body（`c.noBody()`）、讀者解鎖；e2e mock 目前只有 `POST /creator/lists`。
   - **待 BE 回覆**：新舊 API（`/lists` ↔ `/creator/lists`）的切換時程。Mock 資料由 BE API 直接提供，文件 §15 的 `.http` / `.json` 不會放進 repo。
 - **FakePage payload 型別**：**【✅ 已修 — 2026-10-27】** 原本 context 的 `payload` 是所有頁面 payload 的聯集，讀取端拿不到正確型別（`npm run tsc` 9 個錯誤）。改為 `FakePagePayloads`（每個 pageType 各存一份 payload）+ `getPayload(pageType)`，以 key 取值直接得到對應型別，全程沒有 `as`。Provider 用 `satisfies FakePagePayloads` 檢查更新後的結構；注意泛型 computed key（`[pageType]`）會被視為 index signature，`satisfies` 擋不住錯誤的值，型別安全來自 `openFakePage` 參數 `data?: FakePagePayloadMap[T]`。（曾考慮把「頁面 + payload」放進單一聯集 state，但泛型 `{ page: T; data }` 無法指定給聯集型別，一定得用 `as`，故不採用。）
 - **id 型別分岔**：`src/api/schemas/**` 所有 id 已統一 `z.string()`，但 `src/types/User/index.ts` 等 legacy type 仍是 `id: number`，邊界處散落 `String(...)` 轉換。legacy hooks 刪除後一併收斂 legacy types。
@@ -677,4 +686,5 @@ const likeCount = useMemo(() => {
 - 2026-11-02：本文件再由 `docs/AGENTS.md` 搬到 repo 根目錄 `AGENTS.md`，讓 coding agent 工具能自動讀到。文件內的相對連結改為以根目錄為基準（`../src/` → `src/`、`api/` → `docs/api/`、`superpowers/` → `docs/superpowers/`）；§3 Component Folder Rules 的來源連結改指 `src/components/README.md`（原本指向 `docs/README.md` 文檔索引，是錯的）。README、API 文件、上鎖串接計劃的引用同步更新。
 - 2026-11-02：上鎖階段 3 — 開關改為只反映 form 的 `lock`（設定中仍為關）、設定頁題目暫存與 `ListLockSchema` 驗證、`QuestionConfigSection` 受控輸入與 `n/60`、建立時回覆數 0 與「回覆列表」disabled、`LockTypeDrawer` 文案改 `<Trans>` 並移除 `onCancel`、草稿還原 `type` / `lock`；e2e V1 / V3 改寫、新增 V7～V10（§3、§13 同步）。
 - 2026-11-02：新增 feature toggle 機制：`src/constants/features.ts` 的 `FEATURES.listLock`，由 `NEXT_PUBLIC_FEATURE_LIST_LOCK` 控制，只有 `'true'` 算開啟。e2e 新增 toggle 關閉的第二份 build（`.next-flags-off`、port 8081）和 `flags-off` project，CI 一併執行；`next.config.mjs` 的 `distDir` 可用 `NEXT_DIST_DIR` 指定（§10、§13、§15 同步）。
+- 2026-11-03：上鎖階段 4 — 建立名單接上 `POST /creator/lists`（schema / contract / query、`toCreatorListPostRequest`、`usePostCreatorList` 與 `Idempotency-Key`、共用的 `applyCreatedListToCaches`），由 `FEATURES.listLock` 切換；Form 的 `completedCallback` 改傳完整表單值。e2e mock 新增 `/creator/lists`，`list-create` 改斷言新 API 並新增問答上鎖建立測試（§10、§13 同步）。
 若日後架構大幅變動，請以 PR 更新本文件對應段落，避免被當作可信來源誤導後續工程師或 AI。

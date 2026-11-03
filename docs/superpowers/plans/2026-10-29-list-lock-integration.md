@@ -32,6 +32,11 @@
   - `84e191a` feat：階段 3.5，feature toggle 和 flags-off e2e build。
   - docs commit：`AGENTS.md` 搬到根目錄，記錄階段 3、3.5。
   - 每個 commit 都在暫時的 worktree 單獨驗證過 tsc、lint、unit。e2e 在 commit 前的同一份內容上跑過：81 passed。
+- 2026-11-03 階段 4 的 commit（皆未 push）：
+  - `26b74be` refactor：抽出 `applyCreatedListToCaches`，行為不變。
+  - `c61a14e` feat：建立名單接上 `POST /creator/lists`，由 `FEATURES.listLock` 切換。
+  - docs commit：記錄階段 4。
+  - 每個 commit 都在暫時的 worktree 單獨驗證過 tsc、lint、unit（C8：64 passed；C9：72 passed）。e2e 83 passed，當時字數 `n/60` 是隱藏的，這是和 commit 內容唯一的差異。
 - 階段 1 已完成：5 個 commit（`559603a`..docs commit）。這些 commit 只在本機，尚未 push。
 - `npm run tsc` 沒有錯誤；`npm run lint` 為 0 error / 27 warning（2026-10-30 在下列未 commit 改動上跑過）。
 - 用戶在 commit 之後又有改動，目前尚未 commit：
@@ -75,6 +80,10 @@
 | Q21 | `listLock` 關閉時，上鎖 UI 要不要顯示？（關閉時用舊 API，存不了 `lock`） | **顯示**：toggle 只切換 API，上鎖 UI 一律顯示。 | ✅ 2026-11-02 |
 | Q22 | 環境變數在 build 時就寫死，要測「關閉」狀態需要第二次 build。關閉時的測試要怎麼做？ | **第二份 build + 另一個 port**：`distDir` 可用環境變數指定；Playwright 加一個 toggle 關閉的 webServer（port 8081）和專屬 project。 | ✅ 2026-11-02 |
 | Q23 | 新 API 要到階段 4 才做，所以 toggle 目前沒有可切換的行為（開或關都送舊 `/lists`）。這個階段要做到哪裡？ | **只做機制和基礎設施**。開啟時走 `/creator/lists` 的部分在階段 4 接上。 | ✅ 2026-11-02 |
+| Q24 | 用新 API 建立成功後要導向哪裡？BE mock 不會真的建立名單，`content.id` 固定回 fixture ID；舊的 `GET /lists/:id` 找不到它，所以接 dev BE 時會看到 not-found 頁。 | **和舊流程一樣 `viewList(id)`**。 | ✅ 2026-11-03 |
+| Q25 | 計劃原本要同時做 `GET /creator/lists/:listId`，但建立流程用不到它，只有編輯（階段 5）會用。要現在做嗎？ | **延到階段 5**。 | ✅ 2026-11-03 |
+| Q26 | 新 API 需要 `lock`，但目前 Form 送出前就用 `ListBaseSchema.parse` 去掉了。要改在哪裡處理？ | **交給呼叫端決定**：Form 傳完整表單值；建立頁依 `FEATURES.listLock` 轉換；編輯頁在階段 5 前一律用舊 API。 | ✅ 2026-11-03 |
+| Q27 | 新 hook 建立成功後要怎麼更新快取？ | **比照 `usePostNewList`**。 | ✅ 2026-11-03 |
 
 ---
 
@@ -206,21 +215,37 @@
 ## 階段 4：建立名單 API 串接
 
 - **stage**：4 串接
-- **status**：⬜ 等階段 3。依 Q3：只做 contract、hook、單元測試，create 頁暫不切換；切換等 Q9
+- **status**：✅ 完成（2026-11-03；commit `26b74be`、`c61a14e`）
 - **summary**：
-  - 新增 `/creator/lists` 的 zod schema 和 ts-rest contract。先做 `POST /creator/lists` 和 `GET /creator/lists/:listId`。
-  - 加上 `Idempotency-Key` header（Q5）：同一份內容重送沿用同一個 key；表單內容改變後換新 key。
-  - 送出前把 form 值轉成 BE request（Q2b：轉換放在送出端，不改 schema）：
-    - 不送 `null` 或未知欄位。
-    - `coverImage: null` 改成省略。
-    - `categoryID: 0` 改成省略。
+  - `src/api/schemas/creatorLists.ts`：
+    - `postRequest` 是 strict：BE 不接受 null 和未定義欄位。
+    - `postResponse`：BE §5 的回應。
+    - `idempotencyHeaders`：`idempotency-key` 不可為空字串。
+    - `GET /creator/lists/:listId` 依 Q25 延到階段 5。
+  - `src/api/contracts/creatorLists.ts`、`src/api/query/creatorLists.ts`：`POST /creator/lists` 的 contract 和 query client；兩個 barrel 加上 `creatorLists`。
+  - `src/hooks/api/lists/toCreatorListPostRequest.ts`：表單值轉成 request：
     - title 去掉首尾空白。
-    - `lock.method === 'none'` 時可以省略 `lock`。
-  - 新增 `usePostCreatorList` hook。
-  - e2e mock server 新增 `/creator/lists` 路由。
-  - Vitest：zod contract 能正確 parse 三種 method 的 request 和 response。
-- **evidence**：BE 文件 §1 Headers、§5、§6、§13 錯誤處理。
-- **next_action**：Q9 由用戶問 BE。
+    - `coverImage: null` 不送。
+    - `categoryID: 0` 不送。
+    - `lock` 為 none 時不送。
+  - `src/lib/idempotency.ts`：`resolveIdempotencyKey`（Q5）。重送同一份內容沿用原 key，內容改變才換新 key；建立成功後清掉。
+  - `src/hooks/api/lists/usePostCreatorList.ts`：新 hook，在 `mutate` 時自動帶 `Idempotency-Key`。
+  - `src/hooks/api/lists/applyCreatedListToCaches.ts`：從 `usePostNewList` 抽出建立後的快取更新，新舊 hook 共用（Q27）。
+  - Form 的 `completedCallback` 改傳完整表單值（Q26）：
+    - 建立頁依 `FEATURES.listLock` 選擇 API：開啟時用 `toCreatorListPostRequest` 送新 API，關閉時用 `ListBaseSchema.parse` 送舊 API。
+    - 編輯頁一律用 `ListBaseSchema.parse` 送舊 PUT。
+  - 建立成功後導向 `viewList(id)`（Q24）。
+  - e2e mock server：
+    - 新增 `POST /creator/lists`：缺 `Idempotency-Key`、有 null 或未定義欄位時回 400；名單會真的存進 state。
+    - CORS 允許 `Idempotency-Key` 和 `PATCH`。
+  - `e2e/specs/list-create.spec.ts`：主 build 開啟 toggle，改為斷言 `POST /creator/lists`：body 沒有 null、`categoryID`、`lock`，並有 `idempotency-key` header。另新增問答上鎖的建立測試。
+- **evidence**：
+  - 單元測試先寫，跑過確認失敗（模組不存在），實作後通過：`toCreatorListPostRequest.test.ts` 5 個、`idempotency.test.ts` 3 個。
+  - `npm run tsc` exit 0；`npm run lint` 0 error / 27 warning；`npm run test:unit` 14 檔、72 passed。
+  - 完整 e2e（用戶停掉 dev server、確認 8080 / 8081 / 4000 都空著後執行）：83 passed，其中 mobile-chrome 41、mobile-safari 41、flags-off 1。
+  - 兩份 build 的 toggle 值不同，第一次得到行為上的證明：開啟的 build（8080）`list-create` 斷言送 `POST /creator/lists` 並帶 `idempotency-key` header，通過；關閉的 build（8081）F1 斷言送 `POST /lists`，通過。
+  - 發現：用戶曾在 `QuestionConfigSection` 的字數 `n/60` 加上 `hidden`（e2e 是在隱藏狀態下跑的，V7 仍通過，因為 `toHaveText` 不檢查元素是否可見）。2026-11-03 用戶已改回，檔案和 HEAD 相同，維持 Q12「顯示 `n/60`」。
+- **next_action**：階段 5（等用戶指示）。
 
 ## 階段 5：編輯名單
 

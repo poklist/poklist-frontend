@@ -691,11 +691,11 @@ Mock 不保存狀態：同一方法每次建立回相同 ID，PATCH 只回顯此
 
 ### 串接前要處理的差異
 
-- 專案沒有 `Idempotency-Key`。key 要在每次 mutation 開始時產生，網路重試時沿用同一把，不能在 axios interceptor 裡每個 request 自動產生。
+- 專案沒有 `Idempotency-Key`。key 要在每次 mutation 開始時產生，網路重試時沿用同一把，不能在 axios interceptor 裡每個 request 自動產生。（2026-11-03：建立名單已實作，見 `src/lib/idempotency.ts`、`usePostCreatorList`。）
 - 專案沒有 PATCH 的 contract，要照 根目錄 `AGENTS.md` §4.2 的流程新增（schema → contract → query → hook）。
 - BE 不接受 request 裡有 `null`：
   - 表單的 `coverImage` 可能是 `null`，送出前要轉成空字串或不送。
   - 表單的 `categoryID` 預設是 `0`，BE 要求大於 0。沒選分類時不送，BE 會預設為 1。
 - 題目和回答的字數用 `[...str].length` 計算，不要用 `.length`（UTF-16 長度）。
 - 標記已讀的 POST 不能送 body，contract 用 `c.noBody()`。不要照抄 `deleteListsContract` 的 `body: z.object({})`。
-- `e2e/mock-server/server.ts` 還沒有 `/creator/*` 路由。
+- `e2e/mock-server/server.ts` 目前只有 `POST /creator/lists`（2026-11-03）；其他 `/creator/*` 路由還沒有。
