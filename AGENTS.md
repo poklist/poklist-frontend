@@ -131,7 +131,7 @@ src/
 │   └── README.md         # 元件分層規約（**必讀**）
 ├── constants/            # routes / form / list / i18n / DragAndDrop / Drawer (DrawerIds) / Home / Lists / User / externalLink
 ├── enums/                # 全域 Enums（index.enum.ts 為入口），分子目錄 Style / Lists / EditField
-├── types/                # 各領域型別：User / List / Idea / Discovery / Relation / Settings / Home / EditField；common.ts 內含 zod schema (IdeaFormSchema / ListBaseSchema / ListLockSchema / ListFormSchema)；
+├── types/                # 各領域型別：User / List / Idea / Discovery / Relation / Settings / Home / EditField；common.ts 內含 zod schema (IdeaFormSchema / ListBaseSchema / LockQuestionSchema / ListLockSchema / ListFormSchema)；
 │                          #   response.ts（舊 `IResponse<T>`，仍有 3 處引用）、global.ts、images.d.ts
 ├── lib/                  # 純函式工具，不含 hook
 │   ├── utils.ts          # cn、localStorage helpers、to (Promise tuple)、檔案 / Base64 / URL 處理
@@ -180,7 +180,7 @@ vitest.config.ts
            └─ QueryClientProvider (retry: 401/403/404 不重試 + 一次失敗止損；staleTime 60s, gcTime 5min)
                └─ Radix <Theme>
                    └─ DrawerProvider   # Set<drawerId> 管理多抽屜
-                       └─ FakePageProvider  # 'editField' | 'listSelector' | 'lockConfig' 三種 pageType；payload 每頁各存一份，以 `getPayload(pageType)` 取得對應型別
+                       └─ FakePageProvider  # 'editField' | 'listSelector' | 'lockConfig' | 'replyList' 四種 pageType，可疊加；payload 每頁各存一份，以 `getPayload(pageType)` 取得對應型別
                            ├─ children
                            ├─ GlobalLoading (聽 useCommonStore + useIsFetching/Mutating)
                            ├─ LoginDrawer
@@ -358,7 +358,7 @@ export const useXxx = (options: UseXxxOptions) => {
 - Schema 一律放 `src/types/common.ts`（`IdeaFormSchema` / `ListBaseSchema` / `ListFormSchema`），透過 `zodResolver` 套入 react-hook-form。
   - **`ListBaseSchema` 與 `ListFormSchema` 要分清楚**（2026-11-02）：
     - `ListBaseSchema` 給舊 `/lists` API 的 schema（`api/schemas/lists.ts`）與 `idea/create/list` 用，**不含 `lock`**。
-    - `ListFormSchema = ListBaseSchema.extend({ lock })` 只給 list Form 和草稿用。`lock` 的 `.default({ method: 'none' })` 讓舊草稿仍可讀取。
+    - `ListFormSchema = ListBaseSchema.extend({ lock, resetReadPermissions })` 只給 list Form 和草稿用。`lock` 的 `.default({ method: 'none' })` 和 `resetReadPermissions` 的 `.default(false)` 讓舊草稿仍可讀取。`resetReadPermissions` 只給編輯的 PATCH 用（false 保留已解鎖的讀者、true 重置）；建立的 `toCreatorListPostRequest` 不會送它。
     - 送舊 API 前要用 `ListBaseSchema.parse(data)` 去掉 `lock`。**不要**讓舊 API 的 schema 改回 extend `ListFormSchema`。
 - 共用 helpers：
   - `formatInput`：合併多空白、移除換行。
@@ -379,7 +379,7 @@ export const useXxx = (options: UseXxxOptions) => {
 - **字體**：`Inter`（latin）與 `Noto Sans` 透過 `next/font/google` 注入為 CSS variable，自訂 fontSize token：`h1 / h2 / t1 / t2 / t3`。
 - **Button**（[src/components/ui/button.tsx](src/components/ui/button.tsx)）：使用 enum (`ButtonVariant / Size / Shape`)，請優先使用 enum 而非字串字面值，預設 `WHITE / MD / ROUNDED_FULL`。
 - **Drawer 樣式**：底部 vaul drawer 包了一層 `DrawerComponent`（含 header / subHeader / content / startFooter / endFooter / close）。任何「下拉抽屜」UI 請走 `DrawerComponent` + `DrawerIds` 註冊，不要直接動 vaul。
-- **FakePage**：模仿全頁 modal 的 dialog，目前三種 type：`editField`（編輯單一欄位，textarea 或圖片裁切）、`listSelector`（建立 idea 時挑 list）、`lockConfig`（設定名單上鎖方式，進行中）。要新增「假頁」請在 `FakePageType` union 加入、更新 `FakePagePayloadMap`，並在 `FakePageProvider` 的 `emptyPayloads` 補上該頁的 `null`。開啟用 `openFakePage('xxx', payload)`（payload 型別依 pageType 檢查），讀取用 `getPayload('xxx')`（回傳 `FakePagePayloadMap['xxx'] | null`）。開啟時沒帶 payload 會清空該頁的 payload。
+- **FakePage**：模仿全頁 modal 的 dialog，目前四種 type：`editField`（編輯單一欄位，textarea 或圖片裁切）、`listSelector`（建立 idea 時挑 list）、`lockConfig`（設定名單上鎖方式，進行中）、`replyList`（問答上鎖的回覆列表，疊在 `lockConfig` 上，進行中）。頁面可以疊加：Provider 記錄已開啟的頁面清單，`closeFakePage(pageType)` 只關指定的那一頁（`pageType` 必填，2026-11-10）。要新增「假頁」請在 `FakePageType` union 加入、更新 `FakePagePayloadMap`，並在 `FakePageProvider` 的 `emptyPayloads` 補上該頁的 `null`。開啟用 `openFakePage('xxx', payload)`（payload 型別依 pageType 檢查），讀取用 `getPayload('xxx')`（回傳 `FakePagePayloadMap['xxx'] | null`）。開啟時沒帶 payload 會清空該頁的 payload。
 - **SwitchWithIcon**（[src/components/SwitchWithIcon](src/components/SwitchWithIcon/index.tsx)）：以 cva 定義 `SwitchVariant`（`DARK` / `LIGHT`）與 `SwitchSize`（`SM` / `MD`），Root 與 Thumb 各一組 cva、共用同一組 variant；預設 `DARK / MD`。
 - **Collapsible**（[src/components/ui/collapsible.tsx](src/components/ui/collapsible.tsx)）：`CollapsibleContent` 內建展開／收合高度動畫（`--radix-collapsible-content-height`）。**間距（padding / margin / gap）請放在 Content 內層 wrapper**，不要放在 Content 本身或父層 gap，否則收合結束時會多跳一下。
 - **動畫 a11y 規約**：
@@ -464,7 +464,7 @@ export const useXxx = (options: UseXxxOptions) => {
 | 新增 mutation 帶樂觀更新 | 參考 `useLikeAction` / `useFollowAction` + `optimisticUpdateHandler` | 共享 `debounceMap`（key 含 target）、`shouldAllow` 注入 auth、confirmed 比對防重複送（§4.4） |
 | 特定 API 的特定狀態碼不彈 toast | `src/api/whitelist.ts` 的 `STATUS_WHITELIST` 加 `{ method, pattern, status }` | 401 不可白名單（攔截器獨立優先處理） |
 | 新 Drawer | 在 `constants/Drawer/index.ts` 加 `DrawerIds`、在頁面或 `ClientProviders` 使用 `<DrawerComponent drawerId=...>`，透過 `useDrawer(id)` 控制 | 全域 drawer（跨頁需保留）放 `ClientProviders` |
-| 全螢幕「Fake Page」 | `FakePageType` 加 union、`FakePagePayloadMap` 加對應 payload、`openFakePage('xxx', payload)` | 別在頁面用 `useState` 自己刻；讀取用 `getPayload('xxx')`，`FakePageProvider` 的 `emptyPayloads` 要補新頁 |
+| 全螢幕「Fake Page」 | `FakePageType` 加 union、`FakePagePayloadMap` 加對應 payload、`openFakePage('xxx', payload)` | 別在頁面用 `useState` 自己刻；讀取用 `getPayload('xxx')`，關閉用 `closeFakePage('xxx')`（只關這一頁）；`FakePageProvider` 的 `emptyPayloads` 要補新頁 |
 | 串接名單上鎖 API | 先讀 `docs/api/2026-10-17-list-lock-mock.md`（含前端備註），再照「新 API endpoint」流程新增 `/creator/*` | 需 `Idempotency-Key`（每次操作一把、重試沿用）；request 不可有 `null` 或未定義欄位；上鎖方式用 `ListLockMethod`（字串），**不要**擴充 `ListType`（BE `type` 只有 1／2） |
 | 新 Form | 用 `react-hook-form` + zod schema（放 `types/common.ts`）+ `useFormErrorHandler` | Draft 用 `useIdle({ watch })` + LocalStorage |
 | 切換 / 新增語言 | `Language` enum、`lingui.config.js` `locales`、`src/locales/<locale>/messages.po` | `WatchLocale` 已處理 key reset |
@@ -517,7 +517,7 @@ export const useXxx = (options: UseXxxOptions) => {
   - **保留紀錄供未來類似 optimistic + debounce 場景參考**。
 - **`prop-types`**：依然在 dependencies，但 TS 接管後僅留作 transitive — 可考慮移除。
 - **Storybook**：尚未引入，元件文件靠 README + 程式碼。
-- **測試**：**【✅ 已建立 — 2026-08-18；2026-10-22 更新數量】** Playwright E2E（`e2e/`，mobile-chrome + mobile-safari + smoke 三 project；12 個 spec 檔、41 條確定性測試 × 雙引擎 = 82 條，加上 `flags-off` 1 條，共 83 條（2026-11-03））+ 5 條煙霧 spec + Vitest 單元測試（`src/**/*.test.ts`，11 檔 62 個測試（2026-11-02 新增 `types/common.test.ts`））。2026-10 新增 `list-form-expand`（含 reduced-motion 驗證）/ `list-visibility` 兩個 spec。2026-10-27：開啟上鎖改為會打開 `LockTypeDrawer` 後，`list-visibility` 的 V3 / V4 已依新流程改寫（V3 驗證關閉 drawer 時上鎖自動關回去；V4 驗證選了上鎖方式並按「完成」後再選隱藏會關閉上鎖）。2026-10-29 新增 V6：在 `LockConfigFakePage` 取消（Esc /「取消」）時上鎖維持「關」；按「完成」才變開。2026-11-02（階段 3）：V1 / V3 改為「設定過程中開關仍為關」；新增 V7（題目 1～60 code point 才能儲存、字數顯示）、V8（儲存後草稿的 `lock` 為去空白後的題目）、V9 / V10（還原草稿會還原 `lock` / `type`）。testid：drawer 卡片 `lock-type-password` / `lock-type-question`，設定頁完成鈕 `lock-config-done`，題目 `lock-question-input` / `lock-question-count`。2026-10-30 新增的 `ResetTitleWarnDrawer`（testid `title-reset` / `title-keep`）、`EditLockTypeDrawer` 與編輯模式的上鎖選項**尚無 e2e 覆蓋**。2026-11-02：`list-create` / `list-edit` 加上 request body 斷言，確認送舊 `/lists` API 時沒有 `lock`（mock server 不檢查多餘欄位，所以要在 spec 內斷言）。**Feature toggle 關閉版本（2026-11-02）**：環境變數在 build 時寫死，所以 e2e 另外 build 一份 toggle 全部關閉的版本（`NEXT_DIST_DIR=.next-flags-off`，port 8081），由 `flags-off` project 跑 `e2e/flags-off/`（F1：toggle 關閉時，建立名單送舊 `/lists` 且沒有 `lock`，上鎖 UI 照常顯示）。主 build 的 `list-create` 則斷言送 `/creator/lists`，兩者合起來驗證兩份 build 的 toggle 值不同。主 build（port 8080）開啟全部 toggle。webServer 依序啟動，所以兩份 build 不會同時寫 Lingui 檔；完整 e2e 因此多一次 build。本機跑 e2e 前要確認 8080 **和 8081** 都沒有其他服務。`next build` 會自動把 `.next-flags-off/types/**/*.ts` 加進 `tsconfig.json` 的 `include`，這行已經 commit，不要刪掉，否則每次跑 e2e 都會再出現 diff。CI（`.github/workflows/ci.yml`）的 `verify` job 跑 tsc / lint / unit / build，另有 `e2e` job 跑確定性層（PR 與 push to dev 皆觸發）。
+- **測試**：**【✅ 已建立 — 2026-08-18；2026-10-22 更新數量】** Playwright E2E（`e2e/`，mobile-chrome + mobile-safari + smoke 三 project；12 個 spec 檔、45 條確定性測試 × 雙引擎 = 90 條，加上 `flags-off` 1 條，共 91 條（2026-11-10））+ 5 條煙霧 spec + Vitest 單元測試（`src/**/*.test.ts`，16 檔 96 個測試（2026-11-06））。2026-10 新增 `list-form-expand`（含 reduced-motion 驗證）/ `list-visibility` 兩個 spec。2026-10-27：開啟上鎖改為會打開 `LockTypeDrawer` 後，`list-visibility` 的 V3 / V4 已依新流程改寫（V3 驗證關閉 drawer 時上鎖自動關回去；V4 驗證選了上鎖方式並按「完成」後再選隱藏會關閉上鎖）。2026-10-29 新增 V6：在 `LockConfigFakePage` 取消（Esc /「取消」）時上鎖維持「關」；按「完成」才變開。2026-11-02（階段 3）：V1 / V3 改為「設定過程中開關仍為關」；新增 V7（題目 1～60 code point 才能儲存、字數顯示）、V8（儲存後草稿的 `lock` 為去空白後的題目）、V9 / V10（還原草稿會還原 `lock` / `type`）。testid：drawer 卡片 `lock-type-password` / `lock-type-question`，設定頁完成鈕 `lock-config-done`，題目 `lock-question-input` / `lock-question-count`。2026-10-30 新增的 `ResetTitleWarnDrawer`（testid `title-reset` / `title-keep`）**尚無 e2e 覆蓋**。2026-11-06：`list-edit` 新增編輯模式的上鎖選項（testid `lock-change-method`、`reset-unlock-confirm`）；mock 的名單 100 上過鎖，101 沒有。2026-11-02：`list-create` / `list-edit` 加上 request body 斷言，確認送舊 `/lists` API 時沒有 `lock`（mock server 不檢查多餘欄位，所以要在 spec 內斷言）。**Feature toggle 關閉版本（2026-11-02）**：環境變數在 build 時寫死，所以 e2e 另外 build 一份 toggle 全部關閉的版本（`NEXT_DIST_DIR=.next-flags-off`，port 8081），由 `flags-off` project 跑 `e2e/flags-off/`（F1：toggle 關閉時，建立名單送舊 `/lists` 且沒有 `lock`，上鎖 UI 照常顯示）。主 build 的 `list-create` 則斷言送 `/creator/lists`，兩者合起來驗證兩份 build 的 toggle 值不同。主 build（port 8080）開啟全部 toggle。webServer 依序啟動，所以兩份 build 不會同時寫 Lingui 檔；完整 e2e 因此多一次 build。本機跑 e2e 前要確認 8080 **和 8081** 都沒有其他服務。`next build` 會自動把 `.next-flags-off/types/**/*.ts` 加進 `tsconfig.json` 的 `include`，這行已經 commit，不要刪掉，否則每次跑 e2e 都會再出現 diff。CI（`.github/workflows/ci.yml`）的 `verify` job 跑 tsc / lint / unit / build，另有 `e2e` job 跑確定性層（PR 與 push to dev 皆觸發）。
   - **E2E 架構**：本地 mock API server（`e2e/mock-server/`）依 `Authorization` header 分歧回應，因為 **Server Component 的 SSR fetch 走 Node 端，Playwright 的 `page.route()` 攔不到**——這是重現 §13.1 hydration 汙染的唯一方法。
   - **繞過 Google OAuth**：storageState 直接注入 `auth-storage` / `user-storage`（見 `e2e/fixtures/auth.ts`），**絕不自動化 Google 登入 UI**。
   - ⚠️ **本機跑 E2E 前先關掉 `npm run dev`**：`playwright.config.ts` 本機設 `reuseExistingServer: true`，若 8080 已有 dev server，Playwright 會直接沿用它（連的是真實後端、不是 mock API 4000），依賴 mock 資料的 spec（`list-create` / `list-edit` / `private-list` 等）會大量失敗，看起來像程式壞掉。CI 不受影響（CI 不 reuse）。
@@ -554,8 +554,28 @@ export const useXxx = (options: UseXxxOptions) => {
       - 建立頁：`FEATURES.listLock` 開啟走新 API，關閉用 `ListBaseSchema.parse` 去掉 `lock` 後走舊 API。
       - 編輯頁：一律去掉 `lock` 後走舊 PUT（PATCH 在階段 5）。
     - BE mock 的 `content.id` 固定回 fixture ID，舊的 `GET /lists/:id` 找不到它，所以接 dev BE 建立後導向名單頁會是 not-found；e2e 的 mock server 會真的存名單，所以不受影響。
-  - **編輯模式（2026-10-30 開始，骨架）**：`ListForm` → `VisibilityFields` → `LockConfigFakePage` 往下傳 `isEdit`。編輯模式下設定頁才顯示「更換上鎖方式」（開 `EditLockTypeDrawer`，`DrawerIds.LOCK_TYPE_EDIT_DRAWER_ID`）與「解除上鎖」（尚未接 onClick）。`EditLockTypeDrawer` 目前只有標題文案，`resetReadPermissions` 的 RadioGroup 仍是註解，尚未接 form（BE §7：PATCH 帶 `lock` 時必填）。
-  - **尚未串接**：`GET /creator/lists/:listId` 和 PATCH contract（階段 5）、名額 +10、題目歷史與回答、標已讀 POST 不帶 body（`c.noBody()`）、讀者解鎖；e2e mock 目前只有 `POST /creator/lists`。
+  - **編輯模式（2026-10-30 開始，骨架）**：`ListForm` → `VisibilityFields` → `LockConfigFakePage` 往下傳 `isEdit`。名單上過鎖時（`hasLockHistory` prop，編輯頁 → `ListForm` → `VisibilityFields` → `LockConfigFakePage`），設定頁才顯示「更換上鎖方式」（開 `EditLockTypeDrawer`，`DrawerIds.RESET_UNLOCK_DRAWER_ID`）與「解除上鎖」（尚未接 onClick）。
+    - `EditLockTypeDrawer`：選擇放在子元件 `ResetUnlockContent` 的 state。drawer 關閉時內容 unmount，所以每次打開都是「保留」；按「確認設定」才由 `onConfirmReset` 寫入 form 的 `resetReadPermissions`。
+    - 上過鎖的判斷：`hasLockHistory(settings)`，`method` 不是 none，或 `password` / `question` 不是 null。編輯頁在 `FEATURES.listLock` 開啟時打 `useGetCreatorList`，目前只用來判斷這件事；關閉時視為從未上過鎖。
+    - `GET /creator/lists/:id` 的 404 已加進 `STATUS_WHITELIST`：BE mock 只認 fixture ID，其他名單查不到時不彈 toast，視為從未上過鎖。
+  - **編輯名單 API 層（2026-11-05，階段 5a）**：編輯頁只用 GET 判斷是否上過鎖，送出仍走舊 PUT。
+    - schema / contract / query 在 `creatorLists.ts`：
+      - `GET /creator/lists/:listId`（§6）。
+      - `PATCH /creator/lists/:listId`（§7）。request 是 strict；`lock` 有提供時，`resetReadPermissions` 必填。
+      - `POST .../passwords/:passwordId/increase-capacity`（§8）。
+    - 題目規則抽成 `LockQuestionSchema`（`types/common.ts`），建立和更新共用。
+    - `toListFormLock`：GET 回應轉成 form 的 `lock`。
+    - `toCreatorListPatchRequest`：組 PATCH body。
+      - 基本欄位全送。
+      - `coverImage: null`、`categoryID: 0` 不送，等於沿用原值。
+    - hooks：
+      - `useGetCreatorList`：query key `listsKeys.editSettings`。`staleTime: 0`，`refetchOnMount: 'always'`，避免用到舊的 `editToken`。
+      - `usePatchCreatorList`：帶 `Idempotency-Key`。快取更新和 `usePutList` 共用 `applyUpdatedListToCaches`。
+      - `useIncreasePasswordCapacity`：只用回應改寫編輯設定的快取，不 invalidate，因為 mock 重抓會回到額滿。
+    - `resetReadPermissions` 是 `ListFormSchema` 的欄位（預設 `false`），`toCreatorListPatchRequest(values, original)` 從表單值讀。
+    - `lock` 在方法改變、題目改變，或 `resetReadPermissions` 為 `true` 時送；`question` 只在題目改變時放。只重置資格時送原方法 + `true`。
+    - 待 BE 確認：送同一個方法是否只重置資格、不換密碼或題目；解除上鎖後 GET 是否仍回傳 `password` / `question`。
+  - **尚未串接**：編輯頁改用 PATCH 送出、用 GET 帶入上鎖設定、題目歷史與回答、標已讀 POST 不帶 body（`c.noBody()`）、讀者解鎖；e2e mock 目前只有 `POST /creator/lists` 和 `GET /creator/lists/:id`。
   - **待 BE 回覆**：新舊 API（`/lists` ↔ `/creator/lists`）的切換時程。Mock 資料由 BE API 直接提供，文件 §15 的 `.http` / `.json` 不會放進 repo。
 - **FakePage payload 型別**：**【✅ 已修 — 2026-10-27】** 原本 context 的 `payload` 是所有頁面 payload 的聯集，讀取端拿不到正確型別（`npm run tsc` 9 個錯誤）。改為 `FakePagePayloads`（每個 pageType 各存一份 payload）+ `getPayload(pageType)`，以 key 取值直接得到對應型別，全程沒有 `as`。Provider 用 `satisfies FakePagePayloads` 檢查更新後的結構；注意泛型 computed key（`[pageType]`）會被視為 index signature，`satisfies` 擋不住錯誤的值，型別安全來自 `openFakePage` 參數 `data?: FakePagePayloadMap[T]`。（曾考慮把「頁面 + payload」放進單一聯集 state，但泛型 `{ page: T; data }` 無法指定給聯集型別，一定得用 `as`，故不採用。）
 - **id 型別分岔**：`src/api/schemas/**` 所有 id 已統一 `z.string()`，但 `src/types/User/index.ts` 等 legacy type 仍是 `id: number`，邊界處散落 `String(...)` 轉換。legacy hooks 刪除後一併收斂 legacy types。
@@ -687,4 +707,7 @@ const likeCount = useMemo(() => {
 - 2026-11-02：上鎖階段 3 — 開關改為只反映 form 的 `lock`（設定中仍為關）、設定頁題目暫存與 `ListLockSchema` 驗證、`QuestionConfigSection` 受控輸入與 `n/60`、建立時回覆數 0 與「回覆列表」disabled、`LockTypeDrawer` 文案改 `<Trans>` 並移除 `onCancel`、草稿還原 `type` / `lock`；e2e V1 / V3 改寫、新增 V7～V10（§3、§13 同步）。
 - 2026-11-02：新增 feature toggle 機制：`src/constants/features.ts` 的 `FEATURES.listLock`，由 `NEXT_PUBLIC_FEATURE_LIST_LOCK` 控制，只有 `'true'` 算開啟。e2e 新增 toggle 關閉的第二份 build（`.next-flags-off`、port 8081）和 `flags-off` project，CI 一併執行；`next.config.mjs` 的 `distDir` 可用 `NEXT_DIST_DIR` 指定（§10、§13、§15 同步）。
 - 2026-11-03：上鎖階段 4 — 建立名單接上 `POST /creator/lists`（schema / contract / query、`toCreatorListPostRequest`、`usePostCreatorList` 與 `Idempotency-Key`、共用的 `applyCreatedListToCaches`），由 `FEATURES.listLock` 切換；Form 的 `completedCallback` 改傳完整表單值。e2e mock 新增 `/creator/lists`，`list-create` 改斷言新 API 並新增問答上鎖建立測試（§10、§13 同步）。
+- 2026-11-05：上鎖階段 5a — 編輯名單的 API 層：`GET` / `PATCH /creator/lists/:listId` 與名額 +10 的 schema / contract / query / hooks，`toListFormLock`、`toCreatorListPatchRequest`，從 `usePutList` 抽出共用的 `applyUpdatedListToCaches`，題目規則抽成 `LockQuestionSchema`。`ListFormSchema` 加上 `resetReadPermissions`（預設 `false`），PATCH 從表單值讀，只重置資格時送原方法。編輯頁尚未接上（§7、§13 同步）。單元測試 16 檔 92 個。
+- 2026-11-10：FakePage 改為可疊加（`openedPages` 清單），`closeFakePage(pageType)` 只關指定的頁面且 `pageType` 必填；新增 `replyList`（問答設定頁的回覆列表，疊在 `lockConfig` 上）；`list-visibility` 新增 V11（§4.1、§8、§12、§13 同步）。
+- 2026-11-06：上鎖階段 5a-3 — 編輯頁在 `FEATURES.listLock` 開啟時用 `useGetCreatorList` 判斷名單是否上過鎖（`hasLockHistory`），從未上過鎖就不顯示 `EditLockTypeDrawer` 和「更換上鎖方式／解除上鎖」；drawer 的選擇改為暫存，每次打開都是「保留」，按確認才寫入 form；這支 GET 的 404 加進 `STATUS_WHITELIST`；e2e mock 新增 `GET /creator/lists/:id`，`list-edit` 新增 3 條（§13 同步）。單元測試 16 檔 96 個。
 若日後架構大幅變動，請以 PR 更新本文件對應段落，避免被當作可信來源誤導後續工程師或 AI。

@@ -665,7 +665,7 @@ Mock 不保存狀態：同一方法每次建立回相同 ID，PATCH 只回顯此
 
 ## 前端備註（FE 補充，非 BE 原文）
 
-以上為 BE 原文，未修改。以下由前端補充，記錄日期 2026-10-22，最後更新 2026-11-02。串接計劃見 [`docs/superpowers/plans/2026-10-29-list-lock-integration.md`](../superpowers/plans/2026-10-29-list-lock-integration.md)。
+以上為 BE 原文，未修改。以下由前端補充，記錄日期 2026-10-22，最後更新 2026-11-05。串接計劃見 [`docs/superpowers/plans/2026-10-29-list-lock-integration.md`](../superpowers/plans/2026-10-29-list-lock-integration.md)。
 
 ### 已確認
 
@@ -679,11 +679,24 @@ Mock 不保存狀態：同一方法每次建立回相同 ID，PATCH 只回顯此
 
 - ✅ 上鎖方式的選擇（密碼或問答）：`LockTypeDrawer` → `LockConfigFakePage`，按「完成」寫進 form 的 `lock`（2026-11-02）。
 - ✅ 問答題目的輸入框：1～60 個 Unicode code point，顯示 `n/60`，不合格時「儲存設定」disabled（2026-11-02）。
-- 🟡 編輯時 `lock.resetReadPermissions` 的選項（保留或重置已解鎖的讀者，PATCH 帶 `lock` 時必填）：`EditLockTypeDrawer` 只有骨架，RadioGroup 仍是註解。
+- 🟡 編輯時 `lock.resetReadPermissions` 的選項（保留或重置已解鎖的讀者，PATCH 帶 `lock` 時必填）：form 已有 `resetReadPermissions`（`ListFormSchema`，預設 `false` 保留，2026-11-05）。`EditLockTypeDrawer` 的選項已接上：每次打開都是「保留」，按「確認設定」才寫入 form（2026-11-06）。只有上過鎖的名單才顯示這個 drawer 和「更換上鎖方式／解除上鎖」。「解除上鎖」尚未接 onClick。
+- 🟡 §6～8 的 API 層已完成（2026-11-05）。編輯頁目前只用 §6 GET 判斷名單是否上過鎖（`FEATURES.listLock` 開啟時，2026-11-06），送出仍走舊 `PUT /lists/:id`：
+  - 從未上過鎖＝ `method` 是 none，且 `password`、`question` 都是 null（`hasLockHistory`）。
+  - 這支 GET 的 404 不彈 toast（`STATUS_WHITELIST`），因為 mock 只認 fixture ID；查不到就視為從未上過鎖。
+  - schema / contract / query：`src/api/{schemas,contracts,query}/creatorLists.ts`。
+  - `toCreatorListPatchRequest`（`src/hooks/api/lists/`）依 §7 組 PATCH body：
+    - 基本欄位全送。
+    - `coverImage: null`、`categoryID: 0` 不送，等於沿用原值。
+    - `lock` 在方法改變、題目改變，或 `resetReadPermissions` 為 `true` 時送，送時附 `resetReadPermissions`（取自表單）。
+    - `question` 只在題目改變時放；題目沒變就省略，沿用原題。
+  - hooks：`useGetCreatorList`、`usePatchCreatorList`、`useIncreasePasswordCapacity`。
+  - 只重置資格（方法和題目都不變）：送原方法 + `resetReadPermissions: true`，例如 `{ "method": "password", "resetReadPermissions": true }`。
 
 ### 待問 BE
 
 - 新舊 API（`/lists` 與 `/creator/lists`）的切換時程。
+- 解除上鎖後，§6 GET 是否仍回傳原本的 `password` / `question`？文件沒有寫。如果不回傳，上鎖又解除的名單會被當成從未上過鎖，看不到保留或重置資格的選項。
+- PATCH 送與原本相同的方法（題目省略），例如 `{ "method": "password", "resetReadPermissions": true }`，是否只重置讀者資格、不會換密碼或建立新題目？§7 沒有寫。
 
 ### §15 的請求檔
 
@@ -692,10 +705,10 @@ Mock 不保存狀態：同一方法每次建立回相同 ID，PATCH 只回顯此
 ### 串接前要處理的差異
 
 - 專案沒有 `Idempotency-Key`。key 要在每次 mutation 開始時產生，網路重試時沿用同一把，不能在 axios interceptor 裡每個 request 自動產生。（2026-11-03：建立名單已實作，見 `src/lib/idempotency.ts`、`usePostCreatorList`。）
-- 專案沒有 PATCH 的 contract，要照 根目錄 `AGENTS.md` §4.2 的流程新增（schema → contract → query → hook）。
+- 專案沒有 PATCH 的 contract，要照 根目錄 `AGENTS.md` §4.2 的流程新增（schema → contract → query → hook）。（2026-11-05：已新增 `patchCreatorListContract`。）
 - BE 不接受 request 裡有 `null`：
   - 表單的 `coverImage` 可能是 `null`，送出前要轉成空字串或不送。
   - 表單的 `categoryID` 預設是 `0`，BE 要求大於 0。沒選分類時不送，BE 會預設為 1。
 - 題目和回答的字數用 `[...str].length` 計算，不要用 `.length`（UTF-16 長度）。
 - 標記已讀的 POST 不能送 body，contract 用 `c.noBody()`。不要照抄 `deleteListsContract` 的 `body: z.object({})`。
-- `e2e/mock-server/server.ts` 目前只有 `POST /creator/lists`（2026-11-03）；其他 `/creator/*` 路由還沒有。
+- `e2e/mock-server/server.ts` 目前只有 `POST /creator/lists`（2026-11-03）；其他 `/creator/*` 路由還沒有，等編輯頁接上 GET / PATCH 時再加。
