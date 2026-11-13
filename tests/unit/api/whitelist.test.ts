@@ -41,6 +41,12 @@ describe('isStatusWhitelist', () => {
     expect(isStatusWhitelist('GET', '/lists/100', 403)).toBe(true);
   });
 
+  it('silences 404 on the creator list settings endpoint only', () => {
+    expect(isStatusWhitelist('GET', '/creator/lists/100', 404)).toBe(true);
+    expect(isStatusWhitelist('GET', '/creator/lists/100', 500)).toBe(false);
+    expect(isStatusWhitelist('PATCH', '/creator/lists/100', 404)).toBe(false);
+  });
+
   it('is case-insensitive on method', () => {
     expect(isStatusWhitelist('get', '/lists/100', 403)).toBe(true);
   });
