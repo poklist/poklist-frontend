@@ -18,12 +18,13 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     globals: true,
-    include: ['src/**/*.test.{ts,tsx}'],
+    // 單元測試集中在 tests/unit/，路徑鏡像 src/（src/a/b.ts → tests/unit/a/b.test.ts）
+    include: ['tests/unit/**/*.test.{ts,tsx}'],
     exclude: ['e2e/**', 'node_modules/**'],
     coverage: {
       provider: 'v8',
       include: ['src/**/*.{ts,tsx}'],
-      exclude: ['src/**/*.test.{ts,tsx}', 'src/locales/**'],
+      exclude: ['src/locales/**'],
     },
   },
 });

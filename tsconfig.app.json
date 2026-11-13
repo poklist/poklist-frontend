@@ -33,5 +33,5 @@
     // do not rely on vitest/@testing-library transitively re-exporting them.
     "types": ["vitest/globals", "node", "react", "react-dom"]
   },
-  "include": ["src"]
+  "include": ["src", "tests"]
 }

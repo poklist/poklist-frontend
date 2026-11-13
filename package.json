@@ -10,7 +10,7 @@
     "start": "next start -p 8080",
     "tsc": "tsc --noEmit -p tsconfig.app.json",
     "format": "prettier --write ./src",
-    "lint": "eslint src",
+    "lint": "eslint src tests",
     "extract": "lingui extract",
     "compile": "lingui compile",
     "build-lang": "lingui extract && lingui compile",
