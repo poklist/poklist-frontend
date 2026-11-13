@@ -144,6 +144,42 @@ const handle = async (req: IncomingMessage, res: ServerResponse) => {
     return ok(res, { id });
   }
 
+  // --- GET /creator/lists/:listID（編輯設定，§6）---
+  // 名單目前都是不上鎖；hasLockHistory 的名單會留著已停用的密碼設定
+  const creatorListMatch = path.match(/^\/creator\/lists\/([^/]+)$/);
+  if (creatorListMatch && method === 'GET') {
+    if (!viewer) return fail(res, 401);
+    const list = state.lists.get(creatorListMatch[1]);
+    if (!list) return fail(res, 404);
+    return ok(res, {
+      listID: list.id,
+      title: list.title,
+      description: list.description,
+      coverImage: list.coverImage,
+      externalLink: list.externalLink,
+      categoryID: list.categoryID,
+      type: list.type,
+      method: 'none',
+      editToken: 'mock-edit-token',
+      password: list.hasLockHistory
+        ? {
+            id: 'password-1',
+            status: 'inactive',
+            password: 'mock-password',
+            capacity: {
+              limitMode: 'limited',
+              limitCount: 10,
+              usedCount: 2,
+              remainingCount: 8,
+              isFull: false,
+            },
+          }
+        : null,
+      question: null,
+      answerSummary: { totalCount: 0, unreadCount: 0 },
+    });
+  }
+
   // --- POST /creator/lists（新 API；FEATURES.listLock 開啟時使用）---
   // 依 docs/api/2026-10-17-list-lock-mock.md §1、§3、§5：缺 Idempotency-Key、null 或未定義欄位回 400。
   // 與 BE mock 不同，這裡真的把名單存進 state，讓建立後導向的名單頁可以顯示。

@@ -23,6 +23,8 @@ export interface MockList {
   updatedAt: string;
   ownerUserCode: string;
   ideas: MockIdea[];
+  // 上鎖後又解除：GET /creator/lists/:id 仍回舊的密碼設定
+  hasLockHistory?: boolean;
 }
 
 export interface MockUser {
@@ -88,6 +90,7 @@ const buildInitialState = (): MockState => {
     updatedAt: '2026-07-01T00:00:00.000Z',
     ownerUserCode: 'usera',
     ideas: makeIdeas('100', 41),
+    hasLockHistory: true,
   });
   lists.set('101', {
     id: '101',

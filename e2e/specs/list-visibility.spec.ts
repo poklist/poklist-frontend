@@ -43,7 +43,7 @@ test.describe('list visibility fields (logged-in)', () => {
     await expect(lockSwitch).not.toBeChecked();
   });
 
-  // V4 選了上鎖方式後再點「隱藏」區塊 → 選取「隱藏」並關閉上鎖（上鎖與隱藏互斥）
+  // V4 選了上鎖方式後再點「隱藏」區塊 → 跳出確認 drawer；確認後選取「隱藏」並關閉上鎖（上鎖與隱藏互斥）
   test('V4 clicking private card selects private and turns lock off', async ({
     page,
   }) => {
@@ -55,8 +55,22 @@ test.describe('list visibility fields (logged-in)', () => {
     await page.getByTestId('lock-config-done').click();
     await expect(lockSwitch).toBeChecked();
     await cardOf(page, 'list-visibility-private').click();
+    await page.getByTestId('switch-to-private-confirm').click();
     await expect(page.getByTestId('list-visibility-private')).toBeChecked();
     await expect(lockSwitch).not.toBeChecked();
+  });
+
+  // V12 已上鎖時點「隱藏」後在確認 drawer 按「取消」→ 維持公開與上鎖
+  test('V12 cancelling switch to private keeps lock', async ({ page }) => {
+    const lockSwitch = page.getByTestId('list-lock-switch');
+    await lockSwitch.click();
+    await page.getByTestId('lock-type-password').click();
+    await page.getByTestId('lock-config-done').click();
+    await cardOf(page, 'list-visibility-private').click();
+    await page.getByTestId('switch-to-private-cancel').click();
+    await expect(page.getByTestId('switch-to-private-cancel')).toBeHidden();
+    await expect(page.getByTestId('list-visibility-public')).toBeChecked();
+    await expect(lockSwitch).toBeChecked();
   });
 
   // V5 底部說明文字隨公開／隱藏切換（比對切換前後文字不同，與語系無關）
@@ -124,6 +138,24 @@ test.describe('list visibility fields (logged-in)', () => {
         { timeout: 5000 }
       )
       .toEqual({ method: 'question', question: '你最想去哪裡？' });
+  });
+
+  // V11 回覆列表疊在設定頁上：返回後設定頁還在，未儲存的題目也還在
+  test('V11 closing reply list returns to the lock config page', async ({
+    page,
+  }) => {
+    await page.getByTestId('list-lock-switch').click();
+    await page.getByTestId('lock-type-question').click();
+    const question = page.getByTestId('lock-question-input');
+    await question.fill('你最想去哪裡？');
+
+    await page.getByTestId('lock-reply-list').click();
+    await expect(page.getByTestId('reply-list-back')).toBeVisible();
+    await page.getByTestId('reply-list-back').click();
+
+    await expect(page.getByTestId('reply-list-back')).toBeHidden();
+    await expect(page.getByTestId('lock-config-done')).toBeVisible();
+    await expect(question).toHaveValue('你最想去哪裡？');
   });
 
   // V9 還原草稿 → 上鎖設定一併還原
