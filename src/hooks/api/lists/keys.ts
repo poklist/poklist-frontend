@@ -31,6 +31,12 @@ const listsKeys = {
     'infiniteIdeas',
     listID,
   ],
+  // GET /creator/lists/:listId 的編輯設定（含 editToken）
+  editSettings: (listID: GetListsRequest['listID']) => [
+    ...listsKeys.all,
+    'editSettings',
+    listID,
+  ],
 };
 
 export default listsKeys;

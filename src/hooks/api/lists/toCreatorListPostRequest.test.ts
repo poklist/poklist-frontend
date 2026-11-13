@@ -13,6 +13,7 @@ const formValues: z.infer<typeof ListFormSchema> = {
   categoryID: 0,
   type: ListType.PUBLIC,
   lock: { method: ListLockMethod.NONE },
+  resetReadPermissions: false,
 };
 
 describe('toCreatorListPostRequest', () => {

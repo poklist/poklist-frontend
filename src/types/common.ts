@@ -56,23 +56,28 @@ export const ListBaseSchema = IdeaFormSchema.extend({
   type: z.nativeEnum(ListType),
 });
 
+// 去首尾空白後 1～60 個 Unicode code point（BE §5、§7）
+export const LockQuestionSchema = z
+  .string()
+  .trim()
+  .refine((question) => {
+    const length = [...question].length;
+    return length >= 1 && length <= LOCK_QUESTION_MAX_LENGTH;
+  });
+
 // 規則依 docs/api/2026-10-17-list-lock-mock.md §5
 export const ListLockSchema = z.discriminatedUnion('method', [
   z.object({ method: z.literal(ListLockMethod.NONE) }),
   z.object({ method: z.literal(ListLockMethod.PASSWORD) }),
   z.object({
     method: z.literal(ListLockMethod.QUESTION),
-    question: z
-      .string()
-      .trim()
-      .refine((question) => {
-        const length = [...question].length;
-        return length >= 1 && length <= LOCK_QUESTION_MAX_LENGTH;
-      }),
+    question: LockQuestionSchema,
   }),
 ]);
 
-// list Form 使用；default 讓沒有 lock 的舊草稿仍可讀取
+// list Form 使用；default 讓沒有 lock / resetReadPermissions 的舊草稿仍可讀取。
+// resetReadPermissions 只給編輯的 PATCH 用（BE §7）：false 保留已解鎖的讀者、true 重置
 export const ListFormSchema = ListBaseSchema.extend({
   lock: ListLockSchema.default({ method: ListLockMethod.NONE }),
+  resetReadPermissions: z.boolean().default(false),
 });
