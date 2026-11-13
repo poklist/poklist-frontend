@@ -6,7 +6,11 @@ export const FakePageContext = createContext<IFakePageContext | undefined>(
   undefined
 );
 
-export type FakePageType = 'editField' | 'listSelector' | 'lockConfig';
+export type FakePageType =
+  | 'editField'
+  | 'listSelector'
+  | 'lockConfig'
+  | 'replyList';
 
 export interface FakePagePayloadMap {
   editField: null;
@@ -16,6 +20,7 @@ export interface FakePagePayloadMap {
   lockConfig: {
     lockMethod: ListLockMethod.PASSWORD | ListLockMethod.QUESTION;
   };
+  replyList: [];
 }
 
 // 每個 pageType 各存一份 payload，讀取時以 key 取值即得到對應型別（不需型別斷言）
@@ -24,7 +29,6 @@ export type FakePagePayloads = {
 };
 
 export interface IFakePageContext {
-  openedPage: FakePageType | null;
   getPayload: <T extends FakePageType>(
     pageType: T
   ) => FakePagePayloadMap[T] | null;
@@ -32,6 +36,6 @@ export interface IFakePageContext {
     pageType: T,
     payload?: FakePagePayloadMap[T]
   ) => void;
-  closeFakePage: () => void;
+  closeFakePage: (pageType: FakePageType) => void;
   isOpen: (pageType: FakePageType) => boolean;
 }

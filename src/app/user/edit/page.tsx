@@ -249,7 +249,7 @@ const EditUserPage: React.FC = () => {
     setNewUserInfo(me);
     checkAuthAndRedirect();
     return () => {
-      closeFakePage();
+      closeFakePage('editField');
       resetNewUserInfo();
     };
   }, [me]);

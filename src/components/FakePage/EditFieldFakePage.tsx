@@ -31,7 +31,7 @@ export const EditFieldFakePageComponent: React.FC<IEditFieldConfig> = ({
   const onEditSave = () => {
     if (validator === undefined || validator(fieldValue)) {
       onFieldValueSet(fieldValue);
-      closeFakePage();
+      closeFakePage('editField');
     }
     return;
   };
@@ -43,7 +43,10 @@ export const EditFieldFakePageComponent: React.FC<IEditFieldConfig> = ({
   }, [editingFieldValue, variant]);
 
   return (
-    <Dialog open={isOpen('editField')} onOpenChange={closeFakePage}>
+    <Dialog
+      open={isOpen('editField')}
+      onOpenChange={() => closeFakePage('editField')}
+    >
       <DialogContent
         // For console warning
         aria-describedby={undefined}
@@ -58,7 +61,7 @@ export const EditFieldFakePageComponent: React.FC<IEditFieldConfig> = ({
               disabled={isSaveDisabled}
               onClose={() => {
                 setFieldValue(editingFieldValue ?? '');
-                closeFakePage();
+                closeFakePage('editField');
               }}
               title={fieldName}
               onSave={() => onEditSave()}
@@ -85,7 +88,7 @@ export const EditFieldFakePageComponent: React.FC<IEditFieldConfig> = ({
         {variant === EditFieldVariant.TEXT && (
           <EditModeFooter
             disabled={isSaveDisabled}
-            onClose={() => closeFakePage()}
+            onClose={() => closeFakePage('editField')}
             title={fieldName}
             onSaveText={t`完成`}
             onSave={() => onEditSave()}

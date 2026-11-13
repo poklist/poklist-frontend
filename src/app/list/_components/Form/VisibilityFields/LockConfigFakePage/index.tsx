@@ -49,7 +49,7 @@ const LockConfigFakePage: React.FC<LockConfigPageProps> = ({
 
   const onClosePage = () => {
     setDraftQuestion(null);
-    closeFakePage();
+    closeFakePage('lockConfig');
   };
 
   const onConfigDone = () => {

@@ -111,14 +111,14 @@ const ListSelectorFakePage: React.FC = () => {
       return;
     }
     if (payload?.ideaForm) {
-      closeFakePage();
+      closeFakePage('listSelector');
       navigateTo.temporaryCreateList(payload.ideaForm);
     }
   });
 
   const onClosePage = () => {
     setSelectedList('');
-    closeFakePage();
+    closeFakePage('listSelector');
   };
 
   return (
