@@ -3,6 +3,9 @@
 import { GetUserListsResponse } from '@/api/query/lists';
 import ListForm, { ListFormHandle } from '@/app/list/_components/Form';
 import EditModeHeader from '@/components/Header/EditModeHeader';
+import { FEATURES } from '@/constants/features';
+import { hasLockHistory } from '@/hooks/api/lists/toCreatorListPatchRequest';
+import { useGetCreatorList } from '@/hooks/api/lists/useGetCreatorList';
 import { useGetListInfiniteIdeas } from '@/hooks/api/lists/useGetListInfiniteIdeas';
 import { usePutList } from '@/hooks/api/lists/usePutList';
 import { useAuthCheck, useAuthWrapper } from '@/hooks/useAuth';
@@ -31,6 +34,11 @@ const EditListPage: React.FC = () => {
     // 編輯頁只要 list meta，不需 ideas。
     // limit 不可設 0 —— 後端視為未指定並回傳整批 ideas。
     limit: 1,
+  });
+  // 目前只用來判斷名單是否上過鎖；送出仍走舊 PUT（階段 5）
+  const { data: lockSettings } = useGetCreatorList({
+    listID,
+    enabled: FEATURES.listLock,
   });
   const { mutate: editList } = usePutList({
     userCode: me.userCode,
@@ -102,6 +110,7 @@ const EditListPage: React.FC = () => {
       <ListForm
         ref={formRef}
         isEdit
+        hasLockHistory={!!lockSettings && hasLockHistory(lockSettings)}
         defaultListInfo={listCoverDraft}
         dismissCallback={onDismissEdit}
         completedCallback={onEditList}

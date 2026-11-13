@@ -52,6 +52,8 @@ msgstr "Confirm Delete"
 #: src/app/list/_components/Form/ResetTitleWarnDrawer/index.tsx
 #: src/app/list/_components/Form/VisibilityFields/LockConfigFakePage/index.tsx
 #: src/app/list/_components/Form/VisibilityFields/LockTypeDrawer/index.tsx
+#: src/app/list/_components/Form/VisibilityFields/SwitchToPrivateDrawer/index.tsx
+#: src/app/list/_components/Form/VisibilityFields/TurnOffLockDrawer/index.tsx
 msgid "取消"
 msgstr "Cancel"
 
@@ -560,6 +562,30 @@ msgstr ""
 msgid "更新後，是否保留他們的解鎖資格..."
 msgstr ""
 
+#: src/app/list/_components/Form/VisibilityFields/LockConfigFakePage/EditLockTypeDrawer/index.tsx
+msgid "保留已解鎖的讀者資格（建議）"
+msgstr ""
+
+#: src/app/list/_components/Form/VisibilityFields/LockConfigFakePage/EditLockTypeDrawer/index.tsx
+msgid "已解鎖的讀者可以繼續查看此名單。只有尚未解鎖的需要使用更新後的方式。"
+msgstr ""
+
+#: src/app/list/_components/Form/VisibilityFields/LockConfigFakePage/EditLockTypeDrawer/index.tsx
+msgid "要求讀者重新解鎖"
+msgstr ""
+
+#: src/app/list/_components/Form/VisibilityFields/LockConfigFakePage/EditLockTypeDrawer/index.tsx
+msgid "目前已解鎖的讀者資格將失效。當下次開啟此名單時，所有讀者必須使用更新後的方式重新解鎖。"
+msgstr ""
+
+#: src/app/list/_components/Form/VisibilityFields/LockConfigFakePage/EditLockTypeDrawer/index.tsx
+msgid "此輪的密碼設定或問答回覆等資料將會留存。 若設定回同樣的上鎖方式時，將可查看此輪的資料。"
+msgstr ""
+
+#: src/app/list/_components/Form/VisibilityFields/LockConfigFakePage/EditLockTypeDrawer/index.tsx
+msgid "確認設定"
+msgstr ""
+
 #: src/app/list/_components/Form/VisibilityFields/LockConfigFakePage/PasswordConfigSection/index.tsx
 #: src/app/list/_components/Form/VisibilityFields/LockTypeDrawer/index.tsx
 msgid "密碼上鎖"
@@ -586,15 +612,29 @@ msgid "最多 10 位使用者可使用此密碼解鎖完整名單；額滿後可
 msgstr ""
 
 #: src/app/list/_components/Form/VisibilityFields/LockConfigFakePage/PasswordConfigSection/index.tsx
+#: src/app/list/_components/Form/VisibilityFields/index.tsx
 msgid "{unlocked}/{limit} 人已解鎖"
 msgstr ""
 
 #: src/app/list/_components/Form/VisibilityFields/LockConfigFakePage/PasswordConfigSection/index.tsx
+#: src/app/list/_components/Form/VisibilityFields/index.tsx
 msgid "剩餘 {0} 個名額"
 msgstr ""
 
 #: src/app/list/_components/Form/VisibilityFields/LockConfigFakePage/PasswordConfigSection/index.tsx
 msgid "新增 10 個名額"
+msgstr ""
+
+#: src/app/list/_components/Form/VisibilityFields/LockConfigFakePage/QuestionConfigSection/ReplyListFakePage/index.tsx
+msgid "收到 {0} 則回覆"
+msgstr ""
+
+#: src/app/list/_components/Form/VisibilityFields/LockConfigFakePage/QuestionConfigSection/ReplyListFakePage/index.tsx
+msgid "尚無回覆"
+msgstr ""
+
+#: src/app/list/_components/Form/VisibilityFields/LockConfigFakePage/QuestionConfigSection/ReplyListFakePage/index.tsx
+msgid "分享名單截圖在你的社群限動上，幫助更多人知道這份好名單！"
 msgstr ""
 
 #: src/app/list/_components/Form/VisibilityFields/LockConfigFakePage/QuestionConfigSection/index.tsx
@@ -623,10 +663,12 @@ msgid "例如：分享一件最近讓你煩惱的小事"
 msgstr ""
 
 #: src/app/list/_components/Form/VisibilityFields/LockConfigFakePage/QuestionConfigSection/index.tsx
+#: src/app/list/_components/Form/VisibilityFields/index.tsx
 msgid "共 {count} 則回覆"
 msgstr ""
 
 #: src/app/list/_components/Form/VisibilityFields/LockConfigFakePage/QuestionConfigSection/index.tsx
+#: src/app/list/_components/Form/VisibilityFields/index.tsx
 msgid "{unread} 則未讀"
 msgstr ""
 
@@ -666,6 +708,27 @@ msgstr ""
 msgid "問答上鎖"
 msgstr ""
 
+#: src/app/list/_components/Form/VisibilityFields/SwitchToPrivateDrawer/index.tsx
+msgid "此名單內容將全部隱藏"
+msgstr ""
+
+#: src/app/list/_components/Form/VisibilityFields/SwitchToPrivateDrawer/index.tsx
+#: src/app/list/_components/Form/VisibilityFields/TurnOffLockDrawer/index.tsx
+msgid "此輪的密碼設定或問答回覆等資料將會留存，若未來設定回同樣的上鎖方式時，即可再次使用或查看此輪的資料。"
+msgstr ""
+
+#: src/app/list/_components/Form/VisibilityFields/SwitchToPrivateDrawer/index.tsx
+msgid "確認關閉上鎖"
+msgstr ""
+
+#: src/app/list/_components/Form/VisibilityFields/TurnOffLockDrawer/index.tsx
+msgid "解除上鎖設定後，此名單內容將全部公開"
+msgstr ""
+
+#: src/app/list/_components/Form/VisibilityFields/TurnOffLockDrawer/index.tsx
+msgid "確認解除上鎖"
+msgstr ""
+
 #: src/app/list/_components/Form/VisibilityFields/index.tsx
 msgid "名單瀏覽設定"
 msgstr ""
@@ -684,6 +747,22 @@ msgstr ""
 
 #: src/app/list/_components/Form/VisibilityFields/index.tsx
 msgid "讀者必須解鎖，才能查看完整名單"
+msgstr ""
+
+#: src/app/list/_components/Form/VisibilityFields/index.tsx
+msgid "密碼解鎖"
+msgstr ""
+
+#: src/app/list/_components/Form/VisibilityFields/index.tsx
+msgid "問題解鎖"
+msgstr ""
+
+#: src/app/list/_components/Form/VisibilityFields/index.tsx
+msgid "已設定"
+msgstr ""
+
+#: src/app/list/_components/Form/VisibilityFields/index.tsx
+msgid "編輯"
 msgstr ""
 
 #: src/app/list/_components/Form/VisibilityFields/index.tsx

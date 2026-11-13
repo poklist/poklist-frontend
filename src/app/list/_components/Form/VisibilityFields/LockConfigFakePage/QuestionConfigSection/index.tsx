@@ -1,3 +1,4 @@
+import { useFakePage } from '@/components/FakePage/useFakePage';
 import {
   Button,
   ButtonShape,
@@ -25,6 +26,9 @@ const QuestionConfigSection = ({
   const unread = isEdit ? 2 : 0;
   // 與驗證一致：去掉首尾空白後以 code point 計算
   const length = [...value.trim()].length;
+
+  const { openFakePage } = useFakePage();
+
   return (
     <div className="flex flex-col gap-6 rounded-3xl border border-black-text-01 bg-yellow-bright-01 px-4 py-8">
       <div className="flex justify-between">
@@ -74,7 +78,8 @@ const QuestionConfigSection = ({
           </div>
         </div>
         <Button
-          disabled={!isEdit}
+          onClick={() => openFakePage('replyList')}
+          data-testid="lock-reply-list"
           variant={ButtonVariant.BLACK}
           size={ButtonSize.H40}
           shape={ButtonShape.ROUNDED_8PX}

@@ -55,6 +55,8 @@ export interface ListFormHandle {
 interface IListFormProps {
   defaultListInfo?: GetUserListsResponse['content'][number];
   isEdit: boolean;
+  // 名單上過鎖時才顯示「更換上鎖方式／解除上鎖」
+  hasLockHistory?: boolean;
   dismissCallback: (isFormEmpty: boolean) => void;
   // 傳完整表單值（含 lock），由呼叫端依新舊 API 轉成 request（plan Q26）
   completedCallback: (listData: z.infer<typeof ListFormSchema>) => void;
@@ -71,6 +73,7 @@ const ListForm = forwardRef<ListFormHandle, IListFormProps>(function ListForm(
       type: ListType.PUBLIC,
     },
     isEdit,
+    hasLockHistory = false,
     dismissCallback,
     completedCallback,
   },
@@ -105,6 +108,7 @@ const ListForm = forwardRef<ListFormHandle, IListFormProps>(function ListForm(
       type: defaultListInfo.type,
       // 舊 /lists API 沒有 lock，編輯時一律從 none 開始
       lock: { method: ListLockMethod.NONE },
+      resetReadPermissions: false,
     },
   });
 
@@ -234,7 +238,13 @@ const ListForm = forwardRef<ListFormHandle, IListFormProps>(function ListForm(
     if (defaultListInfo.title === '') {
       return;
     }
-    listForm.reset({ ...defaultListInfo });
+    // reset(values) 會取代整份 defaultValues，沒傳的欄位會變成 undefined。
+    // 舊 /lists API 沒有 lock / resetReadPermissions，所以這裡補上預設值
+    listForm.reset({
+      ...defaultListInfo,
+      lock: { method: ListLockMethod.NONE },
+      resetReadPermissions: false,
+    });
     setTimeout(() => {
       titleTextarea.bind.onChange();
       descriptionTextarea.bind.onChange();
@@ -357,6 +367,7 @@ const ListForm = forwardRef<ListFormHandle, IListFormProps>(function ListForm(
         <div className="flex flex-col gap-4">
           <VisibilityFields
             isEdit={isEdit}
+            hasLockHistory={hasLockHistory}
             control={listForm.control}
             onChange={onListTypeChange}
           />
@@ -426,7 +437,7 @@ const ListForm = forwardRef<ListFormHandle, IListFormProps>(function ListForm(
 
       <ResetTitleWarnDrawer
         onReset={() => onSelectCategory(selectedOption!)}
-        onKeep={() => closeResetTitleDrawer()}
+        onCancel={() => closeResetTitleDrawer()}
       />
 
       {fieldConfig && <EditFieldFakePageComponent {...fieldConfig} />}

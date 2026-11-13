@@ -1,4 +1,4 @@
-import { listsContract } from '@/api/contracts';
+import { creatorListsContract, listsContract } from '@/api/contracts';
 
 /**
  * 把 ts-rest contract path（如 '/lists/:listID'）轉成可比對實際請求 URL 的 RegExp
@@ -38,6 +38,14 @@ export const STATUS_WHITELIST: StatusRule[] = [
     method: 'GET',
     pattern: contractPathToRegExp(listsContract.getListsContract.path),
     status: [403],
+  },
+  // BE mock 只認 fixture ID，其他名單回 404。編輯頁查不到就視為從未上過鎖，不彈 toast
+  {
+    method: 'GET',
+    pattern: contractPathToRegExp(
+      creatorListsContract.getCreatorListContract.path
+    ),
+    status: [404],
   },
 ];
 

@@ -5,12 +5,12 @@ import { Trans } from '@lingui/macro';
 
 interface ResetTitleWarnDrawerProps {
   onReset: () => void;
-  onKeep: () => void;
+  onCancel: () => void;
 }
 
 const ResetTitleWarnDrawer = ({
   onReset,
-  onKeep,
+  onCancel,
 }: ResetTitleWarnDrawerProps) => (
   <DrawerComponent
     drawerId={DrawerIds.RESET_TITLE_WARN_DRAWER_ID}
@@ -26,7 +26,7 @@ const ResetTitleWarnDrawer = ({
       <Button
         onClick={onReset}
         variant={ButtonVariant.WARNING}
-        shape={ButtonShape.ROUNDED_5PX}
+        shape={ButtonShape.ROUNDED_8PX}
         data-testid="title-reset"
       >
         <Trans>確認取代</Trans>
@@ -34,9 +34,9 @@ const ResetTitleWarnDrawer = ({
     }
     endFooter={
       <Button
-        onClick={onKeep}
+        onClick={onCancel}
         variant={ButtonVariant.BLACK}
-        shape={ButtonShape.ROUNDED_5PX}
+        shape={ButtonShape.ROUNDED_8PX}
         data-testid="title-keep"
       >
         <Trans>取消</Trans>

@@ -1,11 +1,23 @@
 import LockConfigFakePage from '@/app/list/_components/Form/VisibilityFields/LockConfigFakePage';
 import EditLockTypeDrawer from '@/app/list/_components/Form/VisibilityFields/LockConfigFakePage/EditLockTypeDrawer';
+import ReplyListFakePage from '@/app/list/_components/Form/VisibilityFields/LockConfigFakePage/QuestionConfigSection/ReplyListFakePage';
 import LockTypeDrawer from '@/app/list/_components/Form/VisibilityFields/LockTypeDrawer';
+import SwitchToPrivateDrawer from '@/app/list/_components/Form/VisibilityFields/SwitchToPrivateDrawer';
+import TurnOffLockDrawer from '@/app/list/_components/Form/VisibilityFields/TurnOffLockDrawer';
 import { useDrawer } from '@/components/Drawer/useDrawer';
+import { useFakePage } from '@/components/FakePage/useFakePage';
 import SwitchWithIcons, {
   SwitchSize,
   SwitchVariant,
 } from '@/components/SwitchWithIcon';
+import {
+  Button,
+  ButtonShape,
+  ButtonSize,
+  ButtonVariant,
+} from '@/components/ui/button';
+import IconCoin from '@/components/ui/icons/CoinIcon';
+import IconKey from '@/components/ui/icons/KeyIcon';
 import IconPrivateEye from '@/components/ui/icons/PrivateEyeIcon';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { DrawerIds } from '@/constants/Drawer';
@@ -18,16 +30,29 @@ import z from 'zod';
 
 interface VisibilityFieldProps {
   isEdit: boolean;
+  hasLockHistory: boolean;
   control: Control<z.infer<typeof ListFormSchema>>;
   onChange: (checked: boolean) => void;
 }
 
 const VisibilityFields: React.FC<VisibilityFieldProps> = ({
   isEdit,
+  hasLockHistory,
   control,
   onChange,
 }: VisibilityFieldProps) => {
+  const { openFakePage, closeFakePage } = useFakePage();
+
   const { openDrawer, closeDrawer } = useDrawer(DrawerIds.LOCK_TYPE_DRAWER_ID);
+  const { closeDrawer: closeResetUnlockDrawer } = useDrawer(
+    DrawerIds.RESET_UNLOCK_DRAWER_ID
+  );
+  const { openDrawer: openTurnOffDrawer, closeDrawer: closeTurnOffDrawer } =
+    useDrawer(DrawerIds.TURN_OFF_LOCK_DRAWER_ID);
+  const {
+    openDrawer: openSwitchToPrivateDrawer,
+    closeDrawer: closeSwitchToPrivateDrawer,
+  } = useDrawer(DrawerIds.SWITCH_TO_PRIVATE_DRAWER_ID);
 
   const id = useId();
   const publicId = `${id}-public`;
@@ -35,8 +60,13 @@ const VisibilityFields: React.FC<VisibilityFieldProps> = ({
   const lockId = `${id}-lock`;
   const type = useWatch({ control, name: 'type' });
   const { field: lockField } = useController({ control, name: 'lock' });
+  const { field: resetReadPermissionsField } = useController({
+    control,
+    name: 'resetReadPermissions',
+  });
   // 開關只反映 form 的 lock：設定頁按「完成」才會變「開」
-  const isLocked = lockField.value.method !== ListLockMethod.NONE;
+  const lockMethod = lockField.value.method;
+  const isLocked = lockMethod !== ListLockMethod.NONE;
 
   const onTypeChange = (isPrivate: boolean) => {
     closeDrawer();
@@ -45,14 +75,45 @@ const VisibilityFields: React.FC<VisibilityFieldProps> = ({
     if (isPrivate) lockField.onChange({ method: ListLockMethod.NONE });
   };
 
+  const onVisibilityChange = (isPrivate: boolean) => {
+    if (isPrivate && isLocked) {
+      openSwitchToPrivateDrawer();
+      return;
+    }
+    onTypeChange(isPrivate);
+  };
+
+  const onConfirmSwitchToPrivate = () => {
+    closeSwitchToPrivateDrawer();
+    onTypeChange(true);
+  };
+
   const onLockChange = (checked: boolean) => {
     closeDrawer();
     if (checked) {
       onTypeChange(false);
       openDrawer();
     } else {
-      lockField.onChange({ method: ListLockMethod.NONE });
+      openTurnOffDrawer();
     }
+  };
+
+  const onConfirmTurnOffLock = () => {
+    lockField.onChange({ method: ListLockMethod.NONE });
+    closeTurnOffDrawer();
+  };
+
+  const unlocked = 19;
+  const limit = 20;
+
+  const count = isEdit ? 23 : 0;
+  const unread = isEdit ? 2 : 0;
+
+  const onConfirmReset = (resetReadPermissions: boolean) => {
+    resetReadPermissionsField.onChange(resetReadPermissions);
+    closeResetUnlockDrawer();
+    closeFakePage('lockConfig');
+    openDrawer();
   };
 
   return (
@@ -72,7 +133,7 @@ const VisibilityFields: React.FC<VisibilityFieldProps> = ({
           <RadioGroup
             value={String(field.value)}
             onValueChange={(value) =>
-              onTypeChange(value === String(ListType.PRIVATE))
+              onVisibilityChange(value === String(ListType.PRIVATE))
             }
             className="flex flex-col gap-2"
           >
@@ -113,6 +174,55 @@ const VisibilityFields: React.FC<VisibilityFieldProps> = ({
                 <div className="text-black-gray-03">
                   <Trans>讀者必須解鎖，才能查看完整名單</Trans>
                 </div>
+                {isLocked && (
+                  <div className="mt-1 flex flex-col gap-2 rounded-2xl border border-black-text-01 bg-yellow-bright-01 p-4">
+                    <div className="flex items-center gap-2 text-t1 font-semibold">
+                      {lockField.value.method === ListLockMethod.PASSWORD ? (
+                        <div className="flex items-center gap-2.5">
+                          <IconKey width={21} height={21} />{' '}
+                          <Trans>密碼解鎖</Trans>
+                        </div>
+                      ) : (
+                        <div className="flex items-center gap-2.5">
+                          <IconCoin width={19.5} height={19.5} />
+                          <Trans>問題解鎖</Trans>
+                        </div>
+                      )}
+                      <Trans>已設定</Trans>
+                    </div>
+                    <div className="flex flex-col gap-2">
+                      <div className="flex justify-between text-t2 text-black-text-01">
+                        {lockField.value.method === ListLockMethod.PASSWORD ? (
+                          <>
+                            <Trans>
+                              {unlocked}/{limit} 人已解鎖
+                            </Trans>
+                            <div className="">
+                              <Trans>剩餘 {limit - unlocked} 個名額</Trans>
+                            </div>
+                          </>
+                        ) : (
+                          <>
+                            <Trans>共 {count} 則回覆</Trans>
+                            <div className="">
+                              <Trans>{unread} 則未讀</Trans>
+                            </div>
+                          </>
+                        )}
+                      </div>
+                      <Button
+                        onClick={() =>
+                          openFakePage('lockConfig', { lockMethod })
+                        }
+                        variant={ButtonVariant.BLACK}
+                        size={ButtonSize.H40}
+                        shape={ButtonShape.ROUNDED_8PX}
+                      >
+                        <Trans>編輯</Trans>
+                      </Button>
+                    </div>
+                  </div>
+                )}
               </label>
             </div>
             <label
@@ -155,12 +265,22 @@ const VisibilityFields: React.FC<VisibilityFieldProps> = ({
         )}
       </div>
       <LockTypeDrawer />
-      {isEdit && <EditLockTypeDrawer />}
+      {hasLockHistory && <EditLockTypeDrawer onConfirmReset={onConfirmReset} />}
+      <TurnOffLockDrawer
+        onTurnOff={onConfirmTurnOffLock}
+        onCancel={closeTurnOffDrawer}
+      />
+      <SwitchToPrivateDrawer
+        onConfirm={onConfirmSwitchToPrivate}
+        onCancel={closeSwitchToPrivateDrawer}
+      />
       <LockConfigFakePage
         isEdit={isEdit}
+        hasLockHistory={hasLockHistory}
         lock={lockField.value}
         onDone={lockField.onChange}
       />
+      <ReplyListFakePage />
     </div>
   );
 };

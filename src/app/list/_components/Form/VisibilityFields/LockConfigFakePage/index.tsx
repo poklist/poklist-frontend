@@ -21,12 +21,14 @@ type ListLock = z.infer<typeof ListLockSchema>;
 
 interface LockConfigPageProps {
   isEdit: boolean;
+  hasLockHistory: boolean;
   lock: ListLock;
   onDone: (lock: ListLock) => void;
 }
 
 const LockConfigFakePage: React.FC<LockConfigPageProps> = ({
   isEdit,
+  hasLockHistory,
   lock,
   onDone,
 }: LockConfigPageProps) => {
@@ -34,7 +36,7 @@ const LockConfigFakePage: React.FC<LockConfigPageProps> = ({
   const open = isOpen('lockConfig');
   const lockMethod = getPayload('lockConfig')?.lockMethod;
 
-  const { openDrawer } = useDrawer(DrawerIds.LOCK_TYPE_EDIT_DRAWER_ID);
+  const { openDrawer } = useDrawer(DrawerIds.RESET_UNLOCK_DRAWER_ID);
 
   // 題目暫存：null 表示尚未編輯，顯示 form 目前的題目；按「完成」才寫回 form，取消則丟掉
   const [draftQuestion, setDraftQuestion] = useState<string | null>(null);
@@ -60,6 +62,7 @@ const LockConfigFakePage: React.FC<LockConfigPageProps> = ({
   return (
     <Dialog open={open} onOpenChange={onClosePage}>
       <DialogContent
+        onInteractOutside={(event) => event.preventDefault()}
         // For console warning
         aria-describedby={undefined}
         className="flex h-dvh w-full items-center border-0 bg-transparent p-0"
@@ -102,9 +105,10 @@ const LockConfigFakePage: React.FC<LockConfigPageProps> = ({
                 onChange={setDraftQuestion}
               />
             )}
-            {isEdit && (
+            {hasLockHistory && (
               <>
                 <div
+                  data-testid="lock-change-method"
                   onClick={() => openDrawer()}
                   className="flex items-center justify-between text-black-text-01"
                 >
