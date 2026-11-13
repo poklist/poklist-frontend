@@ -7,7 +7,7 @@
 > - `docs/functional-programming.md`：FP 工具與 `useAuth*` 高階 hook
 > - `src/components/README.md`、`src/components/ui/README.md`：元件層級規約
 > - `src/components/Drawer/README.md`、`src/providers/README.md`：Provider 規範
-> - `docs/superpowers/specs/`：設計定案（axios 狀態碼管理等）；`docs/superpowers/plans/`：可執行重構計劃
+> - `docs/superpowers/`、`docs/handoff/`：本機工作筆記，不在 Git；內容以本文件與 `docs/api/` 為準
 > - `docs/api/`：BE 提供的 API 串接文件（目前為名單上鎖 Mock API，見 §13「名單上鎖 API 串接」）
 
 ---
@@ -151,6 +151,7 @@ src/
 └── index.css             # Tailwind layer 與 CSS variable
 
 e2e/                      # Playwright E2E：mock-server / fixtures / specs / smoke
+tests/unit/               # Vitest 單元測試，路徑鏡像 src/（src/a/b.ts → tests/unit/a/b.test.ts）
 playwright.config.ts
 vitest.config.ts
 ```
@@ -224,7 +225,7 @@ src/api/schemas/<name>.ts     # zod schema（createResponseSchema 包 response�
   - 自動建立 `AbortController` 並 `track(controller, '<METHOD> <path>')` 到 [src/lib/abortManager.ts](src/lib/abortManager.ts)（白名單 [src/api/whitelist.ts](src/api/whitelist.ts) 排除）。
   - 注入 `Authorization: Bearer <accessToken>`，token 來自 `useAuthStore.getState().accessToken`。
   - ⚠️ 已知 bug：request error handler 內呼叫 `useStrictNavigationAdapter()` 屬非法 hook 呼叫（攔截器非 React 環境），見 §13。
-- 回應攔截（狀態碼管理，設計稿見 [`docs/superpowers/specs/2026-06-02-axios-status-code-management-design.md`](docs/superpowers/specs/2026-06-02-axios-status-code-management-design.md)），決策順序固定：
+- 回應攔截（狀態碼管理），決策順序固定：
   1. **2xx**：一律不彈 toast；開發環境遇非 200 的 2xx 會 `console.warn`。
   2. **CanceledError**：跳過（`isDebug: true` 時 warn）。
   3. **401（獨立優先，不可被白名單繞過）**：toast `StatusErrorMessageI18n[401]` → `logout()` → `window.location.href = '/'`（清空 zustand persist）。
@@ -379,7 +380,7 @@ export const useXxx = (options: UseXxxOptions) => {
 - **字體**：`Inter`（latin）與 `Noto Sans` 透過 `next/font/google` 注入為 CSS variable，自訂 fontSize token：`h1 / h2 / t1 / t2 / t3`。
 - **Button**（[src/components/ui/button.tsx](src/components/ui/button.tsx)）：使用 enum (`ButtonVariant / Size / Shape`)，請優先使用 enum 而非字串字面值，預設 `WHITE / MD / ROUNDED_FULL`。
 - **Drawer 樣式**：底部 vaul drawer 包了一層 `DrawerComponent`（含 header / subHeader / content / startFooter / endFooter / close）。任何「下拉抽屜」UI 請走 `DrawerComponent` + `DrawerIds` 註冊，不要直接動 vaul。
-- **FakePage**：模仿全頁 modal 的 dialog，目前四種 type：`editField`（編輯單一欄位，textarea 或圖片裁切）、`listSelector`（建立 idea 時挑 list）、`lockConfig`（設定名單上鎖方式，進行中）、`replyList`（問答上鎖的回覆列表，疊在 `lockConfig` 上，進行中）。頁面可以疊加：Provider 記錄已開啟的頁面清單，`closeFakePage(pageType)` 只關指定的那一頁（`pageType` 必填，2026-11-10）。要新增「假頁」請在 `FakePageType` union 加入、更新 `FakePagePayloadMap`，並在 `FakePageProvider` 的 `emptyPayloads` 補上該頁的 `null`。開啟用 `openFakePage('xxx', payload)`（payload 型別依 pageType 檢查），讀取用 `getPayload('xxx')`（回傳 `FakePagePayloadMap['xxx'] | null`）。開啟時沒帶 payload 會清空該頁的 payload。
+- **FakePage**：模仿全頁 modal 的 dialog，目前四種 type：`editField`（編輯單一欄位，textarea 或圖片裁切）、`listSelector`（建立 idea 時挑 list）、`lockConfig`（設定名單上鎖方式，進行中）、`replyList`（問答上鎖的回覆列表，疊在 `lockConfig` 上，進行中）。頁面可以疊加：Provider 記錄已開啟的頁面清單，`closeFakePage(pageType)` 只關指定的那一頁（`pageType` 必填，2026-11-10）。被疊在下面的頁面，`DialogContent` 要加 `onInteractOutside={(e) => e.preventDefault()}`：觸控時 Radix 在 document `click` 才判斷「點到外面」，上層頁面已先關掉，下層會誤判而關閉。要新增「假頁」請在 `FakePageType` union 加入、更新 `FakePagePayloadMap`，並在 `FakePageProvider` 的 `emptyPayloads` 補上該頁的 `null`。開啟用 `openFakePage('xxx', payload)`（payload 型別依 pageType 檢查），讀取用 `getPayload('xxx')`（回傳 `FakePagePayloadMap['xxx'] | null`）。開啟時沒帶 payload 會清空該頁的 payload。
 - **SwitchWithIcon**（[src/components/SwitchWithIcon](src/components/SwitchWithIcon/index.tsx)）：以 cva 定義 `SwitchVariant`（`DARK` / `LIGHT`）與 `SwitchSize`（`SM` / `MD`），Root 與 Thumb 各一組 cva、共用同一組 variant；預設 `DARK / MD`。
 - **Collapsible**（[src/components/ui/collapsible.tsx](src/components/ui/collapsible.tsx)）：`CollapsibleContent` 內建展開／收合高度動畫（`--radix-collapsible-content-height`）。**間距（padding / margin / gap）請放在 Content 內層 wrapper**，不要放在 Content 本身或父層 gap，否則收合結束時會多跳一下。
 - **動畫 a11y 規約**：
@@ -437,17 +438,17 @@ export const useXxx = (options: UseXxxOptions) => {
 
 ## 11. 工程實踐 / Style
 
-- **ESLint**：**【2026-10-28 統一】** 唯一設定為 **`eslint.config.mjs`**（flat config；`.eslintrc.json` 已刪除）。`npm run lint` = `eslint src`，CI 跑 `npm run lint -- --max-warnings=27`。
+- **ESLint**：**【2026-10-28 統一】** 唯一設定為 **`eslint.config.mjs`**（flat config；`.eslintrc.json` 已刪除）。`npm run lint` = `eslint src tests`，CI 跑 `npm run lint -- --max-warnings=27`。
   - 內容：`next/core-web-vitals` + `next/typescript`（經 FlatCompat）+ `@eslint/js` recommended + `typescript-eslint` recommendedTypeChecked + react / react-hooks recommended，另加 `no-console: ['error', { allow: ['warn', 'error'] }]`，以及 `no-restricted-imports`（禁止 `./`、`../` 開頭的 import，強制 `@/` 絕對路徑；`src/api/{contracts,schemas}/index.ts` 的 `export * from './x'` barrel 例外）。
   - 範圍限定 `src`：`parserOptions.project` 只指向 `tsconfig.app.json`（include `src`），對 `e2e/` 或根目錄設定檔跑會出現 parsing error，**不要**改成 `eslint .`。
   - `next.config.mjs` 的 `eslint.ignoreDuringBuilds: true` 表示 build 不跑 lint — 仍需 `npm run lint`。
   - ⚠️ 已知問題：設定中 `prettier: eslintPluginPrettierRecommended` 把「config 物件」當成 plugin 註冊，因此 `prettier/prettier` 規則**實際上沒有啟用**，格式只靠 `npm run format` / 編輯器。要啟用需改成把 `eslintPluginPrettierRecommended` 放進 config 陣列，並先確認現有程式碼格式。
 - **TypeScript**：`strict`、`allowImportingTsExtensions`、`noUnusedLocals/Parameters`、別名 `@/* → ./src/*`。
   - ⚠️ **型別檢查一律用 `npm run tsc`**（= `tsc --noEmit -p tsconfig.app.json`，CI 相同）。**不要**直接跑 `npx tsc --noEmit` 或 `-p .`：根目錄 `tsconfig.json` 只有 `files: []` + `references`，結果只會出現數百個 TS6305，**完全沒有檢查型別**，容易誤以為「沒有錯誤」。
-  - `tsconfig.app.json` 的 include 不含 `e2e/`，所以直接對 `e2e/**/*.ts` 跑 `npx eslint` 會出現 `parserOptions.project` parsing error。這是既有設定，不是程式錯誤；`npm run lint`（`eslint src`）不掃 `e2e/`。
+  - `tsconfig.app.json` 的 include 不含 `e2e/`，所以直接對 `e2e/**/*.ts` 跑 `npx eslint` 會出現 `parserOptions.project` parsing error。這是既有設定，不是程式錯誤；`npm run lint`（`eslint src tests`）不掃 `e2e/`。
 - **Prettier**：semi + singleQuote + trailingComma es5 + tailwindcss plugin。
 - **Commit 風格**（git log 觀察）：`feat:`、`fix:`、`chore:`、`style:` 前綴 + 中英文混合；feature PR 多由 `feature/*` 分支合進 `dev`。`main / uat / dev` 三軌存在。
-- **自動化測試**：**【✅ 2026-08-18 更新】** 已有 Playwright E2E + Vitest 單元測試套件，詳見 §13「測試」項；`package.json` 含 `test:e2e` / `test:unit` 等 script。改動除 type check (`npm run tsc`) 外，應同步跑 `npm run test:unit` 與相關 E2E spec。
+- **自動化測試**：**【✅ 2026-08-18 更新】** 已有 Playwright E2E + Vitest 單元測試套件，詳見 §13「測試」項；`package.json` 含 `test:e2e` / `test:unit` 等 script。改動除 type check (`npm run tsc`) 外，應同步跑 `npm run test:unit` 與相關 E2E spec。單元測試放 `tests/unit/`，路徑鏡像 `src/`，一個測試檔對應一個原始檔（方便日後做變異測試）。
 - **函式式工具**：`lib/functional.ts` 提供 `pipe / compose / throttle / debounce / memoize` 等，已用於 ImageCropper zoom 節流、`useAuthPipe`。`docs/functional-programming.md` 內列出建議寫法 — **新增複雜行為時優先組合既有工具，不要再寫一個版本**。
 
 ---
@@ -482,7 +483,7 @@ export const useXxx = (options: UseXxxOptions) => {
 
 - **legacy API hooks 死碼清除**：**【✅ 已完成 — 2026-07-31 驗證】** `src/hooks/mutations/` 8 支 legacy mutation、`mutations/useFollowAction.ts`、`mutations/useLikeAction.ts`、`hooks/queries/infinite/useInfiniteLists.ts` 皆已刪除；`src/constants/queryKeys.ts` 亦已移除。現存結構：`hooks/mutations/` 只剩 `followUnfollow/` + `optimistic/`，`hooks/queries/` 只剩 `publish/`。
   - **殘留**：**【✅ 已刪除 — 2026-10-28】** `src/constants/apiPath.ts`（零引用孤兒檔），同批刪除零引用的 `components/ui/form.tsx`、`components/ui/switch.tsx`（switch 已由 `SwitchWithIcon` 取代）與空資料夾 `components/NavigationEvents/`。
-- **like/unlike 接線**：**【✅ 已完成】** `list/[id]/client.tsx` 已切至 `mutations/optimistic/likeUnlike/useLikeAction`，舊檔已刪。計劃稿：[`docs/superpowers/plans/2026-06-12-refactor-use-like-action.md`](docs/superpowers/plans/2026-06-12-refactor-use-like-action.md)。
+- **like/unlike 接線**：**【✅ 已完成】** `list/[id]/client.tsx` 已切至 `mutations/optimistic/likeUnlike/useLikeAction`，舊檔已刪。
 - **`followUnfollow/schema.ts` 的 `||` 死碼 bug**：**【✅ 已修】** 該檔已無 `||` 用法。
 - **axios request error handler 非法 hook 呼叫**：**【✅ 已修】** 改為 `window.location.href = '/'`。
 - **useFollowAction 剩餘債**：
@@ -509,7 +510,7 @@ export const useXxx = (options: UseXxxOptions) => {
   - `src/components/README.md` 的範例仍是 Pages Router 時期的 `src/pages/Home/Components/...`，整理時一併更新。
 - **Pages Router 殘骸**：README 仍提到 Pages Router 遷移；目前 `src/` 已純 App Router，可清理舊文檔。
 - **`useScrollPosition` 與 sessionStorage 滾動還原**：`useScrollPosition` hook（`src/hooks/useScrollPosition.ts`）已提供完整的 save / restore / clear 機制，以 `keyPrefix_pathname` 作為 key。**現況問題**：`src/components/Header/index.tsx` 與 `BackToUserHeader.tsx` 直接呼叫 `sessionStorage.removeItem('scroll_pos_/discovery')`（硬編字串），而非透過 hook 的 `clearScrollPosition`，導致若 keyPrefix 日後變更將造成遺留 key。**架構不需大改**，僅需把 Header 元件改用 hook 回傳的 `clearScrollPosition`，或將 key 建構邏輯匯出為共用 util，即可解決。Discovery ListSection 的 `SESSION_VISITED_KEY`（是否曾訪問的 flag）是獨立用途，不在此問題範圍內。
-- **HTTP 狀態碼提示文案**：**【✅ 已實作 — commit `3d3db3e`】** 設計稿見 [`docs/superpowers/specs/2026-06-02-axios-status-code-management-design.md`](docs/superpowers/specs/2026-06-02-axios-status-code-management-design.md)。狀態碼相關的「是否彈 toast / 彈什麼文案」已收斂到 axios response 攔截器：per-(API + 狀態碼) 靜默白名單（中央 registry + regex matcher）+ 狀態碼文案表 + fallback 三段決策；401 獨立優先處理不可被白名單繞過；2xx 一律不彈 toast。
+- **HTTP 狀態碼提示文案**：**【✅ 已實作 — commit `3d3db3e`】** 狀態碼相關的「是否彈 toast / 彈什麼文案」已收斂到 axios response 攔截器：per-(API + 狀態碼) 靜默白名單（中央 registry + regex matcher）+ 狀態碼文案表 + fallback 三段決策；401 獨立優先處理不可被白名單繞過；2xx 一律不彈 toast。
 - **ts-rest mutation 接線**：**【✅ 已完成】** 所有消費端已切到 `hooks/api/*` 新 hook（含 follow/unfollow：`usePostFollowUser` / `usePostUnfollowUser`，由 `useFollowAction` 編排）。剩餘工作即上方「legacy API hooks 死碼待刪」。
 - **✅ 點擊型社交動作 race condition**（Like / Follow）— **已於 commit `4bc46a9` 解決**：
   - **原問題**：debounce 期間連點 Like→Unlike（或 Follow→Unfollow），會以「toggle 前的 optimistic 值」決定送哪個 API，導致對未曾 Like / Follow 的目標送出 Unlike / Unfollow → 後端回錯。
@@ -517,14 +518,14 @@ export const useXxx = (options: UseXxxOptions) => {
   - **保留紀錄供未來類似 optimistic + debounce 場景參考**。
 - **`prop-types`**：依然在 dependencies，但 TS 接管後僅留作 transitive — 可考慮移除。
 - **Storybook**：尚未引入，元件文件靠 README + 程式碼。
-- **測試**：**【✅ 已建立 — 2026-08-18；2026-10-22 更新數量】** Playwright E2E（`e2e/`，mobile-chrome + mobile-safari + smoke 三 project；12 個 spec 檔、45 條確定性測試 × 雙引擎 = 90 條，加上 `flags-off` 1 條，共 91 條（2026-11-10））+ 5 條煙霧 spec + Vitest 單元測試（`src/**/*.test.ts`，16 檔 96 個測試（2026-11-06））。2026-10 新增 `list-form-expand`（含 reduced-motion 驗證）/ `list-visibility` 兩個 spec。2026-10-27：開啟上鎖改為會打開 `LockTypeDrawer` 後，`list-visibility` 的 V3 / V4 已依新流程改寫（V3 驗證關閉 drawer 時上鎖自動關回去；V4 驗證選了上鎖方式並按「完成」後再選隱藏會關閉上鎖）。2026-10-29 新增 V6：在 `LockConfigFakePage` 取消（Esc /「取消」）時上鎖維持「關」；按「完成」才變開。2026-11-02（階段 3）：V1 / V3 改為「設定過程中開關仍為關」；新增 V7（題目 1～60 code point 才能儲存、字數顯示）、V8（儲存後草稿的 `lock` 為去空白後的題目）、V9 / V10（還原草稿會還原 `lock` / `type`）。testid：drawer 卡片 `lock-type-password` / `lock-type-question`，設定頁完成鈕 `lock-config-done`，題目 `lock-question-input` / `lock-question-count`。2026-10-30 新增的 `ResetTitleWarnDrawer`（testid `title-reset` / `title-keep`）**尚無 e2e 覆蓋**。2026-11-06：`list-edit` 新增編輯模式的上鎖選項（testid `lock-change-method`、`reset-unlock-confirm`）；mock 的名單 100 上過鎖，101 沒有。2026-11-02：`list-create` / `list-edit` 加上 request body 斷言，確認送舊 `/lists` API 時沒有 `lock`（mock server 不檢查多餘欄位，所以要在 spec 內斷言）。**Feature toggle 關閉版本（2026-11-02）**：環境變數在 build 時寫死，所以 e2e 另外 build 一份 toggle 全部關閉的版本（`NEXT_DIST_DIR=.next-flags-off`，port 8081），由 `flags-off` project 跑 `e2e/flags-off/`（F1：toggle 關閉時，建立名單送舊 `/lists` 且沒有 `lock`，上鎖 UI 照常顯示）。主 build 的 `list-create` 則斷言送 `/creator/lists`，兩者合起來驗證兩份 build 的 toggle 值不同。主 build（port 8080）開啟全部 toggle。webServer 依序啟動，所以兩份 build 不會同時寫 Lingui 檔；完整 e2e 因此多一次 build。本機跑 e2e 前要確認 8080 **和 8081** 都沒有其他服務。`next build` 會自動把 `.next-flags-off/types/**/*.ts` 加進 `tsconfig.json` 的 `include`，這行已經 commit，不要刪掉，否則每次跑 e2e 都會再出現 diff。CI（`.github/workflows/ci.yml`）的 `verify` job 跑 tsc / lint / unit / build，另有 `e2e` job 跑確定性層（PR 與 push to dev 皆觸發）。
+- **測試**：**【✅ 已建立 — 2026-08-18；2026-10-22 更新數量】** Playwright E2E（`e2e/`，mobile-chrome + mobile-safari + smoke 三 project；12 個 spec 檔、47 條確定性測試 × 雙引擎 = 94 條，加上 `flags-off` 1 條，共 95 條（2026-11-13））+ 5 條煙霧 spec + Vitest 單元測試（`tests/unit/**/*.test.ts`，19 檔 96 個測試（2026-11-13））。2026-10 新增 `list-form-expand`（含 reduced-motion 驗證）/ `list-visibility` 兩個 spec。2026-10-27：開啟上鎖改為會打開 `LockTypeDrawer` 後，`list-visibility` 的 V3 / V4 已依新流程改寫（V3 驗證關閉 drawer 時上鎖自動關回去；V4 驗證選了上鎖方式並按「完成」後再選隱藏會關閉上鎖）。2026-10-29 新增 V6：在 `LockConfigFakePage` 取消（Esc /「取消」）時上鎖維持「關」；按「完成」才變開。2026-11-02（階段 3）：V1 / V3 改為「設定過程中開關仍為關」；新增 V7（題目 1～60 code point 才能儲存、字數顯示）、V8（儲存後草稿的 `lock` 為去空白後的題目）、V9 / V10（還原草稿會還原 `lock` / `type`）。testid：drawer 卡片 `lock-type-password` / `lock-type-question`，設定頁完成鈕 `lock-config-done`，題目 `lock-question-input` / `lock-question-count`。2026-10-30 新增的 `ResetTitleWarnDrawer`（testid `title-reset` / `title-keep`）**尚無 e2e 覆蓋**。2026-11-06：`list-edit` 新增編輯模式的上鎖選項（testid `lock-change-method`、`reset-unlock-confirm`）；mock 的名單 100 上過鎖，101 沒有。2026-11-13：V4 改為經確認 drawer（testid `switch-to-private-confirm`）才切成隱藏；新增 V12（按 `switch-to-private-cancel` 時維持公開與上鎖）。2026-11-02：`list-create` / `list-edit` 加上 request body 斷言，確認送舊 `/lists` API 時沒有 `lock`（mock server 不檢查多餘欄位，所以要在 spec 內斷言）。**Feature toggle 關閉版本（2026-11-02）**：環境變數在 build 時寫死，所以 e2e 另外 build 一份 toggle 全部關閉的版本（`NEXT_DIST_DIR=.next-flags-off`，port 8081），由 `flags-off` project 跑 `e2e/flags-off/`（F1：toggle 關閉時，建立名單送舊 `/lists` 且沒有 `lock`，上鎖 UI 照常顯示）。主 build 的 `list-create` 則斷言送 `/creator/lists`，兩者合起來驗證兩份 build 的 toggle 值不同。主 build（port 8080）開啟全部 toggle。webServer 依序啟動，所以兩份 build 不會同時寫 Lingui 檔；完整 e2e 因此多一次 build。本機跑 e2e 前要確認 8080 **和 8081** 都沒有其他服務。`next build` 會自動把 `.next-flags-off/types/**/*.ts` 加進 `tsconfig.json` 的 `include`，這行已經 commit，不要刪掉，否則每次跑 e2e 都會再出現 diff。CI（`.github/workflows/ci.yml`）的 `verify` job 跑 tsc / lint / unit / build，另有 `e2e` job 跑確定性層（PR 與 push to dev 皆觸發）。
   - **E2E 架構**：本地 mock API server（`e2e/mock-server/`）依 `Authorization` header 分歧回應，因為 **Server Component 的 SSR fetch 走 Node 端，Playwright 的 `page.route()` 攔不到**——這是重現 §13.1 hydration 汙染的唯一方法。
   - **繞過 Google OAuth**：storageState 直接注入 `auth-storage` / `user-storage`（見 `e2e/fixtures/auth.ts`），**絕不自動化 Google 登入 UI**。
   - ⚠️ **本機跑 E2E 前先關掉 `npm run dev`**：`playwright.config.ts` 本機設 `reuseExistingServer: true`，若 8080 已有 dev server，Playwright 會直接沿用它（連的是真實後端、不是 mock API 4000），依賴 mock 資料的 spec（`list-create` / `list-edit` / `private-list` 等）會大量失敗，看起來像程式壞掉。CI 不受影響（CI 不 reuse）。
   - **煙霧層現況**：5 條打真 dev BE 的契約回歸測試，靠 `E2E_ACCESS_TOKEN`（另需 `E2E_SMOKE_BASE_URL` / `E2E_SMOKE_USER_CODE` / `E2E_SMOKE_LIST_ID` / `NEXT_PUBLIC_API_BASE_URL` 等 CI secret）啟用；secret 缺席時自動 skip 而非 red。**目前尚未配置真後端憑證，煙霧層恆為 skip，尚未針對真實後端執行過**。
   - **可測性改動**：`src/lib/seo/fetchers.ts` 的 revalidate 改為 `SEO_FETCH_REVALIDATE` 環境變數驅動（預設仍 300，prod 行為不變）。
   - **選擇器契約**：`data-testid`（`like-button` / `follow-button` / `idea-row` / `list-row` / `hero` / `list-preview` / `links-block` / `not-found` 等）+ `data-liked` / `data-following` / `data-idea-id` / `data-list-id`。**新增 UI 時請一併補**，否則 E2E 無法斷言。
-  - **已知缺口**：ideas 樂觀更新的雙軌快取同步（optimistic dual-cache sync）只在單元層（Task 12）覆蓋，未被 E2E 涵蓋（`IdeaDrawerContent` 的刪除入口沒有 `data-testid`，只有 `<Trans>` 文案與 Radix ARIA role）；reorder 頁、ListSelector 流程、profile 無限捲動、settings、official、idea-create、list-create 等頁面尚無自動化測試。細節見 `docs/superpowers/plans/2026-07-31-test-infrastructure.md` 的「後續建議」章節。
+  - **已知缺口**：ideas 樂觀更新的雙軌快取同步（optimistic dual-cache sync）只在單元層覆蓋，未被 E2E 涵蓋（`IdeaDrawerContent` 的刪除入口沒有 `data-testid`，只有 `<Trans>` 文案與 Radix ARIA role）；reorder 頁、ListSelector 流程、profile 無限捲動、settings、official、idea-create、list-create 等頁面尚無自動化測試。
 - **ts-rest mutation 遷移收尾紀錄**（細項狀態）：
   - **POST/PUT/DELETE contract**：✅ 全數完成，含 reorder（`usePostIdeasReorder`，快取策略 = `invalidateQueries`，理由見 §4.5「無限捲與順序變更不相容」）與 follow/unfollow（query param 形式 `POST /follow?userID=`）。
   - **快取更新 helper 抽離**：✅ 完成 — `hooks/api/utils.ts` 的 `updateEntryCaches` / `updateInfiniteCaches`（§4.5）。後續強化選項：泛型補 `TStatus extends keyof T['responses'] = 200`，防未來 contract 增加錯誤 response 定義時 updater 參數變 union。
@@ -539,8 +540,8 @@ export const useXxx = (options: UseXxxOptions) => {
     - 打開開關：只把 `type` 改成公開並開 `LockTypeDrawer`，**不改 `lock`**，所以選方式和設定的過程中開關仍顯示「關」。
     - `LockTypeDrawer`（選密碼／問答，經 `openFakePage('lockConfig', { lockMethod })` 帶入）→ `LockConfigFakePage`（設定內容）。
     - 設定頁的題目是暫存 state（`draftQuestion`，null 表示沿用 form 目前的題目）。「完成／儲存設定」用 `ListLockSchema.safeParse` 驗證，通過才 `onDone(lock)` 寫入 form；不通過時按鈕 disabled。取消（Esc /「取消」）只丟掉暫存，`lock` 不變。原本的 `onCancel` 已移除。
-    - 關掉開關或選隱藏：`lock` 改成 none（上鎖與隱藏互斥）。
-    - `QuestionConfigSection`：受控輸入框（testid `lock-question-input`），字數 `n/60`（`lock-question-count`，去首尾空白後以 code point 計算）。建立時回覆數顯示 0、「回覆列表」disabled；編輯時暫用示意值，等階段 5 接 API。
+    - 關掉開關或選隱藏：已上鎖時先開確認 drawer（關開關 `TurnOffLockDrawer`、選隱藏 `SwitchToPrivateDrawer`），確認後 `lock` 才改成 none（上鎖與隱藏互斥）；取消則都不變。
+    - `QuestionConfigSection`：受控輸入框（testid `lock-question-input`），字數 `n/60`（`lock-question-count`，去首尾空白後以 code point 計算）。建立時回覆數顯示 0；「回覆列表」開 `replyList`（testid `lock-reply-list`）；編輯時暫用示意值，等階段 5 接 API。
     - 還原草稿時一併還原 `type` 與 `lock`（`useListDraft`）。
     - 送出時 `ListBaseSchema.parse` 會去掉 `lock`，所以舊 API 不會收到。
     - 已知缺口（等設計稿）：建立名單時，設定完成後沒有入口回到設定頁修改題目，只能關掉再打開開關。
@@ -694,20 +695,21 @@ const likeCount = useMemo(() => {
 - 2026-07-03：`feature/free-demo` 期間更新 — §4.4 標記 followUnfollow 模組化完成（optimistic/ 共用 infra + likeUnlike 待接線）、新增 §4.6 發佈額度模式（fetchQuery 命令式查詢 / useQueries 動態 N 筆 / Drawer open-time 鎖定）、§13 更新盤點（queries/ 死碼已清、axios hook bug 已修、schema `||` bug、like 接線最後一哩、SignupDrawer dead prop）。工作交接紀錄見 `docs/handoff/`。
 - 2026-07-30：新增 §13.1 SSR hydration 身分汙染（follow / like 兩起同源 bug 的成因、修法與通用規則）、§13.2 ideas 資料源雙軌（`GET /ideas` 上線後的職責切分與 cache 手術重複債）、§13.3 dev-only console 噪音（Strict Mode 雙打 / CancelledError / Grammarly）；§13 內 `GET /{userCode}/lists` 缺 `totalElements` 一項標記已解除（後端已補，infinite scroll 上線）。
 - 2026-07-31：§13 對照現況重新校準 — legacy 死碼清除、like/unlike 接線、`followUnfollow/schema.ts` 的 `||` bug 三項經 grep 驗證**早已完成**，改標 ✅（原文件仍列為待辦，會誤導接手者）。新增三項債務：`constants/apiPath.ts` 零引用孤兒檔、`useCheckCreateQuota` 的 N+1 序列 await、`isLiked`/`isFollowing` 的型別謊言（schema 說 `boolean` 但 hydration 塞 `undefined`，且 store 把未知塌縮成 `false`）。§13.1 補「依附 per-user 欄位的計數」衍生 bug：`likeCount` 因 ref 轉換偵測誤把 seed 當用戶操作而多算，改為衍生值修正；並新增通用規則第 5 條（計數禁用 ref 累加）＋ 驗證 follow 計數走 mutation cache 手術路徑不受影響。
-- 2026-08-18：建立測試基礎建設 —— Playwright E2E（mock API server 依 Authorization 分歧、storageState 繞過 Google OAuth、mobile-chrome/mobile-safari 雙 project + smoke project）+ Vitest 單元測試（offset / cache helper / path matcher / zod 契約 / 額度 / like store，7 檔 51 個測試）+ GitHub Actions CI（tsc / lint / unit / build / e2e）。過程中連帶修正兩個真實安全與正確性問題：mock server 曾把登出用戶的空 `Bearer` header 誤判為已登入、造成 private list 對匿名洩漏；mock 的 list type 慣例與真實 `ListType` enum（PUBLIC=1/PRIVATE=2）不符，導致私人小眼睛圖示永遠測不到。§13 測試項與 §3 目錄結構同步更新。計劃稿見 `docs/superpowers/plans/2026-07-31-test-infrastructure.md`（含「後續建議」章節，記錄尚未涵蓋的頁面與待辦項）。
+- 2026-08-18：建立測試基礎建設 —— Playwright E2E（mock API server 依 Authorization 分歧、storageState 繞過 Google OAuth、mobile-chrome/mobile-safari 雙 project + smoke project）+ Vitest 單元測試（offset / cache helper / path matcher / zod 契約 / 額度 / like store，7 檔 51 個測試）+ GitHub Actions CI（tsc / lint / unit / build / e2e）。過程中連帶修正兩個真實安全與正確性問題：mock server 曾把登出用戶的空 `Bearer` header 誤判為已登入、造成 private list 對匿名洩漏；mock 的 list type 慣例與真實 `ListType` enum（PUBLIC=1/PRIVATE=2）不符，導致私人小眼睛圖示永遠測不到。§13 測試項與 §3 目錄結構同步更新。
 - 2026-10-22：`feature/new-list-type` 期間更新 — 新增 `docs/api/`（名單上鎖 Mock API 文件）與 §13「名單上鎖 API 串接」現況；`ListType` / `ListLockMethod` 拆分原則寫入 §12；§4.1 / §8 FakePage 改為三種 type，§13 記錄 payload 型別債；§8 新增 SwitchWithIcon variants、Collapsible 間距規則、動畫 a11y 規約（`motion-safe:` 優先、焦點管理、`key` 重播）；§11 標註型別檢查必須用 `npm run tsc`（`tsc -p .` 只會出現 TS6305、不檢查型別）及 e2e 檔的 ESLint parsing error；§13 測試數量更新，並補「本機跑 E2E 前先關 dev server」陷阱；§2 Contract 列移除過時的「共存中」。
 - 2026-10-27：FakePage payload 型別修正（`getPayload` + 每頁一份 payload，§4.1 / §8 / §12 / §13 同步）；Node 版本改為 `.nvmrc` 的 22.23.4，並記錄舊版 Node 下 `npm run tsc` 假通過的陷阱（§1 / §14）。
 
 - 2026-10-28：資料夾結構盤點 — §3 修正 `[userCode]` 與 `/user` 的實際結構（profile 編輯路由為 `/user/edit`，§6.1 同步）、補上 `_layout` / `_shared` 分開、`JsonLd`、`SwitchWithIcon`、`useAsyncAction`、`useLogin`、`lib/{queryClient, identity, seo}`、`types/response.ts`；constants 移除已不存在的 queryKeys / apiPath。§11 記錄 ESLint 雙設定（CI 只跑 `.eslintrc.json`，69 條規則未被 CI 檢查）。§13：apiPath / ui/form / ui/switch / NavigationEvents 刪除標 ✅；扁平 .tsx 清單補齊為 8 處；新增 ESLint 雙設定（#1）、圖片放置規則（#7）、元件結構整理含巢狀 `_components` 規則（#8）、Provider 位置（#9）待辦。同日將 ESLint 統一為 `eslint.config.mjs`（§11 改寫、§13 標 ✅）。
-- 2026-10-29：#8 巢狀 `_components` 全部攤平（§3 目錄樹與 Component Folder Rules 第 5 條、§13 #8 標 ✅、§13.1 / §13.2 連結路徑同步）；相對路徑 import 改為 `@/`，並以 ESLint `no-restricted-imports` 強制（§11、§15）；Lingui catalog 重新 extract。§13 測試補 V6。名單上鎖串接計劃見 `docs/superpowers/plans/2026-10-29-list-lock-integration.md`。
+- 2026-10-29：#8 巢狀 `_components` 全部攤平（§3 目錄樹與 Component Folder Rules 第 5 條、§13 #8 標 ✅、§13.1 / §13.2 連結路徑同步）；相對路徑 import 改為 `@/`，並以 ESLint `no-restricted-imports` 強制（§11、§15）；Lingui catalog 重新 extract。§13 測試補 V6。
 - 2026-10-30：§3 / §13 補上 `ResetTitleWarnDrawer`（套用範例主題前確認取代已輸入的 title）、分類 pill 改為只在 `isEdit` 顯示、上鎖編輯模式骨架（`isEdit` 傳遞、`EditLockTypeDrawer`、`LOCK_TYPE_EDIT_DRAWER_ID` / `RESET_TITLE_WARN_DRAWER_ID`）；`DrawerComponent` 關閉鈕改用 `IconClose`。§13 #8 修正「元件私有 hook」與 §3 第 5 條一致；測試項標註新 UI 尚無 e2e。
 - 2026-11-02：上鎖階段 2：`ListFormSchema` 拆出 `ListBaseSchema`（舊 API／`idea/create/list` 用，不含 lock），新增 `ListLockSchema`（discriminatedUnion，question code point 1～60）與 `LOCK_QUESTION_MAX_LENGTH`；list Form 送舊 API 前以 `ListBaseSchema.parse` 去掉 lock（§3、§7、§13 同步）；`list-create` / `list-edit` e2e 加上「body 不含 lock」的斷言。
-- 2026-11-02：本文件由 `docs/ARCHITECTURE.md` 改名為 `docs/AGENTS.md`。仍在使用的引用（README、API 文件、上鎖串接計劃、`eslint.config.mjs` 與 `src` 內的註解）已一併更新。歷史紀錄（`docs/superpowers/plans/2026-07-31-test-infrastructure.md`、`docs/handoff/`）保留舊名，不另外修改。
-- 2026-11-02：本文件再由 `docs/AGENTS.md` 搬到 repo 根目錄 `AGENTS.md`，讓 coding agent 工具能自動讀到。文件內的相對連結改為以根目錄為基準（`../src/` → `src/`、`api/` → `docs/api/`、`superpowers/` → `docs/superpowers/`）；§3 Component Folder Rules 的來源連結改指 `src/components/README.md`（原本指向 `docs/README.md` 文檔索引，是錯的）。README、API 文件、上鎖串接計劃的引用同步更新。
+- 2026-11-02：本文件由 `docs/ARCHITECTURE.md` 改名為 `docs/AGENTS.md`。仍在使用的引用（README、API 文件、上鎖串接計劃、`eslint.config.mjs` 與 `src` 內的註解）已一併更新。歷史紀錄保留舊名，不另外修改。
+- 2026-11-02：本文件再由 `docs/AGENTS.md` 搬到 repo 根目錄 `AGENTS.md`，讓 coding agent 工具能自動讀到。文件內的相對連結改為以根目錄為基準（`../src/` → `src/`、`api/` → `docs/api/`）；§3 Component Folder Rules 的來源連結改指 `src/components/README.md`（原本指向 `docs/README.md` 文檔索引，是錯的）。README、API 文件、上鎖串接計劃的引用同步更新。
 - 2026-11-02：上鎖階段 3 — 開關改為只反映 form 的 `lock`（設定中仍為關）、設定頁題目暫存與 `ListLockSchema` 驗證、`QuestionConfigSection` 受控輸入與 `n/60`、建立時回覆數 0 與「回覆列表」disabled、`LockTypeDrawer` 文案改 `<Trans>` 並移除 `onCancel`、草稿還原 `type` / `lock`；e2e V1 / V3 改寫、新增 V7～V10（§3、§13 同步）。
 - 2026-11-02：新增 feature toggle 機制：`src/constants/features.ts` 的 `FEATURES.listLock`，由 `NEXT_PUBLIC_FEATURE_LIST_LOCK` 控制，只有 `'true'` 算開啟。e2e 新增 toggle 關閉的第二份 build（`.next-flags-off`、port 8081）和 `flags-off` project，CI 一併執行；`next.config.mjs` 的 `distDir` 可用 `NEXT_DIST_DIR` 指定（§10、§13、§15 同步）。
 - 2026-11-03：上鎖階段 4 — 建立名單接上 `POST /creator/lists`（schema / contract / query、`toCreatorListPostRequest`、`usePostCreatorList` 與 `Idempotency-Key`、共用的 `applyCreatedListToCaches`），由 `FEATURES.listLock` 切換；Form 的 `completedCallback` 改傳完整表單值。e2e mock 新增 `/creator/lists`，`list-create` 改斷言新 API 並新增問答上鎖建立測試（§10、§13 同步）。
 - 2026-11-05：上鎖階段 5a — 編輯名單的 API 層：`GET` / `PATCH /creator/lists/:listId` 與名額 +10 的 schema / contract / query / hooks，`toListFormLock`、`toCreatorListPatchRequest`，從 `usePutList` 抽出共用的 `applyUpdatedListToCaches`，題目規則抽成 `LockQuestionSchema`。`ListFormSchema` 加上 `resetReadPermissions`（預設 `false`），PATCH 從表單值讀，只重置資格時送原方法。編輯頁尚未接上（§7、§13 同步）。單元測試 16 檔 92 個。
 - 2026-11-10：FakePage 改為可疊加（`openedPages` 清單），`closeFakePage(pageType)` 只關指定的頁面且 `pageType` 必填；新增 `replyList`（問答設定頁的回覆列表，疊在 `lockConfig` 上）；`list-visibility` 新增 V11（§4.1、§8、§12、§13 同步）。
 - 2026-11-06：上鎖階段 5a-3 — 編輯頁在 `FEATURES.listLock` 開啟時用 `useGetCreatorList` 判斷名單是否上過鎖（`hasLockHistory`），從未上過鎖就不顯示 `EditLockTypeDrawer` 和「更換上鎖方式／解除上鎖」；drawer 的選擇改為暫存，每次打開都是「保留」，按確認才寫入 form；這支 GET 的 404 加進 `STATUS_WHITELIST`；e2e mock 新增 `GET /creator/lists/:id`，`list-edit` 新增 3 條（§13 同步）。單元測試 16 檔 96 個。
+- 2026-11-13：單元測試搬到 `tests/unit/`（鏡像 `src/`，`contract.test.ts` 依 schema 拆成 4 檔），`tsconfig.app.json` / `lint` / `vitest.config.ts` 同步；`docs/handoff/`、`docs/superpowers/` 移出 Git，本文件不再連到這兩個資料夾。上鎖：關閉上鎖與切成隱藏前的確認 drawer、疊加 FakePage 的觸控誤關修正、e2e V12（§3、§8、§11、§13 同步）。
 若日後架構大幅變動，請以 PR 更新本文件對應段落，避免被當作可信來源誤導後續工程師或 AI。

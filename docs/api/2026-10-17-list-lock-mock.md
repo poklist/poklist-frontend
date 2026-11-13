@@ -665,7 +665,7 @@ Mock 不保存狀態：同一方法每次建立回相同 ID，PATCH 只回顯此
 
 ## 前端備註（FE 補充，非 BE 原文）
 
-以上為 BE 原文，未修改。以下由前端補充，記錄日期 2026-10-22，最後更新 2026-11-05。串接計劃見 [`docs/superpowers/plans/2026-10-29-list-lock-integration.md`](../superpowers/plans/2026-10-29-list-lock-integration.md)。
+以上為 BE 原文，未修改。以下由前端補充，記錄日期 2026-10-22，最後更新 2026-11-13。串接現況見根目錄 `AGENTS.md` §13「名單上鎖 API 串接」。
 
 ### 已確認
 

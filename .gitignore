@@ -37,6 +37,9 @@ README.md
 .claude
 *.tsbuildinfo
 .superpowers
+# 本機工作筆記（計劃、交接），不進 Git；以 AGENTS.md 與 docs/api/ 為準
+/docs/handoff/
+/docs/superpowers/
 
 # Playwright
 /test-results/
