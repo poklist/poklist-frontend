@@ -1,11 +1,7 @@
-import { listsContract } from '@/api/contracts';
 import { listsQuery, PutListsResponse } from '@/api/query/lists';
-import listsKeys from '@/hooks/api/lists/keys';
-import { updateEntryCaches, updateInfiniteCaches } from '@/hooks/api/utils';
-import { toBackendTimestamp } from '@/lib/time';
+import { applyUpdatedListToCaches } from '@/hooks/api/lists/applyUpdatedListToCaches';
 import { useQueryClient } from '@tanstack/react-query';
 import z from 'zod';
-import { invalidateUserListsCaches } from '@/hooks/api/lists/invalidateUserListsCaches';
 
 type UsePutIdeaSchema = z.infer<z.ZodObject<{ userCode: z.ZodString }>>;
 type UsePutListOptions = UsePutIdeaSchema & {
@@ -18,89 +14,15 @@ export const usePutList = (options: UsePutListOptions) => {
     onSuccess: (response, request) => {
       const newData = response.body.content;
       try {
-        const updatedAt = toBackendTimestamp(new Date());
-        updateEntryCaches<typeof listsContract.getUserListsContract>(
-          queryClient,
-          listsKeys.userLists(options.userCode),
-          (previousBody) => {
-            return {
-              ...previousBody,
-              content: previousBody.content.map((list) =>
-                list.id === newData.id
-                  ? {
-                      ...list,
-                      title: newData.title,
-                      description: newData.description,
-                      coverImage: request.body.coverImage ?? list.coverImage,
-                      externalLink: newData.externalLink,
-                      categoryID: newData.categoryID,
-                      type: newData.type,
-                    }
-                  : list
-              ),
-            };
-          }
-        );
-        updateInfiniteCaches<typeof listsContract.getUserListsContract>(
-          queryClient,
-          listsKeys.userInfiniteLists(options.userCode),
-          (previousPages) => {
-            return previousPages.map((page) => {
-              return {
-                ...page,
-                body: {
-                  ...page.body,
-                  content: page.body.content.map((list) =>
-                    list.id === newData.id
-                      ? {
-                          ...list,
-                          title: newData.title,
-                          description: newData.description,
-                          coverImage:
-                            request.body.coverImage ?? list.coverImage,
-                          externalLink: newData.externalLink,
-                          categoryID: newData.categoryID,
-                          type: newData.type,
-                        }
-                      : list
-                  ),
-                },
-              };
-            });
-          }
-        );
-        updateInfiniteCaches<typeof listsContract.getListsContract>(
-          queryClient,
-          listsKeys.infiniteIdeas(newData.id),
-          (previousPages) => {
-            return previousPages.map((page) => {
-              return {
-                ...page,
-                body: {
-                  ...page.body,
-                  content: {
-                    ...page.body.content,
-                    title: newData.title,
-                    description: newData.description,
-                    coverImage:
-                      request.body.coverImage ?? page.body.content.coverImage,
-                    externalLink: newData.externalLink,
-                    categoryID: newData.categoryID,
-                    type: newData.type,
-                    updatedAt,
-                  },
-                },
-              };
-            });
-          }
-        );
-        // 保底重抓：cache 被 gcTime 回收後上面的手術會 no-op（見 helper）。
-        // feed（使用者 List 列表）+ 該 List 詳細頁 meta。detail meta 上面已手術，
-        // 故用 'inactive'（active 靠手術、只背景刷 inactive）。
-        invalidateUserListsCaches(queryClient, options.userCode);
-        void queryClient.invalidateQueries({
-          queryKey: listsKeys.infiniteIdeas(newData.id),
-          refetchType: 'inactive',
+        applyUpdatedListToCaches(queryClient, options.userCode, {
+          id: newData.id,
+          title: newData.title,
+          description: newData.description,
+          // 舊 PUT 的 coverImage 以 request 為準
+          coverImage: request.body.coverImage,
+          externalLink: newData.externalLink,
+          categoryID: newData.categoryID,
+          type: newData.type,
         });
       } catch (error) {
         console.warn('Refetch failed, but list was edited: ', error);
